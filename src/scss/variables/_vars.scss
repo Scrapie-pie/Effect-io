@@ -1,0 +1,99 @@
+@import "extend";
+
+//FONT
+$font-family_main:'Roboto', 'Lato', Helvetica, Arial, sans-serif;
+
+$font-size_main:13px;
+
+@function calc-em($target, $context: $font-size_main){
+  $target:$target * 1px;
+  @return ($target / $context) * 1em;
+}
+$font-size_h1:calc-em(19);
+$font-size_h2:calc-em(15);
+
+$fsz_h2:1.5em;
+$fsz_h3:1.125em;
+$fsz_h4:1em;
+$fsz_h5:1em;
+$fsz_h6:0.75em;
+$fsz_small:0.85em;
+
+$lh_main:1.2;
+
+$margin-padding:10px;
+$width_xs:767px;
+$width_md:1024px;
+$width_lg:1169px;
+
+//COLORS
+
+$glob-trans:.3s ease-in-out;
+$glob-border-radius:5px;
+$glob-border-radius_field:$glob-border-radius * 2;
+$glob-box-shadow:0 2px 9px 1px rgba(0, 0, 0, .12);
+//ICONS
+
+//GRID
+
+//FORM
+
+//MIXIN
+
+$glob-colors:(
+        'success':#00bc00,
+        'error':#e12b2b,
+        'info':#0cf,
+        'info-dark':#009fff,
+        'info-light':#f4f6f7,
+        'disabled':#c0c6ca,
+        'border':#e5e5e5,
+        'main':rgb(82, 82, 82),
+        'secondary':#010101,
+        'light':#fff
+);
+
+@function glob-color($key,$native: true){
+  $clr:map-get($glob-colors, $key);
+  @if ($native){
+    @return var(--color-#{$key})
+  }
+  @return $clr
+}
+:root{
+  @each $i, $c in $glob-colors{
+    --color-#{$i}:#{$c};
+  }
+}
+%g-indent{
+  margin-bottom:em(4);
+  &_xs{
+    margin-bottom:em(2);
+  }
+}
+%full-abs{
+  position:absolute;
+  left:0;
+  right:0;
+  top:0;
+  bottom:0;
+}
+%btn-text{
+  padding:0;
+  border:0;
+  background:none;
+  color:glob-color('main');
+  text-align:inherit;
+  box-shadow:none;
+}
+%bgi{
+  background:no-repeat center/cover;
+}
+%op_0{
+  opacity:0;
+  visibility:hidden;
+}
+%op_1{
+  opacity:1;
+  visibility:visible;
+}

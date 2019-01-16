@@ -1,0 +1,32 @@
+fieldset{
+  border:0;
+  padding:0;
+  margin:0
+}
+legend{
+  width:100%
+}
+label{
+  display:block;
+}
+textarea{
+  resize:vertical
+}
+button, input, select, textarea{
+  font-weight:inherit;
+  color:inherit;
+  transition:$glob-trans;
+}
+input[type=submit]:not([value]){
+  outline:2px solid red;
+}
+input{
+  @include placeholder{ color:inherit; }
+}
+button,
+label,
+input[type="submit"],
+input[type="reset"]{
+  cursor:pointer;
+}
+

@@ -1,0 +1,24 @@
+$elem:'.icon';
+
+#{$elem}{
+  &-wrap{display:inline-block;vertical-align:top}
+  fill:glob-color('main');
+  transition:$glob-trans;
+  width:20px;
+  height:20px;
+  display:block;
+
+  &_calendar{
+    width:15px;
+  }
+  &_exit{
+    width:14px;
+    height:20px;
+  }
+
+  &-left{
+    display:flex;
+    align-items:center;
+    .icon{margin-right:em(1)}
+  }
+}

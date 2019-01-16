@@ -1,0 +1,29 @@
+/* тревога, если первый child внутри списка не li и прочие похожие примеры */
+ul > *:not(li),
+ol > *:not(li),
+dl > *:not(dt):not(dd){
+  outline:2px solid red;
+}
+ul, ol{
+  list-style:none;
+  margin:0;
+  padding:0;
+
+  &:not([class]) + p{
+    margin-top:2.5em;
+  }
+}
+ul:not([class]), ol:not([class]){
+  margin:0;
+}
+ol:not([class]){ list-style:decimal }
+ul:not([class]){
+
+  li{
+    padding-left:30px;
+    margin-bottom:1.1em;
+    position:relative;
+  }
+}
+
+

@@ -1,0 +1,64 @@
+table{ border-spacing:0; border-collapse:collapse; margin:0; width:100%;vertical-align:top }
+table:not([class]){
+  margin-bottom:em(2);
+}
+th{text-align:left;font-weight:inherit}
+th:not([class]){font-weight:600}
+tbody, tfoot, thead, tr, th, td{ vertical-align:inherit; }
+.table{
+  $el:'.table';
+
+  &__caption{
+    display:none;
+  }
+  &, &__thead, &__tbody{
+    display:flex;
+    flex-flow:column;
+  }
+
+  &__tr{
+    display:flex;
+    align-items:center;
+  }
+
+  &__th, &__td{
+    display:block;
+    padding:em(2) em(2);
+    flex:1;
+    min-width:20%;
+  }
+
+  &__thead{
+    @extend %h4;
+    margin-bottom:0;
+  }
+
+  &__thead:not(&__thead_no-fill){
+    background:glob-color('main');
+    color:glob-color('light');
+  }
+
+  &__tr{
+    border-bottom:1px solid glob-color('border');
+  }
+
+  &__product{
+    display:flex;
+    align-items:center;
+    position:relative;
+
+    &-icon{
+      .icon{
+        width:42px;
+        height:42px;
+        margin-right:em(1);
+      }
+    }
+
+    &-link:before{
+      content:'';
+      @extend %full-abs;
+    }
+  }
+
+}
