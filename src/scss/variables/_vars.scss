@@ -11,15 +11,16 @@ $font-size_main:13px;
 }
 $font-size_h1:calc-em(19);
 $font-size_h2:calc-em(15);
+$glob-font-size_small:calc-em(11);
 
 $fsz_h2:1.5em;
 $fsz_h3:1.125em;
 $fsz_h4:1em;
 $fsz_h5:1em;
-$fsz_h6:0.75em;
+$fsz_h6:0.85em;
 $fsz_small:0.85em;
 
-$lh_main:1.2;
+$glob-line-height_main:1.2;
 
 $margin-padding:10px;
 $width_xs:767px;
@@ -48,7 +49,7 @@ $glob-colors:(
         'info-light':#f4f6f7,
         'disabled':#c0c6ca,
         'border':#e5e5e5,
-        'main':rgb(82, 82, 82),
+        'main':#626262,
         'secondary':#010101,
         'light':#fff
 );

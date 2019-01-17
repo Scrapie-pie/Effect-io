@@ -1,82 +1,159 @@
 
 .field{
   $self:&;
+  $border-radius_field:$glob-border-radius_field;
+  $border:glob-color('border');
+  $color_error:glob-color('error');
+  $color_bg:glob-color('light');
+  $color_main:glob-color('main');
+  $color_disabled-field:glob-color('disabled_field');
+  $trans:$glob-trans;
+  $padding_input:calc-em(11) calc-em(20);
+  $font-size_small:$glob-font-size_small;
+  $line-height:$glob-line-height_main;
+  $box-shadow:$glob-box-shadow;
+
   text-align:left;
   position:relative;
-  &[aria-invalid="true"]:not([aria-required="false"]) &__input{border-color:glob-color('error')}
+
+  &__input-wrap{
+    position:relative;
+    display:block;
+  }
+
+  &[aria-invalid="true"]:not([aria-required="false"]) &__input{
+    border-color:$color_error;
+  }
 
   &__input{
+    border:1px solid $border;
+    background-color:$color_bg;
+    border-radius:$border-radius_field;
+    padding:$padding_input;
+
     width:100%;
     position:relative;
-    border:1px solid glob-color('border');
-    border-radius:$glob-border-radius_field;
-    padding:calc-em(11) calc-em(20);
     line-height:1;
-    background-color:glob-color('light');
     -webkit-appearance:none;
 
     &[type="text"] + #{$self}__eye::before{
       transform:translate(-50%, -50%) rotate(-45deg) scale(1);
     }
-
   }
 
   &__label{
-    z-index:1;
+    transition:$trans;
+    line-height:$glob-line-height_main;
     @extend %full-abs;
+    z-index:1;
     pointer-events:none;
-    transition:$glob-trans;
-    line-height:$lh_main;
     top:50%;
     transform:translateY(-50%);
     padding-left:calc-em(20);
     bottom:auto;
   }
 
-  &_focus &__label, &_has_value &__label, &_select &__label{
-    font-size:$fsz_h6;
-    top:-1em;
+  &_focus &__label,
+  &_has_value &__label,
+  &_select &__label{
+    font-size:$font-size_small;
+    top:(calc-em(25) * -1);
     padding:.5em 1.8em;
   }
 
   &__error{
-    color:glob-color('error');
-    font-size:$fsz_h6;
-    padding:5px 0 0 0;
+    color:$color_error;
+    font-size:$font-size_small;
+    padding:calc-em(5) 0 0 0;
     display:block;
     font-weight:inherit;
   }
 
   &__eye{
     @extend %btn-text;
-    padding:1.4em;
+    padding:.75em;
     right:0;
     top:0;
     position:absolute;
+
+    &-text{
+      @extend %visuallyhidden
+    }
+
     .icon{
       width:14px;
     }
-    &:before{
+
+    &::before{
+      transition:$trans;
       content:'';
       width:12px;
       height:1px;
-      background:var(--color-main);
+      background:$color_main;
       left:48%;
       top:50%;
       transform:translate(-50%, -50%) rotate(-45deg) scale(0);
       position:absolute;
       box-shadow:0 1px 0 glob-color('light');
       z-index:1;
-      transition:$glob-trans;
+
     }
 
   }
 
-  &__select.v-select.single{
+  &__select.v-select.dropdown{
+    $color_main:glob-color('main');
+    $color_secondary:glob-color('secondary');
+    $color_info:glob-color('info-light');
+
     .dropdown-toggle{
       @extend #{$self}__input;
     }
-    .selected-tag{
+
+    &:not(.single){
+
+      .dropdown-toggle{
+        padding:calc-em(3.1) 0;
+        padding-left:calc-em(2);
+        min-height:calc-em(39);
+      }
+
+      .selected-tag + .selected-tag{
+        //margin-left:calc-em(10);
+      }
+
+      .form-control{
+        padding-left:calc-em(20);
+      }
+      .selected-tag + .form-control{
+        padding-left:calc-em(5);
+      }
+
+      .selected-tag{
+        position:relative;
+        padding:.3em 1em;
+        padding-right:40px;
+        margin:calc-em(2) calc-em(2);
+        border-radius:6px;
+        &:first-child{
+          //margin-left:calc-em(5);
+        }
+
+      }
+      .close{
+        color:$color_main;
+        font-size:2em;
+        font-weight:300;
+        opacity:1;
+        position:absolute;
+        right:15px;
+        top:50%;
+        transform:translateY(-50%);
+        margin-top:-1px;
+      }
+    }
+
+    &.single .selected-tag{
       /* padding-right: em(6)!important;
        text-overflow: ellipsis;
        overflow: hidden;
@@ -84,7 +161,15 @@
       @extend %full-abs;
       line-height:1.2;
     }
-    .form-control, .selected-tag, .vs__selected-options{margin:0;padding:0;border:0;line-height:1}
+
+    .form-control,
+    .selected-tag,
+    .vs__selected-options{
+      margin:0;
+      padding:0;
+      border:0;
+      line-height:1
+    }
     .clear{display:none}
 
     &.open .selected-tag{position:relative}
@@ -92,16 +177,16 @@
     .dropdown-menu{
       padding:.8em 0;
       border:1px solid white;
-      box-shadow:$glob-box-shadow;
+      box-shadow:$box-shadow;
       margin-top:10px;
       overflow-y:auto;
-      border-radius:$glob-border-radius_field;
+      border-radius:$border-radius_field;
       max-height:400px !important;
 
       li > a{
         line-height:1.2;
         padding:.8em 15px;
-        color:glob-color('secondary');
+        color:$color_secondary;
         white-space:normal;
         border-bottom:0;
       }
@@ -112,7 +197,7 @@
       }
 
       .active a{
-        background:glob-color('info-light');
+        background:$color_info;
       }
 
     }
@@ -129,8 +214,8 @@
     }
     &.open .open-indicator{
       $deg:45deg;
-      &:before{ transform:rotate(-($deg)) }
-      &:after{ transform:rotate($deg) }
+      &::before{ transform:rotate(-($deg)) }
+      &::after{ transform:rotate($deg) }
       bottom:50%;
       transform:translateY(50%);
       right:5px;
@@ -139,13 +224,13 @@
     .spinner{
       top:0;
       right:-2em;
-      border-left-color:glob-color('main');
+      border-left-color:$color_main;
       overflow:visible;
       transform:none;
       transition:none;
       animation:none;
       border:0;
-      &:before{
+      &::before{
         width:20px;
         height:20px;
         margin-top:-10px;
@@ -159,7 +244,7 @@
       cursor:default;
     }
     &.disabled .dropdown-toggle{
-      background-color:glob-color('disabled_field');
+      background-color:$color_disabled-field;
     }
 
   }

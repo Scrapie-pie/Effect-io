@@ -2,48 +2,32 @@ import Vue from 'vue'
 import Router from 'vue-router'
 
 import Home from '@/pages/Home'
-import Auth from '@/pages/Auth'
-import Recover from '@/pages/Recover'
-import UiText from '@/pages/UiText'
-import Settings from '@/pages/Settings'
-import SettingsApp from '@/pages/SettingsApp'
+
+import AccountAuth from '@/components/AccountAuth'
+
+import Settings from '@/routes/settings'
+import Ui from '@/routes/ui'
+
+let helpers = process.env.NODE_ENV !== 'production' ? [...Ui] : [];
 
 
 export default new Router({
     mode: 'history',
     base: process.env.BASE_URL,
     routes: [
-        {
-            name: 'UiText',
-            path: '/ui',
-            component: UiText,
-            meta: {
-                breadcrumb: ''
-            }
-            // beforeEnter: hookNoUserFundsCase
-        },
+
         {
             name: 'auth',
             path: '/',
-            component: Auth,
+            component: AccountAuth,
         },
         {
             name: 'recover',
             path: '/recover',
-            component: Recover,
+            component: AccountAuth,
         },
-        {
-            name: 'settings',
-            path: '/settings',
-            component: Settings,
-            children: [
-                {
-                    name: 'settingsApp',
-                    path: 'app',
-                    component: SettingsApp
-                },
-            ]
-        },
+        ...Settings,
+        ...helpers,
     ]
 
 })

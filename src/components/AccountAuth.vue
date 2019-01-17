@@ -1,20 +1,43 @@
 <template lang="pug">
-
-
-    form.form-password(@submit.prevent="login")
+    form.form-password(@submit.prevent="submit")
         fieldset.form-password__box
-            legend.form-password__title Для входа в личный кабинет #[br] введите свои учетные данные
+            legend.form-password__title(v-text="title")
             .form-password__logo
-                img(src="@/assets/img/logo.png" alt="Логотип")
-            ul.form-password__list
-                li.form-password__item.form-password__field
-                    base-field(type="email" placeholder="Введите Е-email" autocomplete="off" )
-                li.form-password__item.form-password__field
-                    base-field(type="email" placeholder="Введите пароль" autocomplete="off" )
-            .form-password__bottom
-                .form-password__btn
-                    base-btn(theme="sign") Войти
-                router-link.form-password__link(:to='{name:"recover"}' ) Забыли пароль?
+                img(src="@/assets/img/logo.png" alt="logo")
+
+            template(v-if="!recover")
+                ul.form-password__list()
+                    li.form-password__item.form-password__field
+                        base-field(
+                        type="email"
+                        placeholder="Введите Е-email"
+                        name="login"
+                        v-validate="'required|email'" data-vv-as="логин" v-model="email"
+                        )
+                    li.form-password__item.form-password__field
+                        base-field(
+                        type="password"
+                        placeholder="Введите пароль"
+                        name="password"
+                        v-validate="'required'"
+                        data-vv-as="пароль"
+                        v-model="password"
+                        )
+                .form-password__bottom
+                    .form-password__btn
+                        base-btn(theme="sign" type="submit") Войти
+                    router-link.form-password__link(:to='{name:"recover"}' ) Забыли пароль?
+
+            template(v-else)
+                .form-password__list
+                    .form-password__item.form-password__field(v-if="!passwordSent")
+                        base-field(type="email" placeholder="Введите Е-email" autocomplete="off" name="email")
+                    p.form-password__text(v-else) Новый пароль отправлен #[br] на указанный e-mail
+                .form-password__bottom
+                    .form-password__btn
+                        base-btn(theme="sign" type="submit" v-if="!passwordSent") Восстановить пароль
+                    router-link.form-password__link(:to='{name:"auth"}' v-if="!passwordSent") Я помню пароль
+                    router-link.form-password__link(:to='{name:"auth"}' v-else) Вернуться ко входу
 
 </template>
 
@@ -23,18 +46,48 @@
 
     export default {
         components: {},
+
         data() {
             return {
+                recover: false,
                 email: '',
                 password: '',
-                authType: true,
+                title: 'Для входа в личный кабинет введите свои учетные данные',
                 disableLoginForm: false,
-                remember: false
+                passwordSent: false
             }
         },
-        methods: {
+        watch: {
+            '$route'(from, to) {
+                this.selectTemplate()
+            }
+        },
+        created() {
+            this.selectTemplate()
 
+        },
+        methods: {
+            selectTemplate() {
+                if (this.$route.name == 'recover') {
+                    this.title = 'Для восстановления пароля введите Ваш email';
+                    this.recover = true;
+                }
+                else this.recover = false
+            },
+            submit() {
+                if (this.recover) {
+                    this.passwordSent = true;
+                }
+                else {
+                    this.login()
+                }
+
+
+            },
             login() {
+                console.log('login');
+                return this.$router.push({name: 'settingsApp'})
+
                 if (!this.disableLoginForm) {
                     this.$validator.validateAll()
                         .then(success => {
@@ -176,6 +229,12 @@
         }
         &__link{
             color:glob-color('main');
+        }
+
+        &__text{
+            font-size:$font-size_h1;
+            font-weight:300;
+            line-height:1.7;
         }
     }
 </style>

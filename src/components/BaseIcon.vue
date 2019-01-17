@@ -11,7 +11,8 @@
     //importAll(files);
     //files.keys().forEach(files);
 
-    import twitterLogo from '@/assets/img/icons/check.svg';
+    import check from '@/assets/img/icons/check.svg';
+    import eye from '@/assets/img/icons/eye.svg';
 
     export default {
 

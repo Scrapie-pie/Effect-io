@@ -1,3 +1,5 @@
+console.clear();
+
 import Vue from 'vue'
 import App from './App.vue'
 import '@/validation'
@@ -13,6 +15,7 @@ import BaseIcon from "@/components/BaseIcon";
 import BaseField from "@/components/BaseField";
 import BaseBtn from "@/components/BaseBtn";
 import BaseRadioCheck from "@/components/BaseRadioCheck";
+import BaseAvatar from "@/components/BaseAvatar";
 
 
 Vue.component('base-icon', BaseIcon)
@@ -20,6 +23,7 @@ Vue.component('base-field', BaseField)
 Vue.component('base-field', BaseField)
 Vue.component('base-btn', BaseBtn)
 Vue.component('base-radio-check', BaseRadioCheck)
+Vue.component('base-avatar', BaseAvatar)
 
 /*let requireComponent = require.context('@/src/components/', true, /^Base[A-Z]/) //todo не работает(
 console.log(requireComponent.keys());
@@ -35,6 +39,8 @@ requireComponent.keys().forEach(function (fileName) {
     console.log(baseComponentName);
     Vue.component(baseComponentName, baseComponentConfig)
 })*/
+
+const APIURL = 'http://rbcall-rbcall-3212.cloud4.newrobocall.ru/app/app.php?'
 
 Vue.config.productionTip = false;
 

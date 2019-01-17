@@ -1,4 +1,5 @@
 <template lang="pug">
+
     article.grid
         h1 Ui
         base-icon(name="calendar")
@@ -6,17 +7,38 @@
         section
             h2 Елементы
             hr
-            form
-                legend forma
-                ul
-                    li
-                        base-field(
-                        type="text"
-                        name="sirname"
-                        label="Введите имя сотрудника"
-                        )
-                    li
-                        base-btn() Основная кнопка
+            ul.ui-list
+                li.ui-list__item
+                    account-auth
+                li.ui-list__item
+                    upload-avatar
+                li.ui-list__item
+                    base-avatar
+                li.ui-list__item
+                    form
+                        legend forma
+                        ul
+                            li
+                                base-field(
+                                type="select",
+                                :selectOptions="{label:'name',options:voiceList,taggable:true,pushTags:true}"
+                                name="voice"
+                                multiple
+                                )
+                            li
+                                base-field(
+                                type="select",
+                                :selectOptions="{label:'name',options:[{name:'Телефон'},{name:'Связь'}],default:{name:'Телефон'}}"
+                                name="phones"
+                                )
+                            li
+                                base-field(
+                                type="text"
+                                name="sirname"
+                                label="Введите имя сотрудника"
+                                )
+                            li
+                                base-btn() Основная кнопка
         hr
         section
             h2 Типографика
@@ -90,13 +112,28 @@
 
 <script>
 
+    import AccountAuth from '@/components/AccountAuth'
     import TextInfo from '@/components/TextInfo'
-
+    import UploadAvatar from '@/components/UploadAvatar'
 
     export default {
 
         components: {
+            AccountAuth,
             TextInfo,
+            UploadAvatar
         }
     }
 </script>
+
+<style lang="scss">
+    .ui-list{
+        display:flex;
+        flex-flow:wrap;
+        &__item{
+            outline:2px solid #f5f5f5;
+            padding:15px;
+            margin:5px;
+        }
+    }
+</style>
