@@ -1,8 +1,12 @@
 .btn{
-  background-color:glob-color('success');
-  color:glob-color('light');
+  $color_bg-default:glob-color('default');
+  $color_bg-main:glob-color('success');
+  $color_text-main:glob-color('light');
+  $padding:calc-em(7) calc-em(20);
+  background-color:$color_bg-main;
+  color:$color_text-main;
+  padding:$padding;
   border-radius:3px;
-  padding:calc-em(7) calc-em(20);
   display:inline-block;
   vertical-align:top;
   font-weight:400;
@@ -17,7 +21,7 @@
   }
 
   &_sign{
-    color:glob-color('light');
+    color:$color_text-main;
     border:0;
     box-shadow:0 -1px 14px 2px rgba(222, 163, 31, .53);
     font-weight:600;
@@ -25,5 +29,17 @@
     background:linear-gradient(to right, #ff783c 0%, #ffb815 100%);
     padding:1em 2em;
     border-radius:2em;
+  }
+
+  &_default{
+    background-color:$color_bg-default;
+  }
+
+  &_edit{
+    padding:calc-em(7) calc-em(7);
+    .icon{
+      width:15px;
+      height:15px;
+    }
   }
 }

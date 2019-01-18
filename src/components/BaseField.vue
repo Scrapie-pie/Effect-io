@@ -18,21 +18,35 @@
                 @focus="$emit('focus')"
                 ).field__input
 
-                button.field__eye(v-if="type=='password'", @click.prevent="togglePassword()" type="button" title="Показать пароль")
+
+
+                button.field__close(
+                v-if="type=='search'",
+                title="Очистить",
+                @click.prevent="clearSearch()"
+                ) ×
+
+                button.field__eye(
+                v-if="type=='password'",
+                type="button"
+                title="Показать пароль",
+                @click.prevent="togglePassword()"
+                )
                     base-icon(name="eye")
                     span.field__eye-text Показать пароль
-                app-icon.field__calendar(v-if="type=='date'" name="calendar")
+
             strong.field__error(v-if="errors.has(name) && type!='amount'" v-html="errors.first(name)")
 
         .field(:class="classObject" v-else-if="type=='select'"    ref="input")
             label.field__label(v-if="label" v-text="label")
             base-select(
-            key="id"
                 :class="{invalid_force: errors.has(name)}"
+            autocomplete="off",
+            key="id"
+
             v-bind="getSelectOptions",
             v-on="inputListeners",
 
-            autocomplete="off",
 
             ).field__select
                 span(slot="no-options")
@@ -51,19 +65,9 @@
     export default {
         components: {'base-select': vSelect},
         inject: ['$validator'],
-        /*    $_veeValidate: {
-                // must not be arrow functions.
-                // the name getter
-                name () {
-                    return this.label;
-                },
-                // the value getter
-                value () {
-                    return this.value; // `this` is the component instance, `value` is the prop we added.
-                }
-            },*/
         inheritAttrs: false,
         props: {
+            theme: String,
             select: {
                 required: false,
                 default: false
@@ -185,6 +189,7 @@
             },
             classObject() {
                 return {
+                    'field_theme_soft': this.theme == 'soft',
                     'field_has_value': !!this.value,
                     'field_focus': (this.focus),
                     'field_disabled': this.disabled,

@@ -17,7 +17,7 @@
   }
 }
 @mixin box-decor($box-shadow:-1,$border-radius:-1,$background:-1,$padding:-1){
-
+  transition:$glob-trans;
   @if $background == -1{ background-color:glob-color('light'); } @else{ background-color:transparent; }
   @if $box-shadow == -1{ box-shadow:$glob-box-shadow } @else{ box-shadow:none }
   @if $border-radius == -1{ border-radius:$glob-border-radius} @else{ border-radius:0}

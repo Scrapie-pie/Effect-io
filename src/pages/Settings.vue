@@ -25,7 +25,9 @@
                     {text: 'Настройки приложения', link: {name: 'settingsApp'}},
                     {text: 'Настройки профиля', link: {name: 'settingsProfile'}},
                     {text: 'Форма авторизации', link: {name: 'auth'}},
+
                     {text: 'Ui', link: {name: 'ui'}},
+                    {text: 'Команда', link: {name: 'team'}},
                 ]
             }
         }

@@ -124,10 +124,15 @@
             position:absolute;
             left:0;
             top:0;
-            margin-top:.2em;
-            margin-left:.1em;
+            margin-top:.4em;
+            margin-left:.4em;
             transform:scale(0);
             transition:$glob-trans;
+
+            .icon{
+                width:15px;
+                height:15px;
+            }
         }
 
     }

@@ -5,10 +5,12 @@ import Home from '@/pages/Home'
 
 import AccountAuth from '@/components/AccountAuth'
 
+import Chat from '@/routes/chat'
 import Settings from '@/routes/settings'
 import Ui from '@/routes/ui'
 
 let helpers = process.env.NODE_ENV !== 'production' ? [...Ui] : [];
+
 
 
 export default new Router({
@@ -26,6 +28,7 @@ export default new Router({
             path: '/recover',
             component: AccountAuth,
         },
+        ...Chat,
         ...Settings,
         ...helpers,
     ]

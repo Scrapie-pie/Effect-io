@@ -1,6 +1,6 @@
 <template lang="pug">
     button.upload-avatar(type="button")
-        base-avatar.upload-avatar__avatar
+        base-avatar(width="lg").upload-avatar__avatar
         .upload-avatar__text Загрузить фото
         base-btn
             base-icon
@@ -23,7 +23,7 @@
         &__text{
             transition:$glob-trans;
             text-decoration:underline;
-            font-size:$font-size_h2;
+            font-size:$glob-font-size_h2;
             margin-left:calc-em(15);
             margin-right:calc-em(10);
         }

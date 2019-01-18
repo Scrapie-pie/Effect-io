@@ -6,6 +6,7 @@
   $color_error:glob-color('error');
   $color_bg:glob-color('light');
   $color_main:glob-color('main');
+  $color_focus:glob-color('info');
   $color_disabled-field:glob-color('disabled_field');
   $trans:$glob-trans;
   $padding_input:calc-em(11) calc-em(20);
@@ -15,6 +16,16 @@
 
   text-align:left;
   position:relative;
+  min-width:180px;
+
+  &_theme_soft{
+    #{$self}__input{
+      border-radius:0;
+      border-left-color:transparent;
+      border-right-color:transparent;
+      border-top-color:transparent;
+    }
+  }
 
   &__input-wrap{
     position:relative;
@@ -39,6 +50,13 @@
     &[type="text"] + #{$self}__eye::before{
       transform:translate(-50%, -50%) rotate(-45deg) scale(1);
     }
+
+    &:focus{
+      outline:none;
+      border-color:$color_focus;
+      //box-shadow:0 0 1px 0 $color_focus;;
+    }
+
   }
 
   &__label{
@@ -101,10 +119,24 @@
 
   }
 
+  &__close{
+    color:$color_main;
+    font-size:2em;
+    font-weight:300;
+    opacity:1;
+    position:absolute;
+    right:0;
+    top:50%;
+    transform:translateY(-50%);
+    margin-top:-1px;
+    border:0;
+    background:none;
+  }
+
   &__select.v-select.dropdown{
     $color_main:glob-color('main');
     $color_secondary:glob-color('secondary');
-    $color_info:glob-color('info-light');
+    $color_info:glob-color('info-lighten');
 
     .dropdown-toggle{
       @extend #{$self}__input;
@@ -193,7 +225,7 @@
 
       .highlight > a{
         background:none;
-        //color:glob-color('info-light');
+        //color:glob-color('info-lighten');
       }
 
       .active a{

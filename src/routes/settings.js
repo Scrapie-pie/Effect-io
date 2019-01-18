@@ -4,6 +4,7 @@ import SettingsProfile from '@/pages/SettingsProfile'
 
 import Ui from '@/routes/ui'
 
+
 export default [{
     name: 'settings',
     path: '/settings',
@@ -19,7 +20,7 @@ export default [{
             path: 'profile',
             component: SettingsProfile
         },
-        ...Ui
+        ...Ui,
     ]
 }]
 

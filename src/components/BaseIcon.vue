@@ -13,6 +13,7 @@
 
     import check from '@/assets/img/icons/check.svg';
     import eye from '@/assets/img/icons/eye.svg';
+    import edit from '@/assets/img/icons/edit.svg';
 
     export default {
 

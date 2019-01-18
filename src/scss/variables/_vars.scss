@@ -10,7 +10,7 @@ $font-size_main:13px;
   @return ($target / $context) * 1em;
 }
 $font-size_h1:calc-em(19);
-$font-size_h2:calc-em(15);
+$glob-font-size_h2:calc-em(15);
 $glob-font-size_small:calc-em(11);
 
 $fsz_h2:1.5em;
@@ -42,15 +42,17 @@ $glob-box-shadow:0 2px 9px 1px rgba(0, 0, 0, .12);
 //MIXIN
 
 $glob-colors:(
+        'default':#f3f3f3,
         'success':#00bc00,
         'error':#e12b2b,
         'info':#0cf,
         'info-dark':#009fff,
-        'info-light':#f4f6f7,
+        'info-light':#e5f5ff,
+        'info-lighten':#f4f6f7,
         'disabled':#c0c6ca,
         'border':#e5e5e5,
         'main':#626262,
-        'secondary':#010101,
+        'secondary':#2a2a2a,
         'light':#fff
 );
 
@@ -64,12 +66,6 @@ $glob-colors:(
 :root{
   @each $i, $c in $glob-colors{
     --color-#{$i}:#{$c};
-  }
-}
-%g-indent{
-  margin-bottom:em(4);
-  &_xs{
-    margin-bottom:em(2);
   }
 }
 %full-abs{

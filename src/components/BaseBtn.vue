@@ -3,6 +3,8 @@
         router-link(v-on="inputListeners" ,:class="classObject", :disabled="disabled" v-if="isRouter", :to="compRouterName")
             slot
         button(v-on="inputListeners", :type="type", :class="classObject" :disabled="disabled" ref="btn")
+            template(v-if="icon")
+                base-icon(:name="icon.name")
             slot
 </template>
 
@@ -11,6 +13,9 @@
 
     export default {
         props: {
+            icon: {},
+
+
             loaded: {
                 required: false,
                 default: true
@@ -50,13 +55,21 @@
             },
 
             classObject() {
-                return {
-                    'btn-icon': this.mode == 'icon',
-                    'btn-text': this.mode == 'link',
-                    'btn': this.mode == '',
-                    'btn_sign': this.theme == 'sign',
+
+                let obj = {
+                    'btn': true,
+                    'btn btn_default': this.theme == 'default',
+                    'btn btn_sign': this.theme == 'sign',
                     'spinner spinner_sm': this.loaded
                 }
+
+
+                if (!_.isEmpty(this.icon)) {
+                    obj['btn_' + this.icon.name] = true;
+                }
+
+                console.log(obj);
+                return obj
             },
             inputListeners: function () {
                 var vm = this

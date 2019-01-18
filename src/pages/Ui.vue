@@ -9,6 +9,11 @@
             hr
             ul.ui-list
                 li.ui-list__item
+                    base-btn(:icon="{name:'edit',box:true}" theme="default")
+
+                li.ui-list__item
+                    base-people(text="текст" name="имя")
+                li.ui-list__item
                     account-auth
                 li.ui-list__item
                     upload-avatar
@@ -18,6 +23,13 @@
                     form
                         legend forma
                         ul
+                            li
+                                base-field(
+                                type="search"
+                                name="search",
+                                placeholder="Поиск..."
+                                v-model="search"
+                                )
                             li
                                 base-field(
                                 type="select",

@@ -26,7 +26,7 @@
 <style lang="scss">
     .nav-main{
         $color-border:glob-color('info');
-        $color-bg:glob-color('info-light');
+        $color-bg:glob-color('info-lighten');
         $color-text:glob-color('secondary');
         $padding:calc-em(8) calc-em(26);
 

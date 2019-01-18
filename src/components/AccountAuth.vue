@@ -171,6 +171,8 @@
         height:100%;
         background-color:#f5f6f9;
         text-align:center;
+        min-height:500px;
+
         &__box{
             @include box-decor();
             padding:2em 2em 2em;
