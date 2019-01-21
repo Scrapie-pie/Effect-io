@@ -21,9 +21,13 @@
   &_theme_soft{
     #{$self}__input{
       border-radius:0;
-      border-left-color:transparent;
-      border-right-color:transparent;
-      border-top-color:transparent;
+      &, &:focus{
+        border-left-color:transparent;
+        border-right-color:transparent;
+        border-top-color:transparent;
+      }
+
+      padding-left:calc-em(10);
     }
   }
 
@@ -46,6 +50,8 @@
     position:relative;
     line-height:1;
     -webkit-appearance:none;
+
+    @include placeholder{ color:#737373; }
 
     &[type="text"] + #{$self}__eye::before{
       transform:translate(-50%, -50%) rotate(-45deg) scale(1);

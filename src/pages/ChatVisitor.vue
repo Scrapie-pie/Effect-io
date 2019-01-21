@@ -2,11 +2,12 @@
     article.chat-team
         .chat-team__controls
             .chat-team__control
-                base-field(
+                base-field.chat-team__search(
                 type="search"
                 name="search",
                 placeholder="Поиск... (имя, тел., e-mail)"
-                v-model="search"
+                v-model="search",
+                theme="soft"
 
                 )
             .chat-team__control
@@ -84,7 +85,10 @@
             margin-bottom:calc-em(50);
         }
         &__control{
-            margin-right:calc-em(40);
+            margin-right:calc-em(20);
+        }
+        &__search{
+            width:calc-em(250);
         }
 
     }

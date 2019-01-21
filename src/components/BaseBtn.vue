@@ -13,6 +13,7 @@
 
     export default {
         props: {
+            padding: '',
             icon: {},
 
 
@@ -57,15 +58,19 @@
             classObject() {
 
                 let obj = {
-                    'btn': true,
+
+
                     'btn btn_default': this.theme == 'default',
                     'btn btn_sign': this.theme == 'sign',
                     'spinner spinner_sm': this.loaded
                 }
 
+                if (!_.isEmpty(this.padding)) {
+                    obj['btn_padding_' + this.padding] = true;
+                }
 
                 if (!_.isEmpty(this.icon)) {
-                    obj['btn_' + this.icon.name] = true;
+                    obj['btn_icon btn_' + this.icon.name] = true;
                 }
 
                 console.log(obj);
@@ -88,29 +93,5 @@
 </script>
 
 <style lang="scss">
-    .btn{
-        display:inline-block;
-        vertical-align:top;
-        font-weight:500;
-        line-height:1.2;
-        border:1px solid transparent;
-        cursor:pointer;
-        position:relative;
-        text-align:center;
 
-        &_block{
-            width:100%;
-        }
-
-        &_sign{
-            color:glob-color('light');
-            border:0;
-            box-shadow:0 -1px 14px 2px rgba(222, 163, 31, .53);
-            font-weight:bold;
-            background:#ff783c;
-            background:linear-gradient(to right, #ff783c 0%, #ffb815 100%);
-            padding:1em 2em;
-            border-radius:2em;
-        }
-    }
 </style>

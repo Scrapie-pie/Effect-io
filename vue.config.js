@@ -23,7 +23,7 @@ module.exports = {
 
         config.plugin('svg-sprite-loader-plugin').use(require('svg-sprite-loader/plugin'), [
             {
-                plainSprite: true,
+                /* plainSprite: true,*/
 
             }
         ])

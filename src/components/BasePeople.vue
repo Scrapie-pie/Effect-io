@@ -10,7 +10,7 @@
                 )
             p.base-people__text(
             v-if="text"
-            v-text="text"
+            v-html="text"
             )
 
 
@@ -19,6 +19,7 @@
 <script>
     export default {
         props: {
+            bgTextNoFill: false,
             name: '',
             text: '',
             datetime: '',
@@ -38,7 +39,9 @@
         },
         computed: {
             classObject() {
-                if (this.type) return `base-people_${this.type}`
+                let parentClass = 'base-people';
+                if (this.bgTextNoFill) return `${parentClass}_bg-text_no_fill`;
+                if (this.type) return `${parentClass}_${this.type}`;
             }
         }
     }
@@ -64,6 +67,8 @@
             background-color:$color_bg;
             padding:$padding;
         }
+
+        &_bg-text_no_fill &__inner{ background-color:transparent }
 
         &__datetime{
             padding:0 $padding;

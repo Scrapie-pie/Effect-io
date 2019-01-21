@@ -17,3 +17,45 @@
   clip-path:inset(50%);
   margin:-1px;
 }
+%g-icon-down{
+  display:block;
+  $deg:43deg;
+  $sz:40px;
+  cursor:pointer;
+  background:none;
+  border:0;
+  width:$sz;
+  height:$sz;
+  text-align:center;
+  position:relative;
+  line-height:$sz;
+  color:glob-color('main');
+  padding:0;
+  &:before,
+  &:after{
+    width:8px;
+    height:1px;
+    background:currentColor;
+    content:'';
+    display:inline-block;
+    margin:-1px;
+    position:relative;
+    top:-5px;
+    transition:$glob-trans
+  }
+  &:before{
+    transform:rotate($deg)
+  }
+  &:after{
+    transform:rotate(-($deg))
+  }
+  &_open:before{
+    transform:rotate(-($deg))
+  }
+  &_open:after{
+    transform:rotate($deg)
+  }
+}
+
+
+
