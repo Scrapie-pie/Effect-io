@@ -28,6 +28,8 @@
       }
 
       padding-left:calc-em(10);
+      padding-top:calc-em(5);
+      padding-bottom:calc-em(5);
     }
   }
 
@@ -42,7 +44,8 @@
 
   &__input{
     border:1px solid $border;
-    background-color:$color_bg;
+    //background-color:$color_bg;
+    background-color:transparent;
     border-radius:$border-radius_field;
     padding:$padding_input;
 

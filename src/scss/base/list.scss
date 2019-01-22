@@ -4,7 +4,7 @@ ol > *:not(li),
 dl > *:not(dt):not(dd){
   outline:2px solid red;
 }
-ul, ol{
+ul, ol, dl, dt, dd{
   list-style:none;
   margin:0;
   padding:0;
@@ -13,7 +13,7 @@ ul, ol{
     margin-top:2.5em;
   }
 }
-ul:not([class]), ol:not([class]){
+ul:not([class]), ol:not([class]), dl:not([class]){
   margin:0;
 }
 ol:not([class]){ list-style:decimal }
@@ -24,6 +24,9 @@ ul:not([class]){
     margin-bottom:1.1em;
     position:relative;
   }
+}
+dl:not([class]){
+  padding-left:30px;
 }
 
 

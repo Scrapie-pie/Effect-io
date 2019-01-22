@@ -73,7 +73,7 @@
                     obj['btn_icon btn_' + this.icon.name] = true;
                 }
 
-                console.log(obj);
+
                 return obj
             },
             inputListeners: function () {

@@ -23,6 +23,18 @@
   @if $border-radius == -1{ border-radius:$glob-border-radius} @else{ border-radius:0}
   @if $padding == -1{ padding:2em } @else{ padding:0}
 }
+@mixin media($width,$option:0){
+  @if $option == 0{
+    @media (max-width:$width){
+      @content;
+    }
+  } @else if $option == 1{
+    @media (min-width:$width + 1px){
+      @content;
+    }
+  }
+
+}
 
 
 

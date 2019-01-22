@@ -1,6 +1,8 @@
 <template lang="pug">
     .base-people(:class="classObject")
-        base-avatar.base-people__avatar(:width="avatarWidth")
+        .base-people__avatar-wrap
+            base-avatar.base-people__avatar(:width="avatarWidth")
+            base-icon(:name="channelName").base-people__channel
         .base-people__inner
             .base-people__header
                 strong.base-people__name(v-text="name")
@@ -8,6 +10,7 @@
                 v-if="datetime"
                 v-text="datetime"
                 )
+                base-count.base-people__count(:count="count")
             p.base-people__text(
             v-if="text"
             v-html="text"
@@ -17,8 +20,14 @@
 </template>
 
 <script>
+    import BaseCount from '@/components/BaseCount';
     export default {
+        components: {
+            BaseCount
+        },
         props: {
+            channelName: '',
+            count: 0,
             bgTextNoFill: false,
             name: '',
             text: '',
@@ -54,11 +63,33 @@
         $padding:calc-em(15);
         $color_bg:glob-color('info-light');
         $color_name:glob-color('secondary');
+        $small:$glob-font-size_small;
         display:flex;
         align-items:center;
 
+        /* width:100%;*/
+
+        &__count{
+            float:right;
+        }
+
         &__avatar{
             flex:0 0 auto;
+        }
+
+        &__avatar-wrap{
+            display:inline-block;
+            position:relative;
+        }
+        &__channel{
+            position:absolute;
+            bottom:-3px;
+            right:-3px;
+            z-index:1;
+            .icon{
+                width:24px;
+                height:24px;
+            }
         }
 
         &__inner{
@@ -66,16 +97,24 @@
             border-radius:$border-raduis;
             background-color:$color_bg;
             padding:$padding;
+
         }
 
         &_bg-text_no_fill &__inner{ background-color:transparent }
 
         &__datetime{
-            padding:0 $padding;
+            padding:0 ($padding / 2);
+            font-size:$small;
         }
         &__name{
             color:$color_name;
             font-weight:bold;
+        }
+
+        &__text{
+            white-space:nowrap;
+            text-overflow:ellipsis;
+            overflow:hidden;
         }
 
         &_visitor &__inner, &_operator &__inner{

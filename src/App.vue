@@ -48,7 +48,6 @@
             display:flex;
             //align-items:center;
             flex:1 0 auto;
-            padding:em(4) 0;
         }
     }
 

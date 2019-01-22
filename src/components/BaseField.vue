@@ -183,8 +183,8 @@
                 return this.type
             },
             getPlaceholder() {
-                if (this.label != '') return
-                if (this.type == 'date' && this.placeholder == '') return 'дд.мм.гггг'
+                if (this.label != '') return;
+                if (this.placeholder == '') return 'Поиск';
                 else return this.placeholder
             },
             classObject() {

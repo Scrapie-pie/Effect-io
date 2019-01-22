@@ -7,6 +7,9 @@ import router from '@/routes/index'
 import store from './store/index'
 
 
+import VuePerfectScrollbar from 'vue-perfect-scrollbar'
+
+
 window.events = new Vue()
 
 window.flash = (messages, type = '') => window.events.$emit('flash', [messages, type])
@@ -19,6 +22,8 @@ import BaseAvatar from "@/components/BaseAvatar";
 import BasePeople from "@/components/BasePeople";
 
 
+Vue.component('scroll-bar', VuePerfectScrollbar)
+Vue.component('base-icon', BaseIcon)
 Vue.component('base-icon', BaseIcon)
 Vue.component('base-field', BaseField)
 Vue.component('base-field', BaseField)

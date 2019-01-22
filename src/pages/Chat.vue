@@ -1,26 +1,26 @@
 <template lang="pug">
     .chat-page
-        header.chat-page__header
+        header.chat-page__header.chat-page__padding
             user-status.chat-page__user-status
             nav-main.chat-page__nav-main(:item-list="canalList")
             nav-main.chat-page__nav-app(:item-list="appList")
-        .chat-page__people-message
-            base-field.chat-page__search(type="search" name="search" v-model="search" theme="soft")
-            .chat-page__people
-                ul.people-list
-                    li.people-list__item(v-for="(item, index) in peopleList",:key="index")
-                        base-people(:name="item.name" :text="item.text" :bg-text-no-fill="true")
-        the-chat-main.chat-page__main
+        aside.chat-page__last-messages
+            the-last-messages.chat-page__padding
+
+        main.chat-page__main.chat-page__padding
+            the-chat-main
             //transition(name="fade" mode="out-in")
                 router-view
 
-        the-client-info.chat-page__info
+        footer.chat-page__info.chat-page__offset-top
+            the-client-info
 
 
 </template>
 
 <script>
 
+    import TheLastMessages from '@/components/TheLastMessagess';
     import TheClientInfo from '@/components/TheClientInfo';
     import TheChatMain from '@/components/TheChatMain';
 
@@ -30,6 +30,7 @@
     export default {
         components: {
             TheChatMain,
+            TheLastMessages,
             TheClientInfo,
             NavMain,
             UserStatus,
@@ -64,12 +65,14 @@
 
             }
         },
+
         computed: {}
     }
 </script>
 
 
 <style lang="scss">
+
     .chat-page{
         $box-shadow:$glob-box-shadow;
         display:flex;
@@ -90,13 +93,7 @@
         }
 
         &__user-status{
-            padding:calc-em(30) calc-em(20) calc-em(70);
-        }
-
-        &__people-message{
-            width:275px;
-            background-color:glob-color('info-lighten');
-
+            padding:0 calc-em(20) calc-em(70);
         }
 
         &__main{
@@ -104,10 +101,10 @@
             padding:calc-em(15);
         }
 
-        .people-list{
-            &__item{
-                padding:0 calc-em(7);
-            }
+        &__last-messages{
+            width:275px;
+            background-color:glob-color('info-lighten');
+            padding-bottom:calc-em(30);
         }
 
         &__info{
@@ -115,7 +112,10 @@
             width:300px;
         }
 
-
+        &__padding{
+            padding-top:calc-em(30);
+            padding-bottom:calc-em(30);
+        }
     }
 
 

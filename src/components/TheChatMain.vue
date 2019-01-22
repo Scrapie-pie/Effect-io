@@ -1,6 +1,6 @@
 <template lang="pug">
-    main.chat-main
-        .chat-main__header
+    article.chat-main
+        header.chat-main__header
             .chat-main__header-text
                 h1.chat-main__name(v-text="clientName")
                 p.chat-main__channel На сайте: site.ru - Кеды для спорта
@@ -9,14 +9,15 @@
                     base-btn(theme="default" padding="xs") + Пригласить
                 li.chat-main__header-control
                     div.chat-main__header__more
-        .chat-main__body
+        scroll-bar.chat-main__body.scroll-bar(v-once)
             ul.chat-main__list
                 li.chat-main__item
                     time.chat-main__date 29 ноября 2017
-                    .chat-main__messges
-                        ul.messges
-                            li.messges__item
-                                base-people
+
+                    ul.chat-main__messages
+                        li.chat-main__messages-item(v-for="(item, index) in messageList",:key="index")
+                            base-people(avatar-width="md" :name="item.name" :text="item.text" :datetime="item.datetime")
+        footer.chat-main__footer
             .chat-main__contols
                 textarea.chat-main__input(placeholder="Enter - отправить сообщение, Shift+Enter - новая строка.")
             ul.chat-main__buttons
@@ -33,8 +34,35 @@
         data() {
             return {
                 clientName: '',
+
+
+                messageList: [
+                    {name: 'Петр Иванов', text: 'Где можно посмотреть спортивные кеды?', datetime: 17.47},
+                    {name: 'Маша', text: 'Где можно посмотреть спортивные кеды?', datetime: 17.47},
+                    {name: 'Маша', text: 'Где можно посмотреть спортивные кеды?', datetime: 17.47},
+                    {name: 'Маша', text: 'Где можно посмотреть спортивные кеды?', datetime: 17.47},
+                    {name: 'Петр Иванов', text: 'Где можно посмотреть спортивные кеды?', datetime: 17.47},
+                    {name: 'Маша', text: 'Где можно посмотреть спортивные кеды?', datetime: 17.47},
+                    {name: 'Маша', text: 'Где можно посмотреть спортивные кеды?', datetime: 17.47},
+                    {name: 'Маша', text: 'Где можно посмотреть спортивные кеды?', datetime: 17.47},
+                    {name: 'Петр Иванов', text: 'Где можно посмотреть спортивные кеды?', datetime: 17.47},
+                    {name: 'Маша', text: 'Где можно посмотреть спортивные кеды?', datetime: 17.47},
+                    {name: 'Маша', text: 'Где можно посмотреть спортивные кеды?', datetime: 17.47},
+                    {name: 'Маша', text: 'Где можно посмотреть спортивные кеды?', datetime: 17.47},
+                    {name: 'Петр Иванов', text: 'Где можно посмотреть спортивные кеды?', datetime: 17.47},
+                    {name: 'Маша', text: 'Где можно посмотреть спортивные кеды?', datetime: 17.47},
+                    {name: 'Маша', text: 'Где можно посмотреть спортивные кеды?', datetime: 17.47},
+                    {name: 'Маша', text: 'Где можно посмотреть спортивные кеды?', datetime: 17.47},
+                    {name: 'Петр Иванов', text: 'Где можно посмотреть спортивные кеды?', datetime: 17.47},
+                    {name: 'Маша', text: 'Где можно посмотреть спортивные кеды?', datetime: 17.47},
+                    {name: 'Маша', text: 'Где можно посмотреть спортивные кеды?', datetime: 17.47},
+                    {name: 'Маша', text: 'Где можно посмотреть спортивные кеды?', datetime: 17.47},
+                ],
+
+
             }
         },
+
         created() {
             this.clientName = 'Петр Иванов';
 
@@ -49,10 +77,12 @@
         $color_bg_date:glob-color('light');
         display:flex;
         flex-flow:column;
+        height:100%;
 
         &__header{
             display:flex;
             justify-content:space-between;
+            margin-bottom:2.5em;
         }
         &__name{
             font-size:inherit;
@@ -61,13 +91,14 @@
 
         &__body{
             margin-top:auto;
+            height:auto;
         }
 
         &__date{
             position:relative;
             display:block;
             text-align:center;
-            margin:1.5em 0;
+            margin:0 0 1.5em;
 
             &::before{
                 content:'';
@@ -96,6 +127,9 @@
         &__input{
             width:100%;
             padding:calc-em(15) 0;
+            border:0;
+            border-top:1px solid $color_border;
+
         }
 
         &__buttons{
@@ -115,6 +149,16 @@
                 width:25px;
                 height:25px;
             }
+        }
+
+        &__messages{
+            margin-bottom:calc-em(25);
+        }
+        &__messages-item{
+            & + &{
+                margin-top:calc-em(15);
+            }
+
         }
     }
 </style>

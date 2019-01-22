@@ -22,7 +22,7 @@
                 ul.client-info__sub
                     li.client-info__sub-item(v-for="(item, index) in infoList",:key="index")
                         | {{item.text}}
-            li.client-info__item(@click="showAudienceSegments=!showAudienceSegments")
+            li.client-info__item(@click="showAudienceSegments=!showAudienceSegments" v-if="0")
                 h4.client-info__name Аудиторные сегменты
                     span.client-info__arrow(:class="{'client-info__arrow_open':showAudienceSegments}")
                 transition(name="fade")

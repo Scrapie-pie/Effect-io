@@ -42,7 +42,7 @@
         computed: {
             src() {
                 //return `#${this.name}`;
-                console.log(this);
+                //console.log(this);
                 return `/icons-sprite.svg#${this.name}`
             }
         },
