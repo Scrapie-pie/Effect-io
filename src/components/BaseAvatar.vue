@@ -1,6 +1,6 @@
 <template lang="pug">
     .base-avatar(:class="classObject")
-        base-icon.base-avatar__icon(name="n1")
+        base-icon.base-avatar__icon(name="n2")
 
 </template>
 

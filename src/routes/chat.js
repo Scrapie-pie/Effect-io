@@ -13,8 +13,8 @@ export default [{
             component: ChatTeam
         },
         {
-            name: 'visitor',
-            path: 'visitor',
+            name: 'visitors',
+            path: 'visitors',
             component: ChatVisitor
         },
 

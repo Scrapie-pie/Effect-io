@@ -4,18 +4,18 @@
             span.field__input-wrap
                 span.field__label(v-if="label" v-text="label")
 
-                input(
-                autocomplete="off"
-                v-bind="$attrs",
-                :value="value",
-                :name="name",
-                :disabled="disabled",
+                textarea.field__input.field__input_textarea(
+                v-if="type=='textarea'"
+                v-bind="getInputOptions",
                 v-on="inputListeners",
-                :placeholder="getPlaceholder",
-                :type="getType"
                 ref="input",
-                @blur="$emit('blur')",
-                @focus="$emit('focus')"
+                )
+
+                input(
+                v-else
+                v-bind="getInputOptions",
+                v-on="inputListeners",
+                ref="input",
                 ).field__input
 
 
@@ -43,7 +43,6 @@
                 :class="{invalid_force: errors.has(name)}"
             autocomplete="off",
             key="id"
-
             v-bind="getSelectOptions",
             v-on="inputListeners",
 
@@ -170,6 +169,14 @@
         },
 
         computed: {
+            getInputOptions() {
+                let obj = {
+                    autocomplete: "off",
+                    type: this.getType,
+                    placeholder: this.getPlaceholder,
+                }
+                return Object.assign({}, this.$attrs, obj);
+            },
             getSelectOptions() {
                 return Object.assign({}, this.$attrs, this.selectOptions);
             },

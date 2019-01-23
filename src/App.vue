@@ -19,6 +19,7 @@
         },
         mounted() {
             document.querySelector('body').classList.add('page')
+            document.querySelector('body').classList.add('tablet')
         }
     }
 </script>

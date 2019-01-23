@@ -142,6 +142,11 @@
             border-radius:$border-radius;
             border:1px solid $color_border;
             background:none;
+
+            @include media($width_md){
+                font-size:.9em;
+                padding-right:15px;
+            }
         }
         &__arrow{
             @extend %g-icon-down;
@@ -149,7 +154,9 @@
             right:0;
             top:0;
             width:19px;
+            min-width:19px;
             height:19px;
+
             line-height:19px;
 
             &:after, &:before{
@@ -159,6 +166,11 @@
             &_open{
                 @extend %g-icon-down_open
             }
+
+            @include media($width_md){
+                right:-2px;
+            }
+
         }
 
         &__list{
@@ -209,5 +221,6 @@
             &_lunch::before{ background-color:$color_lunch }
             &_offline::before{ background-color:$color_offline }
         }
+
     }
 </style>

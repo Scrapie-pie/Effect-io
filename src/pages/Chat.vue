@@ -12,7 +12,7 @@
             //transition(name="fade" mode="out-in")
                 router-view
 
-        footer.chat-page__info.chat-page__offset-top
+        footer.chat-page__info.chat-page__padding
             the-client-info
 
 
@@ -43,7 +43,7 @@
                     {text: 'Не обработано', link: {name: 'process'}},
                     {text: 'Мои диалоги', link: {name: 'my'}},
                     {text: 'Команда', link: {name: 'team'}},
-                    {text: 'Посетители', link: {name: 'visitor'}},
+                    {text: 'Посетители', link: {name: 'visitors'}},
                     {text: 'Общий чат ', link: {name: 'common'}},
 
 
@@ -51,7 +51,7 @@
                 appList: [
                     {text: 'Ui', link: {name: 'ui'}},
                     {text: 'Настройки', link: {name: 'settingsApp'}},
-                    {text: 'Сменить учетную запись', link: {name: 'settingsProfile'}},
+                    {text: 'Сменить учетную запись', link: {name: 'auth'}},
                     {text: 'Выход', link: {name: 'auth'}},
                 ],
 
@@ -74,6 +74,7 @@
 <style lang="scss">
 
     .chat-page{
+        $self:'.chat-page';
         $box-shadow:$glob-box-shadow;
         display:flex;
         height:100%;
@@ -82,18 +83,24 @@
             @include box-decor();
             display:flex;
             flex-flow:column;
-            z-index:1;
-            width:165px;
+            z-index:300;
+            min-width:165px;
             padding:0 0 calc-em(30);
             border-radius:0;
+
+            @include media($width_md){
+                min-width:75px;
+            }
+
         }
+
 
         &__nav-app{
             margin-top:auto;
         }
 
         &__user-status{
-            padding:0 calc-em(20) calc-em(70);
+            padding-bottom:calc-em(70);
         }
 
         &__main{
@@ -105,11 +112,25 @@
             width:275px;
             background-color:glob-color('info-lighten');
             padding-bottom:calc-em(30);
+
+            @include media($width_md){
+                width:190px;
+            }
         }
 
         &__info{
             margin-left:auto;
-            width:300px;
+            width:280px;
+            padding-right:calc-em(20);
+
+            .client-info{
+                margin-top:-1em;
+            }
+
+            @include media($width_md){
+                width:19.532%;
+                padding-right:calc-em(5);
+            }
         }
 
         &__padding{

@@ -1,6 +1,6 @@
 <template lang="pug">
     nav.nav-main
-        ul.nav-main__list
+        ul.nav-main__list.tablet
             li.nav-main__item(
             v-for="(item, index) in itemList",
             :key="index"
@@ -10,9 +10,11 @@
                 active-class="nav-main__link_active"
                 exact
                 )
-                    | {{item.text}}
-                    base-count.nav-main__count(:count="item.count")
+                    span.nav-main__text(v-text="item.text")
 
+                    span.nav-main__icon
+                        base-icon(:name="item.link.name")
+                    base-count.nav-main__count(:count="item.count")
 
 </template>
 
@@ -32,8 +34,11 @@
 
 <style lang="scss">
     .nav-main{
+        $self:'.nav-main';
         $color-border:glob-color('info');
         $color-bg:glob-color('info-lighten');
+        $color-bg-tooltip:glob-color('light');
+        $border-radius:$glob-border-radius;
         $color-text:glob-color('secondary');
         $padding:calc-em(8) calc-em(26);
 
@@ -42,6 +47,7 @@
         &__item{
         }
         &__link{
+            position:relative;
             border-left:3px solid transparent;
             color:$color-text;
             padding:$padding;
@@ -62,5 +68,53 @@
         &__count{
             margin-left:4px;
         }
+
+        &__icon{
+            display:none;
+            .icon{
+                width:28px;
+                height:28px;
+            }
+
+        }
+
+        @include media($width_md){
+            &__link{
+                padding-left:calc-em(20);
+                padding-right:calc-em(20);
+                border-color:transparent;
+                text-align:center;
+
+                &:hover #{$self}__text{
+                    transform:scale(1);
+                }
+            }
+
+            &__text{
+                @include box-decor();
+                position:absolute;
+                left:50%;
+                bottom:100%;
+                z-index:1;
+                display:inline-block;
+                padding:5px;
+                transform:scale(0);
+            }
+
+            &__icon{
+                display:block;
+            }
+
+            &__count{
+                position:absolute;
+                right:1em;
+                bottom:100%;
+                margin-top:3px;
+            }
+        }
+
+
+
+
     }
 </style>

@@ -30,7 +30,19 @@
     import arrow from '@/assets/img/icons/chat/arrow.svg';
 
 
+    import account from '@/assets/img/icons/chat/menu/account.svg';
+    import common from '@/assets/img/icons/chat/menu/common.svg';
+    import auth from '@/assets/img/icons/chat/menu/auth.svg';
+    import my from '@/assets/img/icons/chat/menu/my.svg';
+    import process from '@/assets/img/icons/chat/menu/process.svg';
+    import settingsApp from '@/assets/img/icons/chat/menu/settingsApp.svg';
+    import team from '@/assets/img/icons/chat/menu/team.svg';
+    import visitors from '@/assets/img/icons/chat/menu/visitors.svg';
+
+
+
     import n1 from '@/assets/img/icons/avatars/n1.svg';
+    import n2 from '@/assets/img/icons/avatars/n2.svg';
 
     export default {
 
@@ -42,7 +54,7 @@
         computed: {
             src() {
                 //return `#${this.name}`;
-                //console.log(this);
+                console.log(this.name);
                 return `/icons-sprite.svg#${this.name}`
             }
         },

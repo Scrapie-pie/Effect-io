@@ -1,9 +1,12 @@
 <template lang="pug">
-    aside.client-info
+    .client-info
         base-people(:name="clientInfo.name" :text="clientInfoContacts" :bg-text-no-fill="true")
         .client-info__social-links
             social-links
         ul.client-info__list
+            li.client-info__item
+                base-field(theme="soft" type="textarea" placeholder="Вы можете оставить комментарий к этому диалогу")
+
             li.client-info__item
 
                 h4.client-info__name(@click="showContacts=!showContacts")
@@ -80,7 +83,7 @@
 
 <style lang="scss">
     .client-info{
-        padding:2em 1em;
+
         &__item{
             margin-bottom:calc-em(30);
         }

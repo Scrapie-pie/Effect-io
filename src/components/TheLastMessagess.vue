@@ -91,8 +91,8 @@
             position:relative;
 
             .base-people__inner{
-                flex:1 0 75%;
-                width:75%;
+                flex:1 0 60%;
+                width:60%;
             }
         }
         &__btn{

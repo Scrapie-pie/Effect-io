@@ -20,7 +20,7 @@
         .icon{
             width:24px;
             height:24px;
-            margin:0 calc-em(5);
+            margin:0 calc-em(2);
         }
     }
 </style>

@@ -19,7 +19,9 @@
                             base-people(avatar-width="md" :name="item.name" :text="item.text" :datetime="item.datetime")
         footer.chat-main__footer
             .chat-main__contols
-                textarea.chat-main__input(placeholder="Enter - отправить сообщение, Shift+Enter - новая строка.")
+                .chat-main__textarea-wrap
+                    scroll-bar.chat-main__scrollbar
+                        textarea.chat-main__input(placeholder="Enter - отправить сообщение, Shift+Enter - новая строка." ref="chatInput" )
             ul.chat-main__buttons
                 li.chat-main__button: base-btn(:icon="{name:'phrases'}")
                 li.chat-main__button: base-btn(:icon="{name:'offer'}")
@@ -30,6 +32,7 @@
 </template>
 
 <script>
+    import autosize from 'autosize'
     export default {
         data() {
             return {
@@ -62,7 +65,13 @@
 
             }
         },
+        mounted() {
+            setTimeout(() => {
+                autosize(this.$refs.chatInput);
+            }, 5000)
 
+
+        },
         created() {
             this.clientName = 'Петр Иванов';
 
@@ -123,13 +132,21 @@
         &__controls{
             border-top:1px solid $color_border;
         }
-
+        &__textarea-wrap{
+            border-top:1px solid $color_border;
+            padding:calc-em(20) 0 0;
+        }
+        &__scrollbar{
+            max-height:7.5em;
+        }
         &__input{
             width:100%;
-            padding:calc-em(15) 0;
-            border:0;
-            border-top:1px solid $color_border;
+            height:2em;
+            line-height:1.5;
 
+            border:0;
+            padding:0;
+            overflow:hidden !important;
         }
 
         &__buttons{
