@@ -26,6 +26,7 @@
             BaseCount
         },
         props: {
+            direction:'',
             channelName: '',
             count: 0,
             bgTextNoFill: false,
@@ -49,9 +50,12 @@
         computed: {
             classObject() {
                 let parentClass = 'base-people';
-                if (this.bgTextNoFill) return `${parentClass}_bg-text_no_fill`;
-                if (this.type) return `${parentClass}_${this.type}`;
-            }
+                let obj = {}
+                obj[`${parentClass}_bg-text_no_fill`]=!!this.bgTextNoFill;
+                obj[`${parentClass}_${this.type}`]=!!this.type;
+                return obj
+            },
+
         }
     }
 </script>

@@ -9,6 +9,10 @@
             hr
             ul.ui-list
                 li.ui-list__item
+                    the-select-operator
+                li.ui-list__item
+
+                li.ui-list__item
                     base-btn(:icon="{name:'edit',box:true}" theme="default")
 
                 li.ui-list__item
@@ -50,7 +54,24 @@
                                 label="Введите имя сотрудника"
                                 )
                             li
+                                base-field(
+                                type="text"
+                                name="sirname"
+                                placeholder="Введите имя сотрудника"
+                                theme="soft"
+                                )
+                            li
+                                base-field(
+                                type="textarea"
+                                name="textarea"
+                                label="Введите имя сотрудника"
+                                )
+                            li
                                 base-btn() Основная кнопка
+                            li
+                                base-btn(theme="sign") theme="sign"
+                                base-btn(theme="default") theme="default"
+                                base-btn(theme="default") theme="default"
         hr
         section
             h2 Типографика
@@ -124,6 +145,7 @@
 
 <script>
 
+    import TheSelectOperator from '@/components/TheSelectOperator'
     import AccountAuth from '@/components/AccountAuth'
     import TextInfo from '@/components/TextInfo'
     import UploadAvatar from '@/components/UploadAvatar'
@@ -131,6 +153,7 @@
     export default {
 
         components: {
+            TheSelectOperator,
             AccountAuth,
             TextInfo,
             UploadAvatar

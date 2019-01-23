@@ -24,9 +24,14 @@ body{
   -webkit-tap-highlight-color:transparent;
 
   ::selection{
-    background:glob-color('main');
+    background:glob-color('info');
     color:white;
     text-shadow:none;
+  }
+
+  &:focus {
+    outline:none;
+    transform:translateY(-1px);
   }
 }
 hr{

@@ -12,6 +12,7 @@
     //files.keys().forEach(files);
 
     import check from '@/assets/img/icons/check.svg';
+    import close from '@/assets/img/icons/close.svg';
     import eye from '@/assets/img/icons/eye.svg';
     import edit from '@/assets/img/icons/edit.svg';
 
@@ -23,11 +24,15 @@
 
 
     import phrases from '@/assets/img/icons/chat/phrases.svg';
-    import offer from '@/assets/img/icons/chat/offer.svg';
+    import more from '@/assets/img/icons/chat/more.svg';
     import files from '@/assets/img/icons/chat/files.svg';
     import gifs from '@/assets/img/icons/chat/gifs.svg';
     import smiles from '@/assets/img/icons/chat/smiles.svg';
     import arrow from '@/assets/img/icons/chat/arrow.svg';
+    import transfer from '@/assets/img/icons/chat/transfer.svg';
+    import exit from '@/assets/img/icons/chat/exit.svg';
+    import bl from '@/assets/img/icons/chat/bl.svg';
+
 
 
     import account from '@/assets/img/icons/chat/menu/account.svg';
@@ -54,7 +59,7 @@
         computed: {
             src() {
                 //return `#${this.name}`;
-                console.log(this.name);
+
                 return `/icons-sprite.svg#${this.name}`
             }
         },

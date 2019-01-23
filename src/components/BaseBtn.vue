@@ -59,7 +59,8 @@
 
                 let obj = {
 
-
+                    'btn': this.theme == '',
+                    'btn btn_text': this.theme == 'text',
                     'btn btn_default': this.theme == 'default',
                     'btn btn_sign': this.theme == 'sign',
                     'spinner spinner_sm': this.loaded
@@ -70,6 +71,9 @@
                 }
 
                 if (!_.isEmpty(this.icon)) {
+                    console.log(this.icon.top);
+                    if (this.icon.top) obj['btn_icon-top'] = true;
+
                     obj['btn_icon btn_' + this.icon.name] = true;
                 }
 

@@ -5,6 +5,8 @@
   $color_text-main:glob-color('light');
   $color_border:glob-color('border');
   $padding:calc-em(7) calc-em(20);
+
+  position:relative;
   background-color:$color_bg-main;
   color:$color_text-main;
   padding:$padding;
@@ -15,8 +17,35 @@
   line-height:1.2;
   border:1px solid transparent;
   cursor:pointer;
-  position:relative;
+
   text-align:center;
+
+  &_text {
+    padding:0;
+    border:0;
+    background:none;
+    color:inherit;
+    font-weight:inherit;
+  }
+  &-arrow {
+    padding-right:20px;
+    &__arrow {
+      position:absolute;
+      right:0;
+      top:0;
+      width:20px;
+      min-width:20px;
+      height:20px;
+      line-height:20px;
+      @extend %g-icon-down;
+      @extend %g-icon-down_md;
+
+      &_open {
+        @extend %g-icon-down_open;
+      }
+    }
+
+  }
 
   &_block{
     width:100%;
@@ -47,6 +76,19 @@
   &_icon{
     border:0;
     background-color:transparent;
+  }
+
+  &_icon-top {
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+
+    .icon {
+      width:45px;
+      height:45px;
+      margin-bottom:.5em;
+    }
+
   }
 
   &_smiles{

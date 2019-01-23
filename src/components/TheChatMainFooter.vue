@@ -1,30 +1,32 @@
 <template lang="pug">
-    article.chat-main
-        the-chat-main-header.chat-main__header
-        scroll-bar.chat-main__body.scroll-bar(v-once)
-            ul.chat-main__list
-                li.chat-main__item
-                    time.chat-main__date 29 ноября 2017
-
-                    ul.chat-main__messages
-                        li.chat-main__messages-item(v-for="(item, index) in messageList",:key="index")
-                            base-people(avatar-width="md" :name="item.name" :text="item.text" :datetime="item.datetime")
-        the-chat-main-footer.chat-main__footer
-
+        footer.chat-main-footer
+            .chat-main-footer__contols
+                .chat-main-footer__textarea-wrap
+                    scroll-bar.chat-main-footer__scrollbar
+                        textarea.chat-main-footer__input(placeholder="Enter - отправить сообщение, Shift+Enter - новая строка." ref="chatInput" )
+            ul.chat-main-footer__buttons
+                li.chat-main-footer__button: base-btn(:icon="{name:'phrases'}")
+                li.chat-main-footer__button: base-btn(:icon="{name:'more'}")
+                li.chat-main-footer__button: base-btn(:icon="{name:'smiles'}")
+                li.chat-main-footer__button: base-btn(:icon="{name:'files'}")
+                li.chat-main-footer__button: base-btn(:icon="{name:'gifs'}")
+                li.chat-main-footer__button.chat-main-footer__button_send: base-btn.chat-main-footer__send(:icon="{name:'arrow'}")
 </template>
 
 <script>
     import TheChatMainHeader from '@/components/TheChatMainHeader'
-    import TheChatMainFooter from '@/components/TheChatMainFooter'
     import autosize from 'autosize'
     export default {
         components:{
-            TheChatMainHeader,
-            TheChatMainFooter
+            TheChatMainHeader
         },
         data() {
             return {
-
+                clientName: '',
+                showClientHistoryActions:false,
+                showInvite:false,
+                showMoreChatActions:false,
+                //moreActionsClose:false,
 
                 messageList: [
                     {name: 'Петр Иванов', text: 'Где можно посмотреть спортивные кеды?', datetime: 17.47},
@@ -60,7 +62,7 @@
 
         },
         created() {
-
+            this.clientName = 'Петр Иванов';
 
         },
         methods: {
@@ -72,56 +74,51 @@
 </script>
 
 <style lang="scss">
-    .chat-main{
+    .chat-main-footer{
         $color_border:glob-color('border');
-        $color_bg_date:glob-color('light');
-
-        display:flex;
-        flex-flow:column;
-        height:100%;
+        $color_bg-send:glob-color('info-lighten');
 
 
-        &__body{
-            margin-top:auto;
-            height:auto;
+
+
+        &__controls{
+            border-top:1px solid $color_border;
+        }
+        &__textarea-wrap{
+            border-top:1px solid $color_border;
+            padding:calc-em(20) 0 0;
+        }
+        &__scrollbar{
+            max-height:7.5em;
+        }
+        &__input{
+            width:100%;
+            height:2em;
+            line-height:1.5;
+
+            border:0;
+            padding:0;
+            overflow:hidden !important;
         }
 
-        &__date{
-            position:relative;
-            display:block;
-            text-align:center;
-            margin:0 0 1.5em;
+        &__buttons{
+            display:flex;
+            align-items:center;
+        }
+        &__button_send{
+            margin-left:auto;
+        }
+        &__send{
+            width:calc-em(45);
+            height:calc-em(45);
+            background-color:$color_bg-send;
+            border-radius:50%;
 
-            &::before{
-                content:'';
-                border-top:1px solid $color_border;
-                position:absolute;
-                left:0;
-                right:0;
-                top:50%;
-                z-index:-1;
+            .icon{
+                width:25px;
+                height:25px;
             }
-            &::after{
-                content:'';
-                display:block;
-                @extend %full-abs;
-                z-index:-1;
-                margin:0 auto;
-                width:98px;
-                background:$color_bg_date;
-            }
         }
-
-        &__messages{
-            margin-bottom:calc-em(25);
-        }
-        &__messages-item{
-            & + &{
-                margin-top:calc-em(15);
-            }
-
-        }
-
 
 
     }

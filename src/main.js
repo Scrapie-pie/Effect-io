@@ -20,6 +20,7 @@ import BaseBtn from "@/components/BaseBtn";
 import BaseRadioCheck from "@/components/BaseRadioCheck";
 import BaseAvatar from "@/components/BaseAvatar";
 import BasePeople from "@/components/BasePeople";
+import BaseBoxMenu from "@/components/BaseBoxMenu";
 
 
 Vue.component('scroll-bar', VuePerfectScrollbar)
@@ -31,6 +32,7 @@ Vue.component('base-btn', BaseBtn)
 Vue.component('base-radio-check', BaseRadioCheck)
 Vue.component('base-avatar', BaseAvatar)
 Vue.component('base-people', BasePeople)
+Vue.component('base-box-menu', BaseBoxMenu)
 
 /*let requireComponent = require.context('@/src/components/', true, /^Base[A-Z]/) //todo не работает(
 console.log(requireComponent.keys());

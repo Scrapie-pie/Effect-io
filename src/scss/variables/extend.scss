@@ -44,6 +44,12 @@
     top:-5px;
     transition:$glob-trans
   }
+
+  &_md:before,
+  &_md:after{
+    width:6px;
+  }
+
   &:before{
     transform:rotate($deg)
   }
