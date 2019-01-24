@@ -1,37 +1,63 @@
 <template lang="pug">
-        footer.chat-main-footer
-            base-box-menu(
-                :show="showPhrases",
-                @base_box_menu_close="showPhrases=false"
-            )
+        form.chat-main-footer
+            base-box-menu(:show="showPhrases", @base_box_menu_close="showPhrases=false")
                 the-phrases-ready
+            base-box-menu(:show="showSmiles", @base_box_menu_close="showSmiles=false")
+                the-files-board(name="smiles")
+            base-box-menu(:show="showGifs", @base_box_menu_close="showGifs=false")
+                the-files-board(name="gifs")
+            base-box-menu(:show="showOffer", @base_box_menu_close="showOffer=false")
+                the-offer()
+
             .chat-main-footer__contols
                 .chat-main-footer__textarea-wrap
                     scroll-bar.chat-main-footer__scrollbar
-                        textarea.chat-main-footer__input(placeholder="Enter - отправить сообщение, Shift+Enter - новая строка." ref="chatInput" )
+                        textarea.chat-main-footer__input(
+                            placeholder="Enter - отправить сообщение, Shift+Enter - новая строка."
+                            ref="chatInput"
+                        )
             ul.chat-main-footer__buttons
                 li.chat-main-footer__button
                     base-btn(
                         :icon="{name:'phrases',textHidden:'Список готовых шаблонных фраз'}",
                         @click.prevent="showPhrases=true"
                     )
-                li.chat-main-footer__button: base-btn(:icon="{name:'more'}")
-                li.chat-main-footer__button: base-btn(:icon="{name:'smiles'}")
+                li.chat-main-footer__button
+                    base-btn(
+                        :icon="{name:'more',textHidden:'Предложить посетителю'}",
+                        @click.prevent="showOffer=true"
+                    )
+                li.chat-main-footer__button
+                    base-btn(
+                        :icon="{name:'smiles',textHidden:'Гифки'}"
+                        @click.prevent="showSmiles=true"
+                    )
                 li.chat-main-footer__button: base-btn(:icon="{name:'files'}")
-                li.chat-main-footer__button: base-btn(:icon="{name:'gifs'}")
+                li.chat-main-footer__button
+                    base-btn(
+                        :icon="{name:'gifs',textHidden:'Гифки'}"
+                        @click.prevent="showGifs=true"
+                    )
                 li.chat-main-footer__button.chat-main-footer__button_send: base-btn.chat-main-footer__send(:icon="{name:'arrow'}")
 </template>
 
 <script>
+    import TheOffer from '@/components/TheOffer'
+    import TheFilesBoard from '@/components/TheFilesBoard'
     import ThePhrasesReady from '@/components/ThePhrasesReady'
 
     export default {
         components:{
+            TheOffer,
+            TheFilesBoard,
             ThePhrasesReady
         },
         data() {
             return {
-                showPhrases:false
+                showGifs:false,
+                showOffer:false,
+                showSmiles:false,
+                showPhrases:false,
 
 
             }

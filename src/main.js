@@ -21,8 +21,10 @@ import BaseRadioCheck from "@/components/BaseRadioCheck";
 import BaseAvatar from "@/components/BaseAvatar";
 import BasePeople from "@/components/BasePeople";
 import BaseBoxMenu from "@/components/BaseBoxMenu";
+import BaseNoFound from "@/components/BaseNoFound";
 
 
+Vue.component('scroll-bar', VuePerfectScrollbar)
 Vue.component('scroll-bar', VuePerfectScrollbar)
 Vue.component('base-icon', BaseIcon)
 Vue.component('base-icon', BaseIcon)
@@ -33,6 +35,7 @@ Vue.component('base-radio-check', BaseRadioCheck)
 Vue.component('base-avatar', BaseAvatar)
 Vue.component('base-people', BasePeople)
 Vue.component('base-box-menu', BaseBoxMenu)
+Vue.component('base-no-found', BaseNoFound)
 
 /*let requireComponent = require.context('@/src/components/', true, /^Base[A-Z]/) //todo не работает(
 console.log(requireComponent.keys());

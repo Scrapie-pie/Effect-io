@@ -27,10 +27,10 @@
 
         },
         mounted() {
-            //document.addEventListener('click', this.close);
+            document.addEventListener('click', this.close);
         },
         updated() {
-            //document.addEventListener('click', this.close);
+            document.addEventListener('click', this.close);
         },
         beforeDestroy() {
             document.removeEventListener('click', this.close);

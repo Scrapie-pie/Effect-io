@@ -73,12 +73,14 @@
 
                 let obj = {
 
-                    'btn': this.theme == '',
-                    'btn btn_link': this.theme == 'link',
-                    'btn btn_text': this.theme == 'text',
-                    'btn btn_default': this.theme == 'default',
-                    'btn btn_sign': this.theme == 'sign',
+
                     'spinner spinner_sm': this.loaded
+                }
+
+                if (!_.isEmpty(this.theme)) {
+                    obj['btn btn_' + this.theme] = true;
+                } else {
+                    obj['btn'] = true;
                 }
 
                 if (!_.isEmpty(this.padding)) {

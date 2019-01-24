@@ -1,24 +1,19 @@
 <template lang="pug">
     form.phrases-ready
-        fieldset
-            legend.phrases-ready__title Готовый список фраз
+        fieldset(v-if="!showPhrasesNew")
+            legend.phrases-ready__text-only-scr Готовый список фраз
 
             .phrases-ready__inner
                 fieldset.phrases-ready__catalog.phrases-ready__fieldset
                     legend.phrases-ready__name Категория
-                    ul.phrases-ready__list.nav-main__list
-                        li.nav-main__item(
-                            v-for="(item, index) in categories",
-                            :key="index"
-                        )
-                            button.nav-main__link.nav-main__link_active(
-                                type="button"
-                                v-text="item.name"
-                            )
+                    action-list.phrases-ready__list(:item-list="categories")
 
                 fieldset.phrases-ready__phrases-wrap.phrases-ready__fieldset
                     legend.phrases-ready__name.phrases-ready__name_phrases Фраза
-                        base-btn.phrases-ready__add(v-text="'Добавить свой шаблон'")
+                        base-btn.phrases-ready__btn-add(
+                            @click="showPhrasesNew=true"
+                            v-text="'Добавить свой шаблон'"
+                        )
                     ul.phrases-ready__phrases
                         li.phrases-ready__phrases-item(
                             v-for="(item, index) in phrases",
@@ -29,16 +24,50 @@
                                 base-btn.phrases-ready__phrases-button.phrases-ready__phrases-edit(theme="link" v-text="'Редактировать'")
                                 base-btn.phrases-ready__phrases-button.phrases-ready__phrases-remove(theme="link" v-text="'Удалить'")
 
-
-
-
-
+        fieldset(v-else)
+            legend.phrases-ready__text-only-scr Добавление новой фразы
+            ul.phrases-ready__add
+                li.phrases-ready__add-item.phrases-ready__add-item_select
+                    base-field(
+                        type="select",
+                        :selectOptions="{label:'name',options:categories}"
+                        name="newCategory"
+                        v-model="newCategory",
+                        label="Выберите категорию или придумайте свою "
+                    )
+                li.phrases-ready__add-item
+                    base-field(
+                        type="textarea",
+                        name="newCategory"
+                        v-model="newPhrase",
+                        label="Введите фразу"
+                    )
+                li.phrases-ready__add-item
+                    base-radio-check(
+                        type="radio"
+                        v-model="VisibleToAll"
+                        value="true"
+                        name="VisibleToAll"
+                    ) Все сотрудники будут видеть данный шаблон
+                li.phrases-ready__add-item
+                    base-radio-check(type="radio" value="false") Данный шаблон будет виден только мне
+                li.phrases-ready__add-item
+                    base-btn.phrases-ready__add-item-button(v-text="'Добавить шаблон'")
+                    base-btn(v-text="'Отмена'" theme="error")
 </template>
 
 <script>
+    import ActionList from '@/components/ActionList'
     export default {
+        components:{
+            ActionList
+        },
         data() {
             return {
+                newCategory:false,
+                newPhrase:false,
+                showPhrasesNew:false,
+                VisibleToAll:false,
                 phrases: [
                     {text:'Здравствуйте! Чем я могу Вам помочь?'},
                     {text:'Добрый день! Отвечу на Ваши вопросы. '},
@@ -46,10 +75,10 @@
                     {text:'Еще категория'},
                 ],
                 categories: [
-                    {name:'Приветствие'},
-                    {name:'Прощание'},
-                    {name:'Название своего варианта'},
-                    {name:'Еще категория'},
+                    {text:'Приветствие'},
+                    {text:'Прощание'},
+                    {text:'Название своего варианта'},
+                    {text:'Еще категория'},
                 ],
 
 
@@ -71,6 +100,23 @@
 
         $padding:calc-em(8) calc-em(26);
 
+        &__add-item {
+            &+& {
+                margin-top:calc-em(25);
+            }
+
+            &_select {
+                max-width:275px;
+            }
+        }
+        &__add-item-button {
+            margin-right:calc-em(20);
+        }
+
+        &__title {
+            font-weight:bold;
+        }
+
         &__inner {
             display:flex;
         }
@@ -79,7 +125,7 @@
             margin-left:(calc-em(26) * -1);
         }
 
-        &__add {
+        &__btn-add {
             margin-left:auto;
             margin-right:calc-em(20);
 
@@ -90,6 +136,7 @@
 
         &__catalog {
             padding-right: 16%;
+            flex: 0 0 auto;
         }
 
         &__phrases-button {
@@ -123,7 +170,7 @@
             margin-left:auto;
         }
 
-        &__title {
+        &__text-only-scr {
             @extend %visuallyhidden;
         }
 
@@ -136,36 +183,7 @@
             }
         }
 
-        .nav-main{
-            $self:'.nav-main';
 
-
-
-            &__item{
-            }
-            &__link{
-                position:relative;
-                border:0;
-                border-left:3px solid transparent;
-                background-color:transparent;
-                color:$color-text;
-                padding:$padding;
-                white-space:nowrap;
-                text-decoration:none;
-                display:block;
-                padding-right:calc-em(20);
-
-
-
-                &_active{
-                    border-color:$color-border;
-                    background-color:$color-bg;
-                    font-weight:700;
-                }
-            }
-
-
-        }
     }
 
 

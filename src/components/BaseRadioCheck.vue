@@ -113,6 +113,7 @@
                 width:$sz;
                 height:$sz;
                 border:1px solid glob-color('border');
+                border-radius:50%;
                 margin-right:calc-em(15);
             }
             &:after{

@@ -4,34 +4,30 @@
             user-status.chat-page__user-status
             nav-main.chat-page__nav-main(:item-list="canalList")
             nav-main.chat-page__nav-app(:item-list="appList")
-        aside.chat-page__last-messages
-            the-last-messages.chat-page__padding
 
         main.chat-page__main.chat-page__padding
-            the-chat-main
-            //transition(name="fade" mode="out-in")
-                router-view
+            transition(name="fade" mode="out-in")
+                router-view.chat-page__view
 
-        footer.chat-page__info.chat-page__padding
-            the-client-info
+
+
+
+
+
 
 
 </template>
 
 <script>
 
-    import TheLastMessages from '@/components/TheLastMessagess';
-    import TheClientInfo from '@/components/TheClientInfo';
-    import TheChatMain from '@/components/TheChatMain';
+
 
     import NavMain from '@/components/NavMain';
     import UserStatus from '@/components/UserStatus';
 
     export default {
         components: {
-            TheChatMain,
-            TheLastMessages,
-            TheClientInfo,
+
             NavMain,
             UserStatus,
 
@@ -41,7 +37,7 @@
 
                 canalList: [
                     {text: 'Не обработано', link: {name: 'process'}},
-                    {text: 'Мои диалоги', link: {name: 'my'}},
+                    {text: 'Мои диалоги', link: {name: 'dialog'}},
                     {text: 'Команда', link: {name: 'team'}},
                     {text: 'Посетители', link: {name: 'visitors'}},
                     {text: 'Общий чат ', link: {name: 'common'}},
@@ -104,9 +100,16 @@
             padding-bottom:calc-em(70);
         }
 
+        &__view {
+            display: flex;
+            height: 100%;
+            flex-direction: column;
+        }
         &__main{
             flex:1;
-            padding:calc-em(15);
+            padding-left:calc-em(15);
+            padding-right:calc-em(15);
+            height:100%;
         }
 
         &__last-messages{

@@ -72,7 +72,7 @@
 <style lang="scss">
 
     .icon{
-        fill:glob-color('main');
+        fill:inherit;
         transition:$glob-trans;
         width:20px;
         height:20px;
@@ -81,6 +81,11 @@
         &-wrap{
             display:inline-block;
             vertical-align:top
+        }
+
+        &_more {
+            height: 17px;
+            width: 26px;
         }
     }
 

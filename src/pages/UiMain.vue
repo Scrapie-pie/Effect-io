@@ -10,6 +10,24 @@
             ul.ui-list
                 li.ui-list__item
                     base-box-menu(:show="true")
+                        the-offer
+                li.ui-list__item
+                    base-box-menu(:show="true")
+                        the-files-board(name="smiles")
+                li.ui-list__item
+                    base-box-menu(:show="true")
+                        the-files-board(name="gifs")
+                li.ui-list__item
+                    base-box-menu(:show="true")
+                        the-chat-main-header-history
+                li.ui-list__item
+                    base-box-menu(:show="true")
+                        the-chat-main-header-actions
+                li.ui-list__item
+                    base-box-menu(:show="true")
+                        the-phrases-ready
+                li.ui-list__item
+                    base-box-menu(:show="true")
                         the-select-operator
                 li.ui-list__item
 
@@ -68,8 +86,11 @@
                                 label="Введите имя сотрудника"
                                 )
                             li
-                                base-btn() Основная кнопка
+
                             li
+                                base-btn() Основная кнопка
+                                base-btn(theme="link") theme="link"
+                                base-btn(theme="error") theme="error"
                                 base-btn(theme="sign") theme="sign"
                                 base-btn(theme="default") theme="default"
                                 base-btn(theme="default") theme="default"
@@ -146,6 +167,11 @@
 
 <script>
 
+    import TheOffer from '@/components/TheOffer'
+    import TheFilesBoard from '@/components/TheFilesBoard'
+    import TheChatMainHeaderHistory from '@/components/TheChatMainHeaderHistory'
+    import TheChatMainHeaderActions from '@/components/TheChatMainHeaderActions'
+    import ThePhrasesReady from '@/components/ThePhrasesReady'
     import TheSelectOperator from '@/components/TheSelectOperator'
     import AccountAuth from '@/components/AccountAuth'
     import TextInfo from '@/components/TextInfo'
@@ -154,6 +180,11 @@
     export default {
 
         components: {
+            TheOffer,
+            TheFilesBoard,
+            TheChatMainHeaderHistory,
+            TheChatMainHeaderActions,
+            ThePhrasesReady,
             TheSelectOperator,
             AccountAuth,
             TextInfo,
@@ -167,12 +198,12 @@
         padding:2em;
     }
     .ui-list{
-        display:flex;
+
         flex-flow:wrap;
         &__item{
-            outline:2px solid #f5f5f5;
+            outline:1px solid black;
             padding:15px;
-            margin:5px;
+
         }
     }
 </style>

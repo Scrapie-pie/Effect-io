@@ -14,15 +14,7 @@
                         :show="showClientHistoryActions",
                         @base_box_menu_close="showClientHistoryActions=false"
                     )
-                        ul.chat-main-header__client-history-list
-                            li.chat-main-header__client-history-item
-                                |На страницу - https://effect.com/
-                            li.chat-main-header__client-history-item
-                                | На страницу - Effect.com - феноменальный подход к общению с клиентами на сайте (https://effect.com/)
-                            li.chat-main-header__client-history-item
-                                | Заказал звонок
-                            li.chat-main-header__client-history-item
-                                |Написал в чат
+                        the-chat-main-header-history
 
         ul.chat-main-header__controls
             li.chat-main-header__control
@@ -38,31 +30,30 @@
                     )
                         the-select-operator
 
-            li.chat-main-header__control
+            li.chat-main-header__control.chat-main-header__control_more
                 base-btn(
-                :icon="{name:'more'}",
-                @click.prevent="showMoreChatActions=true"
+                    :icon="{name:'more'}",
+                    @click.prevent="showMoreChatActions=true"
                 ).chat-main-header__more-btn
-                base-box-menu.chat-main-header__more(
-                :show="showMoreChatActions",
-                @base_box_menu_close="showMoreChatActions=false"
-                )
-                    ul.chat-main-header__more-list
-                        li.chat-main-header__more-item
-                            base-btn(:icon="{name:'transfer',top:true}") Передать диалог
-                        li.chat-main-header__more-item
-                            base-btn(:icon="{name:'exit',top:true}") Выйти из диалога
-                        li.chat-main-header__more-item
-                            base-btn(:icon="{name:'bl',top:true}") Блокировать клиента
+                .chat-main-header__more
+                    base-box-menu(
+                        :show="showMoreChatActions",
+                        @base_box_menu_close="showMoreChatActions=false"
+                    )
+                        the-chat-main-header-actions
 
 
 
 </template>
 
 <script>
+    import TheChatMainHeaderHistory from '@/components/TheChatMainHeaderHistory'
+    import TheChatMainHeaderActions from '@/components/TheChatMainHeaderActions'
     import TheSelectOperator from '@/components/TheSelectOperator'
     export default {
         components: {
+            TheChatMainHeaderHistory,
+            TheChatMainHeaderActions,
             TheSelectOperator
         },
         data() {
@@ -86,7 +77,7 @@
 
 <style lang="scss">
     .chat-main-header{
-        $color_info-dark:glob-color('info-dark');
+
 
         position:relative;
         display:flex;
@@ -102,13 +93,11 @@
 
         &__control {
            /* position:relative;*/
+            &_more {
+                fill:glob-color('info-dark');
+            }
         }
-        &__client-history-actions {
-            position:absolute;
-            top:100%;
-            right:0;
-            left:0;
-        }
+
         &__select-operator {
             position:absolute;
             top:100%;
@@ -121,26 +110,17 @@
             margin-bottom:.5em;
         }
 
-        &__more-btn {
-            .icon {
-                fill:$color_info-dark;
-                width:27px;
-                height:17px;
-            }
-        }
-        &__more-list {
-            display:flex;
-        }
-        &__more-item {
-            padding-left:calc-em(25);
-            padding-right:calc-em(25);
-            white-space:nowrap;
+        &__more {
+            position:absolute;
+            right:0;
+            top:100%
         }
 
-        &__client-history-item {
-            &+& {
-                margin-top:calc-em(15);
-            }
+        &__client-history-actions {
+            position:absolute;
+            top:100%;
+            right:0;
+            left:0;
         }
 
 

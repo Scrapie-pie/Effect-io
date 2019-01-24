@@ -1,7 +1,7 @@
 <template lang="pug">
     article.chat-main
         the-chat-main-header.chat-main__header
-        scroll-bar.chat-main__body.scroll-bar(v-once)
+        scroll-bar.chat-main__body.scroll-bar()
             ul.chat-main__list
                 li.chat-main__item
                     time.chat-main__date 29 ноября 2017
@@ -9,7 +9,8 @@
                     ul.chat-main__messages
                         li.chat-main__messages-item(v-for="(item, index) in messageList",:key="index")
                             base-people(avatar-width="md" :name="item.name" :text="item.text" :datetime="item.datetime")
-        the-chat-main-footer.chat-main__footer
+        footer.chat-main__footer
+            the-chat-main-footer
 
 </template>
 

@@ -1,5 +1,6 @@
 .btn{
   $color_bg-default:glob-color('default');
+  $color_error:glob-color('error');
 
   $color_bg-main:glob-color('success');
   $color_text-main:glob-color('light');
@@ -19,6 +20,10 @@
   cursor:pointer;
 
   text-align:center;
+
+  &_error {
+    background-color:$color_error;
+  }
 
   &_text,&_link {
     padding:0;
@@ -82,6 +87,7 @@
     border:0;
     background-color:transparent;
     padding:0 5px;
+    color:inherit;
   }
   &__text-hidden {
     @extend %visuallyhidden;
