@@ -1,9 +1,10 @@
 import Ui from '@/pages/Ui'
+import UiMain from '@/pages/UiMain'
 
 export default [{
     name: 'ui',
     path: '/ui',
-    component: Ui,
+    component: UiMain,
     meta: {
         breadcrumb: ''
     }

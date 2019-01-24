@@ -27,10 +27,10 @@
 
         },
         mounted() {
-            document.addEventListener('click', this.close);
+            //document.addEventListener('click', this.close);
         },
         updated() {
-            document.addEventListener('click', this.close);
+            //document.addEventListener('click', this.close);
         },
         beforeDestroy() {
             document.removeEventListener('click', this.close);
@@ -41,7 +41,7 @@
 <style lang="scss">
     .base-box-menu {
         @include box-decor();
-        position:absolute;
+        position:relative;
         margin-top:calc-em(15);
         margin-bottom:calc-em(15);
         z-index:1;

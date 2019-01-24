@@ -1,174 +1,122 @@
 <template lang="pug">
+    article.settings-page
+        .settings-page__header
+            .settings-page__grid
+                h1.settings-page__title Ui
 
-    article.grid
-        h1 Ui
-        base-icon(name="calendar")
-        hr
-        section
-            h2 Елементы
-            hr
-            ul.ui-list
-                li.ui-list__item
-                    the-select-operator
-                li.ui-list__item
+        .settings-page__grid
+            .settings-page__inner
+                .settings-page__nav
+                    nav-main(:item-list="menuList")
+                transition.settings-page__main(name="fade" mode="out-in")
+                    router-view
 
-                li.ui-list__item
-                    base-btn(:icon="{name:'edit',box:true}" theme="default")
 
-                li.ui-list__item
-                    base-people(text="текст" name="имя")
-                li.ui-list__item
-                    account-auth
-                li.ui-list__item
-                    upload-avatar
-                li.ui-list__item
-                    base-avatar
-                li.ui-list__item
-                    form
-                        legend forma
-                        ul
-                            li
-                                base-field(
-                                type="search"
-                                name="search",
-                                placeholder="Поиск..."
-                                v-model="search"
-                                )
-                            li
-                                base-field(
-                                type="select",
-                                :selectOptions="{label:'name',options:voiceList,taggable:true,pushTags:true}"
-                                name="voice"
-                                multiple
-                                )
-                            li
-                                base-field(
-                                type="select",
-                                :selectOptions="{label:'name',options:[{name:'Телефон'},{name:'Связь'}],default:{name:'Телефон'}}"
-                                name="phones"
-                                )
-                            li
-                                base-field(
-                                type="text"
-                                name="sirname"
-                                label="Введите имя сотрудника"
-                                )
-                            li
-                                base-field(
-                                type="text"
-                                name="sirname"
-                                placeholder="Введите имя сотрудника"
-                                theme="soft"
-                                )
-                            li
-                                base-field(
-                                type="textarea"
-                                name="textarea"
-                                label="Введите имя сотрудника"
-                                )
-                            li
-                                base-btn() Основная кнопка
-                            li
-                                base-btn(theme="sign") theme="sign"
-                                base-btn(theme="default") theme="default"
-                                base-btn(theme="default") theme="default"
-        hr
-        section
-            h2 Типографика
-            section
-                h1 H1 Заголовок #[br] с переносом строки
-                text-info Загрузите фото, которое будут видеть Ваши коллеги и клиенты. Реальное фото всегда вызывает больше доверия.
-                p обычный текст #[strong жирненький текст ] #[i курсив текст ] #[small small текст ] #[a(href="javascript:") ссылка ] #[a(href="tel:88008000000") 88008000000]
-                h2 H1 Заголовок #[br] с переносом строки
-                p обычный текст #[strong жирненький текст ] #[i курсив текст ] #[small small текст]
-                h3 H3 Заголовок #[br] с переносом строки
-                p обычный текст #[strong жирненький текст ] #[i курсив текст ] #[small small текст]
-                h4 H4 Заголовок #[br] с переносом строки
-                p обычный текст #[strong жирненький текст ] #[i курсив текст ] #[small small текст]
-                h5 H5 Заголовок #[br] с переносом строки
-                p обычный текст #[strong жирненький текст ] #[i курсив текст ] #[small small текст]
-                h6 H6 Заголовок #[br] с переносом строки
-                p обычный текст #[strong жирненький текст ] #[i курсив текст ] #[small small текст]
-                p: img(src="@/assets/img/logo.png" alt="лого")
-                p: img(src="@/assets/img/logo.png" alt="лого")
-                p обычный текст #[strong жирненький текст ] #[i курсив текст] #[small small текст]
-                p: img(src="@/assets/img/logo.png" alt="лого")
-            hr
-
-            hr
-            section
-                p параграф параграф параграф параграф параграф параграф параграф параграф параграф параграф параграф параграф параграф параграф параграф параграф параграф параграф параграф параграф
-                p параграф параграф параграф параграф параграф параграф параграф параграф параграф параграф параграф параграф параграф параграф параграф параграф параграф параграф параграф параграф
-            section
-                dl
-                    dt dl dt пункт списка без переноса строки
-                    dd dl dd пункт списка с #[br] переноса строки
-                    dt dl dt пункт списка без переноса строки
-                    dd dl dd пункт списка с #[br] переноса строки
-                p параграф параграф параграф параграф параграф параграф параграф параграф параграф параграф параграф параграф параграф параграф параграф параграф параграф параграф параграф параграф
-
-                ol
-                    li ol li пункт списка без переноса строки
-                    li ol li пункт списка с #[br] переноса строки
-                    li ol li пункт списка без переноса строки
-                p параграф параграф параграф параграф параграф параграф параграф параграф параграф параграф параграф параграф параграф параграф параграф параграф параграф параграф параграф параграф
-                ul
-                    li ul li пункт списка без переноса строки
-                    li ul li пункт списка с #[br] переноса строки
-                    li ul li пункт списка без переноса строки
-                p параграф параграф параграф параграф параграф параграф параграф параграф параграф параграф параграф параграф параграф параграф параграф параграф параграф параграф параграф параграф
-                ol
-                    li ol li пункт списка без переноса строки
-                    li ol li пункт списка с #[br] переноса строки
-                    li ol li пункт списка без переноса строки
-                ul
-                    li ul li пункт списка без переноса строки
-                    li ul li пункт списка с #[br] переноса строки
-                    li ul li пункт списка без переноса строки
-                blockquote Блочная цитата Блочная цитата Блочная цитата Блочная цитата Блочная цитата Блочная цитата Блочная цитата Блочная цитата
-                table
-                    caption Таблица
-                    thead
-                        tr
-                            th th
-                            th th
-                            th th
-                    tbody
-                        tr
-                            td th
-                            td th
-                            td th
-                p параграф параграф параграф параграф параграф параграф параграф параграф параграф параграф параграф параграф параграф параграф параграф параграф параграф параграф параграф параграф
-                p: a(href="javascript:") ссылка
-                p: a(href="tel:88008000000") 88008000000
 </template>
 
 <script>
 
-    import TheSelectOperator from '@/components/TheSelectOperator'
-    import AccountAuth from '@/components/AccountAuth'
-    import TextInfo from '@/components/TextInfo'
-    import UploadAvatar from '@/components/UploadAvatar'
-
+    import NavMain from '@/components/NavMain'
     export default {
+        components: {NavMain},
+        data() {
+            return {
+                menuList: [
+                    {text: 'Настройки приложения', link: {name: 'settingsApp'}},
+                    {text: 'Настройки профиля', link: {name: 'settingsProfile'}},
+                    {text: 'Форма авторизации', link: {name: 'auth'}},
+                    {text: 'Chat', link: {name: 'chat'}},
 
-        components: {
-            TheSelectOperator,
-            AccountAuth,
-            TextInfo,
-            UploadAvatar
+
+
+                ]
+            }
         }
     }
 </script>
 
+
 <style lang="scss">
-    .ui-list{
-        display:flex;
-        flex-flow:wrap;
+
+
+    .settings-page{
+
+        &__header{
+            text-align:center;
+            box-shadow:0 0 14px 1px rgba(0, 1, 0, .11);
+            padding:calc-em(14) 0;
+            margin-bottom:calc-em(70);
+        }
+        &__title{margin-bottom:0}
+
+        &__grid{
+            max-width:900px;
+            margin:0 auto;
+            padding:0 15px;
+        }
+
+        &__inner{
+            display:flex;
+        }
+
+        &__nav{
+        }
+
+        &__main{
+        }
+    }
+    .settings-list{
+
+        &__name{
+            $color:glob-color('main');
+            font-weight:600;
+            opacity:.8;
+            font-size:inherit;
+        }
+
+        &__name,
+        &__text-info{
+            padding-left:calc-em(15);
+        }
+
         &__item{
-            outline:2px solid #f5f5f5;
-            padding:15px;
-            margin:5px;
+            margin-bottom:calc-em(45);
+        }
+        &__text-info{
+            margin-top:calc-em(20);
+
+            &_sub{
+                margin-bottom:calc-em(35);
+            }
+        }
+
+        &__select{
+            width:168px;
+        }
+
+        &__name-wrap{
+            display:flex;
+            justify-content:space-between;
+        }
+        &__field{
+            max-width:276px;
+            width:100%;
+        }
+
+        &__sub{
+        }
+        &__sub-item{
+            margin-bottom:calc-em(20);
+        }
+
+        &__row{
+            display:flex;
+            align-items:center;
+            margin:0 (calc-em(10) * -1);
+        }
+        &__col{
+            padding-left:calc-em(10);
+            padding-right:calc-em(10);
         }
     }
 </style>

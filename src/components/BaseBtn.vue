@@ -2,9 +2,17 @@
     transition
         router-link(v-on="inputListeners" ,:class="classObject", :disabled="disabled" v-if="isRouter", :to="compRouterName")
             slot
-        button(v-on="inputListeners", :type="type", :class="classObject" :disabled="disabled" ref="btn")
+        button(
+            v-on="inputListeners",
+            :type="type",
+            :class="classObject",
+            :disabled="disabled"
+            ref="btn",
+            :title="getTitle"
+        )
             template(v-if="icon")
                 base-icon(:name="icon.name")
+                span.btn__text-hidden(v-if="icon.textHidden" v-text="icon.textHidden")
             slot
 </template>
 
@@ -13,6 +21,7 @@
 
     export default {
         props: {
+
             padding: '',
             icon: {},
 
@@ -48,6 +57,11 @@
 
         },
         computed: {
+            getTitle(){
+                if (!_.isEmpty(this.icon)) {
+                    if (this.icon.textHidden) return this.icon.textHidden
+                }
+            },
             isRouter() {
                 return !_.isEmpty(this.router)
             },
@@ -60,6 +74,7 @@
                 let obj = {
 
                     'btn': this.theme == '',
+                    'btn btn_link': this.theme == 'link',
                     'btn btn_text': this.theme == 'text',
                     'btn btn_default': this.theme == 'default',
                     'btn btn_sign': this.theme == 'sign',

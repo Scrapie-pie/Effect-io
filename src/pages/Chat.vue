@@ -50,8 +50,8 @@
                 ],
                 appList: [
                     {text: 'Ui', link: {name: 'ui'}},
-                    {text: 'Настройки', link: {name: 'settingsApp'}},
-                    {text: 'Сменить учетную запись', link: {name: 'auth'}},
+                    {text: 'Настройки', link: {name: 'settingsProfile'}},
+                    //{text: 'Сменить учетную запись', link: {name: 'auth'}},
                     {text: 'Выход', link: {name: 'auth'}},
                 ],
 
@@ -85,6 +85,7 @@
             flex-flow:column;
             z-index:300;
             min-width:165px;
+            width:165px;
             padding:0 0 calc-em(30);
             border-radius:0;
 

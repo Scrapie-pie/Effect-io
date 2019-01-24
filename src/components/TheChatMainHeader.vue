@@ -9,19 +9,20 @@
                 ).btn-arrow
                     | Кеды для спорта
                     span.btn-arrow__arrow(:class="{'btn-arrow__arrow':showClientHistoryActions}")
-                base-box-menu.chat-main-header__client-history-actions(
-                    :show="showClientHistoryActions",
-                    @base_box_menu_close="showClientHistoryActions=false"
-                )
-                    ul.chat-main-header__client-history-list
-                        li.chat-main-header__client-history-item
-                            |На страницу - https://effect.com/
-                        li.chat-main-header__client-history-item
-                            | На страницу - Effect.com - феноменальный подход к общению с клиентами на сайте (https://effect.com/)
-                        li.chat-main-header__client-history-item
-                            | Заказал звонок
-                        li.chat-main-header__client-history-item
-                            |Написал в чат
+                .chat-main-header__client-history-actions
+                    base-box-menu(
+                        :show="showClientHistoryActions",
+                        @base_box_menu_close="showClientHistoryActions=false"
+                    )
+                        ul.chat-main-header__client-history-list
+                            li.chat-main-header__client-history-item
+                                |На страницу - https://effect.com/
+                            li.chat-main-header__client-history-item
+                                | На страницу - Effect.com - феноменальный подход к общению с клиентами на сайте (https://effect.com/)
+                            li.chat-main-header__client-history-item
+                                | Заказал звонок
+                            li.chat-main-header__client-history-item
+                                |Написал в чат
 
         ul.chat-main-header__controls
             li.chat-main-header__control
@@ -30,11 +31,12 @@
                     padding="xs",
                     @click.prevent="showInvite=true"
                 ) + Пригласить
-                base-box-menu.chat-main-header__select-operator(
-                    :show="showInvite",
-                    @base_box_menu_close="showInvite=false"
-                )
-                    the-select-operator
+                .chat-main-header__select-operator
+                    base-box-menu(
+                        :show="showInvite",
+                        @base_box_menu_close="showInvite=false"
+                    )
+                        the-select-operator
 
             li.chat-main-header__control
                 base-btn(
@@ -100,6 +102,12 @@
 
         &__control {
            /* position:relative;*/
+        }
+        &__client-history-actions {
+            position:absolute;
+            top:100%;
+            right:0;
+            left:0;
         }
         &__select-operator {
             position:absolute;

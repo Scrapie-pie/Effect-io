@@ -1,6 +1,6 @@
 <template lang="pug">
     nav.nav-main
-        ul.nav-main__list.tablet
+        ul.nav-main__list
             li.nav-main__item(
             v-for="(item, index) in itemList",
             :key="index"

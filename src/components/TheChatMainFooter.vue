@@ -1,11 +1,20 @@
 <template lang="pug">
         footer.chat-main-footer
+            base-box-menu(
+                :show="showPhrases",
+                @base_box_menu_close="showPhrases=false"
+            )
+                the-phrases-ready
             .chat-main-footer__contols
                 .chat-main-footer__textarea-wrap
                     scroll-bar.chat-main-footer__scrollbar
                         textarea.chat-main-footer__input(placeholder="Enter - отправить сообщение, Shift+Enter - новая строка." ref="chatInput" )
             ul.chat-main-footer__buttons
-                li.chat-main-footer__button: base-btn(:icon="{name:'phrases'}")
+                li.chat-main-footer__button
+                    base-btn(
+                        :icon="{name:'phrases',textHidden:'Список готовых шаблонных фраз'}",
+                        @click.prevent="showPhrases=true"
+                    )
                 li.chat-main-footer__button: base-btn(:icon="{name:'more'}")
                 li.chat-main-footer__button: base-btn(:icon="{name:'smiles'}")
                 li.chat-main-footer__button: base-btn(:icon="{name:'files'}")
@@ -14,55 +23,26 @@
 </template>
 
 <script>
-    import TheChatMainHeader from '@/components/TheChatMainHeader'
-    import autosize from 'autosize'
+    import ThePhrasesReady from '@/components/ThePhrasesReady'
+
     export default {
         components:{
-            TheChatMainHeader
+            ThePhrasesReady
         },
         data() {
             return {
-                clientName: '',
-                showClientHistoryActions:false,
-                showInvite:false,
-                showMoreChatActions:false,
-                //moreActionsClose:false,
-
-                messageList: [
-                    {name: 'Петр Иванов', text: 'Где можно посмотреть спортивные кеды?', datetime: 17.47},
-                    {name: 'Маша', text: 'Где можно посмотреть спортивные кеды?', datetime: 17.47},
-                    {name: 'Маша', text: 'Где можно посмотреть спортивные кеды?', datetime: 17.47},
-                    {name: 'Маша', text: 'Где можно посмотреть спортивные кеды?', datetime: 17.47},
-                    {name: 'Петр Иванов', text: 'Где можно посмотреть спортивные кеды?', datetime: 17.47},
-                    {name: 'Маша', text: 'Где можно посмотреть спортивные кеды?', datetime: 17.47},
-                    {name: 'Маша', text: 'Где можно посмотреть спортивные кеды?', datetime: 17.47},
-                    {name: 'Маша', text: 'Где можно посмотреть спортивные кеды?', datetime: 17.47},
-                    {name: 'Петр Иванов', text: 'Где можно посмотреть спортивные кеды?', datetime: 17.47},
-                    {name: 'Маша', text: 'Где можно посмотреть спортивные кеды?', datetime: 17.47},
-                    {name: 'Маша', text: 'Где можно посмотреть спортивные кеды?', datetime: 17.47},
-                    {name: 'Маша', text: 'Где можно посмотреть спортивные кеды?', datetime: 17.47},
-                    {name: 'Петр Иванов', text: 'Где можно посмотреть спортивные кеды?', datetime: 17.47},
-                    {name: 'Маша', text: 'Где можно посмотреть спортивные кеды?', datetime: 17.47},
-                    {name: 'Маша', text: 'Где можно посмотреть спортивные кеды?', datetime: 17.47},
-                    {name: 'Маша', text: 'Где можно посмотреть спортивные кеды?', datetime: 17.47},
-                    {name: 'Петр Иванов', text: 'Где можно посмотреть спортивные кеды?', datetime: 17.47},
-                    {name: 'Маша', text: 'Где можно посмотреть спортивные кеды?', datetime: 17.47},
-                    {name: 'Маша', text: 'Где можно посмотреть спортивные кеды?', datetime: 17.47},
-                    {name: 'Маша', text: 'Где можно посмотреть спортивные кеды?', datetime: 17.47},
-                ],
+                showPhrases:false
 
 
             }
         },
         mounted() {
-            setTimeout(() => {
-                autosize(this.$refs.chatInput);
-            }, 5000)
+
 
 
         },
         created() {
-            this.clientName = 'Петр Иванов';
+
 
         },
         methods: {

@@ -20,13 +20,18 @@
 
   text-align:center;
 
-  &_text {
+  &_text,&_link {
     padding:0;
     border:0;
     background:none;
     color:inherit;
     font-weight:inherit;
   }
+
+  &_link {
+    text-decoration:underline;
+  }
+
   &-arrow {
     padding-right:20px;
     &__arrow {
@@ -76,6 +81,10 @@
   &_icon{
     border:0;
     background-color:transparent;
+    padding:0 5px;
+  }
+  &__text-hidden {
+    @extend %visuallyhidden;
   }
 
   &_icon-top {

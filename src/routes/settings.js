@@ -2,7 +2,7 @@ import Settings from '@/pages/Settings'
 import SettingsApp from '@/pages/SettingsApp'
 import SettingsProfile from '@/pages/SettingsProfile'
 
-import Ui from '@/routes/ui'
+
 
 
 export default [{
@@ -20,7 +20,7 @@ export default [{
             path: 'profile',
             component: SettingsProfile
         },
-        ...Ui,
+
     ]
 }]
 
