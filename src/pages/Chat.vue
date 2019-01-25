@@ -5,9 +5,9 @@
             nav-main.chat-page__nav-main(:item-list="canalList")
             nav-main.chat-page__nav-app(:item-list="appList")
 
-        main.chat-page__main.chat-page__padding
+        main.chat-page__main
             transition(name="fade" mode="out-in")
-                router-view.chat-page__view
+                router-view.chat-page__view.chat-page__padding
 
 
 
@@ -112,30 +112,8 @@
             height:100%;
         }
 
-        &__last-messages{
-            width:275px;
-            background-color:glob-color('info-lighten');
-            padding-bottom:calc-em(30);
 
-            @include media($width_md){
-                width:190px;
-            }
-        }
 
-        &__info{
-            margin-left:auto;
-            width:280px;
-            padding-right:calc-em(20);
-
-            .client-info{
-                margin-top:-1em;
-            }
-
-            @include media($width_md){
-                width:19.532%;
-                padding-right:calc-em(5);
-            }
-        }
 
         &__padding{
             padding-top:calc-em(30);

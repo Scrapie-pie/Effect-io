@@ -133,6 +133,7 @@
             .icon{
                 width:15px;
                 height:15px;
+                fill:glob-color('main')
             }
         }
 

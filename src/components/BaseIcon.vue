@@ -32,6 +32,7 @@
     import transfer from '@/assets/img/icons/chat/transfer.svg';
     import exit from '@/assets/img/icons/chat/exit.svg';
     import bl from '@/assets/img/icons/chat/bl.svg';
+    import down from '@/assets/img/icons/chat/down.svg';
 
 
 

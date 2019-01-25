@@ -2,8 +2,7 @@
     button.upload-avatar(type="button")
         base-avatar(width="lg").upload-avatar__avatar
         .upload-avatar__text Загрузить фото
-        base-btn
-            base-icon
+        base-btn.upload-avatar__icon(:icon="{name:'down',box:true}")
 </template>
 
 <script>
@@ -26,6 +25,13 @@
             font-size:$glob-font-size_h2;
             margin-left:calc-em(15);
             margin-right:calc-em(10);
+        }
+
+        &__icon {
+            .icon {
+                width:35px;
+                height:35px;
+            }
         }
 
     }

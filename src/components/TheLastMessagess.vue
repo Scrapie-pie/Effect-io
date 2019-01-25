@@ -58,15 +58,11 @@
 </script>
 
 <style lang="scss">
-    .scroll-area{
-        position:relative;
-        margin:auto;
-        height:100%;
-    }
+
     .last-messages{
         $color_bg-hover:glob-color('border');
         $transition:$glob-trans;
-        height:100%;
+       // height:100%;
 
         &__search{
             padding-left:calc-em(10);

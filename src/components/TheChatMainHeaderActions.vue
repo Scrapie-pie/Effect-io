@@ -1,17 +1,60 @@
 <template lang="pug">
-    ul.chat-main-header-actions
-        li.chat-main-header-actions__more-item
-            base-btn(:icon="{name:'transfer',top:true}") Передать диалог
-        li.chat-main-header-actions__more-item
-            base-btn(:icon="{name:'exit',top:true}") Выйти из диалога
-        li.chat-main-header-actions__more-item
-            base-btn(:icon="{name:'bl',top:true}") Блокировать клиента
+    form.chat-actions
+        fieldset(v-if="!showBlockClient")
+            legend.chat-actions__text-only-scr Выберите одно из действий
+            ul.chat-actions__list
+                li.chat-actions__more-item
+                    base-btn(:icon="{name:'transfer',top:true}") Передать диалог
+                li.chat-actions__more-item
+                    base-btn(:icon="{name:'exit',top:true}") Выйти из диалога
+                li.chat-actions__more-item
+                    base-btn(:icon="{name:'bl',top:true}", @click="showBlockClient=true") Блокировать клиента
+        fieldset(v-else)
+            legend.chat-actions__title Вы уверенв, что хотите заблокировать данного клиента?
+            ul.chat-actions__buttons
+                li.chat-actions__buttons-item
+                    base-btn Заблокировать
+                li.chat-actions__buttons-item
+                    base-btn(theme="error") Отмена
+
 </template>
 
+<script>
+    export default {
+        components: {},
+
+        data() {
+            return {
+                showBlockClient:false,
+            }
+        }
+    }
+</script>
+
 <style lang="scss">
-    .chat-main-header-actions {
+    .chat-actions {
         $color_info-dark:glob-color('info-dark');
-        display:flex;
+
+        &__list {
+            display:flex;
+        }
+
+        &__buttons {
+            @extend %row-flex;
+
+
+        }
+
+        &__title {
+            margin-bottom:calc-em(20);
+            font-weight:700;
+        }
+
+        &__text-only-scr {
+            @extend %visuallyhidden;
+        }
+
+
 
         &__more-btn {
             .icon {

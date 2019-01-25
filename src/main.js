@@ -26,7 +26,7 @@ import BaseNoFound from "@/components/BaseNoFound";
 
 Vue.component('scroll-bar', VuePerfectScrollbar)
 Vue.component('scroll-bar', VuePerfectScrollbar)
-Vue.component('base-icon', BaseIcon)
+
 Vue.component('base-icon', BaseIcon)
 Vue.component('base-field', BaseField)
 Vue.component('base-field', BaseField)

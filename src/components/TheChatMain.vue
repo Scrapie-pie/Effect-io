@@ -1,25 +1,35 @@
 <template lang="pug">
     article.chat-main
         the-chat-main-header.chat-main__header
-        scroll-bar.chat-main__body.scroll-bar()
+        scroll-bar.chat-main__body
             ul.chat-main__list
                 li.chat-main__item
                     time.chat-main__date 29 ноября 2017
 
                     ul.chat-main__messages
-                        li.chat-main__messages-item(v-for="(item, index) in messageList",:key="index")
-                            base-people(avatar-width="md" :name="item.name" :text="item.text" :datetime="item.datetime")
+                        li.chat-main__messages-item(v-for="(item, index) in messageList",:key="index" :class="{'chat-main__messages-item_right':item.right}")
+                            base-people(
+                                avatar-width="md",
+                                :name="item.name",
+                                :text="item.text",
+                                :datetime="item.datetime",
+                                :right="item.right",
+                                :img="item.img"
+                            )
+                    the-chat-system-messages
         footer.chat-main__footer
             the-chat-main-footer
 
 </template>
 
 <script>
+    import TheChatSystemMessages from '@/components/TheChatSystemMessages'
     import TheChatMainHeader from '@/components/TheChatMainHeader'
     import TheChatMainFooter from '@/components/TheChatMainFooter'
     import autosize from 'autosize'
     export default {
         components:{
+            TheChatSystemMessages,
             TheChatMainHeader,
             TheChatMainFooter
         },
@@ -28,26 +38,26 @@
 
 
                 messageList: [
+                    {name: 'Петр Иванов', text: 'Где можно посмотреть спортивные кеды?', datetime: 17.47,right:true},
+                    {name: 'Маша', text: 'Где можно посмотреть спортивные кеды?', datetime: 17.47,right:true},
+                    {name: 'Маша', text: 'Где можно посмотреть спортивные кеды?', datetime: 17.47},
+                    {name: 'Маша', text: 'Где можно посмотреть спортивные кеды?', datetime: 17.47,right:true},
+                    {name: 'Петр Иванов', text: 'Где можно посмотреть спортивные кеды?', datetime: 17.47},
+                    {name: 'Маша', text: 'Где можно посмотреть спортивные кеды?', datetime: 17.47,right:true},
+                    {name: 'Маша', text: 'Где можно посмотреть спортивные кеды?', datetime: 17.47},
+                    {name: 'Маша', text: 'Где можно посмотреть спортивные кеды?', datetime: 17.47,right:true},
+                    {name: 'Петр Иванов', text: 'Где можно посмотреть спортивные кеды?', datetime: 17.47},
+                    {name: 'Маша', text: 'Где можно посмотреть спортивные кеды?', datetime: 17.47,right:true},
+                    {name: 'Маша', text: 'Где можно посмотреть спортивные кеды?', datetime: 17.47},
+                    {name: 'Маша', text: 'Где можно посмотреть спортивные кеды?', datetime: 17.47,right:true},
+                    {name: 'Петр Иванов', text: 'Где можно посмотреть спортивные кеды?', datetime: 17.47},
+                    {name: 'Маша', text: 'Где можно посмотреть спортивные кеды?', datetime: 17.47,right:true},
+                    {name: 'Маша', text: 'Где можно посмотреть спортивные кеды?', datetime: 17.47},
+                    {name: 'Маша', text: 'Где можно посмотреть спортивные кеды?', datetime: 17.47,right:true},
                     {name: 'Петр Иванов', text: 'Где можно посмотреть спортивные кеды?', datetime: 17.47},
                     {name: 'Маша', text: 'Где можно посмотреть спортивные кеды?', datetime: 17.47},
-                    {name: 'Маша', text: 'Где можно посмотреть спортивные кеды?', datetime: 17.47},
-                    {name: 'Маша', text: 'Где можно посмотреть спортивные кеды?', datetime: 17.47},
-                    {name: 'Петр Иванов', text: 'Где можно посмотреть спортивные кеды?', datetime: 17.47},
-                    {name: 'Маша', text: 'Где можно посмотреть спортивные кеды?', datetime: 17.47},
-                    {name: 'Маша', text: 'Где можно посмотреть спортивные кеды?', datetime: 17.47},
-                    {name: 'Маша', text: 'Где можно посмотреть спортивные кеды?', datetime: 17.47},
-                    {name: 'Петр Иванов', text: 'Где можно посмотреть спортивные кеды?', datetime: 17.47},
-                    {name: 'Маша', text: 'Где можно посмотреть спортивные кеды?', datetime: 17.47},
-                    {name: 'Маша', text: 'Где можно посмотреть спортивные кеды?', datetime: 17.47},
-                    {name: 'Маша', text: 'Где можно посмотреть спортивные кеды?', datetime: 17.47},
-                    {name: 'Петр Иванов', text: 'Где можно посмотреть спортивные кеды?', datetime: 17.47},
-                    {name: 'Маша', text: 'Где можно посмотреть спортивные кеды?', datetime: 17.47},
-                    {name: 'Маша', text: 'Где можно посмотреть спортивные кеды?', datetime: 17.47},
-                    {name: 'Маша', text: 'Где можно посмотреть спортивные кеды?', datetime: 17.47},
-                    {name: 'Петр Иванов', text: 'Где можно посмотреть спортивные кеды?', datetime: 17.47},
-                    {name: 'Маша', text: 'Где можно посмотреть спортивные кеды?', datetime: 17.47},
-                    {name: 'Маша', text: 'Где можно посмотреть спортивные кеды?', datetime: 17.47},
-                    {name: 'Маша', text: 'Где можно посмотреть спортивные кеды?', datetime: 17.47},
+                    {name: 'Маша', text: 'Где можно посмотреть спортивные кеды?', datetime: 17.47,right:true},
+                    {name: 'Маша', text: 'Где можно посмотреть спортивные кеды?', datetime: 17.47,img:'http://dl4.joxi.net/drive/2019/01/25/0004/2024/276456/56/81f74a2997.jpg'},
                 ],
 
 
@@ -85,6 +95,11 @@
         &__body{
             margin-top:auto;
             height:auto;
+
+        }
+        &__list,&__header {
+            padding-right:calc-em(15);
+
         }
 
         &__date{
@@ -119,6 +134,19 @@
         &__messages-item{
             & + &{
                 margin-top:calc-em(15);
+            }
+
+            .base-people {
+
+                align-items:flex-start;
+            }
+
+            &_right {
+                text-align:right;
+                .base-people {
+                    display:inline-flex;
+
+                }
             }
 
         }

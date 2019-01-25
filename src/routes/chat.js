@@ -19,8 +19,18 @@ export default [{
             component: ChatVisitor
         },
         {
+            name: 'process',
+            path: 'process',
+            component: ChatDialog
+        },
+        {
             name: 'dialog',
             path: 'dialog',
+            component: ChatDialog
+        },
+        {
+            name: 'common',
+            path: 'common',
             component: ChatDialog
         },
 

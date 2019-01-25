@@ -12,10 +12,14 @@
                 )
                 base-count.base-people__count(:count="count")
             p.base-people__text(
-            v-if="text"
-            v-html="text"
+                v-if="text"
+                v-html="text"
             )
-
+            p.base-people__img: img(
+                v-if="img"
+                :src="img"
+                alt=""
+            )
 
 </template>
 
@@ -26,7 +30,8 @@
             BaseCount
         },
         props: {
-            direction:'',
+            img:false,
+            right:false,
             channelName: '',
             count: 0,
             bgTextNoFill: false,
@@ -51,6 +56,7 @@
             classObject() {
                 let parentClass = 'base-people';
                 let obj = {}
+                obj[`${parentClass}_right`]=!!this.right;
                 obj[`${parentClass}_bg-text_no_fill`]=!!this.bgTextNoFill;
                 obj[`${parentClass}_${this.type}`]=!!this.type;
                 return obj
@@ -62,6 +68,7 @@
 
 <style lang="scss">
     .base-people{
+        $self:&;
         $ml:calc-em(5);
         $border-raduis:$glob-border-radius;
         $padding:calc-em(15);
@@ -71,7 +78,10 @@
         display:flex;
         align-items:center;
 
+
         /* width:100%;*/
+
+
 
         &__count{
             float:right;
@@ -81,9 +91,20 @@
             flex:0 0 auto;
         }
 
+
+
         &__avatar-wrap{
             display:inline-block;
             position:relative;
+
+            margin-right:$ml;
+
+            #{$self}_right & {
+                order:1;
+                margin-left:$ml;
+                margin-right:0;
+            }
+
         }
         &__channel{
             position:absolute;
@@ -97,7 +118,7 @@
         }
 
         &__inner{
-            margin-left:$ml;
+
             border-radius:$border-raduis;
             background-color:$color_bg;
             padding:$padding;
@@ -119,6 +140,12 @@
             white-space:nowrap;
             text-overflow:ellipsis;
             overflow:hidden;
+
+
+        }
+        &__text + &__img {margin-top:calc-em(15)}
+        &__img {
+
         }
 
         &_visitor &__inner, &_operator &__inner{

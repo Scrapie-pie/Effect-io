@@ -21,7 +21,8 @@
 
     export default {
         props: {
-
+            size:String,
+            color:String,
             padding: '',
             icon: {},
 
@@ -85,6 +86,14 @@
 
                 if (!_.isEmpty(this.padding)) {
                     obj['btn_padding_' + this.padding] = true;
+                }
+
+                if (!_.isEmpty(this.color)) {
+                    obj['btn_color_' + this.color] = true;
+                }
+
+                if (!_.isEmpty(this.size)) {
+                    obj['btn_size_' + this.size] = true;
                 }
 
                 if (!_.isEmpty(this.icon)) {

@@ -21,6 +21,16 @@
 
   text-align:center;
 
+  &_size_lg {
+    font-size:calc-em(15);
+  }
+
+  @each $i, $c in $glob-colors {
+    &_color_#{$i} {
+      background-color: $c;
+    }
+  }
+
   &_error {
     background-color:$color_error;
   }

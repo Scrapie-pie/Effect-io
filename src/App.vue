@@ -1,6 +1,8 @@
 <template lang="pug">
     #app.page__app
-        router-view
+        scroll-bar.page__scrollbar
+            transition(name="fade" mode="out-in")
+                router-view
 
 
 </template>
@@ -39,8 +41,8 @@
             height:100%;
             display:flex;
             flex-flow:column;
-            overflow-x:hidden;
-            overflow-y:scroll;
+        /*    overflow-x:hidden;
+            overflow-y:scroll;*/
         }
         &_main_center &__main{
             align-items:center;
@@ -49,6 +51,10 @@
             display:flex;
             //align-items:center;
             flex:1 0 auto;
+        }
+
+        &__scrollbar {
+            height:100%;
         }
     }
 

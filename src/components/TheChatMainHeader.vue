@@ -1,7 +1,10 @@
 <template lang="pug">
     header.chat-main-header
         .chat-main-header__text
-            h1.chat-main-header__name(v-text="clientName")
+            h1.chat-main-header__members
+                span.chat-main-header__name(v-for="(item, index) in membersList",:key="index")
+                    | {{item }}
+                    button(type="button" v-if="index").chat-main-header__name-tooltip Убрать из диалога
             p.chat-main-header__channel На сайте: site.ru -&nbsp;
                 base-btn(
                     theme="text",
@@ -40,7 +43,9 @@
                         :show="showMoreChatActions",
                         @base_box_menu_close="showMoreChatActions=false"
                     )
-                        the-chat-main-header-actions
+                        the-chat-main-header-actions()
+
+
 
 
 
@@ -58,15 +63,20 @@
         },
         data() {
             return {
-                clientName: '',
+                membersList: [],
                 showClientHistoryActions:false,
                 showInvite:false,
                 showMoreChatActions:false,
                 //moreActionsClose:false,
             }
         },
+        methods:{
+            getActions(e){
+                if (e = 'blockClient' ) this.showConfirmBlockClient=true;
+            }
+        },
         created() {
-            this.clientName = 'Петр Иванов';
+            this.membersList = ['Петр Иванов','Кирил'];
 
         },
 
@@ -94,7 +104,10 @@
         &__control {
            /* position:relative;*/
             &_more {
-                fill:glob-color('info-dark');
+                .icon_more {
+                    fill:glob-color('info-dark');
+                }
+
             }
         }
 
@@ -105,10 +118,49 @@
             left:0;
         }
 
-        &__name{
+        &__members{
             font-size:inherit;
             margin-bottom:.5em;
         }
+
+        &__name {
+            position:relative;
+
+
+
+            &:not(:last-child)::after {
+                content:', ';
+            }
+
+            &-tooltip {
+
+                @include box-decor();
+                position:absolute;
+                top:100%;
+                left:50%;
+                z-index:1;
+
+                margin-top:calc-em(10);
+                padding:calc-em(10);
+
+                border:0;
+                opacity:0;
+                visibility:hidden;
+
+                white-space:nowrap;
+                font-weight:400;
+
+                transform:translateX(-50%);
+            }
+
+            &:hover &-tooltip {
+                opacity:1;
+                visibility:visible;
+            }
+
+        }
+
+
 
         &__more {
             position:absolute;

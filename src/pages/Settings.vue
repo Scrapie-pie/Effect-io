@@ -3,13 +3,15 @@
         .settings-page__header
             .settings-page__grid
                 h1.settings-page__title Настройки
-
+            router-link.settings-page__close(:to="{name:'process'}" title="Выход")
+                span.settings-page__close-text-only-scr Выход
+                base-icon(name="close")
         .settings-page__grid
             .settings-page__inner
                 .settings-page__nav
                     nav-main(:item-list="menuList")
                 transition.settings-page__main(name="fade" mode="out-in")
-                    router-view
+                    router-view.settings-page__content
 
 
 </template>
@@ -22,11 +24,8 @@
         data() {
             return {
                 menuList: [
-                    {text: 'Настройки приложения', link: {name: 'settingsApp'}},
                     {text: 'Настройки профиля', link: {name: 'settingsProfile'}},
-                    {text: 'Форма авторизации', link: {name: 'auth'}},
-                    {text: 'Chat', link: {name: 'chat'}},
-
+                    {text: 'Настройки приложения', link: {name: 'settingsApp'}},
 
 
                 ]
@@ -42,10 +41,27 @@
     .settings-page{
 
         &__header{
+            position:relative;
             text-align:center;
             box-shadow:0 0 14px 1px rgba(0, 1, 0, .11);
             padding:calc-em(14) 0;
             margin-bottom:calc-em(70);
+
+            &-inner {
+                display:flex;
+                justify-content:center;
+            }
+        }
+
+        &__close {
+            position:absolute;
+            right:0;
+            top:0;
+            margin:calc-em(15);
+        }
+
+        &__close-text-only-scr {
+            @extend %visuallyhidden;
         }
         &__title{margin-bottom:0}
 
@@ -55,11 +71,17 @@
             padding:0 15px;
         }
 
+        &__content {
+
+        }
+
         &__inner{
             display:flex;
         }
 
         &__nav{
+            padding-right:6%;
+            width: 29%;
         }
 
         &__main{
@@ -72,6 +94,7 @@
             font-weight:600;
             opacity:.8;
             font-size:inherit;
+            margin-bottom:calc-em(20);
         }
 
         &__name,

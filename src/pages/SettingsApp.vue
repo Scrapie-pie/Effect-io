@@ -52,16 +52,6 @@
                     )
 
 
-                li.settings-list__item
-                    h3.settings-list__name Звук при новом сообщении от посетителя
-                    base-field.settings-list__control.settings-list__select(
-                    type="select",
-                    :selectOptions="{label:'name',options:voiceList,taggable:true,pushTags:true}"
-                    name="voice"
-                    multiple
-                    )
-                    text-info.settings-list__text-info Вы будете получать уведомления о важных событиях в виде стандартного уведомления браузера, даже если он будет свернут.
-
 </template>
 
 <script>
