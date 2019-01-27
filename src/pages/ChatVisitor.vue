@@ -1,6 +1,6 @@
 <template lang="pug">
-    article.chat-team
-        template(v-if="count")
+    article.chat-team.chat-team_visitors
+        template(v-if="!count")
             .chat-team__controls
                 .chat-team__control
                     base-field.chat-team__search(
@@ -81,6 +81,11 @@
 
 <style lang="scss">
     .chat-team{
+
+        &_visitors {
+            max-width:1300px;
+        }
+
         &__controls{
             display:flex;
             align-items:center;

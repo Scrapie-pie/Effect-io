@@ -79,14 +79,15 @@
             @include box-decor();
             display:flex;
             flex-flow:column;
-            z-index:300;
+            z-index:5;
             min-width:165px;
             width:165px;
             padding:0 0 calc-em(30);
             border-radius:0;
 
-            @include media($width_md){
+            @include media($width_lg){
                 min-width:75px;
+                width:75px;
             }
 
         }

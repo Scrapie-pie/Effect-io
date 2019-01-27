@@ -2,6 +2,7 @@ import Chat from '@/pages/Chat'
 import ChatTeam from '@/pages/ChatTeam'
 import ChatVisitor from '@/pages/ChatVisitor'
 import ChatDialog from '@/pages/ChatDialog'
+import Ui from '@/pages/UiMain'
 
 export default [{
     name: 'chat',
@@ -32,6 +33,11 @@ export default [{
             name: 'common',
             path: 'common',
             component: ChatDialog
+        },
+        {
+            name: 'ui',
+            path: 'ui',
+            component: Ui
         },
 
     ]

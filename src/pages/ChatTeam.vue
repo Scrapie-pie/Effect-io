@@ -11,7 +11,7 @@
                     v-model="search"
                     )
                 .chat-team__control
-                    base-btn(name="add") Добавить сотрудника
+                    base-btn(name="add" color="success-dark" size="lg") Добавить сотрудника
 
             table.table
                 thead.table__thead
@@ -38,7 +38,8 @@
                             base-radio-check
                         td.table__td
                             context-menu
-                                base-btn(:icon="{name:'edit',box:true}" theme="default")
+                                base-btn(:icon="{name:'edit',box:true,textHidden:'Открыть меню'}" color="info-lighten")
+
         base-no-found(v-if="!count" name="team")
 
 

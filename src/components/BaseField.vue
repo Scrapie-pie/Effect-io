@@ -54,7 +54,7 @@
 </template>
 
 <script>
-
+    import '@/scss/base/field.scss'
     import moment from 'moment'
 
     import Inputmask from 'inputmask'
@@ -174,8 +174,10 @@
                     autocomplete: "off",
                     type: this.getType,
                     placeholder: this.getPlaceholder,
+
                 }
-                return Object.assign({}, this.$attrs, obj);
+                console.log(this.$attrs);
+                return Object.assign({maxLength:64}, this.$attrs, obj);
             },
             getSelectOptions() {
                 return Object.assign({}, this.$attrs, this.selectOptions);
@@ -191,7 +193,7 @@
             },
             getPlaceholder() {
                 if (this.label != '') return;
-                if (this.placeholder == '') return 'Поиск';
+                if (this.placeholder == '' && this.type == 'search') return 'Поиск';
                 else return this.placeholder
             },
             classObject() {

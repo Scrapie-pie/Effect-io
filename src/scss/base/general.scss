@@ -47,6 +47,7 @@ figure{
 }
 img{
   max-width:100%;
+  border-radius:$glob-border-radius;
   &:not([alt]){outline:2px solid red;
   }
 }

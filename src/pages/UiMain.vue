@@ -2,12 +2,34 @@
 
     article.grid
         h1 Ui
-        base-icon(name="calendar")
         hr
         section
             h2 Елементы
             hr
             ul.ui-list
+                li.ui-list__item
+                    base-no-found(name="team")
+                    base-no-found(name="visitors")
+                    base-no-found(name="process")
+                    base-no-found(name="dialog")
+                li.ui-list__item
+                    ul.ul-row
+                        li
+                            the-chat-main-header
+                        li
+                            the-chat-main-footer
+
+                li.ui-list__item
+                    ul.ul-row
+                        li
+                            base-box-menu(:show="true")
+                                select-operators
+                        li
+                            base-box-menu(:show="true")
+                                select-operators(name="mention")
+
+                li.ui-list__item
+
                 li.ui-list__item
                     base-box-menu(:show="true")
                         the-offer
@@ -21,23 +43,30 @@
                     base-box-menu(:show="true")
                         the-chat-main-header-history
                 li.ui-list__item
-                    base-box-menu(:show="true")
-                        the-chat-main-header-actions
+                    ul.ul-row
+                        li
+                            base-box-menu(:show="true")
+                                the-chat-main-header-actions()
+                        li
+                            base-box-menu(:show="true")
+                                the-chat-main-header-actions(:showBlockClient="true")
+
                 li.ui-list__item
-                    base-box-menu(:show="true")
-                        the-phrases-ready
-                li.ui-list__item
-                    base-box-menu(:show="true")
-                        the-select-operator
-                li.ui-list__item
+                    ul.ul-row
+                        li
+                            base-box-menu(:show="true")
+                                the-phrases-ready
+                        li
+                            base-box-menu(:show="true")
+                                the-phrases-ready(:showPhrasesNew="true")
 
                 li.ui-list__item
                     base-btn(:icon="{name:'edit',box:true}" theme="default")
 
                 li.ui-list__item
-                    base-people(text="текст" name="имя")
-                li.ui-list__item
-                    account-auth
+                    base-people(text="текст" name="имя" datetime="12.13.14")
+                    base-people(text="текст" name="имя" datetime="12.13.14" :right="true")
+
                 li.ui-list__item
                     upload-avatar
                 li.ui-list__item
@@ -47,11 +76,23 @@
                         legend forma
                         ul
                             li
+                                base-radio-check(name="notifications") Включить браузерные уведомления
+
+                            li
                                 base-field(
                                 type="search"
                                 name="search",
-                                placeholder="Поиск..."
-                                v-model="search"
+                                placeholder="theme=soft"
+                                theme="soft"
+
+                                )
+                            li
+                            li
+                                base-field(
+                                    type="search"
+                                    name="search",
+                                    placeholder="Поиск..."
+
                                 )
                             li
                                 base-field(
@@ -88,12 +129,16 @@
                             li
 
                             li
+
                                 base-btn() Основная кнопка
                                 base-btn(theme="link") theme="link"
-                                base-btn(theme="error") theme="error"
+                                base-btn(color="error") color="error"
                                 base-btn(theme="sign") theme="sign"
                                 base-btn(theme="default") theme="default"
-                                base-btn(theme="default") theme="default"
+                                base-btn(color="info-dark" size="lg") color="info-dark" size="lg"
+                                base-btn(color="succsess-dark" size="lg") color="succsess-dark" size="lg"
+                                base-btn(:icon="{name:'edit',box:true}" color="info-lighten")
+
         hr
         section
             h2 Типографика
@@ -167,12 +212,14 @@
 
 <script>
 
+    import TheChatMainFooter from '@/components/TheChatMainFooter'
+    import TheChatMainHeader from '@/components/TheChatMainHeader'
     import TheOffer from '@/components/TheOffer'
     import TheFilesBoard from '@/components/TheFilesBoard'
     import TheChatMainHeaderHistory from '@/components/TheChatMainHeaderHistory'
     import TheChatMainHeaderActions from '@/components/TheChatMainHeaderActions'
     import ThePhrasesReady from '@/components/ThePhrasesReady'
-    import TheSelectOperator from '@/components/TheSelectOperator'
+    import SelectOperators from '@/components/SelectOperators'
     import AccountAuth from '@/components/AccountAuth'
     import TextInfo from '@/components/TextInfo'
     import UploadAvatar from '@/components/UploadAvatar'
@@ -180,12 +227,14 @@
     export default {
 
         components: {
+            TheChatMainHeader,
+            TheChatMainFooter,
             TheOffer,
             TheFilesBoard,
             TheChatMainHeaderHistory,
             TheChatMainHeaderActions,
             ThePhrasesReady,
-            TheSelectOperator,
+            SelectOperators,
             AccountAuth,
             TextInfo,
             UploadAvatar
@@ -194,8 +243,9 @@
 </script>
 
 <style lang="scss">
-    .grid {
-        padding:2em;
+
+    .ul-row {
+        @extend %row-flex;
     }
     .ui-list{
 

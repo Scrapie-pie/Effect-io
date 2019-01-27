@@ -143,7 +143,7 @@
             border:1px solid $color_border;
             background:none;
 
-            @include media($width_md){
+            @include media($width_lg){
                 font-size:.9em;
                 padding-right:15px;
             }
@@ -167,7 +167,7 @@
                 @extend %g-icon-down_open
             }
 
-            @include media($width_md){
+            @include media($width_lg){
                 right:-2px;
             }
 

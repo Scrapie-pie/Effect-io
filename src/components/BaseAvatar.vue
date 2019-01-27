@@ -1,6 +1,6 @@
 <template lang="pug">
     .base-avatar(:class="classObject")
-        base-icon.base-avatar__icon(name="n2")
+        base-icon.base-avatar__icon(:name="setName")
 
 </template>
 
@@ -9,6 +9,7 @@
 
     export default {
         props: {
+            name:String,
             width: {
                 validator: function (value) {
                     return ['lg', 'md'].indexOf(value) !== -1
@@ -18,7 +19,10 @@
         computed: {
             classObject() {
                 if (this.width) return `base-avatar_${this.width}`
-            }
+            },
+            setName(){
+              return 'n3'
+            },
         }
     }
 </script>

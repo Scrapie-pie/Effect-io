@@ -55,7 +55,7 @@
 
         &__close {
             position:absolute;
-            right:0;
+            right:calc-em(15);
             top:0;
             margin:calc-em(15);
         }

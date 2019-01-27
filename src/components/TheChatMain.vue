@@ -26,7 +26,7 @@
     import TheChatSystemMessages from '@/components/TheChatSystemMessages'
     import TheChatMainHeader from '@/components/TheChatMainHeader'
     import TheChatMainFooter from '@/components/TheChatMainFooter'
-    import autosize from 'autosize'
+
     export default {
         components:{
             TheChatSystemMessages,
@@ -64,9 +64,6 @@
             }
         },
         mounted() {
-            setTimeout(() => {
-                autosize(this.$refs.chatInput);
-            }, 5000)
 
 
         },

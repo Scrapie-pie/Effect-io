@@ -15,11 +15,11 @@
                 v-if="text"
                 v-html="text"
             )
-            p.base-people__img: img(
-                v-if="img"
-                :src="img"
-                alt=""
-            )
+            p.base-people__img(v-if="img")
+                img(
+                    :src="img"
+                    alt=""
+                )
 
 </template>
 
@@ -30,16 +30,20 @@
             BaseCount
         },
         props: {
-            img:false,
-            right:false,
-            channelName: '',
-            count: 0,
-            bgTextNoFill: false,
-            name: '',
-            text: '',
-            datetime: '',
-            avatarWidth: '',
+            img: false,
+            right: Boolean,
+            channelName: String,
+            count: {
+                type:Number,
+                default:0,
+            },
+            bgTextNoFill: Boolean,
+            name: String,
+            text: String,
+            datetime: String,
+            avatarWidth: String,
             type: {
+                type:String,
                 validator: function (value) {
                     return ['visitor', 'operator'].indexOf(value) !== -1
                 }
@@ -81,7 +85,9 @@
 
         /* width:100%;*/
 
-
+        &__header {
+            margin-bottom:calc-em(5);
+        }
 
         &__count{
             float:right;

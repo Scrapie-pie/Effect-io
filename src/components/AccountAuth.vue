@@ -86,7 +86,7 @@
             },
             login() {
                 console.log('login');
-                return this.$router.push({name: 'settingsApp'})
+                return this.$router.push({name: 'process'})
 
                 if (!this.disableLoginForm) {
                     this.$validator.validateAll()

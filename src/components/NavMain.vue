@@ -56,7 +56,7 @@
             display:block;
             padding-right:calc-em(20);
 
-            @include media($width_md){
+            @include media($width_lg){
             }
 
             &_active{
@@ -78,7 +78,7 @@
 
         }
 
-        @include media($width_md){
+        @include media($width_lg){
             &__link{
                 padding-left:calc-em(20);
                 padding-right:calc-em(20);

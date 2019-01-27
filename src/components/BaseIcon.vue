@@ -28,18 +28,26 @@
     import files from '@/assets/img/icons/chat/files.svg';
     import gifs from '@/assets/img/icons/chat/gifs.svg';
     import smiles from '@/assets/img/icons/chat/smiles.svg';
-    import arrow from '@/assets/img/icons/chat/arrow.svg';
+    import send from '@/assets/img/icons/chat/send.svg';
     import transfer from '@/assets/img/icons/chat/transfer.svg';
     import exit from '@/assets/img/icons/chat/exit.svg';
     import bl from '@/assets/img/icons/chat/bl.svg';
     import down from '@/assets/img/icons/chat/down.svg';
+    import user from '@/assets/img/icons/chat/user.svg';
+
+
+    import noFoundTeam from '@/assets/img/icons/chat/no-found-team.svg';
+    import noFoundVisitors from '@/assets/img/icons/chat/no-found-visitors.svg';
+    import noFoundMessages from '@/assets/img/icons/chat/no-found-messages.svg';
+
+
 
 
 
     import account from '@/assets/img/icons/chat/menu/account.svg';
     import common from '@/assets/img/icons/chat/menu/common.svg';
     import auth from '@/assets/img/icons/chat/menu/auth.svg';
-    import my from '@/assets/img/icons/chat/menu/my.svg';
+    import dialog from '@/assets/img/icons/chat/menu/dialog.svg';
     import process from '@/assets/img/icons/chat/menu/process.svg';
     import settingsApp from '@/assets/img/icons/chat/menu/settingsApp.svg';
     import team from '@/assets/img/icons/chat/menu/team.svg';
@@ -49,6 +57,7 @@
 
     import n1 from '@/assets/img/icons/avatars/n1.svg';
     import n2 from '@/assets/img/icons/avatars/n2.svg';
+    import n3 from '@/assets/img/icons/avatars/n3.svg';
 
     export default {
 

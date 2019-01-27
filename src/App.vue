@@ -17,11 +17,10 @@
         },
         mixins: [],
         created() {
-
+            document.querySelector('body').classList.add('page')
         },
         mounted() {
-            document.querySelector('body').classList.add('page')
-            document.querySelector('body').classList.add('tablet')
+
         }
     }
 </script>
@@ -36,6 +35,9 @@
         line-height:1.2;
         font-weight:400;
         font-family:$font-family_main;
+        min-height:475px;
+        min-width:685px;
+
 
         &__app{
             height:100%;

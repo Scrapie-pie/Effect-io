@@ -2,9 +2,17 @@
     header.chat-main-header
         .chat-main-header__text
             h1.chat-main-header__members
-                span.chat-main-header__name(v-for="(item, index) in membersList",:key="index")
-                    | {{item }}
-                    button(type="button" v-if="index").chat-main-header__name-tooltip Убрать из диалога
+                template(
+                    v-for="(item, index) in membersList",
+
+                )
+                    span.chat-main-header__name(
+
+                        :class="{'chat-main-header__name_open_client-info js-client-info':!index}"
+                    )
+                        | {{item}}
+                        button(type="button" v-if="index").chat-main-header__name-tooltip Убрать из диалога
+                    |{{separator(index)}}
             p.chat-main-header__channel На сайте: site.ru -&nbsp;
                 base-btn(
                     theme="text",
@@ -31,7 +39,7 @@
                         :show="showInvite",
                         @base_box_menu_close="showInvite=false"
                     )
-                        the-select-operator
+                        select-operators
 
             li.chat-main-header__control.chat-main-header__control_more
                 base-btn(
@@ -54,12 +62,12 @@
 <script>
     import TheChatMainHeaderHistory from '@/components/TheChatMainHeaderHistory'
     import TheChatMainHeaderActions from '@/components/TheChatMainHeaderActions'
-    import TheSelectOperator from '@/components/TheSelectOperator'
+    import SelectOperators from '@/components/SelectOperators'
     export default {
         components: {
             TheChatMainHeaderHistory,
             TheChatMainHeaderActions,
-            TheSelectOperator
+            SelectOperators
         },
         data() {
             return {
@@ -70,14 +78,46 @@
                 //moreActionsClose:false,
             }
         },
+        computed(){
+
+        },
         methods:{
             getActions(e){
                 if (e = 'blockClient' ) this.showConfirmBlockClient=true;
-            }
+            },
+            separator(index){
+                if (!index) return ', '
+            },
+
+            showClientInfo(){
+                document.getElementsByTagName('html')[0]
+                    .classList.add('is-opened-client-info');
+                document.addEventListener('click', this.hideClientInfo);
+
+            },
+            hideClientInfo(e) {
+
+
+
+                if (!e.target.matches('.chat-dialog__info, .chat-dialog__info *,.js-client-info')) {
+                    document.getElementsByTagName('html')[0]
+                        .classList.remove('is-opened-client-info')
+                    document.removeEventListener('click', this.hideClientInfo);
+                }
+            },
+
         },
         created() {
             this.membersList = ['Петр Иванов','Кирил'];
 
+        },
+        mounted(){
+            document.querySelector('.js-client-info')
+                .addEventListener('click', this.showClientInfo)
+
+        },
+        beforeDestroy() {
+            document.removeEventListener('click', this.hideClientInfo);
         },
 
 
@@ -127,9 +167,10 @@
             position:relative;
 
 
-
-            &:not(:last-child)::after {
-                content:', ';
+            &_open_client-info {
+                @include media($width_md) {
+                    border-bottom:1px dashed;
+                }
             }
 
             &-tooltip {

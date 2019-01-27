@@ -28,19 +28,22 @@
             legend.phrases-ready__text-only-scr Добавление новой фразы
             ul.phrases-ready__add
                 li.phrases-ready__add-item.phrases-ready__add-item_select
+                    label.phrases-ready__label(for="newCategory") Выберите категорию или придумайте свою
                     base-field(
                         type="select",
                         :selectOptions="{label:'name',options:categories}"
                         name="newCategory"
                         v-model="newCategory",
-                        label="Выберите категорию или придумайте свою "
+                        id="newCategory"
                     )
                 li.phrases-ready__add-item
+                    label.phrases-ready__label(for="newPhrase") Введите фразу
                     base-field(
+                        id="newPhrase",
                         type="textarea",
                         name="newCategory"
                         v-model="newPhrase",
-                        label="Введите фразу"
+
                     )
                 li.phrases-ready__add-item
                     base-radio-check(
@@ -53,7 +56,7 @@
                     base-radio-check(type="radio" value="false") Данный шаблон будет виден только мне
                 li.phrases-ready__add-item
                     base-btn.phrases-ready__add-item-button(v-text="'Добавить шаблон'")
-                    base-btn(v-text="'Отмена'" theme="error")
+                    base-btn(v-text="'Отмена'" color="error" @click="showPhrasesNew=false")
 </template>
 
 <script>
@@ -62,11 +65,14 @@
         components:{
             ActionList
         },
+        props:{
+            showPhrasesNew:false,
+        },
         data() {
             return {
                 newCategory:false,
                 newPhrase:false,
-                showPhrasesNew:false,
+
                 VisibleToAll:false,
                 phrases: [
                     {text:'Здравствуйте! Чем я могу Вам помочь?'},
@@ -108,6 +114,8 @@
             &_select {
                 max-width:275px;
             }
+
+
         }
         &__add-item-button {
             margin-right:calc-em(20);
@@ -174,6 +182,10 @@
             @extend %visuallyhidden;
         }
 
+        &__label {
+            font-weight:bold;
+            margin-bottom:calc-em(20);
+        }
         &__name {
             font-weight:bold;
             margin-bottom:calc-em(50);

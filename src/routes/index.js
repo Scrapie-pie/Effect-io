@@ -31,7 +31,7 @@ export default new Router({
         ...Chat,
         ...Settings,
         ...helpers,
-        ...Ui
+        //...Ui
     ]
 
 })

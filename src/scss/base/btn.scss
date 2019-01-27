@@ -93,12 +93,15 @@
     padding:0 calc-em(10);
   }
 
-  &_icon{
+  &_icon-no-box{
     border:0;
     background-color:transparent;
     padding:0 5px;
     color:inherit;
   }
+
+
+
   &__text-hidden {
     @extend %visuallyhidden;
   }
@@ -115,6 +118,7 @@
     }
 
   }
+
 
   &_smiles{
     .icon{

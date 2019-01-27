@@ -10,22 +10,24 @@
                 li.chat-actions__more-item
                     base-btn(:icon="{name:'bl',top:true}", @click="showBlockClient=true") Блокировать клиента
         fieldset(v-else)
-            legend.chat-actions__title Вы уверенв, что хотите заблокировать данного клиента?
+            legend.chat-actions__title Вы уверены, что хотите заблокировать данного клиента?
             ul.chat-actions__buttons
                 li.chat-actions__buttons-item
                     base-btn Заблокировать
                 li.chat-actions__buttons-item
-                    base-btn(theme="error") Отмена
+                    base-btn(color="error") Отмена
 
 </template>
 
 <script>
     export default {
         components: {},
-
+        props:{
+            showBlockClient:false,
+        },
         data() {
             return {
-                showBlockClient:false,
+
             }
         }
     }

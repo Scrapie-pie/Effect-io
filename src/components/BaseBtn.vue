@@ -23,8 +23,8 @@
         props: {
             size:String,
             color:String,
-            padding: '',
-            icon: {},
+            padding: String,
+            icon: Object,
 
 
             loaded: {
@@ -35,10 +35,7 @@
                 required: false,
                 default: ''
             },
-            mode: {
-                required: false,
-                default: false
-            },
+
             router: {
                 required: false,
                 default: ''
@@ -97,8 +94,10 @@
                 }
 
                 if (!_.isEmpty(this.icon)) {
-                    console.log(this.icon.top);
+
                     if (this.icon.top) obj['btn_icon-top'] = true;
+                    if (this.icon.box) obj['btn_icon-box'] = true;
+                    else obj['btn_icon-no-box'] = true
 
                     obj['btn_icon btn_' + this.icon.name] = true;
                 }
@@ -123,5 +122,145 @@
 </script>
 
 <style lang="scss">
+    .btn{
+        $color_bg-default:glob-color('default');
+        $color_error:glob-color('error');
 
+        $color_bg-main:glob-color('success');
+        $color_text-main:glob-color('light');
+        $color_border:glob-color('border');
+        $padding:calc-em(7) calc-em(20);
+
+        position:relative;
+        background-color:$color_bg-main;
+        color:$color_text-main;
+        padding:$padding;
+        border-radius:3px;
+        display:inline-block;
+        vertical-align:top;
+        font-weight:400;
+        line-height:1.2;
+        border:1px solid transparent;
+        cursor:pointer;
+
+        text-align:center;
+
+        &_size_lg {
+            font-size:calc-em(15);
+        }
+
+        @each $i, $c in $glob-colors {
+            &_color_#{$i} {
+                background-color: $c;
+            }
+        }
+
+        &_error {
+            background-color:$color_error;
+        }
+
+        &_text,&_link {
+            padding:0;
+            border:0;
+            background:none;
+            color:inherit;
+            font-weight:inherit;
+        }
+
+        &_link {
+            text-decoration:underline;
+        }
+
+        &-arrow {
+            padding-right:20px;
+            &__arrow {
+                position:absolute;
+                right:0;
+                top:0;
+                width:20px;
+                min-width:20px;
+                height:20px;
+                line-height:20px;
+                @extend %g-icon-down;
+                @extend %g-icon-down_md;
+
+                &_open {
+                    @extend %g-icon-down_open;
+                }
+            }
+
+        }
+
+        &_block{
+            width:100%;
+        }
+
+        &_sign{
+            color:$color_text-main;
+            border:0;
+            box-shadow:0 -1px 14px 2px rgba(222, 163, 31, .53);
+            font-weight:600;
+            background:#ff783c;
+            background:linear-gradient(to right, #ff783c 0%, #ffb815 100%);
+            padding:1em 2em;
+            border-radius:2em;
+        }
+
+        &_default{
+            // background-color:$color_bg-default;
+            background-color:transparent;
+            border-color:$color_border;
+            color:inherit;
+        }
+
+        &_padding_xs{
+            padding:0 calc-em(10);
+        }
+
+        &_icon-no-box{
+            border:0;
+            background-color:transparent;
+            padding:0 5px;
+            color:inherit;
+        }
+
+
+
+        &__text-hidden {
+            @extend %visuallyhidden;
+        }
+
+        &_icon-top {
+            display:flex;
+            flex-direction:column;
+            align-items:center;
+
+            .icon {
+                width:45px;
+                height:45px;
+                margin-bottom:.5em;
+            }
+
+        }
+
+
+        &_smiles{
+            .icon{
+                width:16px;
+                height:16px;
+            }
+        }
+        &_files{
+            .icon{
+                height:15px;
+            }
+        }
+        &_edit{
+            padding:calc-em(7) calc-em(7);
+            .icon{
+                width:15px;
+                height:15px;
+            }
+        }
+    }
 </style>

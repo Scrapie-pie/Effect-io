@@ -2,7 +2,7 @@ a, .link{
   color:glob-color('info');
   transition:$glob-trans;
 
-  &[href^="tel:"]{
+  &[href^="tel:"],&[href^="mailto:"]{
     border-bottom:0 !important;
     color:inherit !important;
     text-decoration:none !important;

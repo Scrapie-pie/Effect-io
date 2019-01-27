@@ -11,7 +11,7 @@
                         base-btn(color="info-dark" size="lg") Отклонить
             fieldset(v-else)
                 base-box-menu(:show="showMention", @base_box_menu_close="showMention=false")
-                    the-phrases-ready
+                    select-operators(name="mention")
                 base-box-menu(:show="showPhrases", @base_box_menu_close="showPhrases=false")
                     the-phrases-ready
                 base-box-menu(:show="showSmiles", @base_box_menu_close="showSmiles=false")
@@ -49,24 +49,28 @@
                             :icon="{name:'smiles',textHidden:'Гифки'}"
                             @click.prevent="showSmiles=true"
                         )
-                    li.chat-main-footer__button: base-btn(:icon="{name:'files'}")
+                    li.chat-main-footer__button: base-btn(:icon="{name:'files',textHidden:'Файлы'}")
                     li.chat-main-footer__button
                         base-btn(
                             :icon="{name:'gifs',textHidden:'Гифки'}"
                             @click.prevent="showGifs=true"
                         )
-                    li.chat-main-footer__button.chat-main-footer__button_send: base-btn.chat-main-footer__send(:icon="{name:'arrow'}")
+                    li.chat-main-footer__button.chat-main-footer__button_send
+                        base-btn.chat-main-footer__send(:icon="{name:'send',textHidden:'Отправить сообщение'}")
 </template>
 
 <script>
 
+    import SelectOperators from '@/components/SelectOperators'
     import TheOffer from '@/components/TheOffer'
     import TheFilesBoard from '@/components/TheFilesBoard'
     import ThePhrasesReady from '@/components/ThePhrasesReady'
 
+    import autosize from 'autosize'
+
     export default {
         components:{
-
+            SelectOperators,
             TheOffer,
             TheFilesBoard,
             ThePhrasesReady
@@ -91,8 +95,12 @@
         },
         mounted() {
 
-
-
+            setTimeout(()=>{
+                autosize(this.$refs.chatInput);
+            },500)
+        },
+        beforeDestroy(){
+            autosize.destroy(this.$refs.chatInput);
         },
         created() {
             this.checkIsProcessPage()
@@ -162,14 +170,12 @@
             margin-left:auto;
         }
         &__send{
-            width:calc-em(45);
-            height:calc-em(45);
-            background-color:$color_bg-send;
-            border-radius:50%;
+
+            
 
             .icon{
-                width:25px;
-                height:25px;
+                width:calc-em(45);
+                height:calc-em(45);
             }
         }
 

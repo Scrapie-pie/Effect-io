@@ -10,9 +10,10 @@
         v-on="inputListeners",
         :checked="checked"
         ).radio-check__input
-        span.radio-check__text
+        span.radio-check__text-wrap
             base-icon(name="check" v-if="type=='checkbox'").radio-check__check
-            slot
+            span.radio-check__text
+                slot
 
 </template>
 
@@ -96,13 +97,17 @@
         &__input{
             @extend %visuallyhidden;
 
-            &:checked ~ #{$self}__text{
+            &:checked ~ #{$self}__text-wrap{
                 #{$self}__check{
                     transform:scale(1);
                 }
             }
         }
-        &__text{
+        &__text:not(:empty) {
+
+            margin-left:calc-em(15);
+        }
+        &__text-wrap{
             position:relative;
             display:flex;
             align-items:center;
@@ -114,7 +119,7 @@
                 height:$sz;
                 border:1px solid glob-color('border');
                 border-radius:50%;
-                margin-right:calc-em(15);
+
             }
             &:after{
                 content:'';
