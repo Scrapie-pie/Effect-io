@@ -85,7 +85,7 @@
                 border-color:transparent;
                 text-align:center;
 
-                &:hover #{$self}__text{
+                .page_hasHover &:hover #{$self}__text{
                     transform:scale(1);
                 }
             }

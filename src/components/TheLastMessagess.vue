@@ -5,13 +5,14 @@
         scroll-bar.scroll-bar(v-once)
             .last-messages__scroll-bar
                 ul.last-messages__list
-                    li.last-messages__item(v-for="(item, index) in peopleList",:key="index")
+                    li.last-messages__item(v-for="(item, index) in peopleList",:key="index",  :class="{'last-messages__item_warning':item.warning}")
                         button.last-messages__btn(type="button" v-text="`${item.name}:${item.text}`")
                         base-people.last-messages__people(
-                        :name="item.name"
-                            :text="item.text"
-                                :bg-text-no-fill="true"
-                                :channel-name="item.channel"
+                            :name="item.name",
+                            :text="item.text",
+                            :bg-text-no-fill="true",
+                            :channel-name="item.channel",
+                            :count="item.count"
                         hidden
                         )
 </template>
@@ -20,11 +21,12 @@
     export default {
         data() {
             return {
+                warning:true,
                 peopleList: [
-                    {name: 'Маша', text: 'Где можно посмотреть спортивные кеды?', channel: 'vk'},
-                    {name: 'Маша', text: 'Где можно посмотреть спортивные кеды?', channel: 'fbme'},
-                    {name: 'Маша', text: 'Где можно посмотреть спортивные кеды?', channel: 'chat'},
-                    {name: 'Маша', text: 'Где можно посмотреть спортивные кеды?', channel: 'tg'},
+                    {name: 'Маша', text: 'Где можно посмотреть спортивные кеды?', channel: 'vk',warning:true,count:236},
+                    {name: 'Маша', text: 'Где можно посмотреть спортивные кеды?', channel: 'fbme',count:-1},
+                    {name: 'Маша', text: 'Где можно посмотреть спортивные кеды?', channel: 'chat',count:0},
+                    {name: 'Маша', text: 'Где можно посмотреть спортивные кеды?', channel: 'tg',count:4},
                     {name: 'Маша', text: 'Где можно посмотреть спортивные кеды?', channel: 'vk'},
                     {name: 'Маша', text: 'Где можно посмотреть спортивные кеды?'},
                     {name: 'Маша', text: 'Где можно посмотреть спортивные кеды?'},
@@ -61,6 +63,7 @@
 
     .last-messages{
         $color_bg-hover:glob-color('border');
+        $color_bg-error:glob-color('error');
         $transition:$glob-trans;
        // height:100%;
 
@@ -78,7 +81,20 @@
             transition:$transition;
             padding-left:calc-em(10);
             &:hover{
-                background:$color_bg-hover;
+                background-color:$color_bg-hover;
+            }
+
+            &_warning {
+                &::before {
+                    content:'';
+                    @extend %full-abs;
+                    background-color:$color_bg-error;
+                    opacity:.5;
+                    z-index:0;
+                }
+
+
+
             }
 
         }
@@ -99,6 +115,8 @@
             background-color:transparent;
             border-color:transparent;
             font-size:0;
+
+
         }
     }
 

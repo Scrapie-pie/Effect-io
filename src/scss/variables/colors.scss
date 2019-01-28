@@ -1,0 +1,28 @@
+$glob-colors:(
+        'default':#f3f3f3,
+        'success':#00bc00,
+        'success-dark':#00b05a,
+        'error':#ff6257,
+        'info':#0cf,
+        'info-dark':#009fff,
+        'info-light':#e5f5ff,
+        'info-lighten':#f4f6f7,
+        'disabled':#c0c6ca,
+        'border':#e5e5e5,
+        'main':#626262,
+        'secondary':#2a2a2a,
+        'light':#fff
+);
+
+@function glob-color($key,$native: true){
+  $clr:map-get($glob-colors, $key);
+  @if ($native){
+    @return var(--color-#{$key})
+  }
+  @return $clr
+}
+:root{
+  @each $i, $c in $glob-colors{
+    --color-#{$i}:#{$c};
+  }
+}

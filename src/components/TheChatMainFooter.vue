@@ -3,23 +3,24 @@
 
             //the-chat-system-messages
 
-            fieldset(v-if="showProcess")
+            fieldset(v-if="showProcess" key="showProcess")
                 ul.chat-main-footer__process
                     li.chat-main-footer__process-item
                         base-btn(color="success-dark" size="lg") Присоединиться
                     li.chat-main-footer__process-item
                         base-btn(color="info-dark" size="lg") Отклонить
             fieldset(v-else)
-                base-box-menu(:show="showMention", @base_box_menu_close="showMention=false")
-                    select-operators(name="mention")
-                base-box-menu(:show="showPhrases", @base_box_menu_close="showPhrases=false")
-                    the-phrases-ready
-                base-box-menu(:show="showSmiles", @base_box_menu_close="showSmiles=false")
-                    the-files-board(name="smiles")
-                base-box-menu(:show="showGifs", @base_box_menu_close="showGifs=false")
-                    the-files-board(name="gifs")
-                base-box-menu(:show="showOffer", @base_box_menu_close="showOffer=false")
-                    the-offer()
+                .chat-main-footer__box-menu
+                    box-controls(:show="showMention", @base_box_menu_close="showMention=false")
+                        select-operators(name="mention")
+                    box-controls(:show="showPhrases", @base_box_menu_close="showPhrases=false")
+                        the-phrases-ready
+                    box-controls(:show="showSmiles", @base_box_menu_close="showSmiles=false")
+                        the-files-board(name="smiles")
+                    box-controls(:show="showGifs", @base_box_menu_close="showGifs=false")
+                        the-files-board(name="gifs")
+                    box-controls(:show="showOffer", @base_box_menu_close="showOffer=false")
+                        the-offer()
 
                 .chat-main-footer__contols
                     .chat-main-footer__textarea-wrap
@@ -144,7 +145,7 @@
         }
         &__textarea-wrap{
 
-            padding: 0 0 calc-em(20);
+
         }
         &__scrollbar{
             max-height:7.5em;
@@ -163,19 +164,27 @@
             display:flex;
             align-items:center;
         }
+
         &__button_offer {
             fill:#cbcfde;
         }
+
         &__button_send{
             margin-left:auto;
         }
+
         &__send{
-
-            
-
             .icon{
                 width:calc-em(45);
                 height:calc-em(45);
+            }
+        }
+
+        &__box-menu {
+            position:relative;
+            .box-controls-wrap {
+                @extend %full-abs;
+                top:auto;
             }
         }
 

@@ -1,4 +1,4 @@
-@function calc-em($target, $context: $font-size_main){
+@function calc-em($target, $context: $glob-font-size_main){
   $target:$target * 1px;
   @return ($target / $context) * 1em;
 }

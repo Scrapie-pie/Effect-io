@@ -20,9 +20,11 @@
                             :key="index"
                         )
                             span.phrases-ready__phrases-text(v-text="item.text")
-                            .phrases-ready__phrases-controls
-                                base-btn.phrases-ready__phrases-button.phrases-ready__phrases-edit(theme="link" v-text="'Редактировать'")
-                                base-btn.phrases-ready__phrases-button.phrases-ready__phrases-remove(theme="link" v-text="'Удалить'")
+                            ul.phrases-ready__phrases-controls
+                                li.phrases-ready__phrases-button.phrases-ready__phrases-edit
+                                    base-btn(theme="link" v-text="'Редактировать'")
+                                li.phrases-ready__phrases-button.phrases-ready__phrases-remove
+                                    base-btn(theme="link" v-text="'Удалить'")
 
         fieldset(v-else)
             legend.phrases-ready__text-only-scr Добавление новой фразы
@@ -148,7 +150,7 @@
         }
 
         &__phrases-button {
-            padding:0 1em;
+            padding-left:calc-em(35);
         }
         &__phrases-remove {
             color:$color_error;

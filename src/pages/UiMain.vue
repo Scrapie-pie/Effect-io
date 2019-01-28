@@ -1,6 +1,6 @@
 <template lang="pug">
 
-    article.grid
+    article
         h1 Ui
         hr
         section
@@ -22,42 +22,42 @@
                 li.ui-list__item
                     ul.ul-row
                         li
-                            base-box-menu(:show="true")
+                            box-controls(:show="true")
                                 select-operators
                         li
-                            base-box-menu(:show="true")
+                            box-controls(:show="true")
                                 select-operators(name="mention")
 
                 li.ui-list__item
 
                 li.ui-list__item
-                    base-box-menu(:show="true")
+                    box-controls(:show="true")
                         the-offer
                 li.ui-list__item
-                    base-box-menu(:show="true")
+                    box-controls(:show="true")
                         the-files-board(name="smiles")
                 li.ui-list__item
-                    base-box-menu(:show="true")
+                    box-controls(:show="true")
                         the-files-board(name="gifs")
                 li.ui-list__item
-                    base-box-menu(:show="true")
+                    box-controls(:show="true")
                         the-chat-main-header-history
                 li.ui-list__item
                     ul.ul-row
                         li
-                            base-box-menu(:show="true")
+                            box-controls(:show="true")
                                 the-chat-main-header-actions()
                         li
-                            base-box-menu(:show="true")
+                            box-controls(:show="true")
                                 the-chat-main-header-actions(:showBlockClient="true")
 
                 li.ui-list__item
                     ul.ul-row
                         li
-                            base-box-menu(:show="true")
+                            box-controls(:show="true")
                                 the-phrases-ready
                         li
-                            base-box-menu(:show="true")
+                            box-controls(:show="true")
                                 the-phrases-ready(:showPhrasesNew="true")
 
                 li.ui-list__item

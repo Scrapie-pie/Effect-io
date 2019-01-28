@@ -1,24 +1,22 @@
 <template lang="pug">
-    article.settings-page
-        .settings-page__header
-            .settings-page__grid
-                h1.settings-page__title Ui
+    the-layout(:header-padding-no="true").settings-page
+        template(slot="title") Guide
+        //template(slot="nav")
+            nav-main(:item-list="menuList")
+        template(slot="main")
+            router-view
 
-        .settings-page__grid
-            .settings-page__inner
-                .settings-page__nav
-                    nav-main(:item-list="menuList")
-                transition.settings-page__main(name="fade" mode="out-in")
-                    router-view
+
 
 
 </template>
 
 <script>
 
+    import TheLayout from '@/components/TheLayout'
     import NavMain from '@/components/NavMain'
     export default {
-        components: {NavMain},
+        components: {NavMain,TheLayout},
         data() {
             return {
                 menuList: [

@@ -3,7 +3,7 @@ console.clear();
 import Vue from 'vue'
 import App from './App.vue'
 import '@/validation'
-import router from '@/routes/index'
+import router from '@/routes/router'
 import store from './store/index'
 
 
@@ -20,7 +20,8 @@ import BaseBtn from "@/components/BaseBtn";
 import BaseRadioCheck from "@/components/BaseRadioCheck";
 import BaseAvatar from "@/components/BaseAvatar";
 import BasePeople from "@/components/BasePeople";
-import BaseBoxMenu from "@/components/BaseBoxMenu";
+
+import BoxControls from "@/components/BoxControls";
 import BaseNoFound from "@/components/BaseNoFound";
 
 
@@ -34,8 +35,10 @@ Vue.component('base-btn', BaseBtn)
 Vue.component('base-radio-check', BaseRadioCheck)
 Vue.component('base-avatar', BaseAvatar)
 Vue.component('base-people', BasePeople)
-Vue.component('base-box-menu', BaseBoxMenu)
+
+Vue.component('box-controls', BoxControls)
 Vue.component('base-no-found', BaseNoFound)
+
 
 /*let requireComponent = require.context('@/src/components/', true, /^Base[A-Z]/) //todo не работает(
 console.log(requireComponent.keys());

@@ -2,46 +2,37 @@ import Chat from '@/pages/Chat'
 import ChatTeam from '@/pages/ChatTeam'
 import ChatVisitor from '@/pages/ChatVisitor'
 import ChatDialog from '@/pages/ChatDialog'
-import Ui from '@/pages/UiMain'
 
-export default [{
-    name: 'chat',
-    path: '/chat',
-    component: Chat,
-    children: [
+
+export default [
+
         {
             name: 'team',
-            path: 'team',
+            path: '/team',
             component: ChatTeam
         },
         {
             name: 'visitors',
-            path: 'visitors',
+            path: '/visitors',
             component: ChatVisitor
         },
         {
             name: 'process',
-            path: 'process',
+            path: '/process',
             component: ChatDialog
         },
         {
             name: 'dialog',
-            path: 'dialog',
+            path: '/dialog',
             component: ChatDialog
         },
         {
             name: 'common',
-            path: 'common',
+            path: '/common',
             component: ChatDialog
         },
-        {
-            name: 'ui',
-            path: 'ui',
-            component: Ui
-        },
 
-    ]
-}]
+]
 
 
 

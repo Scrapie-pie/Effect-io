@@ -77,6 +77,7 @@
         $border-raduis:$glob-border-radius;
         $padding:calc-em(15);
         $color_bg:glob-color('info-light');
+        $color_bg-error:glob-color('error');
         $color_name:glob-color('secondary');
         $small:$glob-font-size_small;
         display:flex;
@@ -130,6 +131,8 @@
             padding:$padding;
 
         }
+
+        &_warning &__inner { background-color:$color_bg-error}
 
         &_bg-text_no_fill &__inner{ background-color:transparent }
 

@@ -21,7 +21,7 @@
                     | Кеды для спорта
                     span.btn-arrow__arrow(:class="{'btn-arrow__arrow':showClientHistoryActions}")
                 .chat-main-header__client-history-actions
-                    base-box-menu(
+                    box-controls(
                         :show="showClientHistoryActions",
                         @base_box_menu_close="showClientHistoryActions=false"
                     )
@@ -35,7 +35,7 @@
                     @click.prevent="showInvite=true"
                 ) + Пригласить
                 .chat-main-header__select-operator
-                    base-box-menu(
+                    box-controls(
                         :show="showInvite",
                         @base_box_menu_close="showInvite=false"
                     )
@@ -47,7 +47,7 @@
                     @click.prevent="showMoreChatActions=true"
                 ).chat-main-header__more-btn
                 .chat-main-header__more
-                    base-box-menu(
+                    box-controls(
                         :show="showMoreChatActions",
                         @base_box_menu_close="showMoreChatActions=false"
                     )
@@ -90,7 +90,7 @@
             },
 
             showClientInfo(){
-                document.getElementsByTagName('html')[0]
+                document.body
                     .classList.add('is-opened-client-info');
                 document.addEventListener('click', this.hideClientInfo);
 
@@ -100,7 +100,7 @@
 
 
                 if (!e.target.matches('.chat-dialog__info, .chat-dialog__info *,.js-client-info')) {
-                    document.getElementsByTagName('html')[0]
+                    document.body
                         .classList.remove('is-opened-client-info')
                     document.removeEventListener('click', this.hideClientInfo);
                 }

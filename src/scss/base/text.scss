@@ -8,12 +8,12 @@
 %h6:not([class]) {
   margin:0 0 em(2);
 }*/
-%h1{ font-size:$font-size_h1; }
+%h1{ font-size:$glob-font-size_h1; }
 %h2{ font-size:$glob-font-size_h2;}
-%h3{ font-size:$fsz_h3;}
-%h4{ font-size:$fsz_h4;}
-%h5{ font-size:$fsz_h5; }
-%h6{ font-size:$fsz_h6; }
+%h3{ font-size:$glob-font-size_h3;}
+%h4{ font-size:$glob-font-size_h4;}
+%h5{ font-size:$glob-font-size_h5; }
+%h6{ font-size:$glob-font-size_h6; }
 h1, .h1{ @extend %h1}
 h2, .h2{ @extend %h2}
 h3, .h3{ @extend %h3 }
@@ -32,7 +32,7 @@ strong :not([class]), .g-strong{
 }
 small{font-size:inherit}
 small:not([class]), .g-small{
-  font-size:$fsz_small;
+  font-size:$glob-font-size_small;
 }
 
 

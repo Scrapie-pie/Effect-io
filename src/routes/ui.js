@@ -4,10 +4,17 @@ import UiMain from '@/pages/UiMain'
 export default [{
     name: 'ui',
     path: '/ui',
-    component: UiMain,
+    component: Ui,
     meta: {
         breadcrumb: ''
-    }
+    },
+    children: [{
+        name: 'main',
+        path: '',
+        component: UiMain,
+    },
+
+    ]
     // beforeEnter: hookNoUserFundsCase
 
 }]

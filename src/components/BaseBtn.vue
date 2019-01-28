@@ -132,18 +132,25 @@
         $padding:calc-em(7) calc-em(20);
 
         position:relative;
-        background-color:$color_bg-main;
-        color:$color_text-main;
-        padding:$padding;
-        border-radius:3px;
+
         display:inline-block;
         vertical-align:top;
+
         font-weight:400;
         line-height:1.2;
-        border:1px solid transparent;
         cursor:pointer;
-
         text-align:center;
+
+        border:1px solid transparent;
+        border-radius:3px;
+        background-color:$color_bg-main;
+        padding:$padding;
+        color:$color_text-main;
+
+        &:hover {
+            opacity:.8;
+        }
+
 
         &_size_lg {
             font-size:calc-em(15);

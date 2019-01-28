@@ -18,6 +18,8 @@
                     :selectOptions="{label:'name',options:channelList}"
                     v-model="channel"
                     )
+                .chat-team__control
+                    base-btn(@click="$root.$emit('popup-not-find')") Попап ограничения
 
             table.table
                 thead.table__thead
@@ -75,6 +77,12 @@
                 {name: 'Skype'},
             ]
             this.channel = this.channelList[0];
+        },
+        methods:{
+            popupNotFind(){
+                this.$root.$emit('popup-not-find');
+                console.log(this.$root);
+            }
         }
     }
 </script>

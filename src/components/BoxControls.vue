@@ -1,28 +1,32 @@
 <template lang="pug">
     transition(name="fade")
-        section.base-box-menu-wrap(v-if="show")
-            .base-box-menu
+        section.box-controls(v-if="show", :class="{'box-controls_popup':popup}")
+            .box-controls__box
                 base-btn(
                     :icon="{name:'close'}",
                     @click="$emit('base_box_menu_close')"
-                ).base-box-menu__close
+                ).box-controls__close
+                p.box-controls__text
+                    slot(name="text")
                 slot
-            .base-box-menu-overlay
+
+            .box-controls__overlay
 </template>
 
 <script>
     export default {
         props: {
-            show:false,
+            show:Boolean,
+            popup:Boolean
         },
         watch:{
             show(val){
                 if(val) {
-                    document.getElementsByTagName('html')[0]
-                        .classList.add('is-opened-base-box-menu');
+                    document.body
+                        .classList.add('is-opened-box-controls');
                 } else {
-                    document.getElementsByTagName('html')[0]
-                        .classList.remove('is-opened-base-box-menu');
+                    document.body
+                        .classList.remove('is-opened-box-controls');
                 }
             }
         },
@@ -30,9 +34,10 @@
             close(e) {
 
                 if (!this.show) return
-                console.log(e.target);
-                if (!e.target.matches('.base-box-menu, .base-box-menu *')) {
+
+                if (!e.target.matches('.box-controls, .box-controls *')) {
                     this.$emit('base_box_menu_close')
+                    console.log('base_box_menu_close');
                     document.removeEventListener('click', this.close);
                 }
             },
@@ -46,8 +51,7 @@
         },
         beforeDestroy() {
             document.removeEventListener('click', this.close);
-            document.getElementsByTagName('html')[0]
-                .classList.remove('is-opened-base-box-menu');
+            document.body.classList.remove('is-opened-box-controls');
         },
     }
 </script>
@@ -57,14 +61,38 @@
 
 
 
-    .base-box-menu {
-
+    .box-controls {
+        $self:&;
+        &__box {
             @include box-decor();
             position:relative;
             margin-top:calc-em(15);
             margin-bottom:calc-em(15);
             z-index:9999;
             background-color:glob-color('light');
+
+            #{$self}_popup & {
+                position:fixed;
+                left:50%;
+                top:50%;
+                transform:translate(-50%,-50%);
+                display:flex;
+                flex-direction:column;
+                height:300px;
+                width:300px;
+                align-items:center;
+                justify-content:center;
+                text-align:center;
+            }
+        }
+
+
+        &__text {
+            &:empty {
+                margin:0;
+            }
+            margin:calc-em(25) 0;
+        }
 
 
         &__close {
@@ -80,7 +108,7 @@
         }
 
 
-        &-overlay{
+        &__overlay{
             content:'';
             @extend %full-abs;
             position:fixed;
@@ -89,8 +117,9 @@
             opacity:0;
             visibility:hidden;
             transition:$glob-trans;
+            transition-property:background-color;
 
-            .is-opened-base-box-menu & {
+            .is-opened-box-controls & {
                 opacity:1;
                 visibility:visible;
             }

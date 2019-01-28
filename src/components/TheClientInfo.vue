@@ -113,6 +113,7 @@
 
             &_textarea {
                 .field__input {
+                    height:auto;
                     max-height:5em;
 
                 }

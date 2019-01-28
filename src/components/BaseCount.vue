@@ -1,7 +1,7 @@
 <template lang="pug">
     sup.base-count(
-    v-if="count"
-    v-text="count"
+    v-if="getCount"
+    v-text="getCount"
     title="Количество сообщений")
 </template>
 
@@ -18,6 +18,14 @@
         },
         data() {
             return {}
+        },
+        computed: {
+            getCount(){
+                if(this.count > 99) return 99;
+                if(this.count < 0) return 0;
+                return this.count
+
+            }
         }
     }
 </script>

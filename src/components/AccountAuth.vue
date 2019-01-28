@@ -1,20 +1,20 @@
 <template lang="pug">
-    form.form-password(@submit.prevent="submit")
-        fieldset.form-password__box
-            legend.form-password__title(v-text="title")
-            .form-password__logo
+    form.account-auth(@submit.prevent="submit")
+        fieldset.account-auth__box
+            legend.account-auth__title(v-text="title")
+            .account-auth__logo
                 img(src="@/assets/img/logo.png" alt="logo")
 
             template(v-if="!recover")
-                ul.form-password__list()
-                    li.form-password__item.form-password__field
+                ul.account-auth__list()
+                    li.account-auth__item.account-auth__field
                         base-field(
                         type="email"
                         placeholder="Введите Е-email"
                         name="login"
                         v-validate="'required|email'" data-vv-as="логин" v-model="email"
                         )
-                    li.form-password__item.form-password__field
+                    li.account-auth__item.account-auth__field
                         base-field(
                         type="password"
                         placeholder="Введите пароль"
@@ -23,30 +23,30 @@
                         data-vv-as="пароль"
                         v-model="password"
                         )
-                .form-password__bottom
-                    .form-password__btn
+                .account-auth__bottom
+                    .account-auth__btn
                         base-btn(theme="sign" type="submit") Войти
-                    router-link.form-password__link(:to='{name:"recover"}' ) Забыли пароль?
+                    router-link.account-auth__link(:to='{name:"recover"}' ) Забыли пароль?
 
             template(v-else)
-                .form-password__list
-                    .form-password__item.form-password__field(v-if="!passwordSent")
+                .account-auth__list
+                    .account-auth__item.account-auth__field(v-if="!passwordSent")
                         base-field(type="email" placeholder="Введите Е-email" autocomplete="off" name="email")
-                    p.form-password__text(v-else) Новый пароль отправлен #[br] на указанный e-mail
-                .form-password__bottom
-                    .form-password__btn
+                    p.account-auth__text(v-else) Новый пароль отправлен #[br] на указанный e-mail
+                .account-auth__bottom
+                    .account-auth__btn
                         base-btn(theme="sign" type="submit" v-if="!passwordSent") Восстановить пароль
-                    router-link.form-password__link(:to='{name:"auth"}' v-if="!passwordSent") Я помню пароль
-                    router-link.form-password__link(:to='{name:"auth"}' v-else) Вернуться ко входу
+                    router-link.account-auth__link(:to='{name:"auth"}' v-if="!passwordSent") Я помню пароль
+                    router-link.account-auth__link(:to='{name:"auth"}' v-else) Вернуться ко входу
 
 </template>
 
 <script>
 
-
+    import { hideHeader } from '@/mixins/mixins'
     export default {
         components: {},
-
+        mixins:[hideHeader],
         data() {
             return {
                 recover: false,
@@ -164,7 +164,11 @@
 </script>
 
 <style lang="scss">
-    .form-password{
+    .account-auth{
+
+        margin-left:-($glob-indent-main-lr);
+        margin-right:-($glob-indent-main-lr);
+
         display:flex;
         align-items:center;
         justify-content:center;
@@ -206,7 +210,7 @@
                 border-radius:0;
                 border-bottom:1px solid glob-color('info');
                 text-align:center;
-                font-size:$font-size_h1;
+                font-size:$glob-font-size_h1;
                 font-weight:300;
                 $p:calc-em(5);
                 padding-top:$p;
@@ -234,7 +238,7 @@
         }
 
         &__text{
-            font-size:$font-size_h1;
+            font-size:$glob-font-size_h1;
             font-weight:300;
             line-height:1.7;
         }

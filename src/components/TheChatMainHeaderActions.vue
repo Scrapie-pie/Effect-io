@@ -1,21 +1,23 @@
 <template lang="pug">
     form.chat-actions
-        fieldset(v-if="!showBlockClient")
-            legend.chat-actions__text-only-scr Выберите одно из действий
-            ul.chat-actions__list
-                li.chat-actions__more-item
-                    base-btn(:icon="{name:'transfer',top:true}") Передать диалог
-                li.chat-actions__more-item
-                    base-btn(:icon="{name:'exit',top:true}") Выйти из диалога
-                li.chat-actions__more-item
-                    base-btn(:icon="{name:'bl',top:true}", @click="showBlockClient=true") Блокировать клиента
-        fieldset(v-else)
-            legend.chat-actions__title Вы уверены, что хотите заблокировать данного клиента?
-            ul.chat-actions__buttons
-                li.chat-actions__buttons-item
-                    base-btn Заблокировать
-                li.chat-actions__buttons-item
-                    base-btn(color="error") Отмена
+        transition(name="fade" mode="out-in")
+            fieldset(v-if="!showBlockClient" key="hideBlockClient")
+                legend.chat-actions__text-only-scr Выберите одно из действий
+                ul.chat-actions__list
+                    li.chat-actions__more-item
+                        base-btn(:icon="{name:'transfer',top:true}") Передать диалог
+                    li.chat-actions__more-item
+                        base-btn(:icon="{name:'exit',top:true}") Выйти из диалога
+                    li.chat-actions__more-item
+                        base-btn(:icon="{name:'bl',top:true}", @click="showBlockClient=true") Блокировать клиента
+            fieldset(v-else key="showBlockClient")
+                legend.chat-actions__title Вы уверены, что хотите заблокировать данного клиента?
+                ul.chat-actions__buttons
+                    li.chat-actions__buttons-item
+                        base-btn Заблокировать
+                    li.chat-actions__buttons-item
+                        base-btn(color="error" @click="showBlockClient=false") Отмена
+
 
 </template>
 

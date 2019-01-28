@@ -1,26 +1,24 @@
 <template lang="pug">
-    article.settings-page
-        .settings-page__header
-            .settings-page__grid
-                h1.settings-page__title Настройки
-            router-link.settings-page__close(:to="{name:'process'}" title="Выход")
-                span.settings-page__close-text-only-scr Выход
-                base-icon(name="close")
-        .settings-page__grid
-            .settings-page__inner
-                .settings-page__nav
-                    nav-main(:item-list="menuList")
-                transition.settings-page__main(name="fade" mode="out-in")
-                    router-view.settings-page__content
+        the-layout(:header-padding-no="true").settings-page
+            template(slot="title").qwe Настройки
+            template(slot="nav")
+                nav-main(:item-list="menuList")
+            template(slot="main")
+                 router-view
+
+
+
 
 
 </template>
 
 <script>
-
+    import { hideHeader } from '@/mixins/mixins'
+    import TheLayout from '@/components/TheLayout'
     import NavMain from '@/components/NavMain'
     export default {
-        components: {NavMain},
+        components: {NavMain,TheLayout},
+        mixins: [hideHeader],
         data() {
             return {
                 menuList: [
@@ -30,7 +28,8 @@
 
                 ]
             }
-        }
+        },
+
     }
 </script>
 
@@ -38,55 +37,7 @@
 <style lang="scss">
 
 
-    .settings-page{
 
-        &__header{
-            position:relative;
-            text-align:center;
-            box-shadow:0 0 14px 1px rgba(0, 1, 0, .11);
-            padding:calc-em(14) 0;
-            margin-bottom:calc-em(70);
-
-            &-inner {
-                display:flex;
-                justify-content:center;
-            }
-        }
-
-        &__close {
-            position:absolute;
-            right:calc-em(15);
-            top:0;
-            margin:calc-em(15);
-        }
-
-        &__close-text-only-scr {
-            @extend %visuallyhidden;
-        }
-        &__title{margin-bottom:0}
-
-        &__grid{
-            max-width:900px;
-            margin:0 auto;
-            padding:0 15px;
-        }
-
-        &__content {
-
-        }
-
-        &__inner{
-            display:flex;
-        }
-
-        &__nav{
-            padding-right:6%;
-            width: 29%;
-        }
-
-        &__main{
-        }
-    }
     .settings-list{
 
         &__name{
