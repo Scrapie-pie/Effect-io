@@ -1,5 +1,5 @@
 <template lang="pug">
-    article.layout()
+    scroll-bar.layout()
         header.layout__header(:class="{'layout__header_padding-wrap_no':headerPaddingNo}")
             .layout__grid
                 h1.layout__title
@@ -38,7 +38,8 @@
 
 
     .layout{
-
+        margin-right:-(calc-em(15));
+        padding-right:calc-em(15);
         &__header{
             position:relative;
             text-align:center;

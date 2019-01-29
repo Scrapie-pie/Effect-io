@@ -4,7 +4,7 @@
             legend.select-operator__title Выберите сотрудника, которого вы хотите упомянуть в диалоге. Данный сотрудник получит оповещение.
             .select-operator__search-operators
                 base-field.select-operator__search(type="search" name="search" v-model="search" theme="soft")
-                scroll-bar.select-operator__scrollbar
+                scroll-bar.select-operator__scrollbar.select-operator__scrollbar_mention
                     ul.select-operator__list
                         li.select-operator__item.select-operator__item_operator
                             .select-operator__checkbox
@@ -71,17 +71,17 @@
                 search:'',
                 comment:'',
                 itemList: [
-                    {name: 'Петр Иванов', text: 'Главный отдел'},
+                    {name: 'Петр Иванов Камикадзев', text: 'Главный отдел'},
                     {name: 'Зеленков Александр', text: 'Главный отдел'},
                     {name: 'Зеленков Александр', text: 'Главный отдел'},
                     {name: 'Зеленков Александр', text: 'Главный отдел'},
-                    {name: 'Петр Иванов', text: 'Главный отдел'},
+                    {name: 'Петр Иванов Камикадзев', text: 'Главный отдел'},
 
-                    {name: 'Петр Иванов', text: 'Главный отдел'},
+                    {name: 'Петр Иванов Камикадзев', text: 'Главный отдел'},
                     {name: 'Зеленков Александр', text: 'Главный отдел'},
                     {name: 'Зеленков Александр', text: 'Главный отдел'},
                     {name: 'Зеленков Александр', text: 'Главный отдел'},
-                    {name: 'Петр Иванов', text: 'Главный отдел'},
+                    {name: 'Петр Иванов Камикадзев', text: 'Главный отдел'},
 
                 ],
             }
@@ -94,7 +94,7 @@
 
 <style lang="scss">
     .select-operator {
-
+        $self:'.select-operator';
 
         &__title {
             /*padding-top:2.5em;*/
@@ -107,6 +107,10 @@
 
         &__scrollbar {
             max-height: calc(80vh - 20em);
+
+            &_mention {
+                max-height: calc(92vh - 20em);
+            }
 
         }
 
@@ -126,6 +130,8 @@
                 .icon {
                     visibility:hidden;
                 }
+
+
             }
         }
 
@@ -146,7 +152,7 @@
         }
 
         &__search-operators {
-            max-width:245px;
+            max-width:320px;
         }
 
         &__footer {

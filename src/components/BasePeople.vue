@@ -19,6 +19,7 @@
                 img(
                     :src="img"
                     alt=""
+                        @click="$root.$emit('popup-img',img)"
                 )
 
 </template>
@@ -71,6 +72,7 @@
 </script>
 
 <style lang="scss">
+
     .base-people{
         $self:&;
         $ml:calc-em(5);
@@ -88,10 +90,12 @@
 
         &__header {
             margin-bottom:calc-em(5);
+            display:flex;
         }
 
         &__count{
             float:right;
+            flex:0 0 auto
         }
 
         &__avatar{
@@ -143,6 +147,9 @@
         &__name{
             color:$color_name;
             font-weight:bold;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
         }
 
         &__text{
@@ -154,7 +161,10 @@
         }
         &__text + &__img {margin-top:calc-em(15)}
         &__img {
-
+            img {
+                max-width:230px;
+                cursor:pointer;
+            }
         }
 
         &_visitor &__inner, &_operator &__inner{

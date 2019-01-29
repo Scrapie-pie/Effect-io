@@ -23,12 +23,12 @@ body{
 *{
   -webkit-tap-highlight-color:transparent;
 
-  ::selection{
+ /* ::selection{
     background:glob-color('info');
     color:white;
     text-shadow:none;
   }
-
+*/
   &:focus {
     outline:none;
     /*transform:translateY(-1px);*/
@@ -54,6 +54,10 @@ img{
 
 .scroll-bar{
   height:100%;
+}
+
+.ps__scrollbar-x-rail {
+  display:none!important;
 }
 
 

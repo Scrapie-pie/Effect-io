@@ -43,7 +43,6 @@
         @include box-decor();
         display:flex;
         flex-flow:column;
-        z-index:1;
         min-width:165px;
         width:165px;
         padding:0 0 calc-em(30);

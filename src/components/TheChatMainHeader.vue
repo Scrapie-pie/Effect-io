@@ -13,18 +13,14 @@
                         | {{item}}
                         button(type="button" v-if="index").chat-main-header__name-tooltip Убрать из диалога
                     |{{separator(index)}}
-            p.chat-main-header__channel На сайте: site.ru -&nbsp;
-                base-btn(
-                    theme="text",
-                    @click.prevent="showClientHistoryActions=true"
-                ).btn-arrow
-                    | Кеды для спорта
-                    span.btn-arrow__arrow(:class="{'btn-arrow__arrow':showClientHistoryActions}")
-                .chat-main-header__client-history-actions
-                    box-controls(
-                        :show="showClientHistoryActions",
-                        @base_box_menu_close="showClientHistoryActions=false"
-                    )
+            .chat-main-header__channel На сайте: site.ru -&nbsp;
+                .chat-main-header__channel-btn-wrap
+                    base-btn(
+                        theme="text",
+                    ).btn-arrow.chat-main-header__channel-btn
+                        | Кеды для спорта
+                        span.btn-arrow__arrow(:class="{'btn-arrow__arrow':showClientHistoryActions}")
+                    .chat-main-header__client-history-actions()
                         the-chat-main-header-history
 
         ul.chat-main-header__controls
@@ -37,7 +33,7 @@
                 .chat-main-header__select-operator
                     box-controls(
                         :show="showInvite",
-                        @base_box_menu_close="showInvite=false"
+                        @box_control_close="showInvite=false"
                     )
                         select-operators
 
@@ -49,7 +45,7 @@
                 .chat-main-header__more
                     box-controls(
                         :show="showMoreChatActions",
-                        @base_box_menu_close="showMoreChatActions=false"
+                        @box_control_close="showMoreChatActions=false"
                     )
                         the-chat-main-header-actions()
 
@@ -108,7 +104,7 @@
 
         },
         created() {
-            this.membersList = ['Петр Иванов','Кирил'];
+            this.membersList = ['Петр Иванов Камикадзев','Кирил'];
 
         },
         mounted(){
@@ -208,12 +204,23 @@
             right:0;
             top:100%
         }
-
+        &__channel-btn-wrap {
+            display:inline-block;
+        }
+        &__channel-btn-wrap:hover &__client-history-actions {
+            opacity:1;
+            visibility:visible;
+        }
         &__client-history-actions {
+            @include box-decor();
             position:absolute;
             top:100%;
             right:0;
             left:0;
+            margin-top:calc-em(30);
+            opacity:0;
+            visibility:hidden;
+
         }
 
 

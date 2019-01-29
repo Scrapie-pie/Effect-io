@@ -8,6 +8,8 @@
             hr
             ul.ui-list
                 li.ui-list__item
+                    base-btn(@click="$root.$emit('popup','notFind')") Попап ограничения
+                li.ui-list__item
                     base-no-found(name="team")
                     base-no-found(name="visitors")
                     base-no-found(name="process")

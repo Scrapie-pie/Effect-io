@@ -176,17 +176,19 @@
         &__list{
             @include box-decor();
             position:absolute;
+            left:50%;
+            top:100%;
             z-index:1;
             padding:calc-em(13) 0;
             opacity:0;
             visibility:hidden;
-            transform:translateY(3em);
+            transform:translate(-50%,3em);
             transition:$transition;
 
             &_open{
                 opacity:1;
                 visibility:visible;
-                transform:translateY(0);
+                transform:translate(-50%,0);
             }
         }
         &__input{

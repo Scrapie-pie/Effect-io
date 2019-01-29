@@ -1,64 +1,67 @@
 <template lang="pug">
     form.phrases-ready
-        fieldset(v-if="!showPhrasesNew")
-            legend.phrases-ready__text-only-scr Готовый список фраз
-
-            .phrases-ready__inner
-                fieldset.phrases-ready__catalog.phrases-ready__fieldset
-                    legend.phrases-ready__name Категория
-                    action-list.phrases-ready__list(:item-list="categories")
-
-                fieldset.phrases-ready__phrases-wrap.phrases-ready__fieldset
-                    legend.phrases-ready__name.phrases-ready__name_phrases Фраза
-                        base-btn.phrases-ready__btn-add(
-                            @click="showPhrasesNew=true"
-                            v-text="'Добавить свой шаблон'"
-                        )
-                    ul.phrases-ready__phrases
-                        li.phrases-ready__phrases-item(
-                            v-for="(item, index) in phrases",
-                            :key="index"
-                        )
-                            span.phrases-ready__phrases-text(v-text="item.text")
-                            ul.phrases-ready__phrases-controls
-                                li.phrases-ready__phrases-button.phrases-ready__phrases-edit
-                                    base-btn(theme="link" v-text="'Редактировать'")
-                                li.phrases-ready__phrases-button.phrases-ready__phrases-remove
-                                    base-btn(theme="link" v-text="'Удалить'")
-
-        fieldset(v-else)
-            legend.phrases-ready__text-only-scr Добавление новой фразы
-            ul.phrases-ready__add
-                li.phrases-ready__add-item.phrases-ready__add-item_select
-                    label.phrases-ready__label(for="newCategory") Выберите категорию или придумайте свою
-                    base-field(
-                        type="select",
-                        :selectOptions="{label:'name',options:categories}"
-                        name="newCategory"
-                        v-model="newCategory",
-                        id="newCategory"
+        transition(name="fade" mode="out-in")
+            fieldset(v-if="!showPhrasesNew" key="showPhrasesNew")
+                legend.phrases-ready__text-only-scr Готовый список фраз
+                .phrases-ready__btn-add
+                    base-btn(
+                        @click="showPhrasesNew=true"
+                        v-text="'Добавить свой шаблон'"
                     )
-                li.phrases-ready__add-item
-                    label.phrases-ready__label(for="newPhrase") Введите фразу
-                    base-field(
-                        id="newPhrase",
-                        type="textarea",
-                        name="newCategory"
-                        v-model="newPhrase",
+                .phrases-ready__inner
+                    fieldset.phrases-ready__catalog.phrases-ready__fieldset
+                        legend.phrases-ready__name Категория
+                        action-list.phrases-ready__list(:item-list="categories")
 
-                    )
-                li.phrases-ready__add-item
-                    base-radio-check(
-                        type="radio"
-                        v-model="VisibleToAll"
-                        value="true"
-                        name="VisibleToAll"
-                    ) Все сотрудники будут видеть данный шаблон
-                li.phrases-ready__add-item
-                    base-radio-check(type="radio" value="false") Данный шаблон будет виден только мне
-                li.phrases-ready__add-item
-                    base-btn.phrases-ready__add-item-button(v-text="'Добавить шаблон'")
-                    base-btn(v-text="'Отмена'" color="error" @click="showPhrasesNew=false")
+                    fieldset.phrases-ready__phrases-wrap.phrases-ready__fieldset
+
+                        legend.phrases-ready__name Фраза
+
+                        ul.phrases-ready__phrases
+                            li.phrases-ready__phrases-item(
+                                v-for="(item, index) in phrases",
+                                :key="index"
+                            )
+                                span.phrases-ready__phrases-text(v-text="item.text")
+                                ul.phrases-ready__phrases-controls
+                                    li.phrases-ready__phrases-button.phrases-ready__phrases-edit
+                                        base-btn(theme="link" v-text="'Редактировать'")
+                                    li.phrases-ready__phrases-button.phrases-ready__phrases-remove
+                                        base-btn(theme="link" v-text="'Удалить'")
+
+            fieldset(v-else)
+                legend.phrases-ready__text-only-scr Добавление новой фразы
+                ul.phrases-ready__add
+                    li.phrases-ready__add-item.phrases-ready__add-item_select
+                        label.phrases-ready__label(for="newCategory") Выберите категорию или придумайте свою
+                        base-field(
+                            type="select",
+                            :selectOptions="{label:'name',options:categories}"
+                            name="newCategory"
+                            v-model="newCategory",
+                            id="newCategory"
+                        )
+                    li.phrases-ready__add-item
+                        label.phrases-ready__label(for="newPhrase") Введите фразу
+                        base-field(
+                            id="newPhrase",
+                            type="textarea",
+                            name="newCategory"
+                            v-model="newPhrase",
+
+                        )
+                    li.phrases-ready__add-item
+                        base-radio-check(
+                            type="radio"
+                            v-model="VisibleToAll"
+                            value="true"
+                            name="VisibleToAll"
+                        ) Все сотрудники будут видеть данный шаблон
+                    li.phrases-ready__add-item
+                        base-radio-check(type="radio" value="false") Данный шаблон будет виден только мне
+                    li.phrases-ready__add-item
+                        base-btn.phrases-ready__add-item-button(v-text="'Добавить шаблон'")
+                        base-btn(v-text="'Отмена'" color="error" @click="showPhrasesNew=false")
 </template>
 
 <script>
@@ -136,17 +139,20 @@
         }
 
         &__btn-add {
-            margin-left:auto;
-            margin-right:calc-em(20);
-
-            margin-top: (calc-em(16) * -1);
-            top: calc-em(7);
+            position:absolute;
+            right:0;
+            top:0;
+            margin:calc-em(13) calc-em(45);
         }
 
 
         &__catalog {
-            padding-right: 16%;
+            padding-right: 9vw;
             flex: 0 0 auto;
+
+            @include media(1600px) {
+                padding-right:1vw;
+            }
         }
 
         &__phrases-button {
@@ -192,10 +198,10 @@
             font-weight:bold;
             margin-bottom:calc-em(50);
 
-            &_phrases {
-                display:flex;
-            }
+
         }
+
+
 
 
     }

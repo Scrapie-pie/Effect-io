@@ -53,7 +53,7 @@
                 showContacts: false,
                 showAudienceSegments: false,
                 clientInfo: {
-                    name: 'Петр Иванов',
+                    name: 'Петр Иванов Камикадзев',
                     phone: '+7 911 567 55 77',
                     email: 'petr@gmail.com'
                 },

@@ -1,11 +1,10 @@
 <template lang="pug">
     #app.page__app
-        scroll-bar.page__scrollbar
-            the-header.page__header.page__padding
-            main.page__main
-                transition(name="fade" mode="out-in")
-                    router-view.page__view.page__padding
-            the-popup
+        the-header.page__header.page__padding
+        main.page__main
+            transition(name="fade" mode="out-in")
+                router-view.page__view.page__padding
+        the-popup
 
 </template>
 
@@ -84,7 +83,8 @@
             height:100%;
             display:flex;
             transition:$transition;
-
+            flex:1;
+            overflow:hidden;
             .is-hided-header & {
                 margin-left:-165px;
 
@@ -93,6 +93,11 @@
         /*    overflow-x:hidden;
             overflow-y:scroll;*/
         }
+
+        &__header {
+
+        }
+
         &_main_center &__main{
             align-items:center;
         }
@@ -107,7 +112,9 @@
             display:flex;
             flex:1;
 
-
+            &-inner {
+                overflow:hidden;
+            }
         }
 
 

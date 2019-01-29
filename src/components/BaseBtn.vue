@@ -147,8 +147,15 @@
         padding:$padding;
         color:$color_text-main;
 
+        transition-duration:.1s;
+
+        will-change:transform;
+
         &:hover {
             opacity:.8;
+        }
+        &:active {
+            transform:translateY(1px);
         }
 
 

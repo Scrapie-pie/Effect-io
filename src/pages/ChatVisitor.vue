@@ -19,7 +19,7 @@
                     v-model="channel"
                     )
                 .chat-team__control
-                    base-btn(@click="$root.$emit('popup-not-find')") Попап ограничения
+                    base-btn(@click="$root.$emit('popup','notFind')") Попап ограничения
 
             table.table
                 thead.table__thead
