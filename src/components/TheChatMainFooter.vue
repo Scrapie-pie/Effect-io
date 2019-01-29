@@ -32,8 +32,8 @@
                 ul.chat-main-footer__buttons
                     li.chat-main-footer__button
                         base-btn(
-                        :icon="{name:'user',textHidden:'Упомянуть в диалоге'}",
-                        @click.prevent="showMention=true"
+                            :icon="{name:'user',textHidden:'Упомянуть в диалоге'}",
+                            @click.prevent="showMention=true"
                         )
                     li.chat-main-footer__button
                         base-btn(
@@ -42,7 +42,7 @@
                         )
                     li.chat-main-footer__button.chat-main-footer__button_offer
                         base-btn(
-                            :icon="{name:'more',textHidden:'Предложить посетителю'}",
+                            :icon="{name:'more-fill',textHidden:'Предложить посетителю'}",
                             @click.prevent="showOffer=true"
                         )
                     li.chat-main-footer__button

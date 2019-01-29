@@ -8,6 +8,8 @@
                     @click="$emit('box_control_close')"
                     title="Закрыть"
                 ).box-controls__close
+                base-icon(name="info").box-controls__icon(v-if="popup")
+
                 p.box-controls__text
                     slot(name="text")
                 slot
@@ -106,6 +108,30 @@
             z-index:99999;
             background-color:$color-box;
 
+
+            @include media($width_md) {
+
+                .box-controls & {
+                    position: fixed;
+                    left: 50%;
+                    top: 50%;
+                    bottom: auto;
+                    -webkit-transform: translate(-50%, -50%);
+                    transform: translate(-50%, -50%);
+                    max-width: 90%;
+
+                    max-height: 90%;
+                    height: auto;
+                    margin: auto;
+                    display: inline-block;
+                }
+
+                .chat-main-footer__box-control & {
+                    width:100%;
+                }
+
+            }
+
             #{$self}_popup & {
                 position:fixed;
                 left:50%;
@@ -191,7 +217,7 @@
             margin:-999em;
             z-index:1;
             opacity:0;
-            visibility:visible;
+            visibility:hidden;
             background-color:rgba(0, 0, 0, 0.3);
 
             .is-opened-box-controls & {

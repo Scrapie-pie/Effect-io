@@ -15,6 +15,8 @@
     import close from '@/assets/img/icons/close.svg';
     import eye from '@/assets/img/icons/eye.svg';
     import edit from '@/assets/img/icons/edit.svg';
+    import info from '@/assets/img/icons/info.svg';
+
 
 
     import vk from '@/assets/img/icons/social/vk.svg';
@@ -25,10 +27,13 @@
 
     import phrases from '@/assets/img/icons/chat/phrases.svg';
     import more from '@/assets/img/icons/chat/more.svg';
+    import moreFill from '@/assets/img/icons/chat/more-fill.svg';
     import files from '@/assets/img/icons/chat/files.svg';
     import gifs from '@/assets/img/icons/chat/gifs.svg';
     import smiles from '@/assets/img/icons/chat/smiles.svg';
+
     import send from '@/assets/img/icons/chat/send.svg';
+
     import transfer from '@/assets/img/icons/chat/transfer.svg';
     import exit from '@/assets/img/icons/chat/exit.svg';
     import bl from '@/assets/img/icons/chat/bl.svg';
@@ -97,6 +102,16 @@
         &_more {
             height: 17px;
             width: 26px;
+        }
+
+        &_more-fill {
+            width:24px;
+            height:20px;
+        }
+
+        &_info {
+            width:calc-em(90);
+            height:calc-em(90);
         }
     }
 

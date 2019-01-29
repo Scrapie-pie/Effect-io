@@ -11,23 +11,24 @@
                 .phrases-ready__inner
                     fieldset.phrases-ready__catalog.phrases-ready__fieldset
                         legend.phrases-ready__name Категория
-                        action-list.phrases-ready__list(:item-list="categories")
+                        scroll-bar.phrases-ready__scrollbar
+                            action-list.phrases-ready__list(:item-list="categories")
 
                     fieldset.phrases-ready__phrases-wrap.phrases-ready__fieldset
 
                         legend.phrases-ready__name Фраза
-
-                        ul.phrases-ready__phrases
-                            li.phrases-ready__phrases-item(
-                                v-for="(item, index) in phrases",
-                                :key="index"
-                            )
-                                span.phrases-ready__phrases-text(v-text="item.text")
-                                ul.phrases-ready__phrases-controls
-                                    li.phrases-ready__phrases-button.phrases-ready__phrases-edit
-                                        base-btn(theme="link" v-text="'Редактировать'")
-                                    li.phrases-ready__phrases-button.phrases-ready__phrases-remove
-                                        base-btn(theme="link" v-text="'Удалить'")
+                        scroll-bar.phrases-ready__scrollbar.phrases-ready__scrollbar_phrases
+                            ul.phrases-ready__phrases
+                                li.phrases-ready__phrases-item(
+                                    v-for="(item, index) in phrases",
+                                    :key="index"
+                                )
+                                    span.phrases-ready__phrases-text(v-text="item.text")
+                                    ul.phrases-ready__phrases-controls
+                                        li.phrases-ready__phrases-button.phrases-ready__phrases-edit
+                                            base-btn(theme="link" v-text="'Редактировать'")
+                                        li.phrases-ready__phrases-button.phrases-ready__phrases-remove
+                                            base-btn(theme="link" v-text="'Удалить'")
 
             fieldset(v-else)
                 legend.phrases-ready__text-only-scr Добавление новой фразы
@@ -84,8 +85,71 @@
                     {text:'Добрый день! Отвечу на Ваши вопросы. '},
                     {text:'Здравствуйте! Какой вопрос Вас интересует? '},
                     {text:'Еще категория'},
+                    {text:'Здравствуйте! Чем я могу Вам помочь?'},
+                    {text:'Добрый день! Отвечу на Ваши вопросы. '},
+                    {text:'Здравствуйте! Какой вопрос Вас интересует? '},
+                    {text:'Еще категория'},
+                    {text:'Здравствуйте! Чем я могу Вам помочь?'},
+                    {text:'Добрый день! Отвечу на Ваши вопросы. '},
+                    {text:'Здравствуйте! Какой вопрос Вас интересует? '},
+                    {text:'Еще категория'},
+                    {text:'Здравствуйте! Чем я могу Вам помочь?'},
+                    {text:'Добрый день! Отвечу на Ваши вопросы. '},
+                    {text:'Здравствуйте! Какой вопрос Вас интересует? '},
+                    {text:'Еще категория'},
+                    {text:'Здравствуйте! Какой вопрос Вас интересует? '},
+                    {text:'Еще категория'},
+                    {text:'Здравствуйте! Чем я могу Вам помочь?'},
+                    {text:'Добрый день! Отвечу на Ваши вопросы. '},
+                    {text:'Здравствуйте! Какой вопрос Вас интересует? '},
+                    {text:'Еще категория'},
+                    {text:'Здравствуйте! Какой вопрос Вас интересует? '},
+                    {text:'Еще категория'},
+                    {text:'Здравствуйте! Какой вопрос Вас интересует? '},
+                    {text:'Еще категория'},
+                    {text:'Здравствуйте! Чем я могу Вам помочь?'},
+                    {text:'Добрый день! Отвечу на Ваши вопросы. '},
+                    {text:'Здравствуйте! Какой вопрос Вас интересует? '},
+                    {text:'Еще категория'},
+
                 ],
                 categories: [
+                    {text:'Приветствие'},
+                    {text:'Прощание'},
+                    {text:'Название своего варианта'},
+                    {text:'Еще категория'},
+                    {text:'Приветствие'},
+                    {text:'Прощание'},
+                    {text:'Название своего варианта'},
+                    {text:'Еще категория'},
+                    {text:'Приветствие'},
+                    {text:'Прощание'},
+                    {text:'Название своего варианта'},
+                    {text:'Еще категория'},
+                    {text:'Приветствие'},
+                    {text:'Прощание'},
+                    {text:'Название своего варианта'},
+                    {text:'Еще категория'},
+                    {text:'Приветствие'},
+                    {text:'Прощание'},
+                    {text:'Название своего варианта'},
+                    {text:'Еще категория'},
+                    {text:'Приветствие'},
+                    {text:'Прощание'},
+                    {text:'Название своего варианта'},
+                    {text:'Еще категория'},
+                    {text:'Приветствие'},
+                    {text:'Прощание'},
+                    {text:'Название своего варианта'},
+                    {text:'Еще категория'},
+                    {text:'Приветствие'},
+                    {text:'Прощание'},
+                    {text:'Название своего варианта'},
+                    {text:'Еще категория'},
+                    {text:'Приветствие'},
+                    {text:'Прощание'},
+                    {text:'Название своего варианта'},
+                    {text:'Еще категория'},
                     {text:'Приветствие'},
                     {text:'Прощание'},
                     {text:'Название своего варианта'},
@@ -110,6 +174,16 @@
         $color-error:glob-color('error');
 
         $padding:calc-em(8) calc-em(26);
+        max-height: 74vh;
+
+        &__scrollbar {
+            max-height: 67.5vh;
+
+            &_phrases {
+                margin-left:-(calc-em(15));
+                padding-left:calc-em(15);
+            }
+        }
 
         &__add-item {
             &+& {
@@ -157,6 +231,9 @@
 
         &__phrases-button {
             padding-left:calc-em(35);
+            @include media($width_xl) {
+                padding-left:0;
+            }
         }
         &__phrases-remove {
             color:$color_error;
@@ -184,6 +261,12 @@
             display:flex;
             align-items:center;
             margin-left:auto;
+
+            @include media($width_xl) {
+                flex-direction:column;
+                align-items: flex-end;
+                padding-left:calc-em(15);
+            }
         }
 
         &__text-only-scr {
