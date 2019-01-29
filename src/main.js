@@ -6,13 +6,16 @@ import '@/validation'
 import router from '@/routes/router'
 import store from './store/index'
 
+import axios from '@/modules/axios'
+
+window.axios=axios;
 
 import VuePerfectScrollbar from 'vue-perfect-scrollbar'
 
 
-window.events = new Vue()
 
-window.flash = (messages, type = '') => window.events.$emit('flash', [messages, type])
+
+
 
 import BaseIcon from "@/components/BaseIcon";
 import BaseField from "@/components/BaseField";
@@ -55,7 +58,14 @@ requireComponent.keys().forEach(function (fileName) {
     Vue.component(baseComponentName, baseComponentConfig)
 })*/
 
-const APIURL = 'http://rbcall-rbcall-3212.cloud4.newrobocall.ru/app/app.php?'
+
+/*window.axios = require('axios');
+window.axios.defaults.baseURL = 'http://rbcall-rbcall-3212.cloud4.newrobocall.ru/app/app.php?'
+
+window.axios.interceptors.response.use(null, function (error) {
+
+    if (store.state.flashErrorOn && error.response.status == 500) alert('Неизвестная ошибка')
+})*/
 
 Vue.config.productionTip = false;
 
@@ -64,3 +74,31 @@ new Vue({
     store,
     render: h => h(App)
 }).$mount('#app')
+
+/*const jwt = localStorage.getItem('jwt')
+if (jwt) {
+
+    axios.defaults.data = {};
+    axios.defaults.headers.common[ 'jwt' ] = jwt;
+
+
+    axios.post('app.php?login', {jwt}, {//todo доделать если время токена кончилось
+        headers: { 'content-type': 'application/json' }
+    }).then(({ data }) => {
+
+        console.log('user', data.user)
+        store.dispatch('user/login', data.user)
+
+    }).catch((error) => {
+        alert(error.response)
+    })
+
+}*/
+axios.interceptors.response.use(null, function (error) {
+    console.log(error.response);
+    if (error.response.status == 500) alert('Неизвестная ошибка')
+})
+
+
+
+

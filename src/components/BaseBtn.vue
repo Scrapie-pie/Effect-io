@@ -72,7 +72,7 @@
                 let obj = {
 
 
-                    'spinner spinner_sm': this.loaded
+                   /* 'spinner spinner_sm': this.loaded*/
                 }
 
                 if (!_.isEmpty(this.theme)) {
