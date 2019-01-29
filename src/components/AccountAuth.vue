@@ -139,7 +139,7 @@
                     password: this.password,
 
                 }
-                data = {
+             /*   data = {
                     name: 'testrbcall@mail.ru',
                     password: '321tceffE',
 
@@ -148,7 +148,7 @@
                     name: 'r.bochkarev@bk.ru',
                     password: 'romanroman',
 
-                }
+                }*/
                 axios.post('app.php?forgot-password', data, {
                     headers: { 'content-type': 'application/json' }
                 }).then(({ data }) => {
