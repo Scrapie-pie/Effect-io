@@ -2,10 +2,10 @@ console.clear();
 
 import Vue from 'vue'
 import App from './App.vue'
-/*import axios from '@/modules/axios'
-window.axios = axios;*/
+
 import axios from '@/modules/axios'
-Vue.prototype.$axios = axios;
+
+window.axios = axios;
 
 import '@/validation'
 import router from '@/routes/router'

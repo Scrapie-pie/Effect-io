@@ -114,6 +114,7 @@ router.beforeEach((to, from, next) => {
 
 });
 
+/*
 axios.interceptors.response.use(undefined,  (err)=> { //Обработка просроченных токенов 401 Unauthorized
     return new Promise((resolve, reject)=> {
 
@@ -128,5 +129,6 @@ axios.interceptors.response.use(undefined,  (err)=> { //Обработка пр�
         throw err;
     });
 });
+*/
 
 Vue.use(Router)

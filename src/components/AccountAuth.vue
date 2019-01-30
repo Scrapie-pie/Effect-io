@@ -55,8 +55,8 @@
         data() {
             return {
                 recoveryPage: false,
-                email: 'TooManyRequestsHttpException@bk.ru',//todo кастомнай компонент не обновляет значение v-model на другом кастомном компоненте
-                password: 'TooManyRequestsHttpException',
+                email: '',//todo кастомнай компонент не обновляет значение v-model на другом кастомном компоненте
+                password: '',
                 title: 'Для входа в личный кабинет введите свои учетные данные',
                 passwordSent: false
             }
@@ -104,12 +104,20 @@
 
                 }*/
             /*    data = {
+                    name: 'simon.oganesyan@gmail.com',
+                    password: '321tceffE',
+
+                }*//*    data = {
                     name: 'r.bochkarev@bk.ru',
                     password: 'romanroman',
 
                 }*/
+                data = {
+                    name: 'simon.oganesyan@gmail.com',
+                    password: '321tceffE',
+                }
 
-                this.$axios.post('app.php?login', data, {
+                axios.post('app.php?login', data, {
                     headers: { 'content-type': 'application/json' }
                 }).then(({ data }) => {
                     console.log('user', data.user)
@@ -128,7 +136,7 @@
                 let data = {
                     email: this.email,
                 }
-                this.$axios.post('app.php?forgot-password', this.email, {
+                axios.post('app.php?forgot-password', this.email, {
                     headers: { 'content-type': 'application/json' }
                 }).then(({ data }) => {
                     console.log(data);
