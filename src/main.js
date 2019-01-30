@@ -2,19 +2,14 @@ console.clear();
 
 import Vue from 'vue'
 import App from './App.vue'
-
+/*import axios from '@/modules/axios'
+window.axios = axios;*/
 import axios from '@/modules/axios'
-
-window.axios = axios;
+Vue.prototype.$axios = axios;
 
 import '@/validation'
 import router from '@/routes/router'
 import store from './store/index'
-
-
-
-
-
 
 import VuePerfectScrollbar from 'vue-perfect-scrollbar'
 
@@ -28,18 +23,18 @@ import BoxControls from "@/components/BoxControls";
 import BaseNoFound from "@/components/BaseNoFound";
 
 
-Vue.component('scroll-bar', VuePerfectScrollbar)
 
-Vue.component('base-icon', BaseIcon)
-Vue.component('base-field', BaseField)
-Vue.component('base-field', BaseField)
-Vue.component('base-btn', BaseBtn)
-Vue.component('base-radio-check', BaseRadioCheck)
-Vue.component('base-avatar', BaseAvatar)
-Vue.component('base-people', BasePeople)
+Vue.component('scroll-bar', VuePerfectScrollbar);
+Vue.component('base-icon', BaseIcon);
+Vue.component('base-field', BaseField);
+Vue.component('base-field', BaseField);
+Vue.component('base-btn', BaseBtn);
+Vue.component('base-radio-check', BaseRadioCheck);
+Vue.component('base-avatar', BaseAvatar);
+Vue.component('base-people', BasePeople);
+Vue.component('box-controls', BoxControls);
+Vue.component('base-no-found', BaseNoFound);
 
-Vue.component('box-controls', BoxControls)
-Vue.component('base-no-found', BaseNoFound)
 
 
 /*let requireComponent = require.context('@/src/components/', true, /^Base[A-Z]/) //todo не работает(
@@ -58,17 +53,12 @@ requireComponent.keys().forEach(function (fileName) {
 })*/
 
 
-/*window.axios = require('axios');
-window.axios.defaults.baseURL = 'http://rbcall-rbcall-3212.cloud4.newrobocall.ru/app/app.php?'
 
-window.axios.interceptors.response.use(null, function (error) {
-
-    if (store.state.flashErrorOn && error.response.status == 500) alert('Неизвестная ошибка')
-})*/
 
 Vue.config.productionTip = false;
 
 window.showError = function (error) {
+    console.log(error.header);
     if (error.response) {
         // The request was made and the server responded with a status code
         // that falls out of the range of 2xx
@@ -85,7 +75,7 @@ window.showError = function (error) {
         console.log('Error', error.message)
     }
     console.log(error.config)
-    alert(error.response)
+
 
 }
 

@@ -1,14 +1,20 @@
 import axios from 'axios'
 //import config from "../config";
-
 const config = {
   api_server:'http://rbcall-rbcall-3212.cloud4.newrobocall.ru/app/'
 }
 
 // Настройки http-запросов
 axios.defaults.baseURL = config.api_server;
-axios.defaults.headers.common['Content-Type'] = 'application/json'
+axios.defaults.headers.common['Content-Type'] = 'application/json';
 
+axios.interceptors.request.use(function (config) {
+    config.url='app.php?'+config.url
+    return config;
+}, function (error) {
+    // Do something with request error
+    return Promise.reject(error);
+});
 
 axios.interceptors.response.use(null, function (error) {
 

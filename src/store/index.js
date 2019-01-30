@@ -13,7 +13,7 @@ export default new Vuex.Store({
     },
     state: {
         buffering: false,
-        flashErrorOn: true,
+        noticeErrorOn: true,
         mainClass: '',
         showBreadcrumbs: true,
         moreBreadcrumbds: [],
@@ -25,8 +25,8 @@ export default new Vuex.Store({
         buffering(state, val) {
             state.buffering = val
         },
-        flashErrorOn(state, val) {
-            state.flashErrorOn = val
+        noticeErrorOn(state, val) {
+            state.noticeErrorOn = val
         },
 
         mainClass(state, value) {

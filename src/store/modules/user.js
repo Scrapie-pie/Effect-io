@@ -6,7 +6,7 @@ export default {
     mutations: {
         logout(state) {
             localStorage.removeItem('jwt')
-            delete axios.defaults.headers.post[ 'jwt' ];
+            delete this._vm.$axios.defaults.headers.post[ 'jwt' ];
             state.user = false
             state.authenticated = false
             console.log(state);
@@ -20,7 +20,7 @@ export default {
     actions: {
         login({commit, dispatch}, user) {
             localStorage.setItem('jwt', user.jwt);
-            axios.defaults.headers.post[ 'jwt' ] = user.jwt;
+            this._vm.$axios.defaults.headers.post[ 'jwt' ] = user.jwt;
             commit('save', user)
         },
 

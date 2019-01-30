@@ -55,8 +55,8 @@
         data() {
             return {
                 recoveryPage: false,
-                email: '',//todo кастомнай компонент не обновляет значение v-model на другом кастомном компоненте
-                password: '',
+                email: 'TooManyRequestsHttpException@bk.ru',//todo кастомнай компонент не обновляет значение v-model на другом кастомном компоненте
+                password: 'TooManyRequestsHttpException',
                 title: 'Для входа в личный кабинет введите свои учетные данные',
                 passwordSent: false
             }
@@ -92,7 +92,7 @@
 
             },
             sendLoginRequest() {
-                //todo Пароль был введен некорректно несколько раз. Попытайтесь снова через 5 минут ДОБАВЛЯЕМ?
+
                 let data = {
                     name: this.email,
                     password: this.password,
@@ -103,21 +103,17 @@
                     password: 'TooManyRequestsHttpException',
 
                 }*/
-            /*    data = {
-                    name: 'simon.oganesyan@gmail.com',
+            /*     data = {
+                    name: 'testrbcall@mail.ru',
                     password: '321tceffE',
-
-                }*//*    data = {
-                    name: 'r.bochkarev@bk.ru',
-                    password: 'romanroman',
 
                 }*/
-                data = {
-                    name: 'simon.oganesyan@gmail.com',
-                    password: '321tceffE',
-                }
+             /*   data = {
+                    name: 'r.bochkarev@bk.ru',
+                    password: 'qF5grpgY5e_',
 
-                axios.post('app.php?login', data, {
+                }*/
+                this.$axios.post('login', data, {
                     headers: { 'content-type': 'application/json' }
                 }).then(({ data }) => {
                     console.log('user', data.user)
@@ -128,7 +124,7 @@
 
                 }).catch((error) => {
                     showError(error)
-                    if (error.response.status == 429) alert('Аккаунт заблокирован, вы совершили много http запросов')
+                    if (error.response.status == 429) this.$root.$emit('popup-notice','Аккаунт заблокирован, вы совершили много http запросов')
                 })
 
             },
@@ -136,7 +132,7 @@
                 let data = {
                     email: this.email,
                 }
-                axios.post('app.php?forgot-password', this.email, {
+                this.$axios.post('app.php?forgot-password', this.email, {
                     headers: { 'content-type': 'application/json' }
                 }).then(({ data }) => {
                     console.log(data);

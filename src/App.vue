@@ -6,6 +6,7 @@
                 router-view.page__view.page__padding
         the-popup
 
+
 </template>
 
 <script>
@@ -22,8 +23,8 @@
         },
 
         created() {
-
             document.body.classList.add('page');
+
             this.watchForHover();
 
             window.addEventListener('unhandledrejection', this.promiseErrorHandler);
@@ -84,10 +85,7 @@
         line-height:1.2;
         font-weight:400;
         font-family:$font-family_main;
-
-
         min-width:685px;
-
 
         &__app{
             height:100%;
@@ -95,25 +93,19 @@
             transition:$transition;
             flex:1;
             overflow:hidden;
+
             .is-hided-header & {
                 margin-left:-165px;
 
             }
-
-        /*    overflow-x:hidden;
-            overflow-y:scroll;*/
-        }
-
-        &__header {
-
         }
 
         &_main_center &__main{
             align-items:center;
         }
+
         &__main{
             display:flex;
-
             flex:1 0 auto;
         }
 
@@ -126,10 +118,6 @@
                 overflow:hidden;
             }
         }
-
-
-
-
 
         &__view {
             display: flex;
@@ -145,9 +133,6 @@
             padding-right:$indent-main;
             height:100%;
         }
-
-
-
 
         &__padding{
             padding-top:calc-em(30);

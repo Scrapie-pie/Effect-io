@@ -114,7 +114,6 @@ router.beforeEach((to, from, next) => {
 
 });
 
-/*
 axios.interceptors.response.use(undefined,  (err)=> { //Обработка просроченных токенов 401 Unauthorized
     return new Promise((resolve, reject)=> {
 
@@ -124,11 +123,12 @@ axios.interceptors.response.use(undefined,  (err)=> { //Обработка пр�
                     this.$router.push({name:'auth'})
                     // document.querySelector('.site').classList.remove('site_overlay')
                 })
-            alert('401 Unauthorized')
+            this._vm.$root.$emit('popup-notice','Попробуйте авторизоваться снова')
+
+
         }
         throw err;
     });
 });
-*/
 
 Vue.use(Router)
