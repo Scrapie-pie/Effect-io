@@ -2,20 +2,21 @@ console.clear();
 
 import Vue from 'vue'
 import App from './App.vue'
+/*import axios from '@/modules/axios'
+window.axios = axios;*/
+import axios from '@/modules/axios'
+Vue.prototype.$axios = axios;
+
 import '@/validation'
 import router from '@/routes/router'
 import store from './store/index'
 
-import axios from '@/modules/axios'
 
-window.axios=axios;
+
+
+
 
 import VuePerfectScrollbar from 'vue-perfect-scrollbar'
-
-
-
-
-
 
 import BaseIcon from "@/components/BaseIcon";
 import BaseField from "@/components/BaseField";
@@ -23,12 +24,10 @@ import BaseBtn from "@/components/BaseBtn";
 import BaseRadioCheck from "@/components/BaseRadioCheck";
 import BaseAvatar from "@/components/BaseAvatar";
 import BasePeople from "@/components/BasePeople";
-
 import BoxControls from "@/components/BoxControls";
 import BaseNoFound from "@/components/BaseNoFound";
 
 
-Vue.component('scroll-bar', VuePerfectScrollbar)
 Vue.component('scroll-bar', VuePerfectScrollbar)
 
 Vue.component('base-icon', BaseIcon)
@@ -69,19 +68,7 @@ window.axios.interceptors.response.use(null, function (error) {
 
 Vue.config.productionTip = false;
 
-new Vue({
-    router,
-    store,
-    render: h => h(App)
-}).$mount('#app')
-
-
-
-
-
-
-
-window.showError = function showError(error) {
+window.showError = function (error) {
     if (error.response) {
         // The request was made and the server responded with a status code
         // that falls out of the range of 2xx
@@ -101,6 +88,20 @@ window.showError = function showError(error) {
     alert(error.response)
 
 }
+
+new Vue({
+    router,
+    store,
+    render: h => h(App)
+}).$mount('#app')
+
+
+
+
+
+
+
+
 
 
 

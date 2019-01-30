@@ -59,7 +59,7 @@
                 this.$store.dispatch('user/logout')
                     .then(() => {
                         this.$router.push({name:'auth'})
-                        // document.querySelector('.site').classList.remove('site_overlay')
+
                     })
             },
             close(e) {

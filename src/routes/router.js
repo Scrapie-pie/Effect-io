@@ -8,6 +8,7 @@ import AccountAuth from '@/components/AccountAuth'
 import Chat from '@/routes/chat'
 import Settings from '@/routes/settings'
 import Ui from '@/routes/ui'
+
 import axios from "@/modules/axios";
 
 let helpers = process.env.NODE_ENV !== 'production' ? [...Ui] : [];
@@ -85,7 +86,7 @@ router.beforeEach((to, from, next) => {
         const jwt = localStorage.getItem('jwt');
         console.log('jwt',jwt);
         if (jwt) {
-            window.axios.post('app.php?login', {jwt}, {//todo доделать если время токена кончилось
+            axios.post('app.php?login', {jwt}, {//todo доделать если время токена кончилось
                 headers: { 'content-type': 'application/json' }
             }).then(({ data }) => {
 
@@ -98,7 +99,7 @@ router.beforeEach((to, from, next) => {
                 })
 
             }).catch((error) => {
-                showError(error);
+                this.$showError(error);
                 store.dispatch('user/logout').then(()=>{
                     return next({name:'auth'})
                 })
@@ -113,5 +114,19 @@ router.beforeEach((to, from, next) => {
 
 });
 
+axios.interceptors.response.use(undefined,  (err)=> { //Обработка просроченных токенов 401 Unauthorized
+    return new Promise((resolve, reject)=> {
+
+        if (err.status === 401 && err.config && !err.config.__isRetryRequest) { //Todo ждем Api
+            this.$store.dispatch('user/logout')
+                .then(() => {
+                    this.$router.push({name:'auth'})
+                    // document.querySelector('.site').classList.remove('site_overlay')
+                })
+            alert('401 Unauthorized')
+        }
+        throw err;
+    });
+});
 
 Vue.use(Router)
