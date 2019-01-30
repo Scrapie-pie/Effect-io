@@ -4,7 +4,6 @@
             legend.account-auth__title(v-text="title")
             .account-auth__logo
                 img(src="@/assets/img/logo.png" alt="logo")
-
             template(v-if="!recoveryPage")
                 ul.account-auth__list()
                     li.account-auth__item.account-auth__field
@@ -31,7 +30,13 @@
             template(v-else)
                 .account-auth__list
                     .account-auth__item.account-auth__field(v-if="!passwordSent")
-                        base-field(type="email" placeholder="Введите Е-email" autocomplete="off" name="email")
+                        base-field(
+                            type="email"
+                            placeholder="Введите Е-email"
+                            name="login"
+                            v-model="email"
+                            v-validate="'required|email'" data-vv-as="login"
+                        )
                     p.account-auth__text(v-else) Новый пароль отправлен #[br] на указанный e-mail
                 .account-auth__bottom
                     .account-auth__btn
@@ -50,10 +55,9 @@
         data() {
             return {
                 recoveryPage: false,
-                email: '',
+                email: '',//todo кастомнай компонент не обновляет значение v-model на другом кастомном компоненте
                 password: '',
                 title: 'Для входа в личный кабинет введите свои учетные данные',
-                disableLoginForm: false,
                 passwordSent: false
             }
         },
@@ -64,7 +68,6 @@
         },
         created() {
             this.selectTemplate()
-
         },
         methods: {
             selectTemplate() {
@@ -75,93 +78,62 @@
                 else this.recoveryPage = false
             },
             submit() {
-                if (this.recoveryPage) {
-                    this.passwordSent = true;
-                }
-                else {
-                    this.login()
-                }
-
-
-            },
-            login() {
-                this.sendLoginRequest()
-                return console.log('login');
-                return this.$router.push({name: 'process'})
-
-                if (!this.disableLoginForm) {
-                    this.$validator.validateAll()
-                        .then(success => {
-                            if (success) {
-                                this.buffering = true
+                this.$validator.validateAll()
+                    .then(success => {
+                        if (success) {
+                            if (this.recoveryPage) {
+                                this.recoverRequest()
+                            }
+                            else {
                                 this.sendLoginRequest()
                             }
-                        })
-                } else {
-                    flash(['Пароль был введен некорректно несколько раз. <br> Попытайтесь снова через 5 минут'], 'error')
-                }
+                        }
+                    })
+
             },
             sendLoginRequest() {
+                //todo Пароль был введен некорректно несколько раз. Попытайтесь снова через 5 минут ДОБАВЛЯЕМ?
                 let data = {
                     name: this.email,
                     password: this.password,
 
                 }
-            /*    data = {
+                data = {
                     name: 'testrbcall@mail.ru',
                     password: '321tceffE',
 
                 }
-                data = {
+            /*    data = {
                     name: 'r.bochkarev@bk.ru',
                     password: 'romanroman',
 
                 }*/
+
                 axios.post('app.php?login', data, {
                     headers: { 'content-type': 'application/json' }
                 }).then(({ data }) => {
-
                     console.log('user', data.user)
                     this.$store.dispatch('user/login', data.user).then(()=>{
-                        this.$router.push({name:'process'})
+                        if (this.$route.query.return) this.$router.push(this.$route.query.return)
+                        else this.$router.push({name:'process'})
                     })
-                    //this.$store.dispatch('setUser', user);
-                    //localStorage.setItem('jwt', user.jwt)
-                    //this.$router.push('/')
+
                 }).catch((error) => {
-                    alert(error.response.data.message)
+                    showError(error)
                 })
 
             },
             recoverRequest() {
                 let data = {
-                    name: this.email,
-                    password: this.password,
-
+                    email: this.email,
                 }
-             /*   data = {
-                    name: 'testrbcall@mail.ru',
-                    password: '321tceffE',
-
-                }
-                data = {
-                    name: 'r.bochkarev@bk.ru',
-                    password: 'romanroman',
-
-                }*/
                 axios.post('app.php?forgot-password', data, {
                     headers: { 'content-type': 'application/json' }
                 }).then(({ data }) => {
-
-                    console.log('user', data.user)
-                    this.$store.dispatch('user/login', data.user).then(()=>{
-                        this.$router.push({name:'process'})
-                    })
-                    //this.$store.dispatch('setUser', user);
-                    //localStorage.setItem('jwt', user.jwt)
-                    //this.$router.push('/')
+                    console.log(data);
+                    this.passwordSent = true;
                 }).catch((error) => {
-                    alert(error.response.data.message)
+                    showError(error)
                 })
 
             }

@@ -75,29 +75,32 @@ new Vue({
     render: h => h(App)
 }).$mount('#app')
 
-/*const jwt = localStorage.getItem('jwt')
-if (jwt) {
-
-    axios.defaults.data = {};
-    axios.defaults.headers.common[ 'jwt' ] = jwt;
 
 
-    axios.post('app.php?login', {jwt}, {//todo доделать если время токена кончилось
-        headers: { 'content-type': 'application/json' }
-    }).then(({ data }) => {
 
-        console.log('user', data.user)
-        store.dispatch('user/login', data.user)
 
-    }).catch((error) => {
-        alert(error.response)
-    })
 
-}*/
-axios.interceptors.response.use(null, function (error) {
-    console.log(error.response);
-    if (error.response.status == 500) alert('Неизвестная ошибка')
-})
+
+window.showError = function showError(error) {
+    if (error.response) {
+        // The request was made and the server responded with a status code
+        // that falls out of the range of 2xx
+        console.log(error.response.data)
+        console.log(error.response.status)
+        console.log(error.response.headers)
+    } else if (error.request) {
+        // The request was made but no response was received
+        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+        // http.ClientRequest in node.js
+        console.log(error.request)
+    } else {
+        // Something happened in setting up the request that triggered an Error
+        console.log('Error', error.message)
+    }
+    console.log(error.config)
+    alert(error.response)
+
+}
 
 
 

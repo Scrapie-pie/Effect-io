@@ -22,6 +22,10 @@ if (jwt) {
   axios.defaults.headers.get[ 'jwt' ] = jwt
 }*/
 
-
+/*axios.interceptors.response.use(null, function (error) {
+    console.log(error.response);
+    if (error.response.status == 500) alert('Неизвестная ошибка')
+    if (error.response.status == 400) alert('Bad request')
+})*/
 
 export default axios

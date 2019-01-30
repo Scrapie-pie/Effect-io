@@ -25,6 +25,24 @@
 
             document.body.classList.add('page');
             this.watchForHover();
+
+            window.addEventListener('unhandledrejection', this.promiseErrorHandler);
+
+            axios.interceptors.response.use(undefined, function (err) { //Обработка просроченных токенов
+                return new Promise(function (resolve, reject) {
+                    if (err.status === 401 && err.config && !err.config.__isRetryRequest) {
+                        this.$store.dispatch('user/logout')
+                            .then(() => {
+                                this.$router.push({name:'auth'})
+                                // document.querySelector('.site').classList.remove('site_overlay')
+                            })
+                    }
+                    throw err;
+                });
+            });
+        },
+        beforeDestroy() {
+            window.removeEventListener('unhandledrejection', this.promiseErrorHandler);
         },
         methods: {
             watchForHover(){ // Отключаем hover на touch устройствах
@@ -59,7 +77,10 @@
 
                     enableHover();
 
-            }
+            },
+            promiseErrorHandler(event) {
+                console.error('Unhandled rejection (promise: ', event.promise, ', reason: ', event.reason, ')');
+            },
         }
     }
 </script>

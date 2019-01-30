@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import store from '@/store/index'
 
 
 
@@ -7,12 +8,13 @@ import AccountAuth from '@/components/AccountAuth'
 import Chat from '@/routes/chat'
 import Settings from '@/routes/settings'
 import Ui from '@/routes/ui'
+import axios from "@/modules/axios";
 
 let helpers = process.env.NODE_ENV !== 'production' ? [...Ui] : [];
 
 
 
-export default new Router({
+const router =  new Router({
     mode: 'history',
     base: process.env.BASE_URL,
     routes: [
@@ -31,12 +33,85 @@ export default new Router({
         ...Chat,
         ...Settings,
         ...helpers,
-        //...Ui
+        //...Ui,
+        {
+            name: '/*',
+            path:'*',
+            redirect: '/',
+
+        },
     ]
 
 })
 
+export default router
 
+router.beforeEach((to, from, next) => {
+
+
+
+
+
+    const not_auth_routes = ['/', '/recover'],
+    authenticated = store.getters['user/authenticated'];
+
+
+    if(not_auth_routes.indexOf(to.path) >= 0) { // пропускаем на гостевые маршруты
+
+        if(authenticated){
+            return next({name:'process'})
+        }
+        else {
+            jwt(
+                {name:'process'}, // Был ранее авторизирован, но попытался перейти по гостевым маршрутом с обновлением страницы, уводим его с этих страниц
+                '' // Был разлогинен, токена нет, оставляем на гостевых страницах
+            )
+        }
+
+    } else {
+        if(authenticated) {
+            return next()
+        } else {
+            jwt(
+                '', // пользователь был авторизирован, обновил браузер, авторизируем из ссесии оставляем на тякущей странице
+                `/auth?return=${to.fullPath}` // Если пользователь не был авторизирован, сохраняем его ссылку, отправляем на форму авторизации, после успешной авторизации снова отправляем на его ссылку
+            )
+
+        }
+    }
+
+    function jwt(pathTarget,pathElseNoJwt) {
+
+        const jwt = localStorage.getItem('jwt');
+        console.log('jwt',jwt);
+        if (jwt) {
+            window.axios.post('app.php?login', {jwt}, {//todo доделать если время токена кончилось
+                headers: { 'content-type': 'application/json' }
+            }).then(({ data }) => {
+
+                store.dispatch('user/login', data.user).then(()=>{
+                    if (to.query.return) return next(to.query.return) // отправляем по ранее сохраненному маршруту
+                    else {
+                        if (pathTarget) return next(pathTarget)
+                        else return next()
+                    }
+                })
+
+            }).catch((error) => {
+                showError(error);
+                store.dispatch('user/logout').then(()=>{
+                    return next({name:'auth'})
+                })
+            })
+        } else {
+            if (pathElseNoJwt) return next(pathElseNoJwt)
+            else return next()
+        }
+    }
+
+
+
+});
 
 
 Vue.use(Router)

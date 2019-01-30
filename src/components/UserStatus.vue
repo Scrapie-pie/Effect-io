@@ -1,5 +1,5 @@
 <template lang="pug">
-    form.user-status
+    form.user-status(@click="logout")
         .user-status__avatar-wrap
             base-avatar.user-status__avatar
             .user-status__indicator(:class="`user-status__indicator_${statusCurrent.name}`")
@@ -55,6 +55,13 @@
             document.removeEventListener('click', this.close);
         },
         methods: {
+            logout(){
+                this.$store.dispatch('user/logout')
+                    .then(() => {
+                        this.$router.push({name:'auth'})
+                        // document.querySelector('.site').classList.remove('site_overlay')
+                    })
+            },
             close(e) {
                 if (!e.target.matches('.user-status__status, .user-status__status *')) {
                     this.show = false;

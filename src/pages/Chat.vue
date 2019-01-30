@@ -46,7 +46,7 @@
                 ],
                 appList: [
                     {text: 'Ui', link: {name: 'ui'}},
-                    {text: 'Настройки', link: {name: 'settingsProfile'}},
+                    {text: 'Настройки!', link: {name: 'settingsProfile',query:{exit:true}}},
                     //{text: 'Сменить учетную запись', link: {name: 'auth'}},
                     {text: 'Выход', link: {name: 'auth'}},
                 ],

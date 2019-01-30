@@ -24,6 +24,8 @@
                     {text: 'Общий чат ', link: {name: 'common'}},
                 ],
                 appList: [
+                    {text: 'recover', link: {name: 'recover'}},
+                    {text: 'Ломанный маршрут', link: {name: 'bad'}},
                     {text: 'Ui', link: {name: 'ui'}},
                     {text: 'Настройки', link: {name: 'settingsProfile'}},
                     //{text: 'Сменить учетную запись', link: {name: 'auth'}},
