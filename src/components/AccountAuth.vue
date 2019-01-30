@@ -10,9 +10,10 @@
                         base-field(
                             type="email"
                             placeholder="Введите Е-email"
-                            name="login"
-                            v-validate="'required|email'" data-vv-as="логин" v-model="email"
+                            name="email"
+                            v-validate="'required'"  v-model="login"
                         )
+
                     li.account-auth__item.account-auth__field
                         base-field(
                             type="password"
@@ -22,6 +23,7 @@
                             data-vv-as="пароль"
                             v-model="password"
                         )
+
                 .account-auth__bottom
                     .account-auth__btn
                         base-btn(theme="sign" type="submit") Войти
@@ -33,9 +35,8 @@
                         base-field(
                             type="email"
                             placeholder="Введите Е-email"
-                            name="login"
-                            v-model="email"
-                            v-validate="'required|email'" data-vv-as="login"
+                            name="email"
+                            v-validate="'required'"  v-model="login"
                         )
                     p.account-auth__text(v-else) Новый пароль отправлен #[br] на указанный e-mail
                 .account-auth__bottom
@@ -55,7 +56,7 @@
         data() {
             return {
                 recoveryPage: false,
-                email: 'TooManyRequestsHttpException@bk.ru',//todo кастомнай компонент не обновляет значение v-model на другом кастомном компоненте
+                login: 'TooManyRequestsHttpException@bk.ru',//todo кастомнай компонент не обновляет значение v-model на другом кастомном компоненте
                 password: 'TooManyRequestsHttpException',
                 title: 'Для входа в личный кабинет введите свои учетные данные',
                 passwordSent: false
@@ -94,7 +95,7 @@
             sendLoginRequest() {
 
                 let data = {
-                    name: this.email,
+                    name: this.login,
                     password: this.password,
 
                 }
@@ -132,7 +133,7 @@
                 let data = {
                     email: this.email,
                 }
-                this.$axios.post('app.php?forgot-password', this.email, {
+                this.$axios.post('forgot-password', this.email, {
                     headers: { 'content-type': 'application/json' }
                 }).then(({ data }) => {
                     console.log(data);

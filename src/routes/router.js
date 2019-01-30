@@ -86,7 +86,7 @@ router.beforeEach((to, from, next) => {
         const jwt = localStorage.getItem('jwt');
         console.log('jwt',jwt);
         if (jwt) {
-            axios.post('app.php?login', {jwt}, {//todo доделать если время токена кончилось
+            axios.post('login', {jwt}, {//todo доделать если время токена кончилось
                 headers: { 'content-type': 'application/json' }
             }).then(({ data }) => {
 
@@ -99,7 +99,7 @@ router.beforeEach((to, from, next) => {
                 })
 
             }).catch((error) => {
-                this.$showError(error);
+                showError(error);
                 store.dispatch('user/logout').then(()=>{
                     return next({name:'auth'})
                 })

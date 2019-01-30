@@ -29,7 +29,7 @@
 
             window.addEventListener('unhandledrejection', this.promiseErrorHandler);
 
-
+            console.log(this);
         },
         beforeDestroy() {
             window.removeEventListener('unhandledrejection', this.promiseErrorHandler);
