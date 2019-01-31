@@ -42,7 +42,10 @@
                 this.$http.interceptors.response.use(null,(err)=> {
                     console.log(err.response);
 
-                    if(err.response && err.response.data && err.response.data.message) {
+                    if(err.response && err.response.data && err.response.data.message && this.$route.name!=='auth') {
+
+
+
                         this.$root.$emit('popup-notice',err.response.data.message);
                         console.log('error №',err.response.status)
                     }

@@ -1,9 +1,7 @@
 import Vue from 'vue'
 import axios from 'axios'
-//import config from "../config";
-const config = {
-  api_server:'http://rbcall-rbcall-3212.cloud4.newrobocall.ru/app/'
-}
+import config from "@/config/index.js";
+
 
 // Настройки http-запросов
 axios.defaults.baseURL = config.api_server;

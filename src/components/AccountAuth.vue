@@ -5,6 +5,7 @@
             .account-auth__logo
                 img(src="@/assets/img/logo.png" alt="logo")
             template(v-if="!recoveryPage")
+                p.account-auth__error-text(v-if="errorApiText" v-text="errorApiText")
                 ul.account-auth__list()
                     li.account-auth__item.account-auth__field
                         base-field(
@@ -19,7 +20,7 @@
                             type="password"
                             placeholder="Введите пароль"
                             name="password"
-                            v-validate="'max:32|min:6'"
+                            v-validate="'required|max:32|min:6'"
                             data-vv-as="пароль"
                             v-model="password"
                         )
@@ -59,10 +60,18 @@
                 login: '',//todo кастомнай компонент не обновляет значение v-model на другом кастомном компоненте
                 password: '',
                 title: 'Для входа в личный кабинет введите свои учетные данные',
-                passwordSent: false
+                passwordSent: false,
+                errorApiText:''
             }
         },
         watch: {
+            errorApiText(val) {
+                if(val) {
+                    setTimeout(()=>{
+                        this.errorApiText=false;
+                    },5000)
+                }
+            },
             '$route'(from, to) {
                 this.selectTemplate()
             }
@@ -123,6 +132,9 @@
                         else this.$router.push({name:'process'})
                     })
 
+                }).catch(({response})=>{
+                    this.errorApiText = response.data.message;
+
                 })
 
             },
@@ -143,7 +155,8 @@
 
 <style lang="scss">
     .account-auth{
-
+        $color_error:glob-color('error');
+        $font-size_small:$glob-font-size_small;
         margin-left:-($glob-indent-main-lr);
         margin-right:-($glob-indent-main-lr);
 
@@ -154,6 +167,13 @@
         background-color:#f5f6f9;
         text-align:center;
         min-height:500px;
+
+        &__error-text {
+            color:$color_error;
+            font-size:$font-size_small;
+            margin-bottom:calc-em(20);
+            margin-top:-2em;
+        }
 
         &__box{
             @include box-decor();
