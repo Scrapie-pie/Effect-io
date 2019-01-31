@@ -56,8 +56,8 @@
         data() {
             return {
                 recoveryPage: false,
-                login: 'TooManyRequestsHttpException@bk.ru',//todo кастомнай компонент не обновляет значение v-model на другом кастомном компоненте
-                password: 'TooManyRequestsHttpException',
+                login: '',//todo кастомнай компонент не обновляет значение v-model на другом кастомном компоненте
+                password: '',
                 title: 'Для входа в личный кабинет введите свои учетные данные',
                 passwordSent: false
             }
@@ -114,7 +114,7 @@
                     password: 'qF5grpgY5e_',
 
                 }*/
-                this.$axios.post('login', data, {
+                this.$http.post('login', data, {
                     headers: { 'content-type': 'application/json' }
                 }).then(({ data }) => {
                     console.log('user', data.user)
@@ -123,25 +123,18 @@
                         else this.$router.push({name:'process'})
                     })
 
-                }).catch((error) => {
-                    showError(error)
-                    if (error.response.status == 429) this.$root.$emit('popup-notice','Аккаунт заблокирован, вы совершили много http запросов')
                 })
 
             },
             recoverRequest() {
                 let data = {
                     email: this.email,
-                }
-                this.$axios.post('forgot-password', this.email, {
+                };
+                this.$http.post('forgot-password', this.email, {
                     headers: { 'content-type': 'application/json' }
                 }).then(({ data }) => {
-                    console.log(data);
                     this.passwordSent = true;
-                }).catch((error) => {
-                    showError(error)
                 })
-
             }
 
         }

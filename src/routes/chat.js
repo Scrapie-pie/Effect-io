@@ -19,7 +19,7 @@ export default [
         {
             name: 'process',
             path: '/process',
-            component: ChatDialog
+            component: ChatDialog,
         },
         {
             name: 'dialog',

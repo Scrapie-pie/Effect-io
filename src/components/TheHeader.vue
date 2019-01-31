@@ -29,7 +29,7 @@
                     {text: 'Ui', link: {name: 'ui'}},
                     {text: 'Настройки', link: {name: 'settingsProfile'}},
                     //{text: 'Сменить учетную запись', link: {name: 'auth'}},
-                    {text: 'Выход', link: {name: 'auth'}},
+                    {text: 'Выход', link: {name: 'exit'}},
                 ],
             }
         },

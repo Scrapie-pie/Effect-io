@@ -29,12 +29,35 @@
 
             window.addEventListener('unhandledrejection', this.promiseErrorHandler);
 
-            console.log(this);
+            this.httpErrors();
+
+
+
         },
         beforeDestroy() {
             window.removeEventListener('unhandledrejection', this.promiseErrorHandler);
         },
         methods: {
+            httpErrors(){
+                this.$http.interceptors.response.use(null,(err)=> {
+                    console.log(err.response);
+
+                    if(err.response && err.response.data && err.response.data.message) {
+                        this.$root.$emit('popup-notice',err.response.data.message);
+                        console.log('error №',err.response.status)
+                    }
+
+
+                    if (err.response.status === 401) {
+                        this.$store.dispatch('user/logout').then(() => {this.$router.push({name:'auth'})});
+                    }
+
+
+                    //showError(error)
+                    return Promise.reject(error);
+
+                })
+            },
             watchForHover(){ // Отключаем hover на touch устройствах
 
                 let      hasHoverClass = false,

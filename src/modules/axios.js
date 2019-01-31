@@ -1,3 +1,4 @@
+import Vue from 'vue'
 import axios from 'axios'
 //import config from "../config";
 const config = {
@@ -16,11 +17,6 @@ axios.interceptors.request.use(function (config) {
     return Promise.reject(error);
 });
 
-axios.interceptors.response.use(null, function (error) {
 
-    showError(error)
-    if (error.response.status == 500) alert('Неизвестная ошибка')
-    if (error.response.status == 400) alert('Bad request')
-})
 
 export default axios

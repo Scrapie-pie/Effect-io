@@ -1,6 +1,6 @@
 <template lang="pug">
     transition(name="fade" )
-        section.box-controls(v-if="show", :class="{'box-controls_popup':popup,'box-controls_gallery':gallery}")
+        section.box-controls(v-if="show", :class="{'box-controls_popup':type}")
             .box-controls__overlay()
             .box-controls__box()
                 base-btn(
@@ -8,20 +8,23 @@
                     @click="$emit('box_control_close')"
                     title="Закрыть"
                 ).box-controls__close
-                base-icon(name="info").box-controls__icon(v-if="popup")
+                base-icon(name="info").box-controls__icon(v-if="type==='popup'")
 
                 p.box-controls__text
                     slot(name="text")
                 slot
-
 </template>
 
 <script>
     export default {
         props: {
+            type:{
+                type:String,
+                validator: function (value) {
+                    return ['popup','gallery'].indexOf(value) !== -1
+                }
+            },
             show:Boolean,
-            popup:Boolean,
-            gallery:Boolean,
             blur:Boolean
         },
         watch:{
@@ -36,20 +39,14 @@
             }
         },
         methods: {
-
             close(e) {
-
-                if (!this.show) return
+                if (!this.show) return;
 
                 if (!e.target.matches('.box-controls__box, .box-controls__box *')) {
-                    this.$emit('box_control_close')
-
+                    this.$emit('box_control_close');
                     document.removeEventListener('click', this.close);
                 }
             },
-
-        },
-        created(){
 
         },
         mounted() {
@@ -66,27 +63,6 @@
 </script>
 
 <style lang="scss">
-
-
-/*    .chat-dialog__main {
-        &::after {
-            content:'';
-            @extend %full-abs;
-            position:fixed;
-            background-color:rgba(0, 0, 0, 0.3);
-            opacity:0;
-            visibility:hidden;
-            transition:$glob-trans;
-            z-index: 1;
-        }
-
-
-    }
-    .is-opened-box-controls .chat-dialog__main::after {
-        opacity:1;
-        visibility:visible;
-    }*/
-
     .box-controls {
         $self:'.box-controls';
         $color-box:glob-color('light');
@@ -108,9 +84,7 @@
             z-index:99999;
             background-color:$color-box;
 
-
             @include media($width_md) {
-
                 .box-controls & {
                     position: fixed;
                     left: 50%;
@@ -145,12 +119,7 @@
                 justify-content:center;
                 text-align:center;
             }
-
-
-
-
         }
-
 
         &_gallery {
             #{$self}__box {
@@ -163,11 +132,9 @@
                 background-color: transparent;
                 text-align:center;
 
-
                 img {
                     max-height:100%;
                 }
-
             }
 
             #{$self}__close {
@@ -175,28 +142,13 @@
             }
         }
 
-    /*    &__gallery {
-            @extend %full-abs;
-            position:fixed;
-            z-index:9999;
-            padding:calc-em(30);
-            text-align:center;
-            img {max-height:100%}
-
-        }
-        &_gallery &__close {
-            fill:glob-color('light');
-        }
-*/
-
-
         &__text {
             &:empty {
                 margin:0;
             }
             margin:calc-em(25) 0;
+            word-break: break-word;
         }
-
 
         &__close {
             position:absolute;
@@ -206,10 +158,8 @@
             .icon {
                 width:15px;
                 height:15px;
-
             }
         }
-
 
         &__overlay{
             content:'';
@@ -234,12 +184,6 @@
                 position:fixed;
                 margin:0;
             }
-
         }
-
-
     }
-
-
-
 </style>

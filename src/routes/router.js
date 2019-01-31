@@ -2,8 +2,6 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import store from '@/store/index'
 
-
-
 import AccountAuth from '@/components/AccountAuth'
 import Chat from '@/routes/chat'
 import Settings from '@/routes/settings'
@@ -36,6 +34,10 @@ const router =  new Router({
         ...helpers,
         //...Ui,
         {
+            name: 'exit',
+            path:'/exit',
+        },
+        {
             name: '/*',
             path:'*',
             redirect: '/',
@@ -48,16 +50,14 @@ const router =  new Router({
 export default router
 
 router.beforeEach((to, from, next) => {
-
-
-
-
-
-    const not_auth_routes = ['/', '/recover'],
+    console.log(to.name);
+    const not_auth_routes = ['auth', 'recover','exit'],
     authenticated = store.getters['user/authenticated'];
 
 
-    if(not_auth_routes.indexOf(to.path) >= 0) { // пропускаем на гостевые маршруты
+    if(not_auth_routes.indexOf(to.name) >= 0) { // пропускаем на гостевые маршруты
+
+        if(to.name==='exit')  store.dispatch('user/logout').then(()=>{return next({name:'auth'})})
 
         if(authenticated){
             return next({name:'process'})
@@ -86,7 +86,7 @@ router.beforeEach((to, from, next) => {
         const jwt = localStorage.getItem('jwt');
         console.log('jwt',jwt);
         if (jwt) {
-            axios.post('login', {jwt}, {//todo доделать если время токена кончилось
+            axios.post('login', {jwt}, {
                 headers: { 'content-type': 'application/json' }
             }).then(({ data }) => {
 
@@ -99,7 +99,7 @@ router.beforeEach((to, from, next) => {
                 })
 
             }).catch((error) => {
-                showError(error);
+
                 store.dispatch('user/logout').then(()=>{
                     return next({name:'auth'})
                 })
@@ -114,21 +114,6 @@ router.beforeEach((to, from, next) => {
 
 });
 
-axios.interceptors.response.use(undefined,  (err)=> { //Обработка просроченных токенов 401 Unauthorized
-    return new Promise((resolve, reject)=> {
 
-        if (err.status === 401 && err.config && !err.config.__isRetryRequest) { //Todo ждем Api
-            this.$store.dispatch('user/logout')
-                .then(() => {
-                    this.$router.push({name:'auth'})
-                    // document.querySelector('.site').classList.remove('site_overlay')
-                })
-            this._vm.$root.$emit('popup-notice','Попробуйте авторизоваться снова')
-
-
-        }
-        throw err;
-    });
-});
 
 Vue.use(Router)
