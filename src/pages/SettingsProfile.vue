@@ -120,6 +120,7 @@
 <script>
 
 
+
     import TextInfo from '@/components/TextInfo'
     import UploadAvatar from '@/components/UploadAvatar'
 

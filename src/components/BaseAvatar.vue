@@ -1,6 +1,6 @@
 <template lang="pug">
-    .base-avatar(:class="classObject")
-        base-icon.base-avatar__icon(:name="setName")
+    .base-avatar(:class="classObject" :style="style")
+        base-icon.base-avatar__icon(v-if="!url" :name="setName")
 
 </template>
 
@@ -9,6 +9,7 @@
 
     export default {
         props: {
+            url:'',
             name:String,
             width: {
                 validator: function (value) {
@@ -17,6 +18,10 @@
             }
         },
         computed: {
+
+            style(){
+                return `backgroundImage:url(${this.url})`
+            },
             classObject() {
                 if (this.width) return `base-avatar_${this.width}`
             },
@@ -36,7 +41,7 @@
         width:$sz;
         height:$sz;
         border-radius:50%;
-        background-color:glob-color('info-lighten');
+        background:glob-color('info-lighten') no-repeat center/cover;
 
         .base-avatar__icon .icon{
             @extend %full-abs;

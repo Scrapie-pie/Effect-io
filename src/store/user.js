@@ -1,18 +1,19 @@
 export default {
     namespaced: true,
     state: {
-        user:false,
+        profile:false,
     },
     mutations: {
         logout(state) {
             localStorage.removeItem('jwt')
             delete this._vm.$http.defaults.headers.post[ 'jwt' ];
             state.user = false
-            state.authenticated = false
+
         },
 
         save(state, user) {
-            state.user=user;
+            state.profile=user;
+
         }
 
     },
@@ -28,7 +29,7 @@ export default {
     },
     getters: {
         authenticated: state => {
-            return !!state.user
+            return !!state.profile
         }
     }
 }

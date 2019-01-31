@@ -57,8 +57,8 @@
         data() {
             return {
                 recoveryPage: false,
-                login: '',//todo кастомнай компонент не обновляет значение v-model на другом кастомном компоненте
-                password: '',
+                login: 'testrbcall@mail.ru',//todo кастомнай компонент не обновляет значение v-model на другом кастомном компоненте
+                password: '321tceffE',
                 title: 'Для входа в личный кабинет введите свои учетные данные',
                 passwordSent: false,
                 errorApiText:''
