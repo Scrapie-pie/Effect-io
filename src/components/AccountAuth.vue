@@ -132,7 +132,7 @@
                 };
                 this.$http.post('forgot-password', this.email, {
                     headers: { 'content-type': 'application/json' }
-                }).then(({ data }) => {
+                }).then(() => {
                     this.passwordSent = true;
                 })
             }

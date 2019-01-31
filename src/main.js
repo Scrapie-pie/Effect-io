@@ -2,14 +2,12 @@ console.clear();
 
 import Vue from 'vue'
 import App from './App.vue'
-/*import axios from '@/modules/axios'
-window.axios = axios;*/
-import axios from '@/modules/axios'
-Vue.prototype.$http = axios;
-
 import '@/validation'
 import router from '@/routes/router'
-import store from './store/index'
+import store from './store/store'
+import axios from '@/modules/axios'
+
+Vue.prototype.$http = axios;
 
 import VuePerfectScrollbar from 'vue-perfect-scrollbar'
 
@@ -22,12 +20,6 @@ import BasePeople from "@/components/BasePeople";
 import BoxControls from "@/components/BoxControls";
 import BaseNoFound from "@/components/BaseNoFound";
 
-
-
-
-
-
-
 Vue.component('scroll-bar', VuePerfectScrollbar);
 Vue.component('base-icon', BaseIcon);
 Vue.component('base-field', BaseField);
@@ -38,7 +30,6 @@ Vue.component('base-avatar', BaseAvatar);
 Vue.component('base-people', BasePeople);
 Vue.component('box-controls', BoxControls);
 Vue.component('base-no-found', BaseNoFound);
-
 
 
 /*let requireComponent = require.context('@/src/components/', true, /^Base[A-Z]/) //todo не работает(
@@ -56,14 +47,9 @@ requireComponent.keys().forEach(function (fileName) {
     Vue.component(baseComponentName, baseComponentConfig)
 })*/
 
-
-
-
 Vue.config.productionTip = false;
 
 window.showError = function (error) {
-
-
 
     if (error.response) {
         // The request was made and the server responded with a status code

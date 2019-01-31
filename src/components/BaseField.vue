@@ -174,8 +174,9 @@
                     autocomplete: "off",
                     type: this.getType,
                     placeholder: this.getPlaceholder,
-
+                    value:this.value
                 }
+
                 return Object.assign({maxLength:64}, this.$attrs, obj);
             },
             getSelectOptions() {
