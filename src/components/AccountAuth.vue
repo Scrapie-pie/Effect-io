@@ -19,7 +19,7 @@
                             type="password"
                             placeholder="Введите пароль"
                             name="password"
-                            v-validate="'required'"
+                            v-validate="'max:32|min:6'"
                             data-vv-as="пароль"
                             v-model="password"
                         )

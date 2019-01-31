@@ -2,7 +2,7 @@
     button.upload-avatar(type="button")
         base-avatar(width="lg").upload-avatar__avatar
         .upload-avatar__text Загрузить фото
-        base-btn.upload-avatar__icon(:icon="{name:'down'}")
+        base-icon.upload-avatar__icon(:icon="{name:'down'}")
 </template>
 
 <script>
