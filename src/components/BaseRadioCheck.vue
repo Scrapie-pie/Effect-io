@@ -1,14 +1,9 @@
 <template lang="pug">
 
-    label.radio-check(:class="[`radio-check_${type}`, {'radio-check_tab': tab },{'radio-check_error': errors.has(name)}]")
+    label.radio-check(:class="[`radio-check_${type}`,{'radio-check_error': errors.has(name)}]")
         input(
-        v-bind="$attrs",
-        :value="value"
-            :type="type",
-        :name="name",
-        @checked="checked"
-        v-on="inputListeners",
-        :checked="checked"
+            v-bind="getInputOptions",
+            v-on="inputListeners",
         ).radio-check__input
         span.radio-check__text-wrap
             base-icon(name="check" v-if="type=='checkbox'").radio-check__check
@@ -27,12 +22,8 @@
             event: 'change'
         },
         props: {
-            tab: {
-                required: false,
-
-                default: false
-
-            },
+       /*     textTrue:null,
+            textFalse:null,*/
             value: {
                 required: false,
                 default: 1
@@ -52,33 +43,40 @@
                 required: false,
                 default: false
             }
-
         },
 
-        mounted() {
-            // this.$emit('input', this.checked)
-        },
         computed: {
+            getInputOptions() {
+                console.log(this);
+                let obj = {
+                  /*  textTrue:this.textTrue,
+                    textFalse:this.textFalse,*/
+                    type: this.type,
+                    checked: this.checked,
+                    value:this.value,
+                    name:this.name
+                }
+
+                return Object.assign({}, this.$attrs, obj);
+            },
             inputListeners: function () {
                 var vm = this
-                // `Object.assign` объединяет объекты вместе, чтобы получить новый объект
                 return Object.assign({},
-                    // Мы добавляем все слушатели из родителя
                     this.$listeners,
-                    // Затем мы можем добавить собственные слушатели или
-                    // перезаписать поведение некоторых существующих.
                     {
-                        // Это обеспечит, что будет работать v-model на компоненте
-                        input: function (event) {
-                            if (vm.type == 'radio') {
-                                return vm.$emit('input', event.target.value)
-                            }
-                            vm.$emit('input', event.target.checked)
-                        },
                         change: function (event) {
                             if (vm.type == 'radio') {
                                 return vm.$emit('change', event.target.value)
                             }
+
+                        /*    if (vm.textTrue && vm.textFalse) {
+
+                                let val = event.target.checked && vm.textTrue || !event.target.checked && vm.textFalse;
+
+                                return vm.$emit('change', val)
+
+                            }*/
+
                             vm.$emit('change', event.target.checked)
                         }
                     }
@@ -89,11 +87,13 @@
 </script>
 
 <style lang="scss">
-
-
     .radio-check{
         $self:&;
         $sz:calc-em(24);
+        $color_border:glob-color('border');
+        $color_main:glob-color('main');
+        $transition:$glob-trans;
+
         &__input{
             @extend %visuallyhidden;
 
@@ -112,16 +112,16 @@
             display:flex;
             align-items:center;
 
-            &:before{
+            &::before{
                 content:'';
                 display:block;
                 width:$sz;
                 height:$sz;
-                border:1px solid glob-color('border');
+                border:1px solid $color_border;
                 border-radius:50%;
-
             }
-            &:after{
+
+            &::after{
                 content:'';
                 display:block;
             }
@@ -133,12 +133,12 @@
             margin-top:.4em;
             margin-left:.4em;
             transform:scale(0);
-            transition:$glob-trans;
+            transition:$transition;
 
             .icon{
                 width:15px;
                 height:15px;
-                fill:glob-color('main')
+                fill:$color_main
             }
         }
 

@@ -5,7 +5,7 @@
             ref="input",
             v-on="inputListeners",
         ).upload-avatar__input
-        base-avatar(width="lg" :url="fileContainer").upload-avatar__avatar
+        base-avatar(width="lg" :url="setUrl").upload-avatar__avatar
         button( v-if="fileContainer", type="button" @click="clear").upload-avatar__clear удалить фото
         .upload-avatar__text(v-if="!fileContainer") Загрузить фото
 
@@ -20,6 +20,7 @@
     export default {
         inheritAttrs: false,
         props: {
+            url:'',
             disabled: {
                 required: false,
                 default: false
@@ -40,6 +41,9 @@
         },
 
         computed: {
+            setUrl(){
+                return (this.fileContainer || this.url)
+            },
             getInputOptions() {
                 let obj = {
                     name:"uploadAvatar",

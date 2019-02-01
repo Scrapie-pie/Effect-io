@@ -113,6 +113,9 @@
             width:calc-em(90);
             height:calc-em(90);
         }
+        &_eye {
+            fill:glob-color('disabled');
+        }
     }
 
 </style>

@@ -57,7 +57,10 @@ router.beforeEach((to, from, next) => {
 
     if(not_auth_routes.indexOf(to.name) >= 0) { // пропускаем на гостевые маршруты
 
-        if(to.name==='exit')  store.dispatch('user/logout').then(()=>{return next({name:'auth'})})
+        if(to.name==='exit')  {
+            console.log('store.dispatch(\'user/logout\')');
+            store.dispatch('user/logout').then(()=>{return next({name:'auth'})})
+        }
 
         if(authenticated){
             return next({name:'process'})
