@@ -1,6 +1,6 @@
 <template lang="pug">
-    section
-        form
+
+        form(@submit="userUpdate")
             ul.settings-list
                 li.settings-list__item
                     .settings-list__upload-avatar
@@ -105,12 +105,13 @@
                 li.settings-list__item(v-if="$store.getters['user/isRole']=='owner'")
                     h3.settings-list__name Настройки доступа
                     base-radio-check.settings-list__control(
-                        name="role_id"
-                        v-model="model.role_id",
+                        name="admin_mode"
+                        v-model="admin_mode",
 
                     ) Включить права администратора
                     text-info.settings-list__text-info Права администратора позволяют сотруднику: управлять другими аккаунтами сотрудников, просматривать статистику, менять данные основного аккаунта, добавлять/удалять/ редактировать данные всех сотрудников, отделов и каналов связи.
 
+            base-btn(@click="userUpdate" size="lg" color="success-dark") Сохранить
 </template>
 
 <script>
@@ -127,8 +128,17 @@
         components: {
             TextInfo, UploadAvatar, PasswordRefresh
         },
+        watch:{
+            admin_mode(val){
+                if(val) {
+                    this.model.role_id = 13
+                } else this.model.role_id = 5
+
+            }
+        },
         data() {
             return {
+
                 model:{
                     user_id:this.$store.getters['user/profile'].user_id,
                     avatar:this.$store.getters['user/profile'].avatar,
@@ -136,12 +146,13 @@
                     last_name:this.$store.getters['user/profile'].last_name,
                     phone:this.$store.getters['user/profile'].phone,
                     mail:this.$store.getters['user/profile'].mail,
-                    role_id:this.$store.getters['user/profile'].role_id == 13,
+                    role_id:this.$store.getters['user/profile'].role_id,
                     is_common_chat:this.$store.getters['user/profile'].is_common_chat,
                     branches_ids:this.$store.getters['user/profile'].branches_ids,
                     use_chat:this.$store.getters['user/profile'].use_chat,
                     use_calls:this.$store.getters['user/profile'].is_common_chat,
                 },
+                admin_mode:this.$store.getters['user/profile'].role_id == 13,
                 voiceList: [
                     {name: '1'},
                     {name: '2'},
@@ -150,14 +161,28 @@
             }
         },
         computed:{
-            profile(){
 
-                return this.$store.getters['user/profile']
-            }
         },
         created(){
-            console.log(this.profile);
+
+        },
+        beforeRouteLeave (to, from, next) {
+
+            this.userUpdate().then(({data})=>{
+                console.log(data);
+            }).catch(()=>{
+
+            })
+
+
+        },
+        methods:{
+            userUpdate(){
+
+             return this.$http.post('user-update', this.model)
+            }
         }
+
 
 
     }

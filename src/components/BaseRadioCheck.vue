@@ -47,7 +47,6 @@
 
         computed: {
             getInputOptions() {
-                console.log(this);
                 let obj = {
                   /*  textTrue:this.textTrue,
                     textFalse:this.textFalse,*/

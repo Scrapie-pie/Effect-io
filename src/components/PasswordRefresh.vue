@@ -30,29 +30,28 @@ export default {
 
     data() {
         return {
-            model:{
-                password:'',
-                confirm_password:'',
+            model: {
+                password: '',
+                confirm_password: '',
+                user_id: ''
             }
 
         }
     },
     created(){
-
+        this.setUserId()
     },
     methods:{
+        setUserId() {
+            if( this.$route.params.id ) this.model.user_id = this.$route.params.id;
+            else this.model.user_id = this.$store.getters['user/profile'].user_id
+        },
         save(){
-
-
-            this.$http.put('user-password-update', this.model, {
-
-            }).then(({ data }) => {
+            this.$http.put('user-password-update', this.model)
+                .then(({ data }) => {
                 console.log(data);
-
-
-            }).catch(({response})=>{
+            }).catch(({ response }) => {
                 console.log(response);
-
             })
         }
     }
