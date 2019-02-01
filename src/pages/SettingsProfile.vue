@@ -166,7 +166,7 @@
         created(){
 
         },
-        beforeRouteLeave (to, from, next) {
+  /*      beforeRouteLeave (to, from, next) {
 
             this.userUpdate().then(({data})=>{
                 console.log(data);
@@ -175,7 +175,7 @@
             })
 
 
-        },
+        },*/
         methods:{
             userUpdate(){
 
