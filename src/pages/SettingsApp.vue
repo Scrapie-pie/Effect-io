@@ -1,6 +1,9 @@
 <template lang="pug">
     section
         form
+            audio(controls)
+                source(src="@/assets/sounds/Drum.mp3")
+
             ul.settings-list
                 li.settings-list__item
                     h3.settings-list__name Уведомления
@@ -63,7 +66,7 @@
     export default {
 
         components: {
-            TextInfo,
+            TextInfo
         },
         data() {
             return {

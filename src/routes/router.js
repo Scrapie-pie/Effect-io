@@ -78,7 +78,8 @@ router.beforeEach((to, from, next) => {
         } else {
             jwt(
                 '', // пользователь был авторизирован, обновил браузер, авторизируем из ссесии оставляем на тякущей странице
-                `/auth?return=${to.fullPath}` // Если пользователь не был авторизирован, сохраняем его ссылку, отправляем на форму авторизации, после успешной авторизации снова отправляем на его ссылку
+
+                {name:'auth',query:{return:to.fullPath}} // Если пользователь не был авторизирован, сохраняем его ссылку, отправляем на форму авторизации, после успешной авторизации снова отправляем на его ссылку
             )
 
         }
@@ -102,9 +103,10 @@ router.beforeEach((to, from, next) => {
                 })
 
             }).catch((error) => {
-
+                console.log(error.response)
+                console.log('user/logout');
                 store.dispatch('user/logout').then(()=>{
-                    return next({name:'auth'})
+                    return next({name:'auth',query:{return:to.fullPath}})
                 })
             })
         } else {

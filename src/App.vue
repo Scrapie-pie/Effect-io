@@ -40,6 +40,7 @@
         methods: {
             httpErrors(){
                 this.$http.interceptors.response.use(null,(err)=> {
+                    console.log(err);
                     console.log(err.response);
 
                     if(err.response && err.response.data && err.response.data.message && this.$route.name!=='auth') {
@@ -52,7 +53,11 @@
 
 
                     if (err.response.status === 401) {
-                        this.$store.dispatch('user/logout').then(() => {this.$router.push({name:'auth'})});
+                        console.log(this.$route.fullPath,err.response.status);
+                        this.$store.dispatch('user/logout').then(() => {
+                            this.$router.push({name:'auth',query:{return:this.$route.fullPath}})
+
+                        });
                     }
 
 
