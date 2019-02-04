@@ -75,8 +75,10 @@
                                 return vm.$emit('change', val)
 
                             }*/
+                            if(event.target.checked) vm.$emit('change', 1) // На сервере строгая типизация
+                            else vm.$emit('change', 0)
 
-                            vm.$emit('change', event.target.checked)
+
                         }
                     }
                 )

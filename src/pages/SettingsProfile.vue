@@ -43,6 +43,7 @@
                             :selectOptions="{label:'name',options:[{name:'Телефон'},{name:'Связь'}],default:{name:'Телефон'}}"
                             name="phones"
                             )
+                            tel-input
                         .settings-list__col
                         .settings-list__col
                             base-field.settings-list__control.settings-list__field(
@@ -121,12 +122,14 @@
     import PasswordRefresh from '@/components/PasswordRefresh'
     import TextInfo from '@/components/TextInfo'
     import UploadAvatar from '@/components/UploadAvatar'
+    import TelInput from '@/components/TelInput'
+
 
 
     export default {
 
         components: {
-            TextInfo, UploadAvatar, PasswordRefresh
+            TextInfo, UploadAvatar, PasswordRefresh,TelInput
         },
         watch:{
             admin_mode(val){
