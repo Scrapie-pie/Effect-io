@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import axios from 'axios'
-import config from "@/config/default.index";
+import config from "@/config/index";
 
 
 // Настройки http-запросов
