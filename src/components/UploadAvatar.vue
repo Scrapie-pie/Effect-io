@@ -87,7 +87,8 @@
                 }).then(({data})=>{
 
                     this.loader = true;
-
+                    console.log(data);
+                    this.$emit('upload_url', data.file)
                     this.$emit('input', data.file)
 
                 }).catch(()=>this.loader = true)

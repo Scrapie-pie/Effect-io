@@ -5,10 +5,12 @@
 
 <script>
 
-    const sistemFiles = require.context('!svg-sprite-loader!@/assets/img/icons/', true, /.*\.svg$/)
-
-    const importAll = (r) => r.keys().forEach(r)
-    //importAll(files);
+   /* const sistemFiles = require.context('!svg-sprite-loader!@/assets/img/icons/', true, /.*\.svg$/)
+    console.log(sistemFiles);
+    const importAll = (r) => r.keys().forEach(function (r) {
+        console.log(r);
+    })
+    importAll(sistemFiles);*/
     //files.keys().forEach(files);
 
     import check from '@/assets/img/icons/check.svg';

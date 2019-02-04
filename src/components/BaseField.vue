@@ -180,6 +180,7 @@
                 return Object.assign({maxLength:64}, this.$attrs, obj);
             },
             getSelectOptions() {
+
                 return Object.assign({}, this.$attrs, this.selectOptions);
             },
             selectLoading() {

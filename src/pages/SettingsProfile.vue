@@ -4,7 +4,7 @@
             ul.settings-list
                 li.settings-list__item
                     .settings-list__upload-avatar
-                        upload-avatar(:url="model.avatar")
+                        upload-avatar(:url="model.avatar", @upload_url="getUploadAvatar")
                 li.settings-list__item
                     .settings-list__upload-avatar
                     text-info.settings-list__text-info Загрузите фото, которое будут видеть Ваши коллеги и клиенты. Реальное фото всегда вызывает больше доверия.
@@ -111,7 +111,7 @@
                     ) Включить права администратора
                     text-info.settings-list__text-info Права администратора позволяют сотруднику: управлять другими аккаунтами сотрудников, просматривать статистику, менять данные основного аккаунта, добавлять/удалять/ редактировать данные всех сотрудников, отделов и каналов связи.
 
-            base-btn(@click="userUpdate" size="lg" color="success-dark") Сохранить
+            base-btn(@click="userUpdate") Сохранить
 </template>
 
 <script>
@@ -150,7 +150,7 @@
                     is_common_chat:this.$store.getters['user/profile'].is_common_chat,
                     branches_ids:this.$store.getters['user/profile'].branches_ids,
                     use_chat:this.$store.getters['user/profile'].use_chat,
-                    use_calls:this.$store.getters['user/profile'].is_common_chat,
+                    use_calls:this.$store.getters['user/profile'].use_calls,
                 },
                 admin_mode:this.$store.getters['user/profile'].role_id == 13,
                 voiceList: [
@@ -177,6 +177,10 @@
 
         },*/
         methods:{
+            getUploadAvatar(event){
+
+                this.model.avatar=event;
+            },
             userUpdate(){
 
              return this.$http.post('user-update', this.model)

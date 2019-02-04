@@ -7,6 +7,7 @@ export default {
         logout(state) {
             localStorage.removeItem('jwt')
             delete this._vm.$http.defaults.headers.common[ 'jwt' ];
+            delete this._vm.$http.defaults.headers['content-type'];
             state.profile = false
 
         },
@@ -22,6 +23,8 @@ export default {
         login({commit, dispatch}, user) {
             localStorage.setItem('jwt', user.jwt);
             this._vm.$http.defaults.headers.common[ 'jwt' ] = user.jwt;
+            this._vm.$http.defaults.headers['content-type']= 'application/json';
+
             commit('save', user)
         },
         logout({commit}) {
