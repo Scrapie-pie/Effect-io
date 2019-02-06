@@ -1,72 +1,66 @@
 <template lang="pug">
     section
-        form
+        form(@submit.prevent="submit")
             ul.settings-list
                 li.settings-list__item
                     h3.settings-list__name Уведомления
-                    base-radio-check.settings-list__control(name="notifications" v-model="model.notifications") Включить браузерные уведомления
+                    base-radio-check.settings-list__control(name="push_notifications" v-model="model.push_notifications" @click="notifications_enable") Включить браузерные уведомления
                     text-info.settings-list__text-info Вы будете получать уведомления о важных событиях в виде стандартного уведомления браузера, даже если он будет свернут.
 
                 li.settings-list__item
                     h3.settings-list__name Звук при новом сообщении от посетителя
                     base-field.settings-list__control.settings-list__select(
-                    type="select",
-
-                    :selectOptions="{placeholder:'Без звука',label:'name',options:soundList}"
-                    v-model="voice"
-                    name="voice"
+                        type="select",
+                        :selectOptions="{value:model.sound_new_guest_message,label:'name',options:sounds}"
+                        v-model="model.sound_new_guest_message"
+                        name="sound_new_guest_message"
                     )
                     text-info.settings-list__text-info Выберите звук, который будет проигрываться, если в Ваших текущих диалогах посетитель напишет новое сообщение.
 
                 li.settings-list__item
                     h3.settings-list__name Звук, когда новый посетитель зашел на сайт
                     base-field.settings-list__control.settings-list__select(
-                    type="select",
-                    :selectOptions="{placeholder:'Без звука',label:'name',options:soundList}"
-                    name="voice"
+                        type="select",
+                        :selectOptions="{value:model.sound_new_guest,label:'name',options:sounds}"
+                        name="sound_new_guest"
+                        v-model="model.sound_new_guest"
                     )
                     text-info.settings-list__text-info Выберите звук, который будет проигрываться, если новый посетитель зайдет на сайт. Вы сможете начать с ним диалог.
 
                 li.settings-list__item
                     h3.settings-list__name Звук, когда другой сотрудник написал Вам новое сообщение
                     base-field.settings-list__control.settings-list__select(
-                    type="select",
-                    :selectOptions="{placeholder:'Без звука',label:'name',options:soundList}"
-                    name="voice"
+                        type="select",
+                        :selectOptions="{value:model.sound_new_operator_message,label:'name',options:sounds}"
+                        name="sound_new_operator_message"
+                        v-model="model.sound_new_operator_message"
                     )
                     text-info.settings-list__text-info Выберите звук, который будет проигрываться, если кто-то из Вашей команды напишет Вам новое сообщение.
 
                 li.settings-list__item
                     h3.settings-list__name Звук, когда есть новое сообщение в общем чате
                     base-field.settings-list__control.settings-list__select(
-                    type="select",
-                    :selectOptions="{placeholder:'Без звука',label:'name',options:soundList}"
-                    name="voice"
+                        type="select",
+                        :selectOptions="{value:model.sound_new_common_message,label:'name',options:sounds}"
+                        name="sound_new_common_message"
+                        v-model="model.sound_new_common_message"
                     )
                     text-info.settings-list__text-info Выберите звук, который будет проигрываться, если кто-то из Вашей команды напишет в общем чате, упомянув Вас.
 
                 li.settings-list__item
                     h3.settings-list__name Язык приложения
                     base-field.settings-list__control.settings-list__select(
-                    type="select",
-                    :selectOptions="{label:'name',options:soundList}"
-                    name="voice"
-                    )
-
+                        type="select",
+                        :selectOptions="{value:model.language,label:'name',options:languages}"
+                        name="voice"
+                        v-model="model.language"
+                        )
+                li.settings-list__item
+                    base-btn(type="submit") Сохранить
 
 </template>
 
 <script>
-    //const files = require.context('@/assets/sounds/', true, /.*\.mp3$/)
-/*    const files = require.context('@/components', true, /.*\.vue$/)
-
-    console.log(files);
-    files.keys().forEach(function (key) {
-
-        console.log(key);
-    })*/
-
-    //importAll(require.context('@/src/assets/sounds/', false, /\.mp3$/));
     import TextInfo from '@/components/TextInfo'
     import browserNotification from '@/modules/browserNotification'
 
@@ -75,60 +69,115 @@
         components: {
             TextInfo
         },
-        watch:{
-            model:{
+        watch: {
+            'model.sound_new_common_message': 'playSoundFile',
+            'model.sound_new_guest': 'playSoundFile',
+            'model.sound_new_guest_message': 'playSoundFile',
+            'model.sound_new_operator_message': 'playSoundFile',
+            settings: {
                 handler(val) {
-                    if(val.notifications) {
-                        console.log('Нотификации')
-                        Notification.requestPermission((permission)=>{
-                            if(permission==='denied')  {
-                                val.notifications=false;
-                                this.$root.$emit('popup-notice','Вы запретили уведомления, их можно разрещить в настройках вашего браузера')
-                            }
-                            if(permission==='granted') {
-
-                                browserNotification('Уведомления включены', 'Таким образом мы будем Вас уведомлять')
-
-
-                            }
-
+                    if (val) {
+                        let sounds = val.sounds.map((elem, index) => {
+                            elem.index = index;
+                            return elem
                         });
+                        this.sounds = sounds;
+                        this.model.push_notifications = val.settings.push_notifications;
+                        this.model.sound_new_common_message = sounds[val.settings.sound_new_common_message]; // = object
+                        this.model.sound_new_guest = sounds[val.settings.sound_new_guest];
+                        this.model.sound_new_guest_message = sounds[val.settings.sound_new_guest_message];
+                        this.model.sound_new_operator_message = sounds[val.settings.sound_new_operator_message];
+
+                        //val.languages = {ru:"Русский",us:"Английский"}
+
+                        let languages = []
+                        for (let prop in val.languages) {
+                            languages.push({
+                                prefix: prop,
+                                name: val.languages[prop]
+                            })
+
+                        }
+                        this.languages = languages;
+
+                        this.model.language = {
+                            prefix: val.settings.language,
+                            name: val.languages[val.settings.language]
+                        }
+
                     }
                 },
-                deep: true
+                immediate: true
             },
-          voice(val){
-              console.log(val);
-              if(val){
-                this.playSound(val.name)
-            }
-          }
         },
         data() {
             return {
                 model:{
-                    notifications:false,
+                    push_notifications:'',
+                    sound_new_common_message:{},
+                    sound_new_guest:{},
+                    sound_new_guest_message:{},
+                    sound_new_operator_message:{},
+                    language:'',
+
                 },
-                voice:'',
-                soundList: [
-                    {name: 'Drum'},
-                    {name: 'Intrigue'},
-                    {name: 'Keys'},
-                    {name: 'Kick'},
-                    {name: 'Noise'},
-                    {name: 'Plucked'},
-                    {name: 'Shot'},
-                    {name: 'Standart'},
-                    {name: 'Strech'},
-                    {name: 'Whistle'},
-                    {name: 'Zvonok'},
-                ]
+                languages:[],
+                sounds:[]
+            }
+        },
+        computed:{
+            settings(){
+                return this.$store.getters['user/settings']
             }
         },
         created(){
-
+          /*  this.$http.get('company-get-settings').then(({data})=>{
+                console.log(data);
+            })*/
         },
         methods: {
+            notifications_enable(){
+                if(this.model.push_notifications) return // Когда мы кликаем значение еще старое, по этому я инвертирую проверку
+
+                Notification.requestPermission((permission)=>{
+
+                    if(permission==='denied')  {
+                        this.$root.$emit('popup-notice','Вы запретили уведомления, их можно разрещить в настройках вашего браузера')
+                        this.model.push_notifications=0;
+
+                    }
+
+                    if(permission==='granted') {
+                        browserNotification('Уведомления включены', 'Таким образом мы будем Вас уведомлять')
+                    }
+
+                });
+            },
+            submit(){
+                let data = {
+
+                    push_notifications:this.model.push_notifications,
+                    sound_new_common_message:this.model.sound_new_common_message.index,
+                    sound_new_guest:this.model.sound_new_guest.index,
+                    sound_new_guest_message:this.model.sound_new_guest_message.index,
+                    sound_new_operator_message:this.model.sound_new_operator_message.index,
+                    language:this.model.language.prefix
+                }
+
+
+                  this.$http.put('company-settings-update',data)
+                      .then(({data})=>{
+                       console.log(data);
+                   })
+            },
+            playSoundFile:function(sound ,prev_sound) {
+                if (!prev_sound.file) return  //Что бы не проигрывалось при заходе на страницу
+                if(sound.file) {
+                let audio = new Audio(sound.file); // не работает на локальном сервере "/static/dev/audio/notices/default.mp3"
+                audio.volume=.5;
+                audio.play();
+            }
+            },
             playSound(sound) {
                 if(sound) {
 

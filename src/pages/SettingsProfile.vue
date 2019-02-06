@@ -1,6 +1,6 @@
 <template lang="pug">
 
-        form(@submit="userUpdate")
+        form(@submit.prevent="userUpdate")
             ul.settings-list
                 li.settings-list__item
                     .settings-list__upload-avatar
@@ -51,7 +51,6 @@
                             type="text",
                             name="phonePlus"
                             )
-
                     text-info.settings-list__text-info Телефон будет использоваться для приема звонков от клиентов. Если у Вас есть IP телефония, вы можете принимать звонки на sip аккаунт.
 
                 li.settings-list__item
@@ -61,21 +60,17 @@
                 li.settings-list__item
                     h3.settings-list__name Определить в отдел / отделы
                     base-field.settings-list__control(
-                    type="select",
-                    :selectOptions="{label:'name',options:voiceList,taggable:true,pushTags:true}"
-                    name="voice"
-                    multiple
+                        v-model="branchListSelected"
+                        type="select",
+                        :selectOptions="{value:branchListSelected, label:'title',options:compBranchListRemaining}"
+                        name="voice"
+                        multiple,
                     )
                     text-info.settings-list__text-info Вы можете назначить сотрудника в один или несколько отделов. Чтобы выбрать отдел, начните набирать его название в данном поле.
 
                 li.settings-list__item
                     h3.settings-list__name Настройки каналов
-
-
-
-
-                    ul.settings-list__sub()
-
+                    ul.settings-list__sub
                         li.settings-list__sub-item
                             base-radio-check.settings-list__control(name="is_common_chat" v-model="model.is_common_chat") Подключиться к общему чату
                             text-info.settings-list__text-info.settings-list__text-info_sub Если включена данная функция, Вы сможете общаться со своей командой в общем чате.
@@ -102,7 +97,6 @@
                             base-radio-check.settings-list__control(v-if="0" name="notifications") Принимать звонки от клиентов
                             text-info.settings-list__text-info Выберите, в каких каналах данный сотрудник может общаться с клиентами.
 
-
                 li.settings-list__item(v-if="$store.getters['user/isRole']=='owner'")
                     h3.settings-list__name Настройки доступа
                     base-radio-check.settings-list__control(
@@ -124,24 +118,32 @@
     import UploadAvatar from '@/components/UploadAvatar'
     import TelInput from '@/components/TelInput'
 
-
-
     export default {
 
         components: {
             TextInfo, UploadAvatar, PasswordRefresh,TelInput
         },
         watch:{
+            branchListSelected(val) {
+                this.model.branches_ids = val.map((item) => {
+                    return item.id
+                })
+           /*     let branchListAll = this.branchListAll.filter((item)=>{
+                    return !this.model.branches_ids.includes(item.id)
+                });
+                console.log(branchListAll);
+                console.log(val);
+                console.log(this.model.branches_ids);*/
+
+            },
             admin_mode(val){
                 if(val) {
                     this.model.role_id = 13
                 } else this.model.role_id = 5
-
             }
         },
         data() {
             return {
-
                 model:{
                     user_id:this.$store.getters['user/profile'].user_id,
                     avatar:this.$store.getters['user/profile'].avatar,
@@ -156,36 +158,49 @@
                     use_calls:this.$store.getters['user/profile'].use_calls,
                 },
                 admin_mode:this.$store.getters['user/profile'].role_id == 13,
-                voiceList: [
-                    {name: '1'},
-                    {name: '2'},
-                    {name: '3'},
-                ]
+                branchListSelected:[],
+                branchListAll:[],
+                branchListRemaining:[],
+
+
             }
         },
         computed:{
 
+
+            compBranchListRemaining(){
+                return this.branchListAll.filter((item)=>{
+                    return !this.model.branches_ids.includes(item.id)
+                });
+            }
         },
         created(){
-
+            this.getBranchListAll()
         },
-  /*      beforeRouteLeave (to, from, next) {
-
-            this.userUpdate().then(({data})=>{
-                console.log(data);
-            }).catch(()=>{
-
-            })
-
-
-        },*/
         methods:{
-            getUploadAvatar(event){
+            getBranchListAll(){
+                this.$http.get('branches-list').then(({data})=>{
+                    this.branchListAll = data.data;
+              /*      this.branchList = data.data.filter((item)=>{
+                        return this.model.branches_ids.includes(item.id)
+                    });
+                    this.branchListRemaining = data.data.filter((item)=>{
+                        return !this.model.branches_ids.includes(item.id)
+                    });*/
 
+
+
+                this.branchListSelected = this.branchListAll.filter((item)=>{
+                    return this.model.branches_ids.includes(item.id)
+                });
+
+
+                })
+            },
+            getUploadAvatar(event){
                 this.model.avatar=event;
             },
             userUpdate(){
-
              return this.$http.post('user-update', this.model)
             }
         }

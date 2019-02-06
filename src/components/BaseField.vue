@@ -43,10 +43,9 @@
                 :class="{invalid_force: errors.has(name)}"
             autocomplete="off",
             key="id"
+
             v-bind="getSelectOptions",
             v-on="inputListeners",
-
-
             ).field__select
                 span(slot="no-options")
                 //template(slot="no-options") Результат 0
@@ -181,7 +180,7 @@
             },
             getSelectOptions() {
 
-                return Object.assign({}, this.$attrs, this.selectOptions);
+                return Object.assign({/*resetOnOptionsChange:false*/}, this.$attrs, this.selectOptions);
             },
             selectLoading() {
                 if (this.selectOptions.options.length) return false
@@ -230,12 +229,9 @@
                         },
                         input: function (event) {
 
-                            if (vm.type == 'amount') {
-                                vm.$emit('input', vm.amountInput(event.target.value))
-                                return
-                            }
 
                             if (vm.type == 'select') {
+
                                 vm.$emit('input', event)
 
                                 return
@@ -243,19 +239,9 @@
                             vm.$emit('input', event.target.value)
                         },
                         change: function (event) {
-                            if (vm.type == 'date') {
-                                vm.$emit('input', event.target.value)
-                            }
+
                         },
-                        keydown: function (event) {
-                            if (vm.type == 'date') {
-                                if (event.keyCode == 9) {
-                                    setTimeout(() => {
-                                        if (event.target.nextSibling.classList.contains('active')) event.target.click()
-                                    }, 200)
-                                }
-                            }
-                        }
+
 
                     }
                 )
