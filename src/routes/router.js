@@ -3,7 +3,11 @@ import Router from 'vue-router'
 import store from '@/store/store'
 
 import AccountAuth from '@/components/AccountAuth'
-import Chat from '@/routes/chat'
+
+import Team from '@/pages/Team'
+import Visitor from '@/pages/Visitor'
+import ChatDialog from '@/pages/ChatDialog'
+
 import Settings from '@/routes/settings'
 import Ui from '@/routes/ui'
 
@@ -29,7 +33,31 @@ const router =  new Router({
             }]
         },
 
-        ...Chat,
+        {
+            name: 'team',
+            path: '/team',
+            component: Team
+        },
+        {
+            name: 'visitors',
+            path: '/visitors',
+            component: Visitor
+        },
+        {
+            name: 'process',
+            path: '/process',
+            component: ChatDialog,
+        },
+        {
+            name: 'dialog',
+            path: '/dialog',
+            component: ChatDialog
+        },
+        {
+            name: 'common',
+            path: '/common',
+            component: ChatDialog
+        },
         ...Settings,
         ...helpers,
         //...Ui,

@@ -77,6 +77,10 @@
                 {name: 'Skype'},
             ]
             this.channel = this.channelList[0];
+
+            this.$http('guest-get-by-operator').then(({data})=>{
+                console.log(data);
+            })
         },
         methods:{
             popupNotFind(){

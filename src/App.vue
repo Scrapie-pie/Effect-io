@@ -1,7 +1,7 @@
 <template lang="pug">
     #app.page__app
         the-header.page__header.page__padding
-        main.page__main
+        main.page__main(v-if="1")
             transition(name="fade" mode="out-in")
                 router-view.page__view.page__padding
         the-popup
@@ -16,12 +16,10 @@
     import ThePopup from "@/components/ThePopup";
 
     export default {
-
         components: {
             TheHeader,
             ThePopup
         },
-
         created() {
             document.body.classList.add('page');
 
@@ -30,9 +28,6 @@
             window.addEventListener('unhandledrejection', this.promiseErrorHandler);
 
             this.httpErrors();
-
-
-
         },
         beforeDestroy() {
             window.removeEventListener('unhandledrejection', this.promiseErrorHandler);
@@ -44,13 +39,9 @@
                     console.log(err.response);
 
                     if(err.response && err.response.data && err.response.data.message && this.$route.name!=='auth') {
-
-
-
                         this.$root.$emit('popup-notice',err.response.data.message);
                         console.log('error №',err.response.status)
                     }
-
 
                     if (err.response.status === 401) {
                         console.log(this.$route.fullPath,err.response.status);
@@ -59,9 +50,6 @@
 
                         });
                     }
-
-
-                    //showError(error)
                     return Promise.reject(err);
 
                 })
@@ -110,6 +98,7 @@
     .page{
         $transition:$glob-trans;
         $indent-main:$glob-indent-main-lr;
+
         background-color:glob-color('light');
         color:glob-color('main');
         font-size:$glob-font-size_main;

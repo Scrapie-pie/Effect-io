@@ -5,7 +5,7 @@
 
 <script>
 
-   /* const sistemFiles = require.context('!svg-sprite-loader!@/assets/img/icons/', true, /.*\.svg$/)
+   /* const sistemFiles = require.context('!svg-sprite-loader!@/assets/img/icons/', true, /.*\.svg$/)  //Todo то у плагина не работает режим extract
     console.log(sistemFiles);
     const importAll = (r) => r.keys().forEach(function (r) {
         console.log(r);
@@ -66,6 +66,23 @@
     import n1 from '@/assets/img/icons/avatars/n1.svg';
     import n2 from '@/assets/img/icons/avatars/n2.svg';
     import n3 from '@/assets/img/icons/avatars/n3.svg';
+    import n4 from '@/assets/img/icons/avatars/n4.svg';
+    import n5 from '@/assets/img/icons/avatars/n5.svg';
+    import n6 from '@/assets/img/icons/avatars/n6.svg';
+    import n7 from '@/assets/img/icons/avatars/n7.svg';
+    import n8 from '@/assets/img/icons/avatars/n8.svg';
+    import n9 from '@/assets/img/icons/avatars/n9.svg';
+    import n10 from '@/assets/img/icons/avatars/n10.svg';
+    import n11 from '@/assets/img/icons/avatars/n11.svg';
+    import n12 from '@/assets/img/icons/avatars/n12.svg';
+    import n13 from '@/assets/img/icons/avatars/n13.svg';
+    import n14 from '@/assets/img/icons/avatars/n14.svg';
+    import n15 from '@/assets/img/icons/avatars/n15.svg';
+    import n16 from '@/assets/img/icons/avatars/n16.svg';
+    import n17 from '@/assets/img/icons/avatars/n17.svg';
+    import n18 from '@/assets/img/icons/avatars/n18.svg';
+    import n19 from '@/assets/img/icons/avatars/n19.svg';
+    import n20 from '@/assets/img/icons/avatars/n20.svg';
 
     export default {
 

@@ -18,7 +18,7 @@
 
     <script>
 
-import 'intl-tel-input/build/js/utils'
+import 'intl-tel-input/build/js/utils' //Todo отптимизировать, сделать ленивую загрузку
 import intlTelInput from 'intl-tel-input'
 import 'intl-tel-input/build/css/intlTelInput.min.css'
 
@@ -94,16 +94,16 @@ export default  {
     beforeDestroy(){
         this.$refs.maskPhone.inputmask.remove()
         this.$refs.maskPhone.removeEventListener("countrychange", this.setMask);
-        window.iti.destroy();
-        delete window.iti;
-        delete window.intlTelInputGlobals;
-        delete window.intlTelInputUtils;
+        this.iti.destroy();
+        //delete this.iti;
+        //delete window.intlTelInputGlobals;
+        //delete window.intlTelInputUtils;
 
 
     },
     methods: {
         initTelList(){
-            window.iti = intlTelInput(this.$refs.maskPhone,{
+            this.iti = intlTelInput(this.$refs.maskPhone,{
                 nationalMode:false,
                 autoPlaceholder:'off',
                 preferredCountries:['ru','us', 'de', 'es','fr'],
@@ -114,7 +114,7 @@ export default  {
             this.$refs.maskPhone.addEventListener("countrychange", this.setMask);
 
             this.getCountryByIp().then(({data})=>{
-                window.iti.setCountry(data.country)
+                this.iti.setCountry(data.country)
                 this.setMask();
                 this.setValue=this.$store.getters['user/profile'].phones.phone;
             })
@@ -129,7 +129,7 @@ export default  {
             return ipinfo.get('')
         },
         setMask(){
-            let country_data = window.iti.getSelectedCountryData(),
+            let country_data = this.iti.getSelectedCountryData(),
                 format       = intlTelInputUtils.getExampleNumber(country_data.iso2, false, 1),
                 mask         = format.replace('+' + country_data.dialCode, '').replace(/\d/g, '#'),
                 finishMask = '+' + country_data.dialCode.replace(/9/g, '\\9') + mask;

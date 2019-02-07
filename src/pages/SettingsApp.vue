@@ -131,9 +131,12 @@
             }
         },
         created(){
-          /*  this.$http.get('company-get-settings').then(({data})=>{
-                console.log(data);
-            })*/
+            /*console.log(this.$route.query.user_id);
+            this.$http('get-user-profile',{user_id:151}).then(({data})=>{
+                console.log(data);})*/
+            /*  this.$http.get('company-get-settings').then(({data})=>{
+                  console.log(data);
+              })*/
         },
         methods: {
             notifications_enable(){

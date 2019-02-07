@@ -1,6 +1,7 @@
 <template lang="pug">
     .base-avatar(:class="classObject" :style="style")
-        base-icon.base-avatar__icon(v-if="!url" :name="setName")
+        transition(name="fade" mode="out-in")
+            base-icon.base-avatar__icon(v-if="!url" :name="setName")
 
 </template>
 
@@ -18,7 +19,6 @@
             }
         },
         computed: {
-
             style(){
                 return `backgroundImage:url(${this.url})`
             },
@@ -26,8 +26,15 @@
                 if (this.width) return `base-avatar_${this.width}`
             },
             setName(){
-              return 'n3'
+              return 'n'+this.randomInteger(1,20)
             },
+        },
+        methods:{
+            randomInteger(min, max) {
+                let rand = min - 0.5 + Math.random() * (max - min + 1)
+                rand = Math.round(rand);
+                return rand;
+            }
         }
     }
 </script>
@@ -35,13 +42,15 @@
 <style lang="scss">
     .base-avatar{
         $sz:calc-em(52);
+        $color_bg:glob-color('info-lighten');
+
         position:relative;
         display:inline-block;
         vertical-align:middle;
         width:$sz;
         height:$sz;
         border-radius:50%;
-        background:glob-color('info-lighten') no-repeat center/cover;
+        background:$color_bg no-repeat center/cover;
 
         .base-avatar__icon .icon{
             @extend %full-abs;

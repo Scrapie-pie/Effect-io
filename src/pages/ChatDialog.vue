@@ -18,8 +18,6 @@
             TheChatMain,
             TheLastMessages,
             TheClientInfo,
-
-
         },
     }
 </script>
@@ -34,19 +32,13 @@
 
         flex-direction:row;
 
-        &__last-messages {
-
-        }
-
         &__last-messages{
+            $sz:calc-em(30);
             width:275px;
             background-color:$color_bg;
             border-right:1px solid $color_border;
 
-            $sz:calc-em(30);
-
             padding:$sz 0 ;
-
             margin:($sz * -1) 0 ;
             margin-left:-($sz / 2);
 

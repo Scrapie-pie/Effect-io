@@ -16,6 +16,7 @@
         },
         data() {
             return {
+
                 canalList: [
                     {text: 'Не обработано', link: {name: 'process'}},
                     {text: 'Мои диалоги', link: {name: 'dialog'}},
@@ -39,7 +40,6 @@
 
 
 <style lang="scss">
-
     .header {
         position:relative;
         @include box-decor();
@@ -60,11 +60,8 @@
         }
 
         &__user-status{
-
             padding-bottom: 7.5vh;
         }
 
     }
-
-
 </style>

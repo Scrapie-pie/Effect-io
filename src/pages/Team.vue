@@ -74,8 +74,17 @@
         data() {
             return {
                 count:0,
-                search: ''
+                search: '',
+                operator_list:[
+
+                ]
             }
+        },
+        created(){
+         /*   this.$http.get('admin-employee-read').then(({data})=>{
+                this.operator_list = data.data;
+
+            })*/
         }
     }
 </script>

@@ -1,6 +1,6 @@
 <template lang="pug">
         the-layout(:header-padding-no="true").settings-page
-            template(slot="title").qwe Настройки
+            template(slot="title") Настройки
             template(slot="nav")
                 nav-main(:item-list="menuList")
             template(slot="main")

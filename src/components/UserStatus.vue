@@ -1,24 +1,24 @@
 <template lang="pug">
-    form.user-status(@click="logout")
+    form.user-status(@change="operatorStatusUpdate")
         .user-status__avatar-wrap
-            base-avatar.user-status__avatar
+            base-avatar.user-status__avatar(:url="profile.avatar")
             .user-status__indicator(:class="`user-status__indicator_${statusCurrent.name}`")
             ul.user-status__list(:class="{'user-status__list_open':show}")
                 li.user-status__item
                     label.user-status__text.user-status__text_online
-                        input.user-status__input(type="radio" name="status" value="3" v-model="status")
+                        input.user-status__input(type="radio" name="status" value="1" v-model.number="status")
                         | В сети (онлайн)
                 li.user-status__item
                     label.user-status__text.user-status__text_offline
-                        input.user-status__input(type="radio" name="status" value="0" v-model="status")
+                        input.user-status__input(type="radio" name="status" value="0" v-model.number="status")
                         | Не в сети (оффлайн)
                 li.user-status__item
                     label.user-status__text.user-status__text_break
-                        input.user-status__input(type="radio" name="status" value="2" v-model="status")
+                        input.user-status__input(type="radio" name="status" value="2" v-model.number="status")
                         | Перерыв
                 li.user-status__item
                     label.user-status__text.user-status__text_lunch
-                        input.user-status__input(type="radio" name="status" value="1" v-model="status")
+                        input.user-status__input(type="radio" name="status" value="3" v-model.number="status")
                         | Обед
         form.user-status__status
             button(type="button").user-status__current-status(@click.prevent="toggle")
@@ -42,53 +42,29 @@
         data() {
             return {
                 show: false,
-                status: '4'
-            }
-        },
-        mounted() {
-            document.addEventListener('click', this.close);
-        },
-        updated() {
-            document.addEventListener('click', this.close);
-        },
-        beforeDestroy() {
-            document.removeEventListener('click', this.close);
-        },
-        methods: {
-            logout(){
-                this.$store.dispatch('user/logout')
-                    .then(() => {
-                        this.$router.push({name:'auth'})
-
-                    })
-            },
-            close(e) {
-                if (!e.target.matches('.user-status__status, .user-status__status *')) {
-                    this.show = false;
-                    document.removeEventListener('click', this.close);
-                }
-            },
-            toggle() {
-                this.show = !this.show;
+                status:0,
             }
         },
         computed: {
+            profile(){
+                return this.$store.state.user.profile
+            },
             statusCurrent() {
                 let text, textShort, name;
-
+                console.log(this.status);
                 switch (this.status) {
-                    case '3':
+                    case 1:
                         text = 'В сети (онлайн)';
                         textShort = 'В сети';
                         name = 'online';
                         break;
-                    case '2':
+                    case 2:
                         text = 'Перерыв';
                         textShort = 'Перерыв';
 
                         name = 'break';
                         break;
-                    case '1':
+                    case 3:
                         text = 'Обед';
                         textShort = 'Обед';
                         name = 'lunch';
@@ -100,10 +76,45 @@
                         name = 'offline';
                         break;
                 }
-
                 return {text, textShort, name}
             }
-        }
+        },
+        watch:{
+            profile(val){
+                if(val){
+                    this.status = val.status;
+                }
+            }
+        },
+        created(){
+
+        },
+        mounted() {
+            document.addEventListener('click', this.close);
+        },
+        updated() {
+            document.addEventListener('click', this.close);
+        },
+        beforeDestroy() {
+            document.removeEventListener('click', this.close);
+        },
+        methods: {
+            close(e) {
+                if (!e.target.matches('.user-status__status, .user-status__status *')) {
+                    this.show = false;
+                    document.removeEventListener('click', this.close);
+                }
+            },
+            toggle() {
+                this.show = !this.show;
+            },
+            operatorStatusUpdate(){
+                this.$http.put('operator-online-update',{
+                    online:this.status
+                })
+            }
+        },
+
     }
 </script>
 

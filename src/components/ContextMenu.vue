@@ -5,7 +5,7 @@
         transition(name="fade")
             ul.context-menu__list(v-if="show")
                 li.context-menu__item
-                    router-link.context-menu__link(:to="{name:'settingsApp'}") Редактировать
+                    router-link.context-menu__link(:to="{name:'settingsApp',query: { user_id: 151 }}") Редактировать
 </template>
 
 <script>
