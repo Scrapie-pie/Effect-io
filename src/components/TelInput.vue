@@ -1,6 +1,12 @@
 <template lang="pug">
     div.tel-list
-        input.field__input(ref="maskPhone" type="text" v-model="phone" key="maskPhone")
+        input.field__input(
+            ref="maskPhone"
+            type="tel"
+            v-bind="getInputOptions",
+            v-on="inputListeners",
+
+        )
         .tel-list__scrollbar()
             scroll-bar
                 div(ref="wrapTelList")
@@ -19,10 +25,66 @@ import 'intl-tel-input/build/css/intlTelInput.min.css'
 import Inputmask from "inputmask";
 
 export default  {
+    inheritAttrs: false,
+    props:{
+        value: {
+            required: false,
+            default: ''
+        }
+    },
+    data() {
+        return {
+            iti:'',
+            phone:'',
+        }
+
+    },
     watch:{
 
     },
     computed: {
+        getInputOptions() {
+            let obj = {
+                value:this.value
+            }
+
+            return Object.assign({maxLength:64}, this.$attrs, obj);
+        },
+        inputListeners: function () {
+            var vm = this
+            // `Object.assign` объединяет объекты вместе, чтобы получить новый объект
+            return Object.assign({},
+                // Мы добавляем все слушатели из родителя
+                this.$listeners,
+                // Затем мы можем добавить собственные слушатели или
+                // перезаписать поведение некоторых существующих.
+                {
+                    // Это обеспечит, что будет работать v-model на компоненте
+                    focus: function (event) {
+                        vm.$emit('focus');
+                        vm.focus = true
+                    },
+                    blur: function (event) {
+                        vm.$emit('blur');
+                        if (event.target.value) return
+                        vm.focus = false
+                    },
+                    input: function (event,$event) {
+                        let str = vm.iti.getSelectedCountryData().dialCode+''+vm.$refs.maskPhone.inputmask.unmaskedvalue()
+
+                        vm.$emit('unmaskedvalue', str)
+                        vm.$emit('input', event.target.value)
+                    },
+                }
+
+
+
+
+            )}
+    },
+    created(){
+
+
 
     },
     mounted() {
@@ -32,38 +94,32 @@ export default  {
     beforeDestroy(){
         this.$refs.maskPhone.inputmask.remove()
         this.$refs.maskPhone.removeEventListener("countrychange", this.setMask);
-        this.iti.destroy();
-        window.intlTelInputGlobals='';
-
-
-    },
-    data() {
-        return {
-            iti:'',
-            phone:'',
-        }
-
-    },
-    created(){
-
+        window.iti.destroy();
+        delete window.iti;
+        delete window.intlTelInputGlobals;
+        delete window.intlTelInputUtils;
 
 
     },
     methods: {
         initTelList(){
-            this.iti = intlTelInput(this.$refs.maskPhone,{
+            window.iti = intlTelInput(this.$refs.maskPhone,{
                 nationalMode:false,
                 autoPlaceholder:'off',
                 preferredCountries:['ru','us', 'de', 'es','fr'],
-                dropdownContainer:this.$refs.wrapTelList
+                dropdownContainer:this.$refs.wrapTelList,
+                formatOnDisplay:false
             });
-            window.intlTelInputGlobals = intlTelInputUtils; //Todo сделать ленивую подгрузку
+            //Todo сделать ленивую подгрузку
             this.$refs.maskPhone.addEventListener("countrychange", this.setMask);
 
             this.getCountryByIp().then(({data})=>{
-                this.iti.setCountry(data.country)
-                this.setMask()
+                window.iti.setCountry(data.country)
+                this.setMask();
+                this.setValue=this.$store.getters['user/profile'].phones.phone;
             })
+
+
         },
         getCountryByIp(){
             let ipinfo = this.$http.create({
@@ -73,17 +129,20 @@ export default  {
             return ipinfo.get('')
         },
         setMask(){
-            let country_data = this.iti.getSelectedCountryData(),
-                format       = intlTelInputGlobals.getExampleNumber(country_data.iso2, false, intlTelInputGlobals.numberType.MOBILE),
+            let country_data = window.iti.getSelectedCountryData(),
+                format       = intlTelInputUtils.getExampleNumber(country_data.iso2, false, 1),
                 mask         = format.replace('+' + country_data.dialCode, '').replace(/\d/g, '#'),
                 finishMask = '+' + country_data.dialCode.replace(/9/g, '\\9') + mask;
 
             this.phone='';
-
-            Inputmask({
+            let settingsInputMask = {
                 mask:finishMask,
                 showMaskOnHover:false
-            }).mask(this.$refs.maskPhone)
+            }
+            Inputmask(settingsInputMask).mask(this.$refs.maskPhone)
+
+            //this.phone=Inputmask.format(this.$store.getters['user/profile'].phones.phone, {mask:finishMask});
+            //this.phone= Inputmask.format(this.phone,settingsInputMask)
 
         },
     },
@@ -99,7 +158,6 @@ export default  {
 
         position:relative;
         &__scrollbar {
-
             @include box-decor();
             margin-top:calc-em(10);
             padding:0;

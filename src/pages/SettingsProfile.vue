@@ -19,19 +19,19 @@
 
                         )
                         base-field.settings-list__control.settings-list__field(
-                        label="Введите фамилию сотрудника",
-                        type="text",
-                        name="last_name"
-                        v-model="model.last_name"
+                            label="Введите фамилию сотрудника",
+                            type="text",
+                            name="last_name"
+                            v-model="model.last_name"
                         )
                     text-info.settings-list__text-info Используйте реальное имя, оно будет отображаться в диалогах с клиентами и другими сотрудниками. Фамилию вводить не обязательно.
 
                 li.settings-list__item
                     base-field.settings-list__control.settings-list__field(
-                    label="Введите e-mail сотрудника",
-                    type="email",
-                    name="email"
-                    v-model="model.mail"
+                        label="Введите e-mail сотрудника",
+                        type="email",
+                        name="email"
+                        v-model="model.mail"
                     )
                     text-info.settings-list__text-info Используйте реальное имя, оно будет отображаться в диалогах с клиентами и другими сотрудниками. Фамилию вводить не обязательно.
 
@@ -39,18 +39,29 @@
                     .settings-list__row
                         .settings-list__col
                             base-field.settings-list__control.settings-list__select(
-                            type="select",
-                            :selectOptions="{label:'name',options:[{name:'Телефон'},{name:'Связь'}],default:{name:'Телефон'}}"
-                            name="phones"
+                                v-model="phones_type_select"
+                                type="select",
+                                :selectOptions="{label:'name',options:phonesType,value:phonesType[model.phones.type]}"
+                                name="phones"
                             )
-                            tel-input
-                        .settings-list__col
-                        .settings-list__col
-                            base-field.settings-list__control.settings-list__field(
-                            label="Добавочный",
-                            type="text",
-                            name="phonePlus"
-                            )
+                        template(v-if="!model.phones.type")
+                            .settings-list__col
+                                tel-input(v-model="model.phones.phone" @unmaskedvalue="unmaskedvalue")
+                            .settings-list__col
+                                base-field.settings-list__control.settings-list__field(
+                                v-model="model.phones.additional"
+                                label="Добавочный",
+                                type="text",
+                                name="phoneAdditional"
+                                )
+                        template(v-else)
+                            .settings-list__col
+                                base-field(
+                                    v-model="model.phones.sip"
+                                    label="SIP URL",
+                                    type="text"
+                                    name="Sip"
+                                )
                     text-info.settings-list__text-info Телефон будет использоваться для приема звонков от клиентов. Если у Вас есть IP телефония, вы можете принимать звонки на sip аккаунт.
 
                 li.settings-list__item
@@ -60,9 +71,9 @@
                 li.settings-list__item
                     h3.settings-list__name Определить в отдел / отделы
                     base-field.settings-list__control(
-                        v-model="branchListSelected"
+                        v-model="branch_list_selected"
                         type="select",
-                        :selectOptions="{value:branchListSelected, label:'title',options:compBranchListRemaining}"
+                        :selectOptions="{value:branch_list_selected, label:'title',options:comp_branch_list_remaining}"
                         name="voice"
                         multiple,
                     )
@@ -119,22 +130,20 @@
     import TelInput from '@/components/TelInput'
 
     export default {
-
         components: {
-            TextInfo, UploadAvatar, PasswordRefresh,TelInput
+            TextInfo,
+            UploadAvatar,
+            PasswordRefresh,
+            TelInput
         },
         watch:{
-            branchListSelected(val) {
+            phones_type_select(val){
+                this.model.phones.type = val.value
+            },
+            branch_list_selected(val) {
                 this.model.branches_ids = val.map((item) => {
                     return item.id
                 })
-           /*     let branchListAll = this.branchListAll.filter((item)=>{
-                    return !this.model.branches_ids.includes(item.id)
-                });
-                console.log(branchListAll);
-                console.log(val);
-                console.log(this.model.branches_ids);*/
-
             },
             admin_mode(val){
                 if(val) {
@@ -144,12 +153,25 @@
         },
         data() {
             return {
+                phone_unmaskedvalue:'',
+                phones_type_select:{},
+                phonesType:[
+                    {
+                        name:'Телефон',
+                        value:0
+                    },
+                    {
+                        name:'Sip',
+                        value:1
+                    }
+                ],
                 model:{
                     user_id:this.$store.getters['user/profile'].user_id,
                     avatar:this.$store.getters['user/profile'].avatar,
                     first_name:this.$store.getters['user/profile'].first_name,
                     last_name:this.$store.getters['user/profile'].last_name,
                     phone:this.$store.getters['user/profile'].phone,
+                    phones:this.$store.getters['user/profile'].phones,
                     mail:this.$store.getters['user/profile'].mail,
                     role_id:this.$store.getters['user/profile'].role_id,
                     is_common_chat:this.$store.getters['user/profile'].is_common_chat,
@@ -157,19 +179,15 @@
                     use_chat:this.$store.getters['user/profile'].use_chat,
                     use_calls:this.$store.getters['user/profile'].use_calls,
                 },
-                admin_mode:this.$store.getters['user/profile'].role_id == 13,
-                branchListSelected:[],
-                branchListAll:[],
-                branchListRemaining:[],
-
+                admin_mode:this.$store.getters['user/profile'].role_id === 13,
+                branch_list_selected:[],
+                branch_list_all:[],
 
             }
         },
         computed:{
-
-
-            compBranchListRemaining(){
-                return this.branchListAll.filter((item)=>{
+            comp_branch_list_remaining(){
+                return this.branch_list_all.filter((item)=>{
                     return !this.model.branches_ids.includes(item.id)
                 });
             }
@@ -178,34 +196,25 @@
             this.getBranchListAll()
         },
         methods:{
+            unmaskedvalue(val){
+                this.phone_unmaskedvalue=val;
+
+            },
             getBranchListAll(){
                 this.$http.get('branches-list').then(({data})=>{
-                    this.branchListAll = data.data;
-              /*      this.branchList = data.data.filter((item)=>{
+                    this.branch_list_all = data.data;
+                    this.branch_list_selected = this.branch_list_all.filter((item)=>{
                         return this.model.branches_ids.includes(item.id)
                     });
-                    this.branchListRemaining = data.data.filter((item)=>{
-                        return !this.model.branches_ids.includes(item.id)
-                    });*/
-
-
-
-                this.branchListSelected = this.branchListAll.filter((item)=>{
-                    return this.model.branches_ids.includes(item.id)
-                });
-
-
                 })
             },
             getUploadAvatar(event){
                 this.model.avatar=event;
             },
             userUpdate(){
+
              return this.$http.post('user-update', this.model)
             }
         }
-
-
-
     }
 </script>

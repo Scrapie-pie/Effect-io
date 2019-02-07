@@ -47,8 +47,7 @@
             v-bind="getSelectOptions",
             v-on="inputListeners",
             ).field__select
-                span(slot="no-options")
-                //template(slot="no-options") Результат 0
+                template(slot="no-options") Ничего не найдено
 
 </template>
 
