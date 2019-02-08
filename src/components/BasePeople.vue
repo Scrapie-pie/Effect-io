@@ -1,7 +1,7 @@
 <template lang="pug">
     .base-people(:class="classObject")
         .base-people__avatar-wrap
-            base-avatar.base-people__avatar(:width="avatarWidth")
+            base-avatar.base-people__avatar(:width="avatarWidth", :url="avatarUrl")
             base-icon(:name="channelName").base-people__channel
         .base-people__inner
             .base-people__header
@@ -43,6 +43,7 @@
             text: String,
             datetime: String,
             avatarWidth: String,
+            avatarUrl: String,
             type: {
                 type:String,
                 validator: function (value) {

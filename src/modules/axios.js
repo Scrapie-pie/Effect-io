@@ -10,6 +10,7 @@ axios.defaults.headers.common['Content-Type'] = 'application/json';
 
 axios.interceptors.request.use(function (config) {
     config.url='app.php?'+config.url
+
     return config;
 }, function (error) {
     // Do something with request error

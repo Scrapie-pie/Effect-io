@@ -22,23 +22,34 @@
                         th.table__td.table__td_th Отдел
                         th.table__td.table__td_th Активен
                         th.table__td.table__td_th Досупные действия
-                tbody.table__tbody
+                tbody.table__tbody(v-for="(item, index) in operator_list", :key="item.id")
                     tr
                         td.table__td
-                            base-people(type="operator" text="онлайн" name="Зеленков Александр")
+                            base-people(type="operator" text="онлайн" :name="item.first_name +' '+ item.last_name" :avatar-url="item.avatar")
                         td.table__td
-                            base-btn(@click="startChat") Начать диалог
+                            base-btn() Начать диалог
 
                         td.table__td
-                            a(href="tel:+7 (921) 656-66-77") +7 (921) 656-66-77
+                            a(
+                                v-if="!item.phones.type",
+                                :href="`tel:${item.phones.phone}`"
+                                v-text="item.phones.phone"
+                            )
+                            a(
+                                v-else
+                                href="javascript:"
+                                v-text="item.phones.sip"
+                            )
                             br
-                            a(href="mailto:mail@mail.ru")  ivan@effect.com
+                            a(:href="`mailto:${item.mail}`" v-text="item.mail")
                         td.table__td Главный отдел
                         td.table__td
                             base-radio-check
                         td.table__td
                             context-menu
                                 base-btn(:icon="{name:'edit',box:true,textHidden:'Открыть меню'}" color="info-lighten")
+                                template(slot="listItem")
+                                    router-link.context-menu__link(:to="{name:'settingsProfile',query: { user_id: item.id }}") Редактировать
 
         base-no-found(v-if="!count" name="team")
 
@@ -81,10 +92,10 @@
             }
         },
         created(){
-         /*   this.$http.get('admin-employee-read').then(({data})=>{
+            this.$http.get('employee-company-list').then(({data})=>{
                 this.operator_list = data.data;
 
-            })*/
+            })
         }
     }
 </script>

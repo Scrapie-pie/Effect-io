@@ -5,6 +5,8 @@
         transition(name="fade")
             ul.context-menu__list(v-if="show")
                 li.context-menu__item
+                    slot(name="listItem")
+                li.context-menu__item
                     router-link.context-menu__link(:to="{name:'settingsApp',query: { user_id: 151 }}") Редактировать
 </template>
 
@@ -49,6 +51,7 @@
             position:absolute;
             top:100%;
             left:0;
+            z-index:1;
         }
 
         &__link{ font-size:$font-size;}

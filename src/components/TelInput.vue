@@ -114,9 +114,13 @@ export default  {
             this.$refs.maskPhone.addEventListener("countrychange", this.setMask);
 
             this.getCountryByIp().then(({data})=>{
-                this.iti.setCountry(data.country)
+                console.log(data);
+                this.iti.setCountry(data.country);
                 this.setMask();
-                this.setValue=this.$store.getters['user/profile'].phones.phone;
+
+            }).catch(()=>{
+                console.log('catch');
+                this.setMask();
             })
 
 

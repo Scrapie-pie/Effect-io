@@ -39,7 +39,7 @@
                     .settings-list__row
                         .settings-list__col
                             base-field.settings-list__control.settings-list__select(
-                                v-model="phones_type_select"
+                                v-model="phonesTypeSelect"
                                 type="select",
                                 :selectOptions="{label:'name',options:phonesType,value:phonesType[model.phones.type]}"
                                 name="phones"
@@ -71,9 +71,9 @@
                 li.settings-list__item
                     h3.settings-list__name Определить в отдел / отделы
                     base-field.settings-list__control(
-                        v-model="branch_list_selected"
+                        v-model="branchListSelected"
                         type="select",
-                        :selectOptions="{value:branch_list_selected, label:'title',options:comp_branch_list_remaining}"
+                        :selectOptions="{value:branchListSelected, label:'title',options:compBranchListRemaining}"
                         name="voice"
                         multiple,
                     )
@@ -111,8 +111,8 @@
                 li.settings-list__item(v-if="$store.getters['user/isRole']=='owner'")
                     h3.settings-list__name Настройки доступа
                     base-radio-check.settings-list__control(
-                        name="admin_mode"
-                        v-model="admin_mode",
+                        name="adminMode"
+                        v-model="adminMode",
 
                     ) Включить права администратора
                     text-info.settings-list__text-info Права администратора позволяют сотруднику: управлять другими аккаунтами сотрудников, просматривать статистику, менять данные основного аккаунта, добавлять/удалять/ редактировать данные всех сотрудников, отделов и каналов связи.
@@ -137,15 +137,15 @@
             TelInput
         },
         watch:{
-            phones_type_select(val){
+            phonesTypeSelect(val){
                 this.model.phones.type = val.value
             },
-            branch_list_selected(val) {
+            branchListSelected(val) {
                 this.model.branches_ids = val.map((item) => {
                     return item.id
                 })
             },
-            admin_mode(val){
+            adminMode(val){
                 if(val) {
                     this.model.role_id = 13
                 } else this.model.role_id = 5
@@ -153,8 +153,8 @@
         },
         data() {
             return {
-                phone_unmaskedvalue:'',
-                phones_type_select:{},
+                phoneUnmaskedvalue:'',
+                phonesTypeSelect:{},
                 phonesType:[
                     {
                         name:'Телефон',
@@ -179,31 +179,47 @@
                     use_chat:this.$store.getters['user/profile'].use_chat,
                     use_calls:this.$store.getters['user/profile'].use_calls,
                 },
-                admin_mode:this.$store.getters['user/profile'].role_id === 13,
-                branch_list_selected:[],
-                branch_list_all:[],
+                adminMode:this.$store.getters['user/profile'].role_id === 13,
+                branchListSelected:[],
+                branchListAll:[],
 
             }
         },
         computed:{
-            comp_branch_list_remaining(){
-                return this.branch_list_all.filter((item)=>{
+            compBranchListRemaining(){
+                return this.branchListAll.filter((item)=>{
                     return !this.model.branches_ids.includes(item.id)
                 });
             }
         },
         created(){
-            this.getBranchListAll()
+            this.getBranchListAll();
+            this.getProfileByUserId()
+
+
         },
         methods:{
+            getProfileByUserId(){
+                let user_id = + this.$route.query.user_id;
+                if(user_id) {
+
+                    this.$http.get('user-profile', {params:{user_id:user_id}}).then(({data})=>{
+                        if(data.success) {
+                            this.model=data.data.user;
+
+                        }
+                    })
+                }
+
+            },
             unmaskedvalue(val){
-                this.phone_unmaskedvalue=val;
+                this.phoneUnmaskedvalue=val;
 
             },
             getBranchListAll(){
                 this.$http.get('branches-list').then(({data})=>{
-                    this.branch_list_all = data.data;
-                    this.branch_list_selected = this.branch_list_all.filter((item)=>{
+                    this.branchListAll = data.data;
+                    this.branchListSelected = this.branchListAll.filter((item)=>{
                         return this.model.branches_ids.includes(item.id)
                     });
                 })

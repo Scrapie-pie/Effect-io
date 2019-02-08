@@ -43,9 +43,13 @@
             return {
                 show: false,
                 status:0,
+                activity: null
             }
         },
         computed: {
+            isAuth(){
+                return this.$store.getters['user/authenticated']
+            },
             profile(){
                 return this.$store.state.user.profile
             },
@@ -80,6 +84,10 @@
             }
         },
         watch:{
+            isAuth(val){
+                if (val) this.makeActivity();
+                else this.endActivity()
+            },
             profile(val){
                 if(val){
                     this.status = val.status;
@@ -87,7 +95,7 @@
             }
         },
         created(){
-
+            if (this.isAuth) this.makeActivity();
         },
         mounted() {
             document.addEventListener('click', this.close);
@@ -108,11 +116,36 @@
             toggle() {
                 this.show = !this.show;
             },
+
             operatorStatusUpdate(){
                 this.$http.put('operator-online-update',{
                     online:this.status
                 })
-            }
+            },
+
+            makeActivity() {
+                this.startActivity();
+                ['mousemove', 'mouseup', 'touchmove', 'mousewheel','keydown'].forEach(event => document.addEventListener(event, this.resetActivity));
+            },
+            startActivity() {
+                this.activity = setTimeout(() => {
+                    this.$http.put('operator-online-update',{
+                        online:2  //перерыв
+                    })
+                }, 10 * 60 * 1000);
+            },
+            resetActivity() {
+                this.$nextTick(() => {
+                    clearTimeout(this.activity);
+                    this.startActivity()
+                });
+            },
+            endActivity() {
+                ['mousemove', 'mouseup', 'touchmove', 'mousewheel'].forEach(event => document.removeEventListener(event, this.resetActivity));
+                this.$nextTick(() => {
+                    clearTimeout(this.activity);
+                });
+            },
         },
 
     }
