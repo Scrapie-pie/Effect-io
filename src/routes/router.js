@@ -4,8 +4,8 @@ import store from '@/store/store'
 
 import AccountAuth from '@/components/AccountAuth'
 
-import Team from '@/pages/Team'
-import Visitor from '@/pages/Visitor'
+import PageTeam from '@/pages/PageTeam'
+import PageVisitor from '@/pages/PageVisitor'
 import ChatDialog from '@/pages/ChatDialog'
 
 import Settings from '@/routes/settings'
@@ -36,12 +36,12 @@ const router =  new Router({
         {
             name: 'team',
             path: '/team',
-            component: Team
+            component: PageTeam
         },
         {
             name: 'visitors',
             path: '/visitors',
-            component: Visitor
+            component: PageVisitor
         },
         {
             name: 'process',

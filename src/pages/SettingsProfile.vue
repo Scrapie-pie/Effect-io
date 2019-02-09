@@ -200,13 +200,12 @@
         },
         methods:{
             getProfileByUserId(){
-                let user_id = + this.$route.query.user_id;
-                if(user_id) {
 
+                let user_id = + this.$route.query.user_id;
+                if(user_id !== this.$store.getters['user/profile'].user_id) {
                     this.$http.get('user-profile', {params:{user_id:user_id}}).then(({data})=>{
                         if(data.success) {
                             this.model=data.data.user;
-
                         }
                     })
                 }

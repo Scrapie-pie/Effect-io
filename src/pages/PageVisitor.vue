@@ -1,9 +1,9 @@
 <template lang="pug">
-    article.chat-team.chat-team_visitors
+    article.page-visitors
         template(v-if="!count")
-            .chat-team__controls
-                .chat-team__control
-                    base-field.chat-team__search(
+            .page-visitors__controls
+                .page-visitors__control
+                    base-field.page-visitors__search(
                     type="search"
                     name="search",
                     placeholder="Поиск... (имя, тел., e-mail)"
@@ -11,15 +11,14 @@
                     theme="soft"
 
                     )
-                .chat-team__control
+                .page-visitors__control
                     base-field(
                     type="select"
                     name="channel",
                     :selectOptions="{label:'name',options:channelList}"
                     v-model="channel"
                     )
-                .chat-team__control
-                    base-btn(@click="$root.$emit('popup','notFind')") Попап ограничения
+
 
             table.table
                 thead.table__thead
@@ -28,26 +27,27 @@
                         th.table__td.table__td_th Прикреплен сотрудник
                         th.table__td.table__td_th Контакты
                         th.table__td.table__td_th Регион
-                tbody.table__tbody
-                    tr.table__tr
+                tbody.table__tbody(v-for="(item, index) in itemList", :key="item.uuid+item.site_id")
+                    tr.table__tr.page-visitors__tr
                         td.table__td
-                            base-people(type="visitor" name="Ксения" avatar-width="md")
-                        td.table__td Вы можете начать диалог
+                            base-people(
+                                type="visitor"
+                                name="Ксения"
+                                avatar-width="md",
+                                :avatar-url="item.photo"
+                            )
                         td.table__td
-                            a(href="tel:+7 (921) 656-66-77") +7 (921) 656-66-77
-                            | ,
-                            a(href="mailto:mail@mail.ru") ivan@effect.com
-                        td.table__td Россия, Свердловская область, Екатеринбург
-                    tr.table__tr
+                            template(v-if="!item.employee_id")
+                                base-btn.page-visitors__start-chat(:router="{name:'dialog'}") начать диалог
+                            template(v-else v-text="item.employee_id")
+                                |{{item.employee_id}}
+
                         td.table__td
-                            base-people(type="visitor" name="Ксения" avatar-width="md")
+                            a(:href="`tel:${item.phone}`" v-text="item.phone")
+                            br(v-if="item.phone")
+                            a(:href="`mailto:${item.mail}`" v-text="item.mail")
                         td.table__td
-                            base-btn() Начать диалог
-                        td.table__td
-                            a(href="tel:+7 (921) 656-66-77") +7 (921) 656-66-77
-                            | ,
-                            a(href="mailto:mail@mail.ru") ivan@effect.com
-                        td.table__td Россия, Свердловская область, Екатеринбург
+                            |{{item.country}}, {{item.region}}, {{item.city}}
         base-no-found(v-else name="visitors")
 </template>
 
@@ -63,7 +63,8 @@
                 count:0,
                 search: '',
                 channel: '',
-                channelList: []
+                channelList: [],
+                itemList:[],
             }
         },
         created() {
@@ -78,8 +79,9 @@
             ]
             this.channel = this.channelList[0];
 
-            this.$http('guest-get-by-operator').then(({data})=>{
-                console.log(data);
+            this.$http('guest-company-list').then(({data})=>{
+                this.itemList = data.data;
+                console.log(data.data);
             })
         },
         methods:{
@@ -92,11 +94,8 @@
 </script>
 
 <style lang="scss">
-    .chat-team{
-
-        &_visitors {
-            max-width:1300px;
-        }
+    .page-visitors{
+        max-width:1300px;
 
         &__controls{
             display:flex;
@@ -110,6 +109,24 @@
             width:calc-em(250);
         }
 
+        &__tr:not(:hover) &__start-chat {
+            border:0;
+            padding:0;
+            color:inherit;
+            background-color:transparent;
+            transition-property:color;
+
+            &::before {
+                content:'Вы можете ';
+
+            }
+        }
+        &__start-chat{
+            text-decoration:none;
+        }
+        &__start-chat:first-letter {
+            text-transform:uppercase;
+        }
     }
 
 

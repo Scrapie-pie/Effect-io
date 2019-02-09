@@ -61,6 +61,7 @@
 </template>
 
 <script>
+    import config from "@/config/index";
     import TextInfo from '@/components/TextInfo'
     import browserNotification from '@/modules/browserNotification'
 
@@ -174,9 +175,9 @@
                    })
             },
             playSoundFile:function(sound ,prev_sound) {
-                if (!prev_sound.file) return  //Что бы не проигрывалось при заходе на страницу
+                if (!prev_sound.name) return  //Что бы не проигрывалось при заходе на страницу
                 if(sound.file) {
-                let audio = new Audio(sound.file); // не работает на локальном сервере "/static/dev/audio/notices/default.mp3"
+                    let audio = new Audio(config.api_server.split('/app')[0]+sound.file);
                 audio.volume=.5;
                 audio.play();
             }

@@ -23,7 +23,7 @@
                         th.table__td.table__td_th Активен
                         th.table__td.table__td_th Досупные действия
                 tbody.table__tbody(v-for="(item, index) in operator_list", :key="item.id")
-                    tr
+                    tr.table__tr
                         td.table__td
                             base-people(type="operator" text="онлайн" :name="item.first_name +' '+ item.last_name" :avatar-url="item.avatar")
                         td.table__td
@@ -79,7 +79,6 @@
 
     export default {
         components: {
-
             ContextMenu
         },
         data() {
@@ -87,7 +86,6 @@
                 count:0,
                 search: '',
                 operator_list:[
-
                 ]
             }
         },

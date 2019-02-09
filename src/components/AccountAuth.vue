@@ -140,9 +140,9 @@
             },
             recoverRequest() {
                 let data = {
-                    email: this.email,
+                    email: this.login,
                 };
-                this.$http.post('forgot-password', this.email, {
+                this.$http.post('forgot-password', data, {
                     headers: { 'content-type': 'application/json' }
                 }).then(() => {
                     this.passwordSent = true;
