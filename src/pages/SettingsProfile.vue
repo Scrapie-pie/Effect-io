@@ -139,6 +139,14 @@
             TelInput
         },
         watch:{
+            branchListAll(val){
+                if(val) {
+                    this.branchListSelected = val.filter((item)=>{
+                        return this.model.branches_ids.includes(item.id)
+                    });
+                }
+
+            },
             phonesTypeSelect(val){
                 this.model.phones.type = val.value
             },
@@ -184,7 +192,7 @@
                 },
                 adminMode:this.$store.getters['user/profile'].role_id === 13,
                 branchListSelected:[],
-                branchListAll:[],
+
 
             }
         },
@@ -193,16 +201,18 @@
                 return  this.model.user_id !== this.$store.getters['user/profile'].user_id
             },
             viewAdmin(){
-                return  this.$store.getters['user/profile'].role_id === 13 || this.$store.getters['user/profile'].role_id === 5
+                return  this.$store.getters['user/profile'].role_id === 13 || this.$store.getters['user/profile'].role_id === 5 //либо админ либо владелец
             },
             compBranchListRemaining(){
                 return this.branchListAll.filter((item)=>{
                     return !this.model.branches_ids.includes(item.id)
                 });
+            },
+            branchListAll(){
+                return this.$store.state.user.branchListAll
             }
         },
         created(){
-            this.getBranchListAll();//todo переделать
             this.getProfileByUserId()
         },
         methods:{
@@ -216,7 +226,7 @@
                     this.$http.get('user-profile', {params:{user_id:user_id}}).then(({data})=>{
                         if(data.success) {
                             this.model=data.data.user;
-                            this.getBranchListAll();
+
                         }
                     })
                 }

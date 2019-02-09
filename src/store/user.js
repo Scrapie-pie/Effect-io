@@ -2,7 +2,8 @@ export default {
     namespaced: true,
     state: {
         profile:false,
-        settings:false
+        settings:false,
+        branchListAll:[]
     },
     mutations: {
         logout(state) {
@@ -15,14 +16,16 @@ export default {
 
         },
 
-        profile(state, user) {
-            state.profile=user;
+        profile(state, val) {
+            state.profile=val;
 
 
         },
-        settings(state, settings) {
-            state.settings=settings;
-
+        settings(state, val) {
+            state.settings=val;
+        },
+        branchListAll(state, val) {
+            state.branchListAll=val;
         }
 
     },
@@ -34,6 +37,7 @@ export default {
 
             commit('profile', user)
             dispatch('getSettings')
+            dispatch('getBranchListAll')
 
         },
         logout({commit}) {
@@ -42,6 +46,11 @@ export default {
         getSettings({ commit, dispatch }) {
             this._vm.$http.get('company-get-settings').then(({data})=>{
                 commit('settings',data.data)
+            })
+        },
+        getBranchListAll({ commit, dispatch }) {
+            this._vm.$http.get('branches-list').then(({data})=>{
+                commit('branchListAll',data.data)
             })
         },
     },

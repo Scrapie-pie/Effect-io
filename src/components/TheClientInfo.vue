@@ -2,7 +2,7 @@
     scroll-bar.client-info
         base-people(:name="clientInfo.name" :text="clientInfoContacts" :bg-text-no-fill="true" :avatar-url="info.photo")
         .client-info__social-links
-            social-links
+            social-links(:link="info.channel_link" :name="channelName")
         .client-info__scrollbar
             form(@change="guestUpdateByOperator")
                 ul.client-info__list
@@ -153,7 +153,7 @@
 
                         break;
                 }
-                return text
+                return text.toLowerCase()
             }
         },
         created(){
