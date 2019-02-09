@@ -1,15 +1,10 @@
 <template lang="pug">
         the-layout(:header-padding-no="true").settings-page
             template(slot="title") Настройки
-            template(slot="nav")
+            template(slot="nav" v-if="menuList.length")
                 nav-main(:item-list="menuList")
             template(slot="main")
                  router-view
-
-
-
-
-
 </template>
 
 <script>
@@ -19,25 +14,27 @@
     export default {
         components: {NavMain,TheLayout},
         mixins: [hideHeader],
-        data() {
-            return {
-                menuList: [
+        computed:{
+            menuList(){
+                let menuList= [
                     {text: 'Настройки профиля', link: {name: 'settingsProfile'}},
                     {text: 'Настройки приложения', link: {name: 'settingsApp'}},
-
-
-                ]
+                ];
+                let user_id = + this.$route.query.user_id;
+                if(user_id) { //у чужого пользователя одна страница настроек, по этому меню не нужно
+                    if (user_id === this.$store.getters['user/profile'].user_id)  {
+                        menuList=[]
+                    }
+                }
+                return menuList
             }
-        },
+        }
 
     }
 </script>
 
 
 <style lang="scss">
-
-
-
     .settings-list{
 
         &__name{

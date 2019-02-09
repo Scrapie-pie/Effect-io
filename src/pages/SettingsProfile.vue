@@ -79,7 +79,7 @@
                     )
                     text-info.settings-list__text-info Вы можете назначить сотрудника в один или несколько отделов. Чтобы выбрать отдел, начните набирать его название в данном поле.
 
-                li.settings-list__item
+                li.settings-list__item(v-if="viewAdmin")
                     h3.settings-list__name Настройки каналов
                     ul.settings-list__sub
                         li.settings-list__sub-item
@@ -108,7 +108,7 @@
                             base-radio-check.settings-list__control(v-if="0" name="notifications") Принимать звонки от клиентов
                             text-info.settings-list__text-info Выберите, в каких каналах данный сотрудник может общаться с клиентами.
 
-                li.settings-list__item(v-if="$store.getters['user/isRole']=='owner'")
+                li.settings-list__item(v-if="viewAdmin && anotherProfile")
                     h3.settings-list__name Настройки доступа
                     base-radio-check.settings-list__control(
                         name="adminMode"
@@ -129,6 +129,8 @@
     import UploadAvatar from '@/components/UploadAvatar'
     import TelInput from '@/components/TelInput'
 
+    //const  TelInput = ()=> import('@/components/TelInput')
+
     export default {
         components: {
             TextInfo,
@@ -148,7 +150,7 @@
             adminMode(val){
                 if(val) {
                     this.model.role_id = 13
-                } else this.model.role_id = 5
+                } else this.model.role_id = 6
             }
         },
         data() {
@@ -167,6 +169,7 @@
                 ],
                 model:{
                     user_id:this.$store.getters['user/profile'].user_id,
+                    owner_id:this.$store.getters['user/profile'].owner_id, //нужен для проверки userIdNoOwner()
                     avatar:this.$store.getters['user/profile'].avatar,
                     first_name:this.$store.getters['user/profile'].first_name,
                     last_name:this.$store.getters['user/profile'].last_name,
@@ -186,6 +189,12 @@
             }
         },
         computed:{
+            anotherProfile(){
+                return  this.model.user_id !== this.$store.getters['user/profile'].user_id
+            },
+            viewAdmin(){
+                return  this.$store.getters['user/profile'].role_id === 13 || this.$store.getters['user/profile'].role_id === 5
+            },
             compBranchListRemaining(){
                 return this.branchListAll.filter((item)=>{
                     return !this.model.branches_ids.includes(item.id)
@@ -193,19 +202,21 @@
             }
         },
         created(){
-            this.getBranchListAll();
+            this.getBranchListAll();//todo переделать
             this.getProfileByUserId()
-
-
         },
         methods:{
             getProfileByUserId(){
 
                 let user_id = + this.$route.query.user_id;
-                if(user_id !== this.$store.getters['user/profile'].user_id) {
+                if(user_id) {
+
+                    if (user_id == this.$store.getters['user/profile'].user_id) return
+
                     this.$http.get('user-profile', {params:{user_id:user_id}}).then(({data})=>{
                         if(data.success) {
                             this.model=data.data.user;
+                            this.getBranchListAll();
                         }
                     })
                 }
@@ -228,7 +239,29 @@
             },
             userUpdate(){
 
-             return this.$http.post('user-update', this.model)
+             this.$http.post('user-update', this.model).catch(({response})=>{
+                 console.log('errors');
+                 console.log(response.data);
+
+                 if(response.data.errors) { // добавляет ошибки с бека в валидатор
+                     for (let prop in response.data.errors) {
+                         let id = this.$validator.fields.find({ name: prop });
+                         let err = {
+                             field: prop,
+                             msg:response.data.errors[prop].message,
+                             id:id
+                         };
+                         this.errors.add(err);
+                         this.$validator.flag(prop, {
+                             valid: false,
+                             dirty: true
+                         });
+                     }
+
+
+                 }
+             })
+
             }
         }
     }

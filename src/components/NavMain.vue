@@ -3,12 +3,14 @@
         ul.nav-main__list
             li.nav-main__item(
             v-for="(item, index) in itemList",
-            :key="index"
+            :key="index",
+            :class="'nav-main__item_'+item.link.name",
             )
                 router-link.nav-main__link(
+
                 :to="item.link"
                 active-class="nav-main__link_active"
-                exact
+
                 )
                     span.nav-main__text(v-text="item.text")
 

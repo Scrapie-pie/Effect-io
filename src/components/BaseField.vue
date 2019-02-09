@@ -1,51 +1,51 @@
 <template lang="pug">
     transition
-        label.field(:class="classObject" v-if="type!='select'")
+        label.field(:class="classObject" v-if="type!=='select'")
             span.field__input-wrap
                 span.field__label(v-if="label" v-text="label")
 
                 textarea.field__input.field__input_textarea(
-                v-if="type=='textarea'"
-                v-bind="getInputOptions",
-                v-on="inputListeners",
-                ref="input",
+                    v-if="type==='textarea'"
+                    v-bind="getInputOptions",
+                    v-on="inputListeners",
+                    ref="input",
                 )
 
                 input(
-                v-else
-                v-bind="getInputOptions",
-                v-on="inputListeners",
-                ref="input",
+                    v-else
+                    v-bind="getInputOptions",
+                    v-on="inputListeners",
+                    ref="input",
                 ).field__input
 
-
-
                 button.field__close(
-                v-if="type=='search'",
-                title="Очистить",
-                @click.prevent="clearSearch()"
+                    v-if="type==='search'",
+                    title="Очистить",
+                    @click.prevent="clearSearch()"
                 ) ×
 
                 button.field__eye(
-                v-if="type=='password'",
-                type="button"
-                title="Показать пароль",
-                @click.prevent="togglePassword()"
+                    v-if="type==='password'",
+                    type="button"
+                    title="Показать пароль",
+                    @click.prevent="togglePassword()"
                 )
                     base-icon(name="eye")
                     span.field__eye-text Показать пароль
 
-            strong.field__error(v-if="errors.has(name) && type!='amount'" v-html="errors.first(name)")
+            strong.field__error(
+                v-if="errors.has(name) && type!=='amount'"
+                v-html="errors.first(name)"
+            )
 
-        .field(:class="classObject" v-else-if="type=='select'"    ref="input")
+        .field(:class="classObject" v-else-if="type==='select'" ref="input")
             label.field__label(v-if="label" v-text="label")
             base-select(
                 :class="{invalid_force: errors.has(name)}"
-            autocomplete="off",
-            key="id"
-
-            v-bind="getSelectOptions",
-            v-on="inputListeners",
+                autocomplete="off",
+                key="id"
+                v-bind="getSelectOptions",
+                v-on="inputListeners",
             ).field__select
                 template(slot="no-options") Ничего не найдено
 
@@ -53,10 +53,6 @@
 
 <script>
     import '@/scss/base/field.scss'
-    import moment from 'moment'
-
-    import Inputmask from 'inputmask'
-    // import '@/assets/js/phone-ru'
 
     import vSelect from 'vue-select' // https://github.com/sagalbot/vue-select
     export default {
@@ -102,75 +98,14 @@
             return {
                 focus: false,
                 options: {},
-                mapMask: {
-                    passport: '9999 999999',
-                    passportCode: '999-999',
 
-                    index: '999999',
-                    snils: '999-999-999 99',
-                    inn: '999999999999',
-                    birthdate: '99.99.9999',
-                    dateIssue: '99.99.9999',
-                    phone: '+7 (999) 999 99 99',
-                    email: {
-                        alias: 'email',
-                        disablePredictiveText: true,
-                        placeholder: '',
-                        showMaskOnHover: false
-                    },
-                    bic: '999999999',
-                    accCorr: '99999999999999999999',
-                    accCheck: {
-                        mask: '99999.999.9.99999999999',
-                        autoUnmask: true,
-                        showMaskOnHover: false
-                    },
-                    accPers: {
-                        mask: '99999.999.9.99999999999',
-                        autoUnmask: true,
-                        showMaskOnHover: false
-                    }
-                }
-            }
-        },
-        mounted() {
-
-            /*    if (this.label) {
-                let divClosest = this.$refs.input.closest('.form__item')
-                if (divClosest) {
-                  divClosest.classList.add('form__item_field_label')
-                }
-              }*/
-            this.$nextTick(() => {
-                if (this.mapMask[this.name]) {
-                    if (this.name == 'email' && this.mobileOS == 'Android') return
-
-                    Inputmask(this.mapMask[this.name], {showMaskOnHover: false}).mask(this.$refs.input)
-                }
-
-                if (this.type == 'date') {
-                    this.$refs.input.DatePickerX.init({
-                        maxDate: moment().subtract(18, 'year').toDate()
-                    })
-                }
-
-                if (this.name == 'acc' || this.name == 'accCheck') {
-                    this.$refs.input.addEventListener('copy', this.handleCopy)
-                }
-            })
-        },
-        beforeDestroy() {
-            if (this.$refs.input && this.$refs.input.inputmask) this.$refs.input.inputmask.remove()
-            if (this.name == 'acc' || this.name == 'accCheck') {
-                this.$refs.input.removeEventListener('copy', this.handleCopy)
             }
         },
 
         computed: {
             getInputOptions() {
                 let obj = {
-                    autocomplete: "off",
-                    type: this.getType,
+                    type:this.type,
                     placeholder: this.getPlaceholder,
                     value:this.value
                 }
@@ -185,11 +120,7 @@
                 if (this.selectOptions.options.length) return false
                 return true
             },
-            getType() {
-                if (this.type == 'date' || this.type == 'amount') return 'text'
 
-                return this.type
-            },
             getPlaceholder() {
                 if (this.label != '') return;
                 if (this.placeholder == '' && this.type == 'search') return 'Поиск';
@@ -237,21 +168,12 @@
                             }
                             vm.$emit('input', event.target.value)
                         },
-                        change: function (event) {
-
-                        },
-
-
                     }
                 )
             }
         },
 
         methods: {
-            handleCopy(e) {
-                e.clipboardData.setData('text/plain', e.target.value)
-                e.preventDefault()
-            },
             togglePassword() {
                 let el = this.$refs.input
 
@@ -266,6 +188,3 @@
 
 </script>
 
-<style lang="scss">
-
-</style>

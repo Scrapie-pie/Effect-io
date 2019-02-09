@@ -3,6 +3,12 @@ import SettingsApp from '@/pages/SettingsApp'
 import SettingsProfile from '@/pages/SettingsProfile'
 
 
+/*const  Settings = ()=> import('@/pages/Settings')
+const  SettingsApp  = ()=> import('@/pages/SettingsApp')
+const  SettingsProfile = ()=> import('@/pages/SettingsProfile')*/
+
+
+
 
 
 export default [{

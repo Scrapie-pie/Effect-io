@@ -87,10 +87,12 @@
 
         &__nav{
             padding-right:6%;
-            width: 29%;
         }
 
+
         &__main{
+            width:70%;
+            margin:0 auto;
         }
 
 

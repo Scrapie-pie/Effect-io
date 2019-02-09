@@ -9,6 +9,7 @@ import PageVisitor from '@/pages/PageVisitor'
 import ChatDialog from '@/pages/ChatDialog'
 
 import Settings from '@/routes/settings'
+
 import Ui from '@/routes/ui'
 
 import axios from "@/modules/axios";
@@ -78,7 +79,7 @@ const router =  new Router({
 export default router
 
 router.beforeEach((to, from, next) => {
-    console.log(to.name);
+
     const not_auth_routes = ['auth', 'recover','exit'],
     authenticated = store.getters['user/authenticated'];
 

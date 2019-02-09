@@ -57,7 +57,7 @@
         data() {
             return {
                 recoveryPage: false,
-                login: 'testrbcall@mail.ru',//todo кастомнай компонент не обновляет значение v-model на другом кастомном компоненте
+                login: 'testrbcall@mail.ru',
                 password: '321tceffE',
                 title: 'Для входа в личный кабинет введите свои учетные данные',
                 passwordSent: false,
@@ -145,6 +145,7 @@
                 this.$http.post('forgot-password', data, {
                     headers: { 'content-type': 'application/json' }
                 }).then(() => {
+                    console.log(data);
                     this.passwordSent = true;
                 })
             }

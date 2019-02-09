@@ -4,7 +4,7 @@
             ul.settings-list
                 li.settings-list__item
                     h3.settings-list__name Уведомления
-                    base-radio-check.settings-list__control(name="push_notifications" v-model="model.push_notifications" @click="notifications_enable") Включить браузерные уведомления
+                    base-radio-check.settings-list__control(name="push_notifications" v-model="model.push_notifications" @click="notificationsEnable") Включить браузерные уведомления
                     text-info.settings-list__text-info Вы будете получать уведомления о важных событиях в виде стандартного уведомления браузера, даже если он будет свернут.
 
                 li.settings-list__item
@@ -132,15 +132,10 @@
             }
         },
         created(){
-            /*console.log(this.$route.query.user_id);
-            this.$http('get-user-profile',{user_id:151}).then(({data})=>{
-                console.log(data);})*/
-            /*  this.$http.get('company-get-settings').then(({data})=>{
-                  console.log(data);
-              })*/
+
         },
         methods: {
-            notifications_enable(){
+            notificationsEnable(){
                 if(this.model.push_notifications) return // Когда мы кликаем значение еще старое, по этому я инвертирую проверку
 
                 Notification.requestPermission((permission)=>{
@@ -159,7 +154,6 @@
             },
             submit(){
                 let data = {
-
                     push_notifications:this.model.push_notifications,
                     sound_new_common_message:this.model.sound_new_common_message.index,
                     sound_new_guest:this.model.sound_new_guest.index,
@@ -182,15 +176,6 @@
                 audio.play();
             }
             },
-            playSound(sound) {
-                if(sound) {
-
-                    let path='/sounds/', //TOdo не получилось обрабытывать webpack'ом
-                        audio = new Audio(path+sound+'.mp3');
-                    audio.volume=.5; //
-                    audio.play();
-                }
-            }
         }
     }
 </script>

@@ -44,7 +44,7 @@
                             a(:href="`mailto:${item.mail}`" v-text="item.mail")
                         td.table__td Главный отдел
                         td.table__td
-                            base-radio-check
+                            base-radio-check(:name="'userIsActive'+item.id")
                         td.table__td
                             context-menu
                                 base-btn(:icon="{name:'edit',box:true,textHidden:'Открыть меню'}" color="info-lighten")
