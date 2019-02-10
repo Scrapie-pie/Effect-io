@@ -30,14 +30,16 @@ export default {
 
     },
     actions: {
-        login({commit, dispatch}, user) {
+        getLogin({commit, dispatch}, user) {
             localStorage.setItem('jwt', user.jwt);
             this._vm.$http.defaults.headers.common[ 'jwt' ] = user.jwt;
             this._vm.$http.defaults.headers['content-type']= 'application/json';
 
             commit('profile', user)
             dispatch('getSettings')
-            dispatch('getBranchListAll')
+            dispatch('getBranchListAll');
+            dispatch('operators/getAll',null,{root:true});
+
 
         },
         logout({commit}) {

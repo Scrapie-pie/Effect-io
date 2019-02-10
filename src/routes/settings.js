@@ -24,7 +24,7 @@ export default [{
         {
             name: 'settingsProfile',
             path: 'profile',
-            component: SettingsProfile
+            component: SettingsProfile,
         },
 
     ]

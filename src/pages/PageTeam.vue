@@ -1,8 +1,8 @@
 <template lang="pug">
-    article.chat-team
-        .chat-team__content
-            .chat-team__controls
-                .chat-team__control
+    article.page-team
+        .page-team__content
+            .page-team__controls
+                .page-team__control
                     base-field(
                     type="search"
                     name="search",
@@ -10,7 +10,7 @@
                     theme="soft"
                     v-model="search"
                     )
-                .chat-team__control
+                .page-team__control
                     base-btn(name="add" color="success-dark" size="lg") Добавить сотрудника
 
             table.table
@@ -22,7 +22,7 @@
                         th.table__td.table__td_th Отдел
                         th.table__td.table__td_th Активен
                         th.table__td.table__td_th Досупные действия
-                tbody.table__tbody(v-for="(item, index) in operator_list", :key="item.id")
+                tbody.table__tbody(v-for="(item, index) in operatorList", :key="item.id")
                     tr.table__tr
                         td.table__td
                             base-people(type="operator" text="онлайн" :name="item.first_name +' '+ item.last_name" :avatar-url="item.avatar")
@@ -42,7 +42,10 @@
                             )
                             br
                             a(:href="`mailto:${item.mail}`" v-text="item.mail")
-                        td.table__td Главный отдел
+                        td.table__td
+                            ul.page-team__branch
+                                li.page-team__branch-item(v-for="(branch, index) in item.branches_ids", :key="item" v-text="item.branches_names[index]")
+
                         td.table__td
                             base-radio-check(:name="'userIsActive'+item.id")
                         td.table__td
@@ -51,7 +54,7 @@
                                 template(slot="listItem")
                                     router-link.context-menu__link(:to="{name:'settingsProfile',query: { user_id: item.id }}") Редактировать
 
-        base-no-found(v-if="!count" name="team")
+        base-no-found(v-if="operatorList.length<=1" name="team")
 
 
 
@@ -85,21 +88,19 @@
             return {
                 count:0,
                 search: '',
-                operator_list:[
-                ]
             }
         },
-        created(){
-            this.$http.get('employee-company-list').then(({data})=>{
-                this.operator_list = data.data;
+        computed:{
+            operatorList(){
+                return this.$store.getters['operators/all']
+            }
+        },
 
-            })
-        }
     }
 </script>
 
 <style lang="scss">
-    .chat-team{
+    .page-team{
 
 
         &__controls{

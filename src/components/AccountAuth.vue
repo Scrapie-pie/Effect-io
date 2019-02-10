@@ -127,13 +127,14 @@
                     headers: { 'content-type': 'application/json' }
                 }).then(({ data }) => {
                     console.log('user', data.user)
-                    this.$store.dispatch('user/login', data.user).then(()=>{
+                    this.$store.dispatch('user/getLogin', data.user).then(()=>{
                         if (this.$route.query.return) this.$router.push(this.$route.query.return)
                         else this.$router.push({name:'process'})
                     })
 
-                }).catch(({response})=>{
-                    this.errorApiText = response.data.message;
+                }).catch((errors)=>{
+                    console.log(errors);
+                    this.errorApiText = errors.response.data.message;
 
                 })
 

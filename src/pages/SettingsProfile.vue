@@ -223,11 +223,16 @@
 
                     if (user_id == this.$store.getters['user/profile'].user_id) return
 
+
+
                     this.$http.get('user-profile', {params:{user_id:user_id}}).then(({data})=>{
                         if(data.success) {
                             this.model=data.data.user;
 
                         }
+                    }).catch((errors)=>{
+                        if (errors.response.status == 404) this.$router.push({name:'process'})
+
                     })
                 }
 

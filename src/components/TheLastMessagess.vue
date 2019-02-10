@@ -21,6 +21,7 @@
     export default {
         data() {
             return {
+                search:'',
                 warning:true,
                 peopleList: [
                     {name: 'Кристина Мармеладова Игоревна', text: 'Где можно посмотреть спортивные кеды?', channel: 'vk',warning:true,count:236},
