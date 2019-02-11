@@ -108,7 +108,14 @@
                     password: this.password,
 
                 }
-           /*     data = {
+
+           /*
+              data = {
+                    name: 'fanhorsis@gmail.com',
+                    password: 'msitnikov',
+
+                }
+              data = {
                     name: 'TooManyRequestsHttpException@abk.ru',
                     password: 'TooManyRequestsHttpException',
 
@@ -125,15 +132,16 @@
                 }*/
                 this.$http.post('login', data, {
                     headers: { 'content-type': 'application/json' }
-                }).then(({ data }) => {
-                    console.log('user', data.user)
+                }).then(({data}) => {
+
+
                     this.$store.dispatch('user/getLogin', data.user).then(()=>{
                         if (this.$route.query.return) this.$router.push(this.$route.query.return)
                         else this.$router.push({name:'process'})
                     })
 
                 }).catch((errors)=>{
-                    console.log(errors);
+
                     this.errorApiText = errors.response.data.message;
 
                 })
@@ -146,7 +154,7 @@
                 this.$http.post('forgot-password', data, {
                     headers: { 'content-type': 'application/json' }
                 }).then(() => {
-                    console.log(data);
+
                     this.passwordSent = true;
                 })
             }

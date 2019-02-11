@@ -253,7 +253,6 @@
                 this.model.avatar=event;
             },
             userUpdate(){
-
              this.$http.post('user-update', this.model).catch(({response})=>{
                  console.log('errors');
                  console.log(response.data);

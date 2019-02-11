@@ -11,7 +11,11 @@ export default {
             delete this._vm.$http.defaults.headers.common[ 'jwt' ];
             delete this._vm.$http.defaults.headers['content-type'];
             for (let prop in state) {
-                state[prop] = false;
+
+                if(Array.isArray(state[prop])) state[prop]=[]
+                else state[prop] = false;
+
+
             }
 
         },

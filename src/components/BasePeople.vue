@@ -139,6 +139,10 @@
 
         &_warning &__inner { background-color:$color_bg-error}
 
+        &_operator &__name {
+            white-space:normal;
+        }
+
         &_bg-text_no_fill &__inner{ background-color:transparent }
 
         &__datetime{

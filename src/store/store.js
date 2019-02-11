@@ -15,11 +15,13 @@ export default new Vuex.Store({
         visitors
     },
     state: {
-
+        loading:false
 
     },
     mutations: {
-
+        loading(state, val) {
+            state.loading = val
+        },
 
     },
     actions: {

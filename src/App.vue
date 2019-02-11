@@ -1,5 +1,5 @@
 <template lang="pug">
-    #app.page__app
+    #app.page__app(:class="{'spinner spinner_main-page':$store.state.loading}")
         the-header.page__header.page__padding
         main.page__main(v-if="1")
             transition(name="fade" mode="out-in")
@@ -66,7 +66,21 @@
                 }, 3000);
             },
             httpErrors(){
-                this.$http.interceptors.response.use(null,(err)=> {
+
+                this.$http.interceptors.request.use( (config)=> {
+                    this.$store.commit('loading',true)
+                    return config;
+                }, function (error) {
+                    // Do something with request error
+                    return Promise.reject(error);
+                });
+
+
+                this.$http.interceptors.response.use((resp)=>{
+                    this.$store.commit('loading',false)
+                    return resp
+                },(err)=> {
+                    this.$store.commit('loading',false)
                     console.log(err);
                     console.log(err.response);
 

@@ -13,7 +13,6 @@ export default {
     actions: {
         getAll({ commit, dispatch }) {
             this._vm.$http.get('employee-company-list').then(({data})=>{
-
                 commit('all',data.data)
             })
         },
@@ -26,11 +25,17 @@ export default {
 
                 });
 
-
                 operator.branches_names = list.map(item=>item.title)
-                operator.fullName = operator.first_name +' '+ operator.last_name
-            })
+                operator.fullName = operator.first_name +' '+ operator.last_name;
 
+                let onlineText = ['оффлайн','онлайн','перерыв','обед'];
+
+                operator.statusText = onlineText[operator.online];
+
+
+
+
+            })
             return state.all
         }
     }
