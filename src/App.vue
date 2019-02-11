@@ -12,6 +12,8 @@
 <script>
     import '@/scss/base.scss'
 
+
+
     import TheHeader from '@/components/TheHeader'
     import ThePopup from "@/components/ThePopup";
 
@@ -21,6 +23,7 @@
             ThePopup
         },
         created() {
+            this.webSocketInit()
             document.body.classList.add('page');
 
             this.watchForHover();
@@ -33,6 +36,35 @@
             window.removeEventListener('unhandledrejection', this.promiseErrorHandler);
         },
         methods: {
+            webSocketInit() {
+                let socket = io("http://newrobocall.ru:3000", {
+                    query: {
+                        uuid:  Math.random()
+                    }
+                });
+
+                socket.on("connect", () => {
+                    console.log("connected");
+                });
+
+                socket.on("connect_error", () => {
+                    console.log("connect_error");
+                });
+
+                socket.on("connect_timeout", () => {
+                    console.log("connect_timeout");
+                });
+
+
+                setTimeout(() => {
+
+                    socket.emit('message', {
+                        body: 'Text Message',
+                        uuid: Math.random()
+                    });
+
+                }, 3000);
+            },
             httpErrors(){
                 this.$http.interceptors.response.use(null,(err)=> {
                     console.log(err);
