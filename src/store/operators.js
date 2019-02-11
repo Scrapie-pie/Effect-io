@@ -20,19 +20,17 @@ export default {
     },
     getters: {
         all: (state, getters,rootState) => {
-
-            for (let prop in state.all) {
-
+            state.all.forEach((operator)=>{
                 let list = rootState.user.branchListAll.filter((item)=>{
-                    if(state.all[prop].branches_ids.includes(item.id)) return item
+                    if(operator.branches_ids.includes(item.id)) return item
 
                 });
 
 
-                state.all[prop].branches_names = list.map(item=>item.title)
+                operator.branches_names = list.map(item=>item.title)
+                operator.fullName = operator.first_name +' '+ operator.last_name
+            })
 
-
-            }
             return state.all
         }
     }

@@ -14,6 +14,7 @@
                         ref="clientComment"
                         type="textarea"
                         placeholder="Вы можете оставить комментарий к этому диалогу" maxlength="500"
+                        name="comment"
                         )
 
                     li.client-info__item
@@ -68,26 +69,19 @@
         },
         data() {
             return {
-                uuid:'03ba07f5-2757-50eb-a35d-80a496e9a343',
-                site_id:1,
+                uuid:null,
+                site_id:null,
                 showContacts: false,
                 showAudienceSegments: false,
-                clientInfo: {
-                    name: 'Петр Иванов Камикадзев',
-                    phone: '+7 911 567 55 77',
-                    email: 'petr@gmail.com'
-                },
-                audienceSegments: [
-                    {name: 'Пол', text: 'мужской'},
-                    {name: 'Восраст', text: '26'},
-                    {name: 'Интересы', text: 'Интерес к автомобилям по маркам (Марка не определена)'},
-                ],
+                clientInfo: {}
+
 
             }
         },
         computed: {
             info(){
-                return this.clientInfo
+                console.log(this.$store.state.visitors.itemOpen);
+                return this.$store.state.visitors.itemOpen
             },
             infoList(){
                 return [
@@ -156,15 +150,10 @@
                 return text.toLowerCase()
             }
         },
+
         created(){
-            this.$http.get('guest-info', {
-                params:{
-                    uuid:this.uuid,
-                    site_id:this.site_id
-                }}).then(({data})=>{
-                this.clientInfo= data.data;
-                console.log(data.data);
-            })
+
+
         },
         mounted() {
             setTimeout(()=>{
@@ -176,6 +165,7 @@
             autosize.destroy(this.$refs.clientComment.$refs.input);
         },
         methods:{
+
             guestUpdateByOperator(){
                 this.$http.put('guest-update-by-operator', {
                         guest_uuid:this.uuid,

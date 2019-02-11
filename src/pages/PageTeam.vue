@@ -6,7 +6,7 @@
                     base-field(
                     type="search"
                     name="search",
-                    placeholder="Поиск..."
+                    placeholder="Поиск по имени..."
                     theme="soft"
                     v-model="search"
                     )
@@ -25,7 +25,7 @@
                 tbody.table__tbody(v-for="(item, index) in operatorList", :key="item.id")
                     tr.table__tr
                         td.table__td
-                            base-people(type="operator" text="онлайн" :name="item.first_name +' '+ item.last_name" :avatar-url="item.avatar")
+                            base-people(type="operator" text="онлайн" :name="item.fullName" :avatar-url="item.avatar")
                         td.table__td
                             base-btn() Начать диалог
 
@@ -44,7 +44,7 @@
                             a(:href="`mailto:${item.mail}`" v-text="item.mail")
                         td.table__td
                             ul.page-team__branch
-                                li.page-team__branch-item(v-for="(branch, index) in item.branches_ids", :key="item" v-text="item.branches_names[index]")
+                                li.page-team__branch-item(v-for="(branch, index) in item.branches_ids", :key="branch" v-text="item.branches_names[index]")
 
                         td.table__td
                             base-radio-check(:name="'userIsActive'+item.id")
@@ -92,7 +92,21 @@
         },
         computed:{
             operatorList(){
+                console.log(this.$store.getters['operators/all']);
                 return this.$store.getters['operators/all']
+            },
+            operatorListSearch(){
+                let list = this.operatorList
+
+                list = list.filter(item => {
+                    var regexp = new RegExp(this.search, 'ig')
+
+                    if (item.fullName.match(regexp) == null) return 0
+                    return true
+                })
+                console.log(list)
+                // console.log(list);
+                return list
             }
         },
 

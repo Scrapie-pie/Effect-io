@@ -1,10 +1,10 @@
 <template lang="pug">
-    article.chat-dialog
-        the-last-messages.chat-dialog__last-messages
+    article.page-dialog
+        the-last-messages.page-dialog__last-messages
 
-        section.chat-dialog__main
+        section.page-dialog__main
                 the-chat-main
-        aside.chat-dialog__info
+        aside.page-dialog__info
             the-client-info
 
 </template>
@@ -13,17 +13,38 @@
     import TheLastMessages from '@/components/TheLastMessagess';
     import TheClientInfo from '@/components/TheClientInfo';
     import TheChatMain from '@/components/TheChatMain';
+    import store from '@/store/store'
+
+    const routerHooks = (to, from, next)=>{
+        let uuid = to.params.id,
+            guest_uuid=to.params.id, // метод read-history требуе prefix guest_
+            site_id = to.query.site,
+            params ={ uuid, site_id ,guest_uuid};
+
+        if(!uuid && !site_id) return next()
+
+        store.dispatch('visitors/getItemOpen', params).then(()=>{
+            return next()
+        }).catch(()=>{
+            return next()
+        })
+    }
+
     export default {
         components: {
             TheChatMain,
             TheLastMessages,
             TheClientInfo,
         },
+        beforeRouteEnter:routerHooks,
+        beforeRouteUpdate:routerHooks
+
+
     }
 </script>
 
 <style lang="scss">
-    .chat-dialog {
+    .page-dialog {
         $color_border:glob-color('border');
         $color_bg:glob-color('info-lighten');
         $color_bg-app:glob-color('light');

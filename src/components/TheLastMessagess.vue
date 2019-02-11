@@ -2,19 +2,22 @@
     form.last-messages
         .last-messages__search
             base-field(type="search" name="search" v-model="search" theme="soft")
-        scroll-bar.scroll-bar(v-once)
-            .last-messages__scroll-bar
-                ul.last-messages__list
-                    li.last-messages__item(v-for="(item, index) in peopleList",:key="index",  :class="{'last-messages__item_warning':item.warning}")
-                        button.last-messages__btn(type="button" v-text="`${item.name}:${item.text}`")
-                        base-people.last-messages__people(
-                            :name="item.name",
-                            :text="item.text",
-                            :bg-text-no-fill="true",
-                            :channel-name="item.channel",
-                            :count="item.count"
-                        hidden
-                        )
+        scroll-bar.last-messages__scrollbar
+            ul.last-messages__list
+                li.last-messages__item(v-for="(item, index) in visitorsList",:key="item.uuid+item.site_id",  :class="{'last-messages__item_warning':item.warning}")
+                    //button.last-messages__btn(type="button" v-text="`${item.name}:${item.text}`")
+                    router-link.last-messages__btn(
+                    :to="{name:'dialog',params: { id: item.uuid},query:{site:item.site_id}}"
+                    v-text="`${item.name}:${item.text}`")
+                    base-people.last-messages__people(
+                        :avatar-url="item.photo"
+                        :name="item.name",
+                        :text="item.last_message",
+                        :bg-text-no-fill="true",
+                        :channel-name="item.channel",
+                        :count="item.count"
+                    hidden
+                    )
 </template>
 
 <script>
@@ -23,40 +26,16 @@
             return {
                 search:'',
                 warning:true,
-                peopleList: [
-                    {name: 'Кристина Мармеладова Игоревна', text: 'Где можно посмотреть спортивные кеды?', channel: 'vk',warning:true,count:236},
-                    {name: 'Кристина Мармеладова Игоревна', text: 'Где можно посмотреть спортивные кеды?', channel: 'fbme',count:-1},
-                    {name: 'Кристина Мармеладова Игоревна', text: 'Где можно посмотреть спортивные кеды?', channel: 'chat',count:0},
-                    {name: 'Кристина Мармеладова Игоревна', text: 'Где можно посмотреть спортивные кеды?', channel: 'tg',count:4},
-                    {name: 'Кристина Мармеладова Игоревна', text: 'Где можно посмотреть спортивные кеды?', channel: 'vk'},
-                    {name: 'Кристина Мармеладова Игоревна', text: 'Где можно посмотреть спортивные кеды?'},
-                    {name: 'Кристина Мармеладова Игоревна', text: 'Где можно посмотреть спортивные кеды?'},
-                    {name: 'Кристина Мармеладова Игоревна', text: 'Где можно посмотреть спортивные кеды?'},
-
-                    {name: 'Кристина Мармеладова Игоревна', text: 'Где можно посмотреть спортивные кеды?'},
-                    {name: 'Кристина Мармеладова Игоревна', text: 'Где можно посмотреть спортивные кеды?'},
-                    {name: 'Кристина Мармеладова Игоревна', text: 'Где можно посмотреть спортивные кеды?'},
-                    {name: 'Кристина Мармеладова Игоревна', text: 'Где можно посмотреть спортивные кеды?'},
-
-                    {name: 'Кристина Мармеладова Игоревна', text: 'Где можно посмотреть спортивные кеды?'},
-                    {name: 'Кристина Мармеладова Игоревна', text: 'Где можно посмотреть спортивные кеды?'},
-                    {name: 'Кристина Мармеладова Игоревна', text: 'Где можно посмотреть спортивные кеды?'},
-                    {name: 'Кристина Мармеладова Игоревна', text: 'Где можно посмотреть спортивные кеды?'},
-
-                    {name: 'Кристина Мармеладова Игоревна', text: 'Где можно посмотреть спортивные кеды?'},
-                    {name: 'Кристина Мармеладова Игоревна', text: 'Где можно посмотреть спортивные кеды?'},
-                    {name: 'Кристина Мармеладова Игоревна', text: 'Где можно посмотреть спортивные кеды?'},
-                    {name: 'Кристина Мармеладова Игоревна', text: 'Где можно посмотреть спортивные кеды?'},
-
-                    {name: 'Кристина Мармеладова Игоревна', text: 'Где можно посмотреть спортивные кеды?'},
-                    {name: 'Кристина Мармеладова Игоревна', text: 'Где можно посмотреть спортивные кеды?'},
-                    {name: 'Кристина Мармеладова Игоревна', text: 'Где можно посмотреть спортивные кеды?'},
-                    {name: 'Кристина Мармеладова Игоревна', text: 'Где можно посмотреть спортивные кеды?'},
-                ],
 
 
             }
         },
+        computed:{
+            visitorsList(){
+
+                return this.$store.getters['visitors/all']
+            }
+        }
     }
 </script>
 
@@ -71,6 +50,10 @@
         &__search{
             padding-left:calc-em(10);
             padding-right:calc-em(10);
+        }
+
+        &__scrollbar {
+            height:100%;
         }
 
         &__list{

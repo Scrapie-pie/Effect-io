@@ -57,7 +57,10 @@
                             @click.prevent="showGifs=true"
                         )
                     li.chat-main-footer__button.chat-main-footer__button_send
-                        base-btn.chat-main-footer__send(:icon="{name:'send',textHidden:'Отправить сообщение'}")
+                        base-btn.chat-main-footer__send(
+                            @click="send"
+                            :icon="{name:'send',textHidden:'Отправить сообщение'}"
+                        )
 </template>
 
 <script>
@@ -113,6 +116,9 @@
             }
         },
         methods: {
+            send(){
+
+            },
             checkIsProcessPage() {
                 if(this.$route.name === 'process') {
                     this.showProcess = true;

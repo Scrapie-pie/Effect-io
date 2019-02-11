@@ -39,15 +39,18 @@ export default {
         }
     },
     created(){
-        this.setUserId()
+
     },
     methods:{
         setUserId() {
-            this.user_id = + this.$route.query.user_id;
+            this.model.user_id = this.$route.query.user_id;
+            if(!this.model.user_id) {
+                this.model.user_id = this.$store.getters['user/profile'].user_id;
+            }
 
-            if(!this.user_id) this.user_id = this.$store.getters['user/profile'].user_id
         },
         save(){
+            this.setUserId()
             this.$http.put('user-password-update', this.model)
                 .then(({ data }) => {
                 this.password='';

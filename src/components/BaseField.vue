@@ -174,6 +174,9 @@
         },
 
         methods: {
+            clearSearch(){
+                this.$emit('input', '')
+            },
             togglePassword() {
                 let el = this.$refs.input
 

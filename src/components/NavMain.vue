@@ -16,7 +16,7 @@
 
                     span.nav-main__icon
                         base-icon(:name="item.link.name")
-                    base-count.nav-main__count(:count="item.count")
+                    base-count.nav-main__count(:count="item.unread")
 
 </template>
 

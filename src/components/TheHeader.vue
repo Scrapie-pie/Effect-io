@@ -17,16 +17,8 @@
         data() {
             return {
 
-                canalList: [
-                    {text: 'Не обработано', link: {name: 'process'}},
-                    {text: 'Мои диалоги', link: {name: 'dialog'}},
-                    {text: 'Команда', link: {name: 'team'}},
-                    {text: 'Посетители', link: {name: 'visitors'}},
-                    {text: 'Общий чат ', link: {name: 'common'}},
-                ],
                 appList: [
                     {text: 'recover', link: {name: 'recover'}},
-                    {text: 'Ломанный маршрут', link: {name: 'bad'}},
                     {text: 'Ui', link: {name: 'ui'}},
                     {text: 'Настройки', link: {name: 'settingsProfile'}},
                     //{text: 'Сменить учетную запись', link: {name: 'auth'}},
@@ -34,6 +26,34 @@
                 ],
             }
         },
+        computed:{
+            canalList(){
+                return [
+                    {text: 'Не обработано', link: {name: 'process'},unread:this.unreadGuest},
+                    {text: 'Мои диалоги', link: {name: 'dialog'},unread:this.unreadPrivate},
+                    {text: 'Команда', link: {name: 'team'}},
+                    {text: 'Посетители', link: {name: 'visitors'}},
+                    {text: 'Общий чат ', link: {name: 'common'},unread:this.unreadCommon},
+                ]
+            },
+            unread(){
+                if (this.$store.state.user.profile.unread) return this.$store.state.user.profile.unread
+                else return {}
+
+            },
+            unreadCommon(){
+                return this.unread.common
+            },
+            unreadGuest(){
+                console.log(this.unread);
+                return this.unread.guest
+            },
+            unreadPrivate(){
+                return this.unread.private
+            },
+
+
+        }
 
     }
 </script>

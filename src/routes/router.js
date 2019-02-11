@@ -6,7 +6,7 @@ import AccountAuth from '@/components/AccountAuth'
 
 import PageTeam from '@/pages/PageTeam'
 import PageVisitor from '@/pages/PageVisitor'
-import ChatDialog from '@/pages/ChatDialog'
+import PageDialog from '@/pages/PageDialog'
 
 import Settings from '@/routes/settings'
 
@@ -47,17 +47,18 @@ const router =  new Router({
         {
             name: 'process',
             path: '/process',
-            component: ChatDialog,
+            component: PageDialog,
         },
         {
             name: 'dialog',
-            path: '/dialog',
-            component: ChatDialog
+            path: '/dialog/:id',
+            component: PageDialog,
+
         },
         {
             name: 'common',
             path: '/common',
-            component: ChatDialog
+            component: PageDialog
         },
         ...Settings,
         ...helpers,

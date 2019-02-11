@@ -2,17 +2,14 @@
     header.chat-main-header
         .chat-main-header__text
             h1.chat-main-header__members
-                template(
-                    v-for="(item, index) in membersList",
-
+                span.chat-main-header__name.chat-main-header__name_open_client-info.js-client-info(
+                    v-text="$store.state.visitors.itemOpen.name"
                 )
-                    span.chat-main-header__name(
-
-                        :class="{'chat-main-header__name_open_client-info js-client-info':!index}"
-                    )
-                        | {{item}}
+                template(v-for="(item, index) in compMembersList")
+                    span.chat-main-header__name
+                        | , {{item}}
                         button(type="button" v-if="index").chat-main-header__name-tooltip Убрать из диалога
-                    |{{separator(index)}}
+
             .chat-main-header__channel На сайте: site.ru -&nbsp;
                 .chat-main-header__channel-btn-wrap
                     base-btn(
@@ -74,8 +71,10 @@
                 //moreActionsClose:false,
             }
         },
-        computed(){
-
+        computed:{
+            compMembersList(){
+                return this.membersList
+            }
         },
         methods:{
             getActions(e){
@@ -104,6 +103,7 @@
 
         },
         created() {
+            //this.membersList.push(this.$store.state.visitors.itemOpen.name)
             this.membersList = ['Петр Иванов Камикадзев','Кирил'];
 
         },
