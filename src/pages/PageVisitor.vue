@@ -37,10 +37,10 @@
                                 :avatar-url="item.photo"
                             )
                         td.table__td
-                            template(v-if="!item.employee_id")
+                            template(v-if="!item.employee")
                                 base-btn.page-visitors__start-chat(:router="{name:'dialog'}") начать диалог
-                            template(v-else v-text="item.employee_id")
-                                |{{item.employee_id}}
+                            template(v-else)
+                                |{{item.employee}}
 
                         td.table__td
                             a(:href="`tel:${item.phone}`" v-text="item.phone")
@@ -65,6 +65,7 @@
                 channel: '',
                 channelList: [],
                 itemList:[],
+                itemListCount: 0,
             }
         },
         created() {
@@ -80,8 +81,10 @@
             this.channel = this.channelList[0];
 
             this.$http('guest-company-list').then(({data})=>{
-                this.itemList = data.data;
-                console.log(data.data);
+                console.log(data);
+                this.itemList = data.data.list;
+                this.itemListCount = data.data.count;
+                //console.log(data.data);
             })
         },
         methods:{

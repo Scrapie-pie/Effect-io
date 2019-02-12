@@ -7,7 +7,8 @@ export default {
     },
     mutations: {
         all(state, val) {
-            state.all=val;
+            state.all=val.list;
+            state.allCount=val.count;
         },
         itemOpen(state, val) {
             state.itemOpen=val;

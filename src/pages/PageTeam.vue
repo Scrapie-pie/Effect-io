@@ -12,57 +12,55 @@
                     )
                 .page-team__control(v-if="viewAdmin")
                     base-btn(name="add" color="success-dark" size="lg") Добавить сотрудника
+            scroll-bar.page-team__scroll-bar
+                table.table
+                    thead.table__thead
+                        tr.table__tr
+                            th.table__td.table__td_th Имя
+                            th.table__td.table__td_th
+                            th.table__td.table__td_th Контакты
+                            th.table__td.table__td_th Отдел
+                            th.table__td.table__td_th(v-if="viewAdmin") Активен
+                            th.table__td.table__td_th(v-if="viewAdmin") Досупные действия
+                    tbody.table__tbody(v-for="(item, index) in operatorListSearch", :key="item.id")
+                        tr.table__tr
+                            td.table__td
+                                base-people(
+                                    type="operator",
+                                    :text="item.statusText",
+                                    :name="item.fullName",
+                                    :avatar-url="item.avatar"
+                                )
+                            td.table__td
+                                base-btn() Начать диалог
 
-            table.table
-                thead.table__thead
-                    tr.table__tr
-                        th.table__td.table__td_th Имя
-                        th.table__td.table__td_th
-                        th.table__td.table__td_th Контакты
-                        th.table__td.table__td_th Отдел
-                        th.table__td.table__td_th(v-if="viewAdmin") Активен
-                        th.table__td.table__td_th(v-if="viewAdmin") Досупные действия
-                tbody.table__tbody(v-for="(item, index) in operatorListSearch", :key="item.id")
-                    tr.table__tr
-                        td.table__td
-                            base-people(
-                                type="operator",
-                                :text="item.statusText",
-                                :name="item.fullName",
-                                :avatar-url="item.avatar"
-                            )
-                        td.table__td
-                            base-btn() Начать диалог
+                            td.table__td
+                                a(
+                                    v-if="!item.phones.type",
+                                    :href="`tel:${item.phones.phone}`"
+                                ) {{item.phones | phoneAdditional}}
+                                a(
+                                    v-else
+                                    href="`tel:${item.phones.sip}`"
+                                    v-text="item.phones.sip"
+                                )
+                                br
+                                a(:href="`mailto:${item.mail}`" v-text="item.mail")
+                            td.table__td
+                                ul.page-team__branch
+                                    li.page-team__branch-item(v-for="(branch, index) in item.branches_ids", :key="branch" v-text="item.branches_names[index]")
 
-                        td.table__td
-                            a(
-                                v-if="!item.phones.type",
-                                :href="`tel:${item.phones.phone}`"
-                                v-text="item.phones.phone"
-                            )
-                            a(
-                                v-else
-                                href="javascript:"
-                                v-text="item.phones.sip"
-                            )
-                            br
-                            a(:href="`mailto:${item.mail}`" v-text="item.mail")
-                        td.table__td
-                            ul.page-team__branch
-                                li.page-team__branch-item(v-for="(branch, index) in item.branches_ids", :key="branch" v-text="item.branches_names[index]")
-
-                        td.table__td(v-if="viewAdmin")
-                            base-radio-check(
-                                v-if="anotherProfile(item.id)"
-                                :name="'userIsActive'+item.id",
-                                :checked="item.active"  @click="changeActiveOperator(item)"
-                            )
-                        td.table__td(v-if="viewAdmin")
-                            context-menu
-                                base-btn(:icon="{name:'edit',box:true,textHidden:'Открыть меню'}" color="info-lighten")
-                                template(slot="listItem")
-                                    router-link.context-menu__link(:to="{name:'settingsProfile',query: { user_id: item.id }}") Редактировать
-
+                            td.table__td(v-if="viewAdmin")
+                                base-radio-check(
+                                    v-if="anotherProfile(item.id)"
+                                    :name="'userIsActive'+item.id",
+                                    :checked="item.active"  @click="changeActiveOperator(item)"
+                                )
+                            td.table__td(v-if="viewAdmin")
+                                context-menu
+                                    base-btn(:icon="{name:'edit',box:true,textHidden:'Открыть меню'}" color="info-lighten")
+                                    template(slot="listItem")
+                                        router-link.context-menu__link(:to="{name:'settingsProfile',query: { user_id: item.id }}") Редактировать
         base-no-found(v-if="operatorList.length<=1" name="team")
 
 
@@ -92,6 +90,16 @@
     export default {
         components: {
             ContextMenu
+        },
+        filters: {
+            phoneAdditional: function (value) {
+
+                let str = value.phone;
+
+                if (value.additional) str = str + ' (' + value.additional +')'
+                console.log(str);
+                return str
+            }
         },
         data() {
             return {
