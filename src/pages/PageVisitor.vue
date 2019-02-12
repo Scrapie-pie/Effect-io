@@ -65,7 +65,7 @@
 
                 search: '',
                 offset:0,
-                limit:0,
+                limit:20,
                 channel: '',
                 channelList: [],
                 itemList:[],
@@ -74,7 +74,12 @@
             }
         },
         watch:{
-            search:'getVisitorsList'
+            search:{
+                handler(val){
+                    this.getVisitorsList()
+                },
+                immediate: true
+            }
         },
         created() {
             this.channelList = [
@@ -99,6 +104,7 @@
                 };
 
                 this.$http.get('guest-company-list',{params}).then(({data})=>{
+                    console.log(data);
                     this.itemList = data.data.list
                     this.itemListCount = data.data.count
                 })

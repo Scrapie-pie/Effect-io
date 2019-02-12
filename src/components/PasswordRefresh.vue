@@ -27,12 +27,15 @@
 <script>
 export default {
     name: "password-refresh",
-
+    props:{
+        hideBtn:{
+            type:Boolean,
+            default:false,
+        }
+    },
     data() {
         return {
-            props:{
-                hideBtn:Boolean
-            },
+
             model: {
                 password: '',
                 confirm_password: '',
