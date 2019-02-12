@@ -1,7 +1,6 @@
 <template lang="pug">
 
         form(@submit.prevent="userUpdate")
-
             ul.settings-list
                 li.settings-list__item
                     .settings-list__upload-avatar
@@ -50,10 +49,10 @@
                                 tel-input(v-model="model.phones.phone" @unmaskedvalue="unmaskedvalue")
                             .settings-list__col
                                 base-field.settings-list__control.settings-list__field(
-                                v-model="model.phones.additional"
-                                label="Добавочный",
-                                type="text",
-                                name="phoneAdditional"
+                                    v-model="model.phones.additional"
+                                    label="Добавочный",
+                                    type="text",
+                                    name="phoneAdditional"
                                 )
                         template(v-else)
                             .settings-list__col
@@ -66,7 +65,7 @@
                     text-info.settings-list__text-info Телефон будет использоваться для приема звонков от клиентов. Если у Вас есть IP телефония, вы можете принимать звонки на sip аккаунт.
 
                 li.settings-list__item
-                    password-refresh(setClass="settings-list")
+                    password-refresh(@getPassword="setPassword", :hide-btn="isAddOperator")
                     text-info.settings-list__text-info Данный пароль используется для доступа к приложению сотрудника.
 
                 li.settings-list__item
@@ -118,7 +117,7 @@
                     ) Включить права администратора
                     text-info.settings-list__text-info Права администратора позволяют сотруднику: управлять другими аккаунтами сотрудников, просматривать статистику, менять данные основного аккаунта, добавлять/удалять/ редактировать данные всех сотрудников, отделов и каналов связи.
 
-            base-btn(@click="userUpdate") Сохранить
+            base-btn(type="submit") Сохранить
 </template>
 
 <script>
@@ -164,6 +163,8 @@
         },
         data() {
             return {
+
+                isAddOperator:this.$route.query.add,
                 phoneUnmaskedvalue:'',
                 phonesTypeSelect:{},
                 phonesType:[
@@ -177,6 +178,7 @@
                     }
                 ],
                 model:{
+                    pass:'', //нужен для создания нового оператора
                     user_id:this.$store.getters['user/profile'].user_id,
                     owner_id:this.$store.getters['user/profile'].owner_id, //нужен для проверки userIdNoOwner()
                     avatar:this.$store.getters['user/profile'].avatar,
@@ -214,9 +216,28 @@
             }
         },
         created(){
+            this.clearFormValue();
             this.getProfileByUserId()
         },
         methods:{
+            setPassword(val){
+                this.model.pass = val
+            },
+            clearFormValue(){
+
+                if(!this.isAddOperator) return;
+                for (let prop in this.model) {
+                    if (prop == 'phones') {
+                        this.model[prop].phone ='';
+                        this.model[prop].additional ='';
+                        this.model[prop].spi ='';
+                    } else this.model[prop] = '';
+
+                    this.role_id = 6
+
+
+                }
+            },
             getProfileByUserId(){
 
                 let user_id = + this.$route.query.user_id;
@@ -253,7 +274,16 @@
             getUploadAvatar(event){
                 this.model.avatar=event;
             },
+            createOperator(){
+                this.$http.post('admin-employee-create', this.model)
+            },
             userUpdate(){
+            this.model.phones.phone= this.phoneUnmaskedvalue;
+
+            if(this.isAddOperator) {
+                return  this.createOperator()
+            }
+
              this.$http.post('user-update', this.model).catch(({response})=>{
                  console.log('errors');
                  console.log(response.data);

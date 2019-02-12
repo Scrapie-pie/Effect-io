@@ -19,7 +19,7 @@
                     v-validate="{required: true, confirmed: model.password}"
                     data-vv-as="пароль 2"
                 )
-            li.password-refresh__col
+            li.password-refresh__col(v-if="hideBtn")
                 base-btn.password-refresh__btn(@click="save") Сохранить пароль
     
 </template>
@@ -30,6 +30,9 @@ export default {
 
     data() {
         return {
+            props:{
+                hideBtn:Boolean
+            },
             model: {
                 password: '',
                 confirm_password: '',
@@ -38,8 +41,12 @@ export default {
 
         }
     },
-    created(){
 
+    watch:{
+        'model.confirm_password'(val){
+            if(val === this.model.password) this.$emit('getPassword',val)
+
+        }
     },
     methods:{
         setUserId() {

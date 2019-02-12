@@ -58,15 +58,23 @@
         components: {
             ContextMenu
         },
+
         data() {
             return {
                 count:0,
+
                 search: '',
+                offset:0,
+                limit:0,
                 channel: '',
                 channelList: [],
                 itemList:[],
                 itemListCount: 0,
+
             }
+        },
+        watch:{
+            search:'getVisitorsList'
         },
         created() {
             this.channelList = [
@@ -80,14 +88,21 @@
             ]
             this.channel = this.channelList[0];
 
-            this.$http('guest-company-list').then(({data})=>{
-                console.log(data);
-                this.itemList = data.data.list;
-                this.itemListCount = data.data.count;
-                //console.log(data.data);
-            })
+
         },
         methods:{
+            getVisitorsList(){
+                let params= {
+                    search:this.search,
+                    offset:this.offset,
+                    limit:this.limit,
+                };
+
+                this.$http.get('guest-company-list',{params}).then(({data})=>{
+                    this.itemList = data.data.list
+                    this.itemListCount = data.data.count
+                })
+            },
             popupNotFind(){
                 this.$root.$emit('popup-not-find');
                 console.log(this.$root);
