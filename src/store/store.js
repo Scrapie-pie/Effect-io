@@ -20,7 +20,10 @@ export default new Vuex.Store({
     },
     mutations: {
         loading(state, val) {
-            state.loading = val
+
+                state.loading = val
+
+
         },
 
     },

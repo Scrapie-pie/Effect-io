@@ -26,23 +26,23 @@
                         tr.table__tr
                             td.table__td
                                 base-people(
-                                    type="operator",
-                                    :text="item.statusText",
-                                    :name="item.fullName",
-                                    :avatar-url="item.avatar"
+                                type="operator",
+                                :text="item.statusText",
+                                :name="item.fullName",
+                                :avatar-url="item.avatar"
                                 )
                             td.table__td
                                 base-btn() Начать диалог
 
                             td.table__td
                                 a(
-                                    v-if="!item.phones.type",
-                                    :href="`tel:${item.phones.phone}`"
+                                v-if="!item.phones.type",
+                                :href="`tel:${item.phones.phone}`"
                                 ) {{item.phones | phoneAdditional}}
                                 a(
-                                    v-else
-                                    href="`tel:${item.phones.sip}`"
-                                    v-text="item.phones.sip"
+                                v-else
+                                href="`tel:${item.phones.sip}`"
+                                v-text="item.phones.sip"
                                 )
                                 br
                                 a(:href="`mailto:${item.mail}`" v-text="item.mail")
@@ -52,9 +52,49 @@
 
                             td.table__td(v-if="viewAdmin")
                                 base-radio-check(
-                                    v-if="anotherProfile(item.id)"
+                                v-if="anotherProfile(item.id)"
                                     :name="'userIsActive'+item.id",
-                                    :checked="item.active"  @click="changeActiveOperator(item)"
+                                :checked="item.active"  @click="changeActiveOperator(item)"
+                                )
+                            td.table__td(v-if="viewAdmin")
+                                context-menu
+                                    base-btn(:icon="{name:'edit',box:true,textHidden:'Открыть меню'}" color="info-lighten")
+                                    template(slot="listItem")
+                                        router-link.context-menu__link(:to="{name:'settingsProfile',query: { user_id: item.id }}") Редактировать
+
+                    tbody.table__tbody(v-for="(item, index) in operatorListSearch", :key="item.id")
+                        tr.table__tr
+                            td.table__td
+                                base-people(
+                                type="operator",
+                                :text="item.statusText",
+                                :name="item.fullName",
+                                :avatar-url="item.avatar"
+                                )
+                            td.table__td
+                                base-btn() Начать диалог
+
+                            td.table__td
+                                a(
+                                v-if="!item.phones.type",
+                                :href="`tel:${item.phones.phone}`"
+                                ) {{item.phones | phoneAdditional}}
+                                a(
+                                v-else
+                                href="`tel:${item.phones.sip}`"
+                                v-text="item.phones.sip"
+                                )
+                                br
+                                a(:href="`mailto:${item.mail}`" v-text="item.mail")
+                            td.table__td
+                                ul.page-team__branch
+                                    li.page-team__branch-item(v-for="(branch, index) in item.branches_ids", :key="branch" v-text="item.branches_names[index]")
+
+                            td.table__td(v-if="viewAdmin")
+                                base-radio-check(
+                                v-if="anotherProfile(item.id)"
+                                    :name="'userIsActive'+item.id",
+                                :checked="item.active"  @click="changeActiveOperator(item)"
                                 )
                             td.table__td(v-if="viewAdmin")
                                 context-menu
@@ -159,7 +199,9 @@
 <style lang="scss">
     .page-team{
 
-
+        &__scroll-bar {
+            height:500px;
+        }
         &__controls{
             display:flex;
             align-items:center;

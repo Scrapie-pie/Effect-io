@@ -36,16 +36,16 @@
 
 
 
-  &_main-page {
-    min-height:400px;
+  &-main-page {
+
   }
-  &_main-page:before {
+  &-main-page:before {
     position:fixed;
     box-shadow: 0 0 6em 4em rgba(255, 255, 255, 0.7), inset 0 0 1em 15em rgba(255, 255, 255, 0.7);
   }
-  &_main-page:after {
+  &-main-page:after {
     content: '';
-    position: absolute;
+    position: fixed;
     left: 0;
     right: 0;
     top: 0;

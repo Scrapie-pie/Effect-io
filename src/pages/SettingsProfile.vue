@@ -1,6 +1,7 @@
 <template lang="pug">
 
         form(@submit.prevent="userUpdate")
+
             ul.settings-list
                 li.settings-list__item
                     .settings-list__upload-avatar

@@ -1,7 +1,8 @@
 <template lang="pug">
-    #app.page__app(:class="{'spinner spinner_main-page':$store.state.loading}")
+    #app.page__app
+        //div(:class="{'spinner spinner_main-page':$store.state.loading}")
         the-header.page__header.page__padding
-        main.page__main(v-if="1")
+        main.page__main
             transition(name="fade" mode="out-in")
                 router-view.page__view.page__padding
         the-popup
@@ -68,7 +69,8 @@
             httpErrors(){
 
                 this.$http.interceptors.request.use( (config)=> {
-                    this.$store.commit('loading',true)
+
+                    this.$store.commit('loading',true) //Todo баг скрола на странице настройки
                     return config;
                 }, function (error) {
                     // Do something with request error

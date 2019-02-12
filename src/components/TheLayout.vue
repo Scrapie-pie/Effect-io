@@ -1,8 +1,10 @@
 <template lang="pug">
-    scroll-bar.layout()
+    scroll-bar.layout
+        div(:class="{'spinner spinner-main-page':$store.state.loading}")
         header.layout__header(:class="{'layout__header_padding-wrap_no':headerPaddingNo}")
             .layout__grid
                 h1.layout__title
+
                     slot(name="title")
             router-link.layout__close(:to="{name:'process'}" title="Выход")
                 span.layout__close-text-only-scr Выход
@@ -14,6 +16,7 @@
                 .layout__main
                     transition(name="fade" mode="out-in")
                         slot(name="main")
+
 
 
 </template>
@@ -29,7 +32,14 @@
             return {
 
             }
+        },
+        created(){
+
+        },
+        mounted(){
+
         }
+
     }
 </script>
 
