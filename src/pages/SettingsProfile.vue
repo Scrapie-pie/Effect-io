@@ -230,7 +230,7 @@
                     if (prop == 'phones') {
                         this.model[prop].phone ='';
                         this.model[prop].additional ='';
-                        this.model[prop].spi ='';
+                        this.model[prop].sip ='';
                     } else this.model[prop] = '';
 
                     this.role_id = 6

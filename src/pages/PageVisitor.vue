@@ -32,7 +32,7 @@
                         td.table__td
                             base-people(
                                 type="visitor"
-                                name="Ксения"
+                                :name="item.name"
                                 avatar-width="md",
                                 :avatar-url="item.photo"
                             )
@@ -65,7 +65,7 @@
 
                 search: '',
                 offset:0,
-                limit:20,
+                limit:50,
                 channel: '',
                 channelList: [],
                 itemList:[],
