@@ -168,8 +168,7 @@
 
             guestUpdateByOperator(){
                 this.$http.put('guest-update-by-operator', {
-                        guest_uuid:this.uuid,
-                        site_id:this.site_id,
+                        guest_uuid:this.info.uuid,
                         comment:this.info.comment,
                         additional_contact_1:this.info.additional_contact_1,
                         additional_contact_2:this.info.additional_contact_2,

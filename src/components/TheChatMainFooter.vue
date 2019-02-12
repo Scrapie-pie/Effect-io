@@ -117,7 +117,18 @@
         },
         methods: {
             send(){
+                let guest_uuid = this.$store.state.visitors.itemOpen.uuid,
+                    site_id =+ this.$route.query.site, //Todo попросить чтобы siteId был в  visitors.itemOpen
+                    body='12345';
+                let data = {
+                    guest_uuid,site_id,body
+                }
 
+
+
+                this.$http.post('message-send', data).then(({data})=>{
+                    console.log(data.data);
+                })
             },
             checkIsProcessPage() {
                 if(this.$route.name === 'process') {
