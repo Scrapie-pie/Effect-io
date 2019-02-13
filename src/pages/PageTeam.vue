@@ -29,7 +29,7 @@
                                 type="operator",
                                 :text="item.statusText",
                                 :name="item.fullName",
-                                :avatar-url="item.avatar"
+                                :avatar-url="item.photo"
                                 )
                             td.table__td
                                 base-btn() Начать диалог

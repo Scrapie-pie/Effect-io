@@ -3,6 +3,7 @@
         router-link(v-on="inputListeners" ,:class="classObject", :disabled="disabled" v-if="isRouter", :to="compRouterName")
             slot
         button(
+            v-else
             v-on="inputListeners",
             :type="type",
             :class="classObject",

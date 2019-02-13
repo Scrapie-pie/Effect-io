@@ -19,35 +19,32 @@
                     v-model="channel"
                     )
 
-
-            table.table
-                thead.table__thead
-                    tr.table__tr
-                        th.table__td.table__td_th Имя
-                        th.table__td.table__td_th Прикреплен сотрудник
-                        th.table__td.table__td_th Контакты
-                        th.table__td.table__td_th Регион
-                tbody.table__tbody(v-for="(item, index) in itemList", :key="item.uuid+item.site_id")
-                    tr.table__tr.page-visitors__tr
-                        td.table__td
-                            base-people(
-                                type="visitor"
-                                :name="item.name"
-                                avatar-width="md",
-                                :avatar-url="item.photo"
-                            )
-                        td.table__td
-                            template(v-if="!item.employee")
-                                base-btn.page-visitors__start-chat(:router="{name:'dialog'}") начать диалог
-                            template(v-else)
-                                |{{item.employee}}
-
-                        td.table__td
-                            a(:href="`tel:${item.phone}`" v-text="item.phone")
-                            br(v-if="item.phone")
-                            a(:href="`mailto:${item.mail}`" v-text="item.mail")
-                        td.table__td
-                            |{{item.country}}, {{item.region}}, {{item.city}}
+            scroll-bar.page-visitors__scroll-bar
+                table.table
+                    thead.table__thead
+                        tr.table__tr
+                            th.table__td.table__td_th Имя
+                            th.table__td.table__td_th Прикреплен сотрудник
+                            th.table__td.table__td_th Контакты
+                            th.table__td.table__td_th Регион
+                    tbody.table__tbody(v-for="(item, index) in itemList", :key="item.uuid+item.site_id")
+                        tr.table__tr.page-visitors__tr
+                            td.table__td
+                                base-people(
+                                    type="visitor"
+                                    :name="item.name"
+                                    avatar-width="md",
+                                    :avatar-url="item.photo"
+                                )
+                            td.table__td
+                                base-btn.page-visitors__start-chat(v-if="!item.employee" :router="{name:'dialog'}") начать диалог
+                                span(v-else v-text="item.employee")
+                            td.table__td
+                                a(:href="`tel:${item.phone}`" v-text="item.phone")
+                                br(v-if="item.phone")
+                                a(:href="`mailto:${item.mail}`" v-text="item.mail")
+                            td.table__td
+                                |{{item.country}}, {{item.region}}, {{item.city}}
         base-no-found(v-else name="visitors")
 </template>
 
@@ -82,17 +79,18 @@
             }
         },
         created() {
-
+            this.getChannelList()
 
 
 
         },
         methods:{
             getChannelList(){
-                this.$http.get('site-company-list'.then(({data})=>{
+                this.$http.get('channel-types').then(({data})=>{
+                    console.log(data);
                     this.channelList = data;
                     this.channel = this.channelList[0];
-                }))
+                })
             },
             getVisitorsList(){
                 let params= {

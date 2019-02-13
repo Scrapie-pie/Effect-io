@@ -36,11 +36,14 @@ export default  {
         return {
             iti:'',
             phone:'',
+            onceUnmaskedValue:0,
         }
 
     },
     watch:{
-
+        value(val){
+            if(!this.onceUnmaskedValue) this.$emit('unmaskedvalue', val)
+        }
     },
     computed: {
         getInputOptions() {
@@ -75,6 +78,7 @@ export default  {
                         vm.$emit('unmaskedvalue', str)
                         vm.$emit('input', event.target.value)
                     },
+
                 }
 
 

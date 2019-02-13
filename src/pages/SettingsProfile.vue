@@ -165,7 +165,7 @@
             return {
 
                 isAddOperator:!!this.$route.query.add,
-                phoneUnmaskedvalue:'',
+                phoneUnmaskedValue:'',
                 phonesTypeSelect:{},
                 phonesType:[
                     {
@@ -260,7 +260,7 @@
 
             },
             unmaskedvalue(val){
-                this.phoneUnmaskedvalue=val;
+                this.phoneUnmaskedValue=val;
 
             },
             getBranchListAll(){
@@ -277,18 +277,18 @@
             createOperator(){
                 this.$http.post('admin-employee-create', this.model).then(({data})=>{
 
-                    this.$route.push({name:'team'})
+                    this.$router.push({name:'team'})
                 })
             },
             userUpdate(){
-            this.model.phones.phone= this.phoneUnmaskedvalue;
+            this.model.phones.phone= this.phoneUnmaskedValue;
 
             if(this.isAddOperator) {
                 return  this.createOperator()
             }
 
              this.$http.post('user-update', this.model).then(()=>{
-                 this.$route.push({name:'team'})
+                 this.$router.push({name:'team'})
              }).catch(({response})=>{
                  console.log('errors');
                  console.log(response.data);
