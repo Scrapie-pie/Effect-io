@@ -158,8 +158,12 @@
 
 <style lang="scss">
     .page-team{
-
+        &__content {
+            display:flex;
+            flex-direction:column;
+        }
         &__scroll-bar {
+            height:100%;
         }
         &__controls{
             display:flex;

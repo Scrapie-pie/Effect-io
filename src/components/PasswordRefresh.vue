@@ -19,7 +19,7 @@
                     v-validate="{required: true, confirmed: model.password}"
                     data-vv-as="пароль 2"
                 )
-            li.password-refresh__col(v-if="hideBtn")
+            li.password-refresh__col(v-if="!hideBtn")
                 base-btn.password-refresh__btn(@click="save") Сохранить пароль
     
 </template>

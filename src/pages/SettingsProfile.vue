@@ -164,7 +164,7 @@
         data() {
             return {
 
-                isAddOperator:this.$route.query.add,
+                isAddOperator:!!this.$route.query.add,
                 phoneUnmaskedvalue:'',
                 phonesTypeSelect:{},
                 phonesType:[

@@ -140,6 +140,7 @@
         line-height:1.2;
         cursor:pointer;
         text-align:center;
+        text-decoration:none;
 
         border:1px solid transparent;
         border-radius:3px;
