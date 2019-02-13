@@ -1,6 +1,6 @@
 <template lang="pug">
     scroll-bar.client-info
-        base-people(:name="clientInfo.name" :text="clientInfoContacts" :bg-text-no-fill="true" :avatar-url="info.photo")
+        base-people(:name="info.name" :text="clientInfoContacts" :bg-text-no-fill="true" :avatar-url="info.photo")
         .client-info__social-links
             social-links(:link="info.channel_link" :name="channelName")
         .client-info__scrollbar
@@ -86,21 +86,21 @@
             infoList(){
                 return [
                     {name: 'Пол', text: `На сайте ${this.info.online_time}, заходил ${this.info.visits_count} раз`},
-                    {name: 'Восраст', text: this.info.key_phrases+', запрос "'+this.info.key_phrases+'" '+this.info.country+' '+this.info.city},
+                    {name: 'Восраст', text: this.info.referrer+', запрос "'+this.info.key_phrases+'" '+this.info.country+' '+this.info.city},
                     {name: 'Интересы', text: this.info.browser+', '+ this.info.browser+', '+ this.info.device},
                     {name: 'ip', text: 'IP' + this.info.ip},
                     {name: 'Интересы', text: `Последнее обращение через: ${this.channelName}`},
                 ]
             },
             clientInfoContacts() {
-                let phone = `<div><a href="tel:${this.clientInfo.phone}">${this.clientInfo.phone}</a></div>`,
-                    email = `<div><a href="mailto:${this.clientInfo.mail}">${this.clientInfo.mail}</a></div>`;
+                let phone = `<div><a href="tel:${this.info.phone}">${this.info.phone}</a></div>`,
+                    email = `<div><a href="mailto:${this.info.mail}">${this.info.mail}</a></div>`;
                 return phone + email;
 
             },
             channelName() {
                 let text, textShort, name;
-                console.log(this.status);
+
                 switch (this.info.channel_type) {
                     case 1:
                         text = '1';
@@ -174,7 +174,7 @@
                         additional_contact_2:this.info.additional_contact_2,
                         additional_contact_3:this.info.additional_contact_3,
                     }).then(({data})=>{
-                    console.log(data);
+
                 })
             }
         }

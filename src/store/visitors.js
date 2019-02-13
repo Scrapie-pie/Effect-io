@@ -6,9 +6,12 @@ export default {
         itemOpenHistoryActions:false
     },
     mutations: {
-        all(state, val) {
+        all(state, val) { //Todo походу не нужен
             state.all=val.list;
             state.allCount=val.count;
+            val.list.forEach((item)=>{
+                console.log(item.uuid);
+            })
         },
         itemOpen(state, val) {
             state.itemOpen=val;

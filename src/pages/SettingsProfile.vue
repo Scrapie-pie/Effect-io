@@ -4,7 +4,7 @@
             ul.settings-list
                 li.settings-list__item
                     .settings-list__upload-avatar
-                        upload-avatar(:url="model.photo", @upload_url="getUploadAvatar")
+                        upload-avatar(:url="model.avatar", @upload_url="getUploadAvatar")
                 li.settings-list__item
                     .settings-list__upload-avatar
                     text-info.settings-list__text-info Загрузите фото, которое будут видеть Ваши коллеги и клиенты. Реальное фото всегда вызывает больше доверия.
@@ -32,6 +32,7 @@
                         type="email",
                         name="email"
                         v-model="model.mail"
+
                     )
                     text-info.settings-list__text-info Используйте реальное имя, оно будет отображаться в диалогах с клиентами и другими сотрудниками. Фамилию вводить не обязательно.
 
@@ -121,7 +122,7 @@
 </template>
 
 <script>
-
+    //Todo добавить скролинг при ошибки к полю ошибки
 
 
     import PasswordRefresh from '@/components/PasswordRefresh'
@@ -181,7 +182,7 @@
                     pass:'', //нужен для создания нового оператора
                     user_id:this.$store.getters['user/profile'].user_id,
                     owner_id:this.$store.getters['user/profile'].owner_id, //нужен для проверки userIdNoOwner()
-                    photo:this.$store.getters['user/profile'].photo,
+                    avatar:this.$store.getters['user/profile'].avatar,
                     first_name:this.$store.getters['user/profile'].first_name,
                     last_name:this.$store.getters['user/profile'].last_name,
                     phone:this.$store.getters['user/profile'].phone,
@@ -272,7 +273,7 @@
                 })
             },
             getUploadAvatar(event){
-                this.model.photo=event;
+                this.model.avatar=event;
             },
             createOperator(){
                 this.$http.post('admin-employee-create', this.model).then(({data})=>{
@@ -281,36 +282,44 @@
                 })
             },
             userUpdate(){
-            this.model.phones.phone= this.phoneUnmaskedValue;
 
-            if(this.isAddOperator) {
-                return  this.createOperator()
-            }
+                this.$validator.validateAll().then(response => {
+                    if (response) {
 
-             this.$http.post('user-update', this.model).then(()=>{
-                 this.$router.push({name:'team'})
-             }).catch(({response})=>{
-                 console.log('errors');
-                 console.log(response.data);
+                        this.model.phones.phone= this.phoneUnmaskedValue;
 
-                 if(response.data.errors) { // добавляет ошибки с бека в валидатор
-                     for (let prop in response.data.errors) {
-                         let id = this.$validator.fields.find({ name: prop });
-                         let err = {
-                             field: prop,
-                             msg:response.data.errors[prop].message,
-                             id:id
-                         };
-                         this.errors.add(err);
-                         this.$validator.flag(prop, {
-                             valid: false,
-                             dirty: true
-                         });
-                     }
+                        if(this.isAddOperator) {
+                            return  this.createOperator()
+                        }
+
+                        this.$http.post('user-update', this.model).then(()=>{
+                            this.$router.push({name:'team'})
+                        }).catch(({response})=>{
+                            console.log('errors');
+                            console.log(response.data);
+
+                            if(response.data.errors) { // добавляет ошибки с бека в валидатор
+                                for (let prop in response.data.errors) {
+                                    let id = this.$validator.fields.find({ name: prop });
+                                    let err = {
+                                        field: prop,
+                                        msg:response.data.errors[prop].message,
+                                        id:id
+                                    };
+                                    this.errors.add(err);
+                                    this.$validator.flag(prop, {
+                                        valid: false,
+                                        dirty: true
+                                    });
+                                }
 
 
-                 }
-             })
+                            }
+                        })
+                    }
+
+                });
+
 
             }
         }

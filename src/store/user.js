@@ -43,7 +43,7 @@ export default {
             dispatch('getSettings')
             dispatch('getBranchListAll');
             dispatch('operators/getAll',null,{root:true});
-            dispatch('visitors/getAll',null,{root:true});
+            //dispatch('visitors/getAll',null,{root:true}); //Todo лишний
 
 
         },

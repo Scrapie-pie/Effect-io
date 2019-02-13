@@ -1,6 +1,6 @@
 <template lang="pug">
     article.page-visitors
-        template(v-if="!count")
+        template(v-if="1")
             .page-visitors__controls
                 .page-visitors__control
                     base-field.page-visitors__search(
@@ -18,8 +18,9 @@
                     :selectOptions="{label:'name',options:channelList,value:channel}"
                     v-model="channel"
                     )
-
-            scroll-bar.page-visitors__scroll-bar
+                .page-visitors__control
+                    |На странице показано {{showItemLength}} из {{ itemListCount}}
+            scroll-bar(v-if="showItemLength" @ps-y-reach-end="loadDate").page-visitors__scroll-bar
                 table.table
                     thead.table__thead
                         tr.table__tr
@@ -27,7 +28,7 @@
                             th.table__td.table__td_th Прикреплен сотрудник
                             th.table__td.table__td_th Контакты
                             th.table__td.table__td_th Регион
-                    tbody.table__tbody(v-for="(item, index) in itemList", :key="item.uuid+item.site_id")
+                    tbody.table__tbody(v-for="(item, index) in itemList", :keey="item.uuid+item.site_id")
                         tr.table__tr.page-visitors__tr
                             td.table__td
                                 base-people(
@@ -45,7 +46,7 @@
                                 a(:href="`mailto:${item.mail}`" v-text="item.mail")
                             td.table__td
                                 |{{item.country}}, {{item.region}}, {{item.city}}
-        base-no-found(v-else name="visitors")
+            base-no-found(v-else name="visitors")
 </template>
 
 <script>
@@ -58,57 +59,101 @@
 
         data() {
             return {
-                count:0,
 
+                getVisitorsListStart:true,
                 search: '',
-                offset:0,
-                limit:50,
-                channel: '',
-                channelList: [],
-                itemList:[],
+                limit:1,
+                pageN:1,
                 itemListCount: 0,
+                itemList:[],
 
+                channel: '',
+                channelList: [
+                    {id:null,name:"Все каналы"},
+                    {id:7,name:"Effect.com"},
+                    {id:1,name:"Веб-сайт (Виджет 1.0)"},
+                    {id:2,name:"ВКонтакте"},
+                    {id:3,name:"Facebook"},
+                    {id:5,name:"Telegram"},
+                    {id:6,name:"Viber"},
+                    {id:4,name:"Slack"},
+                    {id:8,name:"Slack (IO)"},
+                    {id:9,name:"Zendesk"},
+                    {id:1,"nam":"Salesforce"}],
+
+
+            }
+        },
+        computed:{
+            showItemLength(){
+                return this.itemList.length
+            },
+            pageNLast(){
+                return this.itemListCount / this.limit
+            },
+            getOffset(){
+                return this.limit * (this.pageN - 1)
+            },
+            requestData(){
+                return {
+                    params:{
+                        search:this.search,
+                        offset:this.getOffset,
+                        limit:this.limit,
+                        channel_type:this.channel.id
+                    }
+
+                }
             }
         },
         watch:{
-            search:{
-                handler(val){
-                    this.getVisitorsList()
-                },
-                immediate: true
-            }
+            search(val){
+                console.log(val);
+                this.resetSearch();
+                this.getVisitorsList();
+            },
+            channel(){
+                this.resetSearch();
+                this.getVisitorsList();
+            },
         },
         created() {
-            this.getChannelList()
+            this.channel = this.channelList[0];
 
 
 
         },
         methods:{
-            getChannelList(){
-                this.$http.get('channel-types').then(({data})=>{
-                    console.log(data);
-                    this.channelList = data;
-                    this.channel = this.channelList[0];
-                })
+            resetSearch(){
+                this.pageN=1;
+                this.itemListCount= 0;
+                this.itemList=[];
+                this.getVisitorsListStart=true;
+            },
+            loadDate(event){
+                this.getVisitorsList()
+
             },
             getVisitorsList(){
-                let params= {
-                    search:this.search,
-                    offset:this.offset,
-                    limit:this.limit,
-                };
+                if(!this.getVisitorsListStart) return;
 
-                this.$http.get('guest-company-list',{params}).then(({data})=>{
-                    console.log(data);
-                    this.itemList = data.data.list
-                    this.itemListCount = data.data.count
-                })
+                this.getVisitorsListStart=false;
+
+                if((this.showItemLength < this.itemListCount) || this.itemListCount===0) {
+                    this.$http.get('guest-company-list',this.requestData).then(({data})=>{
+                        this.getVisitorsListStart=true;
+                        if (data.data.count) {
+                            console.log('getOffset=',this.getOffset,'pageN=',this.pageN,'pageNLast=',this.pageNLast,'itemListCount=',this.itemListCount);
+                            this.itemList.push(...data.data.list);
+                            this.itemListCount = data.data.count;
+                            this.pageN += 1;
+                        }
+
+                    })
+                }
+
             },
-            popupNotFind(){
-                this.$root.$emit('popup-not-find');
-                console.log(this.$root);
-            }
+
         }
     }
 </script>
@@ -128,7 +173,9 @@
         &__search{
             width:calc-em(250);
         }
-
+        &__tr  .table__td {
+            height:20vh;
+        }
         &__tr:not(:hover) &__start-chat {
             border:0;
             padding:0;

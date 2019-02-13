@@ -25,6 +25,7 @@ import 'intl-tel-input/build/css/intlTelInput.min.css'
 import Inputmask from "inputmask";
 
 export default  {
+
     inheritAttrs: false,
     props:{
         value: {

@@ -14,7 +14,7 @@
     import '@/scss/base.scss'
 
 
-
+    import browserNotification from '@/modules/browserNotification'
     import TheHeader from '@/components/TheHeader'
     import ThePopup from "@/components/ThePopup";
 
@@ -38,23 +38,33 @@
         },
         methods: {
             webSocketInit() {
-                let socket = io("http://newrobocall.ru:3000", {
-                    query: {
-                        uuid:  Math.random()
-                    }
-                });
 
-                socket.on("connect", () => {
-                    console.log("connected");
-                });
+                try {
 
-                socket.on("connect_error", () => {
-                    console.log("connect_error");
-                });
+                    let socket = io("http://newrobocall.ru:3000", {
+                        query: {
+                            uuid:  Math.random()
+                        }
+                    });
 
-                socket.on("connect_timeout", () => {
-                    console.log("connect_timeout");
-                });
+                    socket.on("connect", () => {
+                        console.log("connected");
+                    });
+
+                    socket.on("connect_error", () => {
+                        console.log("connect_error");
+                    });
+
+                    socket.on("connect_timeout", () => {
+                        console.log("connect_timeout");
+                    });
+
+                } catch (err) {
+
+                    browserNotification('Сбой на сервере сокетов')
+
+                }
+
 
 
                 setTimeout(() => {

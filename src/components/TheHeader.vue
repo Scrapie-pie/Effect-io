@@ -45,7 +45,6 @@
                 return this.unread.common
             },
             unreadGuest(){
-                console.log(this.unread);
                 return this.unread.guest
             },
             unreadPrivate(){

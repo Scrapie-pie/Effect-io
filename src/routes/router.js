@@ -118,7 +118,6 @@ router.beforeEach((to, from, next) => {
     function jwt(pathTarget,pathElseNoJwt) {
 
         const jwt = localStorage.getItem('jwt');
-        console.log('jwt',jwt);
         if (jwt) {
             axios.post('login', {jwt}, {
                 headers: { 'content-type': 'application/json' }

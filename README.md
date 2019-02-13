@@ -32,3 +32,7 @@ npm run test:unit
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+Сброс 
+cd /srv/api/RBCALL-3212
+php app/cli/services/clear_attempts.php

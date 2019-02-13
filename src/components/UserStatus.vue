@@ -55,7 +55,6 @@
             },
             statusCurrent() {
                 let text, textShort, name;
-                console.log(this.status);
                 switch (this.status) {
                     case 1:
                         text = 'В сети (онлайн)';
