@@ -4,7 +4,7 @@
             ul.settings-list
                 li.settings-list__item
                     .settings-list__upload-avatar
-                        upload-avatar(:url="model.avatar", @upload_url="getUploadAvatar")
+                        upload-avatar(:url="model.photo", @upload_url="getUploadAvatar")
                 li.settings-list__item
                     .settings-list__upload-avatar
                     text-info.settings-list__text-info Загрузите фото, которое будут видеть Ваши коллеги и клиенты. Реальное фото всегда вызывает больше доверия.
@@ -181,7 +181,7 @@
                     pass:'', //нужен для создания нового оператора
                     user_id:this.$store.getters['user/profile'].user_id,
                     owner_id:this.$store.getters['user/profile'].owner_id, //нужен для проверки userIdNoOwner()
-                    avatar:this.$store.getters['user/profile'].avatar,
+                    photo:this.$store.getters['user/profile'].photo,
                     first_name:this.$store.getters['user/profile'].first_name,
                     last_name:this.$store.getters['user/profile'].last_name,
                     phone:this.$store.getters['user/profile'].phone,
@@ -272,10 +272,13 @@
                 })
             },
             getUploadAvatar(event){
-                this.model.avatar=event;
+                this.model.photo=event;
             },
             createOperator(){
-                this.$http.post('admin-employee-create', this.model)
+                this.$http.post('admin-employee-create', this.model).then(({data})=>{
+
+                    this.$route.push({name:'team'})
+                })
             },
             userUpdate(){
             this.model.phones.phone= this.phoneUnmaskedvalue;
@@ -284,7 +287,9 @@
                 return  this.createOperator()
             }
 
-             this.$http.post('user-update', this.model).catch(({response})=>{
+             this.$http.post('user-update', this.model).then(()=>{
+                 this.$route.push({name:'team'})
+             }).catch(({response})=>{
                  console.log('errors');
                  console.log(response.data);
 

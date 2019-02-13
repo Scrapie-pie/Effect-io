@@ -15,7 +15,7 @@
                     base-field(
                     type="select"
                     name="channel",
-                    :selectOptions="{label:'name',options:channelList}"
+                    :selectOptions="{label:'name',options:channelList,value:channel}"
                     v-model="channel"
                     )
 
@@ -82,20 +82,18 @@
             }
         },
         created() {
-            this.channelList = [
-                {name: 'Все каналы'},
-                {name: 'Effect.com'},
-                {name: 'ВКонтакте'},
-                {name: 'Facebook'},
-                {name: 'Slack'},
-                {name: 'Viber'},
-                {name: 'Skype'},
-            ]
-            this.channel = this.channelList[0];
+
+
 
 
         },
         methods:{
+            getChannelList(){
+                this.$http.get('site-company-list'.then(({data})=>{
+                    this.channelList = data;
+                    this.channel = this.channelList[0];
+                }))
+            },
             getVisitorsList(){
                 let params= {
                     search:this.search,
