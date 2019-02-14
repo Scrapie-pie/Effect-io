@@ -6,7 +6,7 @@ import AccountAuth from '@/components/AccountAuth'
 
 import PageTeam from '@/pages/PageTeam'
 import PageVisitor from '@/pages/PageVisitor'
-import PageDialog from '@/pages/PageDialog'
+import PageChat from '@/pages/PageChat'
 
 import Settings from '@/routes/settings'
 
@@ -37,7 +37,12 @@ const router =  new Router({
         {
             name: 'team',
             path: '/team',
-            component: PageTeam
+            component: PageTeam,
+        },
+        {
+            name: 'teamChat', // Вынес в children, иначе при переходе срабатывала функция hideHeader
+            path: '/team/:id',
+            component: PageChat,
         },
         {
             name: 'visitors',
@@ -45,20 +50,26 @@ const router =  new Router({
             component: PageVisitor
         },
         {
-            name: 'process',
-            path: '/process',
-            component: PageDialog,
+            name: 'visitorsChat',
+            path: '/visitors/:id',
+            component: PageChat,
+
         },
         {
             name: 'dialog',
             path: '/dialog/:id',
-            component: PageDialog,
-
+            component: PageChat,
         },
+        {
+            name: 'process',
+            path: '/process',
+            component: PageChat,
+        },
+
         {
             name: 'common',
             path: '/common',
-            component: PageDialog
+            component: PageChat
         },
         ...Settings,
         ...helpers,

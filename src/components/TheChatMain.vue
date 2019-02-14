@@ -4,7 +4,7 @@
         scroll-bar.chat-main__body
 
             ul.chat-main__list
-                li.chat-main__item
+                li.chat-main__item.chat-main__item_history_more
                     base-btn(theme="link" @click="historyMessageLoad") Загрузить более раннюю история общения с посетителем
                 li.chat-main__item
                     time.chat-main__date 29 ноября 2017
@@ -30,12 +30,14 @@
     import TheChatMainHeader from '@/components/TheChatMainHeader'
     import TheChatMainFooter from '@/components/TheChatMainFooter'
 
+
     export default {
         components:{
             TheChatSystemMessages,
             TheChatMainHeader,
             TheChatMainFooter
         },
+
         data() {
             return {
 
@@ -116,6 +118,12 @@
         display:flex;
         flex-flow:column;
         height:100%;
+
+        &__item {
+            padding:calc-em(25);
+
+            &_history_more {text-align:center}
+        }
 
 
         &__body{

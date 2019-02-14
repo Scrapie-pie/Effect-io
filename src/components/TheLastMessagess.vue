@@ -3,12 +3,16 @@
         .last-messages__search
             base-field(type="search" name="search" v-model="search" theme="soft")
         scroll-bar.last-messages__scrollbar
-            ul.last-messages__list
-                li.last-messages__item(v-for="(item, index) in visitorsList",:key="item.uuid+item.site_id",  :class="{'last-messages__item_warning':item.warning}")
-                    //button.last-messages__btn(type="button" v-text="`${item.name}:${item.text}`")
+            ul.last-messages__list(v-if="viewModeChat=='visitors'")
+                li.last-messages__item(
+                    v-for="(item, index) in visitorsList",
+                    :key="item.uuid+item.site_id",
+                    :class="{'last-messages__item_warning':item.warning}"
+                )
+
                     router-link.last-messages__btn(
-                    :to="{name:'dialog',params: { id: item.uuid},query:{site:item.site_id}}"
-                    v-text="`${item.name}:${item.text}`")
+                        :to="{name:'dialog',params: { id: item.uuid},query:{site:item.site_id}}"
+                        v-text="`${item.name}:${item.text}`")
                     base-people.last-messages__people(
                         :avatar-url="item.photo"
                         :name="item.name",
@@ -18,23 +22,72 @@
                         :count="item.count"
                         hidden
                     )
+
+            ul.last-messages__list(v-else)
+                li.last-messages__item(
+                v-for="(item, index) in operatorListSearch",
+                :key="item.id",
+                :class="{'last-messages__item_warning':item.warning}"
+                )
+
+                    router-link.last-messages__btn(
+                    :to="{name:'dialog',params: { id: item.uuid},query:{site:item.site_id}}"
+                    v-text="`${item.name}:${item.text}`")
+                    base-people.last-messages__people(
+                    :avatar-url="item.photo"
+                        :name="item.fullName",
+                    :text="'В API нет последнего сообщения'",
+                    :bg-text-no-fill="true",
+                    :channel-name="item.channel",
+                    :count="item.count"
+                    hidden
+                    )
 </template>
 
 <script>
+    import { viewModeChat } from '@/mixins/mixins'
     export default {
+        mixins:[viewModeChat],
+
         data() {
             return {
                 search:'',
                 warning:true,
 
-
             }
         },
         computed:{
+            styleClass(){
+
+            },
+            itemList(){
+                if(this.$route.name === "teamChat") return this.operatorList
+                else return this.visitorsList()
+            },
             visitorsList(){
 
                 return this.$store.getters['visitors/all']
+            },
+            operatorList(){
+                console.log(this.$store.getters['operators/all']);
+                return this.$store.getters['operators/all']
+            },
+            operatorListSearch(){
+                let list = this.operatorList;
+
+                list = list.filter(item => {
+                    var regexp = new RegExp(this.search, 'ig')
+
+                    if (item.fullName.match(regexp) == null) return 0
+                    return true
+                })
+                console.log(list)
+                // console.log(list);
+                return list
             }
+        },
+        created(){
+
         }
     }
 </script>
@@ -64,7 +117,8 @@
             position:relative;
             transition:$transition;
             padding-left:calc-em(10);
-            &:hover{
+            &:hover,
+            &_active{
                 background-color:$color_bg-hover;
             }
 

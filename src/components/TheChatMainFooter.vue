@@ -31,7 +31,7 @@
                                 v-model="message"
                             )
                 ul.chat-main-footer__buttons
-                    li.chat-main-footer__button
+                    li.chat-main-footer__button(v-if="viewModeChat=='common'")
                         base-btn(
                             :icon="{name:'user',textHidden:'Упомянуть в диалоге'}",
                             @click.prevent="showMention=true"
@@ -41,7 +41,7 @@
                             :icon="{name:'phrases',textHidden:'Список готовых шаблонных фраз'}",
                             @click.prevent="showPhrases=true"
                         )
-                    li.chat-main-footer__button.chat-main-footer__button_offer
+                    li.chat-main-footer__button.chat-main-footer__button_offer(v-if="viewModeChat=='visitors'")
                         base-btn(
                             :icon="{name:'more-fill',textHidden:'Предложить посетителю'}",
                             @click.prevent="showOffer=true"
@@ -73,6 +73,8 @@
 
     import autosize from 'autosize'
 
+    import { viewModeChat } from '@/mixins/mixins'
+
     export default {
         components:{
             SelectOperators,
@@ -80,6 +82,7 @@
             TheFilesBoard,
             ThePhrasesReady
         },
+        mixins:[viewModeChat],
         watch:{
             '$route' (to, from) {
                 this.checkIsProcessPage();

@@ -1,10 +1,10 @@
 <template lang="pug">
-    article.page-dialog
-        the-last-messages.page-dialog__last-messages
+    article.page-chat
+        the-last-messages.page-chat__last-messages
 
-        section.page-dialog__main
+        section.page-chat__main
                 the-chat-main
-        aside.page-dialog__info
+        aside.page-chat__info(v-if="viewModeChat=='visitors'")
             the-client-info
 
 </template>
@@ -14,8 +14,13 @@
     import TheClientInfo from '@/components/TheClientInfo';
     import TheChatMain from '@/components/TheChatMain';
     import store from '@/store/store'
+    import { viewModeChat } from '@/mixins/mixins'
+
+
 
     const routerHooks = (to, from, next)=>{
+        if(to.name==="teamChat") return next();
+
         let uuid = to.params.id,
             guest_uuid=to.params.id, // метод read-history требуе prefix guest_
             site_id = to.query.site,
@@ -36,15 +41,16 @@
             TheLastMessages,
             TheClientInfo,
         },
+        mixins:[viewModeChat],
         beforeRouteEnter:routerHooks,
-        beforeRouteUpdate:routerHooks
+        beforeRouteUpdate:routerHooks,
 
 
     }
 </script>
 
 <style lang="scss">
-    .page-dialog {
+    .page-chat {
         $color_border:glob-color('border');
         $color_bg:glob-color('info-lighten');
         $color_bg-app:glob-color('light');

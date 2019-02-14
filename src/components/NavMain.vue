@@ -10,6 +10,7 @@
 
                 :to="item.link"
                 active-class="nav-main__link_active"
+                :exact="item.exact"
 
                 )
                     span.nav-main__text(v-text="item.text")

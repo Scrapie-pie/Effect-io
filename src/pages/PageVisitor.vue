@@ -36,7 +36,10 @@
                                 :avatar-url="item.photo"
                             )
                         td.table__td
-                            base-btn.page-visitors__start-chat(v-if="!item.employee" :router="{name:'dialog'}") начать диалог
+                            base-btn.page-visitors__start-chat(
+                                v-if="!item.employee",
+                                :router="{name:'visitorsChat',params:{id:item.uuid},query:{site_id:item.site_id}}"
+                            ) начать диалог
                             span(v-else v-text="item.employee")
                         td.table__td
                             a(:href="`tel:${item.phone}`" v-text="item.phone")

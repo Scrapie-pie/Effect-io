@@ -3,14 +3,14 @@
         .chat-main-header__text
             h1.chat-main-header__members
                 span.chat-main-header__name.chat-main-header__name_open_client-info.js-client-info(
-                    v-text="$store.state.visitors.itemOpen.name"
+                    v-text="targetName"
                 )
                 template(v-for="(item, index) in compMembersList")
                     span.chat-main-header__name
                         | , {{item}}
                         button(type="button" v-if="index").chat-main-header__name-tooltip Убрать из диалога
 
-            .chat-main-header__channel На сайте: site.ru -&nbsp;
+            .chat-main-header__channel(v-if="viewModeChat=='visitors'") На сайте: site.ru -&nbsp;
                 .chat-main-header__channel-btn-wrap
                     base-btn(
                         theme="text",
@@ -45,23 +45,21 @@
                         @box_control_close="showMoreChatActions=false"
                     )
                         the-chat-main-header-actions()
-
-
-
-
-
 </template>
 
 <script>
     import TheChatMainHeaderHistory from '@/components/TheChatMainHeaderHistory'
     import TheChatMainHeaderActions from '@/components/TheChatMainHeaderActions'
     import SelectOperators from '@/components/SelectOperators'
+    import { viewModeChat } from '@/mixins/mixins'
+
     export default {
         components: {
             TheChatMainHeaderHistory,
             TheChatMainHeaderActions,
             SelectOperators
         },
+        mixins:[viewModeChat],
         data() {
             return {
                 membersList: [],
@@ -72,6 +70,14 @@
             }
         },
         computed:{
+            targetName(){
+                if (this.viewModeChat=="visitors") return this.$store.state.visitors.itemOpen.name;
+                else {
+                    return this.$store.state.operators.all.find( item => item.id == this.$route.params.id).fullName;
+
+                }
+
+            },
             compMembersList(){
                 return this.membersList
             }
@@ -91,9 +97,6 @@
 
             },
             hideClientInfo(e) {
-
-
-
                 if (!e.target.matches('.chat-dialog__info, .chat-dialog__info *,.js-client-info')) {
                     document.body
                         .classList.remove('is-opened-client-info')
@@ -104,13 +107,11 @@
         },
         created() {
             //this.membersList.push(this.$store.state.visitors.itemOpen.name)
-            this.membersList = ['Петр Иванов Камикадзев','Кирил'];
-
+            //this.membersList = ['Петр Иванов Камикадзев','Кирил'];
         },
         mounted(){
             document.querySelector('.js-client-info')
                 .addEventListener('click', this.showClientInfo)
-
         },
         beforeDestroy() {
             document.removeEventListener('click', this.hideClientInfo);
@@ -123,27 +124,21 @@
 
 <style lang="scss">
     .chat-main-header{
-
-
         position:relative;
         display:flex;
         justify-content:space-between;
         margin-bottom:2.5em;
         z-index:1;
 
-
         &__controls {
             display:flex;
-
         }
 
         &__control {
-           /* position:relative;*/
             &_more {
                 .icon_more {
                     fill:glob-color('info-dark');
                 }
-
             }
         }
 
@@ -162,7 +157,6 @@
         &__name {
             position:relative;
 
-
             &_open_client-info {
                 @include media($width_md) {
                     border-bottom:1px dashed;
@@ -170,7 +164,6 @@
             }
 
             &-tooltip {
-
                 @include box-decor();
                 position:absolute;
                 top:100%;
@@ -194,10 +187,7 @@
                 opacity:1;
                 visibility:visible;
             }
-
         }
-
-
 
         &__more {
             position:absolute;
@@ -222,7 +212,6 @@
             visibility:hidden;
 
         }
-
 
     }
 </style>

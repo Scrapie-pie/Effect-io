@@ -32,7 +32,7 @@
                                 :avatar-url="item.photo"
                                 )
                             td.table__td
-                                base-btn() Начать диалог
+                                base-btn(:router="{name:'teamChat',params:{id:item.id}}") Начать диалог
 
                             td.table__td
                                 a(
@@ -66,20 +66,7 @@
 
 
 
-        //table.table
-            thead.table__thead
-                tr.table__tr
-                    th.table__td.table__td_th Имя
-                    th.table__td.table__td_th Прикреплен сотрудник
-                    th.table__td.table__td_th Контакты
-                    th.table__td.table__td_th Регион
-            tbody.table__tbody
-                tr
-                    td.table__td
-                        base-people(type="operator" text="онлайн" name="Зеленков Александр")
-                    td.table__td Вы можете начать диалог
-                    td.table__td +7 (921) 656-66-77, mail@mail.ru
-                    td.table__td Россия, Свердловская область, Екатеринбург
+
 
 </template>
 
@@ -93,11 +80,8 @@
         },
         filters: {
             phoneAdditional: function (value) {
-
                 let str = value.phone;
-
                 if (value.additional) str = str + ' (' + value.additional +')'
-                console.log(str);
                 return str
             }
         },
@@ -114,20 +98,16 @@
                 return  this.$store.getters['user/profile'].role_id === 13 || this.$store.getters['user/profile'].role_id === 5 //либо админ либо владелец
             },
             operatorList(){
-                console.log(this.$store.getters['operators/all']);
                 return this.$store.getters['operators/all']
             },
             operatorListSearch(){
-                let list = this.operatorList
-
+                let list = this.operatorList;
                 list = list.filter(item => {
                     var regexp = new RegExp(this.search, 'ig')
 
                     if (item.fullName.match(regexp) == null) return 0
                     return true
                 })
-                console.log(list)
-                // console.log(list);
                 return list
             }
         },
@@ -143,11 +123,8 @@
                         user_id:operator.id,
                         active:active
                     }
-                console.log(data);
-
-
                 this.$http.post('user-update', data).then(({data})=>{
-                    console.log(data.data);
+
                 })
 
             }
