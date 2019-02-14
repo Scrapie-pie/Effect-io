@@ -10,16 +10,16 @@
                     time.chat-main__date 29 ноября 2017
 
                     ul.chat-main__messages
-                        li.chat-main__messages-item(v-for="(item, index) in messageList",:key="index" :class="{'chat-main__messages-item_right':item.right}")
+                        li.chat-main__messages-item(v-for="(item, index) in messageList",:key="item.to_id" :class="{'chat-main__messages-item_right':item.right}")
                             base-people(
                                 avatar-width="md",
-                                :name="item.name",
-                                :text="item.text",
-                                :datetime="item.datetime",
+                                :name="member[item.to_id]",
+                                :text="item.body",
+                                :datetime="item.time",
                                 :right="item.right",
                                 :img="item.img"
                             )
-                    the-chat-system-messages
+                    //the-chat-system-messages
         footer.chat-main__footer
             the-chat-main-footer
 
@@ -38,7 +38,6 @@
         },
         data() {
             return {
-
 
                 messageList: [
                     {name: 'Петр Иванов Камикадзев', text: 'Где можно посмотреть спортивные кеды?', datetime: '17.47',right:true},
@@ -62,9 +61,23 @@
                     {name: 'Кристина Мармеладова Игоревна', text: 'Где можно посмотреть спортивные кеды?', datetime: '17.47',right:true},
                     {name: 'Кристина Мармеладова Игоревна', text: 'Где можно посмотреть спортивные кеды?', datetime: '17.47',img:'http://dl3.joxi.net/drive/2019/01/28/0004/2024/276456/56/15f294e8cd.jpg'},
                 ],
-
+                messageList:[],
 
             }
+        },
+        computed:{
+            messageRight(){
+
+            },
+            member(){
+            return {
+                [this.visitorInfo.uuid]: this.visitorInfo.name
+            }
+            },
+            visitorInfo(){
+                console.log(this.$store.state.visitors.itemOpen);
+                return this.$store.state.visitors.itemOpen
+            },
         },
         mounted() {
 
@@ -85,7 +98,8 @@
                 }
 
                 this.$http.get('message-operator-guest-get-last', {params}).then(({data})=>{
-                    console.log(data.data);
+                    console.log(data.messages);
+                    this.messageList = data.messages;
                 })
             }
         },

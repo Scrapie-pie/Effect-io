@@ -27,7 +27,8 @@
                         scroll-bar.chat-main-footer__scrollbar
                             textarea.chat-main-footer__input(
                                 placeholder="Enter - отправить сообщение, Shift+Enter - новая строка."
-                                ref="chatInput"
+                                ref="chatInput",
+                                v-model="message"
                             )
                 ul.chat-main-footer__buttons
                     li.chat-main-footer__button
@@ -93,6 +94,7 @@
                 showOffer:false,
                 showSmiles:false,
                 showPhrases:false,
+                message:'',
 
 
             }
@@ -118,8 +120,8 @@
         methods: {
             send(){
                 let guest_uuid = this.$store.state.visitors.itemOpen.uuid,
-                    site_id =+ this.$route.query.site, //Todo попросить чтобы siteId был в  visitors.itemOpen
-                    body='12345';
+                    site_id =+ this.$store.state.visitors.itemOpen.site_id,
+                    body=this.message;
                 let data = {
                     guest_uuid,site_id,body
                 }

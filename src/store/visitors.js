@@ -22,7 +22,9 @@ export default {
     },
     actions: {
         getAll({ commit, dispatch }) {
-            this._vm.$http.get('guest-company-list').then(({data})=>{
+            this._vm.$http.get('guest-list',{params:{
+                type:'self'
+                }}).then(({data})=>{
 
                 commit('all',data.data)
             })

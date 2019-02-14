@@ -16,7 +16,7 @@
                         :bg-text-no-fill="true",
                         :channel-name="item.channel",
                         :count="item.count"
-                    hidden
+                        hidden
                     )
 </template>
 

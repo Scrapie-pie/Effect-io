@@ -93,7 +93,7 @@
                         search:this.search,
                         offset:this.getOffset,
                         limit:this.limit,
-                        channel_type:this.channel.id
+                        channel_type:this.channel.id,
                     }
                 }
             }
