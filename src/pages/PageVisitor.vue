@@ -1,72 +1,67 @@
 <template lang="pug">
     article.page-visitors
-        template(v-if="1")
-            .page-visitors__controls
-                .page-visitors__control
-                    base-field.page-visitors__search(
+        .page-visitors__controls
+            .page-visitors__control
+                base-field.page-visitors__search(
                     type="search"
                     name="search",
                     placeholder="Поиск... (имя, тел., e-mail)"
                     v-model="search",
                     theme="soft"
-
-                    )
-                .page-visitors__control
-                    base-field(
+                )
+            .page-visitors__control
+                base-field(
                     type="select"
                     name="channel",
                     :selectOptions="{label:'name',options:channelList,value:channel}"
                     v-model="channel"
-                    )
-                .page-visitors__control
-                    |На странице показано {{showItemLength}} из {{ itemListCount}}
-            scroll-bar(v-if="showItemLength" @ps-y-reach-end="loadDate").page-visitors__scroll-bar
-                table.table
-                    thead.table__thead
-                        tr.table__tr
-                            th.table__td.table__td_th Имя
-                            th.table__td.table__td_th Прикреплен сотрудник
-                            th.table__td.table__td_th Контакты
-                            th.table__td.table__td_th Регион
-                    tbody.table__tbody(v-for="(item, index) in itemList", :keey="item.uuid+item.site_id")
-                        tr.table__tr.page-visitors__tr
-                            td.table__td
-                                base-people(
-                                    type="visitor"
-                                    :name="item.name"
-                                    avatar-width="md",
-                                    :avatar-url="item.photo"
-                                )
-                            td.table__td
-                                base-btn.page-visitors__start-chat(v-if="!item.employee" :router="{name:'dialog'}") начать диалог
-                                span(v-else v-text="item.employee")
-                            td.table__td
-                                a(:href="`tel:${item.phone}`" v-text="item.phone")
-                                br(v-if="item.phone")
-                                a(:href="`mailto:${item.mail}`" v-text="item.mail")
-                            td.table__td
-                                |{{item.country}}, {{item.region}}, {{item.city}}
-            base-no-found(v-else name="visitors")
+                )
+            .page-visitors__control
+                |На странице показано {{showItemLength}} из {{ itemListCount}}
+        scroll-bar(v-if="showItemLength" @ps-y-reach-end="loadDate").page-visitors__scroll-bar
+            table.table
+                thead.table__thead
+                    tr.table__tr
+                        th.table__td.table__td_th Имя
+                        th.table__td.table__td_th Прикреплен сотрудник
+                        th.table__td.table__td_th Контакты
+                        th.table__td.table__td_th Регион
+                tbody.table__tbody(v-for="(item, index) in itemList", :keey="item.uuid+item.site_id")
+                    tr.table__tr.page-visitors__tr
+                        td.table__td
+                            base-people(
+                                type="visitor"
+                                :name="item.name"
+                                avatar-width="md",
+                                :avatar-url="item.photo"
+                            )
+                        td.table__td
+                            base-btn.page-visitors__start-chat(v-if="!item.employee" :router="{name:'dialog'}") начать диалог
+                            span(v-else v-text="item.employee")
+                        td.table__td
+                            a(:href="`tel:${item.phone}`" v-text="item.phone")
+                            br(v-if="item.phone")
+                            a(:href="`mailto:${item.mail}`" v-text="item.mail")
+                        td.table__td
+                            |{{item.country}}, {{item.region}}, {{item.city}}
+        base-no-found(v-else name="visitors")
 </template>
 
 <script>
     import ContextMenu from '@/components/ContextMenu'
-
+    import _ from 'underscore'
     export default {
         components: {
             ContextMenu
         },
-
         data() {
             return {
-
                 getVisitorsListStart:true,
                 search: '',
-                limit:1,
+                limit:20,
                 pageN:1,
                 itemListCount: 0,
                 itemList:[],
-
                 channel: '',
                 channelList: [
                     {id:null,name:"Все каналы"},
@@ -79,9 +74,7 @@
                     {id:4,name:"Slack"},
                     {id:8,name:"Slack (IO)"},
                     {id:9,name:"Zendesk"},
-                    {id:1,"nam":"Salesforce"}],
-
-
+                    {id:1,name:"Salesforce"}],
             }
         },
         computed:{
@@ -102,16 +95,11 @@
                         limit:this.limit,
                         channel_type:this.channel.id
                     }
-
                 }
             }
         },
         watch:{
-            search(val){
-                console.log(val);
-                this.resetSearch();
-                this.getVisitorsList();
-            },
+            search:'debounceSearch',
             channel(){
                 this.resetSearch();
                 this.getVisitorsList();
@@ -119,11 +107,13 @@
         },
         created() {
             this.channel = this.channelList[0];
-
-
-
         },
         methods:{
+            debounceSearch:_.debounce(function()
+                {
+                    this.resetSearch();
+                    this.getVisitorsList();
+                }, 500),
             resetSearch(){
                 this.pageN=1;
                 this.itemListCount= 0;
@@ -132,7 +122,6 @@
             },
             loadDate(event){
                 this.getVisitorsList()
-
             },
             getVisitorsList(){
                 if(!this.getVisitorsListStart) return;
@@ -140,10 +129,9 @@
                 this.getVisitorsListStart=false;
 
                 if((this.showItemLength < this.itemListCount) || this.itemListCount===0) {
-                    this.$http.get('guest-company-list',this.requestData).then(({data})=>{
+                    this.$http.get('guest-list',this.requestData).then(({data})=>{
                         this.getVisitorsListStart=true;
                         if (data.data.count) {
-                            console.log('getOffset=',this.getOffset,'pageN=',this.pageN,'pageNLast=',this.pageNLast,'itemListCount=',this.itemListCount);
                             this.itemList.push(...data.data.list);
                             this.itemListCount = data.data.count;
                             this.pageN += 1;
@@ -173,9 +161,7 @@
         &__search{
             width:calc-em(250);
         }
-        &__tr  .table__td {
-            height:20vh;
-        }
+
         &__tr:not(:hover) &__start-chat {
             border:0;
             padding:0;
