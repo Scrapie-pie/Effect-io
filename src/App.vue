@@ -67,6 +67,10 @@
                     console.log("connect_timeout");
                 });
 
+                socket.on("update-branches", function (payload) {
+                    console.log("update-branches", payload);
+                });
+
                 try {
 
 
@@ -75,17 +79,6 @@
                     browserNotification('Сбой на сервере сокетов')
 
                 }
-
-
-
-                setTimeout(() => {
-
-                    socket.emit('message', {
-                        body: 'Text Message',
-                        uuid: Math.random()
-                    });
-
-                }, 3000);
             },
             httpErrors(){
 
