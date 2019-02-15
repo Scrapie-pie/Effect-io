@@ -48,44 +48,37 @@
         },
         methods: {
             webSocketInit() {
+                console.log(this.userId);
+                let socket = io("http://newrobocall.ru:3000", {
+                    query: {
+                        uuid:  this.userId
+                    }
+                });
 
+                socket.on("connect", () => {
+                    console.log("connected");
+                });
+
+                socket.on("connect_error", () => {
+                    console.log("connect_error");
+                });
+
+                socket.on("connect_timeout", () => {
+                    console.log("connect_timeout");
+                });
+
+                socket.on("update-branches", function (payload) {
+                    console.log("update-branches", payload);
+                });
 
                 try {
 
-                    console.log(this.userId);
-                    let socket = io("http://newrobocall.ru:3000", {
-                        query: {
-                            uuid:  this.userId
-                        }
-                    });
 
-                    socket.on("connect", () => {
-                        console.log("connected");
-                    });
-
-                    socket.on("connect_error", () => {
-                        console.log("connect_error");
-                    });
-
-                    socket.on("connect_timeout", () => {
-                        console.log("connect_timeout");
-                    });
                 } catch (err) {
 
                     browserNotification('Сбой на сервере сокетов')
 
                 }
-
-
-
-                setTimeout(() => {
-
-                    socket.emit('message', {
-                        body: 'Text Message',
-                        uuid: Math.random()
-                    });
-
-                }, 3000);
             },
             httpErrors(){
 
