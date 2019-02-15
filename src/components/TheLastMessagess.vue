@@ -69,7 +69,7 @@
                 return this.$store.getters['visitors/all']
             },
             operatorList(){
-                console.log(this.$store.getters['operators/all']);
+
                 return this.$store.getters['operators/all']
             },
             operatorListSearch(){
@@ -81,7 +81,7 @@
                     if (item.fullName.match(regexp) == null) return 0
                     return true
                 })
-                console.log(list)
+
                 // console.log(list);
                 return list
             }

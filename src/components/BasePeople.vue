@@ -33,11 +33,10 @@
         },
         filters: {
             formatTime: function (value) {
-                console.log(value);
-                if (value) {
-                    let date = moment(value)
 
-                    return moment(value).format('HH:mm')
+                if (value) {
+                    //let date = moment(value*1000)
+                    return moment(value*1000).format('HH:mm')
 
                 } else {
                     return ''

@@ -19,7 +19,8 @@
 
 
     const routerHooks = (to, from, next)=>{
-        if(viewModeChat=='operators') return next();
+
+        if(to.name == "teamChat") return next();
 
 
         let uuid = to.params.id,

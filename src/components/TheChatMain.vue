@@ -1,19 +1,37 @@
 <template lang="pug">
     article.chat-main
         the-chat-main-header.chat-main__header
-        scroll-bar.chat-main__body
-
+        scroll-bar.chat-main__body(ref="scrollbar", @ps-scroll-up="scrollLoad")
             ul.chat-main__list
+                li.chat-main__item.chat-main__item_history_more
+                    base-btn(theme="link", @click="historyMessageLoad") Загрузить более раннюю история общения с посетителем
+                li.chat-main__item(v-for="(days, daysIndex) in messageGroupDays",:key="days.index")
+                    time.chat-main__date {{daysIndex}}
+                    ul.chat-main__messages
+                        li.chat-main__messages-item(
+                            v-for="(item, index) in days",
+                            :key="item.id" ,
+                            :class="{'chat-main__messages-item_right':item.from_user_info.id == $store.state.user.profile.employee_id}"
+                        )
+                            base-people(
+                                avatar-width="md",
+                                :name="item.from_user_info.name",
+                                :text="item.body",
+                                :time="item.time",
+                                :right="item.from_user_info.id == $store.state.user.profile.employee_id",
+                                :img="item.img"
+                            )
+            //ul.chat-main__list
                 li.chat-main__item.chat-main__item_history_more
                     base-btn(theme="link" @click="historyMessageLoad") Загрузить более раннюю история общения с посетителем
                 li.chat-main__item
                     time.chat-main__date 29 ноября 2017
 
                     ul.chat-main__messages
-                        li.chat-main__messages-item(v-for="(item, index) in messageList",:key="item.id" :class="{'chat-main__messages-item_right':item.right}")
+                        li.chat-main__messages-item(v-for="(item, index) in messageListReverse",:key="item.id" :class="{'chat-main__messages-item_right':item.right}")
                             base-people(
                                 avatar-width="md",
-                                :name="member[item.to_id]",
+                                :name="item.from_user_info.name",
                                 :text="item.body",
                                 :time="item.time",
                                 :right="item.right",
@@ -33,7 +51,7 @@
     import { viewModeChat } from '@/mixins/mixins'
 
     import _ from 'underscore'
-
+    import moment from 'moment'
     export default {
         components:{
             TheChatSystemMessages,
@@ -41,81 +59,89 @@
             TheChatMainFooter
         },
         mixins:[viewModeChat],
+
         data() {
             return {
-
-                messageList: [
-                    {name: 'Петр Иванов Камикадзев', text: 'Где можно посмотреть спортивные кеды?', datetime: '17.47',right:true},
-                    {name: 'Кристина Мармеладова Игоревна', text: 'Где можно посмотреть спортивные кеды?', datetime: '17.47',right:true},
-                    {name: 'Кристина Мармеладова Игоревна', text: 'Где можно посмотреть спортивные кеды?', datetime: '17.47'},
-                    {name: 'Кристина Мармеладова Игоревна', text: 'Где можно посмотреть спортивные кеды?', datetime: '17.47',right:true},
-                    {name: 'Петр Иванов Камикадзев', text: 'Где можно посмотреть спортивные кеды?', datetime: '17.47'},
-                    {name: 'Кристина Мармеладова Игоревна', text: 'Где можно посмотреть спортивные кеды?', datetime: '17.47',right:true},
-                    {name: 'Кристина Мармеладова Игоревна', text: 'Где можно посмотреть спортивные кеды?', datetime: '17.47'},
-                    {name: 'Кристина Мармеладова Игоревна', text: 'Где можно посмотреть спортивные кеды?', datetime: '17.47',right:true},
-                    {name: 'Петр Иванов Камикадзев', text: 'Где можно посмотреть спортивные кеды?', datetime: '17.47'},
-                    {name: 'Кристина Мармеладова Игоревна', text: 'Где можно посмотреть спортивные кеды?', datetime: '17.47',right:true},
-                    {name: 'Кристина Мармеладова Игоревна', text: 'Где можно посмотреть спортивные кеды?', datetime: '17.47'},
-                    {name: 'Кристина Мармеладова Игоревна', text: 'Где можно посмотреть спортивные кеды?', datetime: '17.47',right:true},
-                    {name: 'Петр Иванов Камикадзев', text: 'Где можно посмотреть спортивные кеды?', datetime: '17.47'},
-                    {name: 'Кристина Мармеладова Игоревна', text: 'Где можно посмотреть спортивные кеды?', datetime: '17.47',right:true},
-                    {name: 'Кристина Мармеладова Игоревна', text: 'Где можно посмотреть спортивные кеды?', datetime: '17.47'},
-                    {name: 'Кристина Мармеладова Игоревна', text: 'Где можно посмотреть спортивные кеды?', datetime: '17.47',right:true},
-                    {name: 'Петр Иванов Камикадзев', text: 'Где можно посмотреть спортивные кеды?', datetime: '17.47'},
-                    {name: 'Кристина Мармеладова Игоревна', text: 'Где можно посмотреть спортивные кеды?', datetime: '17.47'},
-                    {name: 'Кристина Мармеладова Игоревна', text: 'Где можно посмотреть спортивные кеды?', datetime: '17.47',right:true},
-                    {name: 'Кристина Мармеладова Игоревна', text: 'Где можно посмотреть спортивные кеды?', datetime: '17.47',img:'http://dl3.joxi.net/drive/2019/01/28/0004/2024/276456/56/15f294e8cd.jpg'},
-                ],
                 messageList:[],
-                last_msg_id:null,
-                limit:1
 
+                tempList:[
+
+                ],
+                limit:20
             }
         },
-        computed:{
-            messageRight(){
+        watch:{
+            messageDays(val){
+                return val
+            }
+          /*  messageList(val){
+                if (val) {
+                    let mas = val.slice();
+                    this.messageListReverse = mas.reverse();
 
+
+                }
+            }*/
+        },
+        computed:{
+            messageGroupDays(){
+                return _.groupBy(this.messageListReverse, (item)=>{
+                    return moment(item.time*1000).format('DD.MM.YYYY')
+                })
+            },
+            messageLastId(){
+                return (this.messageListReverse[0]) ? this.messageListReverse[0].id : null;
+            },
+            messageListReverse(){
+                let list = this.messageList.slice();
+                return list.reverse()
             },
             member(){
-            return {
-                [this.visitorInfo.uuid]: this.visitorInfo.name
-            }
+                return {
+                    [this.visitorInfo.uuid]: this.visitorInfo.name
+                }
             },
             visitorInfo(){
                 return this.$store.state.visitors.itemOpen
             },
         },
-        mounted() {
-
-
-        },
         created() {
-            if (this.viewModeChat=='visitors') {
-                let guest_uuid = this.$store.state.visitors.itemOpen.uuid,
-                    site_id = this.$store.state.visitors.itemOpen.site_id,
-                    last_msg_id = this.last_msg_id,
-                    limit = this.limit;
-
-                let params = {
-                    guest_uuid,
-                    site_id,
-                    last_msg_id,
-                    limit
-
-                }
-                console.log(params);
-
-
-                this.historyMessageLoad()
-            }
-
-
+            this.historyMessageLoad()
+        },
+        mounted() {
+            setTimeout(()=>{
+                this.scrollerPushDown(this.$refs.scrollbar)
+            },500)
         },
         methods: {
+            scrollerPushDown(scrollbar){
+                let scrollerEl = scrollbar.$el,
+                    valPx = this.scrollerPxToPercent(scrollerEl, 100);
+                scrollerEl.scrollTop = valPx;
+                scrollbar.update()
+            },
+            scrollerPxToPercent(scroller,scrollTop){
+                let height = scroller.clientHeight,
+                    scrollHeight = scroller.scrollHeight - height,
+                    percent = Math.floor(scrollTop * scrollHeight /100);
+                return percent
+            },
+            scrollLoad(e){
+                const scroller = e.target
+                let height = scroller.clientHeight,
+                scrollHeight = scroller.scrollHeight - height,
+                scrollTop = scroller.scrollTop,
+                percent = Math.floor(scrollTop / scrollHeight * 100);
+                console.log(scroller.scrollTop);
+                if ( percent < 25 ) this.historyMessageLoad()
+            },
             historyMessageLoad(){
+
+                if (this.viewModeChat!='visitors') return
+
                 let guest_uuid = this.$store.state.visitors.itemOpen.uuid,
                     site_id = this.$store.state.visitors.itemOpen.site_id,
-                    last_msg_id = this.last_msg_id,
+                    last_msg_id = this.messageLastId,
                     limit = this.limit;
 
                 let params = {
@@ -123,14 +149,11 @@
                     site_id,
                     last_msg_id,
                     limit
-
                 }
 
-                this.$http.get('message-operator-guest-get-last', {params}).then(({data})=>{
-                    console.log(data);
-                    this.last_msg_id = _.last(data.messages).id;
+                this.$http.get('message-history', {params}).then(({data})=>{
+                    this.messageList.push(...data.data.messages);
 
-                    this.messageList.push(...data.messages);
                 })
             }
         },
@@ -191,7 +214,7 @@
             }
         }
 
-        &__messages{
+        &__list{
             margin-bottom:calc-em(25);
         }
         &__messages-item{

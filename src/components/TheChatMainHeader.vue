@@ -72,8 +72,11 @@
         computed:{
             targetName(){
                 if (this.viewModeChat=="visitors") return this.$store.state.visitors.itemOpen.name;
+
                 else {
-                    return this.$store.state.operators.all.find( item => item.id == this.$route.params.id).fullName;
+                    let operator = this.$store.state.operators.all.find(item => item.id == this.$route.params.id)
+                    if (operator) return operator.fullName;
+                    return ''
 
                 }
 
@@ -86,10 +89,6 @@
             getActions(e){
                 if (e = 'blockClient' ) this.showConfirmBlockClient=true;
             },
-            separator(index){
-                if (!index) return ', '
-            },
-
             showClientInfo(){
                 document.body
                     .classList.add('is-opened-client-info');

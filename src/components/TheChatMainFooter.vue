@@ -122,16 +122,32 @@
         },
         methods: {
             send(){
-                let guest_uuid = this.$store.state.visitors.itemOpen.uuid,
-                    site_id =+ this.$store.state.visitors.itemOpen.site_id,
-                    body=this.message;
-                let data = {
-                    guest_uuid,site_id,body
+                let data = {},
+                    body,
+                    guest_uuid,
+                    site_id,
+                    to_id;
+                body = this.message;
+                if(this.viewModeChat=="visitors") {
+                    guest_uuid = this.$store.state.visitors.itemOpen.uuid,
+                    site_id = +this.$store.state.visitors.itemOpen.site_id,
+                    body = this.message;
+                    data = {
+                        guest_uuid, site_id, body
+                    }
+                } else {
+                    to_id = + this.$route.params.id;
+                    data = {
+                        to_id, body
+                    }
+
                 }
 
 
 
+
                 this.$http.post('message-send', data).then(({data})=>{
+                    this.message='';
                     console.log(data.data);
                 })
             },

@@ -43,17 +43,19 @@ export default {
             )
 */
 
-            return new Promise((resolve) => {
-                this._vm.$http.get('guest-info', {params}).then(({data})=>{
-                    commit('itemOpen',data.data)
-                    resolve(1);
-                })
+           // return new Promise((resolve) => {
+            this._vm.$http.get('read-history', {params}).then(({data})=>{
+                commit('itemOpenHistoryActions',data.data)
+            })
 
-                this._vm.$http.get('read-history', {params}).then(({data})=>{
-                    commit('itemOpenHistoryActions',data.data)
-                })
+            return this._vm.$http.get('guest-info', {params}).then(({data})=>{
+                commit('itemOpen',data.data)
 
-            });
+            })
+
+
+
+           // });
         },
     },
     getters: {
