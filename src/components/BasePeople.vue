@@ -6,10 +6,10 @@
         .base-people__inner
             .base-people__header
                 strong.base-people__name(v-text="name")
-                time.base-people__datetime(
-                v-if="datetime"
-                v-text="datetime"
+                time.base-people__time(
+                v-if="time"
                 )
+                    |{{time | formatTime}}
                 base-count.base-people__count(:count="count")
             p.base-people__text(
                 v-if="text"
@@ -25,10 +25,25 @@
 </template>
 
 <script>
+    import moment from 'moment'
     import BaseCount from '@/components/BaseCount';
     export default {
         components: {
             BaseCount
+        },
+        filters: {
+            formatTime: function (value) {
+                console.log(value);
+                if (value) {
+                    let date = moment(value)
+
+                    return moment(value).format('HH:mm')
+
+                } else {
+                    return ''
+                }
+
+            }
         },
         props: {
             img: false,
@@ -41,7 +56,7 @@
             bgTextNoFill: Boolean,
             name: String,
             text: String,
-            datetime: String,
+            time: Number,
             avatarWidth: String,
             avatarUrl: String,
             type: {
@@ -145,7 +160,7 @@
 
         &_bg-text_no_fill &__inner{ background-color:transparent }
 
-        &__datetime{
+        &__time{
             padding:0 ($padding / 2);
             font-size:$small;
         }

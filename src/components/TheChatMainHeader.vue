@@ -97,7 +97,7 @@
 
             },
             hideClientInfo(e) {
-                if (!e.target.matches('.chat-dialog__info, .chat-dialog__info *,.js-client-info')) {
+                if (!e.target.matches('.chat-chat__info, .chat-chat__info *,.js-client-info')) {
                     document.body
                         .classList.remove('is-opened-client-info')
                     document.removeEventListener('click', this.hideClientInfo);

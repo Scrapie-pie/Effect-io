@@ -19,11 +19,11 @@
 
 
     const routerHooks = (to, from, next)=>{
-        if(to.name==="teamChat") return next();
+        if(viewModeChat=='operators') return next();
 
         let uuid = to.params.id,
             guest_uuid=to.params.id, // метод read-history требуе prefix guest_
-            site_id = to.query.site,
+            site_id = to.params.site_id,
             params ={ uuid, site_id ,guest_uuid};
 
         if(!uuid && !site_id) return next()

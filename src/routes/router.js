@@ -56,8 +56,13 @@ const router =  new Router({
 
         },
         {
-            name: 'dialog',
-            path: '/dialog/:id',
+            name: 'chat',
+            path: '/chat',
+            component: PageChat,
+        },
+        {
+            name: 'chatId',
+            path: '/chat/:id/:site_id',
             component: PageChat,
         },
         {

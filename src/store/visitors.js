@@ -35,7 +35,7 @@ export default {
                 commit('itemOpen',data.data)
             })
 
-            this._vm.$http.get('read-history', {params}).then(({data})=>{
+            return this._vm.$http.get('read-history', {params}).then(({data})=>{
                 commit('itemOpenHistoryActions',data.data)
             })
 

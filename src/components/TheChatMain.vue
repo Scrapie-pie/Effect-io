@@ -10,12 +10,12 @@
                     time.chat-main__date 29 ноября 2017
 
                     ul.chat-main__messages
-                        li.chat-main__messages-item(v-for="(item, index) in messageList",:key="item.to_id" :class="{'chat-main__messages-item_right':item.right}")
+                        li.chat-main__messages-item(v-for="(item, index) in messageList",:key="item.id" :class="{'chat-main__messages-item_right':item.right}")
                             base-people(
                                 avatar-width="md",
                                 :name="member[item.to_id]",
                                 :text="item.body",
-                                :datetime="item.time",
+                                :time="item.time",
                                 :right="item.right",
                                 :img="item.img"
                             )
@@ -30,6 +30,7 @@
     import TheChatMainHeader from '@/components/TheChatMainHeader'
     import TheChatMainFooter from '@/components/TheChatMainFooter'
 
+    import _ from 'underscore'
 
     export default {
         components:{
@@ -64,6 +65,8 @@
                     {name: 'Кристина Мармеладова Игоревна', text: 'Где можно посмотреть спортивные кеды?', datetime: '17.47',img:'http://dl3.joxi.net/drive/2019/01/28/0004/2024/276456/56/15f294e8cd.jpg'},
                 ],
                 messageList:[],
+                last_msg_id:null,
+                limit:1
 
             }
         },
@@ -77,7 +80,6 @@
             }
             },
             visitorInfo(){
-                console.log(this.$store.state.visitors.itemOpen);
                 return this.$store.state.visitors.itemOpen
             },
         },
@@ -86,22 +88,29 @@
 
         },
         created() {
-
+            this.historyMessageLoad()
 
         },
         methods: {
             historyMessageLoad(){
-
                 let guest_uuid = this.$store.state.visitors.itemOpen.uuid,
-                    site_id = this.$route.query.site; //Todo попросить чтобы siteId был в  visitors.itemOpen
+                    site_id = this.$store.state.visitors.itemOpen.site_id,
+                    last_msg_id = this.last_msg_id,
+                    limit = this.limit;
 
                 let params = {
-                    guest_uuid,site_id
+                    guest_uuid,
+                    site_id,
+                    last_msg_id,
+                    limit
+
                 }
 
                 this.$http.get('message-operator-guest-get-last', {params}).then(({data})=>{
-                    console.log(data.messages);
-                    this.messageList = data.messages;
+                    console.log(data);
+                    this.last_msg_id = _.last(data.messages).id;
+
+                    this.messageList.push(...data.messages);
                 })
             }
         },
@@ -120,7 +129,7 @@
         height:100%;
 
         &__item {
-            padding:calc-em(25);
+            padding-top:calc-em(25);
 
             &_history_more {text-align:center}
         }

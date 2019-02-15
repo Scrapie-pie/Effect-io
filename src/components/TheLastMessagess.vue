@@ -11,7 +11,7 @@
                 )
 
                     router-link.last-messages__btn(
-                        :to="{name:'dialog',params: { id: item.uuid},query:{site:item.site_id}}"
+                        :to="{name:'chatId',params: { id: item.uuid,site_id:item.site_id}}"
                         v-text="`${item.name}:${item.text}`")
                     base-people.last-messages__people(
                         :avatar-url="item.photo"
@@ -31,7 +31,7 @@
                 )
 
                     router-link.last-messages__btn(
-                    :to="{name:'dialog',params: { id: item.uuid},query:{site:item.site_id}}"
+                    :to="{name:'chat',params: { id: item.uuid},query:{site:item.site_id}}"
                     v-text="`${item.name}:${item.text}`")
                     base-people.last-messages__people(
                     :avatar-url="item.photo"

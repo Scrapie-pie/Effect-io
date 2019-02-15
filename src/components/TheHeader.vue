@@ -30,7 +30,7 @@
             canalList(){
                 return [
                     {text: 'Не обработано', link: {name: 'process'},unread:this.unreadGuest},
-                    {text: 'Мои диалоги', link: {name: 'dialog'},unread:this.unreadPrivate,exact:true},
+                    {text: 'Мои диалоги', link: {name: 'chat'},unread:this.unreadPrivate,exact:true},
                     {text: 'Команда', link: {name: 'team'}},
                     {text: 'Посетители', link: {name: 'visitors'}},
                     {text: 'Общий чат ', link: {name: 'common'},unread:this.unreadCommon},

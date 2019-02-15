@@ -24,7 +24,7 @@
     import vk from '@/assets/img/icons/social/vk.svg';
     import tg from '@/assets/img/icons/social/tg.svg';
     import fbme from '@/assets/img/icons/social/fbme.svg';
-    import chat from '@/assets/img/icons/social/chat.svg';
+    //import chat from '@/assets/img/icons/social/chat.svg';
 
 
     import phrases from '@/assets/img/icons/chat/phrases.svg';
@@ -55,7 +55,7 @@
     import account from '@/assets/img/icons/chat/menu/account.svg';
     import common from '@/assets/img/icons/chat/menu/common.svg';
     import auth from '@/assets/img/icons/chat/menu/auth.svg';
-    import dialog from '@/assets/img/icons/chat/menu/dialog.svg';
+    import chat from '@/assets/img/icons/chat/menu/chat.svg';
     import process from '@/assets/img/icons/chat/menu/process.svg';
     import settingsApp from '@/assets/img/icons/chat/menu/settingsApp.svg';
     import team from '@/assets/img/icons/chat/menu/team.svg';

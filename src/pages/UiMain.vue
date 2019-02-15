@@ -13,7 +13,7 @@
                     base-no-found(name="team")
                     base-no-found(name="visitors")
                     base-no-found(name="process")
-                    base-no-found(name="dialog")
+                    base-no-found(name="chat")
                 li.ui-list__item
                     ul.ul-row
                         li
