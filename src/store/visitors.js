@@ -30,15 +30,30 @@ export default {
             })
         },
         getItemOpen({ commit, dispatch },params) {
-            console.log(params);
-            this._vm.$http.get('guest-info', {params}).then(({data})=>{
-                commit('itemOpen',data.data)
-            })
 
-            return this._vm.$http.get('read-history', {params}).then(({data})=>{
-                commit('itemOpenHistoryActions',data.data)
-            })
+      /*      this._vm.$http.all([
+                this._vm.$http.get('guest-info', {params}),
+                this._vm.$http.get('read-history', {params}),
+            ]).then(
+                this._vm.$http.spread((itemOpen, itemOpenHistoryActions) => {
+                    commit('itemOpen',itemOpen.data)
+                    commit('itemOpenHistoryActions',itemOpenHistoryActions.data)
 
+                })
+            )
+*/
+
+            return new Promise((resolve) => {
+                this._vm.$http.get('guest-info', {params}).then(({data})=>{
+                    commit('itemOpen',data.data)
+                    resolve(1);
+                })
+
+                this._vm.$http.get('read-history', {params}).then(({data})=>{
+                    commit('itemOpenHistoryActions',data.data)
+                })
+
+            });
         },
     },
     getters: {

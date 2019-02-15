@@ -21,6 +21,7 @@
     const routerHooks = (to, from, next)=>{
         if(viewModeChat=='operators') return next();
 
+
         let uuid = to.params.id,
             guest_uuid=to.params.id, // метод read-history требуе prefix guest_
             site_id = to.params.site_id,
@@ -28,7 +29,9 @@
 
         if(!uuid && !site_id) return next()
 
-        store.dispatch('visitors/getItemOpen', params).then(()=>{
+        store.dispatch('visitors/getItemOpen', params).then((data)=>{
+            console.log(data,store.state.visitors.itemOpen.uuid);
+
             return next()
         }).catch(()=>{
             return next()

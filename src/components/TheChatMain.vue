@@ -30,6 +30,8 @@
     import TheChatMainHeader from '@/components/TheChatMainHeader'
     import TheChatMainFooter from '@/components/TheChatMainFooter'
 
+    import { viewModeChat } from '@/mixins/mixins'
+
     import _ from 'underscore'
 
     export default {
@@ -38,7 +40,7 @@
             TheChatMainHeader,
             TheChatMainFooter
         },
-
+        mixins:[viewModeChat],
         data() {
             return {
 
@@ -88,7 +90,25 @@
 
         },
         created() {
-            this.historyMessageLoad()
+            if (this.viewModeChat=='visitors') {
+                let guest_uuid = this.$store.state.visitors.itemOpen.uuid,
+                    site_id = this.$store.state.visitors.itemOpen.site_id,
+                    last_msg_id = this.last_msg_id,
+                    limit = this.limit;
+
+                let params = {
+                    guest_uuid,
+                    site_id,
+                    last_msg_id,
+                    limit
+
+                }
+                console.log(params);
+
+
+                this.historyMessageLoad()
+            }
+
 
         },
         methods: {

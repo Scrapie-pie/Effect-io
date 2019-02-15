@@ -80,7 +80,6 @@
         },
         computed: {
             info(){
-                console.log(this.$store.state.visitors.itemOpen);
                 return this.$store.state.visitors.itemOpen
             },
             infoList(){

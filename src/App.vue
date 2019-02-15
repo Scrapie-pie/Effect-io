@@ -23,8 +23,18 @@
             TheHeader,
             ThePopup
         },
+        computed:{
+            userId(){
+                return this.$store.state.user.profile.id
+            }
+        },
+        watch:{
+            userId(val){
+                if(val) this.webSocketInit()
+            }
+        },
         created() {
-            this.webSocketInit()
+            //this.webSocketInit()
             document.body.classList.add('page');
 
             this.watchForHover();
@@ -38,26 +48,27 @@
         },
         methods: {
             webSocketInit() {
+                console.log(this.userId);
+                let socket = io("http://newrobocall.ru:3000", {
+                    query: {
+                        uuid:  this.userId
+                    }
+                });
+
+                socket.on("connect", () => {
+                    console.log("connected");
+                });
+
+                socket.on("connect_error", () => {
+                    console.log("connect_error");
+                });
+
+                socket.on("connect_timeout", () => {
+                    console.log("connect_timeout");
+                });
 
                 try {
 
-                    let socket = io("http://newrobocall.ru:3000", {
-                        query: {
-                            uuid:  Math.random()
-                        }
-                    });
-
-                    socket.on("connect", () => {
-                        console.log("connected");
-                    });
-
-                    socket.on("connect_error", () => {
-                        console.log("connect_error");
-                    });
-
-                    socket.on("connect_timeout", () => {
-                        console.log("connect_timeout");
-                    });
 
                 } catch (err) {
 
