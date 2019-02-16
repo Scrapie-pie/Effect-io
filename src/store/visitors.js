@@ -2,6 +2,11 @@ export default {
     namespaced: true,
     state: {
         all:[],
+        allCount:false,
+        process:[],
+        processCount:false,
+        self:[],
+        selfCount:false,
         itemOpen:false,
         itemOpenHistoryActions:false
     },
@@ -9,9 +14,14 @@ export default {
         all(state, val) { //Todo походу не нужен
             state.all=val.list;
             state.allCount=val.count;
-            val.list.forEach((item)=>{
-                console.log(item.uuid);
-            })
+        },
+        process(state, val) {
+            state.process=val.list;
+            state.processCount=val.count;
+        },
+        self(state, val) {
+            state.self=val.list;
+            state.selfCount=val.count;
         },
         itemOpen(state, val) {
             state.itemOpen=val;
@@ -27,6 +37,22 @@ export default {
                 }}).then(({data})=>{
 
                 commit('all',data.data)
+            })
+        },
+        getProcess({ commit, dispatch }) {
+            this._vm.$http.get('guest-list',{params:{
+                    type:'unprocessed'
+                }}).then(({data})=>{
+
+                commit('process',data.data)
+            })
+        },
+        getSelf({ commit, dispatch }) {
+            this._vm.$http.get('guest-list',{params:{
+                    type:'self'
+                }}).then(({data})=>{
+
+                commit('self',data.data)
             })
         },
         getItemOpen({ commit, dispatch },params) {

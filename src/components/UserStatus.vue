@@ -130,7 +130,8 @@
                 this.activity = setTimeout(() => {
                     this.$http.put('operator-online-update',{
                         online:2  //перерыв
-                    })
+                    });
+                    this.status=2
                 }, 10 * 60 * 1000);
             },
             resetActivity() {

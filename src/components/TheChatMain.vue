@@ -136,20 +136,26 @@
                 if ( percent < 25 ) this.historyMessageLoad()
             },
             historyMessageLoad(){
-
-                if (this.viewModeChat!='visitors') return
-
-                let guest_uuid = this.$store.state.visitors.itemOpen.uuid,
-                    site_id = this.$store.state.visitors.itemOpen.site_id,
-                    last_msg_id = this.messageLastId,
-                    limit = this.limit;
-
                 let params = {
+                        last_msg_id:this.messageLastId,
+                        limit: this.limit
+                    },
                     guest_uuid,
                     site_id,
-                    last_msg_id,
-                    limit
+                    users_ids = []
+
+                if (this.viewModeChat=='visitors') {
+                         params.guest_uuid = this.$store.state.visitors.itemOpen.uuid,
+                         params.site_id = this.$store.state.visitors.itemOpen.site_id;
+
                 }
+                else {
+                    params.users_ids = [this.$route.params.id,this.$store.state.user.profile.id];
+                }
+
+
+
+
 
                 this.$http.get('message-history', {params}).then(({data})=>{
                     this.messageList.push(...data.data.messages);

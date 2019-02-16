@@ -38,7 +38,6 @@
                         :name="item.fullName",
                     :text="'В API нет последнего сообщения'",
                     :bg-text-no-fill="true",
-                    :channel-name="item.channel",
                     :count="item.count"
                     hidden
                     )
@@ -98,7 +97,6 @@
         $color_bg-hover:glob-color('border');
         $color_bg-error:glob-color('error');
         $transition:$glob-trans;
-       // height:100%;
 
         &__search{
             padding-left:calc-em(10);
@@ -117,6 +115,7 @@
             position:relative;
             transition:$transition;
             padding-left:calc-em(10);
+
             &:hover,
             &_active{
                 background-color:$color_bg-hover;
@@ -130,12 +129,9 @@
                     opacity:.5;
                     z-index:0;
                 }
-
-
-
             }
-
         }
+
         &__people{
             z-index:1;
             position:relative;
@@ -146,6 +142,7 @@
                 min-width:0;
             }
         }
+
         &__btn{
             @extend %full-abs;
             z-index:2;
@@ -154,10 +151,6 @@
             background-color:transparent;
             border-color:transparent;
             font-size:0;
-
-
         }
     }
-
-
 </style>

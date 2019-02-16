@@ -14,16 +14,11 @@ export default {
 
                 if(Array.isArray(state[prop])) state[prop]=[]
                 else state[prop] = false;
-
-
             }
-
         },
 
         profile(state, val) {
             state.profile=val;
-
-
         },
         settings(state, val) {
             state.settings=val;
@@ -39,11 +34,13 @@ export default {
             this._vm.$http.defaults.headers.common[ 'jwt' ] = user.jwt;
             this._vm.$http.defaults.headers['content-type']= 'application/json';
 
-            commit('profile', user)
-            dispatch('getSettings')
+            commit('profile', user);
+            dispatch('getSettings');
             dispatch('getBranchListAll');
             dispatch('operators/getAll',null,{root:true});
-            dispatch('visitors/getAll',null,{root:true}); //Todo лишний
+            dispatch('visitors/getAll',null,{root:true}); //Todo лишний или нет
+            dispatch('visitors/getProcess',null,{root:true});
+            dispatch('visitors/getSelf',null,{root:true});
 
 
         },

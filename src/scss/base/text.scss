@@ -27,7 +27,7 @@ p{margin:0;}
 strong{
   font-weight:inherit;
 }
-strong :not([class]), .g-strong{
+strong:not([class]), .g-strong{
   font-weight:600;
 }
 small{font-size:inherit}

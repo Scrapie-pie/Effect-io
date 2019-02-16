@@ -1,8 +1,8 @@
 <template lang="pug">
-    article.page-team
-        .page-team__content
-            .page-team__controls
-                .page-team__control
+    article.page-operators
+        .page-operators__content
+            .page-operators__controls
+                .page-operators__control
                     base-field(
                     type="search"
                     name="search",
@@ -10,9 +10,9 @@
                     theme="soft"
                     v-model="search"
                     )
-                .page-team__control(v-if="viewAdmin")
+                .page-operators__control(v-if="viewAdmin")
                     base-btn(name="add" color="success-dark" size="lg" :router="{name:'settingsProfile',query:{add:'operator'}}") Добавить сотрудника
-            scroll-bar.page-team__scroll-bar
+            scroll-bar.page-operators__scroll-bar
                 table.table
                     thead.table__thead
                         tr.table__tr
@@ -23,16 +23,22 @@
                             th.table__td.table__td_th(v-if="viewAdmin") Активен
                             th.table__td.table__td_th(v-if="viewAdmin") Досупные действия
                     tbody.table__tbody(v-for="(item, index) in operatorListSearch", :key="item.id")
-                        tr.table__tr
+                        tr.table__tr.page-operators__tr
                             td.table__td
                                 base-people(
-                                type="operator",
-                                :text="item.statusText",
-                                :name="item.fullName",
-                                :avatar-url="item.photo"
+                                    type="operator",
+                                    :count="item.unread.length+1",
+                                    :text="item.statusText",
+                                    :name="item.fullName",
+                                    :avatar-url="item.photo"
                                 )
                             td.table__td
-                                base-btn(:router="{name:'teamChat',params:{id:item.id}}") Начать диалог
+                                .page-operators__last-message-wrap
+                                    .page-operators__last-message
+                                        strong(v-text="item.last_message_author")
+                                        div(v-text="item.last_message+' супер длинный текст сообщения'")
+                                    base-btn.page-operators__start-chat(:router="{name:'teamChat',params:{id:item.id}}") Начать диалог
+
 
                             td.table__td
                                 a(
@@ -47,8 +53,8 @@
                                 br
                                 a(:href="`mailto:${item.mail}`" v-text="item.mail")
                             td.table__td
-                                ul.page-team__branch
-                                    li.page-team__branch-item(v-for="(branch, index) in item.branches_ids", :key="branch" v-text="item.branches_names[index]")
+                                ul.page-operators__branch
+                                    li.page-operators__branch-item(v-for="(branch, index) in item.branches_ids", :key="branch" v-text="item.branches_names[index]")
 
                             td.table__td(v-if="viewAdmin")
                                 base-radio-check(
@@ -71,6 +77,7 @@
 </template>
 
 <script>
+    //TODO соедиить шаблон с таблицей посетителей
     import ContextMenu from '@/components/ContextMenu'
 
 
@@ -87,9 +94,7 @@
         },
         data() {
             return {
-                count:0,
                 search: '',
-                active:1,
             }
         },
         computed:{
@@ -134,7 +139,9 @@
 </script>
 
 <style lang="scss">
-    .page-team{
+    .page-operators{
+        $transition:$glob-trans;
+        $font-small:$glob-font-size_small;
         &__content {
             display:flex;
             flex-direction:column;
@@ -151,6 +158,24 @@
             margin-right:calc-em(40);
         }
 
+        &__last-message-wrap {
+            position:relative;
+        }
+        &__tr:hover &__last-message  {
+            opacity:0;
+            visibility:hidden;
+        }
+        &__last-message {
+            @extend %full-abs;
+            top:50%;
+            bottom:auto;
+            transform:translateY(-50%);
+            transition:$transition;
+        }
+        &__tr:not(:hover) &__start-chat  {
+            opacity:0;
+            visibility:hidden;
+        }
     }
 
 

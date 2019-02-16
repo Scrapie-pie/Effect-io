@@ -12,7 +12,13 @@ export default {
     },
     actions: {
         getAll({ commit, dispatch }) {
-            this._vm.$http.get('employee-company-list',{params:{with_branches_ids:1}}).then(({data})=>{
+            this._vm.$http.get('employee-company-list',{
+                params:{
+                    with_branches_ids:1,
+                    with_unread:1,
+                    with_last_messages:1
+                }
+            }).then(({data})=>{
                 commit('all',data.data)
             })
         },

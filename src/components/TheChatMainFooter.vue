@@ -123,22 +123,29 @@
         methods: {
             send(){
                 let data = {},
-                    body,
                     guest_uuid,
                     site_id,
-                    to_id;
-                body = this.message;
+                    to_id,
+
+                    body = this.message;
+
                 if(this.viewModeChat=="visitors") {
+
                     guest_uuid = this.$store.state.visitors.itemOpen.uuid,
                     site_id = +this.$store.state.visitors.itemOpen.site_id,
                     body = this.message;
                     data = {
-                        guest_uuid, site_id, body
+                        guest_uuid,
+                        site_id,
+                        body
                     }
+
                 } else {
+
                     to_id = + this.$route.params.id;
                     data = {
-                        to_id, body
+                        to_id,
+                        body
                     }
 
                 }
