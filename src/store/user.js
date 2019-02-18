@@ -3,9 +3,13 @@ export default {
     state: {
         profile:false,
         settings:false,
-        branchListAll:[]
+        branchListAll:[],
+        roomIdOpen:false,
     },
     mutations: {
+        roomIdOpen(state, val) {
+            state.roomIdOpen=val;
+        },
         logout(state) {
             localStorage.removeItem('jwt')
             delete this._vm.$http.defaults.headers.common[ 'jwt' ];

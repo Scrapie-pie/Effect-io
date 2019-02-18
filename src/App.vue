@@ -77,6 +77,10 @@
                         console.log("update-employees", payload);
                     });
 
+                    socket.on("new-message", function (payload) {
+                        console.log("new-message", payload);
+                    });
+
 
                 } catch (err) {
 

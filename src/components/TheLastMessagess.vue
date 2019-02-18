@@ -12,18 +12,21 @@
 
                     router-link.last-messages__btn(
                         :to="{name:'chatId',params: { id: item.uuid,site_id:item.site_id}}"
-                        v-text="`${item.name}:${item.text}`")
+                         v-text="`${item.fullName}:${item.last_message}`"
+                        active-class="last-messages__btn_active"
+                        )
+
                     base-people.last-messages__people(
                         :avatar-url="item.photo"
                         :name="item.name",
                         :text="item.last_message",
                         :bg-text-no-fill="true",
                         :channel-name="item.channel",
-                        :count="item.count"
+                        :count="item.unread.length"
                         hidden
                     )
 
-            ul.last-messages__list(v-else)
+            ul.last-messages__list(v-if="viewModeChat=='operators'")
                 li.last-messages__item(
                 v-for="(item, index) in operatorListSearch",
                 :key="item.id",
@@ -31,14 +34,16 @@
                 )
 
                     router-link.last-messages__btn(
-                    :to="{name:'chat',params: { id: item.uuid},query:{site:item.site_id}}"
-                    v-text="`${item.name}:${item.text}`")
+                    :to="{name:'teamChat',params:{id:item.id}}"
+                    v-text="`${item.fullName}:${item.last_message}`"
+                    active-class="last-messages__btn_active"
+                    )
                     base-people.last-messages__people(
                     :avatar-url="item.photo"
                         :name="item.fullName",
-                    :text="'В API нет последнего сообщения'",
+                    :text="item.last_message",
                     :bg-text-no-fill="true",
-                    :count="item.count"
+                    :count="item.unread.length"
                     hidden
                     )
 </template>
@@ -98,6 +103,10 @@
         $color_bg-error:glob-color('error');
         $transition:$glob-trans;
 
+        .ps__scrollbar-y-rail {
+            z-index:2;
+        }
+
         &__search{
             padding-left:calc-em(10);
             padding-right:calc-em(10);
@@ -115,10 +124,12 @@
             position:relative;
             transition:$transition;
             padding-left:calc-em(10);
+            padding-top:calc-em(10);
+            padding-bottom:calc-em(10);
 
             &:hover,
             &_active{
-                background-color:$color_bg-hover;
+                //background-color:$color_bg-hover;
             }
 
             &_warning {
@@ -133,8 +144,9 @@
         }
 
         &__people{
-            z-index:1;
+            z-index:2;
             position:relative;
+            pointer-events:none;
 
             .base-people__inner{
                 flex:1 0 60%;
@@ -148,9 +160,11 @@
             z-index:2;
             width:100%;
             height:100%;
-            background-color:transparent;
             border-color:transparent;
             font-size:0;
+            &:hover,&_active {
+                background-color:$color_bg-hover;
+            }
         }
     }
 </style>

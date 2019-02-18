@@ -27,11 +27,21 @@
             }
         },
         computed:{
+            routerNameChatVisitorsFirst(){
+                let visitorFirst = this.$store.state.visitors.self[0],
+                params = {id: 0,site_id:0}
+                if (visitorFirst)  {
+                    params.id=visitorFirst.uuid;
+                    params.site_id=visitorFirst.site_id
+                }
+
+                return {name:'chatId',params}
+            },
             canalList(){
                 return [
                     {text: 'Не обработано', link: {name: 'process'},unread:this.unreadGuest},
-                    {text: 'Мои диалоги', link: {name: 'chat'},unread:this.unreadPrivate,exact:true},
-                    {text: 'Команда', link: {name: 'team'}},
+                    {text: 'Мои диалоги', link: this.routerNameChatVisitorsFirst,unread:this.unreadGuest,exact:true},
+                    {text: 'Команда', link: {name: 'team'},unread:this.unreadPrivate},
                     {text: 'Посетители', link: {name: 'visitors'}},
                     {text: 'Общий чат ', link: {name: 'common'},unread:this.unreadCommon},
                 ]

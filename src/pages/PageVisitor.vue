@@ -38,7 +38,7 @@
                         td.table__td
                             base-btn.page-visitors__start-chat(
                                 v-if="!item.employee",
-                                :router="{name:'visitorsChat',params:{id:item.uuid},query:{site_id:item.site_id}}"
+                                @click="startChat(item)"
                             ) начать диалог
                             span(v-else v-text="item.employee")
                         td.table__td
@@ -112,6 +112,17 @@
             this.channel = this.channelList[0];
         },
         methods:{
+            startChat(visitor){
+
+
+                this.$http.put('guest-take', {
+                    guest_uuid:visitor.uuid,
+                    site_id:visitor.site_id
+                })
+                    .then(({ data }) => {
+                        this.$router.push({name:'chatId',params: { id: visitor.uuid,site_id:visitor.site_id}});
+                    })
+            },
             debounceSearch:_.debounce(function()
                 {
                     this.resetSearch();

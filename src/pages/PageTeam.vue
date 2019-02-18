@@ -27,7 +27,7 @@
                             td.table__td
                                 base-people(
                                     type="operator",
-                                    :count="item.unread.length+1",
+                                    :count="item.unread.length",
                                     :text="item.statusText",
                                     :name="item.fullName",
                                     :avatar-url="item.photo"

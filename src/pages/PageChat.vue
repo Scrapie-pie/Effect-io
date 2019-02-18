@@ -20,6 +20,17 @@
 
     const routerHooks = (to, from, next)=>{
 
+
+
+
+
+
+
+
+
+
+        if(to.name == "common") return next();
+
         if(to.name == "teamChat") return next();
 
 
@@ -28,14 +39,14 @@
             site_id = to.params.site_id,
             params ={ uuid, site_id ,guest_uuid};
 
-        if(!uuid && !site_id) return next()
+        if(!uuid && !site_id) {
+            return next(false)
+        }
 
         store.dispatch('visitors/getItemOpen', params).then((data)=>{
-            console.log(data,store.state.visitors.itemOpen.uuid);
-
             return next()
         }).catch(()=>{
-            return next()
+            return next(false)
         })
     }
 

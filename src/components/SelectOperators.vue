@@ -8,7 +8,7 @@
                     ul.select-operator__list
                         li.select-operator__item.select-operator__item_operator
                             .select-operator__checkbox
-                                base-radio-check()
+                                base-radio-check(name="mention")
                             base-people(
                                 :bg-text-no-fill="true",
                                 :name="'Упомянуть всех сотрудников'" ,
@@ -19,7 +19,7 @@
                                 base-radio-check()
                             base-people(
                                 :bg-text-no-fill="true"
-                                :name="item.name" ,
+                                :name="item.fullName" ,
                                 :text="item.text" ,
                                 :datetime="item.datetime"
                             )
@@ -33,12 +33,11 @@
                     ul.select-operator__list
                         li.select-operator__item(v-for="(item, index) in itemList",:key="index")
                             .select-operator__checkbox
-                                base-radio-check()
+                                base-radio-check(name="item")
                             base-people(
                                 :bg-text-no-fill="true"
-
-                                :name="item.name" ,
-                                :text="item.text" ,
+                                :name="item.fullName" ,
+                                :text="item.branches_names | branches" ,
                                 :datetime="item.datetime"
                             )
             .select-operator__footer
@@ -57,6 +56,18 @@
 
 <script>
     export default {
+        filters: {
+            branches: function (value) {
+                let str='';
+
+                value.forEach((item,index)=>{
+                    let separator = ( index === value.length )?' ':'<br>';
+                    str = str + item + separator
+                    console.log(str);
+                })
+                return str
+            }
+        },
         props:{
           name:{
               type:String,
@@ -70,20 +81,12 @@
                 count:1,
                 search:'',
                 comment:'',
-                itemList: [
-                    {name: 'Петр Иванов Камикадзев', text: 'Главный отдел'},
-                    {name: 'Зеленков Александр', text: 'Главный отдел'},
-                    {name: 'Зеленков Александр', text: 'Главный отдел'},
-                    {name: 'Зеленков Александр', text: 'Главный отдел'},
-                    {name: 'Петр Иванов Камикадзев', text: 'Главный отдел'},
 
-                    {name: 'Петр Иванов Камикадзев', text: 'Главный отдел'},
-                    {name: 'Зеленков Александр', text: 'Главный отдел'},
-                    {name: 'Зеленков Александр', text: 'Главный отдел'},
-                    {name: 'Зеленков Александр', text: 'Главный отдел'},
-                    {name: 'Петр Иванов Камикадзев', text: 'Главный отдел'},
-
-                ],
+            }
+        },
+        computed:{
+            itemList(){
+                return this.$store.getters['operators/all']
             }
         },
         created(){

@@ -165,7 +165,7 @@
             content:'';
             @extend %full-abs;
             margin:-999em;
-            z-index:1;
+            z-index:999;
             opacity:0;
             visibility:hidden;
             background-color:rgba(0, 0, 0, 0.3);

@@ -1,7 +1,7 @@
 <template lang="pug">
         form.chat-main-footer
 
-            //the-chat-system-messages
+            ///the-chat-system-messages
 
             fieldset(v-if="showProcess" key="showProcess")
                 ul.chat-main-footer__process
@@ -28,7 +28,8 @@
                             textarea.chat-main-footer__input(
                                 placeholder="Enter - отправить сообщение, Shift+Enter - новая строка."
                                 ref="chatInput",
-                                v-model="message"
+                                v-model="message",
+                                @keydown.enter.exact="onEnter"
                             )
                 ul.chat-main-footer__buttons
                     li.chat-main-footer__button(v-if="viewModeChat=='common'")
@@ -116,24 +117,35 @@
 
         },
         computed:{
+            messageBreakLine(){
+                return this.message.replace(/(\r\n|\n)/g, "&lt;br/&gt;")
+            },
             processView(){
                 return this.showProcess
             }
         },
         methods: {
+            onEnter: function (e) {
+
+                e.stopPropagation()
+                e.preventDefault()
+                e.returnValue = false
+                this.input = e.target.value
+                this.send()
+            },
             send(){
                 let data = {},
                     guest_uuid,
                     site_id,
                     to_id,
 
-                    body = this.message;
+                    body = this.messageBreakLine;
 
                 if(this.viewModeChat=="visitors") {
 
                     guest_uuid = this.$store.state.visitors.itemOpen.uuid,
                     site_id = +this.$store.state.visitors.itemOpen.site_id,
-                    body = this.message;
+
                     data = {
                         guest_uuid,
                         site_id,
@@ -153,10 +165,12 @@
 
 
 
-                this.$http.post('message-send', data).then(({data})=>{
-                    this.message='';
-                    console.log(data.data);
-                })
+                this.$http.post('message-send', data);
+                this.$http.put('message-operator-guest-mark-as-read', {
+                    room_id:this.$store.state.user.roomIdOpen
+                });
+
+                this.message='';
             },
             checkIsProcessPage() {
                 if(this.$route.name === 'process') {

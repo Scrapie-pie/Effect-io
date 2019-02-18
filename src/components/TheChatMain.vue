@@ -5,6 +5,8 @@
             ul.chat-main__list
                 //li.chat-main__item.chat-main__item_history_more
                     base-btn(theme="link", @click="historyMessageLoad") Загрузить более раннюю история общения с посетителем
+
+
                 li.chat-main__item(v-for="(days, daysIndex) in messageGroupDays",:key="days.index")
                     time.chat-main__date {{daysIndex}}
                     ul.chat-main__messages
@@ -15,12 +17,14 @@
                         )
                             base-people(
                                 avatar-width="md",
+                                :avatar-url="item.from_user_info.photo"
                                 :name="item.from_user_info.name",
                                 :text="item.body",
                                 :time="item.time",
                                 :right="item.from_user_info.id == $store.state.user.profile.employee_id",
                                 :img="item.img"
                             )
+
             //ul.chat-main__list
                 li.chat-main__item.chat-main__item_history_more
                     base-btn(theme="link" @click="historyMessageLoad") Загрузить более раннюю история общения с посетителем
@@ -37,7 +41,7 @@
                                 :right="item.right",
                                 :img="item.img"
                             )
-                    //the-chat-system-messages
+                    the-chat-system-messages
         footer.chat-main__footer
             the-chat-main-footer
 
@@ -62,8 +66,10 @@
 
         data() {
             return {
+                historyMessageLoadStart:true, //При прокрутке страницы, функция historyMessageLoad выполнялась раньше чем приходил ответ, из за этого лишние индификаторы были
+                messageRun:true, //Если история закончилась, что бы больше не отправлял запросы
                 messageList:[],
-
+                rooms_id:null,
                 tempList:[
 
                 ],
@@ -94,6 +100,7 @@
             },
             messageListReverse(){
                 let list = this.messageList.slice();
+
                 return list.reverse()
             },
             member(){
@@ -106,7 +113,7 @@
             },
         },
         created() {
-            this.historyMessageLoad()
+            this.historyMessageLoad();
         },
         mounted() {
             setTimeout(()=>{
@@ -114,6 +121,7 @@
             },500)
         },
         methods: {
+
             scrollerPushDown(scrollbar){
                 let scrollerEl = scrollbar.$el,
                     valPx = this.scrollerPxToPercent(scrollerEl, 100);
@@ -132,10 +140,12 @@
                 scrollHeight = scroller.scrollHeight - height,
                 scrollTop = scroller.scrollTop,
                 percent = Math.floor(scrollTop / scrollHeight * 100);
-                console.log(scroller.scrollTop);
+
                 if ( percent < 25 ) this.historyMessageLoad()
             },
             historyMessageLoad(){
+                if(!this.messageRun) return
+                if(!this.historyMessageLoadStart) return
                 let params = {
                         last_msg_id:this.messageLastId,
                         limit: this.limit
@@ -156,10 +166,17 @@
 
 
 
+                this.historyMessageLoadStart=false;
+                this.messageRun=false;
 
                 this.$http.get('message-history', {params}).then(({data})=>{
+                    this.historyMessageLoadStart=true;
+                    if (!data.data.count) return
+                    this.messageRun=data.data.count;
                     this.messageList.push(...data.data.messages);
 
+                    this.$store.commit('user/roomIdOpen',data.data.messages[0].room_id)
+                    console.log(_.isEmpty(data.data.messages));
                 })
             }
         },
