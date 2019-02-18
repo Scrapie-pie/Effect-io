@@ -73,6 +73,10 @@
                         console.log("update-branches", payload);
                     });
 
+                    socket.on("update-employees", function (payload) {
+                        console.log("update-employees", payload);
+                    });
+
 
                 } catch (err) {
 

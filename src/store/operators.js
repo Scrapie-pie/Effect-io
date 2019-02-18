@@ -30,7 +30,6 @@ export default {
                     if(operator.branches_ids.includes(item.id)) return item
 
                 });
-
                 operator.branches_names = list.map(item=>item.title)
                 operator.fullName = operator.first_name +' '+ operator.last_name;
 

@@ -110,7 +110,8 @@
 
         &__count{
             float:right;
-            flex:0 0 auto
+            flex:0 0 auto;
+            margin-left:calc-em(10);
         }
 
         &__avatar{

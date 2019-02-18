@@ -3,7 +3,7 @@
         the-chat-main-header.chat-main__header
         scroll-bar.chat-main__body(ref="scrollbar", @ps-scroll-up="scrollLoad")
             ul.chat-main__list
-                li.chat-main__item.chat-main__item_history_more
+                //li.chat-main__item.chat-main__item_history_more
                     base-btn(theme="link", @click="historyMessageLoad") Загрузить более раннюю история общения с посетителем
                 li.chat-main__item(v-for="(days, daysIndex) in messageGroupDays",:key="days.index")
                     time.chat-main__date {{daysIndex}}

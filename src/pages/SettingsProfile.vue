@@ -140,12 +140,27 @@
             TelInput
         },
         watch:{
-            branchListAll(val){
-                if(val) {
-                    this.branchListSelected = val.filter((item)=>{
-                        return this.model.branches_ids.includes(item.id)
-                    });
-                }
+            profile:{
+                handler(val){
+                    console.log(val);
+                    if(val) {
+                        console.log(val);
+                        this.getProfileByUserId()
+                    }
+                },
+                immediate: true
+            },
+            branchListAll:{
+                handler(val){
+                    if(val) {
+
+                        this.branchListSelected = val.filter((item)=>{
+                            console.log(item.id,this.model,this.model.branches_ids.includes(item.id));
+                            return this.model.branches_ids.includes(item.id)
+                        });
+                    }
+                },
+                immediate: true
 
             },
             phonesTypeSelect(val){
@@ -180,47 +195,75 @@
                 ],
                 model:{
                     pass:'', //нужен для создания нового оператора
-                    user_id:this.$store.getters['user/profile'].user_id,
-                    owner_id:this.$store.getters['user/profile'].owner_id, //нужен для проверки userIdNoOwner()
-                    avatar:this.$store.getters['user/profile'].avatar,
-                    first_name:this.$store.getters['user/profile'].first_name,
-                    last_name:this.$store.getters['user/profile'].last_name,
-                    phone:this.$store.getters['user/profile'].phone,
-                    phones:this.$store.getters['user/profile'].phones,
-                    mail:this.$store.getters['user/profile'].mail,
-                    role_id:this.$store.getters['user/profile'].role_id,
-                    is_common_chat:this.$store.getters['user/profile'].is_common_chat,
-                    branches_ids:this.$store.getters['user/profile'].branches_ids,
-                    use_chat:this.$store.getters['user/profile'].use_chat,
-                    use_calls:this.$store.getters['user/profile'].use_calls,
+                    user_id:null,
+                    owner_id:null, //нужен для проверки userIdNoOwner()
+                    avatar:null,
+                    first_name:null,
+                    last_name:null,
+                    phone:null,
+                    phones:{
+                        type:1,
+                        phone:'',
+                        sip:'',
+                    },
+                    mail:null,
+                    role_id:null,
+                    is_common_chat:null,
+                    branches_ids:[],
+                    use_chat:null,
+                    use_calls:null,
                 },
-                adminMode:this.$store.getters['user/profile'].role_id === 13,
+                adminMode:null,
                 branchListSelected:[],
-
-
+                branchListAll:[]
             }
         },
+
         computed:{
+            branches_ids(){
+                return this.model.branches_ids
+            },
+            profile(){
+                return this.$store.getters['user/profile']
+            },
             anotherProfile(){
-                return  this.model.user_id !== this.$store.getters['user/profile'].user_id
+                return  this.model.user_id !== this.profile.user_id
             },
             viewAdmin(){
-                return  this.$store.getters['user/profile'].role_id === 13 || this.$store.getters['user/profile'].role_id === 5 //либо админ либо владелец
+                return  this.profile.role_id === 13 || this.profile.role_id === 5 //либо админ либо владелец
             },
             compBranchListRemaining(){
+                let list = this.branches_ids;
                 return this.branchListAll.filter((item)=>{
-                    return !this.model.branches_ids.includes(item.id)
+                    return !list.includes(item.id)
                 });
             },
-            branchListAll(){
-                return this.$store.state.user.branchListAll
-            }
         },
         created(){
-            this.clearFormValue();
-            this.getProfileByUserId()
+            //this.clearFormValue();
+
         },
         methods:{
+
+            fillProfile(){
+
+                this.model.user_id=this.profile.user_id,
+                this.model.owner_id=this.profile.owner_id, //нужен для проверки userIdNoOwner()
+                this.model.avatar=this.profile.avatar,
+                this.model.first_name=this.profile.first_name,
+                this.model.last_name=this.profile.last_name,
+                this.model.phone=this.profile.phone,
+                this.model.phones=this.profile.phones,
+                this.model.mail=this.profile.mail,
+                this.model.role_id=this.profile.role_id,
+                this.model.is_common_chat=this.profile.is_common_chat,
+                this.model.branches_ids=this.profile.branches_ids,
+                this.model.use_chat=this.profile.use_chat,
+                this.model.use_calls=this.profile.use_calls
+
+                this.adminMode=this.profile.role_id === 13;
+                this.branchListAll = this.$store.state.user.branchListAll
+            },
             setPassword(val){
                 this.model.pass = val
             },
@@ -241,36 +284,32 @@
             },
             getProfileByUserId(){
 
+                if(!!this.isAddOperator) return;
+
                 let user_id = + this.$route.query.user_id;
                 if(user_id) {
 
-                    if (user_id == this.$store.getters['user/profile'].user_id) return
+                    if (user_id == this.profile.user_id) return this.fillProfile()
 
 
 
                     this.$http.get('user-profile', {params:{user_id:user_id}}).then(({data})=>{
                         if(data.success) {
                             this.model=data.data.user;
-
+                            this.branchListAll = this.$store.state.user.branchListAll
                         }
                     }).catch((errors)=>{
                         if (errors.response.status == 404) this.$router.push({name:'process'})
 
                     })
+                } else {
+                    this.fillProfile()
                 }
 
             },
             unmaskedvalue(val){
                 this.phoneUnmaskedValue=val;
 
-            },
-            getBranchListAll(){
-                this.$http.get('branches-list').then(({data})=>{
-                    this.branchListAll = data.data;
-                    this.branchListSelected = this.branchListAll.filter((item)=>{
-                        return this.model.branches_ids.includes(item.id)
-                    });
-                })
             },
             getUploadAvatar(event){
                 this.model.avatar=event;

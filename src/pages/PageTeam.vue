@@ -34,7 +34,7 @@
                                 )
                             td.table__td
                                 .page-operators__last-message-wrap
-                                    .page-operators__last-message
+                                    //.page-operators__last-message
                                         strong(v-text="item.last_message_author")
                                         div(v-text="item.last_message+' супер длинный текст сообщения'")
                                     base-btn.page-operators__start-chat(:router="{name:'teamChat',params:{id:item.id}}") Начать диалог
@@ -47,7 +47,7 @@
                                 ) {{item.phones | phoneAdditional}}
                                 a(
                                 v-else
-                                href="`tel:${item.phones.sip}`"
+                                :href="`tel:${item.phones.sip}`"
                                 v-text="item.phones.sip"
                                 )
                                 br

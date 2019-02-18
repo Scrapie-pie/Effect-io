@@ -97,8 +97,11 @@ export default  {
 
     },
     beforeDestroy(){
-        this.$refs.maskPhone.inputmask.remove()
-        this.$refs.maskPhone.removeEventListener("countrychange", this.setMask);
+        if(this.$refs.maskPhone.inputmask) {
+            this.$refs.maskPhone.inputmask.remove()
+            this.$refs.maskPhone.removeEventListener("countrychange", this.setMask);
+        }
+
         this.iti.destroy();
         //delete this.iti;
         //delete window.intlTelInputGlobals;
