@@ -5,7 +5,7 @@
             .box-controls__box()
                 base-btn(
                     :icon="{name:'close'}",
-                    @click="$emit('box_control_close')"
+                    @click="$emit('boxControlClose')"
                     title="Закрыть"
                 ).box-controls__close
                 base-icon(name="info").box-controls__icon(v-if="type==='popup'")
@@ -38,16 +38,10 @@
                 }
             }
         },
-        methods: {
-            close(e) {
-                if (!this.show) return;
-
-                if (!e.target.matches('.box-controls__box, .box-controls__box *')) {
-                    this.$emit('box_control_close');
-                    document.removeEventListener('click', this.close);
-                }
-            },
-
+        created(){
+            this.$root.$on('globBoxControlClose',()=>{
+                this.$emit('boxControlClose')
+            })
         },
         mounted() {
             document.addEventListener('click', this.close);
@@ -59,6 +53,19 @@
             document.removeEventListener('click', this.close);
             document.body.classList.remove('is-opened-box-controls');
         },
+        methods: {
+
+            close(e) {
+                if (!this.show) return;
+
+                if (!e.target.matches('.box-controls__box, .box-controls__box *')) {
+                    this.$emit('boxControlClose');
+                    document.removeEventListener('click', this.close);
+                }
+            },
+
+        },
+
     }
 </script>
 

@@ -184,17 +184,18 @@
                 this.$http.get('message-history', {params}).then(({data})=>{
                     this.historyMessageLoadStart=true;
                     if (!data.data.count) return
+                    console.log(data.data.messages);
                     this.messageRun=data.data.count;
                     this.messageList.push(...data.data.messages);
 
                     this.$store.commit('user/roomIdOpen',data.data.messages[0].room_id)
-                    console.log(_.isEmpty(data.data.messages));
+
                 })
             }
         },
         sockets: {
             "new-message"(val) {
-                console.log(val);
+                console.log('soket new-message',val);
                 this.messageList.unshift(val);
                 setTimeout(()=>{
                     this.scrollerPushDown(this.$refs.scrollbar)

@@ -25,14 +25,15 @@
                 base-btn(
                     theme="default"
                     padding="xs",
-                    @click.prevent="showInvite=true"
+                    @click.prevent="showSelectOperators=true"
                 ) + Пригласить
                 .chat-main-header__select-operator
                     box-controls(
-                        :show="showInvite",
-                        @box_control_close="showInvite=false"
-                    )
-                        select-operators
+                        :show="showSelectOperators",
+                        @boxControlClose="showSelectOperators=false"
+                        )
+                        select-operators(:name="selectOperatorsMode")
+
 
             li.chat-main-header__control.chat-main-header__control_more
                 base-btn(
@@ -42,7 +43,7 @@
                 .chat-main-header__more
                     box-controls(
                         :show="showMoreChatActions",
-                        @box_control_close="showMoreChatActions=false"
+                        @boxControlClose="showMoreChatActions=false"
                     )
                         the-chat-main-header-actions()
 </template>
@@ -64,8 +65,9 @@
             return {
                 membersList: [],
                 showClientHistoryActions:false,
-                showInvite:false,
+                showSelectOperators:false,
                 showMoreChatActions:false,
+                selectOperatorsMode:''
                 //moreActionsClose:false,
             }
         },
@@ -105,6 +107,15 @@
 
         },
         created() {
+            this.$root.$on('showTransfer',()=>{
+                this.showMoreChatActions=false;
+                setTimeout(()=>{
+                    this.selectOperatorsMode='transfer';
+                    this.showSelectOperators=true
+                    console.log('showTransfer');
+                },500)
+
+            })
             //this.membersList.push(this.$store.state.visitors.itemOpen.name)
             //this.membersList = ['Петр Иванов Камикадзев','Кирил'];
         },

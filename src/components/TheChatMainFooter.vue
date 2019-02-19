@@ -11,15 +11,15 @@
                         base-btn(color="info-dark" size="lg") Отклонить
             fieldset(v-else)
                 .chat-main-footer__box-control
-                    box-controls(:show="showMention", @box_control_close="showMention=false")
+                    box-controls(:show="showMention", @boxControlClose="showMention=false")
                         select-operators(name="mention")
-                    box-controls(:show="showPhrases", @box_control_close="showPhrases=false")
+                    box-controls(:show="showPhrases", @boxControlClose="showPhrases=false")
                         the-phrases-ready
-                    box-controls(:show="showSmiles", @box_control_close="showSmiles=false")
+                    box-controls(:show="showSmiles", @boxControlClose="showSmiles=false")
                         the-files-board(name="smiles")
-                    box-controls(:show="showGifs", @box_control_close="showGifs=false")
+                    box-controls(:show="showGifs", @boxControlClose="showGifs=false")
                         the-files-board(name="gifs")
-                    box-controls(:show="showOffer", @box_control_close="showOffer=false")
+                    box-controls(:show="showOffer", @boxControlClose="showOffer=false")
                         the-offer()
 
                 .chat-main-footer__contols

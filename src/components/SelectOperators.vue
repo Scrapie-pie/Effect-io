@@ -17,9 +17,10 @@
                             )
                         li.select-operator__item(v-for="(item, index) in itemList",:key="index")
                             .select-operator__checkbox
-                                base-radio-check()
+                                base-radio-check(name="mention")
                             base-people(
                                 :bg-text-no-fill="true"
+                                :avatar-url="item.photo"
                                 :name="item.fullName" ,
                                 :text="item.text" ,
                                 :datetime="item.datetime"
@@ -27,33 +28,34 @@
 
 
         fieldset(v-else-if="count")
-            //legend.select-operator__title Выберите сотрудника, которому Вы хотите передать диалог
-            legend.select-operator__title Отметьте сотрудников, которых Вы хотите пригласить к данному диалогу
+            legend.select-operator__title Выберите сотрудника, которому Вы хотите передать диалог
+            //legend.select-operator__title Отметьте сотрудников, которых Вы хотите пригласить к данному диалогу
             .select-operator__search-operators
                 base-field.select-operator__search(type="search" name="search" v-model="search" theme="soft")
                 scroll-bar.select-operator__scrollbar
                     ul.select-operator__list
                         li.select-operator__item(v-for="(item, index) in itemList",:key="item.id")
                             .select-operator__checkbox
-                                input(type="checkbox" name="operatorCheck" v-model="operatorCheck[item.id]" :value="item.id")
-                                //base-radio-check(name="operatorCheck" v-model="operatorCheck" :value="item.id")
+                                //input(type="checkbox" name="operatorCheck" v-model="operatorCheck[item.id]" :value="item.id")
+                                base-radio-check(name="operatorCheck" v-model="operatorCheck[item.id]" :value="item.id")
                             base-people(
                                 :bg-text-no-fill="true"
-                                :name="item.fullName +' '+ item.id" ,
+                                :avatar-url="item.photo"
+                                :name="item.fullName" ,
                                 :text="item.branches_names | branches" ,
                                 :datetime="item.datetime"
                             )
             .select-operator__footer
                 label.select-operator__label Оставьте комментарий
-                //placeholder="Данный комментарий увидит сотрудник, которому Вы передаете диалог. Это не обязательное поле. Вы можете передать диалог без указания комментария."
+                // placeholder="Данный комментарий увидят все сотрудники, которых Вы пригласите. Это не обязательное поле. Вы можете пригласить сотрудников без указания комментария. "
                 base-field.select-operator__input(
                     type="textarea"
                     name="comment"
+                    placeholder="Данный комментарий увидит сотрудник, которому Вы передаете диалог. Это не обязательное поле. Вы можете передать диалог без указания комментария."
 
-                    placeholder="Данный комментарий увидят все сотрудники, которых Вы пригласите. Это не обязательное поле. Вы можете пригласить сотрудников без указания комментария. "
                     v-model="comment"
                 )
-                base-btn() Пригласить
+                base-btn(@click="invite") Пригласить
 
         fieldset(v-else)
             p.select-operator__count-no К сожалению, сейчас нет доступных сотрудников
@@ -68,7 +70,6 @@
                 value.forEach((item,index)=>{
                     let separator = ( index === value.length )?' ':'<br>';
                     str = str + item + separator
-                    console.log(str);
                 })
                 return str
             }
@@ -77,7 +78,8 @@
           name:{
               type:String,
               validator: function (value) {
-                  return ['mention'].indexOf(value) !== -1
+                  console.log(value);
+                  return ['','mention','transfer'].indexOf(value) !== -1
               }
           }
         },
@@ -92,12 +94,34 @@
             }
         },
         computed:{
+            operatorsIds(){
+                let list=[]
+                for (let key in this.operatorCheck) {
+                    if (this.operatorCheck[key]) list.push(Number(key))
+                }
+
+                return list
+            },
             itemList(){
                 return this.$store.getters['operators/all']
             }
         },
         created(){
 
+        },
+        methods:{
+            invite(){
+                let data =  this.$store.getters['visitors/itemOpenIds'];
+
+                data.to_id=this.operatorsIds[0];
+
+                this.$http.put('guest-transfer-request', data)
+                    .then(({ data }) => {
+                        this.$root.$emit('globBoxControlClose')
+                    })
+
+
+            }
         }
     }
 </script>

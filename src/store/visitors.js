@@ -89,6 +89,12 @@ export default {
 
 
             return state.all
+        },
+        itemOpenIds: (state) => {
+            return {
+                guest_uuid:state.itemOpen.uuid,
+                site_id:state.itemOpen.site_id,
+            }
         }
     }
 }
