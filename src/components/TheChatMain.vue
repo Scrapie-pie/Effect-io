@@ -7,11 +7,11 @@
                     base-btn(theme="link", @click="historyMessageLoad") Загрузить более раннюю история общения с посетителем
 
 
-                li.chat-main__item(v-for="(days, daysIndex) in messageGroupDays",:key="days.index")
-                    time.chat-main__date {{daysIndex}}
+                li.chat-main__item(v-for="(days, daysIndex) in messageGroupDaysReverse",:key="days.index")
+                    time.chat-main__date {{days[0]}}
                     ul.chat-main__messages
                         li.chat-main__messages-item(
-                            v-for="(item, index) in days",
+                            v-for="(item, index) in days[1]",
                             :key="item.id" ,
                             :class="{'chat-main__messages-item_right':item.from_user_info.id == $store.state.user.profile.employee_id}"
                         )
@@ -70,13 +70,16 @@
                 messageRun:true, //Если история закончилась, что бы больше не отправлял запросы
                 messageList:[],
                 rooms_id:null,
-                tempList:[
-
-                ],
                 limit:20
             }
         },
         watch:{
+            '$route'(){
+                this.historyMessageLoadStart=true;
+                this.messageRun=true;
+                this.messageList=[];
+                this.historyMessageLoad();
+            },
             messageDays(val){
                 return val
             }
@@ -90,9 +93,18 @@
             }*/
         },
         computed:{
+            messageGroupDaysReverse(){
+
+                let list = Object.entries(this.messageGroupDays).reverse() //['14.15.2018',[messages]]
+                list.forEach(item=>{
+                    item[1] = item[1].reverse()
+                })
+                return list
+            },
             messageGroupDays(){
-                return _.groupBy(this.messageListReverse, (item)=>{
+                return _.groupBy(this.messageList, (item)=>{
                     return moment(item.time*1000).format('DD.MM.YYYY')
+                    //moment(item.time*1000).format('HH:mm')
                 })
             },
             messageLastId(){
@@ -100,7 +112,6 @@
             },
             messageListReverse(){
                 let list = this.messageList.slice();
-
                 return list.reverse()
             },
             member(){
@@ -114,6 +125,7 @@
         },
         created() {
             this.historyMessageLoad();
+
         },
         mounted() {
             setTimeout(()=>{
@@ -180,6 +192,18 @@
                 })
             }
         },
+        sockets: {
+            "new-message"(val) {
+                console.log(val);
+                this.messageList.unshift(val);
+                setTimeout(()=>{
+                    this.scrollerPushDown(this.$refs.scrollbar)
+                },50)
+
+
+            }
+        },
+
 
 
     }

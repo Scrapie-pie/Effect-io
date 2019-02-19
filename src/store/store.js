@@ -15,15 +15,17 @@ export default new Vuex.Store({
         visitors
     },
     state: {
+        isConnected: false,
         loading:false
 
     },
     mutations: {
         loading(state, val) {
-
-                state.loading = val
-
-
+            state.loading = val
+        },
+        socket_CONNECT(state, status) {
+            console.log(state);
+            state.isConnected = true;
         },
 
     },

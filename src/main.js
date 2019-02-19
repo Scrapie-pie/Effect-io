@@ -11,6 +11,14 @@ Vue.prototype.$http = axios;
 
 import VuePerfectScrollbar from 'vue-perfect-scrollbar'
 
+import VueSocketio from 'vue-socket.io-extended';
+import io from 'socket.io-client';
+
+Vue.use(VueSocketio, io('http://newrobocall.ru:3000'),{
+    store,actionPrefix: 'socket',
+
+});
+
 import BaseIcon from "@/components/BaseIcon";
 import BaseField from "@/components/BaseField";
 import BaseBtn from "@/components/BaseBtn";

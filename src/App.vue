@@ -48,6 +48,11 @@
         },
         methods: {
             webSocketInit() {
+                this.$socket.disconnect();
+                this.$socket.query = `uuid=${this.userId}`;
+                this.$socket.io.opts.query = `uuid=${this.userId}`;
+                this.$socket.open();
+                return
 
                 try {
                     console.log(this.userId);
@@ -160,7 +165,23 @@
             promiseErrorHandler(event) {
                 console.error('Unhandled rejection (promise: ', event.promise, ', reason: ', event.reason, ')');
             },
-        }
+        },
+        sockets: {
+            connect() {
+                console.log('socket connected')
+
+            },
+            disconnect() {
+                console.log('socket disconnect')
+
+            },
+            "update-employees"(val) {
+                console.log(val);
+
+
+            }
+
+        },
     }
 </script>
 

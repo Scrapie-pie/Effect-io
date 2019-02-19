@@ -9,6 +9,10 @@ export default {
         all(state, val) {
             state.all=val;
         },
+        'SOCKET_UPDATE-EMPLOYEES'(state, val) {
+            console.log(val);
+        /*    state.all=val;*/
+        },
     },
     actions: {
         getAll({ commit, dispatch }) {
@@ -22,6 +26,7 @@ export default {
                 commit('all',data.data)
             })
         },
+
     },
     getters: {
         all: (state, getters,rootState) => {

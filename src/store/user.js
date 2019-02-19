@@ -63,9 +63,13 @@ export default {
         },
     },
     getters: {
+
         isRole:state=> {// в JavaScript, когда `false && myString` возвратит `false`, а `true && myString` возвратит `myString`.
 
           return state.profile.id === state.profile.owner_id && 'owner';
+        },
+        branchListAll: state => {
+            return state.branchListAll
         },
         settings: state => {
             return state.settings;

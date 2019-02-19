@@ -36,7 +36,7 @@
 
                 if (value) {
                     //let date = moment(value*1000)
-                    return moment(value*1000).format('HH:mm')
+                    return moment(value*1000).format('HH:mm:ss')
 
                 } else {
                     return ''

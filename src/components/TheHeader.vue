@@ -34,7 +34,6 @@
                     params.id=visitorFirst.uuid;
                     params.site_id=visitorFirst.site_id
                 }
-
                 return {name:'chatId',params}
             },
             canalList(){

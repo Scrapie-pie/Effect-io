@@ -142,9 +142,7 @@
         watch:{
             profile:{
                 handler(val){
-                    console.log(val);
                     if(val) {
-                        console.log(val);
                         this.getProfileByUserId()
                     }
                 },
@@ -155,7 +153,6 @@
                     if(val) {
 
                         this.branchListSelected = val.filter((item)=>{
-                            console.log(item.id,this.model,this.model.branches_ids.includes(item.id));
                             return this.model.branches_ids.includes(item.id)
                         });
                     }
@@ -244,7 +241,17 @@
 
         },
         methods:{
-
+            getBranchListAll(){
+                if(this.$store.state.user.branchListAll.length) {
+                    this.branchListAll = this.$store.getters['user/branchListAll']
+                } else {
+                    this.$store.watch(
+                        (state)=>state.user.branchListAll,
+                        (val) => {
+                            return this.branchListAll = val
+                    });
+                }
+            },
             fillProfile(){
 
                 this.model.user_id=this.profile.user_id,
@@ -262,7 +269,7 @@
                 this.model.use_calls=this.profile.use_calls
 
                 this.adminMode=this.profile.role_id === 13;
-                this.branchListAll = this.$store.state.user.branchListAll
+                this.getBranchListAll()
             },
             setPassword(val){
                 this.model.pass = val
@@ -284,7 +291,13 @@
             },
             getProfileByUserId(){
 
-                if(!!this.isAddOperator) return;
+                if(!!this.isAddOperator) {
+
+                    this.getBranchListAll()
+
+                    return
+
+                }
 
                 let user_id = + this.$route.query.user_id;
                 if(user_id) {
@@ -296,7 +309,7 @@
                     this.$http.get('user-profile', {params:{user_id:user_id}}).then(({data})=>{
                         if(data.success) {
                             this.model=data.data.user;
-                            this.branchListAll = this.$store.state.user.branchListAll
+                            this.getBranchListAll()
                         }
                     }).catch((errors)=>{
                         if (errors.response.status == 404) this.$router.push({name:'process'})

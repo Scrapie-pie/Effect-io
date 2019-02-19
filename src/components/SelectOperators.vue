@@ -1,7 +1,8 @@
 <template lang="pug">
     form.select-operator
         fieldset(v-if="count && name=='mention'")
-            legend.select-operator__title Выберите сотрудника, которого вы хотите упомянуть в диалоге. Данный сотрудник получит оповещение.
+            //legend.select-operator__title Выберите сотрудника, которого вы хотите упомянуть в диалоге. Данный сотрудник получит оповещение.
+            legend.select-operator__title Отметьте сотрудников, которых Вы хотите пригласить к данному диалогу
             .select-operator__search-operators
                 base-field.select-operator__search(type="search" name="search" v-model="search" theme="soft")
                 scroll-bar.select-operator__scrollbar.select-operator__scrollbar_mention
@@ -26,14 +27,15 @@
 
 
         fieldset(v-else-if="count")
-            legend.select-operator__title Выберите сотрудника, которому Вы хотите передать диалог
+            //legend.select-operator__title Выберите сотрудника, которому Вы хотите передать диалог
+            legend.select-operator__title Отметьте сотрудников, которых Вы хотите пригласить к данному диалогу
             .select-operator__search-operators
                 base-field.select-operator__search(type="search" name="search" v-model="search" theme="soft")
                 scroll-bar.select-operator__scrollbar
                     ul.select-operator__list
-                        li.select-operator__item(v-for="(item, index) in itemList",:key="index")
+                        li.select-operator__item(v-for="(item, index) in itemList",:key="item.id")
                             .select-operator__checkbox
-                                base-radio-check(name="item")
+                                base-radio-check(name="operatorCheck" v-model="operatorCheck" value="item.id")
                             base-people(
                                 :bg-text-no-fill="true"
                                 :name="item.fullName" ,
@@ -42,10 +44,12 @@
                             )
             .select-operator__footer
                 label.select-operator__label Оставьте комментарий
+                //placeholder="Данный комментарий увидит сотрудник, которому Вы передаете диалог. Это не обязательное поле. Вы можете передать диалог без указания комментария."
                 base-field.select-operator__input(
                     type="textarea"
                     name="comment"
-                    placeholder="Данный комментарий увидит сотрудник, которому Вы передаете диалог. Это не обязательное поле. Вы можете передать диалог без указания комментария."
+
+                    placeholder="Данный комментарий увидят все сотрудники, которых Вы пригласите. Это не обязательное поле. Вы можете пригласить сотрудников без указания комментария. "
                     v-model="comment"
                 )
                 base-btn() Пригласить
@@ -78,6 +82,7 @@
         },
         data(){
             return {
+                operatorCheck:'',
                 count:1,
                 search:'',
                 comment:'',
@@ -117,13 +122,13 @@
 
         }
 
-        &__list {
-
-        }
 
         &__item {
             display:flex;
             align-items:center;
+            margin-top:calc-em(10);
+            margin-bottom:calc-em(10);
+            .base-people__inner {padding-top:0;padding-bottom:0}
 
             &_operator {
                 .base-avatar {
