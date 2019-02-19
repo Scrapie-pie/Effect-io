@@ -103,6 +103,7 @@
                 return  this.$store.getters['user/profile'].role_id === 13 || this.$store.getters['user/profile'].role_id === 5 //либо админ либо владелец
             },
             operatorList(){
+
                 return this.$store.getters['operators/all']
             },
             operatorListSearch(){

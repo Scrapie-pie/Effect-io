@@ -269,6 +269,7 @@
                 this.model.use_calls=this.profile.use_calls
 
                 this.adminMode=this.profile.role_id === 13;
+                this.phoneUnmaskedValue=this.profile.phones.phone;
                 this.getBranchListAll()
             },
             setPassword(val){
@@ -309,6 +310,7 @@
                     this.$http.get('user-profile', {params:{user_id:user_id}}).then(({data})=>{
                         if(data.success) {
                             this.model=data.data.user;
+                            this.phoneUnmaskedValue=this.model.phones.phone;
                             this.getBranchListAll()
                         }
                     }).catch((errors)=>{
