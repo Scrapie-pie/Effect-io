@@ -175,6 +175,16 @@
                 console.log('socket disconnect')
 
             },
+            "guest-update"(val) {
+                console.log('guest-update',val);
+
+
+            },
+            "update-branches"(val) {
+                console.log('update-branches',val);
+
+
+            },
             "update-employees"(val) {
                 console.log(val);
 

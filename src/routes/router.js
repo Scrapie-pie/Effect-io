@@ -97,6 +97,7 @@ export default router
 
 router.beforeEach((to, from, next) => {
 
+
     const not_auth_routes = ['auth', 'recover','exit'],
     authenticated = store.getters['user/authenticated'];
 

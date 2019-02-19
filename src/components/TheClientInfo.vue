@@ -9,12 +9,12 @@
                     li.client-info__item.client-info__item_textarea
 
                         base-field(
-                        v-model="info.comment"
-                        theme="soft"
-                        ref="clientComment"
-                        type="textarea"
-                        placeholder="Вы можете оставить комментарий к этому диалогу" maxlength="500"
-                        name="comment"
+                            v-model="info.comment"
+                            theme="soft"
+                            ref="clientComment"
+                            type="textarea"
+                            placeholder="Вы можете оставить комментарий к этому диалогу" maxlength="500"
+                            name="comment"
                         )
 
                     li.client-info__item

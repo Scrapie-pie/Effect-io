@@ -25,7 +25,7 @@
                 base-btn(
                     theme="default"
                     padding="xs",
-                    @click.prevent="showSelectOperators=true"
+                    @click.prevent="showSelectOperators=true;selectOperatorsMode='invite'"
                 ) + Пригласить
                 .chat-main-header__select-operator
                     box-controls(

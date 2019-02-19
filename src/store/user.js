@@ -7,6 +7,11 @@ export default {
         roomIdOpen:false,
     },
     mutations: {
+        'SOCKET_UPDATE-BRANCHES'(state, val) {
+            console.log('SOCKET_UPDATE-BRANCHES');
+            state.branchListAll=val;
+
+        },
         roomIdOpen(state, val) {
             state.roomIdOpen=val;
         },

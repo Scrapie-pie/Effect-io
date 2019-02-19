@@ -29,7 +29,8 @@
                                 placeholder="Enter - отправить сообщение, Shift+Enter - новая строка."
                                 ref="chatInput",
                                 v-model="message",
-                                @keydown.enter.exact="onEnter"
+                                @keydown.enter.exact="onEnter",
+                                @click.prevent="messageRead"
                             )
                 ul.chat-main-footer__buttons
                     li.chat-main-footer__button(v-if="viewModeChat=='common'")
@@ -125,6 +126,11 @@
             }
         },
         methods: {
+            messageRead(){
+                this.$http.put('message-operator-guest-mark-as-read', {
+                    room_id:this.$store.state.user.roomIdOpen
+                });
+            },
             onEnter: function (e) {
 
                 e.stopPropagation()
@@ -166,9 +172,7 @@
 
 
                 this.$http.post('message-send', data);
-                this.$http.put('message-operator-guest-mark-as-read', {
-                    room_id:this.$store.state.user.roomIdOpen
-                });
+
 
                 this.message='';
             },

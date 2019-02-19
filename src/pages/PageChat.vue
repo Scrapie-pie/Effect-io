@@ -22,13 +22,6 @@
 
 
 
-
-
-
-
-
-
-
         if(to.name == "process") return next({name:'team'});
         if(to.name == "common") return next();
 
