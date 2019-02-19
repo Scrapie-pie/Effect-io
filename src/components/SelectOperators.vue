@@ -35,10 +35,11 @@
                     ul.select-operator__list
                         li.select-operator__item(v-for="(item, index) in itemList",:key="item.id")
                             .select-operator__checkbox
-                                base-radio-check(name="operatorCheck" v-model="operatorCheck" value="item.id")
+                                input(type="checkbox" name="operatorCheck" v-model="operatorCheck[item.id]" :value="item.id")
+                                //base-radio-check(name="operatorCheck" v-model="operatorCheck" :value="item.id")
                             base-people(
                                 :bg-text-no-fill="true"
-                                :name="item.fullName" ,
+                                :name="item.fullName +' '+ item.id" ,
                                 :text="item.branches_names | branches" ,
                                 :datetime="item.datetime"
                             )
@@ -82,7 +83,8 @@
         },
         data(){
             return {
-                operatorCheck:'',
+
+                operatorCheck:{},
                 count:1,
                 search:'',
                 comment:'',

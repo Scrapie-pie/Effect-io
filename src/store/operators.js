@@ -10,8 +10,8 @@ export default {
             state.all=val;
         },
         'SOCKET_UPDATE-EMPLOYEES'(state, val) {
-            console.log(val);
-        /*    state.all=val;*/
+            console.log('SOCKET_UPDATE-EMPLOYEES',val)
+            state.all=val;
         },
     },
     actions: {
