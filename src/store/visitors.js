@@ -41,7 +41,8 @@ export default {
         },
         getProcess({ commit, dispatch }) {
             this._vm.$http.get('guest-list',{params:{
-                    type:'unprocessed'
+                    //type:'unprocessed'
+                    type:'self'
                 }}).then(({data})=>{
 
                 commit('process',data.data)

@@ -1,6 +1,8 @@
 <template lang="pug">
     article.page-chat
-        the-last-messages.page-chat__last-messages
+        the-last-messages.page-chat__last-messages(v-if="viewModeChat=='operators'")
+        the-last-messages-v.page-chat__last-messages(v-if="viewModeChat=='visitors'")
+        the-last-messages-v.page-chat__last-messages(v-if="viewModeChat=='process'")
 
         section.page-chat__main
                 the-chat-main
@@ -10,7 +12,8 @@
 </template>
 
 <script>
-    import TheLastMessages from '@/components/TheLastMessagess';
+    import TheLastMessages from '@/components/TheLastMessages';
+    import TheLastMessagesV from '@/components/TheLastMessagesV';
     import TheClientInfo from '@/components/TheClientInfo';
     import TheChatMain from '@/components/TheChatMain';
     import store from '@/store/store'
@@ -22,7 +25,7 @@
 
 
 
-        if(to.name == "process") return next({name:'team'});
+        if(to.name == "process") return next();
         if(to.name == "common") return next();
 
         if(to.name == "teamChat") return next();
@@ -48,6 +51,7 @@
         components: {
             TheChatMain,
             TheLastMessages,
+            TheLastMessagesV,
             TheClientInfo,
         },
         mixins:[viewModeChat],

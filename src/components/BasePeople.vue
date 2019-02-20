@@ -3,6 +3,11 @@
         .base-people__avatar-wrap
             base-avatar.base-people__avatar(:width="avatarWidth", :url="avatarUrl")
             base-icon(:name="channelName").base-people__channel
+            .base-people__status(
+                v-if="status!=null",
+                :class="classStatus",
+                :title="statusText"
+                )
         .base-people__inner
             .base-people__header
                 strong.base-people__name(v-text="name")
@@ -45,6 +50,13 @@
             }
         },
         props: {
+            status:{
+                type:Number,
+                default:null,
+                validator: function (value) {
+                    return [0,1,2,3].indexOf(value) !== -1
+                }
+            },
             img: false,
             right: Boolean,
             channelName: String,
@@ -73,6 +85,27 @@
 
         },
         computed: {
+            statusText() {
+                let text;
+                switch (this.status) {
+                    case 1:
+                        text = 'В сети (онлайн)';
+                        break;
+                    case 2:
+                        text = 'Перерыв';
+                        break;
+                    case 3:
+                        text = 'Обед';
+                        break;
+                    default:
+                        text = 'Не в сети (оффлайн)';
+                        break;
+                }
+                return text;
+            },
+            classStatus(){
+                return 'base-people__status_'+this.status
+            } ,
             classObject() {
                 let parentClass = 'base-people';
                 let obj = {}
@@ -89,6 +122,11 @@
 <style lang="scss">
 
     .base-people{
+        $color_online:glob-color('success');
+        $color_break:#d7c502;
+        $color_lunch:glob-color('error');
+        $color_offline:glob-color('secondary');
+
         $self:&;
         $ml:calc-em(5);
         $border-raduis:$glob-border-radius;
@@ -99,6 +137,26 @@
         $small:$glob-font-size_small;
         display:flex;
         align-items:center;
+
+        &__status{
+            position:absolute;
+            bottom:0;
+            right:0;
+            width:14px;
+            height:14px;
+            border-radius:50%;
+            background-color:$color_offline;
+
+            &_1{ background-color:$color_online; }
+            &_2{ background-color:$color_break; }
+            &_3{ background-color:$color_lunch; }
+        }
+
+        &__status {
+            &_online{ background-color:$color_online; }
+            &_break{ background-color:$color_break; }
+            &_lunch{ background-color:$color_lunch; }
+        }
 
 
         /* width:100%;*/

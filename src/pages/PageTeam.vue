@@ -4,11 +4,11 @@
             .page-operators__controls
                 .page-operators__control
                     base-field(
-                    type="search"
-                    name="search",
-                    placeholder="Поиск по имени..."
-                    theme="soft"
-                    v-model="search"
+                        type="search"
+                        name="search",
+                        placeholder="Поиск по имени..."
+                        theme="soft"
+                        v-model="search"
                     )
                 .page-operators__control(v-if="viewAdmin")
                     base-btn(name="add" color="success-dark" size="lg" :router="{name:'settingsProfile',query:{add:'operator'}}") Добавить сотрудника
@@ -22,7 +22,7 @@
                             th.table__td.table__td_th Отдел
                             th.table__td.table__td_th(v-if="viewAdmin") Активен
                             th.table__td.table__td_th(v-if="viewAdmin") Досупные действия
-                    tbody.table__tbody(v-for="(item, index) in operatorListSearch", :key="item.id")
+                    tbody.table__tbody(v-for="(item, index) in operatorListSortUnread", :key="item.id")
                         tr.table__tr.page-operators__tr
                             td.table__td
                                 base-people(
@@ -79,7 +79,7 @@
 <script>
     //TODO соедиить шаблон с таблицей посетителей
     import ContextMenu from '@/components/ContextMenu'
-
+    import _ from 'underscore'
 
     export default {
         components: {
@@ -115,7 +115,16 @@
                     return true
                 })
                 return list
-            }
+            },
+            operatorListSortUnread(){
+                return _.sortBy(this.operatorListSearch,(item)=>{
+                    console.log(item.unread.length);
+                    return !item.unread.length
+                });
+
+
+
+            },
         },
         methods:{
             anotherProfile(user_id){

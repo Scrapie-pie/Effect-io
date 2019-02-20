@@ -3,32 +3,9 @@
         .last-messages__search
             base-field(type="search" name="search" v-model="search" theme="soft")
         scroll-bar.last-messages__scrollbar
-            ul.last-messages__list(v-if="viewModeChat=='visitors'")
-                li.last-messages__item(
-                    v-for="(item, index) in visitorsList",
-                    :key="item.uuid+item.site_id",
-                    :class="{'last-messages__item_warning':item.warning}"
-                )
-
-                    router-link.last-messages__btn(
-                        :to="{name:'chatId',params: { id: item.uuid,site_id:item.site_id}}"
-                         v-text="`${item.fullName}:${item.last_message}`"
-                        active-class="last-messages__btn_active"
-                        )
-
-                    base-people.last-messages__people(
-                        :avatar-url="item.photo"
-                        :name="item.name",
-                        :text="item.last_message",
-                        :bg-text-no-fill="true",
-                        :channel-name="item.channel",
-                        :count="item.unread.length"
-                        hidden
-                    )
-
             ul.last-messages__list(v-if="viewModeChat=='operators'")
                 li.last-messages__item(
-                v-for="(item, index) in operatorListSearch",
+                v-for="(item, index) in operatorListSortUnread",
                 :key="item.id",
                 :class="{'last-messages__item_warning':item.warning}"
                 )
@@ -39,20 +16,28 @@
                     active-class="last-messages__btn_active"
                     )
                     base-people.last-messages__people(
-                    :avatar-url="item.photo"
+                        :status="item.online",
+                        :avatar-url="item.photo",
                         :name="item.fullName",
-                    :text="item.last_message",
-                    :bg-text-no-fill="true",
-                    :count="item.unread.length"
-                    hidden
+                        :text="item.last_message | lastMessage(item)",
+                        :bg-text-no-fill="true",
+                        :count="item.unread.length"
+                        hidden
                     )
 </template>
 
 <script>
+    import _ from 'underscore'
     import { viewModeChat } from '@/mixins/mixins'
     export default {
         mixins:[viewModeChat],
-
+        filters: {
+            lastMessage: function (value,item) {
+                if(!value) return '';
+                if(item.first_name !== item.last_message_author) return 'Вы: '+value
+                return value
+            }
+        },
         data() {
             return {
                 search:'',
@@ -61,17 +46,6 @@
             }
         },
         computed:{
-            styleClass(){
-
-            },
-            itemList(){
-                if(this.$route.name === "teamChat") return this.operatorList
-                else return this.visitorsList()
-            },
-            visitorsList(){
-
-                return this.$store.getters['visitors/all']
-            },
             operatorList(){
 
                 return this.$store.getters['operators/all']
@@ -88,7 +62,16 @@
 
                 // console.log(list);
                 return list
-            }
+            },
+            operatorListSortUnread(){
+                return _.sortBy(this.operatorListSearch,(item)=>{
+                    console.log(item.unread.length);
+                    return !item.unread.length
+                });
+
+
+
+            },
         },
         created(){
 

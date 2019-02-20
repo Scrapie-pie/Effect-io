@@ -19,7 +19,7 @@
                                 avatar-width="md",
                                 :avatar-url="item.from_user_info.photo"
                                 :name="item.from_user_info.name",
-                                :text="item.body",
+                                :text="item.body | messageBreakLine",
                                 :time="item.time",
                                 :right="item.from_user_info.id == $store.state.user.profile.employee_id",
                                 :img="item.img"
@@ -63,7 +63,12 @@
             TheChatMainFooter
         },
         mixins:[viewModeChat],
-
+        filters: {
+            messageBreakLine: function (value) {
+                console.log(value);
+                return value
+            }
+        },
         data() {
             return {
                 historyMessageLoadStart:true, //При прокрутке страницы, функция historyMessageLoad выполнялась раньше чем приходил ответ, из за этого лишние индификаторы были
@@ -78,7 +83,9 @@
                 this.historyMessageLoadStart=true;
                 this.messageRun=true;
                 this.messageList=[];
-                this.historyMessageLoad();
+                this.historyMessageLoad().then(()=>{
+                    this.scrollerPushDown(this.$refs.scrollbar)
+                });
             },
             messageDays(val){
                 return val
@@ -124,13 +131,10 @@
             },
         },
         created() {
-            this.historyMessageLoad();
-
-        },
-        mounted() {
-            setTimeout(()=>{
+            this.historyMessageLoad().then(()=>{
                 this.scrollerPushDown(this.$refs.scrollbar)
-            },500)
+            });
+
         },
         methods: {
 
@@ -167,8 +171,9 @@
                     users_ids = []
 
                 if (this.viewModeChat=='visitors') {
-                         params.guest_uuid = this.$store.state.visitors.itemOpen.uuid,
-                         params.site_id = this.$store.state.visitors.itemOpen.site_id;
+                    let {guest_uuid,site_id } =  this.$store.getters['visitors/itemOpenIds'];
+                         params.guest_uuid = guest_uuid,
+                         params.site_id = site_id;
 
                 }
                 else {
@@ -181,7 +186,7 @@
                 this.historyMessageLoadStart=false;
                 this.messageRun=false;
 
-                this.$http.get('message-history', {params}).then(({data})=>{
+                return this.$http.get('message-history', {params}).then(({data})=>{
                     this.historyMessageLoadStart=true;
                     if (!data.data.count) return
                     console.log(data.data.messages);

@@ -129,9 +129,9 @@
             invite(){
                 let data =  this.$store.getters['visitors/itemOpenIds'];
 
-                data.to_id=this.operatorsIds[0];
+                data.users_ids=this.operatorsIds;
 
-                this.$http.put('guest-transfer-request', data)
+                this.$http.post('chat-room-user-invite', data)
                     .then(({ data }) => {
                         this.$root.$emit('globBoxControlClose')
                     })
