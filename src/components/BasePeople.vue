@@ -97,6 +97,7 @@
                     case 3:
                         text = 'Обед';
                         break;
+
                     default:
                         text = 'Не в сети (оффлайн)';
                         break;

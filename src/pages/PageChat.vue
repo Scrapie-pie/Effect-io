@@ -25,7 +25,7 @@
 
 
 
-        if(to.name == "process") return next();
+
         if(to.name == "common") return next();
 
         if(to.name == "teamChat") return next();

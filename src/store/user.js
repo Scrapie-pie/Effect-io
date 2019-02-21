@@ -49,7 +49,9 @@ export default {
             dispatch('operators/getAll',null,{root:true});
             dispatch('visitors/getAll',null,{root:true}); //Todo лишний или нет
             dispatch('visitors/getProcess',null,{root:true});
-            dispatch('visitors/getSelf',null,{root:true});
+            dispatch('visitors/getSelf',null,{root:true}).then((data)=>{
+                console.log('getSelf',data);
+            });
 
 
         },

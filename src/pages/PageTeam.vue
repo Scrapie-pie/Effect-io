@@ -67,8 +67,14 @@
                                     base-btn(:icon="{name:'edit',box:true,textHidden:'Открыть меню'}" color="info-lighten")
                                     template(slot="listItem")
                                         router-link.context-menu__link(:to="{name:'settingsProfile',query: { user_id: item.id }}") Редактировать
-        base-no-found(v-if="operatorList.length<=1" name="team")
-
+        base-no-found.page-operators__base-no-found(v-if="operatorList.length<=1" name="team")
+            base-btn(
+                slot="team-content"
+                name="add"
+                color="success-dark"
+                size="lg",
+                :router="{name:'settingsProfile',query:{add:'operator'}}"
+            ) Добавить сотрудника
 
 
 
@@ -152,6 +158,8 @@
     .page-operators{
         $transition:$glob-trans;
         $font-small:$glob-font-size_small;
+
+
         &__content {
             display:flex;
             flex-direction:column;
@@ -185,6 +193,12 @@
         &__tr:not(:hover) &__start-chat  {
             opacity:0;
             visibility:hidden;
+        }
+
+
+        &__base-no-found {
+            height: auto;
+            flex: 1;
         }
     }
 

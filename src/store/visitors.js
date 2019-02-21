@@ -1,3 +1,4 @@
+import _ from 'underscore'
 export default {
     namespaced: true,
     state: {
@@ -39,19 +40,18 @@ export default {
                 commit('all',data.data)
             })
         },
-        getProcess({ commit, dispatch }) {
-            this._vm.$http.get('guest-list',{params:{
-                    //type:'unprocessed'
-                    type:'self'
-                }}).then(({data})=>{
+        getProcess({ commit, dispatch },params) {
+            this._vm.$http.get('guest-list',
+                _.extend({type: 'unprocessed'},params )
+            ).then(({data})=>{
 
                 commit('process',data.data)
             })
         },
-        getSelf({ commit, dispatch }) {
-            this._vm.$http.get('guest-list',{params:{
-                    type:'self'
-                }}).then(({data})=>{
+        getSelf({ commit, dispatch },params) {
+            this._vm.$http.get('guest-list',
+                _.extend({type: 'self'},params )
+                ).then(({data})=>{
 
                 commit('self',data.data)
             })

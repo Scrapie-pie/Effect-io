@@ -6,7 +6,7 @@
             fieldset(v-if="showProcess" key="showProcess")
                 ul.chat-main-footer__process
                     li.chat-main-footer__process-item
-                        base-btn(color="success-dark" size="lg") Присоединиться
+                        base-btn(color="success-dark" size="lg" @click="invite") Присоединиться
                     li.chat-main-footer__process-item
                         base-btn(color="info-dark" size="lg") Отклонить
             fieldset(v-else)
@@ -118,14 +118,18 @@
 
         },
         computed:{
-            messageBreakLine(){
-                return this.message.replace(/(\r\n|\n)/g, "&lt;br/&gt;")
-            },
+
             processView(){
                 return this.showProcess
             }
         },
         methods: {
+            invite(){
+                this.$http.post('chat-room-user-accept-invitation', {
+                    room_id:105
+
+                });
+            },
             messageRead(){
                 this.$http.put('message-operator-guest-mark-as-read', {
                     room_id:this.$store.state.user.roomIdOpen
@@ -145,7 +149,7 @@
                     site_id,
                     to_id,
 
-                    body = this.messageBreakLine;
+                    body = this.message;
 
                 if(this.viewModeChat=="visitors") {
 

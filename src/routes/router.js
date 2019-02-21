@@ -67,7 +67,7 @@ const router =  new Router({
         },
         {
             name: 'process',
-            path: '/process',
+            path: '/process/:id/:site_id',
             component: PageChat,
         },
 

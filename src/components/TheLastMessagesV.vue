@@ -3,7 +3,7 @@
         .last-messages__search
             base-field(type="search" name="search" v-model="search" theme="soft")
         scroll-bar.last-messages__scrollbar(@ps-y-reach-end="loadDate")
-            ul.last-messages__list(v-if="viewModeChat=='visitors'")
+            ul.last-messages__list
                 li.last-messages__item(
                     v-for="(item, index) in itemList",
                     :key="item.uuid+item.site_id",
@@ -64,7 +64,7 @@
                         search:this.search,
                         offset:this.getOffset,
                         limit:this.limit,
-                        type:'self'
+                        type:'unprocessed'
                     }
                 }
             }

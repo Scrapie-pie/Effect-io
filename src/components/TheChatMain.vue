@@ -65,8 +65,7 @@
         mixins:[viewModeChat],
         filters: {
             messageBreakLine: function (value) {
-                console.log(value);
-                return value
+                return   value.replace(/(\r\n|\n)/g, "<br>")
             }
         },
         data() {
@@ -170,7 +169,7 @@
                     site_id,
                     users_ids = []
 
-                if (this.viewModeChat=='visitors') {
+                if (this.viewModeChat=='visitors' || this.viewModeChat=='process') {
                     let {guest_uuid,site_id } =  this.$store.getters['visitors/itemOpenIds'];
                          params.guest_uuid = guest_uuid,
                          params.site_id = site_id;

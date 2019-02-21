@@ -6,7 +6,8 @@
             p.no-found__text.
                 Вы – единственный сотрудник. Пригласите коллег, чтобы они так же смогли обрабатывать заявки от клиентов. #[br]
                 Так же вы сможете общаться как отдельно с каждым сотрудником, так и в общем совместном чате.
-            p: base-btn(color="success-dark" size="lg") Добавить сотрудника
+            p: slot(name="team-content")
+
 
         .no-found__content(v-if="name=='visitors'")
             base-icon.no-found__icon(name="no-found-visitors")

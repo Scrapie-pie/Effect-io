@@ -16,7 +16,7 @@
                     :selectOptions="{label:'name',options:channelList,value:channel}"
                     v-model="channel"
                 )
-            .page-visitors__control
+            .page-visitors__control(v-if="itemListCount")
                 |На странице показано {{showItemLength}} из {{ itemListCount}}
         scroll-bar(v-if="showItemLength" @ps-y-reach-end="loadDate").page-visitors__scroll-bar
             table.table
@@ -162,7 +162,11 @@
 
 <style lang="scss">
     .page-visitors{
-        max-width:1300px;
+
+
+        &__scroll-bar {
+            max-width:1300px;
+        }
 
         &__controls{
             display:flex;
