@@ -1,10 +1,11 @@
+import _ from 'underscore'
 export default {
     namespaced: true,
     state: {
         profile:false,
         settings:false,
         branchListAll:[],
-        roomIdOpen:false,
+
     },
     mutations: {
         'SOCKET_UPDATE-BRANCHES'(state, val) {
@@ -12,9 +13,7 @@ export default {
             state.branchListAll=val;
 
         },
-        roomIdOpen(state, val) {
-            state.roomIdOpen=val;
-        },
+
         logout(state) {
             localStorage.removeItem('jwt')
             delete this._vm.$http.defaults.headers.common[ 'jwt' ];
@@ -25,7 +24,10 @@ export default {
                 else state[prop] = false;
             }
         },
+        profileUpdate(state, val) {
 
+            state.profile=_.extend(state.profile,val);
+        },
         profile(state, val) {
             state.profile=val;
         },

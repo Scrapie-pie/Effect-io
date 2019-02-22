@@ -89,7 +89,8 @@
             },
             profile(val){
                 if(val){
-                    this.status = val.status;
+                    console.log(val.status);
+                    this.status = val.online;
                 }
             }
         },
@@ -146,6 +147,11 @@
                     clearTimeout(this.activity);
                 });
             },
+        },
+        sockets: {
+            "update-employees"(val) {
+                val[0]
+            }
         },
 
     }

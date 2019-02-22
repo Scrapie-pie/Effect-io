@@ -6,13 +6,49 @@ export default {
 
     },
     mutations: {
+        'SOCKET_UPDATE-EMPLOYEES'(state, val){
+            console.log('SOCKET_UPDATE-EMPLOYEES',val);
+            state.all=val;
+        },
         all(state, val) {
             state.all=val;
         },
-        'SOCKET_UPDATE-EMPLOYEES'(state, val) {
-            console.log('SOCKET_UPDATE-EMPLOYEES',val)
-            state.all=val;
+        messageRead(state,id) {
+            let findIndex = state.all.findIndex((item)=>{
+                 return item.id === id
+            });
+            if(findIndex !== -1) {
+                state.all[findIndex].unread=[];
+            }
         },
+        messageLastUpdate(state, val) {
+
+            let findIndex = state.all.findIndex((item)=>{
+                if(val.selfId) return item.id === val.selfId; //selfId значит мое сообщение
+                else return item.employee_id === val.from_user_info.id
+            })
+
+            if(findIndex !== -1) {
+                state.all[findIndex].last_message = val.body;
+                state.all[findIndex].last_message_author = val.from_user_info.first_name;
+
+                if(!val.selfId) state.all[findIndex].unread.push(val.id);
+
+            }
+        }
+ /*       'SOCKET_NEW-MESSAGE'(state, val) {
+            console.log('SOCKET_NEW_MESSAGE',val.from_user_info.id)
+            console.log(state.all);
+            let findIndex = state.all.findIndex((item)=>{
+                return (item.employee_id === val.from_user_info.id)
+            })
+            if(findIndex !== -1) {
+                state.all[findIndex].last_message = val.body;
+                state.all[findIndex].last_message_author = val.first_name;
+            }
+
+        },*/
+
     },
     actions: {
         getAll({ commit, dispatch }) {

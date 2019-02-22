@@ -75,7 +75,7 @@
 
     import autosize from 'autosize'
 
-    import { viewModeChat } from '@/mixins/mixins'
+    import { viewModeChat,httpParams } from '@/mixins/mixins'
 
     export default {
         components:{
@@ -84,7 +84,7 @@
             TheFilesBoard,
             ThePhrasesReady
         },
-        mixins:[viewModeChat],
+        mixins:[viewModeChat,httpParams],
         watch:{
             '$route' (to, from) {
                 this.checkIsProcessPage();
@@ -131,9 +131,12 @@
                 });
             },
             messageRead(){
+
                 this.$http.put('message-operator-guest-mark-as-read', {
                     room_id:this.$store.state.user.roomIdOpen
                 });
+
+                this.$store.commit('operators/messageRead',this.httpParams.params.id)
             },
             onEnter: function (e) {
 
@@ -178,6 +181,26 @@
                 this.$http.post('message-send', data);
 
 
+                let {first_name,photo,employee_id} = this.$store.state.user.profile,
+                    time = (new Date).getTime() / 1000;
+
+                let message = {
+                    time,
+                    body,
+                    from_user_info:{
+                        id:employee_id,
+                        first_name,
+                        photo
+                    }
+                }
+
+                this.$root.$emit('messageAdd',message);
+
+                message.from_user_info.id = this.$store.state.user.profile.employee_id;
+                message.selfId = this.httpParams.params.id;
+
+                this.$store.commit('operators/messageLastUpdate',message)
+
                 this.message='';
             },
             checkIsProcessPage() {
@@ -187,6 +210,8 @@
                 else this.showProcess = false
             }
         },
+
+
 
 
     }

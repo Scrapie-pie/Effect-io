@@ -3,17 +3,16 @@
         .last-messages__search
             base-field(type="search" name="search" v-model="search" theme="soft")
         scroll-bar.last-messages__scrollbar
-            ul.last-messages__list(v-if="viewModeChat=='operators'")
+            ul.last-messages__list
                 li.last-messages__item(
-                v-for="(item, index) in operatorListSortUnread",
-                :key="item.id",
-                :class="{'last-messages__item_warning':item.warning}"
-                )
+                    v-for="(item, index) in operatorListSearch",
+                    :key="item.id",
+                    :class="classObject(item)"
 
+                )
                     router-link.last-messages__btn(
-                    :to="{name:'teamChat',params:{id:item.id}}"
-                    v-text="`${item.fullName}:${item.last_message}`"
-                    active-class="last-messages__btn_active"
+                        :to="{name:'teamChat',params:{id:item.id}}"
+                        v-text="`${item.fullName}:${item.last_message}`"
                     )
                     base-people.last-messages__people(
                         :status="item.online",
@@ -28,9 +27,9 @@
 
 <script>
     import _ from 'underscore'
-    import { viewModeChat } from '@/mixins/mixins'
+    import { viewModeChat,httpParams } from '@/mixins/mixins'
     export default {
-        mixins:[viewModeChat],
+        mixins:[viewModeChat,httpParams],
         filters: {
             lastMessage: function (value,item) {
                 if(!value) return '';
@@ -41,41 +40,56 @@
         data() {
             return {
                 search:'',
-                warning:true,
 
             }
         },
         computed:{
-            operatorList(){
 
+            operatorList(){
                 return this.$store.getters['operators/all']
             },
             operatorListSearch(){
-                let list = this.operatorList;
-
+                let list = this.operatorListSortActiveFirst;
                 list = list.filter(item => {
                     var regexp = new RegExp(this.search, 'ig')
-
                     if (item.fullName.match(regexp) == null) return 0
                     return true
                 })
-
                 // console.log(list);
                 return list
             },
             operatorListSortUnread(){
-                return _.sortBy(this.operatorListSearch,(item)=>{
-                    console.log(item.unread.length);
+                return _.sortBy(this.operatorList,(item)=>{
                     return !item.unread.length
                 });
-
-
-
             },
+            operatorListSortActiveFirst() {
+                let itemActive,
+                list = this.operatorListSortUnread.filter((item,index)=>{
+                    console.log(this.httpParams.params.id);
+                    if(item.id === this.httpParams.params.id){
+                        itemActive = item;
+                        return false
+                    }
+                    else return true
+                });
+                if (list.length)  list.unshift(itemActive);
+
+                return list
+            }
         },
         created(){
 
+        },
+        methods:{
+            classObject(item){
+                return {
+                    'last-messages__item_active':item.id === this.httpParams.params.id,
+                    'last-messages__item_warning':item.warning
+                }
+            }
         }
+
     }
 </script>
 
@@ -109,6 +123,10 @@
             padding-left:calc-em(10);
             padding-top:calc-em(10);
             padding-bottom:calc-em(10);
+
+            &:hover,&_active {
+                background-color:$color_bg-hover;
+            }
 
             &:hover,
             &_active{
@@ -145,9 +163,7 @@
             height:100%;
             border-color:transparent;
             font-size:0;
-            &:hover,&_active {
-                background-color:$color_bg-hover;
-            }
+
         }
     }
 </style>

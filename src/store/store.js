@@ -16,11 +16,15 @@ export default new Vuex.Store({
     },
     state: {
         loading:false,
+        roomIdOpen:false,
 
     },
     mutations: {
         loading(state, val) {
             state.loading = val
+        },
+        roomIdOpen(state, val) {
+            state.roomIdOpen=val;
         },
 
 

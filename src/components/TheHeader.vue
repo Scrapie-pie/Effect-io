@@ -28,10 +28,15 @@
         },
         computed:{
             routerNameProcessVisitorsFirst(){
-                let visitorFirst = this.$store.state.visitors.process[0],
-                    params = {id: 0,site_id:0}
-                if (visitorFirst)  {
-                    params.id=visitorFirst.uuid;
+                console.log(this.$store.state.visitors.process);
+
+
+                    let visitorFirst = this.$store.state.visitors.process,
+                        params = {uuid: 0,site_id:0}
+
+                if (visitorFirst.length)  {
+                    visitorFirst = visitorFirst[0],
+                    params.uuid=visitorFirst.uuid;
                     params.site_id=visitorFirst.site_id
                 }
                 console.log( {name:'process',params});
@@ -40,9 +45,9 @@
             },
             routerNameChatVisitorsFirst(){
                 let visitorFirst = this.$store.state.visitors.self[0],
-                params = {id: 0,site_id:0}
+                params = {uuid: 0,site_id:0}
                 if (visitorFirst)  {
-                    params.id=visitorFirst.uuid;
+                    params.uuid=visitorFirst.uuid;
                     params.site_id=visitorFirst.site_id
                 }
                 return {name:'chatId',params}

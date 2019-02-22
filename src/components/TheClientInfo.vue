@@ -62,11 +62,13 @@
 <script>
     import SocialLinks from '@/components/SocialLinks';
     import autosize from 'autosize'
+    import {httpParams} from "@/mixins/mixins";
 
     export default {
         components: {
             SocialLinks
         },
+        mixins:[httpParams],
         data() {
             return {
                 uuid:null,
@@ -149,9 +151,11 @@
                 return text.toLowerCase()
             }
         },
-
+        watch:{
+            '$route': 'getInfo'
+        },
         created(){
-
+            this.getInfo()
 
         },
         mounted() {
@@ -164,7 +168,10 @@
             autosize.destroy(this.$refs.clientComment.$refs.input);
         },
         methods:{
-
+            getInfo(){
+                if(!this.httpParams) return;
+                this.$store.dispatch('visitors/getItemOpen', this.httpParams)
+            },
             guestUpdateByOperator(){
                 this.$http.put('guest-update-by-operator', {
                         guest_uuid:this.info.uuid,

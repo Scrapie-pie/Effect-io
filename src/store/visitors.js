@@ -17,10 +17,13 @@ export default {
             state.allCount=val.count;
         },
         process(state, val) {
+            if(!val.length) return
+
             state.process=val.list;
             state.processCount=val.count;
         },
         self(state, val) {
+
             state.self=val.list;
             state.selfCount=val.count;
         },
@@ -30,29 +33,32 @@ export default {
         itemOpenHistoryActions(state, val) {
             state.itemOpenHistoryActions=val;
         },
+
     },
     actions: {
+        getItems({ commit, dispatch },data) {
+            this._vm.$http.get('guest-list',data).then(({data})=>{
+                if(!_.isEmpty(data.params.type) && data.params.type === "self") commit('self',data.data)
+                if(!_.isEmpty(data.params.type) && data.params.type === "unprocessed") commit('process',data.data)
+                else { commit('all',data.data) }
+
+            })
+        },
         getAll({ commit, dispatch }) {
-            this._vm.$http.get('guest-list',{params:{
-                type:'self'
-                }}).then(({data})=>{
+            this._vm.$http.get('guest-list',{}).then(({data})=>{
 
                 commit('all',data.data)
             })
         },
         getProcess({ commit, dispatch },params) {
-            this._vm.$http.get('guest-list',
-                _.extend({type: 'unprocessed'},params )
-            ).then(({data})=>{
-
+            params = _.extend({type: 'unprocessed', limit: 20}, params);
+            this._vm.$http.get('guest-list',{params}).then(({data})=>{
                 commit('process',data.data)
             })
         },
         getSelf({ commit, dispatch },params) {
-            this._vm.$http.get('guest-list',
-                _.extend({type: 'self'},params )
-                ).then(({data})=>{
-
+            params = _.extend({type: 'self', limit: 20}, params);
+            this._vm.$http.get('guest-list',{params}).then(({data})=>{
                 commit('self',data.data)
             })
         },
@@ -71,11 +77,8 @@ export default {
 */
 
            // return new Promise((resolve) => {
-            this._vm.$http.get('read-history', {params}).then(({data})=>{
-                commit('itemOpenHistoryActions',data.data)
-            })
 
-            return this._vm.$http.get('guest-info', {params}).then(({data})=>{
+            return this._vm.$http.get('guest-info', params).then(({data})=>{
                 commit('itemOpen',data.data)
 
             })

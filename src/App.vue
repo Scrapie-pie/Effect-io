@@ -186,9 +186,8 @@
 
             },
             "update-employees"(val) {
-                console.log(val);
-
-
+                console.log('update-employees user/profile update',val[0])
+                this.$store.commit('user/profileUpdate',val[0])
             }
 
         },

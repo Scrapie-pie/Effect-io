@@ -7,11 +7,11 @@
                 li.last-messages__item(
                     v-for="(item, index) in itemList",
                     :key="item.uuid+item.site_id",
-                    :class="{'last-messages__item_warning':item.warning}"
+
                 )
 
                     router-link.last-messages__btn(
-                        :to="{name:'chatId',params: { id: item.uuid,site_id:item.site_id}}"
+                        :to="{name:'chatId',params: { uuid: item.uuid,site_id:item.site_id}}"
                          v-text="`${item.fullName}:${item.last_message}`"
                         active-class="last-messages__btn_active"
                         )
@@ -39,10 +39,12 @@
             return {
                 warning:true,
 
-                getVisitorsListStart:true,
+                getItemListStart:true,
+
                 search:'',
                 limit:20,
                 pageN:1,
+                type:'',
                 itemListCount: 0,
                 itemList:[],
 
@@ -64,40 +66,48 @@
                         search:this.search,
                         offset:this.getOffset,
                         limit:this.limit,
-                        type:'unprocessed'
+                        type:this.type
                     }
                 }
             }
         },
         watch:{
+            '$route'(to,from){
+                if (this.viewModeChat==="process") this.type='unprocessed';
+                if (this.viewModeChat==="visitors") this.type='self';
+                this.resetSearch();
+                this.getItemList();
+        },
             search:'debounceSearch',
         },
         created(){
+            if (this.viewModeChat==="process") this.type='unprocessed';
+            if (this.viewModeChat==="visitors") this.type='self';
 
         },
         methods:{
             debounceSearch:_.debounce(function()
             {
                 this.resetSearch();
-                this.getVisitorsList();
+                this.getItemList();
             }, 500),
             resetSearch(){
                 this.pageN=1;
                 this.itemListCount= 0;
                 this.itemList=[];
-                this.getVisitorsListStart=true;
+                this.getItemListStart=true;
             },
             loadDate(event){
-                this.getVisitorsList()
+                this.getItemList()
             },
-            getVisitorsList(){
-                if(!this.getVisitorsListStart) return;
+            getItemList(){
+                if(!this.getItemListStart) return;
 
-                this.getVisitorsListStart=false;
+                this.getItemListStart=false;
 
                 if((this.showItemLength < this.itemListCount) || this.itemListCount===0) {
                     this.$http.get('guest-list',this.requestData).then(({data})=>{
-                        this.getVisitorsListStart=true;
+                        this.getItemListStart=true;
                         if (data.data.count) {
                             this.itemList.push(...data.data.list);
                             this.itemListCount = data.data.count;
@@ -105,6 +115,15 @@
                         }
 
                     })
+
+                /*    this.$store.dispatch('visitors/getItems', this.requestData).then(({data})=>{
+                        this.getItemListStart=true;
+                        if (data.data.count) {
+                            this.itemList.push(...data.data.list);
+                            this.itemListCount = data.data.count;
+                            this.pageN += 1;
+                        }
+                    })*/
                 }
 
             },

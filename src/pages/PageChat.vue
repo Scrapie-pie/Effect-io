@@ -1,8 +1,8 @@
 <template lang="pug">
     article.page-chat
         the-last-messages.page-chat__last-messages(v-if="viewModeChat=='operators'")
-        the-last-messages-v.page-chat__last-messages(v-if="viewModeChat=='visitors'")
-        the-last-messages-v.page-chat__last-messages(v-if="viewModeChat=='process'")
+        the-last-messages-v.page-chat__last-messages(v-else)
+
 
         section.page-chat__main
                 the-chat-main
@@ -16,36 +16,8 @@
     import TheLastMessagesV from '@/components/TheLastMessagesV';
     import TheClientInfo from '@/components/TheClientInfo';
     import TheChatMain from '@/components/TheChatMain';
-    import store from '@/store/store'
+
     import { viewModeChat } from '@/mixins/mixins'
-
-
-
-    const routerHooks = (to, from, next)=>{
-
-
-
-
-        if(to.name == "common") return next();
-
-        if(to.name == "teamChat") return next();
-
-
-        let uuid = to.params.id,
-            guest_uuid=to.params.id, // метод read-history требуе prefix guest_
-            site_id = to.params.site_id,
-            params ={ uuid, site_id ,guest_uuid};
-
-        if(!uuid && !site_id) {
-            return next(false)
-        }
-
-        store.dispatch('visitors/getItemOpen', params).then((data)=>{
-            return next()
-        }).catch(()=>{
-            return next(false)
-        })
-    }
 
     export default {
         components: {
@@ -55,8 +27,8 @@
             TheClientInfo,
         },
         mixins:[viewModeChat],
-        beforeRouteEnter:routerHooks,
-        beforeRouteUpdate:routerHooks,
+
+
 
 
     }

@@ -20,7 +20,7 @@
                     .chat-main-header__client-history-actions()
                         the-chat-main-header-history
 
-        ul.chat-main-header__controls
+        ul.chat-main-header__controls(v-if="viewModeChat!='operators'")
             li.chat-main-header__control
                 base-btn(
                     theme="default"

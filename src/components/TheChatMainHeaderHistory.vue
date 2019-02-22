@@ -7,10 +7,29 @@
 </template>
 
 <script>
+    import {httpParams} from '@/mixins/mixins'
     export default {
-        computed:{
-            itemList(){
-                return this.$store.state.visitors.itemOpenHistoryActions
+        mixins:[httpParams],
+        data(){
+            return {
+                itemList:[]
+            }
+        },
+        watch:{
+            '$route':'getItemList'
+        },
+        created(){
+            this.getItemList()
+        },
+        methods:{
+            getItemList(){
+
+                if(!this.httpParams) return
+
+                this.$http.get('read-history', this.httpParams).then(({data})=>{
+                    this.itemList=data.data
+                })
+
             }
         }
     }

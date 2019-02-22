@@ -18,7 +18,7 @@
                             base-people(
                                 avatar-width="md",
                                 :avatar-url="item.from_user_info.photo"
-                                :name="item.from_user_info.name",
+                                :name="item.from_user_info.first_name",
                                 :text="item.body | messageBreakLine",
                                 :time="item.time",
                                 :right="item.from_user_info.id == $store.state.user.profile.employee_id",
@@ -52,7 +52,7 @@
     import TheChatMainHeader from '@/components/TheChatMainHeader'
     import TheChatMainFooter from '@/components/TheChatMainFooter'
 
-    import { viewModeChat } from '@/mixins/mixins'
+    import { viewModeChat,httpParams } from '@/mixins/mixins'
 
     import _ from 'underscore'
     import moment from 'moment'
@@ -62,7 +62,7 @@
             TheChatMainHeader,
             TheChatMainFooter
         },
-        mixins:[viewModeChat],
+        mixins:[viewModeChat,httpParams],
         filters: {
             messageBreakLine: function (value) {
                 return   value.replace(/(\r\n|\n)/g, "<br>")
@@ -73,7 +73,6 @@
                 historyMessageLoadStart:true, //При прокрутке страницы, функция historyMessageLoad выполнялась раньше чем приходил ответ, из за этого лишние индификаторы были
                 messageRun:true, //Если история закончилась, что бы больше не отправлял запросы
                 messageList:[],
-                rooms_id:null,
                 limit:20
             }
         },
@@ -134,6 +133,13 @@
                 this.scrollerPushDown(this.$refs.scrollbar)
             });
 
+            this.$root.$on('messageAdd',(val)=>{
+                this.messageList.unshift(val);
+                setTimeout(()=>{
+                    this.scrollerPushDown(this.$refs.scrollbar)
+                },50)
+            })
+
         },
         methods: {
 
@@ -170,7 +176,7 @@
                     users_ids = []
 
                 if (this.viewModeChat=='visitors' || this.viewModeChat=='process') {
-                    let {guest_uuid,site_id } =  this.$store.getters['visitors/itemOpenIds'];
+                    let {guest_uuid,site_id } =  this.httpParams.params;
                          params.guest_uuid = guest_uuid,
                          params.site_id = site_id;
 
@@ -192,19 +198,20 @@
                     this.messageRun=data.data.count;
                     this.messageList.push(...data.data.messages);
 
-                    this.$store.commit('user/roomIdOpen',data.data.messages[0].room_id)
+                    this.$store.commit('roomIdOpen',data.data.messages[0].room_id)
 
                 })
             }
         },
         sockets: {
             "new-message"(val) {
-                console.log('soket new-message',val);
-                this.messageList.unshift(val);
-                setTimeout(()=>{
-                    this.scrollerPushDown(this.$refs.scrollbar)
-                },50)
+                console.log('sockets new-message',val);
+                console.log(val.room_id, this.room_id);
 
+                if(this.$store.state.user.profile.employee_id !== val.from_user_info.id) {
+                    if (val.room_id === this.$store.state.roomIdOpen) this.$root.$emit('messageAdd',val)
+                    this.$store.commit('operators/messageLastUpdate',val)
+                }
 
             }
         },

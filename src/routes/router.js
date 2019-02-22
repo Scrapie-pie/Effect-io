@@ -62,12 +62,12 @@ const router =  new Router({
         },
         {
             name: 'chatId',
-            path: '/chat/:id/:site_id',
+            path: '/messages/:uuid/:site_id',
             component: PageChat,
         },
         {
             name: 'process',
-            path: '/process/:id/:site_id',
+            path: '/process/:uuid/:site_id',
             component: PageChat,
         },
 
