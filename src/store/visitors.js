@@ -23,8 +23,13 @@ export default {
             state.processCount=val.count;
         },
         self(state, val) {
-
             state.self=val.list;
+            if (val.count) state.selfCount=val.count;
+
+        },
+        selfPush(state,val) {
+            console.log(val);
+            state.self.push(...val.list);
             state.selfCount=val.count;
         },
         itemOpen(state, val) {
@@ -51,13 +56,13 @@ export default {
             })
         },
         getProcess({ commit, dispatch },params) {
-            params = _.extend({type: 'unprocessed', limit: 20}, params);
+            params = _.extend({type: 'unprocessed', limit: 1}, params);
             this._vm.$http.get('guest-list',{params}).then(({data})=>{
                 commit('process',data.data)
             })
         },
         getSelf({ commit, dispatch },params) {
-            params = _.extend({type: 'self', limit: 20}, params);
+            params = _.extend({type: 'self', limit: 1}, params);
             this._vm.$http.get('guest-list',{params}).then(({data})=>{
                 commit('self',data.data)
             })

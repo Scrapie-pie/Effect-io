@@ -194,7 +194,7 @@
                 return this.$http.get('message-history', {params}).then(({data})=>{
                     this.historyMessageLoadStart=true;
                     if (!data.data.count) return
-                    console.log(data.data.messages);
+
                     this.messageRun=data.data.count;
                     this.messageList.push(...data.data.messages);
 

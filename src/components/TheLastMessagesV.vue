@@ -5,7 +5,7 @@
         scroll-bar.last-messages__scrollbar(@ps-y-reach-end="loadDate")
             ul.last-messages__list
                 li.last-messages__item(
-                    v-for="(item, index) in itemList",
+                    v-for="(item, index) in itemListSearch",
                     :key="item.uuid+item.site_id",
 
                 )
@@ -31,16 +31,15 @@
 
 <script>
     import _ from 'underscore'
-    import { viewModeChat } from '@/mixins/mixins'
+    import { viewModeChat,httpParams } from '@/mixins/mixins'
     export default {
-        mixins:[viewModeChat],
+        mixins:[viewModeChat,httpParams ],
 
         data() {
             return {
                 warning:true,
 
                 getItemListStart:true,
-
                 search:'',
                 limit:20,
                 pageN:1,
@@ -51,6 +50,42 @@
             }
         },
         computed:{
+            itemListSearch(){
+                let list = this.operatorListSortActiveFirst;
+                if (!this.search) return list
+                list = list.filter(item => {
+                    var regexp = new RegExp(this.search, 'ig');
+
+                    if(_.isEmpty(item.name)) return 0;  //Todo у оператора fullName
+                    if (item.name.match(regexp) == null) return 0
+                    return true
+                })
+                // console.log(list);
+                return list
+            },
+            operatorListSortUnread(){
+                return _.sortBy(this.itemListStore,(item)=>{
+                    return -item.unread.length
+                });
+            },
+            operatorListSortActiveFirst() {
+                let itemActive,
+                    list = this.operatorListSortUnread.filter((item,index)=>{
+                        console.log(this.httpParams.params.uuid);
+                        if(item.uuid === this.httpParams.params.uuid){ //Todo у оператора id
+                            itemActive = item;
+                            return false
+                        }
+                        else return true
+                    });
+                if (list.length)  list.unshift(itemActive);
+
+                return list
+            },
+
+            itemListStore(){
+                return this.$store.state.visitors.self
+            },
             showItemLength(){
                 return this.itemList.length
             },
@@ -106,12 +141,16 @@
                 this.getItemListStart=false;
 
                 if((this.showItemLength < this.itemListCount) || this.itemListCount===0) {
+                    console.log('getItemList');
                     this.$http.get('guest-list',this.requestData).then(({data})=>{
                         this.getItemListStart=true;
                         if (data.data.count) {
                             this.itemList.push(...data.data.list);
                             this.itemListCount = data.data.count;
+                            this.getItemListUnique();
                             this.pageN += 1;
+
+
                         }
 
                     })
@@ -127,6 +166,23 @@
                 }
 
             },
+            getItemListUnique(){
+                let itemListStore = this.itemListStore;
+
+                this.itemList.filter((item)=>{
+                    let findIndex = this.itemListStore.findIndex((itemStore)=>itemStore.uuid === item.uuid);
+
+                    if (findIndex !== -1) itemListStore[findIndex] == item; // обновляем в базе элемент если такой пришел из поиска
+                    else {
+                        itemListStore.push(item) // если в базе нет, добавляем в базу
+                    }
+                    this.$store.commit('visitors/self',{list:itemListStore})
+
+
+                })
+
+
+            }
 
         }
     }
@@ -162,6 +218,8 @@
             padding-left:calc-em(10);
             padding-top:calc-em(10);
             padding-bottom:calc-em(10);
+
+
 
             &:hover,
             &_active{

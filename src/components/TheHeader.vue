@@ -28,7 +28,7 @@
         },
         computed:{
             routerNameProcessVisitorsFirst(){
-                console.log(this.$store.state.visitors.process);
+
 
 
                     let visitorFirst = this.$store.state.visitors.process,
@@ -39,7 +39,7 @@
                     params.uuid=visitorFirst.uuid;
                     params.site_id=visitorFirst.site_id
                 }
-                console.log( {name:'process',params});
+
 
                 return {name:'process',params}
             },

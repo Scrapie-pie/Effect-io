@@ -1,11 +1,17 @@
 <template lang="pug">
     form.last-messages
         .last-messages__search
+            filterSearch(
+                :item-list="operatorListSortActiveFirst"
+                fieldName="fullName" ,
+                @result="(val)=>filterSearchResult=val",
+                @text="(val)=>search=val"
+            )
             base-field(type="search" name="search" v-model="search" theme="soft")
         scroll-bar.last-messages__scrollbar
             ul.last-messages__list
                 li.last-messages__item(
-                    v-for="(item, index) in operatorListSearch",
+                    v-for="(item, index) in filterSearchResult",
                     :key="item.id",
                     :class="classObject(item)"
 
@@ -27,8 +33,10 @@
 
 <script>
     import _ from 'underscore'
+    import filterSearch from '@/components/FilterSearch'
     import { viewModeChat,httpParams } from '@/mixins/mixins'
     export default {
+        components:{filterSearch},
         mixins:[viewModeChat,httpParams],
         filters: {
             lastMessage: function (value,item) {
@@ -40,7 +48,7 @@
         data() {
             return {
                 search:'',
-
+                filterSearchResult:[],
             }
         },
         computed:{
@@ -60,7 +68,7 @@
             },
             operatorListSortUnread(){
                 return _.sortBy(this.operatorList,(item)=>{
-                    return !item.unread.length
+                    return -item.unread.length
                 });
             },
             operatorListSortActiveFirst() {

@@ -89,7 +89,6 @@
             },
             profile(val){
                 if(val){
-                    console.log(val.status);
                     this.status = val.online;
                 }
             }
