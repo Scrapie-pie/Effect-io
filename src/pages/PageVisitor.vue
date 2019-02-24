@@ -69,15 +69,13 @@
                 channelList: [
                     {id:null,name:"Все каналы"},
                     {id:7,name:"Effect.com"},
-                    {id:1,name:"Веб-сайт (Виджет 1.0)"},
                     {id:2,name:"ВКонтакте"},
                     {id:3,name:"Facebook"},
                     {id:5,name:"Telegram"},
                     {id:6,name:"Viber"},
-                    {id:4,name:"Slack"},
-                    {id:8,name:"Slack (IO)"},
-                    {id:9,name:"Zendesk"},
-                    {id:1,name:"Salesforce"}],
+                    {id:13,name:"WhatsApp"},
+                    {id:4,name:"Slack"}
+                ],
             }
         },
         computed:{
