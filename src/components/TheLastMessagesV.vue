@@ -1,23 +1,25 @@
 <template lang="pug">
     form.last-messages
         .last-messages__search
-            base-field(type="search" name="search" v-model="search" theme="soft")
+            filterSearch(
+                :item-list="itemListSortUnread",
+                @result="(val)=>filterSearchResult=val",
+                @text="(val)=>search=val"
+            )
         scroll-bar.last-messages__scrollbar(@ps-y-reach-end="loadDate")
             ul.last-messages__list
                 li.last-messages__item(
-                    v-for="(item, index) in itemListSearch",
+                    v-for="(item, index) in filterSearchResult",
                     :key="item.uuid+item.site_id",
-
                 )
-
                     router-link.last-messages__btn(
-                        :to="{name:'chatId',params: { uuid: item.uuid,site_id:item.site_id}}"
-                         v-text="`${item.fullName}:${item.last_message}`"
+                        :to="item.link"
+                        v-text="`${item.fullName}:${item.last_message}`"
                         active-class="last-messages__btn_active"
-                        )
+                    )
 
                     base-people.last-messages__people(
-                        :avatar-url="item.photo"
+                        :avatar-url="item.photo",
                         :name="item.name",
                         :text="item.last_message",
                         :bg-text-no-fill="true",
@@ -31,14 +33,15 @@
 
 <script>
     import _ from 'underscore'
+    import filterSearch from '@/components/FilterSearch'
     import { viewModeChat,httpParams } from '@/mixins/mixins'
     export default {
         mixins:[viewModeChat,httpParams ],
-
+        components:{filterSearch},
         data() {
             return {
                 warning:true,
-
+                filterSearchResult:[],
                 getItemListStart:true,
                 search:'',
                 limit:20,
@@ -46,32 +49,18 @@
                 type:'',
                 itemListCount: 0,
                 itemList:[],
-
             }
         },
         computed:{
-            itemListSearch(){
-                let list = this.operatorListSortActiveFirst;
-                if (!this.search) return list
-                list = list.filter(item => {
-                    var regexp = new RegExp(this.search, 'ig');
-
-                    if(_.isEmpty(item.name)) return 0;  //Todo у оператора fullName
-                    if (item.name.match(regexp) == null) return 0
-                    return true
-                })
-                // console.log(list);
-                return list
-            },
-            operatorListSortUnread(){
+            itemListSortUnread(){
                 return _.sortBy(this.itemListStore,(item)=>{
                     return -item.unread.length
                 });
             },
-            operatorListSortActiveFirst() {
+            itemListSortActiveFirst() {
                 let itemActive,
-                    list = this.operatorListSortUnread.filter((item,index)=>{
-                        console.log(this.httpParams.params.uuid);
+                    list = this.itemListSortUnread.filter((item,index)=>{
+
                         if(item.uuid === this.httpParams.params.uuid){ //Todo у оператора id
                             itemActive = item;
                             return false
@@ -84,7 +73,27 @@
             },
 
             itemListStore(){
-                return this.$store.state.visitors.self
+                let itemList = [];
+
+                if (this.viewModeChat==="process")   {
+                    itemList=this.$store.state.visitors.process.map(item=>{
+                        let {uuid,site_id} = item;
+                        item.link = {name:'process',params: { uuid,site_id}}
+                        return item
+                    });
+
+                }
+
+                if (this.viewModeChat==="visitors")  {
+                    itemList=this.$store.state.visitors.self.map(item=>{
+                        let {uuid,site_id} = item;
+                        item.link = {name:'chatId',params: { uuid,site_id}}
+                        return item
+                    });
+                }
+
+                return itemList
+
             },
             showItemLength(){
                 return this.itemList.length
@@ -118,7 +127,6 @@
         created(){
             if (this.viewModeChat==="process") this.type='unprocessed';
             if (this.viewModeChat==="visitors") this.type='self';
-
         },
         methods:{
             debounceSearch:_.debounce(function()
@@ -145,45 +153,46 @@
                     this.$http.get('guest-list',this.requestData).then(({data})=>{
                         this.getItemListStart=true;
                         if (data.data.count) {
+
                             this.itemList.push(...data.data.list);
                             this.itemListCount = data.data.count;
                             this.getItemListUnique();
                             this.pageN += 1;
-
-
                         }
-
                     })
-
-                /*    this.$store.dispatch('visitors/getItems', this.requestData).then(({data})=>{
-                        this.getItemListStart=true;
-                        if (data.data.count) {
-                            this.itemList.push(...data.data.list);
-                            this.itemListCount = data.data.count;
-                            this.pageN += 1;
-                        }
-                    })*/
                 }
-
             },
             getItemListUnique(){
                 let itemListStore = this.itemListStore;
-
+                let itemListNew= []
+                let itemListOld= []
                 this.itemList.filter((item)=>{
-                    let findIndex = this.itemListStore.findIndex((itemStore)=>itemStore.uuid === item.uuid);
-
-                    if (findIndex !== -1) itemListStore[findIndex] == item; // обновляем в базе элемент если такой пришел из поиска
+                    let findIndex = this.itemListStore.findIndex((itemStore)=>itemStore.uuid+itemStore.site_id === item.uuid+item.site_id);
+                    if (findIndex !== -1) {
+                        itemListStore[findIndex] == item;
+                        let {uuid,site_id} =  item
+                        itemListOld.push({uuid,site_id})
+                    } // обновляем в базе элемент если такой пришел из поиска
                     else {
                         itemListStore.push(item) // если в базе нет, добавляем в базу
+                        let {uuid,site_id} =  item
+                        itemListNew.push({uuid,site_id}) // если в базе нет, добавляем в базу
                     }
-                    this.$store.commit('visitors/self',{list:itemListStore})
+
 
 
                 })
+              /*  console.log('itemListNew');
+                console.table(itemListNew);
+                console.log('itemListOld');
+                console.table(itemListOld);*/
+                console.log('***********',itemListStore.length);
 
+                console.log(this.viewModeChat);
+                if (this.viewModeChat==="process") this.$store.commit('visitors/process',{list:itemListStore})
+                if (this.viewModeChat==="visitors")    this.$store.commit('visitors/self',{list:itemListStore})
 
             }
-
         }
     }
 </script>
@@ -220,11 +229,6 @@
             padding-bottom:calc-em(10);
 
 
-
-            &:hover,
-            &_active{
-                //background-color:$color_bg-hover;
-            }
 
             &_warning {
                 &::before {

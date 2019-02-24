@@ -11,6 +11,10 @@ Vue.prototype.$http = axios;
 
 import VuePerfectScrollbar from 'vue-perfect-scrollbar'
 
+
+import _ from 'underscore';
+Object.defineProperty(Vue.prototype, '$_', { value: _ })
+
 import VueSocketio from 'vue-socket.io-extended';
 import io from 'socket.io-client';
 

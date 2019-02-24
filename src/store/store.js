@@ -20,6 +20,7 @@ export default new Vuex.Store({
 
     },
     mutations: {
+
         loading(state, val) {
             state.loading = val
         },
@@ -30,7 +31,21 @@ export default new Vuex.Store({
 
     },
     actions: {
-
+        'SOCKET_NEW-MESSAGE'({ commit, dispatch }, message){
+            console.log(message);
+        },
+        'socket_new-message'({ commit, dispatch }, message){
+            console.log(message);
+        },
+        'socket_new-Message'({ commit, dispatch }, message){
+            console.log(message);
+        },
+        'socket_newMessage'({ commit, dispatch }, message){
+            console.log(message);
+        },
+        socket_newMessage({ commit, dispatch }, message){
+            console.log(message);
+        },
     },
     getters: {
         channelName: state => number => {

@@ -167,6 +167,23 @@
             },
         },
         sockets: {
+
+            "new-message"(val) { //переместил сюда, что бы список на странице team обновлялся
+                console.log('sockets new-message',val);
+
+                if(this.$store.state.user.profile.employee_id === val.from_user_info.id) return; //Принимаем только чужие сообщения
+
+                if (val.room_id === this.$store.state.roomIdOpen) this.$root.$emit('messageAdd',val) // Нужно, что бы чужое сообщение оказалось каждое в своем чате
+
+
+                if(val.from_user_info.uuid) { //Todo у оператора
+                    this.$store.commit('visitors/selfMessageLastUpdate',val)
+                } else {
+                    this.$store.commit('operators/messageLastUpdate',val)
+                }
+
+            },
+
             connect() {
                 console.log('socket connected')
 
@@ -176,7 +193,7 @@
 
             },
             "guest-update"(val) {
-                console.log('guest-update',val);
+
 
 
             },

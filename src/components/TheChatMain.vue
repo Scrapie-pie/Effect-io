@@ -41,7 +41,7 @@
                                 :right="item.right",
                                 :img="item.img"
                             )
-                    the-chat-system-messages
+                    the-chat-system-messages(:itemList="systemMessages")
         footer.chat-main__footer
             the-chat-main-footer
 
@@ -73,7 +73,8 @@
                 historyMessageLoadStart:true, //При прокрутке страницы, функция historyMessageLoad выполнялась раньше чем приходил ответ, из за этого лишние индификаторы были
                 messageRun:true, //Если история закончилась, что бы больше не отправлял запросы
                 messageList:[],
-                limit:20
+                limit:20,
+                systemMessages:[]
             }
         },
         watch:{
@@ -129,6 +130,9 @@
             },
         },
         created() {
+
+            this.$root.$on('chatSystemMessages',(val)=>this.systemMessages.push(val))
+
             this.historyMessageLoad().then(()=>{
                 this.scrollerPushDown(this.$refs.scrollbar)
             });
@@ -203,18 +207,7 @@
                 })
             }
         },
-        sockets: {
-            "new-message"(val) {
-                console.log('sockets new-message',val);
-                console.log(val.room_id, this.room_id);
 
-                if(this.$store.state.user.profile.employee_id !== val.from_user_info.id) {
-                    if (val.room_id === this.$store.state.roomIdOpen) this.$root.$emit('messageAdd',val)
-                    this.$store.commit('operators/messageLastUpdate',val)
-                }
-
-            }
-        },
 
 
 

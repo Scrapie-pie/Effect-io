@@ -1,5 +1,11 @@
 <template lang="pug">
-    ul.chat-system-messages
+    ul.chat-system-messages(v-if="itemList.length")
+        li.chat-system-messages__item(v-for="(item, index) in itemList" :key="index")
+            template(v-if="message.type='recipient'")
+                p {{message.name}} передает Вам диалог
+                p(v-if="message.text" v-text="message.text")
+
+    //ul.chat-system-messages(v-if="0")
         li.chat-system-messages__item Диалог успешно отправлен
         li.chat-system-messages__item
             p Александр приглашает Вас присоединиться к диалогу
@@ -47,11 +53,15 @@
 
 <script>
 export default {
+    props:{
+        itemList:[]
+    },
     data() {
         return {
         
         }
     },
+
 }
 </script>
 

@@ -120,7 +120,7 @@
                     site_id:visitor.site_id
                 })
                     .then(({ data }) => {
-                        this.$router.push({name:'chatId',params: { id: visitor.uuid,site_id:visitor.site_id}});
+                        this.$router.push({name:'chatId',params: { uuid: visitor.uuid,site_id:visitor.site_id}});
                     })
             },
             debounceSearch:_.debounce(function()

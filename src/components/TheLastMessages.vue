@@ -2,19 +2,17 @@
     form.last-messages
         .last-messages__search
             filterSearch(
-                :item-list="operatorListSortActiveFirst"
+                :item-list="itemListSortActiveFirst"
                 fieldName="fullName" ,
                 @result="(val)=>filterSearchResult=val",
                 @text="(val)=>search=val"
             )
-            base-field(type="search" name="search" v-model="search" theme="soft")
         scroll-bar.last-messages__scrollbar
             ul.last-messages__list
                 li.last-messages__item(
                     v-for="(item, index) in filterSearchResult",
                     :key="item.id",
                     :class="classObject(item)"
-
                 )
                     router-link.last-messages__btn(
                         :to="{name:'teamChat',params:{id:item.id}}"
@@ -52,29 +50,17 @@
             }
         },
         computed:{
-
-            operatorList(){
+            itemList(){
                 return this.$store.getters['operators/all']
             },
-            operatorListSearch(){
-                let list = this.operatorListSortActiveFirst;
-                list = list.filter(item => {
-                    var regexp = new RegExp(this.search, 'ig')
-                    if (item.fullName.match(regexp) == null) return 0
-                    return true
-                })
-                // console.log(list);
-                return list
-            },
-            operatorListSortUnread(){
-                return _.sortBy(this.operatorList,(item)=>{
+            itemListSortUnread(){
+                return _.sortBy(this.itemList,(item)=>{
                     return -item.unread.length
                 });
             },
-            operatorListSortActiveFirst() {
+            itemListSortActiveFirst() {
                 let itemActive,
-                list = this.operatorListSortUnread.filter((item,index)=>{
-                    console.log(this.httpParams.params.id);
+                list = this.itemListSortUnread.filter((item,index)=>{
                     if(item.id === this.httpParams.params.id){
                         itemActive = item;
                         return false
@@ -82,7 +68,6 @@
                     else return true
                 });
                 if (list.length)  list.unshift(itemActive);
-
                 return list
             }
         },

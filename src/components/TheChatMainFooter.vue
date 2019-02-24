@@ -3,12 +3,7 @@
 
             ///the-chat-system-messages
 
-            fieldset(v-if="showProcess" key="showProcess")
-                ul.chat-main-footer__process
-                    li.chat-main-footer__process-item
-                        base-btn(color="success-dark" size="lg" @click="invite") Присоединиться
-                    li.chat-main-footer__process-item
-                        base-btn(color="info-dark" size="lg") Отклонить
+            TheProcessActions(v-if="showProcess")
             fieldset(v-else)
                 .chat-main-footer__box-control
                     box-controls(:show="showMention", @boxControlClose="showMention=false")
@@ -72,8 +67,10 @@
     import TheOffer from '@/components/TheOffer'
     import TheFilesBoard from '@/components/TheFilesBoard'
     import ThePhrasesReady from '@/components/ThePhrasesReady'
+    import TheProcessActions from '@/components/TheProcessActions'
 
     import autosize from 'autosize'
+    import _ from 'underscore'
 
     import { viewModeChat,httpParams } from '@/mixins/mixins'
 
@@ -82,7 +79,8 @@
             SelectOperators,
             TheOffer,
             TheFilesBoard,
-            ThePhrasesReady
+            ThePhrasesReady,
+            TheProcessActions
         },
         mixins:[viewModeChat,httpParams],
         watch:{
@@ -117,26 +115,17 @@
             this.checkIsProcessPage()
 
         },
-        computed:{
 
-            processView(){
-                return this.showProcess
-            }
-        },
         methods: {
-            invite(){
-                this.$http.post('chat-room-user-accept-invitation', {
-                    room_id:105
 
-                });
-            },
             messageRead(){
 
                 this.$http.put('message-operator-guest-mark-as-read', {
                     room_id:this.$store.state.user.roomIdOpen
                 });
 
-                this.$store.commit('operators/messageRead',this.httpParams.params.id)
+                if(this.viewModeChat ==='operators') this.$store.commit('operators/messageRead',this.httpParams.params.id) //Todo у оператора
+                if(this.viewModeChat ==='visitors') this.$store.commit('visitors/messageRead',this.httpParams.params.uuid)
             },
             onEnter: function (e) {
 
@@ -148,16 +137,14 @@
             },
             send(){
                 let data = {},
-                    guest_uuid,
-                    site_id,
                     to_id,
 
                     body = this.message;
 
                 if(this.viewModeChat=="visitors") {
 
-                    guest_uuid = this.$store.state.visitors.itemOpen.uuid,
-                    site_id = +this.$store.state.visitors.itemOpen.site_id,
+                 let {guest_uuid,site_id} = this.httpParams.params;
+
 
                     data = {
                         guest_uuid,
@@ -167,7 +154,7 @@
 
                 } else {
 
-                    to_id = + this.$route.params.id;
+                    to_id = + this.httpParams.params.id;
                     data = {
                         to_id,
                         body
@@ -182,29 +169,37 @@
 
 
                 let {first_name,photo,employee_id} = this.$store.state.user.profile,
-                    time = (new Date).getTime() / 1000;
-
-                let message = {
-                    time,
-                    body,
-                    from_user_info:{
-                        id:employee_id,
-                        first_name,
-                        photo
-                    }
+                    time = (new Date).getTime() / 1000,
+                    message = {
+                        time,
+                        body,
+                        from_user_info:{
+                            id:employee_id,
+                            first_name,
+                            photo
+                        }
                 }
 
                 this.$root.$emit('messageAdd',message);
 
                 message.from_user_info.id = this.$store.state.user.profile.employee_id;
-                message.selfId = this.httpParams.params.id;
 
-                this.$store.commit('operators/messageLastUpdate',message)
+                if(this.viewModeChat ==='operators') {
+
+                    message.selfId = this.httpParams.params.id;
+                    this.$store.commit('operators/messageLastUpdate',message)
+                } //Todo у оператора}
+
+                if(this.viewModeChat ==='visitors') {
+
+                    message.selfUuid = this.httpParams.params.uuid;
+                    this.$store.commit('visitors/selfMessageLastUpdate',message)
+                }
 
                 this.message='';
             },
             checkIsProcessPage() {
-                if(this.$route.name === 'process') {
+                if(this.viewModeChat ==='process') {
                     this.showProcess = true;
                 }
                 else this.showProcess = false
@@ -226,9 +221,7 @@
         border-top:1px solid $color_border;
         padding-top:calc-em(20);
 
-        &__process {
-            @extend %row-flex;
-        }
+
 
         &__controls{
 

@@ -24,7 +24,6 @@ export default {
     data() {
         return {
             search:'',
-
         }
     },
     computed:{
@@ -49,7 +48,6 @@ export default {
         },
         itemListResult:{
             handler(val){
-                console.log( 'this.$emit(result',val);
                 this.$emit('result',val)
             },
             immediate: true

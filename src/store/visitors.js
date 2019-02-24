@@ -17,10 +17,8 @@ export default {
             state.allCount=val.count;
         },
         process(state, val) {
-            if(!val.length) return
-
             state.process=val.list;
-            state.processCount=val.count;
+            if (val.count) state.selfCount=val.count;
         },
         self(state, val) {
             state.self=val.list;
@@ -31,6 +29,29 @@ export default {
             console.log(val);
             state.self.push(...val.list);
             state.selfCount=val.count;
+        },
+        selfMessageLastUpdate(state, val) {
+
+            let findIndex = state.self.findIndex((item)=>{
+                if(val.selfUuid) return item.uuid === val.selfUuid; //selfId значит мое сообщение
+                else return item.uuid === val.from_user_info.uuid
+            })
+            console.log(findIndex);
+            if(findIndex !== -1) {
+                state.self[findIndex].last_message = val.body;
+                state.self[findIndex].last_message_author = val.from_user_info.first_name;
+
+                if(!val.selfUuid) state.self[findIndex].unread.push(val.id);
+
+            }
+        },
+        messageRead(state,uuid) {
+            let findIndex = state.self.findIndex((item)=>{
+                return item.uuid === uuid
+            });
+            if(findIndex !== -1) {
+                state.self[findIndex].unread=[];
+            }
         },
         itemOpen(state, val) {
             state.itemOpen=val;
