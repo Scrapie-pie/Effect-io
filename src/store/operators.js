@@ -13,13 +13,8 @@ export default {
         all(state, val) {
             state.all=val;
         },
-        messageRead(state,id) {
-            let findIndex = state.all.findIndex((item)=>{
-                 return item.id === id
-            });
-            if(findIndex !== -1) {
-                state.all[findIndex].unread=[];
-            }
+        messageRead(state,userIndex) {
+            state.all[userIndex].unread=[];
         },
         messageLastUpdate(state, val) {
 

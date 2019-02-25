@@ -178,8 +178,10 @@
 
                 if(val.from_user_info.uuid) { //Todo у оператора
                     this.$store.commit('visitors/selfMessageLastUpdate',val)
+                    this.$store.commit('user/unreadUpdate',['guest',1])
                 } else {
                     this.$store.commit('operators/messageLastUpdate',val)
+                    this.$store.commit('user/unreadUpdate',['private',1])
                 }
 
             },
@@ -201,6 +203,9 @@
                 console.log('update-branches',val);
 
 
+            },
+            "unprocessed"(val){
+                console.log('unprocessed',val)
             },
             "update-employees"(val) {
                 console.log('update-employees user/profile update',val[0])

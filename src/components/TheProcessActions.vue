@@ -19,7 +19,7 @@
 export default {
 
     mixins:[httpParams],
-  /*  watch:{
+  /*  watch:{ //Todo какой то косяк если раскоментирую
         systemMessage(val){
             console.log(val);
             //if (val) this.$root.$emit('chatSystemMessages',this.systemMessages)

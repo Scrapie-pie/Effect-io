@@ -45,13 +45,8 @@ export default {
 
             }
         },
-        messageRead(state,uuid) {
-            let findIndex = state.self.findIndex((item)=>{
-                return item.uuid === uuid
-            });
-            if(findIndex !== -1) {
-                state.self[findIndex].unread=[];
-            }
+        messageRead(state,userIndex) {
+            state.self[userIndex].unread=[];
         },
         itemOpen(state, val) {
             state.itemOpen=val;

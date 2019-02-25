@@ -31,6 +31,34 @@ export default new Vuex.Store({
 
     },
     actions: {
+        setMessageRead({state, commit, dispatch },{userId,type}) {
+            let itemList = [],
+                unreadType, // private,guest
+                idOrUuid; //Todo гениальное решение нужно при получения посетителей добавить item.id = uuid
+            if(type==='operators') {
+                itemList = state.operators.all;
+                unreadType = 'private';
+                idOrUuid = 'id'
+            }
+            if(type==='visitors') {
+                itemList = state.visitors.self;
+                unreadType = 'guest'
+                idOrUuid = 'uuid'
+            }
+            let findIndex = itemList.findIndex((item)=>{
+                return item[idOrUuid] === userId
+            });
+            if(findIndex !== -1) {
+                let unread = itemList[findIndex].unread;
+                console.log('setMessageRead',type,findIndex);
+                commit(type+'/messageRead',findIndex);
+                commit('user/unreadUpdate',[unreadType,-unread.length],{root:true})
+            }
+            console.log(userId,type)
+
+
+
+        },
         'SOCKET_NEW-MESSAGE'({ commit, dispatch }, message){
             console.log(message);
         },

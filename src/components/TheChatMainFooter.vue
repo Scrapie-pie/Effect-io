@@ -121,19 +121,34 @@
             messageRead(){
 
                 this.$http.put('message-operator-guest-mark-as-read', {
-                    room_id:this.$store.state.user.roomIdOpen
+                    room_id:this.$store.state.roomIdOpen
                 });
 
-                if(this.viewModeChat ==='operators') this.$store.commit('operators/messageRead',this.httpParams.params.id) //Todo у оператора
-                if(this.viewModeChat ==='visitors') this.$store.commit('visitors/messageRead',this.httpParams.params.uuid)
+
+                if(this.viewModeChat ==='operators') {
+                    this.$store.dispatch('setMessageRead', {
+                            userId:this.httpParams.params.id,
+                            type:this.viewModeChat
+                        }
+                    );
+                } //Todo у оператора
+                if(this.viewModeChat ==='visitors'){
+                    this.$store.dispatch('setMessageRead', {
+                            userId:this.httpParams.params.uuid,
+                            type:this.viewModeChat
+                        }
+                    );
+
+                }
             },
             onEnter: function (e) {
 
-                e.stopPropagation()
-                e.preventDefault()
-                e.returnValue = false
-                this.input = e.target.value
-                this.send()
+                e.stopPropagation();
+                e.preventDefault();
+                e.returnValue = false;
+                this.input = e.target.value;
+                this.send();
+                this.messageRead()
             },
             send(){
                 let data = {},
