@@ -1,16 +1,18 @@
 <template lang="pug">
     form.last-messages
-        .last-messages__search
+        .last-messages__search()
             filterSearch(
                 :item-list="itemListSortUnread",
                 @result="(val)=>filterSearchResult=val",
                 @text="(val)=>search=val"
+
             )
         scroll-bar.last-messages__scrollbar(@ps-y-reach-end="loadDate")
             ul.last-messages__list
                 li.last-messages__item(
                     v-for="(item, index) in filterSearchResult",
                     :key="item.uuid+item.site_id",
+
                 )
                     router-link.last-messages__btn(
                         :to="item.link"
@@ -79,6 +81,7 @@
                     itemList=this.$store.state.visitors.process.map(item=>{
                         let {uuid,site_id} = item;
                         item.link = {name:'process',params: { uuid,site_id}}
+
                         return item
                     });
 
@@ -116,6 +119,15 @@
             }
         },
         watch:{
+            filterSearchResult(val){
+                if (val.length && (this.$route.name=="processAll" || this.$route.name=="messageAll")) {
+                    if (val[0].link)  {
+                        this.$router.push(val[0].link)
+                    }
+
+                }
+
+            },
             '$route'(to,from){
                 if (this.viewModeChat==="process") this.type='unprocessed';
                 if (this.viewModeChat==="visitors") this.type='self';
@@ -129,6 +141,9 @@
             if (this.viewModeChat==="visitors") this.type='self';
         },
         methods:{
+            openFirst(event,index){
+                console.log(event,index);
+            },
             debounceSearch:_.debounce(function()
             {
                 this.resetSearch();

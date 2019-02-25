@@ -27,50 +27,35 @@
             }
         },
         computed:{
-            routerNameProcessVisitorsFirst(){
-
-
-
-                    let visitorFirst = this.$store.state.visitors.process,
-                        params = {uuid: 0,site_id:0}
-
-                if (visitorFirst.length)  {
-                    visitorFirst = visitorFirst[0],
-                    params.uuid=visitorFirst.uuid;
-                    params.site_id=visitorFirst.site_id
-                }
-
-
-                return {name:'process',params}
+            linkProcess(){
+                if(this.unreadProcess) return {name:'processAll'}
+                else return {name:'process-no-messages'}
             },
-            routerNameChatVisitorsFirst(){
-                let visitorFirst = this.$store.state.visitors.self[0],
-                params = {uuid: 0,site_id:0}
-                if (visitorFirst)  {
-                    params.uuid=visitorFirst.uuid;
-                    params.site_id=visitorFirst.site_id
-                }
-                return {name:'chatId',params}
+            linkMessage(){
+                if(this.unreadGuest) return {name:'messageAll'}
+                else return {name:'visitors-no-messages'}
             },
             canalList(){
                 return [
-                    {text: 'Не обработано', link: this.routerNameProcessVisitorsFirst,unread:this.unreadGuest},
-                    {text: 'Мои диалоги', link: this.routerNameChatVisitorsFirst,unread:this.unreadGuest,exact:true},
+                    {text: 'Не обработано', link: this.linkProcess,unread:this.unreadProcess},
+                    {text: 'Мои диалоги', link: this.linkMessage,unread:this.unreadGuest,exact:true},
                     {text: 'Команда', link: {name: 'team'},unread:this.unreadPrivate},
                     {text: 'Посетители', link: {name: 'visitors'}},
                     {text: 'Общий чат ', link: {name: 'common'},unread:this.unreadCommon},
                 ]
             },
             unread(){
-                if (this.$store.state.user.profile.unread) return this.$store.state.user.profile.unread
-                else return {}
+                return this.$store.state.user.profile.unread || {}
 
             },
             unreadCommon(){
                 return this.unread.common
             },
             unreadGuest(){
-                return this.unread.guest
+                return this.unread.guest || 1
+            },
+            unreadProcess(){
+                return this.unread.process || 1
             },
             unreadPrivate(){
                 return this.unread.private

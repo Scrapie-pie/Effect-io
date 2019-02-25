@@ -1,7 +1,7 @@
 <template lang="pug">
     section.no-found
 
-        .no-found__content(v-if="name=='team'")
+        .no-found__content(v-if="getName=='team'")
             base-icon.no-found__icon.no-found__icon_team(name="no-found-team")
             p.no-found__text.
                 Вы – единственный сотрудник. Пригласите коллег, чтобы они так же смогли обрабатывать заявки от клиентов. #[br]
@@ -9,19 +9,19 @@
             p: slot(name="team-content")
 
 
-        .no-found__content(v-if="name=='visitors'")
+        .no-found__content(v-if="getName=='visitors'")
             base-icon.no-found__icon(name="no-found-visitors")
             p.no-found__text.
                 Здесь будут отображаться посетители из всех каналов (сайт, социальные сети, мессенджеры).#[br]
                 Вы сможете самостоятельно начать диалог с любым из них.
 
-        .no-found__content(v-if="name=='chat'")
+        .no-found__content(v-if="getName=='visitors-no-messages'")
             base-icon.no-found__icon(name="no-found-messages")
             p.no-found__text.
                 Здесь будут отображаться все диалоги, которые Вы ведете с клиентами из различных каналов (сайт, социальные сети, мессенджеры).
 
 
-        .no-found__content(v-if="name=='process'")
+        .no-found__content(v-if="getName=='process-no-messages'")
             base-icon.no-found__icon(name="no-found-messages")
             p.no-found__text.
                 Здесь будут отображаться сообщения, которые посетителя напишут Вам из разных каналов (сайт, социальные сети, мессенджеры). #[br]
@@ -35,6 +35,13 @@
     export default {
         props:{
             name:''
+        },
+        computed:{
+            getName(){
+                if(this.$route.name==='process-no-messages') return this.$route.name
+                if(this.$route.name==='visitors-no-messages') return this.$route.name
+                else this.name
+            }
         }
     }
 </script>

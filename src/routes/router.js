@@ -16,7 +16,7 @@ import axios from "@/modules/axios";
 
 let helpers = process.env.NODE_ENV !== 'production' ? [...Ui] : [];
 
-
+import BaseNoFound from '@/components/BaseNoFound'
 
 const router =  new Router({
     mode: 'history',
@@ -55,20 +55,37 @@ const router =  new Router({
             component: PageChat,
 
         },
-        {
-            name: 'chat',
-            path: '/chat',
-            component: PageChat,
-        },
+
         {
             name: 'chatId',
             path: '/messages/:uuid/:site_id',
             component: PageChat,
         },
         {
+            name: 'messageAll',
+            path: '/messages',
+            component: PageChat,
+        },
+        {
+            name: 'visitors-no-messages',
+            path: '/messages-no',
+            component: BaseNoFound,
+        },
+
+        {
             name: 'process',
             path: '/process/:uuid/:site_id',
             component: PageChat,
+        },
+        {
+            name: 'processAll',
+            path: '/process',
+            component: PageChat,
+        },
+        {
+            name: 'process-no-messages',
+            path: '/process-no-messages',
+            component: BaseNoFound,
         },
 
         {

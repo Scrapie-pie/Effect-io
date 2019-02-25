@@ -72,7 +72,17 @@ export default {
         },
         recipient(){
 
-            this.$http.post('guest-transfer-acceptance',this.httpParams.params);
+            this.$http.put('guest-transfer-acceptance',this.httpParams.params).then(()=>{
+                let {uuid,site_id} = this.httpParams.params;
+                this.$router.push({name:'chatId',params: { uuid,site_id}});
+            });
+        },
+        recipientNo(){
+
+            this.$http.put('guest-transfer-acceptance',this.httpParams.params).then(()=>{
+                let {uuid,site_id} = this.httpParams.params;
+                this.$router.push({name:'chatId',params: { uuid,site_id}});
+            });
         },
         unprocessed(){
             this.$http.put('guest-take', this.httpParams.params)
