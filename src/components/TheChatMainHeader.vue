@@ -7,8 +7,8 @@
                 )
                 template(v-for="(item, index) in compMembersList")
                     span.chat-main-header__name
-                        | , {{item}}
-                        button(type="button" v-if="index").chat-main-header__name-tooltip Убрать из диалога
+                        | , {{item.first_name}}
+                        button(type="button", @click="removeFromRoom(item.id)").chat-main-header__name-tooltip Убрать из диалога
 
             .chat-main-header__channel(v-if="viewModeChat=='visitors'") На сайте: site.ru -&nbsp;
                 .chat-main-header__channel-btn-wrap
@@ -49,6 +49,7 @@
 </template>
 
 <script>
+    import lodash_pull from 'lodash/pull'
     import TheChatMainHeaderHistory from '@/components/TheChatMainHeaderHistory'
     import TheChatMainHeaderActions from '@/components/TheChatMainHeaderActions'
     import SelectOperators from '@/components/SelectOperators'
@@ -83,11 +84,29 @@
                 }
 
             },
+            roomActiveUsers(){
+                return this.$store.state.roomActive.users
+            },
             compMembersList(){
-                return this.membersList
+                let[users,id ]= [this.roomActiveUsers,this.$store.state.user.profile.id]
+                let ids = lodash_pull(users,id);
+                console.log(ids,users,id);
+                if(!ids) return [];
+
+                let operators = ids.map(itemId=>{
+                    let {id,first_name} = this.$store.state.operators.all.find((item) => item.id === itemId )
+                    return {id,first_name}
+                })
+                return operators
             }
         },
         methods:{
+            removeFromRoom(user_id){
+                let room_id = this.$store.state.roomActive.id;
+                this.$http.post('chat-room-user-remove',{room_id,user_id}).then(()=>{
+
+                });
+            },
             getActions(e){
                 if (e = 'blockClient' ) this.showConfirmBlockClient=true;
             },
@@ -125,6 +144,11 @@
         },
         beforeDestroy() {
             document.removeEventListener('click', this.hideClientInfo);
+        },
+        sockets: {
+            "room-users"(val) {
+               console.log('sockets room-users',val)
+            }
         },
 
 

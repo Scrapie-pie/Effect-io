@@ -1,7 +1,7 @@
 <template lang="pug">
     form.chat-actions
         transition(name="fade" mode="out-in")
-            fieldset(v-if="!showBlockClient" key="keyHideBlockClient")
+            fieldset(v-if="!showBlockClient && !showExitRoomConfirm" key="keyHideBlockClient")
                 legend.chat-actions__text-only-scr Выберите одно из действий
                 ul.chat-actions__list
                     li.chat-actions__more-item
@@ -11,17 +11,23 @@
                         ) Передать диалог
 
                     li.chat-actions__more-item
-                        base-btn(:icon="{name:'exit',top:true}") Выйти из диалога
+                        base-btn(:icon="{name:'exit',top:true}", @click="exitRoomConfirm") Выйти из диалога
                     li.chat-actions__more-item
                         base-btn(:icon="{name:'bl',top:true}", @click="showBlockClient=true") Блокировать клиента
-            fieldset(v-else key="keyShowBlockClient")
+            fieldset(v-if="showBlockClient" key="keyShowBlockClient")
                 legend.chat-actions__title Вы уверены, что хотите заблокировать данного клиента?
                 ul.chat-actions__buttons
                     li.chat-actions__buttons-item
                         base-btn(@click="blockClient") Заблокировать
                     li.chat-actions__buttons-item
                         base-btn(color="error" @click="showBlockClient=false") Отмена
-
+            fieldset(v-if="showExitRoomConfirm" key="keyShowExitRoomConfirm")
+                legend.chat-actions__title Вы единственный сотрудник на данный момент,#[br] вы точно хотите покинуть диалог?
+                ul.chat-actions__buttons
+                    li.chat-actions__buttons-item
+                        base-btn(@click="exitRoom") Выйти
+                    li.chat-actions__buttons-item
+                        base-btn(color="error" @click="showExitRoomConfirm=false") Отмена
 
 </template>
 
@@ -32,12 +38,25 @@
         data() {
             return {
                 showBlockClient:false,
+                showExitRoomConfirm:false
             }
         },
         created(){
 
         },
         methods:{
+            exitRoom(){
+                this.$http.post('chat-room-user-exit', {room_id:this.$store.state.roomActive.id})
+                    .then(()=> {
+                        this.$root.$emit('globBoxControlClose')
+                        this.$router.push({name:'messageAll'})
+                    })
+            },
+            exitRoomConfirm(){
+                if (this.$store.state.roomActive.users.length <2) this.showExitRoomConfirm=true;
+                else this.exitRoom()
+
+            },
             showTransfer(){
                 this.$root.$emit('showTransfer')
             },

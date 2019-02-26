@@ -3,11 +3,11 @@
         the-last-messages.page-chat__last-messages(v-if="viewModeChat=='operators'")
         the-last-messages-v.page-chat__last-messages(v-else)
 
-
-        section.page-chat__main
-                the-chat-main
-        aside.page-chat__info(v-if="viewModeChat=='visitors'")
-            the-client-info
+        template(v-if="!show")
+            section.page-chat__main
+                    the-chat-main
+            aside.page-chat__info(v-if="viewModeChat=='visitors'")
+                the-client-info
 
 </template>
 
@@ -27,6 +27,12 @@
             TheClientInfo,
         },
         mixins:[viewModeChat],
+        computed:{
+            show(){
+                console.log('show',this.$route.name, (this.$route.name==='processAll' || this.$route.name==='messageAll'))
+                return (this.$route.name==='processAll' || this.$route.name==='messageAll')
+            }
+        }
 
 
 

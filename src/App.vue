@@ -173,7 +173,7 @@
 
                 if(this.$store.state.user.profile.employee_id === val.from_user_info.id) return; //Принимаем только чужие сообщения
 
-                if (val.room_id === this.$store.state.roomIdOpen) this.$root.$emit('messageAdd',val) // Нужно, что бы чужое сообщение оказалось каждое в своем чате
+                if (val.room_id === this.$store.state.roomActive.id) this.$root.$emit('messageAdd',val) // Нужно, что бы чужое сообщение оказалось каждое в своем чате
 
 
                 if(val.from_user_info.uuid) { //Todo у оператора
@@ -208,8 +208,8 @@
                 console.log('unprocessed',val)
             },
             "update-employees"(val) {
-                console.log('update-employees user/profile update',val[0])
-                this.$store.commit('user/profileUpdate',val[0])
+                console.log('update-employees user/profile update')
+                this.$store.commit('user/profileUpdate', val.find(item=>item.id == this.$store.state.user.profile.id))
             }
 
         },

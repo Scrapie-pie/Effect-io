@@ -18,7 +18,7 @@
                             base-people(
                                 avatar-width="md",
                                 :avatar-url="item.from_user_info.photo"
-                                :name="item.from_user_info.first_name",
+                                :name="item.from_user_info.name",
                                 :text="item.body | messageBreakLine",
                                 :time="item.time",
                                 :right="item.from_user_info.id == $store.state.user.profile.employee_id",
@@ -169,6 +169,7 @@
                 if ( percent < 25 ) this.historyMessageLoad()
             },
             historyMessageLoad(){
+                console.log(this.$route.name);
                 if(!this.messageRun) return
                 if(!this.historyMessageLoadStart) return
                 let params = {
@@ -197,12 +198,15 @@
 
                 return this.$http.get('message-history', {params}).then(({data})=>{
                     this.historyMessageLoadStart=true;
-                    if (!data.data.count) return
+                    let {count,messages,users} = data.data;
+                    if (!count) return
 
-                    this.messageRun=data.data.count;
-                    this.messageList.push(...data.data.messages);
+                    this.messageRun=count;
+                    this.messageList.push(...messages);
 
-                    this.$store.commit('roomIdOpen',data.data.messages[0].room_id)
+
+
+                    this.$store.commit('roomActive',{ id:messages[0].room_id, users})
 
                 })
             }

@@ -3,7 +3,7 @@
 
             ///the-chat-system-messages
 
-            TheProcessActions(v-if="showProcess")
+            TheProcessActions(v-if="compShowProcess")
             fieldset(v-else)
                 .chat-main-footer__box-control
                     box-controls(:show="showMention", @boxControlClose="showMention=false")
@@ -102,6 +102,11 @@
 
             }
         },
+        computed:{
+            compShowProcess(){
+                return this.showProcess
+            }
+        },
         mounted() {
 
             setTimeout(()=>{
@@ -121,7 +126,7 @@
             messageRead(){
 
                 this.$http.put('message-operator-guest-mark-as-read', {
-                    room_id:this.$store.state.roomIdOpen
+                    room_id:this.$store.state.roomActive.id
                 });
 
 

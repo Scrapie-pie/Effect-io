@@ -29,6 +29,9 @@ export default {
         return {}
     },
     computed:{
+        roomId(){
+            return this.process.room_id
+        },
         btnTextYes(){
             let text
             if(this.status === 'recipient') text = 'Принять';
@@ -37,9 +40,9 @@ export default {
             return text
         },
         process(){
-            console.log(this.httpParams);
-            let {uuid,site_id} = this.httpParams.params;
-            return lodash_find(this.$store.state.visitors.process, {uuid, site_id}) || {}
+            let {params:{uuid,site_id}} = this.httpParams;
+
+            if (uuid && site_id) return lodash_find(this.$store.state.visitors.process, {uuid, site_id}) || {}
         },
         status(){
             return this.process.status
@@ -78,11 +81,19 @@ export default {
             });
         },
         recipientNo(){
+            this.$http.put('guest-transfer-decline',this.httpParams.params).then(()=>{
+                setTimeout(()=>{
+                    this.$router.push({name:'processAll'});
+                },500)
 
-            this.$http.put('guest-transfer-acceptance',this.httpParams.params).then(()=>{
-                let {uuid,site_id} = this.httpParams.params;
-                this.$router.push({name:'chatId',params: { uuid,site_id}});
             });
+        },
+        unprocessedNo(){
+            this.$http.put('chat-room-user-decline-invitation', {room_id:this.roomId})
+                .then(({ data }) => {
+                    let {uuid,site_id} = this.httpParams.params;
+                    this.$router.push({name:'processAll'});
+                })
         },
         unprocessed(){
             this.$http.put('guest-take', this.httpParams.params)
@@ -94,14 +105,19 @@ export default {
 
         invited(){
             this.$http.post('chat-room-user-accept-invitation', {
-                room_id:141
+                room_id:this.roomId
 
+            }).then(({ data }) => {
+                let {uuid,site_id} = this.httpParams.params;
+                this.$router.push({name:'chatId',params: { uuid,site_id}});
             });
         },
         invitedNo(){
             this.$http.post('chat-room-user-decline-invitation', {
-                room_id:141
+                room_id:this.roomId
 
+            }).then(()=>{
+                this.$router.push({name:'processAll'})
             });
         },
     }

@@ -52,10 +52,10 @@
                 return this.unread.common
             },
             unreadGuest(){
-                return this.unread.guest || 1
+                return this.unread.guest
             },
             unreadProcess(){
-                return this.unread.process || 1
+                return this.unread.unprocessed
             },
             unreadPrivate(){
                 return this.unread.private

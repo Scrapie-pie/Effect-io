@@ -81,7 +81,7 @@
                     itemList=this.$store.state.visitors.process.map(item=>{
                         let {uuid,site_id} = item;
                         item.link = {name:'process',params: { uuid,site_id}}
-
+                        item.unread = [];
                         return item
                     });
 
@@ -141,9 +141,7 @@
             if (this.viewModeChat==="visitors") this.type='self';
         },
         methods:{
-            openFirst(event,index){
-                console.log(event,index);
-            },
+
             debounceSearch:_.debounce(function()
             {
                 this.resetSearch();
@@ -203,7 +201,7 @@
                 console.table(itemListOld);*/
                 console.log('***********',itemListStore.length);
 
-                console.log(this.viewModeChat);
+
                 if (this.viewModeChat==="process") this.$store.commit('visitors/process',{list:itemListStore})
                 if (this.viewModeChat==="visitors")    this.$store.commit('visitors/self',{list:itemListStore})
 
