@@ -126,7 +126,7 @@
             messageRead(){
 
                 this.$http.put('message-operator-guest-mark-as-read', {
-                    room_id:this.$store.state.roomActive.id
+                    room_id:this.$store.state.roomActiveId
                 });
 
 
@@ -188,14 +188,14 @@
                 this.$http.post('message-send', data);
 
 
-                let {first_name,photo,employee_id} = this.$store.state.user.profile,
+                let {first_name:name,photo,employee_id} = this.$store.state.user.profile,
                     time = (new Date).getTime() / 1000,
                     message = {
                         time,
                         body,
                         from_user_info:{
                             id:employee_id,
-                            first_name,
+                            name,
                             photo
                         }
                 }

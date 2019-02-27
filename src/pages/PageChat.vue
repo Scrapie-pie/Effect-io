@@ -1,5 +1,7 @@
 <template lang="pug">
+
     article.page-chat
+
         the-last-messages.page-chat__last-messages(v-if="viewModeChat=='operators'")
         the-last-messages-v.page-chat__last-messages(v-else)
 
@@ -29,7 +31,6 @@
         mixins:[viewModeChat],
         computed:{
             show(){
-                console.log('show',this.$route.name, (this.$route.name==='processAll' || this.$route.name==='messageAll'))
                 return (this.$route.name==='processAll' || this.$route.name==='messageAll')
             }
         }
@@ -72,7 +73,7 @@
             padding-left:$pd;
             padding-right:$pd;
             height:100%;
-
+            z-index:2;
             @include media($width_md) {
 
                 padding-right:0;

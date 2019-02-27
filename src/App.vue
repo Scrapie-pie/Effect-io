@@ -169,14 +169,19 @@
         sockets: {
 
             "new-message"(val) { //переместил сюда, что бы список на странице team обновлялся
+
+                if(val.from_role_id===9) {
+
+
+                }
                 console.log('sockets new-message',val);
 
                 if(this.$store.state.user.profile.employee_id === val.from_user_info.id) return; //Принимаем только чужие сообщения
 
-                if (val.room_id === this.$store.state.roomActive.id) this.$root.$emit('messageAdd',val) // Нужно, что бы чужое сообщение оказалось каждое в своем чате
+                if (val.room_id === this.$store.state.roomActiveId) this.$root.$emit('messageAdd',val) // Нужно, что бы чужое сообщение оказалось каждое в своем чате
 
 
-                if(val.from_user_info.uuid) { //Todo у оператора
+                if(val.site_id) { //Todo у оператора
                     this.$store.commit('visitors/selfMessageLastUpdate',val)
                     this.$store.commit('user/unreadUpdate',['guest',1])
                 } else {
@@ -206,6 +211,7 @@
             },
             "unprocessed"(val){
                 console.log('unprocessed',val)
+                this.$store.commit('user/unreadUpdate',['unprocessed',1])
             },
             "update-employees"(val) {
                 console.log('update-employees user/profile update')

@@ -67,6 +67,7 @@
                                     base-btn(:icon="{name:'edit',box:true,textHidden:'Открыть меню'}" color="info-lighten")
                                     template(slot="listItem")
                                         router-link.context-menu__link(:to="{name:'settingsProfile',query: { user_id: item.id }}") Редактировать
+
         base-no-found.page-operators__base-no-found(v-if="operatorList.length<=1" name="team")
             base-btn(
                 slot="team-content"

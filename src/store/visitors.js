@@ -18,7 +18,12 @@ export default {
         },
         process(state, val) {
             state.process=val.list;
-            if (val.count) state.selfCount=val.count;
+            if (val.count) state.processCount=val.count;
+        },
+        processRemoveItem(state, {uuid,site_id}) {
+            let findIndex = state.process.findIndex(item=>item.uuid+item.site_id === uuid+site_id)
+            if(findIndex !== -1) state.process.splice(findIndex, 1);
+
         },
         self(state, val) {
             state.self=val.list;
@@ -31,15 +36,15 @@ export default {
             state.selfCount=val.count;
         },
         selfMessageLastUpdate(state, val) {
-
+            console.log(val);
             let findIndex = state.self.findIndex((item)=>{
                 if(val.selfUuid) return item.uuid === val.selfUuid; //selfId значит мое сообщение
-                else return item.uuid === val.from_user_info.uuid
+                else return item.uuid === val.uuid
             })
             console.log(findIndex);
             if(findIndex !== -1) {
                 state.self[findIndex].last_message = val.body;
-                state.self[findIndex].last_message_author = val.from_user_info.first_name;
+                state.self[findIndex].last_message_author = val.from_user_info.name;
 
                 if(!val.selfUuid) state.self[findIndex].unread.push(val.id);
 

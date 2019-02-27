@@ -131,6 +131,8 @@
             '$route'(to,from){
                 if (this.viewModeChat==="process") this.type='unprocessed';
                 if (this.viewModeChat==="visitors") this.type='self';
+
+                if(to.name === from.name) return
                 this.resetSearch();
                 this.getItemList();
         },
@@ -199,7 +201,7 @@
                 console.table(itemListNew);
                 console.log('itemListOld');
                 console.table(itemListOld);*/
-                console.log('***********',itemListStore.length);
+                //console.log('***********',itemListStore.length);
 
 
                 if (this.viewModeChat==="process") this.$store.commit('visitors/process',{list:itemListStore})

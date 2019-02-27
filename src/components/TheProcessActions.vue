@@ -65,6 +65,27 @@ export default {
     },
 
     methods:{
+        routerNextNo(){
+            console.log(this.httpParams.params);
+            this.$store.commit('visitors/processRemoveItem',this.httpParams.params);
+            this.$store.commit('user/unreadUpdate',['unprocessed',-1])
+            let itemList = this.$store.state.visitors.process;
+            if(!itemList.length) this.$router.push({name:'processAll'}); //Todo проверить доделать этот варивант
+            else {
+                console.log(!itemList.length,itemList,itemList.length,itemList[0]);
+                let {uuid,site_id} = itemList[0];
+                this.$router.push({name:'process',params: { uuid,site_id}});
+            }
+
+
+
+
+
+        },
+        routerNextYes(){
+            let {uuid,site_id} = this.httpParams.params;
+            this.$router.push({name:'chatId',params: { uuid,site_id}});
+        },
         processActionNo(){
             if(this.status) this[this.status+'No']()
 
@@ -76,30 +97,31 @@ export default {
         recipient(){
 
             this.$http.put('guest-transfer-acceptance',this.httpParams.params).then(()=>{
-                let {uuid,site_id} = this.httpParams.params;
-                this.$router.push({name:'chatId',params: { uuid,site_id}});
+                this.routerNextYes()
             });
         },
         recipientNo(){
+
+
             this.$http.put('guest-transfer-decline',this.httpParams.params).then(()=>{
-                setTimeout(()=>{
-                    this.$router.push({name:'processAll'});
-                },500)
+                this.routerNextNo()
 
             });
         },
         unprocessedNo(){
-            this.$http.put('chat-room-user-decline-invitation', {room_id:this.roomId})
+
+
+
+            this.$http.post('chat-room-user-decline-guest', this.httpParams.params)
                 .then(({ data }) => {
-                    let {uuid,site_id} = this.httpParams.params;
-                    this.$router.push({name:'processAll'});
+                    this.routerNextNo()
+
                 })
         },
         unprocessed(){
             this.$http.put('guest-take', this.httpParams.params)
                 .then(({ data }) => {
-                    let {uuid,site_id} = this.httpParams.params;
-                    this.$router.push({name:'chatId',params: { uuid,site_id}});
+                    this.routerNextYes()
                 })
         },
 
@@ -117,7 +139,7 @@ export default {
                 room_id:this.roomId
 
             }).then(()=>{
-                this.$router.push({name:'processAll'})
+                this.routerNextNo()
             });
         },
     }

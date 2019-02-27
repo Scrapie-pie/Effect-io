@@ -61,7 +61,9 @@
 </template>
 
 <script>
+    import {httpParams } from '@/mixins/mixins'
     export default {
+        mixins:[httpParams],
         filters: {
             branches: function (value) {
                 let str='';
@@ -127,7 +129,9 @@
                 if (this.name === "transfer")  this.transfer()
             },
             invite(){
-                let data =  this.$store.getters['visitors/itemOpenIds'];
+                let data =   this.httpParams.params
+
+
 
                 data.users_ids=this.operatorsIds;
 
@@ -139,9 +143,10 @@
 
             },
             transfer(){
-                let data =  this.$store.getters['visitors/itemOpenIds'];
+                let data =   this.httpParams.params;
 
                 data.to_id=this.operatorsIds[0];
+                data.comment=this.comment;
 
                 this.$http.put('guest-transfer-request', data)
                     .then(({ data }) => {

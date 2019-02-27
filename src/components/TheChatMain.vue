@@ -16,6 +16,7 @@
                             :class="{'chat-main__messages-item_right':item.from_user_info.id == $store.state.user.profile.employee_id}"
                         )
                             base-people(
+                                v-if="item.from_role_id!=9"
                                 avatar-width="md",
                                 :avatar-url="item.from_user_info.photo"
                                 :name="item.from_user_info.name",
@@ -24,6 +25,7 @@
                                 :right="item.from_user_info.id == $store.state.user.profile.employee_id",
                                 :img="item.img"
                             )
+                            p(v-else v-text="item.body" :style="{textAlign:'center'}")
 
             //ul.chat-main__list
                 li.chat-main__item.chat-main__item_history_more

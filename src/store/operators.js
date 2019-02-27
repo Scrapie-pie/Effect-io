@@ -25,7 +25,7 @@ export default {
 
             if(findIndex !== -1) {
                 state.all[findIndex].last_message = val.body;
-                state.all[findIndex].last_message_author = val.from_user_info.first_name;
+                state.all[findIndex].last_message_author = val.from_user_info.name;
 
                 if(!val.selfId) state.all[findIndex].unread.push(val.id);
 

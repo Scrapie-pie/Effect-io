@@ -21,7 +21,7 @@
                         the-chat-main-header-history
 
         ul.chat-main-header__controls(v-if="viewModeChat!='operators'")
-            li.chat-main-header__control
+            li.chat-main-header__control(v-if="viewModeChat!='process'")
                 base-btn(
                     theme="default"
                     padding="xs",
@@ -85,12 +85,12 @@
 
             },
             roomActiveUsers(){
-                return this.$store.state.roomActive.users
+                return this.$store.state.roomActiveUsers
             },
             compMembersList(){
-                let[users,id ]= [this.roomActiveUsers,this.$store.state.user.profile.id]
+                let[users,id ]= [this.roomActiveUsers,this.$store.state.user.profile.id];
                 let ids = lodash_pull(users,id);
-                console.log(ids,users,id);
+
                 if(!ids) return [];
 
                 let operators = ids.map(itemId=>{
@@ -102,7 +102,7 @@
         },
         methods:{
             removeFromRoom(user_id){
-                let room_id = this.$store.state.roomActive.id;
+                let room_id = this.$store.state.roomActiveId;
                 this.$http.post('chat-room-user-remove',{room_id,user_id}).then(()=>{
 
                 });

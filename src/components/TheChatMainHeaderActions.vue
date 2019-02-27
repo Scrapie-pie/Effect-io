@@ -4,13 +4,13 @@
             fieldset(v-if="!showBlockClient && !showExitRoomConfirm" key="keyHideBlockClient")
                 legend.chat-actions__text-only-scr Выберите одно из действий
                 ul.chat-actions__list
-                    li.chat-actions__more-item
+                    li.chat-actions__more-item(v-if="viewModeChat!='process'")
                         base-btn(
                             :icon="{name:'transfer',top:true}"
                             @click.prevent="showTransfer()"
                         ) Передать диалог
 
-                    li.chat-actions__more-item
+                    li.chat-actions__more-item(v-if="viewModeChat!='process'")
                         base-btn(:icon="{name:'exit',top:true}", @click="exitRoomConfirm") Выйти из диалога
                     li.chat-actions__more-item
                         base-btn(:icon="{name:'bl',top:true}", @click="showBlockClient=true") Блокировать клиента
@@ -32,13 +32,19 @@
 </template>
 
 <script>
+    import {httpParams,viewModeChat} from '@/mixins/mixins'
     export default {
         components: {},
-
+        mixins:[viewModeChat,httpParams],
         data() {
             return {
                 showBlockClient:false,
                 showExitRoomConfirm:false
+            }
+        },
+        computed:{
+            showConfirmExit(){
+                return this.$store.state.roomActiveUsers.length < 2
             }
         },
         created(){
@@ -46,24 +52,24 @@
         },
         methods:{
             exitRoom(){
-                this.$http.post('chat-room-user-exit', {room_id:this.$store.state.roomActive.id})
+                this.$http.post('chat-room-user-exit', {room_id:this.$store.state.roomActiveId})
                     .then(()=> {
                         this.$root.$emit('globBoxControlClose')
                         this.$router.push({name:'messageAll'})
                     })
             },
             exitRoomConfirm(){
-                if (this.$store.state.roomActive.users.length <2) this.showExitRoomConfirm=true;
-                else this.exitRoom()
+                if (this.showConfirmExit) this.showExitRoomConfirm=true;
+                else  this.exitRoom()
 
             },
             showTransfer(){
                 this.$root.$emit('showTransfer')
             },
             blockClient(){
-                let data =  this.$store.getters['visitors/itemOpenIds'];
-                this.$http.post('guest-blocking', data)
-                    .then(({data}) => {
+
+                this.$http.post('guest-blocking', this.httpParams.params)
+                    .then(() => {
                         this.$root.$emit('globBoxControlClose')
                     })
             }
