@@ -86,9 +86,9 @@
             },
             infoList(){
                 return [
-                    {name: 'Пол', text: `На сайте ${this.info.online_time}, заходил ${this.info.visits_count} раз`},
+                    {name: 'Пол', text: `На сайте ${this.info.online_time}, заходил ${this.info.visits_count} раз(а)`},
                     {name: 'Восраст', text: this.info.referrer+', запрос "'+this.info.key_phrases+'" '+this.info.country+', '+this.info.city},
-                    {name: 'Интересы', text: this.info.browser+', '+ this.info.browser+', '+ this.info.device},
+                    {name: 'Интересы', text: this.info.browser+', '+ this.info.os+', '+ this.info.device},
                     {name: 'ip', text: 'IP' + this.info.ip},
                     {name: 'Интересы', text: `Последнее обращение через: ${this.channelName}`},
                 ]
