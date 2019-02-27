@@ -20,6 +20,19 @@ export default {
             state.process=val.list;
             if (val.count) state.processCount=val.count;
         },
+        processMessageLastUpdate(state, val) {
+            console.log(val);
+            state.process.push(val);
+            state.processCount += 1;
+       /*     let findIndex = state.process.findIndex((item)=>{
+               return item.uuid === val.uuid  //Todo срочно добавить uuid+site_id
+            })
+            console.log(findIndex);
+            if(findIndex !== -1) {
+                state.process[findIndex].last_message = val.last_message;
+                state.process[findIndex].last_message_author = val.last_message_author
+            }*/
+        },
         processRemoveItem(state, {uuid,site_id}) {
             let findIndex = state.process.findIndex(item=>item.uuid+item.site_id === uuid+site_id)
             if(findIndex !== -1) state.process.splice(findIndex, 1);
@@ -39,12 +52,13 @@ export default {
             console.log(val);
             let findIndex = state.self.findIndex((item)=>{
                 if(val.selfUuid) return item.uuid === val.selfUuid; //selfId значит мое сообщение
-                else return item.uuid === val.uuid
+                else return item.uuid === val.uuid  //Todo срочно добавить uuid+site_id
             })
             console.log(findIndex);
             if(findIndex !== -1) {
+                let author = val.from_role_id!==9 ? val.from_user_info.name:'Система';
                 state.self[findIndex].last_message = val.body;
-                state.self[findIndex].last_message_author = val.from_user_info.name;
+                state.self[findIndex].last_message_author = author
 
                 if(!val.selfUuid) state.self[findIndex].unread.push(val.id);
 

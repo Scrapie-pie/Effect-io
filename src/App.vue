@@ -14,6 +14,8 @@
     import '@/scss/base.scss'
 
 
+
+
     import browserNotification from '@/modules/browserNotification'
     import TheHeader from '@/components/TheHeader'
     import ThePopup from "@/components/ThePopup";
@@ -169,17 +171,27 @@
         sockets: {
 
             "new-message"(val) { //переместил сюда, что бы список на странице team обновлялся
-
-                if(val.from_role_id===9) {
-
-
-                }
                 console.log('sockets new-message',val);
 
-                if(this.$store.state.user.profile.employee_id === val.from_user_info.id) return; //Принимаем только чужие сообщения
+                if (val.from_user_info && val.from_user_info.id) {
 
-                if (val.room_id === this.$store.state.roomActiveId) this.$root.$emit('messageAdd',val) // Нужно, что бы чужое сообщение оказалось каждое в своем чате
+                    if(this.$store.state.user.profile.employee_id === val.from_user_info.id) return; //Принимаем только чужие сообщения
+                }
+                else val.from_user_info = {id:null} // для совместимости, что бы шаблон не ломался в сообщениях, когда приходят системные сообщения
 
+
+
+
+                if (val.room_id === this.$store.state.roomActiveId) {
+                    console.log(val);
+                    this.$root.$emit('messageAdd',val)
+                } // Нужно, что бы чужое сообщение оказалось каждое в своем чате}
+
+             /*   if(val.from_role_id === 9 && val.site_id) {
+                    this.$store.commit('visitors/selfMessageLastUpdate',val)
+                    this.$store.commit('user/unreadUpdate',['guest',1])
+                    return
+                }*/
 
                 if(val.site_id) { //Todo у оператора
                     this.$store.commit('visitors/selfMessageLastUpdate',val)
@@ -211,11 +223,12 @@
             },
             "unprocessed"(val){
                 console.log('unprocessed',val)
+                this.$store.commit('visitors/processMessageLastUpdate',val)
                 this.$store.commit('user/unreadUpdate',['unprocessed',1])
             },
             "update-employees"(val) {
                 console.log('update-employees user/profile update')
-                this.$store.commit('user/profileUpdate', val.find(item=>item.id == this.$store.state.user.profile.id))
+                this.$store.commit('user/profileUpdate', val.find(item=>item.id === this.$store.state.user.profile.id))
             }
 
         },

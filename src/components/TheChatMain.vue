@@ -18,7 +18,7 @@
                             base-people(
                                 v-if="item.from_role_id!=9"
                                 avatar-width="md",
-                                :avatar-url="item.from_user_info.photo"
+                                :avatar-url="item.from_user_info.photo",
                                 :name="item.from_user_info.name",
                                 :text="item.body | messageBreakLine",
                                 :time="item.time",
@@ -140,6 +140,7 @@
             });
 
             this.$root.$on('messageAdd',(val)=>{
+                console.log('messageAdd',val);
                 this.messageList.unshift(val);
                 setTimeout(()=>{
                     this.scrollerPushDown(this.$refs.scrollbar)
