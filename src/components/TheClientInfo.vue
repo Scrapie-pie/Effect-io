@@ -86,9 +86,9 @@
             },
             infoList(){
                 return [
-                    {name: 'Пол', text: `На сайте ${this.info.online_time}, заходил ${this.info.visits_count} раз`},
-                    {name: 'Восраст', text: this.info.referrer+', запрос "'+this.info.key_phrases+'" '+this.info.country+' '+this.info.city},
-                    {name: 'Интересы', text: this.info.browser+', '+ this.info.browser+', '+ this.info.device},
+                    {name: 'Пол', text: `На сайте ${this.info.online_time}, заходил ${this.info.visits_count} раз(а)`},
+                    {name: 'Восраст', text: this.info.referrer+', запрос "'+this.info.key_phrases+'" '+this.info.country+', '+this.info.city},
+                    {name: 'Интересы', text: this.info.browser+', '+ this.info.os+', '+ this.info.device},
                     {name: 'ip', text: 'IP' + this.info.ip},
                     {name: 'Интересы', text: `Последнее обращение через: ${this.channelName}`},
                 ]
@@ -122,7 +122,7 @@
                         text = 'VIBER';
                         break;
                     case 7:
-                        text = 'SITE2';
+                        text = 'сайт';
                         break;
                     case 8:
                         text = 'SLACKIO';
