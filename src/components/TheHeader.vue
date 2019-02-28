@@ -28,17 +28,17 @@
         },
         computed:{
             linkProcess(){
-                if(this.unreadProcess) return {name:'processAll'}
-                else return {name:'process-no-messages'}
+                 return {name:'processAll'}
+
             },
             linkMessage(){
-                if(this.unreadGuest) return {name:'messageAll'}
-                else return {name:'visitors-no-messages'}
+                return {name:'messageAll'} //Todo срочно тут нужно по количеству сообщений а не счетчика делать
+
             },
             canalList(){
                 return [
                     {text: 'Не обработано', link: this.linkProcess,unread:this.unreadProcess},
-                    {text: 'Мои диалоги', link: this.linkMessage,unread:this.unreadGuest,exact:true},
+                    {text: 'Мои диалоги', link: this.linkMessage,unread:this.unreadGuest},
                     {text: 'Команда', link: {name: 'team'},unread:this.unreadPrivate},
                     {text: 'Посетители', link: {name: 'visitors'}},
                     {text: 'Общий чат ', link: {name: 'common'},unread:this.unreadCommon},

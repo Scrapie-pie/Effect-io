@@ -17,7 +17,7 @@ export default new Vuex.Store({
     state: {
         loading:false,
         roomActiveId:false,
-        roomActiveUsers:false,
+        roomActiveUsers:[],
 
     },
     mutations: {
@@ -25,11 +25,14 @@ export default new Vuex.Store({
         loading(state, val) {
             state.loading = val
         },
-        roomActive(state, {id,users}) {
+        roomActive(state, val) {
 
+            let users = val.filter((item)=>item.status === "active");
+            users = users.map((item)=>item.user_id)
+            console.log('roomActive',val,users);
 
-            state.roomActiveId=id;
-            state.roomActiveUsers=[...users]
+            state.roomActiveId=val[0].room_id;
+            state.roomActiveUsers=users
 
         },
 

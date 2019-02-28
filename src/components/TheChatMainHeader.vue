@@ -74,7 +74,7 @@
         },
         computed:{
             targetName(){
-                if (this.viewModeChat=="visitors") return this.$store.state.visitors.itemOpen.name;
+                if (this.viewModeChat!=="operators") return this.$store.state.visitors.itemOpen.name;
 
                 else {
                     let operator = this.$store.state.operators.all.find(item => item.id == this.$route.params.id)

@@ -32,7 +32,7 @@ export default {
             state.profile=val;
         },
         unreadUpdate(state,val){
-            console.log(state.profile.unread[val[0]]);
+
             state.profile.unread[val[0]] += val[1]
         },
         settings(state, val) {

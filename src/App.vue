@@ -173,17 +173,31 @@
             "new-message"(val) { //переместил сюда, что бы список на странице team обновлялся
                 console.log('sockets new-message',val);
 
-                if (val.from_user_info && val.from_user_info.id) {
 
+
+                if (val.from_user_info && val.from_user_info.id) {
                     if(this.$store.state.user.profile.employee_id === val.from_user_info.id) return; //Принимаем только чужие сообщения
                 }
                 else val.from_user_info = {id:null} // для совместимости, что бы шаблон не ломался в сообщениях, когда приходят системные сообщения
 
-
+           /*     body: "18=28"
+                channel_type: 7
+                from_role_id: 8
+                from_user_info: Object
+                guest_uuid: "c9156b50-79e4-5741-850b-a698524a0022"
+                last_message: "ребята"
+                last_message_author: "Какос"
+                link: {name: "process", params: {…}, path: "/process/c9156b50-79e4-5741-850b-a698524a0022/184"}
+                name: "Гость"
+                photo: null
+                room_id: 168
+                site_id: 184
+                status: "unprocessed"
+                unread: []
+                uuid: "c9156b50-79e4-5741-850b-a698524a0022"*/
 
 
                 if (val.room_id === this.$store.state.roomActiveId) {
-                    console.log(val);
                     this.$root.$emit('messageAdd',val)
                 } // Нужно, что бы чужое сообщение оказалось каждое в своем чате}
 
@@ -192,6 +206,8 @@
                     this.$store.commit('user/unreadUpdate',['guest',1])
                     return
                 }*/
+
+                if(val.status === "unprocessed") return  this.$store.commit('visitors/processMessageLastUpdate',val)
 
                 if(val.site_id) { //Todo у оператора
                     this.$store.commit('visitors/selfMessageLastUpdate',val)
@@ -218,17 +234,33 @@
             },
             "update-branches"(val) {
                 console.log('update-branches',val);
-
-
+            },
+            "room-users"(val){
+                console.log('room-users',val)
+                this.$store.commit('roomActive',val)
             },
             "unprocessed"(val){
                 console.log('unprocessed',val)
                 this.$store.commit('visitors/processMessageLastUpdate',val)
                 this.$store.commit('user/unreadUpdate',['unprocessed',1])
             },
+            "unprocessed-remove"(val){
+                console.log('unprocessed-remove',val)
+                this.$store.commit('visitors/processRemoveItem',val);
+
+                let itemList = this.$store.state.visitors.process;
+                if(!itemList.length) this.$router.push({name:'processAll'}); //Todo проверить доделать этот варивант
+                else {
+                    console.log(!itemList.length,itemList,itemList.length,itemList[0]);
+                    let {uuid,site_id} = itemList[0];
+                    this.$router.push({name:'process',params: { uuid,site_id}});
+                }
+
+                this.$store.commit('user/unreadUpdate',['unprocessed',-1])
+            },
             "update-employees"(val) {
                 console.log('update-employees user/profile update')
-                this.$store.commit('user/profileUpdate', val.find(item=>item.id === this.$store.state.user.profile.id))
+                //this.$store.commit('user/profileUpdate', val.find(item=>item.id === this.$store.state.user.profile.id)) //Todo сохранять то что пришло в ответе
             }
 
         },

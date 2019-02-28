@@ -44,7 +44,7 @@
         },
         computed:{
             showConfirmExit(){
-                return this.$store.state.roomActiveUsers.length < 2
+                return this.$store.state.roomActiveUsers.length < 1
             }
         },
         created(){
@@ -54,7 +54,10 @@
             exitRoom(){
                 this.$http.post('chat-room-user-exit', {room_id:this.$store.state.roomActiveId})
                     .then(()=> {
+                        this.$store.commit('visitors/selfMessageRemoveItem',this.httpParams.params)
                         this.$root.$emit('globBoxControlClose')
+
+
                         this.$router.push({name:'messageAll'})
                     })
             },

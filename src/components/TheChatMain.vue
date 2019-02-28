@@ -81,6 +81,7 @@
         },
         watch:{
             '$route'(){
+                this.getRoomUserAll()
                 this.historyMessageLoadStart=true;
                 this.messageRun=true;
                 this.messageList=[];
@@ -132,7 +133,7 @@
             },
         },
         created() {
-
+            this.getRoomUserAll()
             this.$root.$on('chatSystemMessages',(val)=>this.systemMessages.push(val))
 
             this.historyMessageLoad().then(()=>{
@@ -140,7 +141,6 @@
             });
 
             this.$root.$on('messageAdd',(val)=>{
-                console.log('messageAdd',val);
                 this.messageList.unshift(val);
                 setTimeout(()=>{
                     this.scrollerPushDown(this.$refs.scrollbar)
@@ -149,7 +149,13 @@
 
         },
         methods: {
+            getRoomUserAll(){
+                this.$http.get('chat-room-user-all',this.httpParams).then(({data})=>{
 
+                    this.$store.commit('roomActive',data.data)
+                    console.log(this.$store.state.roomActiveUsers);
+                })
+            },
             scrollerPushDown(scrollbar){
                 let scrollerEl = scrollbar.$el,
                     valPx = this.scrollerPxToPercent(scrollerEl, 100);
@@ -209,11 +215,12 @@
 
 
 
-                    this.$store.commit('roomActive',{ id:messages[0].room_id, users})
+
 
                 })
             }
         },
+
 
 
 

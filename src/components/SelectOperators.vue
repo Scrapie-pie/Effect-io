@@ -134,6 +134,7 @@
 
 
                 data.users_ids=this.operatorsIds;
+                data.comment=this.comment;
 
                 this.$http.post('chat-room-user-invite', data)
                     .then(({ data }) => {

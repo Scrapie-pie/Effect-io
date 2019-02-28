@@ -66,16 +66,16 @@ export default {
 
     methods:{
         routerNextNo(){
-            console.log(this.httpParams.params);
-            this.$store.commit('visitors/processRemoveItem',this.httpParams.params);
-            this.$store.commit('user/unreadUpdate',['unprocessed',-1])
+         /*   console.log(this.httpParams.params);
+            //this.$store.commit('visitors/processRemoveItem',this.httpParams.params);
+
             let itemList = this.$store.state.visitors.process;
             if(!itemList.length) this.$router.push({name:'processAll'}); //Todo проверить доделать этот варивант
             else {
                 console.log(!itemList.length,itemList,itemList.length,itemList[0]);
                 let {uuid,site_id} = itemList[0];
                 this.$router.push({name:'process',params: { uuid,site_id}});
-            }
+            }*/
 
 
 
@@ -88,10 +88,12 @@ export default {
         },
         processActionNo(){
             if(this.status) this[this.status+'No']()
+            this.$store.commit('user/unreadUpdate',['unprocessed',-1])
 
         },
         processActionYes(){
             if(this.status) this[this.status]()
+            this.$store.commit('user/unreadUpdate',['unprocessed',-1])
 
         },
         recipient(){

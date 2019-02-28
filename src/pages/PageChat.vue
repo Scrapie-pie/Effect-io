@@ -1,15 +1,41 @@
 <template lang="pug">
 
     article.page-chat
+        template(v-if="viewModeChat == 'operators'")
+            base-no-found(v-show="messageNo" :name="$route.name")
+            section(v-show="!messageNo").page__view.page-chat
+                the-last-messages.page-chat__last-messages(v-if="viewModeChat=='operators'")
+                the-last-messages-v.page-chat__last-messages(v-else)
 
-        the-last-messages.page-chat__last-messages(v-if="viewModeChat=='operators'")
-        the-last-messages-v.page-chat__last-messages(v-else)
+                template(v-if="!show")
+                    section.page-chat__main
+                        the-chat-main
+                    aside.page-chat__info(v-if="viewModeChat!='operators'")
+                        the-client-info
 
-        template(v-if="!show")
-            section.page-chat__main
-                    the-chat-main
-            aside.page-chat__info(v-if="viewModeChat=='visitors'")
-                the-client-info
+        template(v-if="viewModeChat == 'visitors'")
+            base-no-found(v-show="messageNo" :name="$route.name")
+            section(v-show="!messageNo").page__view.page-chat
+                the-last-messages.page-chat__last-messages(v-if="viewModeChat=='operators'")
+                the-last-messages-v.page-chat__last-messages(v-else)
+
+                template(v-if="!show")
+                    section.page-chat__main
+                            the-chat-main
+                    aside.page-chat__info(v-if="viewModeChat!='operators'")
+                        the-client-info
+        template(v-if="viewModeChat == 'process'")
+            base-no-found(v-show="processNo" :name="$route.name")
+            section(v-show="!processNo").page__view.page-chat
+                the-last-messages.page-chat__last-messages(v-if="viewModeChat=='operators'")
+                the-last-messages-v.page-chat__last-messages(v-else)
+
+                template(v-if="!show")
+                    section.page-chat__main
+                        the-chat-main
+                    aside.page-chat__info(v-if="viewModeChat!='operators'")
+                        the-client-info
+
 
 </template>
 
@@ -32,7 +58,31 @@
         computed:{
             show(){
                 return (this.$route.name==='processAll' || this.$route.name==='messageAll')
+            },
+            showPage(){
+                if(this.$route.name==='messageAll'){
+                   return  this.$store.state.visitors.self.length
+                }
+                if(this.$route.name==='processAll'){
+                    return  this.$store.state.visitors.process.length
+                }
+            },
+            showProcess(){
+                return this.$route.name==='processAll' && !this.$store.state.visitors.process.length
+            },
+            showMessage(){
+                return this.$route.name==='messageAll'
+            },
+            processNo(){
+                return this.$route.name==='processAll' && !this.$store.state.visitors.process.length
+            },
+            messageNo(){
+                return this.$route.name==='messageAll' && !this.$store.state.visitors.self.length
+            },
+            countNo(){
+
             }
+
         }
 
 
