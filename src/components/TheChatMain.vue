@@ -150,6 +150,7 @@
         },
         methods: {
             getRoomUserAll(){
+                if (this.viewModeChat=='operators') return
                 this.$http.get('chat-room-user-all',this.httpParams).then(({data})=>{
 
                     this.$store.commit('roomActive',data.data)
@@ -178,7 +179,7 @@
                 if ( percent < 25 ) this.historyMessageLoad()
             },
             historyMessageLoad(){
-                console.log(this.$route.name);
+                console.log('historyMessageLoad');
                 if(!this.messageRun) return
                 if(!this.historyMessageLoadStart) return
                 let params = {

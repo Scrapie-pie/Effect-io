@@ -88,7 +88,7 @@ export default {
         },
         processActionNo(){
             if(this.status) this[this.status+'No']()
-            this.$store.commit('user/unreadUpdate',['unprocessed',-1])
+            //this.$store.commit('user/unreadUpdate',['unprocessed',-1])
 
         },
         processActionYes(){

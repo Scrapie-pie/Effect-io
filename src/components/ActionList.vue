@@ -5,15 +5,49 @@
             :key="index"
         )
             label.action-list__button
-                input(type="radio" name="action").action-list__input
+                input(
+                    type="radio",
+                    :name="item.name",
+                    :value="item.value",
+                    v-on="inputListeners"
+                ).action-list__input
                 span.action-list__text(v-text="item.text")
 </template>
 
 <script>
     export default {
+        inheritAttrs: false,
         props:{
-            itemList:[]
-        }
+            itemList:{
+                type:Array,
+                default:[]
+            },
+            value:''
+        },
+        data(){
+            return {
+                model:''
+            }
+        },
+        computed: {
+            inputListeners: function () {
+                var vm = this
+                // `Object.assign` объединяет объекты вместе, чтобы получить новый объект
+                return Object.assign({},
+                    // Мы добавляем все слушатели из родителя
+                    this.$listeners,
+                    // Затем мы можем добавить собственные слушатели или
+                    // перезаписать поведение некоторых существующих.
+                    {
+                        // Это обеспечит, что будет работать v-model на компоненте
+                        input: function (event) {
+                            console.log(event);
+                            vm.$emit('input', event.target.value)
+                        }
+                    }
+                )
+            }
+        },
     }
 </script>
 

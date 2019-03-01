@@ -91,6 +91,10 @@
                     itemList=this.$store.state.visitors.self.map(item=>{
                         let {uuid,site_id} = item;
                         item.link = {name:'chatId',params: { uuid,site_id}}
+
+                        item.last_message = this.authorAndMessage(item)
+
+
                         return item
                     });
                 }
@@ -143,7 +147,11 @@
             if (this.viewModeChat==="visitors") this.type='self';
         },
         methods:{
-
+            authorAndMessage({last_message_author_id,last_message_author,last_message}){
+                if(last_message_author_id === this.$store.state.user.profile.id) return 'Вы: '+last_message
+                if(last_message_author_id) return last_message_author+': '+last_message
+                else { return last_message}
+            },
             debounceSearch:_.debounce(function()
             {
                 this.resetSearch();
