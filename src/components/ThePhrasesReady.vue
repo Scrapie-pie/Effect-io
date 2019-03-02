@@ -148,7 +148,7 @@
             },
             itemDelete(id){
 
-                this.$http.delete('snippet-delete',{id})
+                this.$http.delete('snippet-delete',{params:{id}})
                     .then(({ data }) => {
                         let findIndex = this.snippets.find((item)=>item.id===id)
                         if(findIndex!=-1) this.snippets.splice(findIndex,1)
