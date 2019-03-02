@@ -17,7 +17,8 @@ export default new Vuex.Store({
     state: {
         loading:false,
         roomActiveId:false,
-        roomActiveUsers:[],
+        roomActiveUsersActive:[],
+        roomActiveUsersInvited:[],
 
     },
     mutations: {
@@ -26,13 +27,25 @@ export default new Vuex.Store({
             state.loading = val
         },
         roomActive(state, val) {
+            
+            function getIds(status) {
+                let users = val.filter((item)=>item.status === status);
+                return users.map((item)=>item.user_id)
+            }
+            
 
-            let users = val.filter((item)=>item.status === "active");
-            users = users.map((item)=>item.user_id)
-            console.log('roomActive',val,users);
+            console.log('roomActiveUsers',val);
+            console.log('roomActiveUsersActive',getIds('active'));
+            console.log('roomActiveUsersInvited',getIds('invited'));
 
             state.roomActiveId=val[0].room_id;
-            state.roomActiveUsers=users
+            state.roomActiveUsersActive=getIds('active')
+
+
+
+            state.roomActiveUsersInvited=getIds('invited').map(id=>{
+                return state.operators.all.find(item=>item.id===id)
+            })
 
         },
 
@@ -58,11 +71,13 @@ export default new Vuex.Store({
             });
             if(findIndex !== -1) {
                 let unread = itemList[findIndex].unread;
-                console.log('setMessageRead',type,findIndex);
+
                 commit(type+'/messageRead',findIndex);
                 commit('user/unreadUpdate',[unreadType,-unread.length],{root:true})
             }
-            console.log(userId,type)
+
+
+
 
 
 

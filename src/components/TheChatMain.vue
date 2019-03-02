@@ -26,24 +26,16 @@
                                 :img="item.img"
                             )
                             p(v-else v-text="item.body" :style="{textAlign:'center'}")
+                        template(v-if="roomActiveUsersInvited.length")
+                            li.chat-main__messages-item(
+                                v-for="(item, index) in roomActiveUsersInvited",
+                                :key="item.id",
+                                :style="{textAlign:'center'}"
+                                )
+                                    |Ожидаем подтверждение от: {{item.first_name}}&nbsp;
+                                    base-btn(theme="link" v-text="'Отменить приглашение'" @click="invitedCancel(item.id)")
 
-            //ul.chat-main__list
-                li.chat-main__item.chat-main__item_history_more
-                    base-btn(theme="link" @click="historyMessageLoad") Загрузить более раннюю история общения с посетителем
-                li.chat-main__item
-                    time.chat-main__date 29 ноября 2017
 
-                    ul.chat-main__messages
-                        li.chat-main__messages-item(v-for="(item, index) in messageListReverse",:key="item.id" :class="{'chat-main__messages-item_right':item.right}")
-                            base-people(
-                                avatar-width="md",
-                                :name="item.from_user_info.name",
-                                :text="item.body",
-                                :time="item.time",
-                                :right="item.right",
-                                :img="item.img"
-                            )
-                    the-chat-system-messages(:itemList="systemMessages")
         footer.chat-main__footer
             the-chat-main-footer
 
@@ -56,7 +48,8 @@
 
     import { viewModeChat,httpParams } from '@/mixins/mixins'
 
-    import _ from 'underscore'
+
+    import lodash_groupBy from 'lodash/groupBy'
     import moment from 'moment'
     export default {
         components:{
@@ -102,6 +95,9 @@
             }*/
         },
         computed:{
+            roomActiveUsersInvited(){
+                return this.$store.state.roomActiveUsersInvited
+            },
             messageGroupDaysReverse(){
 
                 let list = Object.entries(this.messageGroupDays).reverse() //['14.15.2018',[messages]]
@@ -111,7 +107,7 @@
                 return list
             },
             messageGroupDays(){
-                return _.groupBy(this.messageList, (item)=>{
+                return lodash_groupBy(this.messageList, (item)=>{
                     return moment(item.time*1000).format('DD.MM.YYYY')
                     //moment(item.time*1000).format('HH:mm')
                 })
@@ -149,12 +145,19 @@
 
         },
         methods: {
+            invitedCancel(user_id){
+                this.$http.post('chat-room-user-cancel-invitation',{
+                    room_id:this.$store.state.roomActiveId,
+                    user_id
+                })
+            },
+
             getRoomUserAll(){
                 if (this.viewModeChat=='operators') return
                 this.$http.get('chat-room-user-all',this.httpParams).then(({data})=>{
 
                     this.$store.commit('roomActive',data.data)
-                    console.log(this.$store.state.roomActiveUsers);
+                    console.log(this.$store.state.roomActiveUsersActive);
                 })
             },
             scrollerPushDown(scrollbar){
@@ -201,8 +204,6 @@
                 }
 
 
-
-
                 this.historyMessageLoadStart=false;
                 this.messageRun=false;
 
@@ -213,11 +214,6 @@
 
                     this.messageRun=count;
                     this.messageList.push(...messages);
-
-
-
-
-
                 })
             }
         },

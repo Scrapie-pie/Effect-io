@@ -173,6 +173,15 @@
             "new-message"(val) { //переместил сюда, что бы список на странице team обновлялся
                 console.log('sockets new-message',val);
 
+                if(document.hidden) {
+                    browserNotification(
+                        'Мои диалоги',
+                        val.from_user_info.name+': ' + val.body,
+                        '/messages/6f5806c7-8742-5952-8b19-f584ebbbea0d/184'
+                    )
+                }
+
+
 
 
                 if (val.from_user_info && val.from_user_info.id) {

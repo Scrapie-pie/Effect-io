@@ -42,13 +42,13 @@ export default {
             console.log(findIndex);
             if(findIndex !== -1) {
                     state.process[findIndex].last_message = val.body;
-                    state.process[findIndex].last_message_author = val.from_user_info.name
+                    state.process[findIndex].last_message_author = val.last_message_author
 
 
             }
             else {
                 val.last_message = val.body;
-                val.last_message_author = val.from_user_info.name;
+
                 console.log('state.process.push unprocessed');
                 state.process.push(val);
 
@@ -90,9 +90,9 @@ export default {
             })
 
             if(findIndex !== -1) {
-                let author = val.from_role_id!==9 ? val.from_user_info.name:'Система';
+
                 state.self[findIndex].last_message = val.body;
-                state.self[findIndex].last_message_author = author
+                state.self[findIndex].last_message_author = val.last_message_author
                 if(!val.selfUuid) state.self[findIndex].unread.push(val.id);
             }
         },

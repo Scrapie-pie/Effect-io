@@ -1,4 +1,6 @@
-function sendNotification(title, body) {
+
+
+function sendNotification(title, body,link) {
     let options = {
         body:body,
         dir: 'auto',
@@ -16,10 +18,13 @@ function sendNotification(title, body) {
 // Если права есть, отправим уведомление
 
 
-
+        console.log('sendNotification',title, options);
         var notification = new Notification(title, options);
 
-        function clickFunc() { alert('Пользователь кликнул на уведомление'); }
+        function clickFunc() {
+
+            window.location.href=link;
+        }
 
         notification.onclick = clickFunc;
     }

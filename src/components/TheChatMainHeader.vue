@@ -84,11 +84,11 @@
                 }
 
             },
-            roomActiveUsers(){
-                return this.$store.state.roomActiveUsers
+            roomActiveUsersActive(){
+                return this.$store.state.roomActiveUsersActive
             },
             compMembersList(){
-                let[users,id ]= [this.roomActiveUsers,this.$store.state.user.profile.id];
+                let[users,id ]= [this.roomActiveUsersActive,this.$store.state.user.profile.id];
                 let ids = lodash_pull(users,id);
 
                 if(!ids) return [];

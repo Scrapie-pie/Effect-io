@@ -116,7 +116,7 @@
                 return list
             },
             itemList(){
-                return this.$store.getters['operators/all']
+                return this.$store.getters['operators/all'].filter(item=>item.online==1)
             }
         },
         created(){

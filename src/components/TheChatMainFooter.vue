@@ -3,6 +3,8 @@
 
             ///the-chat-system-messages
 
+
+
             TheProcessActions(v-if="compShowProcess")
             fieldset(v-else)
                 .chat-main-footer__box-control
@@ -103,6 +105,7 @@
             }
         },
         computed:{
+
             compShowProcess(){
                 return this.showProcess
             }
@@ -213,6 +216,8 @@
                 if(this.viewModeChat ==='visitors') {
 
                     message.selfUuid = this.httpParams.params.uuid;
+                    message.last_message_author = 'Вы';
+
                     this.$store.commit('visitors/selfMessageLastUpdate',message)
                 }
 

@@ -44,7 +44,7 @@
         },
         computed:{
             showConfirmExit(){
-                return this.$store.state.roomActiveUsers.length < 1
+                return this.$store.state.roomActiveUsersActive.length < 1
             }
         },
         created(){
