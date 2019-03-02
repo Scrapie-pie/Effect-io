@@ -18,8 +18,8 @@
             return {
                 model:'',
                 list: [
-                    {text:'Предложить автозвонок',value:"call",name:'manual'},
-                    {text:'Предложить ввести контактные данные',value:"contacts",name:'manual'}
+                    {title:'Предложить автозвонок',value:"call",name:'manual'},
+                    {title:'Предложить ввести контактные данные',value:"contacts",name:'manual'}
                 ]
             }
         },

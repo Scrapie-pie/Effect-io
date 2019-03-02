@@ -12,7 +12,13 @@
                     fieldset.phrases-ready__catalog.phrases-ready__fieldset
                         legend.phrases-ready__name Категория
                         scroll-bar.phrases-ready__scrollbar
-                            action-list.phrases-ready__list(:item-list="categories")
+                            action-list.phrases-ready__list(
+                                :item-list="categories"
+                                name="categories"
+                                name-field-text="title"
+                                name-field-value="id"
+                                v-model="categoriesSelectId"
+                            )
 
                     fieldset.phrases-ready__phrases-wrap.phrases-ready__fieldset
 
@@ -26,9 +32,9 @@
                                     span.phrases-ready__phrases-text(v-text="item.text")
                                     ul.phrases-ready__phrases-controls
                                         li.phrases-ready__phrases-button.phrases-ready__phrases-edit
-                                            base-btn(theme="link" v-text="'Редактировать'")
+                                            base-btn(theme="link" v-text="'Редактировать'" @click="itemEdit(item.id)")
                                         li.phrases-ready__phrases-button.phrases-ready__phrases-remove
-                                            base-btn(theme="link" v-text="'Удалить'")
+                                            base-btn(theme="link" v-text="'Удалить'" @click="itemDelete(item.id)")
 
             fieldset(v-else)
                 legend.phrases-ready__text-only-scr Добавление новой фразы
@@ -37,9 +43,9 @@
                         label.phrases-ready__label(for="newCategory") Выберите категорию или придумайте свою
                         base-field(
                             type="select",
-                            :selectOptions="{label:'name',options:categories}"
+                            :selectOptions="{label:'title',options:categories,taggable:true}"
                             name="newCategory"
-                            v-model="newCategory",
+                            v-model="create.category",
                             id="newCategory"
                         )
                     li.phrases-ready__add-item
@@ -47,19 +53,23 @@
                         base-field(
                             id="newPhrase",
                             type="textarea",
-                            name="newCategory"
-                            v-model="newPhrase",
+                            name="newPhrase"
+                            v-model="create.text",
 
                         )
                     li.phrases-ready__add-item
                         base-radio-check(
                             type="radio"
-                            v-model="VisibleToAll"
-                            value="true"
-                            name="VisibleToAll"
+                            v-model="create.is_common",
+                            :value="1"
+                            name="is_common"
                         ) Все сотрудники будут видеть данный шаблон
                     li.phrases-ready__add-item
-                        base-radio-check(type="radio" value="false") Данный шаблон будет виден только мне
+                        base-radio-check(
+                            type="radio" ,
+                            :value="0"
+                            name="is_common"
+                        ) Данный шаблон будет виден только мне
                     li.phrases-ready__add-item
                         base-btn.phrases-ready__add-item-button(v-text="'Добавить шаблон'" type="submit")
                         base-btn(v-text="'Отмена'" color="error" @click="showPhrasesNew=false")
@@ -72,13 +82,14 @@
             ActionList
         },
         props:{
-            showPhrasesNew:false,
+
         },
         data() {
             return {
+                showPhrasesNew:false,
                 create:{
-                    text:'122345',
-                    category:'Новая категория',
+                    text:'',
+                    category:'',
                     is_common:1,
                 },
 
@@ -88,43 +99,80 @@
                 newPhrase:'',
 
                 VisibleToAll:false,
-                phrases: [
-                    {text:'Здравствуйте! Чем я могу Вам помочь?'},
-                    {text:'Добрый день! Отвечу на Ваши вопросы. '},
-                    {text:'Здравствуйте! Какой вопрос Вас интересует? '},
-                    {text:'Еще категория'},
 
-
-                ],
                 categories: [
-                    {text:'Приветствие'},
-                    {text:'Прощание'},
-                    {text:'Название своего варианта'},
-                    {text:'Еще категория'},
 
                 ],
+                categoriesSelectId:'',
 
 
-
+                snippets:[]
 
             }
+        },
+        computed:{
+            phrases(){
+                return this.snippets.filter((item)=>item.category_id === Number(this.categoriesSelectId))
+            }
+        },
+        watch:{
+            snippets:{
+                handler(val){
+                    if(val.length){
+                        console.log(val);
+                        this.categoriesSelectId=val[0].category_id
+                    }
+
+                },
+                immediate: true
+            },
+
         },
         created(){
             this.getItemList()
         },
         methods:{
-            createItem(){
-
-                this.$http.post('snippet-create',this.create)
+            itemEdit(id){
+                let text = 'Отредактированный текст!!!!'
+                this.$http.put('snippet-update',{id,text})
                     .then(({ data }) => {
                         console.log(data);
+                        let findIndex = this.snippets.find((item)=>item.id===id)
+                        if(findIndex!==-1) {
+                            console.log(this.snippets[findIndex]);
+                            console.log(this.snippets[findIndex].text);
+                            console.log(text)
+                            this.snippets[findIndex].text = text
+                        }
+                    })
+            },
+            itemDelete(id){
+
+                this.$http.delete('snippet-delete',{id})
+                    .then(({ data }) => {
+                        let findIndex = this.snippets.find((item)=>item.id===id)
+                        if(findIndex!=-1) this.snippets.splice(findIndex,1)
+                    })
+            },
+            createItem(){
+                this.create.category = this.create.category.title
+                this.$http.post('snippet-create',this.create)
+                    .then(({ data }) => {
+
+                        this.categories.push({
+                            category_id:data.data.category_id,
+                            title:this.create.category
+                        })
+                        this.snippets.push(data.data)
+                        console.log(data.data);
 
                     })
             },
             getItemList(){
                 this.$http.get('snippet-read')
                     .then(({ data }) => {
-                        console.log(data);
+                        this.snippets = data.data.snippets
+                        this.categories = data.data.categories
 
                     })
             }

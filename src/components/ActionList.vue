@@ -7,26 +7,38 @@
             label.action-list__button
                 input(
                     type="radio",
-                    :name="item.name",
-                    :value="item.value",
+                    :name="name",
+                    :value="nameFieldValue | setValue(item)",
+
                     v-on="inputListeners"
                 ).action-list__input
-                span.action-list__text(v-text="item.text")
+                span.action-list__text
+                    |{{nameFieldText | setValue(item)}}
 </template>
 
 <script>
     export default {
         inheritAttrs: false,
+        filters: {
+            setValue: function (nameField,item) {
+                if(!nameField) return '';
+                return item[nameField]
+
+            }
+        },
         props:{
             itemList:{
                 type:Array,
                 default:[]
             },
-            value:''
+            nameFieldText:'',
+            nameFieldValue:'',
+            value:'',
+            name:''
         },
         data(){
             return {
-                model:''
+
             }
         },
         computed: {
