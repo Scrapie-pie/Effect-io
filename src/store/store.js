@@ -19,6 +19,8 @@ export default new Vuex.Store({
         roomActiveId:false,
         roomActiveUsersActive:[],
         roomActiveUsersInvited:[],
+        roomActiveUsersRecipient:[],
+        roomActiveIsAdmin:false,
 
     },
     mutations: {
@@ -32,17 +34,20 @@ export default new Vuex.Store({
                 let users = val.filter((item)=>item.status === status);
                 return users.map((item)=>item.user_id)
             }
-            
+
+
 
             console.log('roomActiveUsers',val);
             console.log('roomActiveUsersActive',getIds('active'));
             console.log('roomActiveUsersInvited',getIds('invited'));
 
+            state.roomActiveIsAdmin = val.filter((item)=>item.isAdmin && item.user_id === state.user.profile.id).length;
+
             state.roomActiveId=val[0].room_id;
             state.roomActiveUsersActive=getIds('active')
-
-
-
+            state.roomActiveUsersRecipient=getIds('recipient').map(id=>{
+                return state.operators.all.find(item=>item.id===id)
+            })
             state.roomActiveUsersInvited=getIds('invited').map(id=>{
                 return state.operators.all.find(item=>item.id===id)
             })

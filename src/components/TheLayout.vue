@@ -4,7 +4,7 @@
             .layout__grid
                 h1.layout__title
                     slot(name="title")
-            router-link.layout__close(:to="{name:'process'}" title="Выход")
+            router-link.layout__close(:to="{name:'processAll'}" title="Выход")
                 span.layout__close-text-only-scr Выход
                 base-icon(name="close")
         .layout__grid

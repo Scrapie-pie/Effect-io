@@ -32,7 +32,7 @@
 
             },
             linkMessage(){
-                return {name:'messageAll'} //Todo срочно тут нужно по количеству сообщений а не счетчика делать
+                return {name:'messageAll'}
 
             },
             canalList(){

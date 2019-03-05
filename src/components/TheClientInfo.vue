@@ -96,58 +96,15 @@
             clientInfoContacts() {
                 let phone = `<div><a href="tel:${this.info.phone}">${this.info.phone}</a></div>`,
                     email = `<div><a href="mailto:${this.info.mail}">${this.info.mail}</a></div>`;
-                return phone + email;
+
+                let str='';
+                if(this.info.phone) str += phone;
+                if(this.info.mail) str += email;
+                return str;
 
             },
             channelName() {
-                let text, textShort, name;
-
-                switch (this.info.channel_type) {
-                    case 1:
-                        text = '1';
-                        break;
-                    case 2:
-                        text = 'VK';
-                        break;
-                    case 3:
-                        text = 'FB';
-                        break;
-                    case 4:
-                        text = 'SLACK';
-                        break;
-                    case 5:
-                        text = 'TG';
-                        break;
-                    case 6:
-                        text = 'VIBER';
-                        break;
-                    case 7:
-                        text = 'сайт';
-                        break;
-                    case 8:
-                        text = 'SLACKIO';
-                        break;
-                    case 9:
-                        text = 'ZENDESK';
-                        break;
-                    case 10:
-                        text = 'AMO';
-                        break;
-                    case 11:
-                        text = 'SALESFORCE';
-                        break;
-                    case 12:
-                        text = 'OPENAPI';
-                        break;
-                    case 13:
-                        text = 'whatsapp';
-                        break;
-
-                    default:
-                        text = '-';
-
-                        break;
-                }
+                let text =  this.$store.getters.channelName(this.info.channel_type)
                 return text.toLowerCase()
             }
         },
@@ -183,6 +140,17 @@
 
                 })
             }
+        },
+        sockets:{
+            "guest-update"(val) {
+                console.log('guest-update',val);
+                let {site_id,uuid} = this.httpParams.params;
+
+                if(val.uuid+val.site_id===uuid+site_id){
+                    this.$store.commit('visitors/itemOpen',val)
+                }
+
+            },
         }
 
 

@@ -5,17 +5,22 @@
                 span.chat-main-header__name.chat-main-header__name_open_client-info.js-client-info(
                     v-text="targetName"
                 )
-                template(v-for="(item, index) in compMembersList")
-                    span.chat-main-header__name
-                        | , {{item.first_name}}
-                        button(type="button", @click="removeFromRoom(item.id)").chat-main-header__name-tooltip Убрать из диалога
+                template(v-if="viewModeChat!='operators'")
+                    template(v-for="(item, index) in compMembersList")
+                        span.chat-main-header__name
+                            | , {{item.first_name}}
+                            button(
+                                type="button",
+                                @click="removeFromRoom(item.id)"
+                                v-if="$store.state.roomActiveIsAdmin"
+                            ).chat-main-header__name-tooltip Убрать из диалога
 
-            .chat-main-header__channel(v-if="viewModeChat=='visitors'") На сайте: site.ru -&nbsp;
+            .chat-main-header__channel(v-if="viewModeChat!='operators'")
                 .chat-main-header__channel-btn-wrap
                     base-btn(
                         theme="text",
                     ).btn-arrow.chat-main-header__channel-btn
-                        | Кеды для спорта
+                        | {{visitorPage}}
                         span.btn-arrow__arrow(:class="{'btn-arrow__arrow':showClientHistoryActions}")
                     .chat-main-header__client-history-actions()
                         the-chat-main-header-history
@@ -73,8 +78,14 @@
             }
         },
         computed:{
+            visitorPage(){
+                return this.visitor.page
+            },
+            visitor(){
+                return this.$store.state.visitors.itemOpen
+            },
             targetName(){
-                if (this.viewModeChat!=="operators") return this.$store.state.visitors.itemOpen.name;
+                if (this.viewModeChat!=="operators") return this.visitor.name;
 
                 else {
                     let operator = this.$store.state.operators.all.find(item => item.id == this.$route.params.id)
@@ -135,8 +146,6 @@
                 },500)
 
             })
-            //this.membersList.push(this.$store.state.visitors.itemOpen.name)
-            //this.membersList = ['Петр Иванов Камикадзев','Кирил'];
         },
         mounted(){
             document.querySelector('.js-client-info')

@@ -37,7 +37,7 @@ export default {
 
 
             let findIndex = state.process.findIndex((item)=>{
-               return item.uuid+item.site_id === val.uuid+val.site_id  //Todo срочно добавить uuid+site_id
+               return item.uuid+item.site_id === val.uuid+val.site_id
             })
             console.log(findIndex);
             if(findIndex !== -1) {
@@ -86,7 +86,7 @@ export default {
         selfMessageLastUpdate(state, val) {
             let findIndex = state.self.findIndex((item)=>{
                 if(val.selfUuid) return item.uuid === val.selfUuid; //selfId значит мое сообщение
-                else return item.uuid+item.site_id === val.uuid+val.site_id  //Todo срочно добавить uuid+site_id
+                else return item.uuid+item.site_id === val.uuid+val.site_id
             })
 
             if(findIndex !== -1) {

@@ -166,6 +166,9 @@
                   this.$http.put('company-settings-update',data)
                       .then(({data})=>{
                        console.log(data);
+                          browserNotification('Сохранено')
+                          this.$router.push({name:'team'})
+
                    })
             },
             playSoundFile:function(sound ,prev_sound) {

@@ -19,8 +19,8 @@
                             .select-operator__checkbox
                                 base-radio-check(name="mention")
                             base-people(
-                                :bg-text-no-fill="true"
-                                :avatar-url="item.photo"
+                                :bg-text-no-fill="true",
+                                :avatar-url="item.photo",
                                 :name="item.fullName" ,
                                 :text="item.text" ,
                                 :datetime="item.datetime"
@@ -39,8 +39,8 @@
                                 //input(type="checkbox" name="operatorCheck" v-model="operatorCheck[item.id]" :value="item.id")
                                 base-radio-check(name="operatorCheck" v-model="operatorCheck[item.id]" :value="item.id")
                             base-people(
-                                :bg-text-no-fill="true"
-                                :avatar-url="item.photo"
+                                :bg-text-no-fill="true",
+                                :avatar-url="item.photo",
                                 :name="item.fullName" ,
                                 :text="item.branches_names | branches" ,
                                 :datetime="item.datetime"
@@ -49,14 +49,14 @@
                 label.select-operator__label Оставьте комментарий
                 base-field.select-operator__input(
                     type="textarea"
-                    name="comment"
+                    name="comment",
                     :placeholder="placeholder"
 
                     v-model="comment"
                 )
                 base-btn(type="submit" v-text="btnText")
 
-        fieldset(v-else)
+        fieldset(v-if="!count")
             p.select-operator__count-no К сожалению, сейчас нет доступных сотрудников
 </template>
 
@@ -87,13 +87,15 @@
         data(){
             return {
                 operatorCheck:{},
-                count:1,
+
                 search:'',
                 comment:'',
-
             }
         },
         computed:{
+            count(){
+                return this.itemList.length
+            },
             btnText(){
                 if (this.name === "invite") return 'Пригласить';
                 if (this.name === "mention") return 'Упомянуть';
@@ -116,7 +118,10 @@
                 return list
             },
             itemList(){
-                return this.$store.getters['operators/all'].filter(item=>item.online==1)
+                return this.$store.getters['operators/all'].filter(item=>
+                    item.online===1 &&
+                    item.id!==this.$store.state.user.profile.id
+                )
             }
         },
         created(){
@@ -130,9 +135,6 @@
             },
             invite(){
                 let data =   this.httpParams.params
-
-
-
                 data.users_ids=this.operatorsIds;
                 data.comment=this.comment;
 
@@ -140,8 +142,6 @@
                     .then(({ data }) => {
                         this.$root.$emit('globBoxControlClose')
                     })
-
-
             },
             transfer(){
                 let data =   this.httpParams.params;
@@ -153,8 +153,6 @@
                     .then(({ data }) => {
                         this.$root.$emit('globBoxControlClose')
                     })
-
-
             }
         }
     }
@@ -198,8 +196,6 @@
                 .icon {
                     visibility:hidden;
                 }
-
-
             }
         }
 
@@ -215,8 +211,6 @@
 
         &__input {
             margin-bottom:calc-em(15);
-
-
         }
 
         &__search-operators {

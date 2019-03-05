@@ -17,6 +17,7 @@
 
 
     import browserNotification from '@/modules/browserNotification'
+    import {browserNotificationMessage} from '@/modules/browserNotification'
     import TheHeader from '@/components/TheHeader'
     import ThePopup from "@/components/ThePopup";
 
@@ -173,13 +174,6 @@
             "new-message"(val) { //переместил сюда, что бы список на странице team обновлялся
                 console.log('sockets new-message',val);
 
-                if(document.hidden) {
-                    browserNotification(
-                        'Мои диалоги',
-                        val.from_user_info.name+': ' + val.body,
-                        '/messages/6f5806c7-8742-5952-8b19-f584ebbbea0d/184'
-                    )
-                }
 
 
 
@@ -187,23 +181,9 @@
                 if (val.from_user_info && val.from_user_info.id) {
                     if(this.$store.state.user.profile.employee_id === val.from_user_info.id) return; //Принимаем только чужие сообщения
                 }
-                else val.from_user_info = {id:null} // для совместимости, что бы шаблон не ломался в сообщениях, когда приходят системные сообщения
+                //else val.from_user_info = {id:null} // для совместимости, что бы шаблон не ломался в сообщениях, когда приходят системные сообщения
 
-           /*     body: "18=28"
-                channel_type: 7
-                from_role_id: 8
-                from_user_info: Object
-                guest_uuid: "c9156b50-79e4-5741-850b-a698524a0022"
-                last_message: "ребята"
-                last_message_author: "Какос"
-                link: {name: "process", params: {…}, path: "/process/c9156b50-79e4-5741-850b-a698524a0022/184"}
-                name: "Гость"
-                photo: null
-                room_id: 168
-                site_id: 184
-                status: "unprocessed"
-                unread: []
-                uuid: "c9156b50-79e4-5741-850b-a698524a0022"*/
+
 
 
                 if (val.room_id === this.$store.state.roomActiveId) {
@@ -216,14 +196,26 @@
                     return
                 }*/
 
-                if(val.status === "unprocessed") return  this.$store.commit('visitors/processMessageLastUpdate',val)
+                if(val.status === "unprocessed") {
+                    return  this.$store.commit('visitors/processMessageLastUpdate',val)}
 
-                if(val.site_id) { //Todo у оператора
+
+
+                if(val.site_id) {
                     this.$store.commit('visitors/selfMessageLastUpdate',val)
                     this.$store.commit('user/unreadUpdate',['guest',1])
+                    browserNotificationMessage(val).then(click=>{
+                        let {uuid,site_id} =  val
+                        this.$router.push({name:'chatId',params: { uuid,site_id}})
+                    })
                 } else {
                     this.$store.commit('operators/messageLastUpdate',val)
                     this.$store.commit('user/unreadUpdate',['private',1])
+
+                    browserNotificationMessage(val).then(click=>{
+                        let find = this.$store.state.operators.all.find((item)=>item.employee_id === val.from_user_info.id)
+                        this.$router.push({name:'teamChat',params:{id:find.id}})
+                    })
                 }
 
             },
@@ -236,11 +228,7 @@
                 console.log('socket disconnect')
 
             },
-            "guest-update"(val) {
 
-
-
-            },
             "update-branches"(val) {
                 console.log('update-branches',val);
             },
@@ -249,9 +237,15 @@
                 this.$store.commit('roomActive',val)
             },
             "unprocessed"(val){
-                console.log('unprocessed',val)
+
+
                 this.$store.commit('visitors/processMessageLastUpdate',val)
                 this.$store.commit('user/unreadUpdate',['unprocessed',1])
+
+                browserNotificationMessage(val).then(click=>{
+                    let {uuid,site_id} =  val
+                    this.$router.push({name:'process',params: { uuid,site_id}})
+                })
             },
             "unprocessed-remove"(val){
                 console.log('unprocessed-remove',val)

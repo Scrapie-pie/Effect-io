@@ -26,7 +26,7 @@
                                 :img="item.img"
                             )
                             p(v-else v-text="item.body" :style="{textAlign:'center'}")
-                        template(v-if="roomActiveUsersInvited.length")
+                        template(v-if="(roomActiveUsersInvited.length || roomActiveUsersRecipient.length) && roomActiveIsAdmin")
                             li.chat-main__messages-item(
                                 v-for="(item, index) in roomActiveUsersInvited",
                                 :key="item.id",
@@ -34,7 +34,13 @@
                                 )
                                     |Ожидаем подтверждение от: {{item.first_name}}&nbsp;
                                     base-btn(theme="link" v-text="'Отменить приглашение'" @click="invitedCancel(item.id)")
-
+                            li.chat-main__messages-item(
+                                v-for="(item, index) in roomActiveUsersRecipient",
+                                :key="item.id",
+                                :style="{textAlign:'center'}"
+                            )
+                                |Ожидаем подтверждение от: {{item.first_name}}&nbsp;
+                                base-btn(theme="link" v-text="'Отменить передачу'" @click="transferCancel(item.id)")
 
         footer.chat-main__footer
             the-chat-main-footer
@@ -42,6 +48,7 @@
 </template>
 
 <script>
+    import { mapState } from 'vuex';
     import TheChatSystemMessages from '@/components/TheChatSystemMessages'
     import TheChatMainHeader from '@/components/TheChatMainHeader'
     import TheChatMainFooter from '@/components/TheChatMainFooter'
@@ -95,9 +102,8 @@
             }*/
         },
         computed:{
-            roomActiveUsersInvited(){
-                return this.$store.state.roomActiveUsersInvited
-            },
+            ...mapState(['roomActiveUsersInvited','roomActiveUsersRecipient','roomActiveIsAdmin']),
+
             messageGroupDaysReverse(){
 
                 let list = Object.entries(this.messageGroupDays).reverse() //['14.15.2018',[messages]]
@@ -145,6 +151,11 @@
 
         },
         methods: {
+            transferCancel(to_id){
+                let data = this.httpParams.params
+                data.to_id = to_id
+                this.$http.put('guest-transfer-cancel',data)
+            },
             invitedCancel(user_id){
                 this.$http.post('chat-room-user-cancel-invitation',{
                     room_id:this.$store.state.roomActiveId,
@@ -153,7 +164,7 @@
             },
 
             getRoomUserAll(){
-                if (this.viewModeChat=='operators') return
+
                 this.$http.get('chat-room-user-all',this.httpParams).then(({data})=>{
 
                     this.$store.commit('roomActive',data.data)

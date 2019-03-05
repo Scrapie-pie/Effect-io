@@ -14,7 +14,7 @@
                         the-phrases-ready
                     box-controls(:show="showSmiles", @boxControlClose="showSmiles=false")
                         the-files-board(name="smiles")
-                    box-controls(:show="showGifs", @boxControlClose="showGifs=false")
+                    //box-controls(:show="showGifs", @boxControlClose="showGifs=false")
                         the-files-board(name="gifs")
                     box-controls(:show="showOffer", @boxControlClose="showOffer=false")
                         the-offer()
@@ -47,11 +47,11 @@
                         )
                     li.chat-main-footer__button
                         base-btn(
-                            :icon="{name:'smiles',textHidden:'Гифки'}"
+                            :icon="{name:'smiles',textHidden:'Смайлы'}"
                             @click.prevent="showSmiles=true"
                         )
                     li.chat-main-footer__button: base-btn(:icon="{name:'files',textHidden:'Файлы'}")
-                    li.chat-main-footer__button
+                    //li.chat-main-footer__button
                         base-btn(
                             :icon="{name:'gifs',textHidden:'Гифки'}"
                             @click.prevent="showGifs=true"

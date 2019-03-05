@@ -130,6 +130,8 @@
     import UploadAvatar from '@/components/UploadAvatar'
     import TelInput from '@/components/TelInput'
 
+    import browserNotification from '@/modules/browserNotification'
+
     //const  TelInput = ()=> import('@/components/TelInput')
 
     export default {
@@ -139,41 +141,7 @@
             PasswordRefresh,
             TelInput
         },
-        watch:{
-            profile:{
-                handler(val){
-                    if(val) {
-                        this.getProfileByUserId()
-                    }
-                },
-                immediate: true
-            },
-            branchListAll:{
-                handler(val){
-                    if(val) {
 
-                        this.branchListSelected = val.filter((item)=>{
-                            return this.model.branches_ids.includes(item.id)
-                        });
-                    }
-                },
-                immediate: true
-
-            },
-            phonesTypeSelect(val){
-                this.model.phones.type = val.value
-            },
-            branchListSelected(val) {
-                this.model.branches_ids = val.map((item) => {
-                    return item.id
-                })
-            },
-            adminMode(val){
-                if(val) {
-                    this.model.role_id = 13
-                } else this.model.role_id = 6
-            }
-        },
         data() {
             return {
 
@@ -236,6 +204,41 @@
                 });
             },
         },
+        watch:{
+            profile:{
+                handler(val){
+                    if(val) {
+                        this.getProfileByUserId()
+                    }
+                },
+                immediate: true
+            },
+            branchListAll:{
+                handler(val){
+                    if(val) {
+
+                        this.branchListSelected = val.filter((item)=>{
+                            return this.model.branches_ids.includes(item.id)
+                        });
+                    }
+                },
+                immediate: true
+
+            },
+            phonesTypeSelect(val){
+                this.model.phones.type = val.value
+            },
+            branchListSelected(val) {
+                this.model.branches_ids = val.map((item) => {
+                    return item.id
+                })
+            },
+            adminMode(val){
+                if(val) {
+                    this.model.role_id = 13
+                } else this.model.role_id = 6
+            }
+        },
         created(){
             //this.clearFormValue();
 
@@ -293,19 +296,13 @@
             getProfileByUserId(){
 
                 if(!!this.isAddOperator) {
-
                     this.getBranchListAll()
-
                     return
-
                 }
 
                 let user_id = + this.$route.query.user_id;
                 if(user_id) {
-
                     if (user_id == this.profile.user_id) return this.fillProfile()
-
-
 
                     this.$http.get('user-profile', {params:{user_id:user_id}}).then(({data})=>{
                         if(data.success) {
@@ -331,7 +328,7 @@
             },
             createOperator(){
                 this.$http.post('admin-employee-create', this.model).then(({data})=>{
-
+                    browserNotification('Оператор создан')
                     this.$router.push({name:'team'})
                 })
             },
@@ -346,7 +343,10 @@
                             return  this.createOperator()
                         }
 
-                        this.$http.post('user-update', this.model).then(()=>{
+                        this.$http.post('user-update', this.model).then(({data})=>{
+                            console.log();
+                            if(data.data.id === this.profile.id)  this.$store.commit('user/profileUpdate', data.data)
+                            browserNotification('Сохранено')
                             this.$router.push({name:'team'})
                         }).catch(({response})=>{
                             console.log('errors');
