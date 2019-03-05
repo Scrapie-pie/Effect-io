@@ -17,8 +17,8 @@ Object.defineProperty(Vue.prototype, '$_', { value: _ })
 
 import VueSocketio from 'vue-socket.io-extended';
 import io from 'socket.io-client';
-
-Vue.use(VueSocketio, io('http://newrobocall.ru:3000'),{
+import config from "@/config/index";
+Vue.use(VueSocketio, io(config.api_websocket),{
     store,actionPrefix: 'socket',
 
 });
