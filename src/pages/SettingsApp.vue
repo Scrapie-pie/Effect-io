@@ -141,7 +141,7 @@
                 Notification.requestPermission((permission)=>{
 
                     if(permission==='denied')  {
-                        this.$root.$emit('popup-notice','Вы запретили уведомления, их можно разрещить в настройках вашего браузера')
+                        this.$root.$emit('popup-notice','Вы запретили уведомления, их можно разрешить в настройках вашего браузера')
                         this.model.push_notifications=0;
 
                     }

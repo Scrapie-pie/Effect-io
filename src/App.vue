@@ -125,7 +125,7 @@
                         console.log('error №',err.response.status)
                     }
 
-                    if (err.response.status === 401) {
+                    if (err.response.status === 401 && err.response.status === 429) {
                         console.log(this.$route.fullPath,err.response.status);
                         this.$store.dispatch('user/logout').then(() => {
                             this.$router.push({name:'auth',query:{return:this.$route.fullPath}})
@@ -174,7 +174,15 @@
             },
         },
         sockets: {
+            "hot-guest"(val){
+                console.log('hot-guest',val);
+                this.$store.commit('visitors/messageWarning',{val,set:true})
+            },
+            "typing-live"(val){
+                console.log('typing-live',val);
 
+
+            },
             "new-message"(val) { //переместил сюда, что бы список на странице team обновлялся
                 console.log('sockets new-message',val);
 

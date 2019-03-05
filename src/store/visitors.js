@@ -13,7 +13,10 @@ const getDefaultState = () => {
     }
 }
 // initial state
-const state = getDefaultState()
+const state = getDefaultState();
+
+
+
 
 export default {
     namespaced: true,
@@ -25,6 +28,25 @@ export default {
         all(state, val) { //Todo походу не нужен
             state.all=val.list;
             state.allCount=val.count;
+        },
+        messageWarning(state, {val:{guest_uuid:uuid,site_id},set}){
+            let findIndex = state.process.findIndex((item)=>{
+
+                return item.uuid+item.site_id === uuid+site_id
+            })
+
+            if(findIndex !== -1) {
+                this._vm.$set(state.process[findIndex],'warning',set)
+
+            }
+             findIndex = state.self.findIndex((item)=>{
+                return item.uuid+item.site_id === uuid+site_id
+            })
+
+            if(findIndex !== -1) {
+                this._vm.$set(state.self[findIndex],'warning',set)
+
+            }
         },
         process(state, val) {
             state.process=val.list;
@@ -60,16 +82,7 @@ export default {
                 state.process.push(val);
 
                 state.processCount += 1;
-          /*      console.log(val);
-                let obj = {
-                    uuid,site_id,time,
-                    body:last_message,
-                    channel_type,
-                    from_user_info:{
-                        name:last_message_author,
-                        photo,
-                    }
-                } = val*/
+
 
 
 
@@ -91,6 +104,7 @@ export default {
             state.selfCount=val.count;
         },
         selfMessageLastUpdate(state, val) {
+            console.log('selfMessageLastUpdate',val);
             let findIndex = state.self.findIndex((item)=>{
                 if(val.selfUuid) return item.uuid === val.selfUuid; //selfId значит мое сообщение
                 else return item.uuid+item.site_id === val.uuid+val.site_id

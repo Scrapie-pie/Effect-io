@@ -12,18 +12,18 @@
                 li.last-messages__item(
                     v-for="(item, index) in filterSearchResult",
                     :key="item.uuid+item.site_id",
+                    :class="{'last-messages__item_active':item.open,'last-messages__item_warning':item.warning}"
 
                 )
                     router-link.last-messages__btn(
                         :to="item.link"
-                        v-text="`${item.fullName}:${item.last_message}`"
-                        active-class="last-messages__btn_active"
+                        v-text="item.last_message"
                     )
 
                     base-people.last-messages__people(
                         :avatar-url="item.photo",
                         :name="item.name",
-                        :text="item.last_message",
+                        :text="item.last_authorAndMessage",
                         :bg-text-no-fill="true",
                         :channel-name="$store.getters.channelName(item.channel_type)",
                         :count="item.unread.length"
@@ -42,7 +42,6 @@
         components:{filterSearch},
         data() {
             return {
-                warning:true,
                 filterSearchResult:[],
                 getItemListStart:true,
                 search:'',
@@ -55,9 +54,7 @@
         },
         computed:{
             itemListSortUnread(){
-                return _.sortBy(this.itemListStore,(item)=>{
-                    return -item.unread.length
-                });
+                return _.sortBy(this.itemListStore,(item)=>-item.unread.length);
             },
             itemListSortActiveFirst() {
                 let itemActive,
@@ -82,8 +79,10 @@
                         let {uuid,site_id} = item;
                         item.link = {name:'process',params: { uuid,site_id}}
                         item.unread = [];
-                        item.last_message = this.authorAndMessage(item)
-                        return item
+
+
+
+                        return this.itemFormat(item)
                     });
 
                 }
@@ -92,10 +91,8 @@
                     itemList=this.$store.state.visitors.self.map(item=>{
                         let {uuid,site_id} = item;
                         item.link = {name:'chatId',params: { uuid,site_id}}
-                        item.last_message = this.authorAndMessage(item)
 
-
-                        return item
+                        return this.itemFormat(item)
                     });
                 }
 
@@ -147,6 +144,15 @@
             if (this.viewModeChat==="visitors") this.type='self';
         },
         methods:{
+            itemFormat(item){
+                item.last_authorAndMessage = this.authorAndMessage(item);
+
+                if(this.httpParams) {
+                    let {uuid,site_id} = this.httpParams.params;
+                    item.open = (item.uuid+item.site_id === uuid+site_id)
+                }
+                return item
+            },
             authorAndMessage({last_message_author,last_message}){
                 let author = '';
                 if(last_message_author) author = last_message_author +': '
@@ -252,7 +258,9 @@
             padding-top:calc-em(10);
             padding-bottom:calc-em(10);
 
-
+            &:hover,&_active {
+                background-color:$color_bg-hover;
+            }
 
             &_warning {
                 &::before {
@@ -284,9 +292,7 @@
             height:100%;
             border-color:transparent;
             font-size:0;
-            &:hover,&_active {
-                background-color:$color_bg-hover;
-            }
+
         }
     }
 </style>

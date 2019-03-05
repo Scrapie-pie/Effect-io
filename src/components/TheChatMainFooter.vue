@@ -146,7 +146,6 @@
                             type:this.viewModeChat
                         }
                     );
-
                 }
             },
             onEnter: function (e) {
@@ -174,6 +173,9 @@
                         site_id,
                         body
                     }
+
+                    let val = this.httpParams.params
+                    this.$store.commit('visitors/messageWarning',{val,set:false})
 
                 } else {
 

@@ -70,16 +70,16 @@ export default {
 
         },
         logout({commit}) {
-
+            this._vm.$http.put('operator-online-update',{
+                online:0
+            })
             commit('logout')
             commit('resetState')
             commit('resetState', null, { root: true })
             commit('operators/resetState', null, { root: true })
             commit('visitors/resetState', null, { root: true })
 
-            this._vm.$http.put('operator-online-update',{
-                online:0
-            })
+
 
         },
         getSettings({ commit, dispatch }) {

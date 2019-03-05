@@ -234,6 +234,7 @@
                 })
             },
             adminMode(val){
+                console.log('adminMode',val);
                 if(val) {
                     this.model.role_id = 13
                 } else this.model.role_id = 6
@@ -307,6 +308,7 @@
                     this.$http.get('user-profile', {params:{user_id:user_id}}).then(({data})=>{
                         if(data.success) {
                             this.model=data.data.user;
+                            this.adminMode=this.model.role_id === 13;
                             this.phoneUnmaskedValue=this.model.phones.phone;
                             this.getBranchListAll()
                         }
