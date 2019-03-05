@@ -52,7 +52,11 @@ function notificationEngine(title, body){
     }
 }
 
+import store from '@/store/store'
 function browserNotificationMessage (val) {
+    if(!store.state.user.settings.settings.push_notifications) return
+
+
     if(!document.hidden) {
         return new Promise((resolve) => { // для совместимости  с clickFunc
             resolve();

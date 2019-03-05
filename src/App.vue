@@ -21,7 +21,7 @@
     import TheHeader from '@/components/TheHeader'
     import ThePopup from "@/components/ThePopup";
 
-    import {httpParams } from '@/mixins/mixins'
+    import {httpParams,viewModeChat } from '@/mixins/mixins'
 
 
     export default {
@@ -29,7 +29,7 @@
             TheHeader,
             ThePopup
         },
-        mixins:[httpParams],
+        mixins:[httpParams,viewModeChat],
         computed:{
             userId(){
                 return this.$store.state.user.profile.id
@@ -193,8 +193,10 @@
                 if (val.site_id && val.room_id === this.$store.state.roomActiveId) { // если есть val.site_id значит общение в диалогах
                     this.$root.$emit('messageAdd',val) // Нужно, что бы чужое сообщение оказалось каждое в своем чате
                 }
-                console.log(this.httpParams);
-                if(!val.site_id && (val.from_user_info.user_id == this.httpParams.params.id)) {this.$root.$emit('messageAdd',val)}
+
+                if(
+                    this.viewModeChat==='operators' && //иначе на других страницах this.httpParams.params.id вылетала ошибка
+                    !val.site_id && (val.from_user_info.user_id == this.httpParams.params.id)) {this.$root.$emit('messageAdd',val)}
 
              /*   if(val.from_role_id === 9 && val.site_id) {
                     this.$store.commit('visitors/selfMessageLastUpdate',val)
