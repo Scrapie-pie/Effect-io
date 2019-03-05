@@ -168,7 +168,7 @@
                 this.$http.get('chat-room-user-all',this.httpParams).then(({data})=>{
 
                     this.$store.commit('roomActive',data.data)
-                    console.log(this.$store.state.roomActiveUsersActive);
+
                 })
             },
             scrollerPushDown(scrollbar){

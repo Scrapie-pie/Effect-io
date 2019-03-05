@@ -120,7 +120,7 @@
             itemList(){
                 return this.$store.getters['operators/all'].filter(item=>
                     item.online===1 &&
-                    item.id!==this.$store.state.user.profile.id
+                    item.id!==this.$store.state.user.profile.id // Убираем себя из списка
                 )
             }
         },

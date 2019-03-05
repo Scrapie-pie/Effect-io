@@ -10,7 +10,7 @@
                             @click.prevent="showTransfer()"
                         ) Передать диалог
 
-                    li.chat-actions__more-item(v-if="viewModeChat!='process'")
+                    li.chat-actions__more-item(v-if="viewModeChat!='process' && showExit")
                         base-btn(:icon="{name:'exit',top:true}", @click="exitRoomConfirm") Выйти из диалога
                     li.chat-actions__more-item
                         base-btn(:icon="{name:'bl',top:true}", @click="showBlockClient=true") Блокировать клиента
@@ -43,7 +43,12 @@
             }
         },
         computed:{
+            showExit(){
+                console.log('showConfirmExit',this.$store.state.roomActiveUsersActive,this.$store.state.roomActiveUsersActive.length > 1);
+                return this.$store.state.roomActiveUsersActive.length > 1
+            },
             showConfirmExit(){
+
                 return this.$store.state.roomActiveUsersActive.length < 1
             }
         },

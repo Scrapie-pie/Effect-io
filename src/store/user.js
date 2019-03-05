@@ -1,13 +1,22 @@
 import _ from 'underscore'
-export default {
-    namespaced: true,
-    state: {
+
+const getDefaultState = () => {
+    return {
         profile:false,
         settings:false,
         branchListAll:[],
+    }
+}
+// initial state
+const state = getDefaultState()
 
-    },
+export default {
+    namespaced: true,
+    state,
     mutations: {
+        resetState(state) {
+            Object.assign(state, getDefaultState())
+        },
         'SOCKET_UPDATE-BRANCHES'(state, val) {
             console.log('SOCKET_UPDATE-BRANCHES');
             state.branchListAll=val;
@@ -18,11 +27,6 @@ export default {
             localStorage.removeItem('jwt')
             delete this._vm.$http.defaults.headers.common[ 'jwt' ];
             delete this._vm.$http.defaults.headers['content-type'];
-            for (let prop in state) {
-
-                if(Array.isArray(state[prop])) state[prop]=[]
-                else state[prop] = false;
-            }
         },
         profileUpdate(state, val) {
 
@@ -66,7 +70,17 @@ export default {
 
         },
         logout({commit}) {
+
             commit('logout')
+            commit('resetState')
+            commit('resetState', null, { root: true })
+            commit('operators/resetState', null, { root: true })
+            commit('visitors/resetState', null, { root: true })
+
+            this._vm.$http.put('operator-online-update',{
+                online:0
+            })
+
         },
         getSettings({ commit, dispatch }) {
             this._vm.$http.get('company-get-settings').then(({data})=>{

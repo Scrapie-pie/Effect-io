@@ -25,19 +25,27 @@
                     .chat-main-header__client-history-actions()
                         the-chat-main-header-history
 
+
         ul.chat-main-header__controls(v-if="viewModeChat!='operators'")
-            li.chat-main-header__control(v-if="viewModeChat!='process'")
-                base-btn(
-                    theme="default"
-                    padding="xs",
-                    @click.prevent="showSelectOperators=true;selectOperatorsMode='invite'"
-                ) + Пригласить
-                .chat-main-header__select-operator
-                    box-controls(
-                        :show="showSelectOperators",
-                        @boxControlClose="showSelectOperators=false"
-                        )
-                        select-operators(:name="selectOperatorsMode")
+            template(v-if="viewModeChat!='process'")
+                li.chat-main-header__control(v-if="roomActiveUserActive")
+                    base-btn(
+                        theme="error"
+                        padding="xs",
+                        @click.prevent="chatCompletion"
+                    ) Завершить диалог
+                li.chat-main-header__control()
+                    base-btn(
+                        theme="default"
+                        padding="xs",
+                        @click.prevent="showSelectOperators=true;selectOperatorsMode='invite'"
+                    ) + Пригласить
+                    .chat-main-header__select-operator
+                        box-controls(
+                            :show="showSelectOperators",
+                            @boxControlClose="showSelectOperators=false"
+                            )
+                            select-operators(:name="selectOperatorsMode")
 
 
             li.chat-main-header__control.chat-main-header__control_more
@@ -54,11 +62,11 @@
 </template>
 
 <script>
-    import lodash_pull from 'lodash/pull'
+
     import TheChatMainHeaderHistory from '@/components/TheChatMainHeaderHistory'
     import TheChatMainHeaderActions from '@/components/TheChatMainHeaderActions'
     import SelectOperators from '@/components/SelectOperators'
-    import { viewModeChat } from '@/mixins/mixins'
+    import { viewModeChat,httpParams } from '@/mixins/mixins'
 
     export default {
         components: {
@@ -66,7 +74,7 @@
             TheChatMainHeaderActions,
             SelectOperators
         },
-        mixins:[viewModeChat],
+        mixins:[viewModeChat,httpParams],
         data() {
             return {
                 membersList: [],
@@ -95,16 +103,22 @@
                 }
 
             },
-            roomActiveUsersActive(){
-                return this.$store.state.roomActiveUsersActive
+            roomActiveUserActive(){
+
+
+                let id = this.$store.state.user.profile.id,
+                    ids = this.$store.state.roomActiveUsersActive;
+                console.log('roomActiveUserActive',ids,id);
+                return  ids.includes(id)
             },
             compMembersList(){
-                let[users,id ]= [this.roomActiveUsersActive,this.$store.state.user.profile.id];
-                let ids = lodash_pull(users,id);
+                let id = this.$store.state.user.profile.id,
+                    usersIds = this.$store.state.roomActiveUsersActive;
 
-                if(!ids) return [];
 
-                let operators = ids.map(itemId=>{
+               usersIds = usersIds.filter(item=>item!==id) //Убираем из списка себя
+
+                let operators = usersIds.map(itemId=>{
                     let {id,first_name} = this.$store.state.operators.all.find((item) => item.id === itemId )
                     return {id,first_name}
                 })
@@ -112,6 +126,11 @@
             }
         },
         methods:{
+            chatCompletion(){
+                    let data = this.httpParams.params;
+                    data.intent = 'farewell'
+                this.$http.post('message-send', data);
+            },
             removeFromRoom(user_id){
                 let room_id = this.$store.state.roomActiveId;
                 this.$http.post('chat-room-user-remove',{room_id,user_id}).then(()=>{
@@ -178,7 +197,9 @@
         }
 
         &__control {
+            padding:0 calc-em(5);
             &_more {
+                padding:0;
                 .icon_more {
                     fill:glob-color('info-dark');
                 }

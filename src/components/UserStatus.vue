@@ -133,7 +133,8 @@
                     this.$http.put('operator-online-update',{
                         online:2  //перерыв
                     });
-                    this.status=2
+                    this.status=2;
+                    this.$root.$emit('popup-notice','Ваш статус переведен в режим "Перерыв", так как у вас нет активности долгое время. Что бы начать общение с гостями, установите статус "В сети"');
                 }, 10 * 60 * 1000);
             },
             resetActivity() {
@@ -149,11 +150,7 @@
                 });
             },
         },
-        sockets: {
-            "update-employees"(val) {
-                val[0]
-            }
-        },
+
 
     }
 </script>

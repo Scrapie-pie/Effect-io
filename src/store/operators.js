@@ -1,11 +1,19 @@
-export default {
-    namespaced: true,
-    state: {
+const getDefaultState = () => {
+    return {
         all:[],
 
+    }
+}
+// initial state
+const state = getDefaultState()
 
-    },
+export default {
+    namespaced: true,
+    state,
     mutations: {
+        resetState (state) {
+            Object.assign(state, getDefaultState())
+        },
         'SOCKET_UPDATE-EMPLOYEES'(state, val){
             console.log('SOCKET_UPDATE-EMPLOYEES',val);
             state.all=val;

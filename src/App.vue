@@ -14,7 +14,7 @@
     import '@/scss/base.scss'
 
 
-
+    import config from "@/config/index";
 
     import browserNotification from '@/modules/browserNotification'
     import {browserNotificationMessage} from '@/modules/browserNotification'
@@ -63,7 +63,7 @@
 
                 try {
                     console.log(this.userId);
-                    let socket = io("http://newrobocall.ru:3000", {
+                    let socket = io(config.api_websocket, {
                         query: {
                             uuid:  this.userId
                         }

@@ -8,22 +8,31 @@ import visitors from '@/store/visitors'
 
 Vue.use(Vuex)
 
+const getDefaultState = () => {
+    return {
+        loading:false,
+        roomActiveId:false,
+        roomActiveUsers:[],
+        roomActiveUsersActive:[],
+        roomActiveUsersInvited:[],
+        roomActiveUsersRecipient:[],
+        roomActiveIsAdmin:false,
+    }
+}
+// initial state
+const state = getDefaultState()
+
 export default new Vuex.Store({
     modules: {
         user,
         operators,
         visitors
     },
-    state: {
-        loading:false,
-        roomActiveId:false,
-        roomActiveUsersActive:[],
-        roomActiveUsersInvited:[],
-        roomActiveUsersRecipient:[],
-        roomActiveIsAdmin:false,
-
-    },
+    state,
     mutations: {
+        resetState (state) {
+            Object.assign(state, getDefaultState())
+        },
 
         loading(state, val) {
             state.loading = val
@@ -35,23 +44,16 @@ export default new Vuex.Store({
                 return users.map((item)=>item.user_id)
             }
 
-
-
             console.log('roomActiveUsers',val);
-            console.log('roomActiveUsersActive',getIds('active'));
-            console.log('roomActiveUsersInvited',getIds('invited'));
+            //console.log('roomActiveUsersActive',getIds('active'));
+           // console.log('roomActiveUsersInvited',getIds('invited'));
 
             state.roomActiveIsAdmin = val.filter((item)=>item.isAdmin && item.user_id === state.user.profile.id).length;
-
             state.roomActiveId=val[0].room_id;
-            state.roomActiveUsersActive=getIds('active')
-            state.roomActiveUsersRecipient=getIds('recipient').map(id=>{
-                return state.operators.all.find(item=>item.id===id)
-            })
-            state.roomActiveUsersInvited=getIds('invited').map(id=>{
-                return state.operators.all.find(item=>item.id===id)
-            })
-
+            state.roomActiveUsers=val;
+            state.roomActiveUsersActive=getIds('active');
+            state.roomActiveUsersRecipient=getIds('recipient')
+            state.roomActiveUsersInvited=getIds('invited')
         },
 
 
@@ -80,10 +82,6 @@ export default new Vuex.Store({
                 commit(type+'/messageRead',findIndex);
                 commit('user/unreadUpdate',[unreadType,-unread.length],{root:true})
             }
-
-
-
-
 
 
         },

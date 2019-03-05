@@ -1,10 +1,7 @@
 import _ from 'underscore'
 
-
-
-export default {
-    namespaced: true,
-    state: {
+const getDefaultState = () => {
+    return {
         all:[],
         allCount:false,
         process:[],
@@ -13,8 +10,18 @@ export default {
         selfCount:false,
         itemOpen:false,
         itemOpenHistoryActions:false
-    },
+    }
+}
+// initial state
+const state = getDefaultState()
+
+export default {
+    namespaced: true,
+    state,
     mutations: {
+        resetState (state) {
+            Object.assign(state, getDefaultState())
+        },
         all(state, val) { //Todo походу не нужен
             state.all=val.list;
             state.allCount=val.count;
