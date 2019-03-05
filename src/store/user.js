@@ -38,6 +38,10 @@ export default {
         settings(state, val) {
             state.settings=val;
         },
+        settingsUpdate(state, val) {
+            state.settings.settings=val;
+        },
+
         branchListAll(state, val) {
             state.branchListAll=val;
         }

@@ -21,14 +21,14 @@ function notificationEngine(title, body){
 // Если права есть, отправим уведомление
 
         return new Promise((resolve) => {
-        console.log('sendNotification',title, options);
-        var notification = new Notification(title, options);
+            console.log('sendNotification',title, options);
+            var notification = new Notification(title, options);
 
-        function clickFunc() {
-            window.focus(); this.close();
-            resolve();
-        }
-        notification.onclick = clickFunc;
+            function clickFunc() {
+                window.focus(); this.close();
+                resolve();
+            }
+            notification.onclick = clickFunc;
         });
         //notification.show();
     }
@@ -53,7 +53,11 @@ function notificationEngine(title, body){
 }
 
 function browserNotificationMessage (val) {
-    if(!document.hidden) return;
+    if(!document.hidden) {
+        return new Promise((resolve) => { // для совместимости  с clickFunc
+            resolve();
+        });
+    };
 
     let title='',body='',link;
 

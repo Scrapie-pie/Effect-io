@@ -21,11 +21,15 @@
     import TheHeader from '@/components/TheHeader'
     import ThePopup from "@/components/ThePopup";
 
+    import {httpParams } from '@/mixins/mixins'
+
+
     export default {
         components: {
             TheHeader,
             ThePopup
         },
+        mixins:[httpParams],
         computed:{
             userId(){
                 return this.$store.state.user.profile.id
@@ -186,9 +190,11 @@
 
 
 
-                if (val.room_id === this.$store.state.roomActiveId) {
-                    this.$root.$emit('messageAdd',val)
-                } // Нужно, что бы чужое сообщение оказалось каждое в своем чате}
+                if (val.site_id && val.room_id === this.$store.state.roomActiveId) { // если есть val.site_id значит общение в диалогах
+                    this.$root.$emit('messageAdd',val) // Нужно, что бы чужое сообщение оказалось каждое в своем чате
+                }
+                console.log(this.httpParams);
+                if(!val.site_id && (val.from_user_info.user_id == this.httpParams.params.id)) {this.$root.$emit('messageAdd',val)}
 
              /*   if(val.from_role_id === 9 && val.site_id) {
                     this.$store.commit('visitors/selfMessageLastUpdate',val)
@@ -197,7 +203,8 @@
                 }*/
 
                 if(val.status === "unprocessed") {
-                    return  this.$store.commit('visitors/processMessageLastUpdate',val)}
+                    return  this.$store.commit('visitors/processMessageLastUpdate',val)
+                }
 
 
 

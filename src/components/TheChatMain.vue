@@ -164,7 +164,7 @@
             },
 
             getRoomUserAll(){
-
+                if (this.viewModeChat=='operators') return
                 this.$http.get('chat-room-user-all',this.httpParams).then(({data})=>{
 
                     this.$store.commit('roomActive',data.data)

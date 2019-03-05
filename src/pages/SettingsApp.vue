@@ -164,9 +164,9 @@
 
 
                   this.$http.put('company-settings-update',data)
-                      .then(({data})=>{
-                       console.log(data);
+                      .then(()=>{
                           browserNotification('Сохранено')
+                          this.$store.commit('user/settingsUpdate',data)
                           this.$router.push({name:'team'})
 
                    })
