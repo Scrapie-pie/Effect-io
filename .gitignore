@@ -23,5 +23,4 @@ yarn-error.log*
 *.sw*
 
 
-src/config/default.index.js
 src/config/index.js
