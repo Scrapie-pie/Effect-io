@@ -166,6 +166,7 @@
         &__header {
             margin-bottom:calc-em(5);
             display:flex;
+            align-items:flex-end;
         }
 
         &__count{

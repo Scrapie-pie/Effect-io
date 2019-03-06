@@ -22,18 +22,18 @@
                                 :name="item.from_user_info.name",
                                 :text="item.body | messageBreakLine",
                                 :time="item.time",
+
                                 :right="item.from_user_info.id == $store.state.user.profile.employee_id",
                                 :img="item.img"
                             )
                             p(v-else v-text="item.body" :style="{textAlign:'center'}")
-                        li.chat-main__messages-item(v-if="visitorTypingLive")
+                        li.chat-main__messages-item(v-if="showVisitorTypingLive")
                             base-people(
                                 :key="'visitorTypingLive'"
                                 avatar-width="md",
                                 :avatar-url="visitorInfo.photo",
                                 :name="visitorInfo.name",
                                 :text="visitorTypingLive | messageBreakLine",
-
                             )
 
                         template(v-if="(roomActiveUsersInvited.length || roomActiveUsersRecipient.length) && roomActiveIsAdmin")
@@ -77,7 +77,7 @@
         mixins:[viewModeChat,httpParams],
         filters: {
             messageBreakLine: function (value) {
-                return   value.replace(/(\r\n|\n)/g, "<br>")
+                return   value.replace(/(\r\n|\n|&lt;br&gt;)/g, "<br>") // из виджета &lt;br&gt;
             }
         },
         data() {
@@ -86,7 +86,8 @@
                 messageRun:true, //Если история закончилась, что бы больше не отправлял запросы
                 messageList:[],
                 limit:20,
-                systemMessages:[]
+                systemMessages:[],
+                visitorTypingLive:'',
             }
         },
         watch:{
@@ -95,6 +96,7 @@
                 this.historyMessageLoadStart=true;
                 this.messageRun=true;
                 this.messageList=[];
+                this.clearTimerVisitorTypingLive=null,
                 this.historyMessageLoad().then(()=>{
                     this.scrollerPushDown(this.$refs.scrollbar)
                 });
@@ -102,7 +104,12 @@
             messageDays(val){
                 return val
             },
-            visitorTypingLive(val,oldVal){
+            compVisitorTypingLive(val,oldVal){
+                this.visitorTypingLive=val;
+                clearTimeout(this.clearTimerVisitorTypingLive);
+                this.clearTimerVisitorTypingLive = setTimeout(()=>{
+                    this.visitorTypingLive=''
+                },1000 * 20) //секунд
 
                 if(!val.length===!oldVal.length) {
 
@@ -112,6 +119,7 @@
                     setTimeout(()=>{
                         this.scrollerPushDown(this.$refs.scrollbar)
                     },50)
+
 
                 }
 
@@ -128,10 +136,16 @@
         },
         computed:{
             ...mapState(['roomActiveUsersInvited','roomActiveUsersRecipient','roomActiveIsAdmin','roomActive']),
+            showVisitorTypingLive(){
+             let {guest_uuid,site_id}  = this.roomActive.visitor,
+                 {params} = this.httpParams
+                console.log('showVisitorTypingLive',guest_uuid+site_id , params.guest_uuid+ params.site_id,this.compVisitorTypingLive.length);
 
-            visitorTypingLive(){
+                return (guest_uuid + site_id === params.guest_uuid + params.site_id) && this.compVisitorTypingLive.length
+            },
+            compVisitorTypingLive(){
                 let {typingLive} = this.roomActive.visitor;
-                if(typingLive) typingLive +='...';
+                if(typingLive) typingLive +='...<br><small>(гость печатает сообщение)</small>';
                 return typingLive
             },
 
@@ -193,17 +207,18 @@
                 if (this.viewModeChat=='operators') return
                 this.$http.get('chat-room-user-all',this.httpParams).then(({data})=>{
                     data.data.visitor =  this.httpParams.params;
+                    //console.log(this.httpParams);
                     this.$store.commit('roomActive',data.data)
 
                 })
             },
             scrollerPushDown(scrollbar){
-                console.log('scrollerPushDown',scrollbar);
+                //console.log('scrollerPushDown',scrollbar);
                 let scrollerEl = scrollbar.$el,
                     valPx = this.scrollerPxToPercent(scrollerEl, 100);
                 scrollerEl.scrollTop = valPx;
                 scrollbar.update()
-                console.log('scrollerEl',scrollerEl,valPx);
+                //console.log('scrollerEl',scrollerEl,valPx);
             },
             scrollerPxToPercent(scroller,scrollTop){
                 let height = scroller.clientHeight,
@@ -232,7 +247,7 @@
                     site_id,
                     users_ids = []
 
-                if (this.viewModeChat=='visitors' || this.viewModeChat=='process') {
+                if (this.viewModeChat==='visitors' || this.viewModeChat==='process') {
                     let {guest_uuid,site_id } =  this.httpParams.params;
                          params.guest_uuid = guest_uuid,
                          params.site_id = site_id;

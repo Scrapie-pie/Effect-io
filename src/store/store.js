@@ -51,6 +51,7 @@ export default new Vuex.Store({
             let visitor = state.roomActive.visitor;
             if(visitor.guest_uuid+visitor.site_id === guest_uuid+site_id)  state.roomActive.visitor.typingLive=message;
 
+
         },
         roomActive(state, val) {
             
@@ -63,6 +64,7 @@ export default new Vuex.Store({
             //console.log('roomActiveUsersActive',getIds('active'));
            // console.log('roomActiveUsersInvited',getIds('invited'));
 
+            state.roomActive.visitor.typingLive='' // очищаем при переходе в другую комнату
             state.roomActive.visitor.guest_uuid=val.visitor.guest_uuid
             state.roomActive.visitor.site_id=val.visitor.site_id
 

@@ -143,7 +143,7 @@
         },
         sockets:{
             "guest-update"(val) {
-                console.log('guest-update',val);
+                //console.log('guest-update',val);
                 let {site_id,uuid} = this.httpParams.params;
 
                 if(val.uuid+val.site_id===uuid+site_id){
