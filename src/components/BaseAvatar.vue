@@ -22,7 +22,7 @@
             },
             name:{
                 type:String,
-                default:'1',
+                default:'',
             },
             width: {
                 validator: function (value) {

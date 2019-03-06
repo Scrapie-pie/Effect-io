@@ -3,6 +3,7 @@ import config from "@/config/index";
 import browserNotification from '@/modules/browserNotification'
 import {browserNotificationMessage} from '@/modules/browserNotification'
 import {httpParams,viewModeChat} from '@/mixins/mixins'
+import settings from "@/routes/settings";
 export default {
     mixins:[httpParams,viewModeChat],
     computed:{
@@ -16,6 +17,13 @@ export default {
         }
     },
     methods: {
+        playSoundFile(nameFile) {
+            let{settings,sounds} = this.$store.state.user.settings
+                let index =  settings[nameFile];
+                let audio = new Audio(config.api_server.split('/app')[0] + sounds[index].file);
+                audio.volume = .5;
+                audio.play();
+        },
         webSocketInit() {
             this.$socket.disconnect();
             this.$socket.query = `uuid=${this.userId}`;
@@ -112,10 +120,16 @@ export default {
                 let {guest_uuid,site_id} = this.httpParams.params
                 if(val.from_user_info.uuid+val.site_id === guest_uuid+site_id) { //Если это сообщение посетителя в чате то нужно очистить TypingLive
                     this.$store.commit('roomActiveTypingLive',{message:'',guest_uuid,site_id})
+                    this.playSoundFile('sound_new_guest_message')
+
                 }
 
+
                 this.$store.commit('visitors/selfMessageLastUpdate',val)
-                this.$store.commit('user/unreadUpdate',['guest',1])
+                this.$store.commit('user/unreadUpdate',['guest',1]);
+
+
+
                 browserNotificationMessage(val).then(click=>{
                     if(click==='toLink') {
                         let {uuid,site_id} =  val
@@ -127,6 +141,8 @@ export default {
                 this.$store.commit('operators/messageLastUpdate',val)
                 this.$store.commit('user/unreadUpdate',['private',1])
 
+
+                this.playSoundFile('sound_new_operator_message')
                 browserNotificationMessage(val).then(click=>{
                     if(click==='toLink') {
                         let find = this.$store.state.operators.all.find((item)=>item.employee_id === val.from_user_info.id)
@@ -159,7 +175,7 @@ export default {
 
             this.$store.commit('visitors/processMessageLastUpdate',val)
             this.$store.commit('user/unreadUpdate',['unprocessed',1])
-
+            this.playSoundFile('sound_new_guest')
             browserNotificationMessage(val).then(click=>{
                 let {uuid,site_id} =  val
                 this.$router.push({name:'process',params: { uuid,site_id}})
@@ -181,7 +197,7 @@ export default {
         },
         "update-employees"(val) {
             console.log('update-employees user/profile update')
-            //this.$store.commit('user/profileUpdate', val.find(item=>item.id === this.$store.state.user.profile.id)) //Todo сохранять то что пришло в ответе
+
         }
 
     },
