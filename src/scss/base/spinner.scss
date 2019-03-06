@@ -15,7 +15,7 @@
     border-top:2px solid glob-color('info');
     border-right:2px solid transparent;
     animation:spinner .6s linear infinite;
-    z-index:2;
+    z-index:9;
   }
   &_xs:before {
     width:25px;
@@ -42,6 +42,7 @@
   &-main-page:before {
     position:fixed;
     box-shadow: 0 0 6em 4em rgba(255, 255, 255, 0.7), inset 0 0 1em 15em rgba(255, 255, 255, 0.7);
+
   }
   &-main-page:after {
     content: '';
@@ -51,7 +52,7 @@
     top: 0;
     bottom: 0;
     background: rgba(255, 255, 255, 0.6);
-    z-index: 1;
+    z-index:8;
   }
 
   @keyframes spinner{

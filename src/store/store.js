@@ -12,11 +12,20 @@ const getDefaultState = () => {
     return {
         loading:false,
         roomActiveId:false,
+        roomActive:{
+            visitor:{
+                guest_uuid:'',
+                site_id:'',
+                typingLive:''
+            },
+
+        },
         roomActiveUsers:[],
         roomActiveUsersActive:[],
         roomActiveUsersInvited:[],
         roomActiveUsersRecipient:[],
         roomActiveIsAdmin:false,
+
     }
 }
 // initial state
@@ -37,6 +46,12 @@ export default new Vuex.Store({
         loading(state, val) {
             state.loading = val
         },
+        roomActiveTypingLive(state,{message,guest_uuid,site_id}){
+
+            let visitor = state.roomActive.visitor;
+            if(visitor.guest_uuid+visitor.site_id === guest_uuid+site_id)  state.roomActive.visitor.typingLive=message;
+
+        },
         roomActive(state, val) {
             
             function getIds(status) {
@@ -47,6 +62,9 @@ export default new Vuex.Store({
             console.log('roomActiveUsers',val);
             //console.log('roomActiveUsersActive',getIds('active'));
            // console.log('roomActiveUsersInvited',getIds('invited'));
+
+            state.roomActive.visitor.guest_uuid=val.visitor.guest_uuid
+            state.roomActive.visitor.site_id=val.visitor.site_id
 
             state.roomActiveIsAdmin = val.filter((item)=>item.isAdmin && item.user_id === state.user.profile.id).length;
             state.roomActiveId=val[0].room_id;

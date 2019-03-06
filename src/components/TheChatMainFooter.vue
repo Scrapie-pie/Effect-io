@@ -175,7 +175,7 @@
                     }
 
                     let val = this.httpParams.params
-                    this.$store.commit('visitors/messageWarning',{val,set:false})
+                    this.$store.commit('visitors/messageHot',{val,set:false})
 
                 } else {
 

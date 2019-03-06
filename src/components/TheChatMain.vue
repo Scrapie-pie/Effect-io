@@ -26,6 +26,16 @@
                                 :img="item.img"
                             )
                             p(v-else v-text="item.body" :style="{textAlign:'center'}")
+                        li.chat-main__messages-item(v-if="visitorTypingLive")
+                            base-people(
+                                :key="'visitorTypingLive'"
+                                avatar-width="md",
+                                :avatar-url="visitorInfo.photo",
+                                :name="visitorInfo.name",
+                                :text="visitorTypingLive | messageBreakLine",
+
+                            )
+
                         template(v-if="(roomActiveUsersInvited.length || roomActiveUsersRecipient.length) && roomActiveIsAdmin")
                             li.chat-main__messages-item(
                                 v-for="(item, index) in roomActiveUsersInvited",
@@ -91,7 +101,22 @@
             },
             messageDays(val){
                 return val
+            },
+            visitorTypingLive(val,oldVal){
+
+                if(!val.length===!oldVal.length) {
+
+
+                } else {
+                    console.log('visitorTypingLive',!val.length===!oldVal.length);
+                    setTimeout(()=>{
+                        this.scrollerPushDown(this.$refs.scrollbar)
+                    },50)
+
+                }
+
             }
+
           /*  messageList(val){
                 if (val) {
                     let mas = val.slice();
@@ -102,7 +127,13 @@
             }*/
         },
         computed:{
-            ...mapState(['roomActiveUsersInvited','roomActiveUsersRecipient','roomActiveIsAdmin']),
+            ...mapState(['roomActiveUsersInvited','roomActiveUsersRecipient','roomActiveIsAdmin','roomActive']),
+
+            visitorTypingLive(){
+                let {typingLive} = this.roomActive.visitor;
+                if(typingLive) typingLive +='...';
+                return typingLive
+            },
 
             messageGroupDaysReverse(){
 
@@ -124,11 +155,6 @@
             messageListReverse(){
                 let list = this.messageList.slice();
                 return list.reverse()
-            },
-            member(){
-                return {
-                    [this.visitorInfo.uuid]: this.visitorInfo.name
-                }
             },
             visitorInfo(){
                 return this.$store.state.visitors.itemOpen
@@ -166,16 +192,18 @@
             getRoomUserAll(){
                 if (this.viewModeChat=='operators') return
                 this.$http.get('chat-room-user-all',this.httpParams).then(({data})=>{
-
+                    data.data.visitor =  this.httpParams.params;
                     this.$store.commit('roomActive',data.data)
 
                 })
             },
             scrollerPushDown(scrollbar){
+                console.log('scrollerPushDown',scrollbar);
                 let scrollerEl = scrollbar.$el,
                     valPx = this.scrollerPxToPercent(scrollerEl, 100);
                 scrollerEl.scrollTop = valPx;
                 scrollbar.update()
+                console.log('scrollerEl',scrollerEl,valPx);
             },
             scrollerPxToPercent(scroller,scrollTop){
                 let height = scroller.clientHeight,

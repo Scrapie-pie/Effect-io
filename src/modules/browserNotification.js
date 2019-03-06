@@ -26,7 +26,7 @@ function notificationEngine(title, body){
 
             function clickFunc() {
                 window.focus(); this.close();
-                resolve();
+                resolve('toLink');
             }
             notification.onclick = clickFunc;
         });
