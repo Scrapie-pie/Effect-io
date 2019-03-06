@@ -107,31 +107,31 @@ export default new Vuex.Store({
             switch (number) {
 
                 case 1:
-                    text = '1';
+                    text = 'виджет';
                     break;
                 case 2:
-                    text = 'vk';
+                    text = 'VK';
                     break;
                 case 3:
-                    text = 'FB';
+                    text = 'Facebook';
                     break;
                 case 4:
-                    text = 'SLACK';
+                    text = 'Slack';
                     break;
                 case 5:
-                    text = 'TG';
+                    text = 'Telegram';
                     break;
                 case 6:
-                    text = 'VIBER';
+                    text = 'Viber';
                     break;
                 case 7:
-                    text = 'SITE2';
+                    text = 'виджет';
                     break;
                 case 8:
                     text = 'SLACKIO';
                     break;
                 case 9:
-                    text = 'ZENDESK';
+                    text = 'Zendesk';
                     break;
                 case 10:
                     text = 'AMO';
@@ -143,7 +143,7 @@ export default new Vuex.Store({
                     text = 'OPENAPI';
                     break;
                 case 13:
-                    text = 'whatsapp';
+                    text = 'WhatsApp';
                     break;
 
                 default:
