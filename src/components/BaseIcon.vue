@@ -21,6 +21,7 @@
     import eye from '@/assets/img/icons/eye.svg';
     import edit from '@/assets/img/icons/edit.svg';
     import info from '@/assets/img/icons/info.svg';
+    import warning from '@/assets/img/icons/warning.svg';
 
 
 

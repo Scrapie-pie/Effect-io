@@ -1,7 +1,9 @@
 <template lang="pug">
-    .base-avatar(:class="classObject" :style="style")
+    .base-avatar(:class="classObject", :style="style")
         transition(name="fade" mode="out-in")
-            base-icon.base-avatar__icon(v-if="!url" :name="setName")
+        base-icon.base-avatar__icon(v-if="name", :name="name")
+        base-icon.base-avatar__icon(v-else-if="!url", :name="setStub")
+
 
 </template>
 
@@ -18,7 +20,10 @@
                 type:String,
                 default:'1',
             },
-            name:String,
+            name:{
+                type:String,
+                default:'1',
+            },
             width: {
                 validator: function (value) {
                     return ['lg', 'md'].indexOf(value) !== -1
@@ -32,7 +37,7 @@
             classObject() {
                 if (this.width) return `base-avatar_${this.width}`
             },
-            setName(){
+            setStub(){
               return 'n'+this.stub
             },
         },

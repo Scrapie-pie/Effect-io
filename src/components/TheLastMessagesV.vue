@@ -2,7 +2,7 @@
     form.last-messages
         .last-messages__search()
             filter-search(
-                :item-list="itemListSortUnread",
+                :item-list="itemListSort",
                 @result="(val)=>filterSearchResult=val",
                 @text="(val)=>search=val"
             )
@@ -11,7 +11,7 @@
                 li.last-messages__item(
                     v-for="(item, index) in filterSearchResult",
                     :key="item.uuid+item.site_id",
-                    :class="{'last-messages__item_active':item.open,'last-messages__item_hot':item.hot}"
+                    :class="{'last-messages__item_active':item.open,'last-messages__item_hot':item.hot,'last-messages__item_very-hot':item.very_hot}"
                 )
                     router-link.last-messages__btn(
                         :to="item.link"
@@ -20,6 +20,7 @@
                     base-people.last-messages__people(
                         :avatar-url="item.photo",
                         :avatar-stub="item.photo_stub",
+                        :avatar-name="item.avatarName",
                         :name="item.name",
                         :text="item.last_authorAndMessage",
                         :bg-text-no-fill="true",
@@ -51,12 +52,18 @@
             }
         },
         computed:{
-            itemListSortUnread(){
-                return _.sortBy(this.itemListStore,(item)=>-item.unread.length);
+            itemListSort(){
+                return _.sortBy(
+                    this.itemListStore,
+                    [
+                        (item)=>-item.very_hot,
+                        (item)=>-item.unread.length
+                    ]
+                );
             },
             itemListSortActiveFirst() {
                 let itemActive,
-                    list = this.itemListSortUnread.filter((item,index)=>{
+                    list = this.itemListSort.filter((item,index)=>{
 
                         if(item.uuid === this.httpParams.params.uuid){ //Todo у оператора id
                             itemActive = item;
@@ -89,6 +96,7 @@
                     itemList=this.$store.state.visitors.self.map(item=>{
                         let {uuid,site_id} = item;
                         item.link = {name:'chatId',params: { uuid,site_id}}
+
 
                         return this.itemFormat(item)
                     });
@@ -143,7 +151,19 @@
         },
         methods:{
             itemFormat(item){
-                item.last_authorAndMessage = this.authorAndMessage(item);
+
+
+
+
+                if(item.very_hot) { ///такое только в не обработанном
+                    item.avatarName='warning';
+                    item.name = 'Диалог необходимо <br> принять <br> в приоритетном порядке!'
+                    item.last_authorAndMessage = 'Передача диалога...'
+                } else {
+                    item.last_authorAndMessage = this.authorAndMessage(item);
+                }
+
+
 
                 if(this.httpParams) {
                     let {uuid,site_id} = this.httpParams.params;
@@ -230,6 +250,7 @@
     .last-messages{
         $color_bg-hover:glob-color('border');
         $color_bg-error:glob-color('error');
+        $color_bg-info:glob-color('info');
         $transition:$glob-trans;
 
         .ps__scrollbar-y-rail {
@@ -260,13 +281,18 @@
                 background-color:$color_bg-hover;
             }
 
-            &_hot {
+            &_hot,&_very-hot {
                 &::before {
                     content:'';
                     @extend %full-abs;
                     background-color:$color_bg-error;
                     opacity:.5;
                     z-index:0;
+                }
+            }
+            &_very-hot {
+                &::before {
+                    background-color:$color_bg-info;
                 }
             }
         }

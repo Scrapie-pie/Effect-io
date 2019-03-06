@@ -139,9 +139,9 @@
             showVisitorTypingLive(){
              let {guest_uuid,site_id}  = this.roomActive.visitor,
                  {params} = this.httpParams
-                console.log('showVisitorTypingLive',guest_uuid+site_id , params.guest_uuid+ params.site_id,this.compVisitorTypingLive.length);
+                console.log('showVisitorTypingLive',guest_uuid+site_id , params.guest_uuid+ params.site_id,this.visitorTypingLive.length);
 
-                return (guest_uuid + site_id === params.guest_uuid + params.site_id) && this.compVisitorTypingLive.length
+                return (guest_uuid + site_id === params.guest_uuid + params.site_id) && this.visitorTypingLive.length
             },
             compVisitorTypingLive(){
                 let {typingLive} = this.roomActive.visitor;

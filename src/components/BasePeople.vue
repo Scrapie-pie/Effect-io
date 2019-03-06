@@ -1,7 +1,12 @@
 <template lang="pug">
     .base-people(:class="classObject")
         .base-people__avatar-wrap
-            base-avatar.base-people__avatar(:width="avatarWidth", :url="avatarUrl", :stub="avatarStub")
+            base-avatar.base-people__avatar(
+                :width="avatarWidth",
+                :url="avatarUrl",
+                :stub="avatarStub",
+                :name="avatarName"
+            )
             base-icon(:name="channelName").base-people__channel
             .base-people__status(
                 v-if="status!=null",
@@ -10,7 +15,7 @@
                 )
         .base-people__inner
             .base-people__header
-                strong.base-people__name(v-text="name")
+                strong.base-people__name(v-html="name")
                 time.base-people__time(
                 v-if="time"
                 )
@@ -24,7 +29,7 @@
                 img(
                     :src="img"
                     alt=""
-                        @click="$root.$emit('popup-img',img)"
+                     @click="$root.$emit('popup-img',img)"
                 )
 
 </template>
@@ -71,6 +76,7 @@
             avatarWidth: String,
             avatarUrl: String,
             avatarStub:String,
+            avatarName:String,
             type: {
                 type:String,
                 validator: function (value) {
