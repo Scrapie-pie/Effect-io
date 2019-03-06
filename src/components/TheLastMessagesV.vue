@@ -12,15 +12,14 @@
                     v-for="(item, index) in filterSearchResult",
                     :key="item.uuid+item.site_id",
                     :class="{'last-messages__item_active':item.open,'last-messages__item_hot':item.hot}"
-
                 )
                     router-link.last-messages__btn(
                         :to="item.link"
                         v-text="item.last_message"
                     )
-
                     base-people.last-messages__people(
                         :avatar-url="item.photo",
+                        :avatar-stub="item.photo_stub",
                         :name="item.name",
                         :text="item.last_authorAndMessage",
                         :bg-text-no-fill="true",

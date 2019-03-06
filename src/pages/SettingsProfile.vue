@@ -185,6 +185,9 @@
         },
 
         computed:{
+            compBranchListAll(){
+                return this.$store.state.user.branchListAll
+            },
             branches_ids(){
                 return this.model.branches_ids
             },
@@ -212,6 +215,9 @@
                     }
                 },
                 immediate: true
+            },
+            compBranchListAll(val){
+                this.branchListAll = val
             },
             branchListAll:{
                 handler(val){

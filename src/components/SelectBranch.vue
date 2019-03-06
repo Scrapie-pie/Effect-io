@@ -1,46 +1,14 @@
 <template lang="pug">
     form.select-operator(@submit.prevent="submit")
-        fieldset(v-if="count && name=='mention'")
-            //legend.select-operator__title Выберите сотрудника, которого вы хотите упомянуть в диалоге. Данный сотрудник получит оповещение.
-            legend.select-operator__title Отметьте сотрудников, которых Вы хотите пригласить к данному диалогу
-            .select-operator__search-operators
-                filter-search(
-                    :item-list="itemList",
-                    @result="(val)=>filterSearchResult=val",
-                    @text="(val)=>search=val",
-                    field-name="fullName"
-                )
-                scroll-bar.select-operator__scrollbar.select-operator__scrollbar_mention
-                    ul.select-operator__list
-                        li.select-operator__item.select-operator__item_operator
-                            .select-operator__checkbox
-                                base-radio-check(name="mention")
-                            base-people(
-                                :bg-text-no-fill="true",
-                                :name="'Упомянуть всех сотрудников'" ,
 
-                            )
-                        li.select-operator__item(v-for="(item, index) in filterSearchResult",:key="index")
-                            .select-operator__checkbox
-                                base-radio-check(name="mention")
-                            base-people(
-                                :bg-text-no-fill="true",
-                                :avatar-url="item.photo",
-                                :name="item.fullName" ,
-                                :text="item.text" ,
-                                :datetime="item.datetime"
-                            )
-
-
-        fieldset(v-else-if="count")
+        fieldset(v-if="count")
             legend.select-operator__title(v-text="title")
-
             .select-operator__search-operators
                 filter-search(
                     :item-list="itemList",
                     @result="(val)=>filterSearchResult=val",
                     @text="(val)=>search=val",
-                    field-name="fullName"
+                    field-name="title"
                 )
                 scroll-bar.select-operator__scrollbar
                     ul.select-operator__list
@@ -50,10 +18,7 @@
                                 base-radio-check(name="itemCheck" v-model="itemCheck[item.id]" :value="item.id")
                             base-people(
                                 :bg-text-no-fill="true",
-                                :avatar-url="item.photo",
-                                :name="item.fullName" ,
-                                :text="item.branches_names | branches" ,
-                                :datetime="item.datetime"
+                                :name="item.title" ,
                             )
             .select-operator__footer
                 label.select-operator__label Оставьте комментарий
@@ -67,7 +32,7 @@
                 base-btn(type="submit" v-text="btnText")
 
         fieldset(v-if="!count")
-            p.select-operator__count-no К сожалению, сейчас нет доступных сотрудников
+            p.select-operator__count-no К сожалению, сейчас нет доступных отделов
 </template>
 
 <script>
@@ -78,31 +43,12 @@
             filterSearch
         },
         mixins:[httpParams],
-        filters: {
-            branches: function (value) {
-                let str='';
 
-                value.forEach((item,index)=>{
-                    let separator = ( index === value.length )?' ':'<br>';
-                    str = str + item + separator
-                })
-                return str
-            }
-        },
-        props:{
-          name:{
-              type:String,
-              validator: function (value) {
-                  console.log(value);
-                  return ['invite','mention','transfer'].indexOf(value) !== -1
-              }
-          }
-        },
+
         data(){
             return {
                 filterSearchResult:[],
                 itemCheck:{},
-
                 search:'',
                 comment:'',
             }
@@ -112,18 +58,16 @@
                 return this.itemList.length
             },
             btnText(){
-                if (this.name === "invite") return 'Пригласить';
-                if (this.name === "mention") return 'Упомянуть';
-                if (this.name === "transfer") return 'Передать'
+                return 'Передать'
             },
             title() {
-                if (this.name === "invite") return 'Отметьте сотрудников, которых Вы хотите пригласить к данному диалогу';
-                if (this.name === "mention") return 'Выберите сотрудника, которого вы хотите упомянуть в диалоге. Данный сотрудник получит оповещение.';
-                if (this.name === "transfer") return 'Выберите сотрудника, которому Вы хотите передать диалог'
+                return 'Выберите отдел, которому Вы хотите передать диалог'
             },
             placeholder() {
-                if (this.name === "invite") return 'Данный комментарий увидят все сотрудники, которых Вы пригласите. Это не обязательное поле. Вы можете пригласить сотрудников без указания комментария.';
-                if (this.name === "transfer") return 'Данный комментарий увидит сотрудник, которому Вы передаете диалог. Это не обязательное поле. Вы можете передать диалог без указания комментария.'
+                return 'Данный комментарий увидит отдел, которому Вы передаете диалог. Это не обязательное поле. Вы можете передать диалог без указания комментария.'
+            },
+            itemList(){
+                return this.$store.state.user.branchListAll
             },
             itemListIds(){
                 let list=[]
@@ -132,43 +76,23 @@
                 }
                 return list
             },
-            itemList(){
-                return this.$store.getters['operators/all'].filter(item=>
-                    item.online===1 &&
-                    item.id!==this.$store.state.user.profile.id // Убираем себя из списка
-                )
-            }
         },
         created(){
 
         },
         methods:{
             submit(){
-                if (this.name === "invite")  this.invite();
-                if (this.name === "mention")  this.mention();
-                if (this.name === "transfer")  this.transfer()
-            },
-            invite(){
-                let data =   this.httpParams.params
-                data.users_ids=this.itemListIds;
-                data.comment=this.comment;
-
-                this.$http.post('chat-room-user-invite', data)
-                    .then(({ data }) => {
-                        this.$root.$emit('globBoxControlClose')
-                    })
-            },
-            transfer(){
                 let data =   this.httpParams.params;
 
-                data.to_id=this.itemListIds[0];
+                data.branch_id=this.itemListIds[0];
                 data.comment=this.comment;
 
-                this.$http.put('guest-transfer-request', data)
+                this.$http.put('guest-transfer-to-branch-request', data)
                     .then(({ data }) => {
                         this.$root.$emit('globBoxControlClose')
                     })
-            }
+            },
+
         }
     }
 </script>

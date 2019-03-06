@@ -10,7 +10,14 @@
 
     export default {
         props: {
-            url:'',
+            url:{
+                type:String,
+                default:'',
+            },
+            stub:{
+                type:String,
+                default:'1',
+            },
             name:String,
             width: {
                 validator: function (value) {
@@ -26,7 +33,7 @@
                 if (this.width) return `base-avatar_${this.width}`
             },
             setName(){
-              return 'n'+this.randomInteger(1,20)
+              return 'n'+this.stub
             },
         },
         methods:{

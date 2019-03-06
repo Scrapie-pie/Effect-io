@@ -59,6 +59,13 @@
                         @boxControlClose="showMoreChatActions=false"
                     )
                         the-chat-main-header-actions()
+                .chat-main-header__select-operator
+                    box-controls(
+                        :show="showSelectBranch",
+                        @boxControlClose="showSelectBranch=false"
+                    )
+                        select-branch
+
 </template>
 
 <script>
@@ -66,10 +73,12 @@
     import TheChatMainHeaderHistory from '@/components/TheChatMainHeaderHistory'
     import TheChatMainHeaderActions from '@/components/TheChatMainHeaderActions'
     import SelectOperators from '@/components/SelectOperators'
+    import SelectBranch from '@/components/SelectBranch'
     import { viewModeChat,httpParams } from '@/mixins/mixins'
 
     export default {
         components: {
+            SelectBranch,
             TheChatMainHeaderHistory,
             TheChatMainHeaderActions,
             SelectOperators
@@ -80,6 +89,7 @@
                 membersList: [],
                 showClientHistoryActions:false,
                 showSelectOperators:false,
+                showSelectBranch:false,
                 showMoreChatActions:false,
                 selectOperatorsMode:''
                 //moreActionsClose:false,
@@ -156,6 +166,15 @@
 
         },
         created() {
+            this.$root.$on('showBranch',()=>{
+                this.showMoreChatActions=false;
+                setTimeout(()=>{
+
+                    this.showSelectBranch=true
+
+                },500)
+
+            })
             this.$root.$on('showTransfer',()=>{
                 this.showMoreChatActions=false;
                 setTimeout(()=>{

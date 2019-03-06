@@ -1,7 +1,7 @@
 <template lang="pug">
     .base-people(:class="classObject")
         .base-people__avatar-wrap
-            base-avatar.base-people__avatar(:width="avatarWidth", :url="avatarUrl")
+            base-avatar.base-people__avatar(:width="avatarWidth", :url="avatarUrl", :stub="avatarStub")
             base-icon(:name="channelName").base-people__channel
             .base-people__status(
                 v-if="status!=null",
@@ -70,6 +70,7 @@
             time: Number,
             avatarWidth: String,
             avatarUrl: String,
+            avatarStub:String,
             type: {
                 type:String,
                 validator: function (value) {

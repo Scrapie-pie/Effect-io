@@ -17,13 +17,12 @@ export default {
         resetState(state) {
             Object.assign(state, getDefaultState())
         },
-        'SOCKET_UPDATE-BRANCHES'(state, val) {
-            console.log('SOCKET_UPDATE-BRANCHES');
-            state.branchListAll=val;
-
-        },
-
         logout(state) {
+            console.log('user logout');
+            this._vm.$http.put('operator-online-update',{
+                online:0
+            })
+            //this._vm.$http.put('logout')
             localStorage.removeItem('jwt')
             delete this._vm.$http.defaults.headers.common[ 'jwt' ];
             delete this._vm.$http.defaults.headers['content-type'];
@@ -70,9 +69,7 @@ export default {
 
         },
         logout({commit}) {
-            this._vm.$http.put('operator-online-update',{
-                online:0
-            })
+
             commit('logout')
             commit('resetState')
             commit('resetState', null, { root: true })

@@ -124,7 +124,7 @@
                         console.log('error №',err.response.status)
                     }
 
-                    if (err.response.status === 401 && err.response.status === 429) {
+                    if (err.response.status === 401 || err.response.status === 429) {
                         console.log(this.$route.fullPath,err.response.status);
                         this.$store.dispatch('user/logout').then(() => {
                             this.$router.push({name:'auth',query:{return:this.$route.fullPath}})
@@ -247,13 +247,14 @@
 
             "update-branches"(val) {
                 console.log('update-branches',val);
+                this.$store.commit('user/branchListAll',val)
             },
             "room-users"(val){
                 console.log('room-users',val)
                 this.$store.commit('roomActive',val)
             },
             "unprocessed"(val){
-
+                console.log('unprocessed',val);
 
                 this.$store.commit('visitors/processMessageLastUpdate',val)
                 this.$store.commit('user/unreadUpdate',['unprocessed',1])

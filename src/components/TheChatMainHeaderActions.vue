@@ -4,14 +4,20 @@
             fieldset(v-if="!showBlockClient && !showExitRoomConfirm" key="keyHideBlockClient")
                 legend.chat-actions__text-only-scr Выберите одно из действий
                 ul.chat-actions__list
-                    li.chat-actions__more-item(v-if="viewModeChat!='process'")
-                        base-btn(
+                    template(v-if="viewModeChat!='process'")
+                        li.chat-actions__more-item()
+                            base-btn(
                             :icon="{name:'transfer',top:true}"
-                            @click.prevent="showTransfer()"
-                        ) Передать диалог
+                                @click.prevent="showBranch()"
+                            ) Передать в отдел
+                        li.chat-actions__more-item()
+                            base-btn(
+                                :icon="{name:'transfer',top:true}"
+                                @click.prevent="showTransfer()"
+                            ) Передать диалог
 
-                    li.chat-actions__more-item(v-if="viewModeChat!='process' && showExit")
-                        base-btn(:icon="{name:'exit',top:true}", @click="exitRoomConfirm") Выйти из диалога
+                        li.chat-actions__more-item(v-if="showExit")
+                            base-btn(:icon="{name:'exit',top:true}", @click="exitRoomConfirm") Выйти из диалога
                     li.chat-actions__more-item
                         base-btn(:icon="{name:'bl',top:true}", @click="showBlockClient=true") Блокировать клиента
             fieldset(v-if="showBlockClient" key="keyShowBlockClient")
@@ -70,6 +76,9 @@
                 if (this.showConfirmExit) this.showExitRoomConfirm=true;
                 else  this.exitRoom()
 
+            },
+            showBranch(){
+                this.$root.$emit('showBranch')
             },
             showTransfer(){
                 this.$root.$emit('showTransfer')
