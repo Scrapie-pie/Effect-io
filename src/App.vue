@@ -1,6 +1,5 @@
 <template lang="pug">
-    #app.page__app
-        //div(:class="{'spinner spinner_main-page':$store.state.loading}")
+    #app.page__app(:class="{'spinner spinner-main-page':$store.state.loading}")
         the-header.page__header.page__padding
         main.page__main
             transition(name="fade" mode="out-in")
@@ -176,7 +175,7 @@
         sockets: {
             "hot-guest"(val){
                 console.log('hot-guest',val);
-                this.$store.commit('visitors/messageWarning',{val,set:true})
+                this.$store.commit('visitors/messageHot',{val,set:true})
             },
             "typing-live"(val){
                 console.log('typing-live',val);

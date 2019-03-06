@@ -1,18 +1,17 @@
 <template lang="pug">
     form.last-messages
         .last-messages__search()
-            filterSearch(
+            filter-search(
                 :item-list="itemListSortUnread",
                 @result="(val)=>filterSearchResult=val",
                 @text="(val)=>search=val"
-
             )
         scroll-bar.last-messages__scrollbar(@ps-y-reach-end="loadDate")
             ul.last-messages__list
                 li.last-messages__item(
                     v-for="(item, index) in filterSearchResult",
                     :key="item.uuid+item.site_id",
-                    :class="{'last-messages__item_active':item.open,'last-messages__item_warning':item.warning}"
+                    :class="{'last-messages__item_active':item.open,'last-messages__item_hot':item.hot}"
 
                 )
                     router-link.last-messages__btn(
@@ -262,7 +261,7 @@
                 background-color:$color_bg-hover;
             }
 
-            &_warning {
+            &_hot {
                 &::before {
                     content:'';
                     @extend %full-abs;

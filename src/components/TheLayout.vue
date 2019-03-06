@@ -1,5 +1,5 @@
 <template lang="pug">
-    scroll-bar.layout
+    scroll-bar.layout.ps(ref="scrollbarLayout")
         header.layout__header(:class="{'layout__header_padding-wrap_no':headerPaddingNo}")
             .layout__grid
                 h1.layout__title
@@ -35,6 +35,10 @@
 
         },
         mounted(){
+            setTimeout(()=>{
+                console.log('scrollbarLayout');
+                window.scrl = this.$refs.scrollbarLayout
+            },3000)
 
         }
 
@@ -48,6 +52,9 @@
     .layout{
         margin-right:-(calc-em(15));
         padding-right:calc-em(15);
+       /* overflow:auto;*/
+        position:relative;
+        overflow:hidden;
         &__header{
             position:relative;
             text-align:center;

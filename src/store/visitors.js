@@ -29,14 +29,14 @@ export default {
             state.all=val.list;
             state.allCount=val.count;
         },
-        messageWarning(state, {val:{guest_uuid:uuid,site_id},set}){
+        messageHot(state, {val:{guest_uuid:uuid,site_id},set}){
             let findIndex = state.process.findIndex((item)=>{
 
                 return item.uuid+item.site_id === uuid+site_id
             })
 
             if(findIndex !== -1) {
-                this._vm.$set(state.process[findIndex],'warning',set)
+                this._vm.$set(state.process[findIndex],'hot',set)
 
             }
              findIndex = state.self.findIndex((item)=>{
@@ -44,7 +44,7 @@ export default {
             })
 
             if(findIndex !== -1) {
-                this._vm.$set(state.self[findIndex],'warning',set)
+                this._vm.$set(state.self[findIndex],'hot',set)
 
             }
         },

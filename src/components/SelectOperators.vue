@@ -4,7 +4,12 @@
             //legend.select-operator__title Выберите сотрудника, которого вы хотите упомянуть в диалоге. Данный сотрудник получит оповещение.
             legend.select-operator__title Отметьте сотрудников, которых Вы хотите пригласить к данному диалогу
             .select-operator__search-operators
-                base-field.select-operator__search(type="search" name="search" v-model="search" theme="soft")
+                filter-search(
+                    :item-list="itemList",
+                    @result="(val)=>filterSearchResult=val",
+                    @text="(val)=>search=val",
+                    field-name="fullName"
+                )
                 scroll-bar.select-operator__scrollbar.select-operator__scrollbar_mention
                     ul.select-operator__list
                         li.select-operator__item.select-operator__item_operator
@@ -15,7 +20,7 @@
                                 :name="'Упомянуть всех сотрудников'" ,
 
                             )
-                        li.select-operator__item(v-for="(item, index) in itemList",:key="index")
+                        li.select-operator__item(v-for="(item, index) in filterSearchResult",:key="index")
                             .select-operator__checkbox
                                 base-radio-check(name="mention")
                             base-people(
@@ -31,10 +36,15 @@
             legend.select-operator__title(v-text="title")
 
             .select-operator__search-operators
-                base-field.select-operator__search(type="search" name="search" v-model="search" theme="soft")
+                filter-search(
+                    :item-list="itemList",
+                    @result="(val)=>filterSearchResult=val",
+                    @text="(val)=>search=val",
+                    field-name="fullName"
+                )
                 scroll-bar.select-operator__scrollbar
                     ul.select-operator__list
-                        li.select-operator__item(v-for="(item, index) in itemList",:key="item.id")
+                        li.select-operator__item(v-for="(item, index) in filterSearchResult",:key="item.id")
                             .select-operator__checkbox
                                 //input(type="checkbox" name="operatorCheck" v-model="operatorCheck[item.id]" :value="item.id")
                                 base-radio-check(name="operatorCheck" v-model="operatorCheck[item.id]" :value="item.id")
@@ -61,8 +71,12 @@
 </template>
 
 <script>
+    import filterSearch from '@/components/FilterSearch'
     import {httpParams } from '@/mixins/mixins'
     export default {
+        components:{
+            filterSearch
+        },
         mixins:[httpParams],
         filters: {
             branches: function (value) {
@@ -86,6 +100,7 @@
         },
         data(){
             return {
+                filterSearchResult:[],
                 operatorCheck:{},
 
                 search:'',
