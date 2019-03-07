@@ -8,6 +8,7 @@ function notificationEngine(title, body){
         body:body,
         dir: 'auto',
         icon: '/logo.png',
+        sound:''
     }
 
 

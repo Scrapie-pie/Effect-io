@@ -1,5 +1,5 @@
 <template lang="pug">
-    form.phrases-ready(@submit.prevent="createItem")
+    form.phrases-ready(@submit.prevent="submit")
         transition(name="fade" mode="out-in")
             fieldset(v-if="!showPhrasesNew" key="showPhrasesNew")
                 legend.phrases-ready__text-only-scr Готовый список фраз
@@ -32,14 +32,14 @@
                                     span.phrases-ready__phrases-text(v-text="item.text")
                                     ul.phrases-ready__phrases-controls
                                         li.phrases-ready__phrases-button.phrases-ready__phrases-edit
-                                            base-btn(theme="link" v-text="'Редактировать'" @click="itemEdit(item.id)")
+                                            base-btn(theme="link" v-text="'Редактировать'" @click="itemEditShow(item)")
                                         li.phrases-ready__phrases-button.phrases-ready__phrases-remove
                                             base-btn(theme="link" v-text="'Удалить'" @click="itemDelete(item.id)")
 
             fieldset(v-else)
                 legend.phrases-ready__text-only-scr Добавление новой фразы
                 ul.phrases-ready__add
-                    li.phrases-ready__add-item.phrases-ready__add-item_select
+                    li.phrases-ready__add-item.phrases-ready__add-item_select(v-if="!showPhrasesEdit")
                         label.phrases-ready__label(for="newCategory") Выберите категорию или придумайте свою
                         base-field(
                             type="select",
@@ -49,7 +49,7 @@
                             id="newCategory"
                         )
                     li.phrases-ready__add-item
-                        label.phrases-ready__label(for="newPhrase") Введите фразу
+                        label.phrases-ready__label(for="newPhrase" v-text="(!showPhrasesEdit)?'Введите фразу':'Редактировать фразу'")
                         base-field(
                             id="newPhrase",
                             type="textarea",
@@ -57,22 +57,22 @@
                             v-model="create.text",
 
                         )
-                    li.phrases-ready__add-item
+                    li.phrases-ready__add-item(v-if="!showPhrasesEdit")
                         base-radio-check(
                             type="radio"
                             v-model="create.is_common",
                             :value="1"
                             name="is_common"
                         ) Все сотрудники будут видеть данный шаблон
-                    li.phrases-ready__add-item
+                    li.phrases-ready__add-item(v-if="!showPhrasesEdit")
                         base-radio-check(
                             type="radio" ,
                             :value="0"
                             name="is_common"
                         ) Данный шаблон будет виден только мне
                     li.phrases-ready__add-item
-                        base-btn.phrases-ready__add-item-button(v-text="'Добавить шаблон'" type="submit")
-                        base-btn(v-text="'Отмена'" color="error" @click="showPhrasesNew=false")
+                        base-btn.phrases-ready__add-item-button(v-text="(!showPhrasesEdit)?'Добавить шблон':'Сохранить'" type="submit")
+                        base-btn(v-text="'Отмена'" color="error", @click="cancel")
 </template>
 
 <script>
@@ -87,6 +87,8 @@
         data() {
             return {
                 showPhrasesNew:false,
+                showPhrasesEdit:false,
+                phrasesEditId:null,
                 create:{
                     text:'',
                     category:'',
@@ -100,27 +102,34 @@
 
                 VisibleToAll:false,
 
-                categories: [
 
-                ],
                 categoriesSelectId:'',
 
 
-                snippets:[]
+
 
             }
         },
         computed:{
+            snippets(){
+                return this.$store.state.phrases.snippets
+            },
+            categories(){
+                return this.$store.state.phrases.categories
+            },
             phrases(){
                 return this.snippets.filter((item)=>item.category_id === Number(this.categoriesSelectId))
             }
         },
         watch:{
-            snippets:{
+            showPhrasesNew(val){
+                if(val && !this.showPhrasesEdit) this.create.text=''
+            },
+            categories:{
                 handler(val){
                     if(val.length){
                         console.log(val);
-                        this.categoriesSelectId=val[0].category_id
+                        this.categoriesSelectId=val[0].id
                     }
 
                 },
@@ -129,52 +138,42 @@
 
         },
         created(){
-            this.getItemList()
+
         },
         methods:{
-            itemEdit(id){
-                let text = 'Отредактированный текст!!!!'
-                this.$http.put('snippet-update',{id,text})
-                    .then(({ data }) => {
-                        console.log(data);
-                        let findIndex = this.snippets.find((item)=>item.id===id)
-                        if(findIndex!==-1) {
-                            console.log(this.snippets[findIndex]);
-                            console.log(this.snippets[findIndex].text);
-                            console.log(text)
-                            this.snippets[findIndex].text = text
-                        }
-                    })
+            cancel(){
+                this.phrasesEditId=null;
+                this.showPhrasesNew=false;
+                this.showPhrasesEdit=false;
+            },
+            itemEditShow(item){
+                console.log(item);
+                this.phrasesEditId = item.id;
+                this.create.text = item.text
+                this.showPhrasesEdit=true;
+                this.showPhrasesNew=true;
+            },
+            itemEdit(){
+                let id = this.phrasesEditId,
+                    text = this.create.text;
+                this.$store.dispatch('phrases/snippetUpdate',{id,text});
             },
             itemDelete(id){
-
-                this.$http.delete('snippet-delete',{params:{id}})
-                    .then(({ data }) => {
-                        let findIndex = this.snippets.find((item)=>item.id===id)
-                        if(findIndex!=-1) this.snippets.splice(findIndex,1)
-                    })
+                this.$store.dispatch('phrases/snippetDelete',id);
             },
-            createItem(){
-                this.create.category = this.create.category.title
-                this.$http.post('snippet-create',this.create)
-                    .then(({ data }) => {
-
-                        this.categories.push({
-                            category_id:data.data.category_id,
-                            title:this.create.category
-                        })
-                        this.snippets.push(data.data)
-                        console.log(data.data);
-
-                    })
+            itemCreate(){
+                this.$store.dispatch('phrases/snippetCreate',this.create);
             },
-            getItemList(){
-                this.$http.get('snippet-read')
-                    .then(({ data }) => {
-                        this.snippets = data.data.snippets
-                        this.categories = data.data.categories
 
-                    })
+            submit(){
+                if(this.showPhrasesEdit) this.itemEdit()
+                else this.itemCreate()
+                console.log('submit');
+                this.showPhrasesNew=false;
+                this.showPhrasesEdit=false;
+                this.phrasesEditId=null,
+                this.newCategory='';
+                this.newPhrase='';
             }
         }
     }

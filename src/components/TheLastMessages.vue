@@ -1,7 +1,7 @@
 <template lang="pug">
     form.last-messages
         .last-messages__search
-            filterSearch(
+            filter-search(
                 :item-list="itemListSortActiveFirst"
                 fieldName="fullName" ,
                 @result="(val)=>filterSearchResult=val",

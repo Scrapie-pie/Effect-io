@@ -5,6 +5,7 @@ const getDefaultState = () => {
         profile:false,
         settings:false,
         branchListAll:[],
+
     }
 }
 // initial state
@@ -47,7 +48,8 @@ export default {
 
         branchListAll(state, val) {
             state.branchListAll=val;
-        }
+        },
+
 
     },
     actions: {
@@ -60,6 +62,7 @@ export default {
             dispatch('getSettings');
             dispatch('getBranchListAll');
             dispatch('operators/getAll',null,{root:true});
+            dispatch('phrases/getItemList',null,{root:true});
         /*    dispatch('visitors/getAll',null,{root:true}); //Todo лишний или нет
             dispatch('visitors/getProcess',null,{root:true});*/
             /*dispatch('visitors/getSelf',null,{root:true}).then((data)=>{
@@ -79,16 +82,17 @@ export default {
 
 
         },
-        getSettings({ commit, dispatch }) {
+        getSettings({commit}) {
             this._vm.$http.get('company-get-settings').then(({data})=>{
                 commit('settings',data.data)
             })
         },
-        getBranchListAll({ commit, dispatch }) {
+        getBranchListAll({commit}) {
             this._vm.$http.get('branches-list').then(({data})=>{
                 commit('branchListAll',data.data)
             })
         },
+
     },
     getters: {
 

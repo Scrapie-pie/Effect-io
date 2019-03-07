@@ -2,8 +2,15 @@
         form.chat-main-footer
 
             ///the-chat-system-messages
-
-
+            box-controls(
+                :show="showPhrasesSelect",
+                @boxControlClose="showPhrasesSelect=false",
+                :overlay="false"
+            )
+                the-phrases-select(
+                    :filter-search="message" ,
+                    @resultText="getPhrasesSelectText"
+                )
 
             TheProcessActions(v-if="compShowProcess")
             fieldset(v-else)
@@ -69,7 +76,11 @@
     import TheOffer from '@/components/TheOffer'
     import TheFilesBoard from '@/components/TheFilesBoard'
     import ThePhrasesReady from '@/components/ThePhrasesReady'
+    import ThePhrasesSelect from '@/components/ThePhrasesSelect'
     import TheProcessActions from '@/components/TheProcessActions'
+
+
+
 
     import autosize from 'autosize'
     import _ from 'underscore'
@@ -82,24 +93,38 @@
             TheOffer,
             TheFilesBoard,
             ThePhrasesReady,
-            TheProcessActions
+            ThePhrasesSelect,
+            TheProcessActions,
+
         },
         mixins:[viewModeChat,httpParams],
         watch:{
             '$route' (to, from) {
                 this.checkIsProcessPage();
             },
+            message(val){
+                if(val && this.showPhrasesSelectAllow){
+                    console.log('message',val);
+                    this.showPhrasesSelect=true;
+                }
+            }
         },
 
         data() {
             return {
+
                 showMention:false,
                 showProcess:false,
                 showGifs:false,
                 showOffer:false,
                 showSmiles:false,
                 showPhrases:false,
+
+                showPhrasesSelect:false,
+                showPhrasesSelectAllow:true,
                 message:'',
+
+
 
 
             }
@@ -125,7 +150,17 @@
         },
 
         methods: {
+            getPhrasesSelectText(val){
+                this.showPhrasesSelectAllow=false; //Набрал текст => выбрал из фильтра, в фильтре по второму кругу отсеялось новое значение, затем скрылся блок, так было раньше, сейчас с первого раза скрывется
+                this.showPhrasesSelect=false;
+                this.message=val;
 
+                setTimeout(()=>{
+                    this.showPhrasesSelectAllow=true
+                },50)
+
+
+            },
             messageRead(){
 
                 this.$http.put('message-operator-guest-mark-as-read', {

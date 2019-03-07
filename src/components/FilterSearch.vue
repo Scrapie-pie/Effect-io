@@ -12,6 +12,14 @@ import _ from 'underscore'
 export default {
     name: "filter-search",
     props:{
+        startAll:{ // true если search пустой выводились все items
+            type:Boolean,
+            default:true
+        },
+        externalSearch:{
+            type:String,
+            default:null
+        },
         fieldName:{
             type:String,
             default:'name'
@@ -31,6 +39,7 @@ export default {
             return this.itemList
         },
         itemListResult(){
+            if(!this.startAll && !this.search) return []
             if (!this.search) return this.compItemList
 
             return this.compItemList.filter(item => {
@@ -43,6 +52,12 @@ export default {
         }
     },
     watch:{
+        externalSearch:{
+            handler(val){
+                this.search=val
+            },
+            immediate: true
+        },
         search(val){
             this.$emit('text',val)
         },

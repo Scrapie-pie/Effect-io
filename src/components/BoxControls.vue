@@ -1,7 +1,7 @@
 <template lang="pug">
     transition(name="fade" )
         section.box-controls(v-if="show", :class="{'box-controls_popup':type}")
-            .box-controls__overlay()
+            .box-controls__overlay(v-if="overlay")
             .box-controls__box()
                 base-btn(
                     :icon="{name:'close'}",
@@ -23,6 +23,10 @@
                 validator: function (value) {
                     return ['popup','gallery'].indexOf(value) !== -1
                 }
+            },
+            overlay:{
+                type:Boolean,
+                default:false,
             },
             show:Boolean,
             blur:Boolean

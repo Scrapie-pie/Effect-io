@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 
 import user from '@/store/user'
+import phrases from '@/store/phrases'
 import operators from '@/store/operators'
 import visitors from '@/store/visitors'
 
@@ -34,6 +35,7 @@ const state = getDefaultState()
 export default new Vuex.Store({
     modules: {
         user,
+        phrases,
         operators,
         visitors
     },

@@ -2,14 +2,14 @@
     ul.action-list
         li.action-list__item(
             v-for="(item, index) in itemList",
-            :key="index"
+            :key="item.id"
         )
             label.action-list__button
                 input(
                     type="radio",
                     :name="name",
                     :value="nameFieldValue | setValue(item)",
-
+                    :checked="value==item.id"
                     v-on="inputListeners"
                 ).action-list__input
                 span.action-list__text
@@ -53,7 +53,6 @@
                     {
                         // Это обеспечит, что будет работать v-model на компоненте
                         input: function (event) {
-                            console.log(event);
                             vm.$emit('input', event.target.value)
                         }
                     }
