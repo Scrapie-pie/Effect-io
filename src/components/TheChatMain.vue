@@ -25,7 +25,7 @@
 
                                 :right="item.from_user_info.id == $store.state.user.profile.employee_id",
                                 :img="item.img",
-                                :files="(item.files || [])"
+                                :files="item.files || []"
                             )
                             p(v-else v-text="item.body" :style="{textAlign:'center'}")
                         li.chat-main__messages-item(v-if="showVisitorTypingLive")

@@ -1,18 +1,15 @@
 <template lang="pug">
-    label(ref="image",:class="{spinner:!loader}").upload-avatar
+    label(ref="image",:class="{spinner:!loader}").upload-file
         input(
             v-bind="getInputOptions",
             ref="input",
             v-on="inputListeners",
-        ).upload-avatar__input
-        base-avatar(width="lg" :url="setUrl").upload-avatar__avatar
-        button( v-if="fileContainer", type="button" @click="clear").upload-avatar__clear удалить фото
-        .upload-avatar__text(v-if="!fileContainer") Загрузить фото
+        ).upload-file__input
 
-        .upload-avatar__text(v-else) Удалить фото
-
-        base-icon.upload-avatar__icon(name="down")
-        base-btn(:icon="{name:'files',textHidden:'Файлы'}")
+        base-btn(
+            :icon="{name:'files',textHidden:'Файлы'}",
+            @click="$refs.input.click()"
+            )
 
 </template>
 
@@ -98,6 +95,7 @@
                     console.log(data);
                     this.$emit('upload', data.file)
                     this.$emit('input', data.file.link)
+                    this.clear()
 
                 }).catch(()=>this.loader = true)
             },
@@ -173,25 +171,7 @@
 </script>
 
 <style lang="scss">
-    .upload-avatar{
-        position:relative;
-
-        display:inline-flex;
-        border:0;
-        padding:0;
-        background:none;
-
-        align-items:center;
-
-        &::before {
-            content:'';
-            @extend %full-abs;
-            margin:-1em;
-            border:1px dashed glob-color('success');
-            transition:$glob-trans;
-            opacity:0;
-            visibility:hidden;
-        }
+    .upload-file{
 
         &.drag-over:before {visibility:visible;opacity:1}
 
@@ -199,31 +179,11 @@
             @extend %visuallyhidden
         }
 
-        &:hover &__text{text-decoration:none}
 
-        &__clear {
-            @extend %full-abs;
-            width:100%;
-            opacity:0;
-        }
 
-        &__text{
-            background:none;
-            border:0;
-            padding:0;
-            transition:$glob-trans;
-            text-decoration:underline;
-            font-size:$glob-font-size_h2;
-            margin-left:calc-em(15);
-            margin-right:calc-em(10);
-        }
 
-        &__icon {
-            .icon {
-                width:35px;
-                height:35px;
-            }
-        }
+
+
 
     }
 </style>

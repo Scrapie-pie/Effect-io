@@ -22,6 +22,7 @@
     import edit from '@/assets/img/icons/edit.svg';
     import info from '@/assets/img/icons/info.svg';
     import warning from '@/assets/img/icons/warning.svg';
+    import file from '@/assets/img/icons/file.svg';
 
 
 
@@ -37,6 +38,7 @@
     import files from '@/assets/img/icons/chat/files.svg';
     import gifs from '@/assets/img/icons/chat/gifs.svg';
     import smiles from '@/assets/img/icons/chat/smiles.svg';
+
 
     import send from '@/assets/img/icons/chat/send.svg';
 
@@ -138,6 +140,10 @@
         }
         &_eye {
             fill:glob-color('disabled');
+        }
+        &_file {
+            width:30px;
+            height:30px;
         }
     }
 

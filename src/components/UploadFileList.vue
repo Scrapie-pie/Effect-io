@@ -2,7 +2,11 @@
     figure.upload-file-list
         ul.upload-file-list__list
             li.upload-file-list__item(v-for="(item, index) in itemList" :key="item.link")
-                base-avatar(:url="item.link_min" width="md").upload-file-list__preview
+                .upload-file-list__preview
+                    base-avatar(
+                        v-bind="props(item)"
+                    )
+                    //base-icon(v-else name="file")
                 .upload-file-list__name(v-text="item.src.name")
                 base-btn(
                     :icon="{name:'close'}",
@@ -22,10 +26,21 @@ export default {
     data() {
         return {}
     },
-    methods:{
-        remove(index){
+    computed:{
 
-        }
+
+    },
+    methods:{
+        props(item){
+            let obj = {
+                width:'md'
+            }
+            if (item.link_min) obj.url= item.link_min
+            else obj.name='file'
+
+            return obj
+        },
+
     }
 }
 </script>
@@ -33,7 +48,7 @@ export default {
 <style lang="scss">
     .upload-file-list{
         &__item {
-            display:flex;
+            display:inline-flex;
             align-items:center;
         }
         &__preview {

@@ -100,7 +100,9 @@
             },
             files:{
                 type:Array,
-                default:[],
+                default:function () {
+                    return []
+                },
 
             },
         },

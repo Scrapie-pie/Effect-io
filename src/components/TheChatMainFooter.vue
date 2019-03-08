@@ -59,7 +59,6 @@
                             @click.prevent="showSmiles=true"
                         )
                     li.chat-main-footer__button
-                        base-btn(:icon="{name:'files',textHidden:'Файлы'}")
                         upload-file(@upload="(val)=>uploadFileList.push(val)")
                     //li.chat-main-footer__button
                         base-btn(
