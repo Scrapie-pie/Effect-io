@@ -7,12 +7,16 @@ import router from '@/routes/router'
 import store from './store/store'
 import axios from '@/modules/axios'
 
+
+
+
+
 Vue.prototype.$http = axios;
 
 import VuePerfectScrollbar from 'vue-perfect-scrollbar'
 
 
-import _ from 'underscore';
+import _ from 'underscore'; //Todo избавить от underscore заменить на lodash
 Object.defineProperty(Vue.prototype, '$_', { value: _ })
 
 import VueSocketio from 'vue-socket.io-extended';

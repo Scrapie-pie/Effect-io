@@ -119,7 +119,7 @@
 
         &-wrap{
             display:inline-block;
-            vertical-align:top
+            vertical-align:middle;
         }
 
         &_more {

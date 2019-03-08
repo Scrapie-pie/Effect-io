@@ -12,12 +12,14 @@
         .upload-avatar__text(v-else) Удалить фото
 
         base-icon.upload-avatar__icon(name="down")
+        base-btn(:icon="{name:'files',textHidden:'Файлы'}")
 
 </template>
 
 <script>
-
+    import { httpParams } from '@/mixins/mixins';
     export default {
+        mixins:[httpParams],
         inheritAttrs: false,
         props: {
             url:'',
@@ -36,7 +38,7 @@
                 fileContainer: false,
                 file: false,
                 loader: true,
-                allowedFiles: ['image/gif', 'image/png', 'image/jpeg', 'image/jpg']
+
             }
         },
 
@@ -46,7 +48,7 @@
             },
             getInputOptions() {
                 let obj = {
-                    name:"uploadAvatar",
+                    name:"uploadFile",
                     value:this.value,
                     type:"file",
                     accept:this.allowedFiles,
@@ -78,9 +80,15 @@
 
                 formData.append('file', this.file, this.file.name)
 
+                let uuid = this.httpParams.params.uuid
+                formData.append('uuid', uuid)
+
                 this.loader = false;
+
+
                 console.log(formData);
-                return this.$http.post('upload-avatar', formData, {
+
+                return this.$http.post('upload-message-file',formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     }
@@ -88,8 +96,8 @@
 
                     this.loader = true;
                     console.log(data);
-                    this.$emit('upload_url', data.file)
-                    this.$emit('input', data.file)
+                    this.$emit('upload', data.file)
+                    this.$emit('input', data.file.link)
 
                 }).catch(()=>this.loader = true)
             },
@@ -108,7 +116,7 @@
 
                         let file = e.dataTransfer.items[0]
 
-                        if (this.allowedFiles.includes(file.type) && this.checkFileSize(file)) {
+                        if (this.checkFileSize(file)) {
                             e.dataTransfer.dropEffect = 'copy'
                             e.target.classList.add('drag-over');
 
@@ -116,7 +124,7 @@
                             e.dataTransfer.dropEffect = 'none'
                             e.target.classList.add('drag-error')
 
-                            this.$root.$emit('popup-notice','Тип файла не поддерживается или размер превышает 5мб');
+                            this.$root.$emit('popup-notice','Размер превышает 5мб');
 
                         }
                     }
@@ -141,10 +149,10 @@
 
                 if (check && !this.checkFileSize(file[0])) return this.$root.$emit('popup-notice','Размер файла превышает 5мб');
 
-                console.log('file.type',file[0].type);
-                if (this.allowedFiles.includes(file[0].type)) this.createIMG(file[0], type);
 
-                else this.$root.$emit('popup-notice','Тип файла не поддерживается')
+               this.createIMG(file[0], type);
+
+
             },
             createIMG (file, type) {
                 this[type] = URL.createObjectURL(file);

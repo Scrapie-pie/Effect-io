@@ -31,6 +31,21 @@
                     alt=""
                      @click="$root.$emit('popup-img',img)"
                 )
+            figure.base-people__files(v-if="files.length")
+                ul.base-people__files-list
+                    li.base-people__files-item(v-for="(item, index) in files" :key="item.link")
+                        img(
+                            v-if="item.link_min",
+                            :src="item.link_min",
+                            :alt="item.name",
+                            @click="$root.$emit('popup-img',item.link)"
+                        )
+                        a(
+                            v-else
+                            v-text="item.name",
+                            :href="item.link"
+                            target="_blank"
+                        )
 
 </template>
 
@@ -82,7 +97,12 @@
                 validator: function (value) {
                     return ['visitor', 'operator'].indexOf(value) !== -1
                 }
-            }
+            },
+            files:{
+                type:Array,
+                default:[],
+
+            },
         },
         data() {
             return {}
@@ -256,6 +276,10 @@
 
         &_visitor &__inner, &_operator &__inner{
             background-color:transparent;
+        }
+
+        &__files-item {
+            margin-top:calc-em(10)
         }
     }
 </style>

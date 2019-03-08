@@ -2,15 +2,8 @@
         form.chat-main-footer
 
             ///the-chat-system-messages
-            box-controls(
-                :show="showPhrasesSelect",
-                @boxControlClose="showPhrasesSelect=false",
-                :overlay="false"
-            )
-                the-phrases-select(
-                    :filter-search="message" ,
-                    @resultText="getPhrasesSelectText"
-                )
+
+
 
             TheProcessActions(v-if="compShowProcess")
             fieldset(v-else)
@@ -28,6 +21,10 @@
 
                 .chat-main-footer__contols
                     .chat-main-footer__textarea-wrap
+                        the-phrases-select(
+                            :filter-search="message" ,
+                            @resultText="getPhrasesSelectText"
+                        ).chat-main-footer__phrases-select
                         scroll-bar.chat-main-footer__scrollbar
                             textarea.chat-main-footer__input(
                                 placeholder="Enter - отправить сообщение, Shift+Enter - новая строка."
@@ -35,6 +32,10 @@
                                 v-model="message",
                                 @keydown.enter.exact="onEnter",
                                 @click.prevent="messageRead"
+                            )
+                            upload-file-list(
+                                :item-list="uploadFileList",
+                                @itemRemove="(index)=>uploadFileList.splice(index, 1)"
                             )
                 ul.chat-main-footer__buttons
                     li.chat-main-footer__button(v-if="viewModeChat=='common'")
@@ -57,7 +58,9 @@
                             :icon="{name:'smiles',textHidden:'Смайлы'}"
                             @click.prevent="showSmiles=true"
                         )
-                    li.chat-main-footer__button: base-btn(:icon="{name:'files',textHidden:'Файлы'}")
+                    li.chat-main-footer__button
+                        base-btn(:icon="{name:'files',textHidden:'Файлы'}")
+                        upload-file(@upload="(val)=>uploadFileList.push(val)")
                     //li.chat-main-footer__button
                         base-btn(
                             :icon="{name:'gifs',textHidden:'Гифки'}"
@@ -78,6 +81,9 @@
     import ThePhrasesReady from '@/components/ThePhrasesReady'
     import ThePhrasesSelect from '@/components/ThePhrasesSelect'
     import TheProcessActions from '@/components/TheProcessActions'
+    import UploadFile from '@/components/UploadFile'
+    import UploadFileList from '@/components/UploadFileList'
+
 
 
 
@@ -95,7 +101,8 @@
             ThePhrasesReady,
             ThePhrasesSelect,
             TheProcessActions,
-
+            UploadFile,
+            UploadFileList
         },
         mixins:[viewModeChat,httpParams],
         watch:{
@@ -124,6 +131,7 @@
                 showPhrasesSelectAllow:true,
                 message:'',
 
+                uploadFileList:[]
 
 
 
@@ -151,15 +159,7 @@
 
         methods: {
             getPhrasesSelectText(val){
-                this.showPhrasesSelectAllow=false; //Набрал текст => выбрал из фильтра, в фильтре по второму кругу отсеялось новое значение, затем скрылся блок, так было раньше, сейчас с первого раза скрывется
-                this.showPhrasesSelect=false;
                 this.message=val;
-
-                setTimeout(()=>{
-                    this.showPhrasesSelectAllow=true
-                },50)
-
-
             },
             messageRead(){
 
@@ -195,7 +195,7 @@
             send(){
                 let data = {},
                     to_id,
-
+                    files=[],
                     body = this.message;
 
                 if(this.viewModeChat=="visitors") {
@@ -222,6 +222,16 @@
 
                 }
 
+                if(this.uploadFileList.length) {
+                    files = this.uploadFileList.map(item=>{
+                        item.name=item.src.name;
+                        delete item.src
+                        return item
+                    })
+                    data.files=files;
+                }
+
+
 
 
 
@@ -233,6 +243,7 @@
                     message = {
                         time,
                         body,
+                        files,
                         from_user_info:{
                             id:employee_id,
                             name,
@@ -279,11 +290,19 @@
         $color_border:glob-color('border');
         $color_bg-send:glob-color('info-lighten');
 
-
+        position:relative;
         border-top:1px solid $color_border;
         padding-top:calc-em(20);
 
-
+        &__phrases-select {
+          /*  @extend %full-abs;
+            top:auto;
+            bottom:100%;
+            .box-controls__box {
+                opacity:.7;
+            }
+*/
+        }
 
         &__controls{
 
