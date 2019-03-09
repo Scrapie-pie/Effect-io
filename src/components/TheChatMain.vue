@@ -29,7 +29,7 @@
                                 :files="item.files || []"
                             )
                             p(v-else v-text="item.body" :style="{textAlign:'center'}")
-                        li.chat-main__messages-item()
+                        li.chat-main__messages-item(v-if="showVisitorTypingLive")
                             base-people(
                                 :key="'visitorTypingLive'"
                                 avatar-width="md",
@@ -197,6 +197,13 @@
                 },50)
             })
 
+            this.$root.$on('messageVisitorUpdateName',({name,uuid,site_id})=>{
+                lodash_find(this.messageList,{site_id,from_user_info:{uuid}})
+                this.messageList.forEach(item=>{
+                    if(item.site_id+item.from_user_info.uuid===site_id+uuid) item.from_user_info.name=name
+                })
+            })
+
         },
         methods: {
             transferCancel(to_id){
@@ -212,7 +219,7 @@
             },
 
             getRoomUserAll(){
-                if (this.viewModeChat=='operators') return
+                if (this.viewModeChat==='operators') return
                 this.$http.get('chat-room-user-all',this.httpParams).then(({data})=>{
                     data.data.visitor =  this.httpParams.params;
                     //console.log(this.httpParams);

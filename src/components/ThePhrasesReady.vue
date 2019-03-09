@@ -63,11 +63,12 @@
                             v-model="create.is_common",
                             :value="1"
                             name="is_common"
-                        ) Все сотрудники будут видеть данный шаблон
+                        ) Все сотрудники будут видеть данный шаблон!
                     li.phrases-ready__add-item(v-if="!showPhrasesEdit")
                         base-radio-check(
                             type="radio" ,
-                            :value="0"
+                            :value="0",
+                            v-model="create.is_common",
                             name="is_common"
                         ) Данный шаблон будет виден только мне
                     li.phrases-ready__add-item
@@ -89,6 +90,8 @@
                 showPhrasesNew:false,
                 showPhrasesEdit:false,
                 phrasesEditId:null,
+                picked:'',
+                is_common:1,
                 create:{
                     text:'',
                     category:'',

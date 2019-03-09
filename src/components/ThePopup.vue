@@ -45,5 +45,8 @@ export default {
 </script>
 
 <style lang="scss">
-
+    .popup {
+        position:relative;
+        z-index:2; //иначе при открывание видно как слои местами меняются
+    }
 </style>

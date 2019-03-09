@@ -56,8 +56,22 @@
                     return resp
                 },(err)=> {
                     this.$store.commit('loading',false)
-                    console.log(err);
+                /*    console.table(err);
+                    console.log(err.config);
                     console.log(err.response);
+
+                    console.log(err.request)*/
+
+                 /*   if(err.request.responseURL.includes('chat-room-user-all')){
+                        console.log(err.request.responseURL);
+                        this.$router.push({name:'team'})
+                        return
+                    }*/
+
+                   /* if(err.response.status === 403) {
+                        this.$router.push({name:'processAll'})
+                        return Promise.reject(err);
+                    }*/
 
                     if(err.response && err.response.data && err.response.data.message && this.$route.name!=='auth') {
                         this.$root.$emit('popup-notice',err.response.data.message);

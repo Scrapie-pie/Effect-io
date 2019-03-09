@@ -22,6 +22,7 @@
                 .chat-main-footer__contols
                     .chat-main-footer__textarea-wrap
                         the-phrases-select(
+                            v-if="viewModeChat=='visitors'"
                             :filter-search="message" ,
                             @resultText="getPhrasesSelectText"
                         ).chat-main-footer__phrases-select
@@ -44,7 +45,7 @@
                             :icon="{name:'user',textHidden:'Упомянуть в диалоге'}",
                             @click.prevent="showMention=true"
                         )
-                    li.chat-main-footer__button
+                    li.chat-main-footer__button(v-if="viewModeChat=='visitors'")
                         base-btn(
                             :icon="{name:'phrases',textHidden:'Список готовых шаблонных фраз'}",
                             @click.prevent="showPhrases=true"
@@ -250,7 +251,7 @@
                             photo
                         }
                 }
-
+                this.uploadFileList=[]
                 this.$root.$emit('messageAdd',message);
 
                 message.from_user_info.id = this.$store.state.user.profile.employee_id;

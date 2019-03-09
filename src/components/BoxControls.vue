@@ -1,6 +1,6 @@
 <template lang="pug">
     transition(name="fade" )
-        section.box-controls(v-if="show", :class="{'box-controls_popup':type}")
+        section.box-controls(v-if="show", :class="'box-controls_'+type")
             .box-controls__overlay(v-if="overlay")
             .box-controls__box()
                 base-btn(
@@ -26,7 +26,7 @@
             },
             overlay:{
                 type:Boolean,
-                default:false,
+                default:true,
             },
             show:Boolean,
             blur:Boolean
@@ -122,7 +122,7 @@
                 left:50%;
                 top:50%;
                 transform:translate(-50%,-50%);
-                display:flex;
+                display:inline-flex;
                 flex-direction:column;
                 height:300px;
                 width:300px;
@@ -176,7 +176,7 @@
             content:'';
             @extend %full-abs;
             margin:-999em;
-            z-index:999;
+            z-index:9999;
             opacity:0;
             visibility:hidden;
             background-color:rgba(0, 0, 0, 0.3);

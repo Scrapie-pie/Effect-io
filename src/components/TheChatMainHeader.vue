@@ -106,6 +106,7 @@
                 if (this.viewModeChat!=="operators") return this.visitor.name;
 
                 else {
+                    if(this.$store.state.user.profile.id === this.httpParams.params.id) return 'Здесь Вы можете оставить важные заметки, которые будут видны только Вам. Или поговорить с самим собой'
                     let operator = this.$store.state.operators.all.find(item => item.id == this.$route.params.id)
                     if (operator) return operator.fullName;
                     return ''

@@ -59,14 +59,6 @@
             show(){
                 return (this.$route.name==='processAll' || this.$route.name==='messageAll')
             },
-            showPage(){
-                if(this.$route.name==='messageAll'){
-                   return  this.$store.state.visitors.self.length
-                }
-                if(this.$route.name==='processAll'){
-                    return  this.$store.state.visitors.process.length
-                }
-            },
             showProcess(){
                 return this.$route.name==='processAll' && !this.$store.state.visitors.process.length
             },
@@ -79,9 +71,7 @@
             messageNo(){
                 return this.$route.name==='messageAll' && !this.$store.state.visitors.self.length
             },
-            countNo(){
 
-            }
 
         }
 

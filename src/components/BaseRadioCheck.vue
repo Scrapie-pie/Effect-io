@@ -6,7 +6,7 @@
             v-on="inputListeners",
         ).radio-check__input
         span.radio-check__text-wrap
-            base-icon(name="check" v-if="type=='checkbox'").radio-check__check
+            base-icon(name="check").radio-check__check
             span.radio-check__text
                 slot
 
@@ -42,21 +42,27 @@
             checked: {
                 required: false,
                 default: false
-            }
+            },
+
+
         },
 
         computed: {
             getInputOptions() {
+
+                let checked = this.checked
+                if(this.type==="radio") checked=  this.checked === this.value
                 let obj = {
                   /*  textTrue:this.textTrue,
                     textFalse:this.textFalse,*/
+
                     type: this.type,
-                    checked: this.checked,
+                    checked: checked,
                     value:this.value,
                     name:this.name
                 }
 
-                return Object.assign({}, this.$attrs, obj);
+                return Object.assign({},this.$attrs,  obj);
             },
             inputListeners: function () {
                 var vm = this
@@ -65,16 +71,9 @@
                     {
                         change: function (event) {
                             if (vm.type == 'radio') {
-                                return vm.$emit('change', event.target.value)
+                                return vm.$emit('change', vm.value)
                             }
 
-                        /*    if (vm.textTrue && vm.textFalse) {
-
-                                let val = event.target.checked && vm.textTrue || !event.target.checked && vm.textFalse;
-
-                                return vm.$emit('change', val)
-
-                            }*/
                             if(event.target.checked) vm.$emit('change', 1) // На сервере строгая типизация
                             else vm.$emit('change', 0)
 

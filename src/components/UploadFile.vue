@@ -14,9 +14,9 @@
 </template>
 
 <script>
-    import { httpParams } from '@/mixins/mixins';
+    import { httpParams,viewModeChat } from '@/mixins/mixins';
     export default {
-        mixins:[httpParams],
+        mixins:[httpParams,viewModeChat],
         inheritAttrs: false,
         props: {
             url:'',
@@ -77,8 +77,11 @@
 
                 formData.append('file', this.file, this.file.name)
 
-                let uuid = this.httpParams.params.uuid
-                formData.append('uuid', uuid)
+                if(this.viewModeChat=="visitors") formData.append('uuid', this.httpParams.params.uuid)
+                else formData.append('uuid', this.httpParams.params.id)
+
+
+
 
                 this.loader = false;
 

@@ -18,8 +18,8 @@
             return {
 
                 appList: [
-                    {text: 'recover', link: {name: 'recover'}},
-                    {text: 'Ui', link: {name: 'ui'}},
+                   /* {text: 'recover', link: {name: 'recover'}},
+                    {text: 'Ui', link: {name: 'ui'}},*/
                     {text: 'Настройки', link: {name: 'settingsProfile'}},
                     //{text: 'Сменить учетную запись', link: {name: 'auth'}},
                     {text: 'Выход', link: {name: 'exit'}},
@@ -27,18 +27,10 @@
             }
         },
         computed:{
-            linkProcess(){
-                 return {name:'processAll'}
-
-            },
-            linkMessage(){
-                return {name:'messageAll'}
-
-            },
             canalList(){
                 return [
-                    {text: 'Не обработано', link: this.linkProcess,unread:this.unreadProcess},
-                    {text: 'Мои диалоги', link: this.linkMessage,unread:this.unreadGuest},
+                    {text: 'Не обработано', link: {name:'processAll'},unread:this.unreadProcess},
+                    {text: 'Мои диалоги', link: {name:'messageAll'},unread:this.unreadGuest},
                     {text: 'Команда', link: {name: 'team'},unread:this.unreadPrivate},
                     {text: 'Посетители', link: {name: 'visitors'}},
                     {text: 'Общий чат ', link: {name: 'common'},unread:this.unreadCommon},
