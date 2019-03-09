@@ -21,7 +21,7 @@
                         :avatar-url="item.photo",
                         :avatar-stub="item.photo_stub",
                         :avatar-name="item.avatarName",
-                        :name="item.name",
+                        :name="item | name(visitorInfo)",
                         :text="item.last_authorAndMessage",
                         :bg-text-no-fill="true",
                         :channel-name="$store.getters.channelName(item.channel_type)",
@@ -33,12 +33,20 @@
 </template>
 
 <script>
-    import _ from 'underscore'
+    import lodash_sortBy from 'lodash/sortBy'
+    import lodash_debounce from 'lodash/debounce'
     import filterSearch from '@/components/FilterSearch'
     import { viewModeChat,httpParams } from '@/mixins/mixins'
     export default {
         mixins:[viewModeChat,httpParams ],
         components:{filterSearch},
+        filters: {
+
+            name(item,visitorInfo){
+                if(item.uuid+item.site_id === visitorInfo.uuid+visitorInfo.site_id) return visitorInfo.name
+                else return item.name
+            }
+        },
         data() {
             return {
                 filterSearchResult:[],
@@ -52,11 +60,15 @@
             }
         },
         computed:{
+            visitorInfo(){
+                return this.$store.state.visitors.itemOpen
+            },
             itemListSort(){
-                return _.sortBy(
+                return lodash_sortBy(
                     this.itemListStore,
                     [
-                        (item)=>-item.very_hot,
+                        (item)=>item.very_hot,
+                        (item,index)=>index,
                         (item)=>-item.unread.length
                     ]
                 );
@@ -171,13 +183,14 @@
                 }
                 return item
             },
-            authorAndMessage({last_message_author,last_message}){
+            authorAndMessage({last_message_author,last_message,files}){
                 let author = '';
+                if(!last_message && files && files.length) last_message = 'Прикреплены файлы'
                 if(last_message_author) author = last_message_author +': '
                 last_message = author + last_message;
                 return last_message
             },
-            debounceSearch:_.debounce(function()
+            debounceSearch:lodash_debounce(function()
             {
                 this.resetSearch();
                 this.getItemList();

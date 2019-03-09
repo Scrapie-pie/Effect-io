@@ -15,8 +15,8 @@ const getDefaultState = () => {
         roomActiveId:false,
         roomActive:{
             visitor:{
-                guest_uuid:'',
-                site_id:'',
+                guest_uuid:'', // использую для функции typingLive
+                site_id:'',// использую для функции typingLive
                 typingLive:''
             },
 
@@ -65,10 +65,12 @@ export default new Vuex.Store({
             console.log('roomActiveUsers',val);
             //console.log('roomActiveUsersActive',getIds('active'));
            // console.log('roomActiveUsersInvited',getIds('invited'));
-
+            if(val.visitor) {
+                state.roomActive.visitor.guest_uuid=val.visitor.guest_uuid
+                state.roomActive.visitor.site_id=val.visitor.site_id
+            }
             state.roomActive.visitor.typingLive='' // очищаем при переходе в другую комнату
-            state.roomActive.visitor.guest_uuid=val.visitor.guest_uuid
-            state.roomActive.visitor.site_id=val.visitor.site_id
+
 
             state.roomActiveIsAdmin = val.filter((item)=>item.isAdmin && item.user_id === state.user.profile.id).length;
             state.roomActiveId=val[0].room_id;

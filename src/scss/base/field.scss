@@ -54,7 +54,7 @@
     line-height:1;
     -webkit-appearance:none;
 
-    @include placeholder{ color:#737373; }
+    @include placeholder{ color:glob-color('placeholder'); }
 
     &[type="text"] + #{$self}__eye::before{
       transform:translate(-50%, -50%) rotate(-45deg) scale(1);

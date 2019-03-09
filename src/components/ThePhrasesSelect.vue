@@ -3,22 +3,18 @@
         .phrases-select(
             v-show="!!filterSearchResult.length"
         )
-            box-controls(
-                :show="true",
-                @boxControlClose="filterSearchResult=[]",
-                :overlay="false"
-            )
 
-                filter-search(
-                    v-show="0"
-                    :item-list="snippets"
-                    fieldName="text" ,
-                    @result="(val)=>filterSearchResult=val",
-                    :external-search="filterSearch",
-                    :startAll="false"
-                )
-                scroll-bar.phrases-ready__scrollbar
-                    action-list.phrases-ready__list(
+
+            filter-search(
+                v-show="0"
+                :item-list="snippets"
+                fieldName="text" ,
+                @result="(val)=>filterSearchResult=val",
+                :external-search="filterSearch",
+                :startAll="false"
+            )
+            scroll-bar.phrases-select__scroll-bar
+                action-list(
                     key="action-list"
                     v-if="!!filterSearchResult.length"
                     :item-list="filterSearchResult"
@@ -26,7 +22,7 @@
                     name-field-text="text"
                     name-field-value="text"
                     v-model="text"
-                    )
+                )
 
 </template>
 
@@ -83,7 +79,15 @@
 
 <style lang="scss">
     .phrases-select {
-
+        .action-list__text {
+            padding:calc-em(2) 0;
+            color:glob-color('placeholder');
+            font-style:italic;
+            border:0;
+        }
+        &__scroll-bar {
+            max-height:12em;
+        }
     }
 
 

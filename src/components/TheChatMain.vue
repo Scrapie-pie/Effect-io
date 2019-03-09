@@ -19,7 +19,8 @@
                                 v-if="item.from_role_id!=9"
                                 avatar-width="md",
                                 :avatar-url="item.from_user_info.photo",
-                                :name="item.from_user_info.name",
+                                :avatar-stub="item.from_user_info.photo_stub",
+                                :name="item | name(visitorInfo)",
                                 :text="item.body | messageBreakLine",
                                 :time="item.time",
 
@@ -28,11 +29,12 @@
                                 :files="item.files || []"
                             )
                             p(v-else v-text="item.body" :style="{textAlign:'center'}")
-                        li.chat-main__messages-item(v-if="showVisitorTypingLive")
+                        li.chat-main__messages-item()
                             base-people(
                                 :key="'visitorTypingLive'"
                                 avatar-width="md",
                                 :avatar-url="visitorInfo.photo",
+                                :avatar-stub="visitorInfo.photo_stub"
                                 :name="visitorInfo.name",
                                 :text="visitorTypingLive | messageBreakLine",
                             )
@@ -68,6 +70,7 @@
 
 
     import lodash_groupBy from 'lodash/groupBy'
+    import lodash_find from 'lodash/find'
     import moment from 'moment'
     export default {
         components:{
@@ -79,6 +82,10 @@
         filters: {
             messageBreakLine: function (value) {
                 return   value.replace(/(\r\n|\n|&lt;br&gt;)/g, "<br>") // из виджета &lt;br&gt;
+            },
+            name(item,visitorInfo){
+                if(item.from_user_info.uuid) return visitorInfo.name
+                else return item.from_user_info.name
             }
         },
         data() {
@@ -140,7 +147,7 @@
             showVisitorTypingLive(){
              let {guest_uuid,site_id}  = this.roomActive.visitor,
                  {params} = this.httpParams
-                console.log('showVisitorTypingLive',guest_uuid+site_id , params.guest_uuid+ params.site_id,this.visitorTypingLive.length);
+                //console.log('showVisitorTypingLive',guest_uuid+site_id , params.guest_uuid+ params.site_id,this.visitorTypingLive.length);
 
                 return (guest_uuid + site_id === params.guest_uuid + params.site_id) && this.visitorTypingLive.length
             },

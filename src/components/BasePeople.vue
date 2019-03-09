@@ -90,7 +90,7 @@
             time: Number,
             avatarWidth: String,
             avatarUrl: String,
-            avatarStub:String,
+            avatarStub:Number,
             avatarName:String,
             type: {
                 type:String,

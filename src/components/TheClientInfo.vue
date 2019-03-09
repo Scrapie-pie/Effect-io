@@ -1,6 +1,12 @@
 <template lang="pug">
     scroll-bar.client-info
-        base-people(:name="info.name" :text="clientInfoContacts" :bg-text-no-fill="true" :avatar-url="info.photo")
+        base-people(
+            :name="info.name" ,
+            :text="clientInfoContacts",
+            :bg-text-no-fill="true",
+            :avatar-url="info.photo",
+            :avatar-stub="info.photo_stub"
+        )
         .client-info__social-links
             social-links(:link="info.channel_link" :name="channelName")
         .client-info__scrollbar
@@ -142,15 +148,7 @@
             }
         },
         sockets:{
-            "guest-update"(val) {
-                //console.log('guest-update',val);
-                let {site_id,uuid} = this.httpParams.params;
 
-                if(val.uuid+val.site_id===uuid+site_id){
-                    this.$store.commit('visitors/itemOpen',val)
-                }
-
-            },
         }
 
 

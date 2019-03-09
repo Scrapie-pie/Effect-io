@@ -4,8 +4,12 @@ import browserNotification from '@/modules/browserNotification'
 import {browserNotificationMessage} from '@/modules/browserNotification'
 import {httpParams,viewModeChat} from '@/mixins/mixins'
 import settings from "@/routes/settings";
+
+import lodash_once from 'lodash/once'
+
 export default {
     mixins:[httpParams,viewModeChat],
+
     computed:{
         userId(){
             return this.$store.state.user.profile.id
@@ -17,12 +21,14 @@ export default {
         }
     },
     methods: {
+
         playSoundFile(nameFile) {
             let{settings,sounds} = this.$store.state.user.settings
                 let index =  settings[nameFile];
                 let audio = new Audio(config.api_server.split('/app')[0] + sounds[index].file);
                 audio.volume = .5;
                 audio.play();
+            console.log(nameFile,config.api_server.split('/app')[0] + sounds[index].file);
         },
         webSocketInit() {
             this.$socket.disconnect();
@@ -161,7 +167,18 @@ export default {
             console.log('socket disconnect')
 
         },
+        "guest-update"(val) {
+            //console.log('guest-update',val);
+            let {site_id,uuid} = this.httpParams.params;
 
+            if(val.uuid+val.site_id===uuid+site_id){
+
+
+                this.$store.commit('visitors/itemOpen',val)  //{name,uuid,site_id} = val
+
+            }
+
+        },
         "update-branches"(val) {
             console.log('update-branches',val);
             this.$store.commit('user/branchListAll',val)
@@ -177,8 +194,11 @@ export default {
             this.$store.commit('user/unreadUpdate',['unprocessed',1])
             this.playSoundFile('sound_new_guest')
             browserNotificationMessage(val).then(click=>{
-                let {uuid,site_id} =  val
-                this.$router.push({name:'process',params: { uuid,site_id}})
+                if(click==='toLink') {
+                    let {uuid,site_id} =  val
+                    this.$router.push({name:'process',params: { uuid,site_id}})
+                }
+
             })
         },
         "unprocessed-remove"(val){

@@ -192,11 +192,7 @@
         beforeDestroy() {
             document.removeEventListener('click', this.hideClientInfo);
         },
-        sockets: {
-            "room-users"(val) {
-               console.log('sockets room-users',val)
-            }
-        },
+
 
 
 

@@ -26,6 +26,7 @@
                             @resultText="getPhrasesSelectText"
                         ).chat-main-footer__phrases-select
                         scroll-bar.chat-main-footer__scrollbar
+
                             textarea.chat-main-footer__input(
                                 placeholder="Enter - отправить сообщение, Shift+Enter - новая строка."
                                 ref="chatInput",
@@ -53,7 +54,7 @@
                             :icon="{name:'more-fill',textHidden:'Предложить посетителю'}",
                             @click.prevent="showOffer=true"
                         )
-                    li.chat-main-footer__button
+                    //li.chat-main-footer__button
                         base-btn(
                             :icon="{name:'smiles',textHidden:'Смайлы'}"
                             @click.prevent="showSmiles=true"

@@ -193,6 +193,7 @@
 
         &__scrollbar {
             max-height: 67.5vh;
+            margin-left:(calc-em(26) * -1);
 
             &_phrases {
                 margin-left:-(calc-em(15));
@@ -224,7 +225,7 @@
         }
 
         &__list {
-            margin-left:(calc-em(26) * -1);
+
         }
 
         &__btn-add {

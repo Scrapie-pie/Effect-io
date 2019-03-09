@@ -29,6 +29,7 @@ export default {
             state.all=val.list;
             state.allCount=val.count;
         },
+
         messageHot(state, {val:{guest_uuid:uuid,site_id},set}){
             let findIndex = state.process.findIndex((item)=>{
 
@@ -68,7 +69,7 @@ export default {
             let findIndex = state.process.findIndex((item)=>{
                return item.uuid+item.site_id === val.uuid+val.site_id
             })
-            console.log(findIndex);
+
             if(findIndex !== -1) {
                     state.process[findIndex].last_message = val.body;
                     state.process[findIndex].last_message_author = val.last_message_author

@@ -11,7 +11,8 @@ $glob-colors:(
         'border':#e5e5e5,
         'main':#626262,
         'secondary':#2a2a2a,
-        'light':#fff
+        'light':#fff,
+        'placeholder':#737373
 );
 
 @function glob-color($key,$native: true){

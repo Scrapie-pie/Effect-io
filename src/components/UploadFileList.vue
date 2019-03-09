@@ -40,6 +40,9 @@ export default {
 
             return obj
         },
+        itemRemove(index){
+            this.$emit('itemRemove',index)
+        }
 
     }
 }
