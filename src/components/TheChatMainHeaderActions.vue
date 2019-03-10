@@ -50,6 +50,7 @@
         },
         computed:{
             showExit(){
+
                 console.log('showConfirmExit',this.$store.state.roomActiveUsersActive,this.$store.state.roomActiveUsersActive.length > 1);
                 return this.$store.state.roomActiveUsersActive.length > 1
             },

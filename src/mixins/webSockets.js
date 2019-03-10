@@ -2,13 +2,13 @@ import config from "@/config/index";
 
 import browserNotification from '@/modules/browserNotification'
 import {browserNotificationMessage} from '@/modules/browserNotification'
-import {httpParams,viewModeChat} from '@/mixins/mixins'
+import {httpParams,viewModeChat,routerPushProcessAllOrItemFirst } from '@/mixins/mixins'
 import settings from "@/routes/settings";
 
 import lodash_once from 'lodash/once'
 
 export default {
-    mixins:[httpParams,viewModeChat],
+    mixins:[httpParams,viewModeChat,routerPushProcessAllOrItemFirst ],
 
     computed:{
         userId(){
@@ -23,12 +23,19 @@ export default {
     methods: {
 
         playSoundFile(nameFile) {
+
             let{settings,sounds} = this.$store.state.user.settings
+
                 let index =  settings[nameFile];
+            console.log(sounds[index].file);
+            console.log(nameFile,config.api_server.split('/app')[0] + sounds[index].file);
+            console.log(config.api_server);
+            console.log(index,sounds[index].file);
+                if(!sounds[index].file) return
                 let audio = new Audio(config.api_server.split('/app')[0] + sounds[index].file);
                 audio.volume = .5;
                 audio.play();
-            console.log(nameFile,config.api_server.split('/app')[0] + sounds[index].file);
+
         },
         webSocketInit() {
             this.$socket.disconnect();
@@ -91,14 +98,9 @@ export default {
             console.log('sockets new-message',val);
 
 
-
-
-
             if (val.from_user_info && val.from_user_info.id) {
                 if(this.$store.state.user.profile.employee_id === val.from_user_info.id) return; //Принимаем только чужие сообщения
             }
-            //else val.from_user_info = {id:null} // для совместимости, что бы шаблон не ломался в сообщениях, когда приходят системные сообщения
-
 
 
 
@@ -109,6 +111,8 @@ export default {
             if(
                 this.viewModeChat==='operators' && //иначе на других страницах this.httpParams.params.id вылетала ошибка
                 !val.site_id && (val.from_user_info.user_id == this.httpParams.params.id)) {this.$root.$emit('messageAdd',val)}
+
+            if(val.common) return this.playSoundFile('sound_new_common_message') //Todo пока условно val.common
 
             /*   if(val.from_role_id === 9 && val.site_id) {
                    this.$store.commit('visitors/selfMessageLastUpdate',val)
@@ -123,13 +127,17 @@ export default {
 
 
             if(val.site_id) {
-                let {guest_uuid,site_id} = this.httpParams.params
-                if(val.from_user_info.uuid+val.site_id === guest_uuid+site_id) { //Если это сообщение посетителя в чате то нужно очистить TypingLive
-                    this.$store.commit('roomActiveTypingLive',{message:'',guest_uuid,site_id})
-                    this.playSoundFile('sound_new_guest_message')
 
+                console.log(this.httpParams);
+                if(this.httpParams) {
+                    let {guest_uuid,site_id} = this.httpParams.params;
+                    if(val.from_user_info.uuid+val.site_id === guest_uuid+site_id) { //Если это сообщение посетителя в чате то нужно очистить TypingLive
+                        this.$store.commit('roomActiveTypingLive',{message:'',guest_uuid,site_id})
+                    }
                 }
 
+
+                this.playSoundFile('sound_new_guest_message')
 
                 this.$store.commit('visitors/selfMessageLastUpdate',val)
                 this.$store.commit('user/unreadUpdate',['guest',1]);
@@ -169,6 +177,7 @@ export default {
         },
         "guest-update"(val) {
             //console.log('guest-update',val);
+            if(!this.httpParams) return
             let {site_id,uuid} = this.httpParams.params;
 
             if(val.uuid+val.site_id===uuid+site_id){
@@ -202,22 +211,17 @@ export default {
             })
         },
         "unprocessed-remove"(val){
-            console.log('unprocessed-remove',val)
+
+
+
+            console.log('unprocessed-remove',val,val.room_id , this.$store.state.roomActiveId)
+
             this.$store.commit('visitors/processRemoveItem',val);
-
-            let itemList = this.$store.state.visitors.process;
-
-            if(!itemList.length) {
-                this.$router.push({name:'processAll'});
-                console.log('this.$router.push({name:\'processAll\'});');
-            } //Todo проверить доделать этот варивант
-            else {
-                console.log(!itemList.length,itemList,itemList.length,itemList[0]);
-                let {uuid,site_id} = itemList[0];
-                this.$router.push({name:'process',params: { uuid,site_id}});
-            }
-
             this.$store.commit('user/unreadUpdate',['unprocessed',-1])
+
+            this.routerPushProcessAllOrItemFirst()
+
+
         },
         "update-employees"(val) {
             console.log('update-employees user/profile update')

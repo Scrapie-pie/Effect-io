@@ -199,6 +199,8 @@
                     files=[],
                     body = this.message;
 
+                    data.body=body;
+
                 if(this.viewModeChat=="visitors") {
 
                  let {guest_uuid,site_id} = this.httpParams.params;
@@ -207,21 +209,25 @@
                     data = {
                         guest_uuid,
                         site_id,
-                        body
+
                     }
 
                     let val = this.httpParams.params
                     this.$store.commit('visitors/messageHot',{val,set:false})
 
-                } else {
+                } else if(this.viewModeChat==="operators") {
 
                     to_id = + this.httpParams.params.id;
                     data = {
                         to_id,
-                        body
                     }
 
                 }
+                else if(this.viewModeChat==="common") {
+                    data.room_id = this.$store.state.user.roomCommonId
+                }
+
+
 
                 if(this.uploadFileList.length) {
                     files = this.uploadFileList.map(item=>{
@@ -235,7 +241,7 @@
 
 
 
-
+                if (!body) return
                 this.$http.post('message-send', data);
 
 

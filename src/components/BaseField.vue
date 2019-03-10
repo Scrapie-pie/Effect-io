@@ -91,6 +91,10 @@
             value: {
                 required: false,
                 default: ''
+            },
+            autocomplete:{
+                required: false,
+                default: 'off'
             }
 
         },
@@ -105,6 +109,7 @@
         computed: {
             getInputOptions() {
                 let obj = {
+                    autocomplete:this.autocomplete,
                     type:this.type,
                     placeholder: this.getPlaceholder,
                     value:this.value

@@ -14,11 +14,11 @@
 </template>
 
 <script>
- import {httpParams } from '@/mixins/mixins'
+ import {httpParams,routerPushProcessAllOrItemFirst } from '@/mixins/mixins'
     import lodash_find from 'lodash/find'
 export default {
 
-    mixins:[httpParams],
+    mixins:[httpParams,routerPushProcessAllOrItemFirst],
   /*  watch:{ //Todo какой то косяк если раскоментирую
         systemMessage(val){
             console.log(val);
@@ -65,84 +65,46 @@ export default {
     },
 
     methods:{
-        routerNextNo(){
-         /*   console.log(this.httpParams.params);
-            //this.$store.commit('visitors/processRemoveItem',this.httpParams.params);
-
-            let itemList = this.$store.state.visitors.process;
-            if(!itemList.length) this.$router.push({name:'processAll'}); //Todo проверить доделать этот варивант
-            else {
-                console.log(!itemList.length,itemList,itemList.length,itemList[0]);
-                let {uuid,site_id} = itemList[0];
-                this.$router.push({name:'process',params: { uuid,site_id}});
-            }*/
-
-
-
-
-
-        },
-        routerNextYes(){
+        routerNext(status){
             let {uuid,site_id} = this.httpParams.params;
-            this.$router.push({name:'chatId',params: { uuid,site_id}});
-        },
-        processActionNo(){
-            if(this.status) this[this.status+'No']()
-            //this.$store.commit('user/unreadUpdate',['unprocessed',-1])
 
-        },
-        processActionYes(){
-            if(this.status) this[this.status]()
+            this.$store.commit('visitors/processRemoveItem',{ uuid,site_id});
             this.$store.commit('user/unreadUpdate',['unprocessed',-1])
 
+            if(status==="no"){
+                this.routerPushProcessAllOrItemFirst()
+            }
+
+            if(status==="yes"){
+                this.$router.push({name:'chatId',params: { uuid,site_id}});
+            }
+
+
+        },
+
+        processActionNo(){
+            if(this.status) this[this.status+'No']().then(() => this.routerNext('no'));
+        },
+        processActionYes(){
+            if(this.status) this[this.status]().then(() => this.routerNext('yes'));
         },
         recipient(){
-
-            this.$http.put('guest-transfer-acceptance',this.httpParams.params).then(()=>{
-                this.routerNextYes()
-            });
+            return this.$http.put('guest-transfer-acceptance',this.httpParams.params)
         },
         recipientNo(){
-
-
-            this.$http.put('guest-transfer-decline',this.httpParams.params).then(()=>{
-                this.routerNextNo()
-
-            });
-        },
-        unprocessedNo(){
-
-
-
-            this.$http.post('chat-room-user-decline-guest', this.httpParams.params)
-                .then(({ data }) => {
-                    this.routerNextNo()
-
-                })
+            return this.$http.put('guest-transfer-decline',this.httpParams.params)
         },
         unprocessed(){
-            this.$http.put('guest-take', this.httpParams.params)
-                .then(({ data }) => {
-                    this.routerNextYes()
-                })
+            return this.$http.put('guest-take', this.httpParams.params)
         },
-
+        unprocessedNo(){
+           return this.$http.post('chat-room-user-decline-guest', this.httpParams.params)
+        },
         invited(){
-            this.$http.post('chat-room-user-accept-invitation', {
-                room_id:this.roomId
-
-            }).then(({ data }) => {
-                let {uuid,site_id} = this.httpParams.params;
-                this.$router.push({name:'chatId',params: { uuid,site_id}});
-            });
+           return this.$http.post('chat-room-user-accept-invitation', {room_id:this.roomId})
         },
         invitedNo(){
-            this.$http.post('chat-room-user-decline-invitation', {
-                room_id:this.roomId
-
-            }).then(()=>{
-                this.routerNextNo()
-            });
+            return this.$http.post('chat-room-user-decline-invitation', {room_id:this.roomId})
         },
     }
 }

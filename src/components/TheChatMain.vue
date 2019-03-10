@@ -1,6 +1,6 @@
 <template lang="pug">
     article.chat-main
-        the-chat-main-header.chat-main__header
+        the-chat-main-header.chat-main__header(v-if!="viewModeChat!='common'")
         scroll-bar.chat-main__body(ref="scrollbar", @ps-scroll-up="scrollLoad")
             ul.chat-main__list
                 //li.chat-main__item.chat-main__item_history_more
@@ -147,10 +147,11 @@
         computed:{
             ...mapState(['roomActiveUsersInvited','roomActiveUsersRecipient','roomActiveIsAdmin','roomActive']),
             showVisitorTypingLive(){
+                if(this.viewModeChat!=='visitors') return false
              let {guest_uuid,site_id}  = this.roomActive.visitor,
                  {params} = this.httpParams
                 //console.log('showVisitorTypingLive',guest_uuid+site_id , params.guest_uuid+ params.site_id,this.visitorTypingLive.length);
-
+                 console.log(guest_uuid + site_id === params.guest_uuid + params.site_id)
                 return (guest_uuid + site_id === params.guest_uuid + params.site_id) && this.visitorTypingLive.length
             },
             compVisitorTypingLive(){
@@ -221,7 +222,7 @@
             },
 
             getRoomUserAll(){
-                if (this.viewModeChat==='operators') return
+                if (this.viewModeChat==='operators' || this.viewModeChat==='common') return
                 this.$http.get('chat-room-user-all',this.httpParams).then(({data})=>{
                     data.data.visitor =  this.httpParams.params;
                     //console.log(this.httpParams);
@@ -261,13 +262,17 @@
                     users_ids = []
 
                 if (this.viewModeChat==='visitors' || this.viewModeChat==='process') {
+                    console.log(this.$route);
                     let {guest_uuid,site_id } =  this.httpParams.params;
                          params.guest_uuid = guest_uuid,
                          params.site_id = site_id;
 
                 }
-                else {
+                else if(this.viewModeChat==='operators') {
                     params.users_ids = [this.$route.params.id,this.$store.state.user.profile.id];
+                }
+                else if(this.viewModeChat==='common') {
+                    params.room_id = this.$store.state.user.roomCommonId
                 }
 
 

@@ -57,17 +57,6 @@ export default {
             if (val.count) state.processCount=val.count;
         },
         processMessageLastUpdate(state, val) {
-         /*   let obj = {}
-            console.log(val);
-            if(val.body) {
-                obj.uuid = val.uuid;
-                obj.site_id = val.site_id;
-                obj.last_message = val.body;
-                obj.last_message_author = val.from_user_info.name;
-                obj.photo = val.from_user_info.photo;
-
-            }*/
-
 
             let findIndex = state.process.findIndex((item)=>{
                return item.uuid+item.site_id === val.uuid+val.site_id
@@ -76,25 +65,20 @@ export default {
             if(findIndex !== -1) {
                     state.process[findIndex].last_message = val.body;
                     state.process[findIndex].last_message_author = val.last_message_author
-
-
             }
             else {
                 val.last_message = val.body;
-
                 console.log('state.process.push unprocessed');
                 state.process.push(val);
-
                 state.processCount += 1;
-
-
-
-
             }
         },
         processRemoveItem(state, {uuid,site_id}) {
             let findIndex = state.process.findIndex(item=>item.uuid+item.site_id === uuid+site_id)
             if(findIndex !== -1) state.process.splice(findIndex, 1);
+        },
+        processRemoveItemAll(state) {
+             state.process=[]
 
         },
         self(state, val) {

@@ -5,6 +5,7 @@ const getDefaultState = () => {
         profile:false,
         settings:false,
         branchListAll:[],
+        roomCommonId:111
 
     }
 }

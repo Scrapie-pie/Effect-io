@@ -35,6 +35,10 @@
                         the-chat-main
                     aside.page-chat__info(v-if="viewModeChat!='operators'")
                         the-client-info
+        template(v-if="viewModeChat == 'common'")
+            section().page__view.page-chat
+                section.page-chat__main
+                    the-chat-main
 
 
 </template>
@@ -73,8 +77,12 @@
             },
 
 
+        },
+        beforeRouteLeave (to, from, next) {
+            console.log('beforeRouteLeave',this.$store.commit('resetState'));
+            this.$store.commit('resetState')
+            return next()
         }
-
 
 
 

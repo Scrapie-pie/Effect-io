@@ -15,7 +15,7 @@
     import TheHeader from '@/components/TheHeader'
     import ThePopup from "@/components/ThePopup";
 
-    import {httpParams,viewModeChat,webSockets } from '@/mixins/mixins'
+    import {viewModeChat,webSockets } from '@/mixins/mixins'
 
 
     export default {
@@ -23,7 +23,7 @@
             TheHeader,
             ThePopup
         },
-        mixins:[httpParams,viewModeChat,webSockets],
+        mixins:[viewModeChat,webSockets],
 
         created() {
             document.body.classList.add('page');

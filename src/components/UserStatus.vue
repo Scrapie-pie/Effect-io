@@ -93,6 +93,9 @@
                 if(val){
                     this.status = val.online;
                 }
+            },
+            status(val){
+                if(val!==1) {this.$store.commit('visitors/processRemoveItemAll')}
             }
         },
         created(){
