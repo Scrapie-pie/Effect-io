@@ -1,7 +1,6 @@
 <template lang="pug">
     form.user-status(@change="operatorStatusUpdate")
         .user-status__avatar-wrap
-            |я {{profile.first_name}}
             base-avatar.user-status__avatar(:url="profile.photo")
 
             .user-status__indicator(:class="`user-status__indicator_${statusCurrent.name}`")
