@@ -1,4 +1,3 @@
-
 export default {
     methods:{
         routerPushProcessAllOrItemFirst(){
@@ -12,4 +11,3 @@ export default {
         }
     },
 }
-

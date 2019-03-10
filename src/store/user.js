@@ -30,7 +30,7 @@ export default {
             delete this._vm.$http.defaults.headers['content-type'];
         },
         profileUpdate(state, val) {
-
+            console.log(_.extend(state.profile, val));
             state.profile=_.extend(state.profile,val);
         },
         profile(state, val) {

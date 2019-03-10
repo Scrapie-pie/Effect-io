@@ -68,7 +68,7 @@
                 channel: '',
                 channelList: [
                     {id:null,name:"Все каналы"},
-                    {id:7,name:"Effect.com"},
+                    {id:7,name:"Виджеты"},
                     {id:2,name:"ВКонтакте"},
                     {id:3,name:"Facebook"},
                     {id:5,name:"Telegram"},

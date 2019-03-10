@@ -2,13 +2,13 @@ import config from "@/config/index";
 
 import browserNotification from '@/modules/browserNotification'
 import {browserNotificationMessage} from '@/modules/browserNotification'
-import {httpParams,viewModeChat,routerPushProcessAllOrItemFirst } from '@/mixins/mixins'
+import {httpParams,viewModeChat,routerPushProcessAllOrItemFirst} from '@/mixins/mixins'
 import settings from "@/routes/settings";
 
 import lodash_once from 'lodash/once'
 
 export default {
-    mixins:[httpParams,viewModeChat,routerPushProcessAllOrItemFirst ],
+    mixins:[httpParams,viewModeChat],
 
     computed:{
         userId(){
@@ -213,18 +213,24 @@ export default {
         "unprocessed-remove"(val){
 
 
-
+            if(val.room_id === this.$store.state.roomActiveId) return //принимаем только чужие сигналы о удалении
             console.log('unprocessed-remove',val,val.room_id , this.$store.state.roomActiveId)
 
             this.$store.commit('visitors/processRemoveItem',val);
             this.$store.commit('user/unreadUpdate',['unprocessed',-1])
-
             this.routerPushProcessAllOrItemFirst()
-
-
         },
         "update-employees"(val) {
-            console.log('update-employees user/profile update')
+            let find = val.find((item)=>item.id===this.$store.state.user.profile.id)
+            if(find) {
+                let {online} = find
+                this.$store.commit('user/profileUpdate',{online})
+                console.log('update-employees user/profile update')
+            }
+
+
+
+
 
         },
 
