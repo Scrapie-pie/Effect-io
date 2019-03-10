@@ -66,6 +66,8 @@
     import TheChatMainHeader from '@/components/TheChatMainHeader'
     import TheChatMainFooter from '@/components/TheChatMainFooter'
 
+    import { scrollLoadAllow} from '@/modules/scroll'
+
     import { viewModeChat,httpParams } from '@/mixins/mixins'
 
 
@@ -242,13 +244,9 @@
                 return percent
             },
             scrollLoad(e){
-                const scroller = e.target
-                let height = scroller.clientHeight,
-                scrollHeight = scroller.scrollHeight - height,
-                scrollTop = scroller.scrollTop,
-                percent = Math.floor(scrollTop / scrollHeight * 100);
 
-                if ( percent < 25 ) this.historyMessageLoad()
+                if(scrollLoadAllow(e,'up')) this.historyMessageLoad()
+
             },
             historyMessageLoad(){
                 console.log('historyMessageLoad');

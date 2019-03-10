@@ -119,7 +119,7 @@
 
                 let id = this.$store.state.user.profile.id,
                     ids = this.$store.state.roomActiveUsersActive;
-                console.log('roomActiveUserActive',ids,id);
+
                 return  ids.includes(id)
             },
             compMembersList(){

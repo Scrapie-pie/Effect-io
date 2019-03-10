@@ -6,7 +6,7 @@
                 @result="(val)=>filterSearchResult=val",
                 @text="(val)=>search=val"
             )
-        scroll-bar.last-messages__scrollbar(@ps-y-reach-end="loadDate")
+        scroll-bar.last-messages__scrollbar(@ps-scroll-down="scrollDown")
             ul.last-messages__list
                 li.last-messages__item(
                     v-for="(item, index) in filterSearchResult",
@@ -35,13 +35,14 @@
 <script>
     import lodash_sortBy from 'lodash/sortBy'
     import lodash_debounce from 'lodash/debounce'
+    import lodash_once from 'lodash/once'
     import filterSearch from '@/components/FilterSearch'
     import { viewModeChat,httpParams } from '@/mixins/mixins'
+    import { scrollLoadAllow} from '@/modules/scroll'
     export default {
         mixins:[viewModeChat,httpParams ],
         components:{filterSearch},
         filters: {
-
             name(item,visitorInfo){
                 if(item.uuid+item.site_id === visitorInfo.uuid+visitorInfo.site_id) return visitorInfo.name
                 else return item.name
@@ -49,10 +50,12 @@
         },
         data() {
             return {
+                classNameScrollBar:'last-messages',
                 filterSearchResult:[],
                 getItemListStart:true,
+
                 search:'',
-                limit:20,
+                limit:12,
                 pageN:1,
                 type:'',
                 itemListCount: 0,
@@ -96,24 +99,17 @@
                         let {uuid,site_id} = item;
                         item.link = {name:'process',params: { uuid,site_id}}
                         item.unread = [];
-
-
-
                         return this.itemFormat(item)
                     });
-
                 }
 
                 if (this.viewModeChat==="visitors")  {
                     itemList=this.$store.state.visitors.self.map(item=>{
                         let {uuid,site_id} = item;
                         item.link = {name:'chatId',params: { uuid,site_id}}
-
-
                         return this.itemFormat(item)
                     });
                 }
-
                 return itemList
 
             },
@@ -151,22 +147,33 @@
                 if (this.viewModeChat==="process") this.type='unprocessed';
                 if (this.viewModeChat==="visitors") this.type='self';
 
-                if(to.name === from.name) return
-                this.resetSearch();
-                this.getItemList();
+                if(to.name !== from.name) {
+                    console.log('$route',to.name, from.name);
+
+                    if(this.itemListStore.length) return
+                    this.resetSearch();
+                    this.getItemList();
+                }
+
+
+
+
+
+
+
         },
             search:'debounceSearch',
         },
         created(){
+            console.log('create')
+
             if (this.viewModeChat==="process") this.type='unprocessed';
             if (this.viewModeChat==="visitors") this.type='self';
+
+            if(!this.itemListStore.length) this.getItemList()
         },
         methods:{
             itemFormat(item){
-
-
-
-
                 if(item.very_hot) { ///такое только в не обработанном
                     item.avatarName='warning';
                     item.name = 'Диалог необходимо <br> принять <br> в приоритетном порядке!'
@@ -174,9 +181,6 @@
                 } else {
                     item.last_authorAndMessage = this.authorAndMessage(item);
                 }
-
-
-
                 if(this.httpParams) {
                     let {uuid,site_id} = this.httpParams.params;
                     item.open = (item.uuid+item.site_id === uuid+site_id)
@@ -190,23 +194,25 @@
                 last_message = author + last_message;
                 return last_message
             },
-            debounceSearch:lodash_debounce(function()
-            {
+            debounceSearch:lodash_debounce(function(val) {
                 this.resetSearch();
+                if(!val) return
+
                 this.getItemList();
-            }, 500),
+                }, 500
+            ),
             resetSearch(){
                 this.pageN=1;
                 this.itemListCount= 0;
                 this.itemList=[];
                 this.getItemListStart=true;
             },
-            loadDate(event){
-                this.getItemList()
+            scrollDown(e){
+                if(scrollLoadAllow(e)) this.getItemList()
             },
+
             getItemList(){
                 if(!this.getItemListStart) return;
-
                 this.getItemListStart=false;
 
                 if((this.showItemLength < this.itemListCount) || this.itemListCount===0) {
@@ -219,6 +225,9 @@
                             this.itemListCount = data.data.count;
                             this.getItemListUnique();
                             this.pageN += 1;
+
+
+                            this.containerFullFillItemList()
                         }
                     })
                 }
@@ -239,9 +248,6 @@
                         let {uuid,site_id} =  item
                         itemListNew.push({uuid,site_id}) // если в базе нет, добавляем в базу
                     }
-
-
-
                 })
               /*  console.log('itemListNew');
                 console.table(itemListNew);
@@ -253,7 +259,19 @@
                 if (this.viewModeChat==="process") this.$store.commit('visitors/process',{list:itemListStore})
                 if (this.viewModeChat==="visitors")    this.$store.commit('visitors/self',{list:itemListStore})
 
-            }
+            },
+            containerFullFillItemList:lodash_once(function(){
+
+                //Заполняем свободную область элементами
+                setTimeout(()=>{
+                    let itemHeight = document.querySelector('.'+this.classNameScrollBar+'__item').clientHeight,
+                        containerHeight =  document.querySelector('.'+this.classNameScrollBar+'__scrollbar').clientHeight;
+                    console.log(this.showItemLength * itemHeight , containerHeight);
+                    if(this.showItemLength*itemHeight < containerHeight) this.getItemList()
+                },50)
+
+
+            })
         }
     }
 </script>
@@ -289,6 +307,8 @@
             padding-left:calc-em(10);
             padding-top:calc-em(10);
             padding-bottom:calc-em(10);
+
+            /*height:50vh;*/
 
             &:hover,&_active {
                 background-color:$color_bg-hover;

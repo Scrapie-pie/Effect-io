@@ -36,6 +36,7 @@ export default new Vuex.Store({
     modules: {
         user,
         phrases,
+
         operators,
         visitors
     },
@@ -62,7 +63,7 @@ export default new Vuex.Store({
                 return users.map((item)=>item.user_id)
             }
 
-            console.log('roomActiveUsers',val);
+
             //console.log('roomActiveUsersActive',getIds('active'));
            // console.log('roomActiveUsersInvited',getIds('invited'));
             if(val.visitor) {

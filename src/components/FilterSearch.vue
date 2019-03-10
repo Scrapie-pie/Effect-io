@@ -8,6 +8,8 @@
 </template>
 
 <script>
+import lodash_debounce from 'lodash/debounce'
+import lodash_isEmpty from 'lodash/isEmpty'
 import _ from 'underscore'
 export default {
     name: "filter-search",
@@ -45,7 +47,7 @@ export default {
             return this.compItemList.filter(item => {
                 let regexp = new RegExp(this.search, 'ig');
 
-                if(_.isEmpty(item[this.fieldName])) return 0;  //Todo у оператора fullName
+                if(lodash_isEmpty(item[this.fieldName])) return 0;  //Todo у оператора fullName
                 if (item[this.fieldName].match(regexp) == null) return 0
                 return true
             })
@@ -58,7 +60,7 @@ export default {
             },
             immediate: true
         },
-        search(val){
+        search(val) {
             this.$emit('text',val)
         },
         itemListResult:{
@@ -67,7 +69,16 @@ export default {
             },
             immediate: true
 
-        }
+        },
+/*
+        itemListResult:{
+            handler:lodash_debounce(function(val) {
+                    console.log('itemListResult lodash_debounce',val);
+                    this.$emit('result',val)
+                }, 500
+            ),
+        }*/
+
 
     },
 

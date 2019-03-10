@@ -9,7 +9,8 @@ const getDefaultState = () => {
         self:[],
         selfCount:false,
         itemOpen:false,
-        itemOpenHistoryActions:false
+        itemOpenHistoryActions:false,
+
     }
 }
 // initial state
@@ -25,6 +26,8 @@ export default {
         resetState (state) {
             Object.assign(state, getDefaultState())
         },
+
+
         all(state, val) { //Todo походу не нужен
             state.all=val.list;
             state.allCount=val.count;
@@ -99,6 +102,7 @@ export default {
             if (val.count) state.selfCount=val.count;
 
         },
+
         selfPush(state,val) {
             console.log(val);
             state.self.push(...val.list);

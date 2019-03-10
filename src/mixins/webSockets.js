@@ -206,7 +206,11 @@ export default {
             this.$store.commit('visitors/processRemoveItem',val);
 
             let itemList = this.$store.state.visitors.process;
-            if(!itemList.length) this.$router.push({name:'processAll'}); //Todo проверить доделать этот варивант
+
+            if(!itemList.length) {
+                this.$router.push({name:'processAll'});
+                console.log('this.$router.push({name:\'processAll\'});');
+            } //Todo проверить доделать этот варивант
             else {
                 console.log(!itemList.length,itemList,itemList.length,itemList[0]);
                 let {uuid,site_id} = itemList[0];
@@ -218,7 +222,8 @@ export default {
         "update-employees"(val) {
             console.log('update-employees user/profile update')
 
-        }
+        },
+
 
     },
 }

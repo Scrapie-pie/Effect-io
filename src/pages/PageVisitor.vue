@@ -61,7 +61,7 @@
             return {
                 getVisitorsListStart:true,
                 search: '',
-                limit:20,
+                limit:10,
                 pageN:1,
                 itemListCount: 0,
                 itemList:[],
