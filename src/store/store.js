@@ -78,11 +78,11 @@ export default new Vuex.Store({
             state.roomActiveUsers=val;
             state.roomActiveUsersActive=getIds('active');
             state.roomActiveUsersRecipient=getIds('recipient').map(id=>{
-                return state.operators.all.find(item=>item.id=id)
+                return state.operators.all.find(item=>item.id===id)
 
             })
             state.roomActiveUsersInvited=getIds('invited').map(id=>{
-                return state.operators.all.find(item=>item.id=id)
+                return state.operators.all.find(item=>item.id===id)
 
             })
         },

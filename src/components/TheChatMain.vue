@@ -194,10 +194,17 @@
             });
 
             this.$root.$on('messageAdd',(val)=>{
-                this.messageList.unshift(val);
-                setTimeout(()=>{
-                    this.scrollerPushDown(this.$refs.scrollbar)
-                },50)
+                val.id
+
+                let findIndex = this.messageList.findIndex(item=>item.id===val.id)
+                if(findIndex===-1) {
+                    this.messageList.unshift(val);
+                    setTimeout(()=>{
+                        this.scrollerPushDown(this.$refs.scrollbar)
+                    },50)
+                }
+
+
             })
 
             this.$root.$on('messageVisitorUpdateName',({name,uuid,site_id})=>{

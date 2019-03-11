@@ -128,13 +128,18 @@
 
 
                usersIds = usersIds.filter(item=>item!==id) //Убираем из списка себя
+                let operators=[]
+                usersIds.forEach(itemId=>{
 
-                let operators = usersIds.map(itemId=>{
                     console.log(itemId);
                     let find =  this.$store.state.operators.all.find((item) => item.id === itemId )
                     console.log(find);
-                    let {id,first_name} = find
-                    return {id,first_name}
+                    if(find) {
+                        let {id,first_name} = find
+                        operators.push({id,first_name})
+                    }
+
+
                 })
                 return operators
             }

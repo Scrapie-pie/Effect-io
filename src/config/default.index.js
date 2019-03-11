@@ -5,4 +5,4 @@ const config = {
 
 export default config
 
-//fanhorsis@yandex.ru http://newfanhor.clan.su
+//fanhorsis@yandex.ru 321tceffE http://newfanhor.clan.su

@@ -23,7 +23,9 @@
             TheHeader,
             ThePopup
         },
-        mixins:[webSockets,routerPushProcessAllOrItemFirst],
+        mixins:[
+            webSockets,
+            routerPushProcessAllOrItemFirst],
 
         created() {
             document.body.classList.add('page');

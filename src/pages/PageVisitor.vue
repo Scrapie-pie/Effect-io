@@ -108,6 +108,20 @@
         },
         created() {
             this.channel = this.channelList[0];
+            this.$root.$on('guestNewSession',(val)=>{
+                console.log('guestNewSession',val);
+                val.name='Новый'
+                this.itemList.unshift(val)
+            })
+            this.$root.$on('guestUpdate',(val)=>{
+                console.log('guestUpdate',val);
+                let findIndex = this.itemList.findIndex(item=>item.uuid+item.site_id === val.uuid+val.site_id)
+                if(findIndex===-1) {
+                    //this.$set()
+                    console.log(this.itemList[findIndex]);
+                    this.itemList[findIndex]={...val};
+                }
+            })
         },
         methods:{
             startChat(visitor){
@@ -145,6 +159,7 @@
                         this.getVisitorsListStart=true;
                         if (data.data.count) {
                             this.itemList.push(...data.data.list);
+                            console.table(this.itemList);
                             this.itemListCount = data.data.count;
                             this.pageN += 1;
                         }

@@ -186,8 +186,16 @@ export default {
             console.log('socket disconnect')
 
         },
+        "guest-new-session"(val) {
+            //console.log('guest-new-session',val);
+            this.playSoundFile('sound_new_guest')
+            this.$root.$emit('guestNewSession',val)
+        },
         "guest-update"(val) {
             //console.log('guest-update',val);
+
+            this.$root.$emit('guestUpdate',val)
+
             if(!this.httpParams) return
             let {site_id,uuid} = this.httpParams.params;
 
@@ -224,22 +232,23 @@ export default {
         "unprocessed-remove"(val){
 
 
-            if(val.room_id === this.$store.state.roomActiveId) return //принимаем только чужие сигналы о удалении
+
             console.log('unprocessed-remove',val,val.room_id , this.$store.state.roomActiveId)
 
             this.$store.commit('visitors/processRemoveItem',val);
             this.$store.commit('user/unreadUpdate',['unprocessed',-1])
 
 
-            //this.routerPushProcessAllOrItemFirst()
+            this.routerPushProcessAllOrItemFirst()
 
         },
         "update-employees"(val) {
+            console.log('update-employees user/profile update')
             let find = val.find((item)=>item.id===this.$store.state.user.profile.id)
             if(find) {
                 let {online} = find
                 this.$store.commit('user/profileUpdate',{online})
-                console.log('update-employees user/profile update')
+
             }
 
 

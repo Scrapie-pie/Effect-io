@@ -44,6 +44,7 @@
         components:{filterSearch},
         filters: {
             name(item,visitorInfo){
+                if(item.very_hot) return item.name
                 if(item.uuid+item.site_id === visitorInfo.uuid+visitorInfo.site_id) return visitorInfo.name
                 else return item.name
             }
