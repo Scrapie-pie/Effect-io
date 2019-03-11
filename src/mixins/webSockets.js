@@ -7,7 +7,7 @@ import {browserNotificationMessage} from '@/modules/browserNotification'
 import settings from "@/routes/settings";
 
 import lodash_once from 'lodash/once'
-import {httpParams,viewModeChat,routerPushProcessAllOrItemFirst} from '@/mixins/mixins'
+import {httpParams,viewModeChat} from '@/mixins/mixins'
 
 export default {
     mixins:[httpParams,viewModeChat], //routerPushProcessAllOrItemFirst подключи будет баг
@@ -23,7 +23,7 @@ export default {
         }
     },
     methods: {
-        routerPushProcessAllOrItemFirst(){
+  /*      routerPushProcessAllOrItemFirst(){
             console.log('routerPushProcess');
             let itemList = this.$store.state.visitors.process;
             if(!itemList.length) this.$router.push({name:'processAll'}); //Todo проверить доделать этот варивант
@@ -32,16 +32,16 @@ export default {
                 let {uuid,site_id} = itemList[0];
                 this.$router.push({name:'process',params: { uuid,site_id}});
             }
-        },
+        },*/
         playSoundFile(nameFile) {
 
             let{settings,sounds} = this.$store.state.user.settings
 
                 let index =  settings[nameFile];
-            console.log(sounds[index].file);
+        /*    console.log(sounds[index].file);
             console.log(nameFile,config.api_server.split('/app')[0] + sounds[index].file);
             console.log(config.api_server);
-            console.log(index,sounds[index].file);
+            console.log(index,sounds[index].file);*/
                 if(!sounds[index].file) return
                 let audio = new Audio(config.api_server.split('/app')[0] + sounds[index].file);
                 audio.volume = .5;
@@ -231,7 +231,7 @@ export default {
             this.$store.commit('user/unreadUpdate',['unprocessed',-1])
 
 
-            this.routerPushProcessAllOrItemFirst()
+            //this.routerPushProcessAllOrItemFirst()
 
         },
         "update-employees"(val) {

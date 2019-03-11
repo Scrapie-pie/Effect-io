@@ -15,7 +15,7 @@
     import TheHeader from '@/components/TheHeader'
     import ThePopup from "@/components/ThePopup";
 
-    import {viewModeChat,webSockets } from '@/mixins/mixins'
+    import {webSockets,routerPushProcessAllOrItemFirst } from '@/mixins/mixins'
 
 
     export default {
@@ -23,7 +23,7 @@
             TheHeader,
             ThePopup
         },
-        mixins:[viewModeChat,webSockets],
+        mixins:[webSockets,routerPushProcessAllOrItemFirst],
 
         created() {
             document.body.classList.add('page');
@@ -43,7 +43,17 @@
 
                 this.$http.interceptors.request.use( (config)=> {
 
-                    this.$store.commit('loading',true)
+                    if(
+                        config.url.includes('message-operator-guest-mark-as-read') ||
+                        config.url.includes('message-send')
+                    ) {
+
+                    }
+                    else {
+                        this.$store.commit('loading',true)
+                    }
+
+
                     return config;
                 }, function (error) {
                     // Do something with request error

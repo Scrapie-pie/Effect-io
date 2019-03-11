@@ -14,11 +14,11 @@
 </template>
 
 <script>
- import {httpParams,routerPushProcess } from '@/mixins/mixins'
+ import {httpParams,routerPushProcessAllOrItemFirst } from '@/mixins/mixins'
     import lodash_find from 'lodash/find'
 export default {
 
-    mixins:[httpParams,routerPushProcess],
+    mixins:[httpParams,routerPushProcessAllOrItemFirst],
   /*  watch:{ //Todo какой то косяк если раскоментирую
         systemMessage(val){
             console.log(val);
@@ -72,7 +72,7 @@ export default {
             this.$store.commit('user/unreadUpdate',['unprocessed',-1])
 
             if(status==="no"){
-                this.routerPushProcess()
+                this.routerPushProcessAllOrItemFirst()
             }
 
             if(status==="yes"){

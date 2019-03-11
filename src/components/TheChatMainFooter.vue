@@ -199,7 +199,7 @@
                     files=[],
                     body = this.message;
 
-                    data.body=body;
+
 
                 if(this.viewModeChat=="visitors") {
 
@@ -227,7 +227,7 @@
                     data.room_id = this.$store.state.user.roomCommonId
                 }
 
-
+                data.body=body;
 
                 if(this.uploadFileList.length) {
                     files = this.uploadFileList.map(item=>{
