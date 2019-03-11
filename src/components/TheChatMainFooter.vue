@@ -119,6 +119,9 @@
 
                     this.showPhrasesSelect=true;
                 }
+            },
+            uploadFileList(val){
+                console.log(val);
             }
         },
 
@@ -235,6 +238,7 @@
 
                 if(this.uploadFileList.length) {
                     files = this.uploadFileList.map(item=>{
+                        console.log(item);
                         item.name=item.src.name;
                         delete item.src
                         return item
@@ -245,7 +249,7 @@
 
 
 
-                if (!body) return
+                if (!body && !files.length) return
                 this.$http.post('message-send', data);
 
 
