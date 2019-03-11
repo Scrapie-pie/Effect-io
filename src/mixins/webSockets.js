@@ -107,7 +107,7 @@ export default {
         },
         "new-message"(val) { //переместил сюда, что бы список на странице team обновлялся
             console.log('sockets new-message',val);
-
+            val.socket=true; //Todo Временное решение, на проверку дубликатов, пока Симон не исправит
 
             if (val.from_user_info && val.from_user_info.id) {
                 if(this.$store.state.user.profile.employee_id === val.from_user_info.id) return; //Принимаем только чужие сообщения
@@ -234,6 +234,7 @@ export default {
 
 
             console.log('unprocessed-remove',val,val.room_id , this.$store.state.roomActiveId)
+            //if(val.room_id === this.$store.state.roomActiveId) return
 
             this.$store.commit('visitors/processRemoveItem',val);
             this.$store.commit('user/unreadUpdate',['unprocessed',-1])

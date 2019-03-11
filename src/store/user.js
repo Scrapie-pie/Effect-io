@@ -39,6 +39,7 @@ export default {
         },
         unreadUpdate(state,val){
             console.log('unreadUpdate',val[0]);
+            if(state.profile.unread[val[0]]===0 && val[1]===-1)return
             state.profile.unread[val[0]] += val[1]
         },
         settings(state, val) {

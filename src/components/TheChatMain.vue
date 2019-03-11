@@ -194,15 +194,22 @@
             });
 
             this.$root.$on('messageAdd',(val)=>{
-                val.id
 
-                let findIndex = this.messageList.findIndex(item=>item.id===val.id)
-                if(findIndex===-1) {
+                if(val.socket){//Todo Временное решение, на проверку дубликатов, пока Симон не исправит
+                    let findIndex = this.messageList.findIndex(item=>item.id===val.id)
+                    if(findIndex===-1) {
+                        this.messageList.unshift(val);
+                        setTimeout(()=>{
+                            this.scrollerPushDown(this.$refs.scrollbar)
+                        },50)
+                    }
+                }  else {
                     this.messageList.unshift(val);
                     setTimeout(()=>{
                         this.scrollerPushDown(this.$refs.scrollbar)
                     },50)
                 }
+
 
 
             })
