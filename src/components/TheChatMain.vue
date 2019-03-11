@@ -286,7 +286,7 @@
                     params.users_ids = [this.$route.params.id,this.$store.state.user.profile.id];
                 }
                 else if(this.viewModeChat==='common') {
-                    params.room_id = this.$store.state.user.roomCommonId
+                    params.room_id = this.$store.state.user.profile.common_room_id
                 }
 
 

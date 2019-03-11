@@ -31,6 +31,8 @@
 </template>
 
 <script>
+
+
     export default {
         /*  props:{
             status:{
@@ -41,6 +43,7 @@
                 }
             }
           },*/
+
         data() {
             return {
                 show: false,
@@ -95,7 +98,12 @@
                 }
             },
             status(val){
-                if(val!==1) {this.$store.commit('visitors/processRemoveItemAll')}
+                console.log('status',val);
+                if(val!==1) {
+
+                    this.$store.commit('visitors/processRemoveItemAll')
+                    this.$store.commit('user/unreadUpdate',['unprocessed','clear'])
+                }
             }
         },
         created(){
@@ -141,6 +149,7 @@
                 }, 10 * 60 * 1000);
             },
             resetActivity() {
+                console.log('resetActivity');
                 this.$nextTick(() => {
                     clearTimeout(this.activity);
                     this.startActivity()

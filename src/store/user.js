@@ -5,7 +5,7 @@ const getDefaultState = () => {
         profile:false,
         settings:false,
         branchListAll:[],
-        roomCommonId:111
+
 
     }
 }
@@ -30,7 +30,7 @@ export default {
             delete this._vm.$http.defaults.headers['content-type'];
         },
         profileUpdate(state, val) {
-            console.log('profileUpdate');
+            console.log('profileUpdate',val.online);
             console.log(_.extend(state.profile, val));
             state.profile=_.extend(state.profile,val);
         },
@@ -39,6 +39,7 @@ export default {
         },
         unreadUpdate(state,val){
             console.log('unreadUpdate',val[0]);
+            if(val[1]==='clear') return state.profile.unread[val[0]]=0;
             if(state.profile.unread[val[0]]===0 && val[1]===-1)return
             state.profile.unread[val[0]] += val[1]
         },

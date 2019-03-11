@@ -231,7 +231,7 @@
 
                 }
                 else if(this.viewModeChat==="common") {
-                    data.room_id = this.$store.state.user.roomCommonId
+                    data.room_id = this.$store.state.user.profile.common_room_id
                 }
 
                 data.body=body;

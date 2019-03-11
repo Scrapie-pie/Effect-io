@@ -247,7 +247,7 @@ export default {
             console.log('update-employees user/profile update')
             let find = val.find((item)=>item.id===this.$store.state.user.profile.id)
             if(find) {
-                let {online} = find
+                let {online} = find;
                 this.$store.commit('user/profileUpdate',{online})
 
             }

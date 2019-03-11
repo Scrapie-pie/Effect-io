@@ -79,6 +79,7 @@ export default {
         },
         processRemoveItemAll(state) {
              state.process=[]
+             state.processCount=0
 
         },
         self(state, val) {
