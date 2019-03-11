@@ -1,6 +1,10 @@
+
+
 export default {
+
     methods:{
         routerPushProcessAllOrItemFirst(){
+            console.log('routerPushProcess');
             let itemList = this.$store.state.visitors.process;
             if(!itemList.length) this.$router.push({name:'processAll'}); //Todo проверить доделать этот варивант
             else {
@@ -10,4 +14,9 @@ export default {
             }
         }
     },
+    computed:{
+
+    }
 }
+
+

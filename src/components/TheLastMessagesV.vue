@@ -195,7 +195,7 @@
                 return last_message
             },
             debounceSearch:lodash_debounce(function(val) {
-                this.resetSearch();
+
                 if(!val) return
 
                 this.getItemList();
@@ -308,7 +308,7 @@
             padding-top:calc-em(10);
             padding-bottom:calc-em(10);
 
-            /*height:50vh;*/
+          /*  height:50vh;*/
 
             &:hover,&_active {
                 background-color:$color_bg-hover;

@@ -26,7 +26,7 @@
                             :filter-search="message" ,
                             @resultText="getPhrasesSelectText"
                         ).chat-main-footer__phrases-select
-                        scroll-bar.chat-main-footer__scrollbar
+                        scroll-bar.chat-main-footer__scrollbar(ref="scrollbarMessage")
 
                             textarea.chat-main-footer__input(
                                 placeholder="Enter - отправить сообщение, Shift+Enter - новая строка."
@@ -111,8 +111,12 @@
                 this.checkIsProcessPage();
             },
             message(val){
+                if(val && this.autosizeInit){
+                    autosize(this.$refs.chatInput);
+                    this.autosizeInit=false;
+                }
                 if(val && this.showPhrasesSelectAllow){
-                    console.log('message',val);
+
                     this.showPhrasesSelect=true;
                 }
             }
@@ -120,7 +124,7 @@
 
         data() {
             return {
-
+                autosizeInit:true,
                 showMention:false,
                 showProcess:false,
                 showGifs:false,
@@ -145,10 +149,6 @@
             }
         },
         mounted() {
-
-            setTimeout(()=>{
-                autosize(this.$refs.chatInput);
-            },500)
         },
         beforeDestroy(){
             autosize.destroy(this.$refs.chatInput);
@@ -277,6 +277,13 @@
                 }
 
                 this.message='';
+                autosize.destroy(this.$refs.chatInput);
+                this.autosizeInit=true;
+                setTimeout(()=>{
+                    this.$refs.scrollbarMessage.update()
+                },200)
+
+
             },
             checkIsProcessPage() {
                 if(this.viewModeChat ==='process') {

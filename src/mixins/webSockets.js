@@ -2,13 +2,15 @@ import config from "@/config/index";
 
 import browserNotification from '@/modules/browserNotification'
 import {browserNotificationMessage} from '@/modules/browserNotification'
-import {httpParams,viewModeChat,routerPushProcessAllOrItemFirst} from '@/mixins/mixins'
+
+
 import settings from "@/routes/settings";
 
 import lodash_once from 'lodash/once'
+import {httpParams,viewModeChat,routerPushProcessAllOrItemFirst} from '@/mixins/mixins'
 
 export default {
-    mixins:[httpParams,viewModeChat],
+    mixins:[httpParams,viewModeChat], //routerPushProcessAllOrItemFirst подключи будет баг
 
     computed:{
         userId(){
@@ -21,7 +23,16 @@ export default {
         }
     },
     methods: {
-
+        routerPushProcessAllOrItemFirst(){
+            console.log('routerPushProcess');
+            let itemList = this.$store.state.visitors.process;
+            if(!itemList.length) this.$router.push({name:'processAll'}); //Todo проверить доделать этот варивант
+            else {
+                console.log(!itemList.length,itemList,itemList.length,itemList[0]);
+                let {uuid,site_id} = itemList[0];
+                this.$router.push({name:'process',params: { uuid,site_id}});
+            }
+        },
         playSoundFile(nameFile) {
 
             let{settings,sounds} = this.$store.state.user.settings
@@ -218,7 +229,10 @@ export default {
 
             this.$store.commit('visitors/processRemoveItem',val);
             this.$store.commit('user/unreadUpdate',['unprocessed',-1])
+
+
             this.routerPushProcessAllOrItemFirst()
+
         },
         "update-employees"(val) {
             let find = val.find((item)=>item.id===this.$store.state.user.profile.id)

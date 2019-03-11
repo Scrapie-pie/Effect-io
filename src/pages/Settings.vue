@@ -8,22 +8,23 @@
 </template>
 
 <script>
-    import { hideHeader } from '@/mixins/mixins'
+    import { hideHeader,httpParams } from '@/mixins/mixins'
     import TheLayout from '@/components/TheLayout'
     import NavMain from '@/components/NavMain'
     export default {
         components: {NavMain,TheLayout},
-        mixins: [hideHeader],
+        mixins: [hideHeader,httpParams],
         computed:{
             menuList(){
                 let menuList= [
                     {text: 'Настройки профиля', link: {name: 'settingsProfile'}},
                     {text: 'Настройки приложения', link: {name: 'settingsApp'}},
                 ];
+                console.log(this.$route.query);
                 let user_id = + this.$route.query.user_id;
                 if(user_id) { //у чужого пользователя одна страница настроек, по этому меню не нужно
-                    if (user_id === this.$store.getters['user/profile'].user_id)  {
-                        menuList=[]
+                    if (user_id !== this.$store.state.user.profile.id)  {
+                        menuList=[{text: 'Настройки профиля', link: {name: 'settingsProfile'}},]
                     }
                 }
                 return menuList
