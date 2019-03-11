@@ -249,8 +249,7 @@ export default {
             this.$store.commit('visitors/processRemoveItem',val);
             this.$store.commit('user/unreadUpdate',['unprocessed',-1])
 
-
-            this.routerPushProcessAllOrItemFirst()
+            if(this.viewModeChat==='process') this.routerPushProcessAllOrItemFirst()
 
         },
         "update-employees"(val) {

@@ -92,10 +92,9 @@
                 if (val) this.makeActivity();
                 else this.endActivity()
             },
-            profile(val){
-                if(val){
-                    this.status = val.online;
-                }
+            profile:{
+                handler: function (val, oldVal) {this.status = val.online;},
+                deep: true
             },
             status(val){
                 console.log('status',val);
