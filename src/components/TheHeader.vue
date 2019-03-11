@@ -33,7 +33,7 @@
                     {text: 'Мои диалоги', link: {name:'messageAll'},unread:this.unreadGuest},
                     {text: 'Команда', link: {name: 'team'},unread:this.unreadPrivate},
                     {text: 'Посетители', link: {name: 'visitors'}},
-                    {text: 'Общий чат ', link: {name: 'common'},unread:this.unreadCommon},
+                    //{text: 'Общий чат ', link: {name: 'common'},unread:this.unreadCommon},
                 ]
             },
             unread(){
