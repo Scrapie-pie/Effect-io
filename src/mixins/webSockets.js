@@ -38,10 +38,10 @@ export default {
             let{settings,sounds} = this.$store.state.user.settings
 
                 let index =  settings[nameFile];
-        /*    console.log(sounds[index].file);
+            console.log(sounds[index].file);
             console.log(nameFile,config.api_server.split('/app')[0] + sounds[index].file);
             console.log(config.api_server);
-            console.log(index,sounds[index].file);*/
+            console.log(index,sounds[index].file);
                 if(!sounds[index].file) return
                 let audio = new Audio(config.api_server.split('/app')[0] + sounds[index].file);
                 audio.volume = .5;
@@ -115,7 +115,9 @@ export default {
 
 
 
-            if (val.site_id && val.room_id === this.$store.state.roomActiveId) { // если есть val.site_id значит общение в диалогах
+
+
+            if (val.site_id && (val.room_id === this.$store.state.roomActiveId)) { // если есть val.site_id значит общение в диалогах
                 this.$root.$emit('messageAdd',val) // Нужно, что бы чужое сообщение оказалось каждое в своем чате
             }
 
@@ -123,7 +125,7 @@ export default {
                 this.viewModeChat==='operators' && //иначе на других страницах this.httpParams.params.id вылетала ошибка
                 !val.site_id && (val.from_user_info.user_id == this.httpParams.params.id)) {this.$root.$emit('messageAdd',val)}
 
-            if(val.common) return this.playSoundFile('sound_new_common_message') //Todo пока условно val.common
+
 
             /*   if(val.from_role_id === 9 && val.site_id) {
                    this.$store.commit('visitors/selfMessageLastUpdate',val)
@@ -163,6 +165,14 @@ export default {
 
                 })
             } else {
+
+                if(val.room_id===this.$store.state.user.profile.common_room_id){
+                    this.$store.commit('user/unreadUpdate',['common',1])
+                    this.playSoundFile('sound_new_common_message')
+                    return
+
+                }
+
                 this.$store.commit('operators/messageLastUpdate',val)
                 this.$store.commit('user/unreadUpdate',['private',1])
 

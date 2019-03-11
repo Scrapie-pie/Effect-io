@@ -149,7 +149,7 @@
                 }, 10 * 60 * 1000);
             },
             resetActivity() {
-                console.log('resetActivity');
+
                 this.$nextTick(() => {
                     clearTimeout(this.activity);
                     this.startActivity()

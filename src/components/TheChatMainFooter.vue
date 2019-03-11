@@ -190,6 +190,13 @@
                         }
                     );
                 }
+                if(this.viewModeChat ==='common'){
+                    this.$http.put('message-operator-guest-mark-as-read', {
+                        room_id:this.$store.state.user.profile.common_room_id
+                    });
+
+                    this.$store.commit('user/unreadUpdate',['common','clear'])
+                }
             },
             onEnter: function (e) {
 

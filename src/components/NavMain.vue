@@ -16,7 +16,8 @@
                     span.nav-main__text(v-text="item.text")
 
                     span.nav-main__icon
-                        base-icon(:name="item.link.name")
+                        base-icon(v-if="item.icon" :name="item.icon")
+                        base-icon(v-else :name="item.link.name")
                     base-count.nav-main__count(:count="item.unread")
 
 </template>
@@ -30,7 +31,11 @@
         },
         props: {
             itemList: {}
+        },
+        methods:{
+
         }
+
 
     }
 </script>
