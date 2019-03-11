@@ -40,7 +40,7 @@
                                 @itemRemove="(index)=>uploadFileList.splice(index, 1)"
                             )
                 ul.chat-main-footer__buttons
-                    li.chat-main-footer__button(v-if="viewModeChat=='common'")
+                    //li.chat-main-footer__button(v-if="viewModeChat=='common'")
                         base-btn(
                             :icon="{name:'user',textHidden:'Упомянуть в диалоге'}",
                             @click.prevent="showMention=true"

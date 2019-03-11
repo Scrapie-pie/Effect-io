@@ -52,7 +52,11 @@
 
 <script>
     import ContextMenu from '@/components/ContextMenu'
-    import _ from 'underscore'
+
+
+
+    import lodash_debounce from 'lodash/debounce'
+    import lodash_extend from 'lodash/extend'
     export default {
         components: {
             ContextMenu
@@ -114,12 +118,22 @@
                 this.itemList.unshift(val)
             })
             this.$root.$on('guestUpdate',(val)=>{
-                console.log('guestUpdate',val);
-                let findIndex = this.itemList.findIndex(item=>item.uuid+item.site_id === val.uuid+val.site_id)
-                if(findIndex===-1) {
+                console.log('guestUpdate',val.employee,val);
+               /* console.table(this.itemList,['uuid','site_id']);*/
+                let findIndex = this.itemList.findIndex(item=>{
+                    console.log(item.uuid + item.site_id);
+                    return item.uuid+item.site_id === val.uuid+val.site_id
+                })
+                console.log(findIndex);
+                if(findIndex!==-1) {
                     //this.$set()
-                    console.log(this.itemList[findIndex]);
-                    this.itemList[findIndex]={...val};
+
+
+                    console.log(Object.assign({}, this.itemList[findIndex], val));
+                    console.log(lodash_extend(this.itemList[findIndex], val));
+                    this.itemList[findIndex]=Object.assign({},this.itemList[findIndex],val)
+
+                    //this.itemList[findIndex]={...val};
                 }
             })
         },
@@ -135,7 +149,7 @@
                         this.$router.push({name:'chatId',params: { uuid: visitor.uuid,site_id:visitor.site_id}});
                     })
             },
-            debounceSearch:_.debounce(function()
+            debounceSearch:lodash_debounce(function()
                 {
                     this.resetSearch();
                     this.getVisitorsList();
@@ -159,7 +173,6 @@
                         this.getVisitorsListStart=true;
                         if (data.data.count) {
                             this.itemList.push(...data.data.list);
-                            console.table(this.itemList);
                             this.itemListCount = data.data.count;
                             this.pageN += 1;
                         }
@@ -168,6 +181,9 @@
                 }
 
             },
+
+        },
+        sockets:{
 
         }
     }

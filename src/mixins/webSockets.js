@@ -201,10 +201,14 @@ export default {
             this.playSoundFile('sound_new_guest')
             this.$root.$emit('guestNewSession',val)
         },
+        'update-guest-employee'(val){
+            console.log('update-guest-employee',val);
+            this.$root.$emit('guestUpdate',val)
+        },
         "guest-update"(val) {
             //console.log('guest-update',val);
 
-            this.$root.$emit('guestUpdate',val)
+            //this.$root.$emit('guestUpdate',val)
 
             if(!this.httpParams) return
             let {site_id,uuid} = this.httpParams.params;
