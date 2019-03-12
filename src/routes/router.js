@@ -5,6 +5,8 @@ import store from '@/store/store'
 import AccountAuth from '@/components/AccountAuth'
 
 import PageTeam from '@/pages/PageTeam'
+//import PageTestScreen from '@/pages/PageTestScreen'
+const  PageTestScreen = ()=> import('@/pages/PageTestScreen')
 import PageVisitor from '@/pages/PageVisitor'
 import PageChat from '@/pages/PageChat'
 
@@ -12,9 +14,14 @@ import Settings from '@/routes/settings'
 
 import Ui from '@/routes/ui'
 
+
 import axios from "@/modules/axios";
 
-let helpers = process.env.NODE_ENV !== 'production' ? [...Ui] : [];
+let helpers = process.env.NODE_ENV !== 'production' ? [...Ui,  {
+    name: 'testScreen',
+    path: '/testScreen',
+    component: PageTestScreen,
+}] : [];
 
 import BaseNoFound from '@/components/BaseNoFound'
 

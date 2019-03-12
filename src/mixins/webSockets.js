@@ -35,13 +35,13 @@ export default {
         },*/
         playSoundFile(nameFile) {
 
-            let{settings,sounds} = this.$store.state.user.settings
+            let{settings,sounds} = this.$store.state.user.settings;
 
                 let index =  settings[nameFile];
-            console.log(sounds[index].file);
+          /*  console.log(sounds[index].file);
             console.log(nameFile,config.api_server.split('/app')[0] + sounds[index].file);
             console.log(config.api_server);
-            console.log(index,sounds[index].file);
+            console.log(index,sounds[index].file);*/
                 if(!sounds[index].file) return
                 let audio = new Audio(config.api_server.split('/app')[0] + sounds[index].file);
                 audio.volume = .5;

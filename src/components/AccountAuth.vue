@@ -57,8 +57,8 @@
         data() {
             return {
                 recoveryPage: false,
-                login: 'testrbcall@mail.ru',
-                password: '321tceffE',
+                login: '',
+                password: '',
                 title: 'Для входа в личный кабинет введите свои учетные данные',
                 passwordSent: false,
                 errorApiText:''

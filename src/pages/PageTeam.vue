@@ -128,9 +128,6 @@
                     console.log(item.unread.length);
                     return !item.unread.length
                 });
-
-
-
             },
         },
         methods:{
@@ -164,6 +161,7 @@
         &__content {
             display:flex;
             flex-direction:column;
+            height:100%;
         }
         &__scroll-bar {
             height:100%;

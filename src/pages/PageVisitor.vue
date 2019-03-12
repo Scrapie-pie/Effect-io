@@ -33,7 +33,8 @@
                                 type="visitor"
                                 :name="item.name"
                                 avatar-width="md",
-                                :avatar-url="item.photo"
+                                :avatar-url="item.photo",
+                                :avatar-stub="item.photo_stub"
                             )
                         td.table__td
                             base-btn.page-visitors__start-chat(
@@ -118,22 +119,12 @@
                 this.itemList.unshift(val)
             })
             this.$root.$on('guestUpdate',(val)=>{
-                console.log('guestUpdate',val.employee,val);
-               /* console.table(this.itemList,['uuid','site_id']);*/
-                let findIndex = this.itemList.findIndex(item=>{
-                    console.log(item.uuid + item.site_id);
-                    return item.uuid+item.site_id === val.uuid+val.site_id
-                })
-                console.log(findIndex);
+                console.log('guestUpdate');
+                let findIndex = this.itemList.findIndex(item=>item.uuid+item.site_id === val.guest_uuid+val.site_id)
                 if(findIndex!==-1) {
-                    //this.$set()
+                    let itemUpdate = Object.assign(this.itemList[findIndex],val)
+                    this.itemList.splice=(findIndex,1,itemUpdate)
 
-
-                    console.log(Object.assign({}, this.itemList[findIndex], val));
-                    console.log(lodash_extend(this.itemList[findIndex], val));
-                    this.itemList[findIndex]=Object.assign({},this.itemList[findIndex],val)
-
-                    //this.itemList[findIndex]={...val};
                 }
             })
         },
