@@ -113,10 +113,6 @@ export default {
                 if(this.$store.state.user.profile.employee_id === val.from_user_info.id) return; //Принимаем только чужие сообщения
             }
 
-
-
-
-
             if (val.site_id && (val.room_id === this.$store.state.roomActiveId)) { // если есть val.site_id значит общение в диалогах
                 this.$root.$emit('messageAdd',val) // Нужно, что бы чужое сообщение оказалось каждое в своем чате
             }
@@ -125,13 +121,6 @@ export default {
                 this.viewModeChat==='operators' && //иначе на других страницах this.httpParams.params.id вылетала ошибка
                 !val.site_id && (val.from_user_info.user_id == this.httpParams.params.id)) {this.$root.$emit('messageAdd',val)}
 
-
-
-            /*   if(val.from_role_id === 9 && val.site_id) {
-                   this.$store.commit('visitors/selfMessageLastUpdate',val)
-                   this.$store.commit('user/unreadUpdate',['guest',1])
-                   return
-               }*/
 
             if(val.status === "unprocessed") {
                 return  this.$store.commit('visitors/processMessageLastUpdate',val)
@@ -214,8 +203,6 @@ export default {
             let {site_id,uuid} = this.httpParams.params;
 
             if(val.uuid+val.site_id===uuid+site_id){
-
-
                 this.$store.commit('visitors/itemOpen',val)  //{name,uuid,site_id} = val
 
             }
@@ -243,10 +230,17 @@ export default {
 
             })
         },
+        "self-remove"(val){
+            console.log('self-remove',val,val.room_id , this.$store.state.roomActiveId)
+            //if(val.room_id === this.$store.state.roomActiveId) return
+
+            this.$store.commit('visitors/processRemoveItem',val);
+            this.$store.commit('user/unreadUpdate',['guest',-1])
+
+            if(this.viewModeChat==='visitors') this.$router.push({name:'messageAll'})
+
+        },
         "unprocessed-remove"(val){
-
-
-
             console.log('unprocessed-remove',val,val.room_id , this.$store.state.roomActiveId)
             //if(val.room_id === this.$store.state.roomActiveId) return
 

@@ -154,9 +154,7 @@
             },
             removeFromRoom(user_id){
                 let room_id = this.$store.state.roomActiveId;
-                this.$http.post('chat-room-user-remove',{room_id,user_id}).then(()=>{
-
-                });
+                this.$http.post('chat-room-user-remove',{room_id,user_id});
             },
             getActions(e){
                 if (e = 'blockClient' ) this.showConfirmBlockClient=true;
