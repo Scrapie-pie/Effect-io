@@ -303,6 +303,7 @@
     .chat-main{
         $color_border:glob-color('border');
         $color_bg_date:glob-color('light');
+        $color_bg_message:glob-color('info-lighten');
 
         display:flex;
         flex-flow:column;
@@ -316,6 +317,8 @@
             .base-people__text {
                 white-space:normal;
             }
+
+
         }
 
 
@@ -367,12 +370,20 @@
 
                 align-items:flex-start;
             }
-
+            .base-people {
+                margin-right:14%;
+            }
             &_right {
                 text-align:right;
                 .base-people {
+                    margin-left:14%;
+                    margin-right:auto;
+
                     text-align:left;
                     display:inline-flex;
+                    &__inner {
+                        background-color:$color_bg_message;
+                    }
                     &__name {
                         margin-left:auto;
                     }
