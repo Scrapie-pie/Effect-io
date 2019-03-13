@@ -370,7 +370,9 @@
                 text-align:right;
                 .base-people {
                     display:inline-flex;
-
+                    &__name {
+                        margin-left:auto;
+                    }
                 }
             }
 
