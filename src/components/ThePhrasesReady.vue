@@ -74,7 +74,7 @@
                             name="is_common"
                         ) Данный шаблон будет виден только мне
                     li.phrases-ready__add-item
-                        base-btn.phrases-ready__add-item-button(v-text="(!showPhrasesEdit)?'Добавить шблон':'Сохранить'" type="submit")
+                        base-btn.phrases-ready__add-item-button(v-text="(!showPhrasesEdit)?'Добавить шаблон':'Сохранить'" type="submit")
                         base-btn(v-text="'Отмена'" color="error", @click="cancel")
 </template>
 
