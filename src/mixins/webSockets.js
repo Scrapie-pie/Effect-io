@@ -234,8 +234,14 @@ export default {
             console.log('self-remove',val,val.room_id , this.$store.state.roomActiveId)
             //if(val.room_id === this.$store.state.roomActiveId) return
 
-            this.$store.commit('visitors/processRemoveItem',val);
-            this.$store.commit('user/unreadUpdate',['guest',-1])
+
+            this.$store.dispatch('setMessageRead', {
+                    uuid:val.uuid,
+                    site_id:val.site_id,
+                    type:'visitors'
+                }
+            );
+            this.$store.commit('visitors/selfMessageRemoveItem',val);
 
             if(this.viewModeChat==='visitors') this.$router.push({name:'messageAll'})
 

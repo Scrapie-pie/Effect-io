@@ -66,7 +66,7 @@
             exitRoom(){
                 this.$http.post('chat-room-user-exit', {room_id:this.$store.state.roomActiveId})
                     .then(()=> {
-                        this.removeMessageAndPush()
+                        //this.removeMessageAndPush()
                     })
             },
             exitRoomConfirm(){
@@ -86,7 +86,7 @@
                     .then(() => {
 
 
-                        this.removeMessageAndPush()
+                        //this.removeMessageAndPush()
 
                         console.log('routerPushChatId');
                         return

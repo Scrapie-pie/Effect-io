@@ -187,7 +187,7 @@
                         user_id:this.httpParams.params.id
                     });
                     this.$store.dispatch('setMessageRead', {
-                            userId:this.httpParams.params.id,
+                            id:this.httpParams.params.id,
                             type:this.viewModeChat
                         }
                     );
@@ -197,7 +197,8 @@
                         room_id:this.$store.state.roomActiveId
                     });
                     this.$store.dispatch('setMessageRead', {
-                            userId:this.httpParams.params.uuid,
+                            uuid:this.httpParams.params.uuid,
+                            site_id:this.httpParams.params.site_id,
                             type:this.viewModeChat
                         }
                     );

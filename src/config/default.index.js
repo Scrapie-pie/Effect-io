@@ -1,6 +1,6 @@
 const config = {
-    api_server:'https://newrobocall.ru/app/',
-    api_websocket:'https://s.newrobocall.ru'
+    api_server:'http://rbcall-rbcall-3285.cloud4.newrobocall.ru/app/',
+    api_websocket:'http://socket-server-RBCALL-3285.cloud4.newrobocall.ru'
 }
 
 export default config

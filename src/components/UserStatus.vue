@@ -32,7 +32,7 @@
 
 <script>
 
-
+    import { viewModeChat} from '@/mixins/mixins'
     export default {
         /*  props:{
             status:{
@@ -43,7 +43,7 @@
                 }
             }
           },*/
-
+        mixins:[viewModeChat],
         data() {
             return {
                 show: false,
@@ -102,6 +102,7 @@
 
                     this.$store.commit('visitors/processRemoveItemAll')
                     this.$store.commit('user/unreadUpdate',['unprocessed','clear'])
+                    if(this.viewModeChat==='process')this.$router.push({name:'processAll'});
                 }
             }
         },

@@ -90,22 +90,22 @@ export default new Vuex.Store({
 
     },
     actions: {
-        setMessageRead({state, commit, dispatch },{userId,type}) {
+        setMessageRead({state, commit, dispatch },{id,site_id,uuid,type}) {
             let itemList = [],
-                unreadType, // private,guest
-                idOrUuid; //Todo гениальное решение нужно при получения посетителей добавить item.id = uuid
+                unreadType; // private,guest
             if(type==='operators') {
                 itemList = state.operators.all;
                 unreadType = 'private';
-                idOrUuid = 'id'
             }
             if(type==='visitors') {
                 itemList = state.visitors.self;
-                unreadType = 'guest'
-                idOrUuid = 'uuid'
+                unreadType = 'guest';
             }
             let findIndex = itemList.findIndex((item)=>{
-                return item[idOrUuid] === userId
+
+                if(type==='visitors') return item.uuid+item.site_id === uuid+site_id
+                if(type==='operators') return item.id === id
+
             });
             if(findIndex !== -1) {
                 let unread = itemList[findIndex].unread;
