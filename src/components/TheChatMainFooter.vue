@@ -7,7 +7,7 @@
                 |qweqweqweq qweqweqweq qweqweqweq qweqweqweq qweqweqweq qweqweqweq qweqweqweq qweqweqweq qweqweqweq qweqweqweq qweqweqweq qweqweqweq qweqweqweq qweqweqweq qweqweqweq
 
             TheProcessActions(v-if="compShowProcess")
-            fieldset(v-else)
+            fieldset.chat-main-footer__fieldset(v-else)
                 .chat-main-footer__box-control
                     box-controls(:show="showMention", @boxControlClose="showMention=false")
                         select-operators(name="mention")
@@ -335,6 +335,7 @@
         border-top:1px solid $color_border;
         padding-top:calc-em(20);
 
+        &__fieldset {min-width:0}
         &__phrases-select {
           /*  @extend %full-abs;
             top:auto;

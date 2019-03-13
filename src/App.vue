@@ -175,6 +175,7 @@
         &__main{
             display:flex;
             flex:1 0 auto;
+            min-width:0;//для шаблонов, чтобы работало text-overflow: ellipsis;
         }
 
         &__scrollbar {
@@ -193,6 +194,7 @@
             flex-direction: column;
             flex: 1;
             min-height:475px;
+            min-width:0;//для шаблонов, чтобы работало text-overflow: ellipsis;
         }
 
         &__main{

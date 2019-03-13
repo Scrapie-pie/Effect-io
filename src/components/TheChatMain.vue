@@ -308,6 +308,7 @@
         display:flex;
         flex-flow:column;
         height:100%;
+        min-width:0;//для шаблонов, чтобы работало text-overflow: ellipsis;
 
         &__item {
             padding-top:calc-em(25);

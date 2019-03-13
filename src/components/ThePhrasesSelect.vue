@@ -80,23 +80,29 @@
 <style lang="scss">
     .phrases-select {
         padding-right:calc-em(10);
-        .action-list__item {
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        .action-list__text {
-            padding:calc-em(2) 0;
-            color:glob-color('placeholder');
-            font-style:italic;
-            border:0;
 
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+        .action-list {
+            &__item {
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            &__text {
+                padding:calc-em(2) 0;
+                color:glob-color('placeholder');
+                font-style:italic;
+                border:0;
 
-            max-width: 50vw;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            &__button{width:100%}
+            &__input {
+                display:none;
+            }
         }
+
         &__scroll-bar {
             max-height:12em;
         }

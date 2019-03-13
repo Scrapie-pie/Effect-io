@@ -122,6 +122,7 @@
             padding-right:$pd;
             height:100%;
             z-index:2;
+            min-width:0;//для шаблонов, чтобы работало text-overflow: ellipsis;
             @include media($width_md) {
 
                 padding-right:0;

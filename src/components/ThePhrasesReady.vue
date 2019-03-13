@@ -1,7 +1,7 @@
 <template lang="pug">
     form.phrases-ready(@submit.prevent="submit")
         transition(name="fade" mode="out-in")
-            fieldset(v-if="!showPhrasesNew" key="showPhrasesNew")
+            fieldset.phrases-ready__wrap(v-if="!showPhrasesNew" key="showPhrasesNew")
                 legend.phrases-ready__text-only-scr Готовый список фраз
                 .phrases-ready__btn-add
                     base-btn(
@@ -29,8 +29,8 @@
                                     v-for="(item, index) in phrases",
                                     :key="index"
                                 )
-                                    span.phrases-ready__phrases-text
-                                        span.phrases-ready__dots(v-text="item.text")
+                                    span.phrases-ready__phrases-text(v-text="item.text")
+
                                     ul.phrases-ready__phrases-controls
                                         li.phrases-ready__phrases-button.phrases-ready__phrases-edit
                                             base-btn(theme="link" v-text="'Редактировать'" @click="itemEditShow(item)")
@@ -100,14 +100,10 @@
                     is_common:1,
                 },
 
-
-
                 newCategory:'',
                 newPhrase:'',
 
                 VisibleToAll:false,
-
-
                 categoriesSelectId:'',
 
 
@@ -173,7 +169,6 @@
             submit(){
                 if(this.showPhrasesEdit) this.itemEdit()
                 else this.itemCreate()
-                console.log('submit');
                 this.showPhrasesNew=false;
                 this.showPhrasesEdit=false;
                 this.phrasesEditId=null,
@@ -195,6 +190,8 @@
 
         $padding:calc-em(8) calc-em(26);
         max-height: 74vh;
+
+        &__wrap,&__phrases-wrap {min-width:0}
 
         &__scrollbar {
             max-height: 67.5vh;
@@ -279,9 +276,9 @@
             }
         }
         &__phrases-text {
-            flex: 1;
-            min-width: 0;
-            display:block;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         &__phrases-controls {
@@ -296,13 +293,7 @@
             }
         }
 
-        &__dots {
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            display:block;
-            max-width: 30vw;
-        }
+
 
         &__text-only-scr {
             @extend %visuallyhidden;
