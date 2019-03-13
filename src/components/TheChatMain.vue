@@ -66,9 +66,9 @@
     import TheChatMainHeader from '@/components/TheChatMainHeader'
     import TheChatMainFooter from '@/components/TheChatMainFooter'
 
-    import { scrollLoadAllow} from '@/modules/scroll'
 
-    import { viewModeChat,httpParams } from '@/mixins/mixins'
+
+    import { viewModeChat,httpParams,scrollbar } from '@/mixins/mixins'
 
 
     import lodash_groupBy from 'lodash/groupBy'
@@ -80,7 +80,7 @@
             TheChatMainHeader,
             TheChatMainFooter
         },
-        mixins:[viewModeChat,httpParams],
+        mixins:[viewModeChat,httpParams,scrollbar],
         filters: {
             messageBreakLine: function (value) {
                 return   value.replace(/(\r\n|\n|&lt;br&gt;)/g, "<br>") // из виджета &lt;br&gt;
@@ -108,7 +108,7 @@
                 this.messageList=[];
                 this.clearTimerVisitorTypingLive=null,
                 this.historyMessageLoad().then(()=>{
-                    this.scrollerPushDown(this.$refs.scrollbar)
+                    this.scrollbarScrollerPush(this.$refs.scrollbar)
                 });
             },
             messageDays(val){
@@ -127,7 +127,7 @@
                 } else {
                     console.log('visitorTypingLive',!val.length===!oldVal.length);
                     setTimeout(()=>{
-                        this.scrollerPushDown(this.$refs.scrollbar)
+                        this.scrollbarScrollerPush(this.$refs.scrollbar)
                     },50)
 
 
@@ -190,7 +190,7 @@
             this.$root.$on('chatSystemMessages',(val)=>this.systemMessages.push(val))
 
             this.historyMessageLoad().then(()=>{
-                this.scrollerPushDown(this.$refs.scrollbar)
+                this.scrollbarScrollerPush(this.$refs.scrollbar)
             });
 
             this.$root.$on('messageAdd',(val)=>{
@@ -200,13 +200,13 @@
                     if(findIndex===-1) {
                         this.messageList.unshift(val);
                         setTimeout(()=>{
-                            this.scrollerPushDown(this.$refs.scrollbar)
+                            this.scrollbarScrollerPush(this.$refs.scrollbar)
                         },50)
                     }
                 }  else {
                     this.messageList.unshift(val);
                     setTimeout(()=>{
-                        this.scrollerPushDown(this.$refs.scrollbar)
+                        this.scrollbarScrollerPush(this.$refs.scrollbar)
                     },50)
                 }
 
@@ -244,23 +244,9 @@
 
                 })
             },
-            scrollerPushDown(scrollbar){
-                //console.log('scrollerPushDown',scrollbar);
-                let scrollerEl = scrollbar.$el,
-                    valPx = this.scrollerPxToPercent(scrollerEl, 100);
-                scrollerEl.scrollTop = valPx;
-                scrollbar.update()
-                //console.log('scrollerEl',scrollerEl,valPx);
-            },
-            scrollerPxToPercent(scroller,scrollTop){
-                let height = scroller.clientHeight,
-                    scrollHeight = scroller.scrollHeight - height,
-                    percent = Math.floor(scrollTop * scrollHeight /100);
-                return percent
-            },
             scrollLoad(e){
 
-                if(scrollLoadAllow(e,'up')) this.historyMessageLoad()
+                if(this.scrollLoadAllow(e,'up')) this.historyMessageLoad()
 
             },
             historyMessageLoad(){

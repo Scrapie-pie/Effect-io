@@ -6,7 +6,7 @@
                 @result="(val)=>filterSearchResult=val",
                 @text="(val)=>search=val"
             )
-        scroll-bar.last-messages__scrollbar(@ps-scroll-down="scrollDown")
+        scroll-bar.last-messages__scrollbar(@ps-scroll-down="scrollDown" ref="scrollbar")
             ul.last-messages__list
                 li.last-messages__item(
                     v-for="(item, index) in filterSearchResult",
@@ -37,10 +37,10 @@
     import lodash_debounce from 'lodash/debounce'
     import lodash_once from 'lodash/once'
     import filterSearch from '@/components/FilterSearch'
-    import { viewModeChat,httpParams } from '@/mixins/mixins'
-    import { scrollLoadAllow} from '@/modules/scroll'
+    import { viewModeChat,httpParams,scrollbar } from '@/mixins/mixins'
+
     export default {
-        mixins:[viewModeChat,httpParams ],
+        mixins:[viewModeChat,httpParams ,scrollbar],
         components:{filterSearch},
         filters: {
             name(item,visitorInfo){
@@ -56,8 +56,9 @@
                 getItemListStart:true,
 
                 search:'',
-                limit:12,
+                limit:2,
                 pageN:1,
+                pageNBeforeSearch:null,
                 type:'',
                 itemListCount: 0,
                 itemList:[],
@@ -140,7 +141,6 @@
                     if (val[0].link)  {
                         this.$router.push(val[0].link)
                     }
-
                 }
 
             },
@@ -149,19 +149,10 @@
                 if (this.viewModeChat==="visitors") this.type='self';
 
                 if(to.name !== from.name) {
-                    console.log('$route',to.name, from.name);
-
                     if(this.itemListStore.length) return
                     this.resetSearch();
                     this.getItemList();
                 }
-
-
-
-
-
-
-
         },
             search:'debounceSearch',
         },
@@ -195,11 +186,22 @@
                 last_message = author + last_message;
                 return last_message
             },
-            debounceSearch:lodash_debounce(function(val) {
+            debounceSearch:lodash_debounce(function(val,oldVal) {
 
-                if(!val) return
+                if(!oldVal) this.pageNBeforeSearch = this.pageN; //запоминаем загруженную страницу
+
+                this.resetSearch();
+
+                if(!val) { // что бы после поиска начать загружать дальше, а не завного
+                    this.pageN  = this.pageNBeforeSearch;
+                    return
+                }
+
+
+
 
                 this.getItemList();
+                this.scrollbarScrollerPush(this.$refs.scrollbar,0)
                 }, 500
             ),
             resetSearch(){
@@ -209,7 +211,7 @@
                 this.getItemListStart=true;
             },
             scrollDown(e){
-                if(scrollLoadAllow(e)) this.getItemList()
+                if(this.scrollLoadAllow(e)) this.getItemList()
             },
 
             getItemList(){
@@ -309,7 +311,7 @@
             padding-top:calc-em(10);
             padding-bottom:calc-em(10);
 
-          /*  height:50vh;*/
+            height:100vh;
 
             &:hover,&_active {
                 background-color:$color_bg-hover;

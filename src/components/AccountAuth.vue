@@ -57,8 +57,8 @@
         data() {
             return {
                 recoveryPage: false,
-                login: '',
-                password: '',
+                login: '', //testrbcall@mail.ru fanhorsis@yandex.ru http://mishki.ucoz.net
+                password: '', //321tceffE
                 title: 'Для входа в личный кабинет введите свои учетные данные',
                 passwordSent: false,
                 errorApiText:''
