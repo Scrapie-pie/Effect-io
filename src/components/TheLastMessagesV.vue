@@ -56,7 +56,7 @@
                 getItemListStart:true,
 
                 search:'',
-                limit:2,
+                limit:20,
                 pageN:1,
                 pageNBeforeSearch:null,
                 type:'',
@@ -311,7 +311,7 @@
             padding-top:calc-em(10);
             padding-bottom:calc-em(10);
 
-            height:100vh;
+
 
             &:hover,&_active {
                 background-color:$color_bg-hover;

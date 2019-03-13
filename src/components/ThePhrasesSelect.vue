@@ -94,6 +94,8 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+
+            max-width: 50vw;
         }
         &__scroll-bar {
             max-height:12em;
