@@ -13,7 +13,7 @@
                         li.chat-main__messages-item(
                             v-for="(item, index) in days[1]",
                             :key="item.id" ,
-                            :class="{'chat-main__messages-item_right':item.from_user_info.id == $store.state.user.profile.employee_id}"
+                            :class="{'chat-main__messages-item_right':item.from_user_info.id != $store.state.user.profile.employee_id}"
                         )
                             base-people(
                                 v-if="item.from_role_id!=9"
@@ -24,19 +24,21 @@
                                 :text="item.body | messageBreakLine",
                                 :time="item.time",
 
-                                :right="item.from_user_info.id == $store.state.user.profile.employee_id",
+                                :right="item.from_user_info.id != $store.state.user.profile.employee_id",
                                 :img="item.img",
                                 :files="item.files || []"
                             )
                             p(v-else v-text="item.body" :style="{textAlign:'center'}")
-                        li.chat-main__messages-item(v-if="showVisitorTypingLive")
+                        li.chat-main__messages-item.chat-main__messages-item_right(v-if="showVisitorTypingLive")
                             base-people(
                                 :key="'visitorTypingLive'"
                                 avatar-width="md",
+                                :time="(new Date).getTime() / 1000"
                                 :avatar-url="visitorInfo.photo",
                                 :avatar-stub="visitorInfo.photo_stub"
                                 :name="visitorInfo.name",
                                 :text="visitorTypingLive | messageBreakLine",
+                                :right="true",
                             )
 
                         template(v-if="(roomActiveUsersInvited.length || roomActiveUsersRecipient.length) && roomActiveIsAdmin")
@@ -369,6 +371,7 @@
             &_right {
                 text-align:right;
                 .base-people {
+                    text-align:left;
                     display:inline-flex;
                     &__name {
                         margin-left:auto;
