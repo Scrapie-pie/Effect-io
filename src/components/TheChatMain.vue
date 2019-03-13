@@ -310,6 +310,10 @@
             padding-top:calc-em(25);
 
             &_history_more {text-align:center}
+
+            .base-people__text {
+                white-space:normal;
+            }
         }
 
 

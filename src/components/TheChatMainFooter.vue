@@ -112,6 +112,7 @@
                 this.checkIsProcessPage();
             },
             message(val){
+                console.log('message',val,this.autosizeInit);
                 if(val && this.autosizeInit){
                     autosize(this.$refs.chatInput);
                     this.autosizeInit=false;
@@ -164,7 +165,17 @@
 
         methods: {
             getPhrasesSelectText(val){
+                autosize.destroy(this.$refs.chatInput);
                 this.message=val;
+
+
+
+            /*
+                this.autosizeInit=true;*/
+                setTimeout(()=>{ //Todo костыль
+                    autosize(this.$refs.chatInput);
+                    this.$refs.scrollbarMessage.update()
+                },300)
             },
             messageRead(){
 
