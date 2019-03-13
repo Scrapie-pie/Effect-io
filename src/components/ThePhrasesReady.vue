@@ -239,8 +239,12 @@
 
 
         &__catalog {
-            padding-right: 9vw;
+            padding-right: calc-em(15);
             flex: 0 0 auto;
+
+            max-width: 220px;
+            width: 100%;
+            min-width:0;
 
             @include media(1600px) {
                 padding-right:1vw;

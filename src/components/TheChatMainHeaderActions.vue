@@ -38,10 +38,10 @@
 </template>
 
 <script>
-    import {httpParams,viewModeChat} from '@/mixins/mixins'
+    import {httpParams,viewModeChat,removeMessageAndPush} from '@/mixins/mixins'
     export default {
         components: {},
-        mixins:[viewModeChat,httpParams],
+        mixins:[viewModeChat,httpParams,removeMessageAndPush],
         data() {
             return {
                 showBlockClient:false,
@@ -66,11 +66,7 @@
             exitRoom(){
                 this.$http.post('chat-room-user-exit', {room_id:this.$store.state.roomActiveId})
                     .then(()=> {
-                        this.$store.commit('visitors/selfMessageRemoveItem',this.httpParams.params)
-                        this.$root.$emit('globBoxControlClose')
-
-
-                        this.$router.push({name:'messageAll'})
+                        this.removeMessageAndPush()
                     })
             },
             exitRoomConfirm(){
@@ -88,12 +84,12 @@
 
                 this.$http.post('guest-blocking', this.httpParams.params)
                     .then(() => {
-                        this.$root.$emit('globBoxControlClose');
 
-                        this.$store.commit('visitors/selfMessageRemoveItem',this.httpParams.params);
-                        this.$store.commit('user/unreadUpdate',['guest',1]);
+
+                        this.removeMessageAndPush()
 
                         console.log('routerPushChatId');
+                        return
                         let itemList = this.$store.state.visitors.self;
                         if(!itemList.length) this.$router.push({name:'messageAll'}); //Todo проверить доделать этот варивант
                         else {

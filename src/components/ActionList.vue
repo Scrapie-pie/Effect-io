@@ -83,6 +83,7 @@
 
         &__button{
             display:inline-block;
+            width:100%;
         }
         &__text{
             transition:$transition;
@@ -95,6 +96,8 @@
             white-space:nowrap;
             text-decoration:none;
             display:block;
+            overflow:hidden;
+            text-overflow:ellipsis;
         }
     }
 </style>

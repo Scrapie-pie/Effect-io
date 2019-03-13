@@ -86,6 +86,7 @@
                     }*/
 
                     if(err.response && err.response.data && err.response.data.message && this.$route.name!=='auth') {
+                        this.$root.$emit('globBoxControlClose')
                         this.$root.$emit('popup-notice',err.response.data.message);
                         console.log('error №',err.response.status)
                     }

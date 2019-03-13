@@ -3,6 +3,7 @@
 export default {
 
     methods:{
+
         routerPushProcessAllOrItemFirst(){
             console.log('routerPushProcess');
             let itemList = this.$store.state.visitors.process;

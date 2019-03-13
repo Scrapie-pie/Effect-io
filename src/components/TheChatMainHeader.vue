@@ -74,7 +74,7 @@
     import TheChatMainHeaderActions from '@/components/TheChatMainHeaderActions'
     import SelectOperators from '@/components/SelectOperators'
     import SelectBranch from '@/components/SelectBranch'
-    import { viewModeChat,httpParams } from '@/mixins/mixins'
+    import { viewModeChat,httpParams,removeMessageAndPush } from '@/mixins/mixins'
 
     export default {
         components: {
@@ -83,7 +83,7 @@
             TheChatMainHeaderActions,
             SelectOperators
         },
-        mixins:[viewModeChat,httpParams],
+        mixins:[viewModeChat,httpParams,removeMessageAndPush],
         data() {
             return {
                 membersList: [],
@@ -149,6 +149,8 @@
                     let data = this.httpParams.params;
                     data.intent = 'farewell'
                 this.$http.post('message-send', data);
+                this.removeMessageAndPush()
+
             },
             removeFromRoom(user_id){
                 let room_id = this.$store.state.roomActiveId;
