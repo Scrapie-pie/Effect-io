@@ -35,4 +35,10 @@ small:not([class]), .g-small{
   font-size:$glob-font-size_small;
 }
 
+.truncated {
+  overflow:hidden;
+  white-space:nowrap;
+  text-overflow:ellipsis;
+}
+
 

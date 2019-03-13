@@ -29,7 +29,8 @@
                                     v-for="(item, index) in phrases",
                                     :key="index"
                                 )
-                                    span.phrases-ready__phrases-text(v-text="item.text")
+                                    span.phrases-ready__phrases-text
+                                        span.phrases-ready__dots(v-text="item.text")
                                     ul.phrases-ready__phrases-controls
                                         li.phrases-ready__phrases-button.phrases-ready__phrases-edit
                                             base-btn(theme="link" v-text="'Редактировать'" @click="itemEditShow(item)")
@@ -55,6 +56,7 @@
                             type="textarea",
                             name="newPhrase"
                             v-model="create.text",
+                            maxLength="2000"
 
                         )
                     li.phrases-ready__add-item(v-if="!showPhrasesEdit")
@@ -267,6 +269,7 @@
 
         &__phrases-item {
             display:flex;
+
             align-items:center;
             padding:$padding;
             padding-left:calc-em(10);
@@ -274,6 +277,11 @@
             &:hover {
                 background-color:$color-bg;
             }
+        }
+        &__phrases-text {
+            flex: 1;
+            min-width: 0;
+            display:block;
         }
 
         &__phrases-controls {
@@ -286,6 +294,14 @@
                 align-items: flex-end;
                 padding-left:calc-em(15);
             }
+        }
+
+        &__dots {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display:block;
+            max-width: 30vw;
         }
 
         &__text-only-scr {
@@ -302,6 +318,8 @@
 
 
         }
+
+
 
 
 

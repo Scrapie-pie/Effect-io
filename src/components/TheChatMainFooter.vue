@@ -3,7 +3,8 @@
 
             ///the-chat-system-messages
 
-
+            //span.truncated
+                |qweqweqweq qweqweqweq qweqweqweq qweqweqweq qweqweqweq qweqweqweq qweqweqweq qweqweqweq qweqweqweq qweqweqweq qweqweqweq qweqweqweq qweqweqweq qweqweqweq qweqweqweq
 
             TheProcessActions(v-if="compShowProcess")
             fieldset(v-else)
