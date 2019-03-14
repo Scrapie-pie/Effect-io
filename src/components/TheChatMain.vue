@@ -199,6 +199,7 @@
 
                 if(val.socket){//Todo Временное решение, на проверку дубликатов, пока Симон не исправит
                     let findIndex = this.messageList.findIndex(item=>item.id===val.id)
+                    console.log('дубликат',findIndex);
                     if(findIndex===-1) {
                         this.messageList.unshift(val);
                         setTimeout(()=>{

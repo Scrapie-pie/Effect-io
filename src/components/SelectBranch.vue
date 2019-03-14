@@ -5,7 +5,7 @@
             legend.select-operator__title(v-text="title")
             .select-operator__search-operators
                 filter-search(
-                    :item-list="itemList",
+                    :item-list="itemLisFilter",
                     @result="(val)=>filterSearchResult=val",
                     @text="(val)=>search=val",
                     field-name="title"
@@ -55,7 +55,7 @@
         },
         computed:{
             count(){
-                return this.itemList.length
+                return this.itemLisFilter.length
             },
             btnText(){
                 return 'Передать'
@@ -65,6 +65,9 @@
             },
             placeholder() {
                 return 'Данный комментарий увидит отдел, которому Вы передаете диалог. Это не обязательное поле. Вы можете передать диалог без указания комментария.'
+            },
+            itemLisFilter(){
+                return this.itemList.filter(item=>item.site_id===this.httpParams.params.site_id)
             },
             itemList(){
                 return this.$store.state.user.branchListAll
