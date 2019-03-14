@@ -97,7 +97,7 @@ export default {
     },
     sockets: {
         "hot-guest"(val){
-            console.log('hot-guest',val);
+            //console.log('hot-guest',val);
             this.$store.commit('visitors/messageHot',{val,set:true})
         },
         "typing-live"(val){
@@ -106,6 +106,7 @@ export default {
             this.$store.commit('roomActiveTypingLive',val)
         },
         "new-message"(val) { //переместил сюда, что бы список на странице team обновлялся
+
             console.log('sockets new-message',val);
             val.socket=true; //Todo Временное решение, на проверку дубликатов, пока Симон не исправит
 
@@ -213,7 +214,7 @@ export default {
             this.$store.commit('user/branchListAll',val)
         },
         "room-users"(val){
-            console.log('room-users',val)
+
             this.$store.commit('roomActive',val)
         },
         "unprocessed"(val){
@@ -247,6 +248,7 @@ export default {
 
         },
         "unprocessed-remove"(val){
+
             console.log('unprocessed-remove',val,val.room_id , this.$store.state.roomActiveId)
             //if(val.room_id === this.$store.state.roomActiveId) return
 

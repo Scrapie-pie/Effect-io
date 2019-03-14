@@ -2,7 +2,7 @@
     form.last-messages
         .last-messages__search
             filter-search(
-                :item-list="itemListSortActiveFirst"
+                :item-list="itemListSortUnread"
                 fieldName="fullName" ,
                 @result="(val)=>filterSearchResult=val",
                 @text="(val)=>search=val"
@@ -22,7 +22,7 @@
                         :status="item.online",
                         :avatar-url="item.photo",
                         :name="item.fullName",
-                        :text="item.last_message | lastMessage(item)",
+                        :text="item.last_message | lastMessage(item) | wrapTextUrls",
                         :bg-text-no-fill="true",
                         :count="item.unread.length"
                         hidden
@@ -33,6 +33,7 @@
     import _ from 'underscore'
     import filterSearch from '@/components/FilterSearch'
     import { viewModeChat,httpParams } from '@/mixins/mixins'
+    import wrapTextUrls from '@/modules/wrapTextUrls'
     export default {
         components:{filterSearch},
         mixins:[viewModeChat,httpParams],
@@ -41,7 +42,8 @@
                 if(!value) return '';
                 if(item.first_name !== item.last_message_author) return 'Вы: '+value
                 return value
-            }
+            },
+            wrapTextUrls
         },
         data() {
             return {

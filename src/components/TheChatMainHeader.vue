@@ -131,9 +131,9 @@
                 let operators=[]
                 usersIds.forEach(itemId=>{
 
-                    console.log(itemId);
+
                     let find =  this.$store.state.operators.all.find((item) => item.id === itemId )
-                    console.log(find);
+
                     if(find) {
                         let {id,first_name} = find
                         operators.push({id,first_name})

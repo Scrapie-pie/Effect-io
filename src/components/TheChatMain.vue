@@ -21,7 +21,7 @@
                                 :avatar-url="item.from_user_info.photo",
                                 :avatar-stub="item.from_user_info.photo_stub",
                                 :name="item | name(visitorInfo)",
-                                :text="item.body | messageBreakLine",
+                                :text="item.body | messageBreakLine | wrapTextUrls",
                                 :time="item.time",
 
                                 :right="item.from_user_info.id != $store.state.user.profile.employee_id",
@@ -67,6 +67,7 @@
     import TheChatSystemMessages from '@/components/TheChatSystemMessages'
     import TheChatMainHeader from '@/components/TheChatMainHeader'
     import TheChatMainFooter from '@/components/TheChatMainFooter'
+    import wrapTextUrls from '@/modules/wrapTextUrls'
 
 
 
@@ -90,6 +91,9 @@
             name(item,visitorInfo){
                 if(item.from_user_info.uuid) return visitorInfo.name
                 else return item.from_user_info.name
+            },
+            wrapTextUrls(text){
+                return wrapTextUrls(text)
             }
         },
         data() {
@@ -135,16 +139,9 @@
 
                 }
 
-            }
-
-          /*  messageList(val){
-                if (val) {
-                    let mas = val.slice();
-                    this.messageListReverse = mas.reverse();
+            },
 
 
-                }
-            }*/
         },
         computed:{
             ...mapState(['roomActiveUsersInvited','roomActiveUsersRecipient','roomActiveIsAdmin','roomActive']),
@@ -179,6 +176,9 @@
             messageLastId(){
                 return (this.messageListReverse[0]) ? this.messageListReverse[0].id : null;
             },
+            messageListWrapTextUrls(){
+
+            },
             messageListReverse(){
                 let list = this.messageList.slice();
                 return list.reverse()
@@ -196,21 +196,14 @@
             });
 
             this.$root.$on('messageAdd',(val)=>{
-
                 if(val.socket){//Todo Временное решение, на проверку дубликатов, пока Симон не исправит
                     let findIndex = this.messageList.findIndex(item=>item.id===val.id)
                     console.log('дубликат',findIndex);
-                    if(findIndex===-1) {
-                        this.messageList.unshift(val);
-                        setTimeout(()=>{
-                            this.scrollbarScrollerPush(this.$refs.scrollbar)
-                        },50)
+                    if(findIndex ===-1) {
+                        this.messageListUnshift(val)
                     }
                 }  else {
-                    this.messageList.unshift(val);
-                    setTimeout(()=>{
-                        this.scrollbarScrollerPush(this.$refs.scrollbar)
-                    },50)
+                    this.messageListUnshift(val)
                 }
 
 
@@ -226,6 +219,13 @@
 
         },
         methods: {
+            messageListUnshift(val){
+                console.log('messageListUnshift',val);
+                this.messageList.unshift(val);
+                setTimeout(()=>{
+                    this.scrollbarScrollerPush(this.$refs.scrollbar)
+                },50)
+            },
             transferCancel(to_id){
                 let data = this.httpParams.params
                 data.to_id = to_id

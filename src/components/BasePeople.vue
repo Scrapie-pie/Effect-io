@@ -239,6 +239,8 @@
             background-color:$color_bg;
             padding:$padding;
 
+            a{color:glob-color('info-dark')}
+
         }
 
         &_warning &__inner { background-color:$color_bg-error}

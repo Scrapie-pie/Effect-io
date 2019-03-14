@@ -167,7 +167,7 @@
                     last_name:null,
                     phone:null,
                     phones:{
-                        type:1,
+                        type:0,
                         phone:'',
                         sip:'',
                     },

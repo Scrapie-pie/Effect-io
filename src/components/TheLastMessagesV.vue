@@ -22,7 +22,7 @@
                         :avatar-stub="item.photo_stub",
                         :avatar-name="item.avatarName",
                         :name="item | name(visitorInfo)",
-                        :text="item.last_authorAndMessage",
+                        :text="item.last_authorAndMessage | wrapTextUrls",
                         :bg-text-no-fill="true",
                         :channel-name="$store.getters.channelName(item.channel_type)",
                         :count="item.unread.length"
@@ -38,6 +38,7 @@
     import lodash_once from 'lodash/once'
     import filterSearch from '@/components/FilterSearch'
     import { viewModeChat,httpParams,scrollbar } from '@/mixins/mixins'
+    import wrapTextUrls from '@/modules/wrapTextUrls'
 
     export default {
         mixins:[viewModeChat,httpParams ,scrollbar],
@@ -47,7 +48,8 @@
                 if(item.very_hot) return item.name
                 if(item.uuid+item.site_id === visitorInfo.uuid+visitorInfo.site_id) return visitorInfo.name
                 else return item.name
-            }
+            },
+            wrapTextUrls
         },
         data() {
             return {
