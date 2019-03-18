@@ -28,7 +28,7 @@
                             @resultText="getPhrasesSelectText"
                         ).chat-main-footer__phrases-select
                         scroll-bar.chat-main-footer__scrollbar(ref="scrollbarMessage")
-                            div(v-for="(symbol, index) in compMessageAndSmile" :key="index")
+                            //div(v-for="(symbol, index) in compMessageAndSmile" :key="index")
                                 smile-emoji(v-if="symbol.length>1" emoji="santa" set="apple" :size="16")
                                 span(v-else v-text="symbol")
                             textarea.chat-main-footer__input(
@@ -62,7 +62,7 @@
                             :icon="{name:'more-fill',textHidden:'Предложить посетителю'}",
                             @click.prevent="showOffer=true"
                         )
-                    li.chat-main-footer__button
+                    //li.chat-main-footer__button
                         base-btn(
                             :icon="{name:'smiles',textHidden:'Смайлы'}"
                             @click.prevent="showSmiles=true"
@@ -177,11 +177,11 @@
         },
 
         methods: {
-            setMessageSmile(val){
+          /*  setMessageSmile(val){
                 console.log(emojiIndex.search('christmas').map((o) => o.native));
                 this.messageAndSmile= this.message+'{{smile}}{{thisSmile}}'+val.id+'{{smile}}';
                 this.message+=val.native
-            },
+            },*/
             getPhrasesSelectText(val){
                 autosize.destroy(this.$refs.chatInput);
                 this.message=val;
