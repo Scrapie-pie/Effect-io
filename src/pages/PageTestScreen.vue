@@ -27,10 +27,10 @@ export default {
                 a.href="/process"
 
                 document.body.appendChild(a);
-          /*      setTimeout(()=>{
+                setTimeout(()=>{
                     ['mousemove', 'mouseup', 'touchmove', 'mousewheel','keydown'].forEach(event => document.addEventListener(event, this.action));
 
-                },1000)*/
+                },1000)
 
             })
 

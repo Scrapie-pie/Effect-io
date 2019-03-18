@@ -2,9 +2,9 @@
     nav.nav-main
         ul.nav-main__list
             li.nav-main__item(
-            v-for="(item, index) in itemList",
-            :key="index",
-            :class="'nav-main__item_'+item.link.name",
+                v-for="(item, index) in itemList",
+                :key="index",
+                :class="'nav-main__item_'+item.link.name",
             )
                 router-link.nav-main__link(
 

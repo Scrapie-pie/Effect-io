@@ -108,14 +108,20 @@
         },
         watch:{
             '$route'(){
+                console.log('$route TheChatMain.vue');
                 this.getRoomUserAll()
                 this.historyMessageLoadStart=true;
                 this.messageRun=true;
-                this.messageList=[];
+                this.messageList=[] //Todo баг не сбрасывается до []
+
+
                 this.clearTimerVisitorTypingLive=null,
                 this.historyMessageLoad().then(()=>{
                     this.scrollbarScrollerPush(this.$refs.scrollbar)
                 });
+
+
+
             },
             messageDays(val){
                 return val
@@ -150,7 +156,7 @@
              let {guest_uuid,site_id}  = this.roomActive.visitor,
                  {params} = this.httpParams
                 //console.log('showVisitorTypingLive',guest_uuid+site_id , params.guest_uuid+ params.site_id,this.visitorTypingLive.length);
-                 console.log(guest_uuid + site_id === params.guest_uuid + params.site_id)
+
                 return (guest_uuid + site_id === params.guest_uuid + params.site_id) && this.visitorTypingLive.length
             },
             compVisitorTypingLive(){
@@ -188,6 +194,8 @@
             },
         },
         created() {
+            console.log('created $on messageAd');
+
             this.getRoomUserAll()
             this.$root.$on('chatSystemMessages',(val)=>this.systemMessages.push(val))
 
@@ -195,20 +203,7 @@
                 this.scrollbarScrollerPush(this.$refs.scrollbar)
             });
 
-            this.$root.$on('messageAdd',(val)=>{
-                if(val.socket){//Todo Временное решение, на проверку дубликатов, пока Симон не исправит
-                    let findIndex = this.messageList.findIndex(item=>item.id===val.id)
-                    console.log('дубликат',findIndex);
-                    if(findIndex ===-1) {
-                        this.messageListUnshift(val)
-                    }
-                }  else {
-                    this.messageListUnshift(val)
-                }
-
-
-
-            })
+            this.$root.$on('messageAdd',this.emitMessageAdd)
 
             this.$root.$on('messageVisitorUpdateName',({name,uuid,site_id})=>{
                 lodash_find(this.messageList,{site_id,from_user_info:{uuid}})
@@ -218,9 +213,26 @@
             })
 
         },
+        beforeDestroy(){
+            this.$root.$off('messageAdd',this.emitMessageAdd)
+        },
         methods: {
+            emitMessageAdd(val){
+                console.log('this.$root.$on(\'messageAdd\'');
+                if(val.socket){//Todo Временное решение, на проверку дубликатов, пока Симон не исправит
+                    let findIndex = this.messageList.findIndex(item=>item.id===val.id)
+
+                    if(findIndex ===-1) {
+                        console.log('дубликат',findIndex,val.id,this.messageList);
+
+                        this.messageListUnshift(val)
+                    }
+                }  else {
+
+                    this.messageListUnshift(val)
+                }
+            },
             messageListUnshift(val){
-                console.log('messageListUnshift',val);
                 this.messageList.unshift(val);
                 setTimeout(()=>{
                     this.scrollbarScrollerPush(this.$refs.scrollbar)
@@ -253,9 +265,10 @@
 
             },
             historyMessageLoad(){
-                console.log('historyMessageLoad');
+
                 if(!this.messageRun) return
                 if(!this.historyMessageLoadStart) return
+
                 let params = {
                         last_msg_id:this.messageLastId,
                         limit: this.limit
@@ -265,7 +278,7 @@
                     users_ids = []
 
                 if (this.viewModeChat==='visitors' || this.viewModeChat==='process') {
-                    console.log(this.$route);
+
                     let {guest_uuid,site_id } =  this.httpParams.params;
                          params.guest_uuid = guest_uuid,
                          params.site_id = site_id;
@@ -281,14 +294,18 @@
 
                 this.historyMessageLoadStart=false;
                 this.messageRun=false;
-
+                console.log('this.messageList',this.messageList);
                 return this.$http.get('message-history', {params}).then(({data})=>{
                     this.historyMessageLoadStart=true;
                     let {count,messages,users} = data.data;
                     if (!count) return
 
                     this.messageRun=count;
+                    console.log('historyMessageLoad');
+
+                    console.log('messages',messages);
                     this.messageList.push(...messages);
+                    console.log('this.messageList.push',this.messageList);
                 })
             }
         },

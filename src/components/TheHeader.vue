@@ -20,7 +20,7 @@
                 appList: [
                    /* {text: 'recover', link: {name: 'recover'}},
                     {text: 'Ui', link: {name: 'ui'}},*/
-                    {text: 'Настройки', link: {name: 'settingsProfile'},icon:'settingsApp'},
+                    {text: 'Настройки', link: {name: 'settingsProfile'},icon:'settings'},
                     //{text: 'Сменить учетную запись', link: {name: 'auth'}},
                     {text: 'Выход', link: {name: 'exit'}},
                 ],
@@ -28,13 +28,16 @@
         },
         computed:{
             canalList(){
-                return [
+                let list = [
                     {text: 'Не обработано', link: {name:'processAll'},unread:this.unreadProcess,icon:'process'},
                     {text: 'Мои диалоги', link: {name:'messageAll'},unread:this.unreadGuest,icon:'chatId'},
                     {text: 'Команда', link: {name: 'team'},unread:this.unreadPrivate},
-                    {text: 'Посетители', link: {name: 'visitors'}},
-                    {text: 'Общий чат ', link: {name: 'common'},unread:this.unreadCommon},
-                ]
+                    {text: 'Посетители', link: {name: 'visitors'}}
+                ];
+                if(this.$store.state.user.profile.common_room_id) list.push({text: 'Общий чат ', link: {name: 'common'},unread:this.unreadCommon})
+
+                return list
+
             },
             unread(){
                 return this.$store.state.user.profile.unread || {}

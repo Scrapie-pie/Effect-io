@@ -14,7 +14,7 @@
                     box-controls(:show="showPhrases", @boxControlClose="showPhrases=false")
                         the-phrases-ready
                     box-controls(:show="showSmiles", @boxControlClose="showSmiles=false")
-                        the-files-board(name="smiles")
+                        the-files-board(name="smiles", @getSmile="setMessageSmile")
                     //box-controls(:show="showGifs", @boxControlClose="showGifs=false")
                         the-files-board(name="gifs")
                     box-controls(:show="showOffer", @boxControlClose="showOffer=false")
@@ -28,14 +28,20 @@
                             @resultText="getPhrasesSelectText"
                         ).chat-main-footer__phrases-select
                         scroll-bar.chat-main-footer__scrollbar(ref="scrollbarMessage")
-
+                            div(v-for="(symbol, index) in compMessageAndSmile" :key="index")
+                                smile-emoji(v-if="symbol.length>1" emoji="santa" set="apple" :size="16")
+                                span(v-else v-text="symbol")
                             textarea.chat-main-footer__input(
                                 placeholder="Enter - отправить сообщение, Shift+Enter - новая строка."
                                 ref="chatInput",
                                 v-model="message",
                                 @keydown.enter.exact="onEnter",
                                 @click.prevent="messageRead"
+
                             )
+
+
+
                             upload-file-list(
                                 :item-list="uploadFileList",
                                 @itemRemove="(index)=>uploadFileList.splice(index, 1)"
@@ -56,7 +62,7 @@
                             :icon="{name:'more-fill',textHidden:'Предложить посетителю'}",
                             @click.prevent="showOffer=true"
                         )
-                    //li.chat-main-footer__button
+                    li.chat-main-footer__button
                         base-btn(
                             :icon="{name:'smiles',textHidden:'Смайлы'}"
                             @click.prevent="showSmiles=true"
@@ -86,12 +92,14 @@
     import UploadFile from '@/components/UploadFile'
     import UploadFileList from '@/components/UploadFileList'
 
+    import { Emoji ,emojiIndex } from 'emoji-mart-vue'
+
 
 
 
 
     import autosize from 'autosize'
-    import _ from 'underscore'
+    import lodash_split from 'lodash/split'
 
     import { viewModeChat,httpParams } from '@/mixins/mixins'
 
@@ -104,7 +112,8 @@
             ThePhrasesSelect,
             TheProcessActions,
             UploadFile,
-            UploadFileList
+            UploadFileList,
+            'smile-emoji':Emoji,
         },
         mixins:[viewModeChat,httpParams],
         watch:{
@@ -112,6 +121,7 @@
                 this.checkIsProcessPage();
             },
             message(val){
+
                 console.log('message',val,this.autosizeInit);
                 if(val && this.autosizeInit){
                     autosize(this.$refs.chatInput);
@@ -140,7 +150,7 @@
                 showPhrasesSelect:false,
                 showPhrasesSelectAllow:true,
                 message:'',
-
+                messageAndSmile:'',
                 uploadFileList:[]
 
 
@@ -148,7 +158,10 @@
             }
         },
         computed:{
+            compMessageAndSmile(){
 
+                return lodash_split(this.message,'')
+            },
             compShowProcess(){
                 return this.showProcess
             }
@@ -164,6 +177,11 @@
         },
 
         methods: {
+            setMessageSmile(val){
+                console.log(emojiIndex.search('christmas').map((o) => o.native));
+                this.messageAndSmile= this.message+'{{smile}}{{thisSmile}}'+val.id+'{{smile}}';
+                this.message+=val.native
+            },
             getPhrasesSelectText(val){
                 autosize.destroy(this.$refs.chatInput);
                 this.message=val;
@@ -286,6 +304,7 @@
                         }
                 }
                 this.uploadFileList=[]
+                console.log(' this.$root.$emit(\'messageAdd\',message);');
                 this.$root.$emit('messageAdd',message);
 
                 message.from_user_info.id = this.$store.state.user.profile.employee_id;

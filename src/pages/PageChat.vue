@@ -79,7 +79,7 @@
 
         },
         beforeRouteLeave (to, from, next) {
-            console.log('beforeRouteLeave',this.$store.commit('resetState'));
+
             this.$store.commit('resetState')
             return next()
         }

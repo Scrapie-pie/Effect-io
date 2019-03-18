@@ -1,8 +1,9 @@
 <template lang="pug">
     sup.base-count(
-    v-if="getCount"
-    v-text="getCount"
-    title="Количество сообщений")
+        v-if="getCount"
+        v-text="getCount"
+        title="Количество сообщений"
+    )
 </template>
 
 <script>

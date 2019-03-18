@@ -34,7 +34,7 @@
                         v-model="model.mail"
 
                     )
-                    text-info.settings-list__text-info Используйте реальное имя, оно будет отображаться в диалогах с клиентами и другими сотрудниками. Фамилию вводить не обязательно.
+                    text-info.settings-list__text-info E-mail будет использоваться как логин для входа в приложения, и так же для важных уведомлений.
 
                 li.settings-list__item
                     .settings-list__row

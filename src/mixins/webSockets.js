@@ -115,12 +115,18 @@ export default {
             }
 
             if (val.site_id && (val.room_id === this.$store.state.roomActiveId)) { // если есть val.site_id значит общение в диалогах
+                console.log('// Нужно, что бы чужое сообщение оказалось каждое в своем чате');
                 this.$root.$emit('messageAdd',val) // Нужно, что бы чужое сообщение оказалось каждое в своем чате
+
             }
 
             if(
                 this.viewModeChat==='operators' && //иначе на других страницах this.httpParams.params.id вылетала ошибка
-                !val.site_id && (val.from_user_info.user_id == this.httpParams.params.id)) {this.$root.$emit('messageAdd',val)}
+                !val.site_id && (val.from_user_info.user_id == this.httpParams.params.id)) {
+                console.log('//иначе на других страницах this.httpParams.params.id вылетала ошибка');
+                this.$root.$emit('messageAdd',val)
+
+            }
 
 
             if(val.status === "unprocessed") {
@@ -131,7 +137,7 @@ export default {
 
             if(val.site_id) {
 
-                console.log(this.httpParams);
+
                 if(this.httpParams) {
                     let {guest_uuid,site_id} = this.httpParams.params;
                     if(val.from_user_info.uuid+val.site_id === guest_uuid+site_id) { //Если это сообщение посетителя в чате то нужно очистить TypingLive
@@ -262,8 +268,8 @@ export default {
             console.log('update-employees user/profile update')
             let find = val.find((item)=>item.id===this.$store.state.user.profile.id)
             if(find) {
-                let {online} = find;
-                this.$store.commit('user/profileUpdate',{online})
+                let {online,common_room_id} = find;
+                this.$store.commit('user/profileUpdate',{online,common_room_id})
 
             }
 
