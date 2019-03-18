@@ -6,8 +6,10 @@ const getDefaultState = () => {
         allCount:false,
         process:[],
         processCount:false,
+        processLastPageN:1,
         self:[],
         selfCount:false,
+        selfLastPageN:null,
         itemOpen:false,
         itemOpenHistoryActions:false,
 
@@ -56,6 +58,9 @@ export default {
             state.process=val.list;
             if (val.count) state.processCount=val.count;
         },
+        setProcessLastPageN(state,val){
+            state.processLastPageN=val;
+        },
         processMessageLastUpdate(state, val) {
 
             let findIndex = state.process.findIndex((item)=>{
@@ -87,7 +92,9 @@ export default {
             if (val.count) state.selfCount=val.count;
 
         },
-
+        setSelfLastPageN(state,val){
+            state.selfLastPageN=val;
+        },
         selfPush(state,val) {
             console.log(val);
             state.self.push(...val.list);

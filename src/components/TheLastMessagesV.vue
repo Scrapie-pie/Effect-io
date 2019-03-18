@@ -138,6 +138,13 @@
             }
         },
         watch:{
+            pageN(val){
+                if(!this.search) {
+                    if (this.viewModeChat==="process")  this.$store.commit('visitors/setProcessLastPageN',val);
+                    if (this.viewModeChat==="visitors")  this.$store.commit('visitors/setSelfLastPageN',val);
+
+                }
+            },
             filterSearchResult(val){
                 if (val.length && (this.$route.name=="processAll" || this.$route.name=="messageAll")) {
                     if (val[0].link)  {
@@ -151,8 +158,11 @@
                 if (this.viewModeChat==="visitors") this.type='self';
 
                 if(to.name !== from.name) {
+                    this.setLastPageN()
                     if(this.itemListStore.length) return
                     this.resetSearch();
+
+
                     this.getItemList();
                 }
         },
@@ -163,10 +173,18 @@
 
             if (this.viewModeChat==="process") this.type='unprocessed';
             if (this.viewModeChat==="visitors") this.type='self';
+            this.setLastPageN();
+            if(!this.itemListStore.length) {
 
-            if(!this.itemListStore.length) this.getItemList()
+                this.getItemList()
+            }
         },
         methods:{
+            setLastPageN(){
+                if (this.viewModeChat==="process" && this.$store.state.visitors.processLastPageN) this.pageN = this.$store.state.visitors.processLastPageN;
+                if (this.viewModeChat==="visitors" && this.$store.state.visitors.selfLastPageN) this.pageN = this.$store.state.visitors.selfLastPageN;
+                console.log('pageN',this.pageN);
+            },
             itemFormat(item){
                 if(item.very_hot) { ///такое только в не обработанном
                     item.avatarName='warning';
