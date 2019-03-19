@@ -4,8 +4,8 @@
         template(v-if="viewModeChat == 'operators'")
             base-no-found(v-show="messageNo" :name="$route.name")
             section(v-show="!messageNo").page__view.page-chat
-                the-last-messages.page-chat__last-messages(v-if="viewModeChat=='operators'")
-                the-last-messages-v.page-chat__last-messages(v-else)
+                the-last-messages(v-if="viewModeChat=='operators'")
+                the-last-messages-v(v-else)
 
                 template(v-if="!show")
                     section.page-chat__main
@@ -16,8 +16,8 @@
         template(v-if="viewModeChat == 'visitors'")
             base-no-found(v-show="messageNo" :name="$route.name")
             section(v-show="!messageNo").page__view.page-chat
-                the-last-messages.page-chat__last-messages(v-if="viewModeChat=='operators'")
-                the-last-messages-v.page-chat__last-messages(v-else)
+                the-last-messages(v-if="viewModeChat=='operators'")
+                the-last-messages-v(v-else)
 
                 template(v-if="!show")
                     section.page-chat__main
@@ -27,8 +27,8 @@
         template(v-if="viewModeChat == 'process'")
             base-no-found(v-show="processNo" :name="$route.name")
             section(v-show="!processNo").page__view.page-chat
-                the-last-messages.page-chat__last-messages(v-if="viewModeChat=='operators'")
-                the-last-messages-v.page-chat__last-messages(v-else)
+                the-last-messages(v-if="viewModeChat=='operators'")
+                the-last-messages-v(v-else)
 
                 template(v-if="!show")
                     section.page-chat__main
@@ -92,28 +92,13 @@
 
 <style lang="scss">
     .page-chat {
-        $color_border:glob-color('border');
-        $color_bg:glob-color('info-lighten');
         $color_bg-app:glob-color('light');
         $box-shadow:$glob-box-shadow;
         $transition:$glob-trans;
 
         flex-direction:row;
 
-        &__last-messages{
-            $sz:calc-em(30);
-            width:275px;
-            background-color:$color_bg;
-            border-right:1px solid $color_border;
 
-            padding:$sz 0 ;
-            margin:($sz * -1) 0 ;
-            margin-left:-($sz / 2);
-
-            @include media($width_lg){
-                width:190px;
-            }
-        }
 
         &__main{
             flex:1;

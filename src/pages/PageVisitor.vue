@@ -22,10 +22,10 @@
             table.table
                 thead.table__thead
                     tr.table__tr
-                        th.table__td.table__td_th Имя
-                        th.table__td.table__td_th Прикреплен сотрудник
-                        th.table__td.table__td_th Контакты
-                        th.table__td.table__td_th Регион
+                        th.table__th Имя
+                        th.table__th Прикреплен сотрудник
+                        th.table__th Контакты
+                        th.table__th Регион
                 tbody.table__tbody(v-for="(item, index) in itemList", :keey="item.uuid+item.site_id")
                     tr.table__tr.page-visitors__tr
                         td.table__td

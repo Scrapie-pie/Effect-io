@@ -171,9 +171,7 @@
             }
         }
 
-        &_error {
-            background-color:$color_error;
-        }
+
 
         &_text,&_link {
             padding:0;
@@ -231,6 +229,10 @@
 
         &_padding_xs{
             padding:0 calc-em(10);
+        }
+        &_padding_xslr{
+            padding-left: calc-em(10);
+            padding-right: calc-em(10);
         }
 
         &_icon-no-box{

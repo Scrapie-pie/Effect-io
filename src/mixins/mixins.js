@@ -5,4 +5,5 @@ export { default as webSockets } from '@/mixins/webSockets'
 export { default as scrollbar } from '@/mixins/scrollbar'
 export { default as routerPushProcessAllOrItemFirst } from '@/mixins/routerPushProcessAllOrItemFirst'
 export { default as removeMessageAndPush } from '@/mixins/removeMessageAndPush'
+export { default as stats } from '@/mixins/stats'
 

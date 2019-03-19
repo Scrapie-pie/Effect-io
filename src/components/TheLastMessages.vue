@@ -1,41 +1,43 @@
 <template lang="pug">
-    form.last-messages
-        .last-messages__search
-            filter-search(
-                :item-list="itemListSortUnread"
-                fieldName="fullName" ,
-                @result="(val)=>filterSearchResult=val",
-                @text="(val)=>search=val"
-            )
-        scroll-bar.last-messages__scrollbar
-            ul.last-messages__list
-                li.last-messages__item(
-                    v-for="(item, index) in filterSearchResult",
-                    :key="item.id",
-                    :class="classObject(item)"
+    nav-aside
+        form.last-messages
+            .last-messages__search
+                filter-search(
+                    :item-list="itemListSortUnread"
+                    fieldName="fullName" ,
+                    @result="(val)=>filterSearchResult=val",
+                    @text="(val)=>search=val"
                 )
-                    router-link.last-messages__btn(
-                        :to="{name:'teamChat',params:{id:item.id}}"
-                        v-text="`${item.fullName}:${item.last_message}`"
+            scroll-bar.last-messages__scrollbar
+                ul.last-messages__list
+                    li.last-messages__item(
+                        v-for="(item, index) in filterSearchResult",
+                        :key="item.id",
+                        :class="classObject(item)"
                     )
-                    base-people.last-messages__people(
-                        :status="item.online",
-                        :avatar-url="item.photo",
-                        :name="item.fullName",
-                        :text="item.last_message | lastMessage(item) | wrapTextUrls",
-                        :bg-text-no-fill="true",
-                        :count="item.unread.length"
-                        hidden
-                    )
+                        router-link.last-messages__btn(
+                            :to="{name:'teamChat',params:{id:item.id}}"
+                            v-text="`${item.fullName}:${item.last_message}`"
+                        )
+                        base-people.last-messages__people(
+                            :status="item.online",
+                            :avatar-url="item.photo",
+                            :name="item.fullName",
+                            :text="item.last_message | lastMessage(item) | wrapTextUrls",
+                            :bg-text-no-fill="true",
+                            :count="item.unread.length"
+                            hidden
+                        )
 </template>
 
 <script>
-    import _ from 'underscore'
+    import NavAside from '@/components/NavAside'
+    import lodash_sortBy from 'lodash/sortBy'
     import filterSearch from '@/components/FilterSearch'
     import { viewModeChat,httpParams } from '@/mixins/mixins'
     import wrapTextUrls from '@/modules/wrapTextUrls'
     export default {
-        components:{filterSearch},
+        components:{filterSearch,NavAside},
         mixins:[viewModeChat,httpParams],
         filters: {
             lastMessage: function (value,item) {
@@ -56,7 +58,7 @@
                 return this.$store.getters['operators/all']
             },
             itemListSortUnread(){
-                return _.sortBy(this.itemList,(item)=>{
+                return lodash_sortBy(this.itemList,(item)=>{
                     return -item.unread.length
                 });
             },

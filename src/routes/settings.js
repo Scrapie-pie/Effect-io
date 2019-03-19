@@ -1,11 +1,11 @@
-import Settings from '@/pages/Settings'
-import SettingsApp from '@/pages/SettingsApp'
-import SettingsProfile from '@/pages/SettingsProfile'
+/*import PageSettings from '@/pages/PageSettings'
+import PageSettingsApp from '@/pages/PageSettingsApp'
+import PageSettingsProfile from '@/pages/PageSettingsProfile'*/
 
 
-/*const  Settings = ()=> import('@/pages/Settings')
-const  SettingsApp  = ()=> import('@/pages/SettingsApp')
-const  SettingsProfile = ()=> import('@/pages/SettingsProfile')*/
+const  PageSettings = ()=> import('@/pages/PageSettings')
+const  PageSettingsApp  = ()=> import('@/pages/PageSettingsApp')
+const  PageSettingsProfile = ()=> import('@/pages/PageSettingsProfile')
 
 
 
@@ -14,17 +14,17 @@ const  SettingsProfile = ()=> import('@/pages/SettingsProfile')*/
 export default [{
     name: 'settings',
     path: '/settings',
-    component: Settings,
+    component: PageSettings,
     children: [
         {
             name: 'settingsApp',
             path: 'app',
-            component: SettingsApp
+            component: PageSettingsApp
         },
         {
             name: 'settingsProfile',
             path: 'profile',
-            component: SettingsProfile,
+            component: PageSettingsProfile,
         },
 
     ]

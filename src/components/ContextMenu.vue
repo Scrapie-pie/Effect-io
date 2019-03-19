@@ -5,9 +5,9 @@
         transition(name="fade")
             ul.context-menu__list(v-if="show")
                 li.context-menu__item
-                    slot(name="listItem")
-                //li.context-menu__item
-                    router-link.context-menu__link(:to="{name:'settingsApp',query: { user_id: 151 }}") Редактировать
+                    li(class="context-menu__item" v-for="link in $slots.item")
+                        vnode(:node="link").context-menu__link
+
 </template>
 
 <script>

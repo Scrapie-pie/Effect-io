@@ -3,9 +3,6 @@
 
             ///the-chat-system-messages
 
-            //span.truncated
-                |qweqweqweq qweqweqweq qweqweqweq qweqweqweq qweqweqweq qweqweqweq qweqweqweq qweqweqweq qweqweqweq qweqweqweq qweqweqweq qweqweqweq qweqweqweq qweqweqweq qweqweqweq
-
             TheProcessActions(v-if="compShowProcess")
             fieldset.chat-main-footer__fieldset(v-else)
                 .chat-main-footer__box-control
@@ -13,7 +10,7 @@
                         select-operators(name="mention")
                     box-controls(:show="showPhrases", @boxControlClose="showPhrases=false")
                         the-phrases-ready
-                    box-controls(:show="showSmiles", @boxControlClose="showSmiles=false")
+                    //box-controls(:show="showSmiles", @boxControlClose="showSmiles=false")
                         the-files-board(name="smiles", @getSmile="setMessageSmile")
                     //box-controls(:show="showGifs", @boxControlClose="showGifs=false")
                         the-files-board(name="gifs")

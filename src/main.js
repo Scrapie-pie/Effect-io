@@ -35,10 +35,23 @@ import BaseAvatar from "@/components/BaseAvatar";
 import BasePeople from "@/components/BasePeople";
 import BoxControls from "@/components/BoxControls";
 import BaseNoFound from "@/components/BaseNoFound";
+import BaseTable from "@/components/BaseTable";
 
+import BaseFilterSearch from '@/components/FilterSearch'
+
+Vue.component("vnode", {
+    functional: true,
+    render(h, context){
+
+        //if(context.data.staticClass) context.props.node.data.staticClass += ' '+context.data.staticClass
+        return context.props.node
+    }
+})
 Vue.component('scroll-bar', VuePerfectScrollbar);
 Vue.component('base-icon', BaseIcon);
 Vue.component('base-field', BaseField);
+Vue.component('base-field', BaseField);
+
 
 Vue.component('base-btn', BaseBtn);
 Vue.component('base-radio-check', BaseRadioCheck);
@@ -46,6 +59,9 @@ Vue.component('base-avatar', BaseAvatar);
 Vue.component('base-people', BasePeople);
 Vue.component('box-controls', BoxControls);
 Vue.component('base-no-found', BaseNoFound);
+
+Vue.component('base-filter-search',BaseFilterSearch);
+Vue.component('base-table',BaseTable);
 
 
 /*let requireComponent = require.context('@/src/components/', true, /^Base[A-Z]/) //todo не работает(

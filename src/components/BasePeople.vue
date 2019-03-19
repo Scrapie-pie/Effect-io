@@ -157,7 +157,7 @@
         $color_lunch:glob-color('error');
         $color_offline:glob-color('secondary');
 
-        $self:&;
+        $self:'.base-people';
         $ml:calc-em(5);
         $border-raduis:$glob-border-radius;
         $padding:calc-em(15);
@@ -248,6 +248,14 @@
         &_operator &__name {
             white-space:normal;
         }
+
+        &_operator,&_visitor {
+            #{$self}__inner {
+                padding-top:0;
+                padding-bottom:0;
+            }
+        }
+
 
         &_bg-text_no_fill &__inner{ background-color:transparent }
 

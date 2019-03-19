@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import store from '@/store/store'
+import axios from "@/modules/axios";
 
 import AccountAuth from '@/components/AccountAuth'
 
@@ -11,11 +12,12 @@ import PageVisitor from '@/pages/PageVisitor'
 import PageChat from '@/pages/PageChat'
 
 import Settings from '@/routes/settings'
+import Stats from '@/routes/stats'
 
 import Ui from '@/routes/ui'
 
 
-import axios from "@/modules/axios";
+
 
 let helpers = process.env.NODE_ENV !== 'production' ? [...Ui,  {
     name: 'testScreen',
@@ -101,6 +103,7 @@ const router =  new Router({
             component: PageChat
         },
         ...Settings,
+        ...Stats,
         ...helpers,
         //...Ui,
         {
@@ -121,6 +124,7 @@ export default router
 
 router.beforeEach((to, from, next) => {
     console.log(to.name);
+
 
     const not_auth_routes = ['auth', 'recover','exit'],
     authenticated = store.getters['user/authenticated'];

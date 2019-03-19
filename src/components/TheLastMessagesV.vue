@@ -1,33 +1,34 @@
 <template lang="pug">
-    form.last-messages
-        .last-messages__search()
-            filter-search(
-                :item-list="itemListSort",
-                @result="(val)=>filterSearchResult=val",
-                @text="(val)=>search=val"
-            )
-        scroll-bar.last-messages__scrollbar(@ps-scroll-down="scrollDown" ref="scrollbar")
-            ul.last-messages__list
-                li.last-messages__item(
-                    v-for="(item, index) in filterSearchResult",
-                    :key="item.uuid+item.site_id",
-                    :class="{'last-messages__item_active':item.open,'last-messages__item_hot':item.hot,'last-messages__item_very-hot':item.very_hot}"
+    nav-aside
+        form.last-messages
+            .last-messages__search()
+                filter-search(
+                    :item-list="itemListSort",
+                    @result="(val)=>filterSearchResult=val",
+                    @text="(val)=>search=val"
                 )
-                    router-link.last-messages__btn(
-                        :to="item.link"
-                        v-text="item.last_message"
+            scroll-bar.last-messages__scrollbar(@ps-scroll-down="scrollDown" ref="scrollbar")
+                ul.last-messages__list
+                    li.last-messages__item(
+                        v-for="(item, index) in filterSearchResult",
+                        :key="item.uuid+item.site_id",
+                        :class="{'last-messages__item_active':item.open,'last-messages__item_hot':item.hot,'last-messages__item_very-hot':item.very_hot}"
                     )
-                    base-people.last-messages__people(
-                        :avatar-url="item.photo",
-                        :avatar-stub="item.photo_stub",
-                        :avatar-name="item.avatarName",
-                        :name="item | name(visitorInfo)",
-                        :text="item.last_authorAndMessage | wrapTextUrls",
-                        :bg-text-no-fill="true",
-                        :channel-name="$store.getters.channelName(item.channel_type)",
-                        :count="item.unread.length"
-                        hidden
-                    )
+                        router-link.last-messages__btn(
+                            :to="item.link"
+                            v-text="item.last_message"
+                        )
+                        base-people.last-messages__people(
+                            :avatar-url="item.photo",
+                            :avatar-stub="item.photo_stub",
+                            :avatar-name="item.avatarName",
+                            :name="item | name(visitorInfo)",
+                            :text="item.last_authorAndMessage | wrapTextUrls",
+                            :bg-text-no-fill="true",
+                            :channel-name="$store.getters.channelName(item.channel_type)",
+                            :count="item.unread.length"
+                            hidden
+                        )
 
 
 </template>
@@ -36,13 +37,15 @@
     import lodash_sortBy from 'lodash/sortBy'
     import lodash_debounce from 'lodash/debounce'
     import lodash_once from 'lodash/once'
+
+    import NavAside from '@/components/NavAside'
     import filterSearch from '@/components/FilterSearch'
     import { viewModeChat,httpParams,scrollbar } from '@/mixins/mixins'
     import wrapTextUrls from '@/modules/wrapTextUrls'
 
     export default {
         mixins:[viewModeChat,httpParams ,scrollbar],
-        components:{filterSearch},
+        components:{filterSearch,NavAside},
         filters: {
             name(item,visitorInfo){
                 if(item.very_hot) return item.name

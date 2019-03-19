@@ -6,7 +6,7 @@ th{text-align:left;font-weight:inherit}
 th:not([class]){font-weight:600}
 tbody, tfoot, thead, tr, th, td{ vertical-align:inherit; }
 
-.table{
+.table,.base-table{
   $self:&;
   $color_border:glob-color('border');
   $color_bg-hover:glob-color('info-lighten');
@@ -16,29 +16,45 @@ tbody, tfoot, thead, tr, th, td{ vertical-align:inherit; }
   table-layout:fixed;
   vertical-align:middle;
 
-  &__td{
+  &__caption {
+    @extend %h3;
+    text-align:left;
+    margin-bottom:calc-em(25);
+  }
+
+  %td {
     transition:$transition;
-    transition-property:border;
+    transition-property:border,background-color;
     padding-left:calc-em(15);
     padding-right:calc-em(15);
+  }
 
+  &__td{
+    @extend %td;
+    padding-top:calc-em(10);
+    padding-bottom:calc-em(10);
+    border-bottom:1px solid $color_border;
     &:first-child{
       border-left:3px solid transparent;
     }
 
-    &:not(&_th){border-bottom:1px solid $color_border;}
-
-    &_th{
-      font-weight:700;
-      padding-bottom:calc-em(50);
-    }
   }
-
-  &__tr:hover &__td:not(&__td_th){
+  &__th {
+    @extend %td;
+    font-weight:700;
+    padding-bottom:calc-em(50);
+  }
+  &__tr:last-child &__td {border-bottom:0}
+  &__tr:hover &__td{
     &:first-child{
       border-left-color:$color_border-left;
     }
     background-color:$color_bg-hover;
   }
+
+  &__color-success {color:glob-color('success')}
+  &__color-error {color:glob-color('error')}
+  &__color-info {color:glob-color('info')}
+
 
 }

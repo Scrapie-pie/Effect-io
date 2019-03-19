@@ -30,7 +30,7 @@
             template(v-if="viewModeChat!='process'")
                 li.chat-main-header__control(v-if="roomActiveUserActive")
                     base-btn(
-                        theme="error"
+                        color="error"
                         padding="xs",
                         @click.prevent="chatCompletion"
                     ) Завершить диалог

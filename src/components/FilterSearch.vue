@@ -1,5 +1,6 @@
 <template lang="pug">
     base-field(
+        :placeholder="placeholder"
         type="search"
         name="search"
         theme="soft",
@@ -14,6 +15,10 @@ import _ from 'underscore'
 export default {
     name: "filter-search",
     props:{
+        placeholder:{
+            type:String,
+            default:'',
+        },
         startAll:{ // true если search пустой выводились все items
             type:Boolean,
             default:true

@@ -16,12 +16,12 @@
                 table.table
                     thead.table__thead
                         tr.table__tr
-                            th.table__td.table__td_th Имя
-                            th.table__td.table__td_th
-                            th.table__td.table__td_th Контакты
-                            th.table__td.table__td_th Отдел
-                            th.table__td.table__td_th(v-if="viewAdmin") Активен
-                            th.table__td.table__td_th(v-if="viewAdmin") Досупные действия
+                            th.table__th Имя
+                            th.table__th
+                            th.table__th Контакты
+                            th.table__th Отдел
+                            th.table__th(v-if="viewAdmin") Активен
+                            th.table__th(v-if="viewAdmin") Досупные действия
                     tbody.table__tbody(v-for="(item, index) in operatorListSortUnread", :key="item.id")
                         tr.table__tr.page-operators__tr
                             td.table__td
@@ -65,8 +65,10 @@
                             td.table__td(v-if="viewAdmin")
                                 context-menu
                                     base-btn(:icon="{name:'edit',box:true,textHidden:'Открыть меню'}" color="info-lighten")
-                                    template(slot="listItem")
-                                        router-link.context-menu__link(:to="{name:'settingsProfile',query: { user_id: item.id }}") Редактировать
+                                    router-link(
+                                        slot="item",
+                                        :to="{name:'settingsProfile',query: { user_id: item.id }}"
+                                    ) Редактировать
 
         base-no-found.page-operators__base-no-found(v-if="operatorList.length<=1" name="team")
             base-btn(

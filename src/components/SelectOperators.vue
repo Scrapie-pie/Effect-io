@@ -52,7 +52,7 @@
                                 :bg-text-no-fill="true",
                                 :avatar-url="item.photo",
                                 :name="item.fullName" ,
-                                :text="item.branches_names | branches" ,
+                                :text="item.branches_names | branchesBr" ,
                                 :datetime="item.datetime"
                             )
             .select-operator__footer
@@ -79,7 +79,7 @@
         },
         mixins:[httpParams],
         filters: {
-            branches: function (value) {
+            branchesBr: function (value) {
                 let str='';
 
                 value.forEach((item,index)=>{
