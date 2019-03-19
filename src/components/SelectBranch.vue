@@ -4,7 +4,7 @@
         fieldset(v-if="count")
             legend.select-operator__title(v-text="title")
             .select-operator__search-operators
-                filter-search(
+                base-filter-search(
                     :item-list="itemLisFilter",
                     @result="(val)=>filterSearchResult=val",
                     @text="(val)=>search=val",
@@ -36,12 +36,10 @@
 </template>
 
 <script>
-    import filterSearch from '@/components/FilterSearch'
+
     import {httpParams } from '@/mixins/mixins'
     export default {
-        components:{
-            filterSearch
-        },
+
         mixins:[httpParams],
 
 

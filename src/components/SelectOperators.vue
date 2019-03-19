@@ -4,7 +4,7 @@
             //legend.select-operator__title Выберите сотрудника, которого вы хотите упомянуть в диалоге. Данный сотрудник получит оповещение.
             legend.select-operator__title Отметьте сотрудников, которых Вы хотите пригласить к данному диалогу
             .select-operator__search-operators
-                filter-search(
+                base-filter-search(
                     :item-list="itemList",
                     @result="(val)=>filterSearchResult=val",
                     @text="(val)=>search=val",
@@ -71,23 +71,13 @@
 </template>
 
 <script>
-    import filterSearch from '@/components/FilterSearch'
+    import branchesBr from '@/modules/branchesBr'
     import {httpParams } from '@/mixins/mixins'
     export default {
-        components:{
-            filterSearch
-        },
+
         mixins:[httpParams],
         filters: {
-            branchesBr: function (value) {
-                let str='';
-
-                value.forEach((item,index)=>{
-                    let separator = ( index === value.length )?' ':'<br>';
-                    str = str + item + separator
-                })
-                return str
-            }
+            branchesBr
         },
         props:{
           name:{
