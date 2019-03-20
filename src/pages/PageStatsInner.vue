@@ -4,10 +4,10 @@
             v-if="filterSearchShow"
             slot="control"
             :placeholder="placeholder",
-            :item-list="bodyList",
+            :item-list="itemList",
             @result="(val)=>filterSearchResult=val",
             @text="(val)=>search=val",
-            fieldName="url"
+
         )
         base-field(
             slot="control"
@@ -74,29 +74,37 @@
             v-if="routerName=='statsEmployees'"
             type="employees",
             :period="period.val",
+            @itemList="(val)=>itemList=val",
+            :filterListOn="true",
+            :filterList="filterSearchResult"
         )
         stats-result(
             v-if="routerName=='statsEmployeesDetail'"
             type="employee",
-            :user_id="+$route.params.id"
-            :period="period.val"
+            :user_id="user_id",
+            :period="period.val",
         )
         stats-table-branches(
             v-if="routerName=='statsBranches'"
             type="branches",
-            :period="period.val"
+            :period="period.val",
+            @itemList="(val)=>itemList=val",
+            :filterListOn="true",
+            :filterList="filterSearchResult"
         )
         stats-result(
             v-if="routerName=='statsBranchesDetail'"
             type="branch",
-            :branch_id="+$route.params.id"
-            :period="period.val"
+            :branch_id="branch_id",
+            :period="period.val",
         )
-
         stats-pages(
             v-if="routerName=='statsPages'"
             type="pages",
-            :period="period.val"
+            :period="period.val",
+            @itemList="(val)=>itemList=val",
+            :filterListOn="true",
+            :filterList="filterSearchResult"
         )
 </template>
 
@@ -121,7 +129,7 @@ export default {
     data() {
         return {
             filterSearchResult:[],
-
+            itemList:[],
             periodList:[
                 {val:'day',name:'За день'},
                 {val:'month',name:'За месяц'},
@@ -142,10 +150,10 @@ export default {
     },
     computed:{
         branch_id(){
-            return this.$route.params.id
+            return +this.$route.params.id
         },
         user_id(){
-            return this.$route.params.id
+            return +this.$route.params.id
         },
         type(){
             if(this.routerName==='statsService') return 'top'

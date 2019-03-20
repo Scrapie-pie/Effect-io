@@ -4,7 +4,7 @@
         thead(v-if="order!=='first_answer_average_speed'")
             tr: th(v-for="(item, index) in headList" :key="index" v-html="item")
         tbody
-            tr(v-for="(item, index) in bodyListFormat" :key="item.id")
+            tr(v-for="(item, index) in itemList" :key="item.id")
                 td
                     base-people(
                         v-if="item.operator",
@@ -75,6 +75,7 @@ export default {
         bodyListFormat(){
             return this.bodyList.map(item=>{
                 item.operator = this.$store.getters['operators/all'].find(itemSub=>itemSub.id===item.user_id)
+                if(item.operator) item.name=item.operator.fullName
                 return item
             })
         },

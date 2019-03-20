@@ -5,7 +5,7 @@
         tbody
             tr(v-for="(item, index) in itemList" :key="item.id")
                 td
-                    span.h4 {{item.branchName}}
+                    span.h4 {{item.name}}
                     div(v-if="item.operators.length") сотрудников в отделе: {{item.operators.length}}
                 td(v-if="!btnDetailHide")
                     base-btn(
@@ -66,7 +66,10 @@ export default {
             return this.bodyList.map(item=>{
                 item.branchName=''
                 let branch = this.$store.state.user.branchListAll.find(itemSub=>itemSub.id===item.branch_id)
-                if(branch) item.branchName = branch.title
+                if(branch) {
+                    item.branchName = branch.title
+                    item.name = branch.title //base-filter-search сейчас ищет по name
+                }
                 item.operators = this.$store.state.operators.all.filter(itemSub=>itemSub.branches_ids.includes(item.branch_id))
                 console.log(item);
                 return item

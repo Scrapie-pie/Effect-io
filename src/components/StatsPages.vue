@@ -31,6 +31,13 @@ export default {
             ];
             return list
         },
+        bodyListFormat(){
+            return this.bodyList.map(item=>{
+                item.name=item.url; //base-filter-search сейчас ищет по name
+
+                return item
+            })
+        },
     },
 }
 </script>

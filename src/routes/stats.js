@@ -1,14 +1,7 @@
-/*import PageSettings from '@/pages/PageSettings'
-import PageSettingsApp from '@/pages/PageSettingsApp'
-import PageSettingsProfile from '@/pages/PageSettingsProfile'*/
+
 
 
 const  PageStats = ()=> import('@/pages/PageStats')
-const  PageStatsService  = ()=> import('@/pages/PageStatsService')
-const  PageStatsPages  = ()=> import('@/pages/PageStatsPages')
-const  PageStatsEmployees  = ()=> import('@/pages/PageStatsPages')
-const  PageStatsBranches  = ()=> import('@/pages/PageStatsBranches')
-const  PageStatsBranchesDetails  = ()=> import('@/pages/PageStatsBranchesDetails')
 const  PageStatsInner  = ()=> import('@/pages/PageStatsInner')
 
 
