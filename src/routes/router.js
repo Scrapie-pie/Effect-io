@@ -123,7 +123,7 @@ const router =  new Router({
 export default router
 
 router.beforeEach((to, from, next) => {
-    console.log(to.name);
+
 
 
     const not_auth_routes = ['auth', 'recover','exit'],

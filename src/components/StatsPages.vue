@@ -1,11 +1,13 @@
 <template lang="pug">
-    base-table
+    base-table.stats-pages
         thead: tr: th(v-for="(item, index) in headList" :key="index" v-text="item")
         tbody
             tr(v-for="(item, index) in itemList" :key="index")
-                td: a(:href="item.url" v-text="item.url" target="_blank")
-                td(v-text="item.dialogues_requests")
-                td(v-text="item.dialogues_percents")
+                td.stats-pages__url(:title="item.url"): a(:href="item.url" v-text="item.url" target="_blank")
+                td
+                    | {{item.dialogues_requests | format}}
+                td
+                    |{{item.dialogues_percents | format}} %
 
 
 </template>
@@ -43,6 +45,11 @@ export default {
 </script>
 
 <style lang="scss">
-
+    .stats-pages{
+        width:auto;
+        &__url {
+            @extend %text-overflow
+        }
+    }
 </style>
 

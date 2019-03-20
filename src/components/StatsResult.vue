@@ -4,21 +4,24 @@
             table.stats-result__list
                 tr.stats-result__item(v-for="(item, index) in dialogsListLeft" :key="index")
                     th(v-text="item.name+':'").stats-result__td
-                    td(v-text="bodyListFormat[item.val]").stats-result__td
+                    td.stats-result__td
+                        |{{bodyListFormat[item.val] | format(item.type)}}
             table.stats-result__list
                 tr.stats-result__item(v-for="(item, index) in dialogsListRight" :key="index")
                     th(v-text="item.name+':'").stats-result__td
-                    td(v-text="bodyListFormat[item.val]").stats-result__td
-
+                    td.stats-result__td
+                        |{{bodyListFormat[item.val] | format(item.type)}}
         .stats-result__other
             table.stats-result__list
                 tr.stats-result__item(v-for="(item, index) in ratingsList" :key="index")
                     th(v-text="item.name+':'").stats-result__td
-                    td(v-text="bodyListFormat[item.val]").stats-result__td
+                    td.stats-result__td
+                        |{{bodyListFormat[item.val] | format(item.type)}}
             table.stats-result__list
                 tr.stats-result__item(v-for="(item, index) in timeList" :key="index")
                     th(v-text="item.name+':'").stats-result__td
-                    td(v-text="bodyListFormat[item.val]").stats-result__td
+                    td.stats-result__td
+                        |{{bodyListFormat[item.val] | format(item.type)}}
 
 </template>
 
@@ -37,10 +40,10 @@ export default {
                 {name:'Получено оценок "Плохо"',val:'badly_ratings'},
             ],
             timeList:[
-                {name:'Время в статусе "Онлайн"',val:'operators_time_in_online'},
-                {name:'Время в статусе "Перерыв"',val:'operators_time_in_break'},
-                {name:'Время в статусе "Обед"',val:'operators_time_in_lunch'},
-                {name:'Время в статусе "Оффлайн:',val:'operators_time_in_offline'},
+                {name:'Время в статусе "Онлайн"',val:'operators_time_in_online',type:'time'},
+                {name:'Время в статусе "Перерыв"',val:'operators_time_in_break',type:'time'},
+                {name:'Время в статусе "Обед"',val:'operators_time_in_lunch',type:'time'},
+                {name:'Время в статусе "Оффлайн',val:'operators_time_in_offline',type:'time'},
             ],
         }
     },
@@ -54,42 +57,37 @@ export default {
             ]
             if(this.type==="branch"){
                 list.push({
-                    name:'Процент от общего количества обращений',val:'dialogues_percents'
+                    name:'Процент от общего количества обращений',val:'dialogues_percents',type:'percent'
                 })
             }
-            if(this.type==="company"){
-                list.unshift({
-                    name:'Всего поступило диалогов',val:''
-                })
-            }
+
             return list
         },
         dialogsListRight(){
             let list = [
                 {name:'Передано диалогов в отделы',val:'dialogues_transferred_to_branches'},
                 {name:'Передано диалогов сотрудникам',val:'dialogues_transferred_to_employees'},
-                {name:'Средняя скорость первого ответа на диалог',val:'first_answer_average_speed'},
+                {name:'Средняя скорость первого ответа на диалог',val:'first_answer_average_speed',type:'time'},
 
             ]
 
             if(this.type==="branch"){
                 list.push(
-                    {name:'Среднее время нахождения клиента в очереди',val:'average_guest_time_in_queue'},
-                    {name:'Максимальное время нахождения клиента в очереди',val:'maximum_guest_time_in_queue'},
+                    {name:'Среднее время нахождения клиента в очереди',val:'average_guest_time_in_queue',type:'time'},
+                    {name:'Максимальное время нахождения клиента в очереди',val:'maximum_guest_time_in_queue',type:'time'},
                 )
             }
 
             if(this.type==="company"){
                 list = [
-                    {name:'Среднее время нахождения клиента в очереди',val:'average_guest_time_in_queue'},
-                    {name:'Максимальное время нахождения клиента в очереди',val:'maximum_guest_time_in_queue'},
-                    {name:'Средняя скорость первого ответа на диалог',val:'first_answer_average_speed'},
+                    {name:'Среднее время нахождения клиента в очереди',val:'average_guest_time_in_queue',type:'time'},
+                    {name:'Максимальное время нахождения клиента в очереди',val:'maximum_guest_time_in_queue',type:'time'},
+                    {name:'Средняя скорость первого ответа на диалог',val:'first_answer_average_speed',type:'time'},
                 ]
             }
             return list
         },
         bodyListFormat(){
-            console.log(this.bodyList);
             return this.bodyList
         },
     },

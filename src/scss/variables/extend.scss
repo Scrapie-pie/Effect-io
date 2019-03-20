@@ -38,6 +38,13 @@
   clip-path:inset(50%);
   margin:-1px;
 }
+
+%text-overflow{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 %g-icon-down{
   display:block;
   $deg:43deg;

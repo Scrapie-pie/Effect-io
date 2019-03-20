@@ -1,5 +1,14 @@
 
 export default {
+    filters:{
+        format(value,type){
+            console.log(value, type);
+            if(!value) return '-';
+            if(type==='percent') value+=' %'
+            if(type==='time') value+=' сек.'
+            return value
+        }
+    },
     props:{
         filterListOn:{
             type:Boolean,

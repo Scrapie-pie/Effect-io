@@ -34,6 +34,13 @@ import {stats} from '@/mixins/mixins'
 
 export default {
     mixins:[stats],
+    props:{
+        filterBranchId:{
+            type:Number,
+            default:null,
+        },
+    },
+
     data() {
         return {
         }
@@ -63,7 +70,7 @@ export default {
                 return list
             },
         bodyListFormat(){
-            return this.bodyList.map(item=>{
+            return this.filterListBranch.map(item=>{
                 item.branchName=''
                 let branch = this.$store.state.user.branchListAll.find(itemSub=>itemSub.id===item.branch_id)
                 if(branch) {
@@ -71,10 +78,14 @@ export default {
                     item.name = branch.title //base-filter-search сейчас ищет по name
                 }
                 item.operators = this.$store.state.operators.all.filter(itemSub=>itemSub.branches_ids.includes(item.branch_id))
-                console.log(item);
+
                 return item
             })
         },
+        filterListBranch(){
+            if(this.filterBranchId) return this.bodyList.filter(item=>item.branch_id===this.filterBranchId)
+            else return this.bodyList
+        }
     },
 }
 </script>

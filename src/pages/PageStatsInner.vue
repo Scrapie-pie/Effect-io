@@ -17,9 +17,7 @@
             v-model="period"
         )
         base-btn(
-
             v-if="!filterSearchShow"
-
             slot="control",
             type="a",
             :href="downloadLink"
@@ -71,7 +69,7 @@
                 )
             stats-result(type="company" :period="period.val")
         stats-table-operators(
-            v-if="routerName=='statsEmployees'"
+            v-if="routerName==='statsEmployees'"
             type="employees",
             :period="period.val",
             @itemList="(val)=>itemList=val",
@@ -79,13 +77,14 @@
             :filterList="filterSearchResult"
         )
         stats-result(
-            v-if="routerName=='statsEmployeesDetail'"
+            v-if="routerName==='statsEmployeesDetail'"
             type="employee",
             :user_id="user_id",
             :period="period.val",
         )
         stats-table-branches(
-            v-if="routerName=='statsBranches'"
+            v-if="routerName==='statsBranches'",
+            :filterBranchId="branch.id"
             type="branches",
             :period="period.val",
             @itemList="(val)=>itemList=val",
@@ -93,13 +92,13 @@
             :filterList="filterSearchResult"
         )
         stats-result(
-            v-if="routerName=='statsBranchesDetail'"
+            v-if="routerName==='statsBranchesDetail'"
             type="branch",
             :branch_id="branch_id",
             :period="period.val",
         )
         stats-pages(
-            v-if="routerName=='statsPages'"
+            v-if="routerName==='statsPages'"
             type="pages",
             :period="period.val",
             @itemList="(val)=>itemList=val",
@@ -140,7 +139,8 @@ export default {
                 val:'day',name:'За день',
             },
             branch:{
-                title:''
+                title:'Все',
+                id:null,
             },
 
 
@@ -150,18 +150,17 @@ export default {
     },
     computed:{
         branch_id(){
-            return +this.$route.params.id
+            return +this.$route.params.id;
         },
         user_id(){
-            return +this.$route.params.id
+            return +this.$route.params.id;
         },
         type(){
-            if(this.routerName==='statsService') return 'top'
-            if(this.routerName==='statsBranchesDetail') return 'branch'
-            if(this.routerName==='statsEmployeesDetail') return 'employee'
+            if(this.routerName==='statsService') return 'top';
+            if(this.routerName==='statsBranchesDetail') return 'branch';
+            if(this.routerName==='statsEmployeesDetail') return 'employee';
         },
         downloadLink(){
-            //console.log(`${config.api_server}?statistic-get-by-params&user_id=${this.user_id}&branch_id=${this.branch_id}&period=${this.period.val}&type=${this.type}&csv=1&jwt=${this.$http.defaults.headers.common.jwt}`);
             return `${config.api_server}app.php?statistic-get-by-params&user_id=${this.user_id}&branch_id=${this.branch_id}&period=${this.period.val}&type=${this.type}&csv=1&jwt=${this.$http.defaults.headers.common.jwt}`
         },
         placeholder(){
@@ -180,22 +179,21 @@ export default {
             return this.$route.name
         },
         branchListAll(){
-            return this.$store.state.user.branchListAll
+            let list = this.$store.state.user.branchListAll
+            list.push({title:'Все'})
+            return list
         }
     },
     watch:{
 
-        '$route'(to){
-           // if(to.name==='statsBranchesDetail') this.$router.ne
-        },
-        branchListAll:{
+    /*    branchListAll:{
             handler(val,oldVal){
                 if((val && val.length) && (oldVal && !oldVal.length)) {
                     this.branch = val[0]
                 }
             },
             immediate: true
-        }
+        }*/
     },
     methods:{
 

@@ -6,7 +6,7 @@ export default {
 
 
         function bem(string) {
-            let className = 'table'
+            let className = 'base-table'
             if (string) className+='__'+string
             return className
         }
