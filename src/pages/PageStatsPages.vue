@@ -251,5 +251,5 @@ export default {
 </script>
 
 <style lang="scss">
-    .page-stats{}
+
 </style>

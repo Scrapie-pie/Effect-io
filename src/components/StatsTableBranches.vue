@@ -1,64 +1,73 @@
 <template lang="pug">
     base-table
         caption(v-text="caption")
-        thead: tr: th(v-for="(item, index) in headList" :key="index" v-html="item")
+        thead: tr: th(v-for="(item, index) in headList" :key="index" v-html="item" )
         tbody
-            tr(v-for="(item, index) in bodyListFormat" :key="item.id")
+            tr(v-for="(item, index) in itemList" :key="item.id")
                 td
-                    base-people(
-                        v-if="item.operator",
-                        type="operator",
-                        :text="item.operator.statusText",
-                        :name="item.operator.fullName",
-                        :avatar-url="item.operator.photo"
-                    )
-                td
+                    span.h4 {{item.branchName}}
+                    div(v-if="item.operators.length") сотрудников в отделе: {{item.operators.length}}
+                td(v-if="!btnDetailHide")
                     base-btn(
                         padding="xslr"
-                        :router="{name:'teamChat',params:{id:item.id}}"
+                        :router="{name:'statsBranchesDetail',params:{id:item.branch_id}}"
                     ) Детальная статистика
-                td(v-text="'Название отдела'")
-
                 td(v-text="item.dialogues_requests")
-                td
-                    span.color_success(v-text="item.dialogues_accepted")
-                    span.color_error(v-text="'/'+item.dialogues_missed")
-                td(v-text="item.first_answer_average_speed +' cек.'")
-                td(v-text="item.average_guest_time_in_queue +' cек.'")
-                td
-                    span.color_success(v-text="item.excellent_ratings")
-                    span.color_info(v-text="'/'+item.middling_ratings+'/'")
-                    span.color_error(v-text="item.badly_ratings")
+                template(v-if="order!=='dialogues_percents'")
 
+                    td
+                        span.color_success(v-text="item.dialogues_accepted")
+                        span.color_error(v-text="'/'+item.dialogues_missed")
+                    td(v-text="item.first_answer_average_speed +' cек.'")
+                    td(v-text="item.average_guest_time_in_queue +' cек.'")
+                    td
+                        span.color_success(v-text="item.excellent_ratings")
+                        span.color_info(v-text="'/'+item.middling_ratings+'/'")
+                        span.color_error(v-text="item.badly_ratings")
+                td(v-else v-text="item[order]")
 
 </template>
 
 <script>
-import branchesBr from '@/modules/branchesBr'
+
 import {stats} from '@/mixins/mixins'
 
 export default {
     mixins:[stats],
-    filters:{
-        branchesBr
-    },
     data() {
         return {
-            headList:[
-                'Название отдела',
-                '',
-                'Отдел',
-                'Получено<br>диалогов',
-                'Принято/<br>пропущено диалогов',
-                'Средняя скорость<br>ответа оператора',
-                'Средняе время<br>ожидания в очереди',
-                'Оценки',
-            ],
         }
     },
     computed:{
+            headList(){
+                let list = [
+                    'Название отдела',
+                    '',
+                    'Получено<br>диалогов',
+                    'Принято/<br>пропущено диалогов',
+                    'Средняя скорость<br>ответа оператора',
+                    'Средняе время<br>ожидания в очереди',
+                    'Оценки',
+                ]
+
+                if(this.btnDetailHide) list.splice(1, 1)
+
+
+                if(this.order==="dialogues_percents") {
+                    list = [
+                        'Название отдела',
+                        'Получено диалогов',
+                    ]
+                    list.push('Процент от общего количества диалогов (всех отделов)')
+                }
+                return list
+            },
         bodyListFormat(){
             return this.bodyList.map(item=>{
+                item.branchName=''
+                let branch = this.$store.state.user.branchListAll.find(itemSub=>itemSub.id===item.branch_id)
+                if(branch) item.branchName = branch.title
+                item.operators = this.$store.state.operators.all.filter(itemSub=>itemSub.branches_ids.includes(item.branch_id))
                 console.log(item);
                 return item
             })

@@ -148,7 +148,7 @@
                 this.showPhrasesEdit=false;
             },
             itemEditShow(item){
-                console.log(item);
+
                 this.phrasesEditId = item.id;
                 this.create.text = item.text
                 this.showPhrasesEdit=true;

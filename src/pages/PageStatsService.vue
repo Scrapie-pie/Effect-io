@@ -4,7 +4,7 @@
             slot="control"
             type="select"
             name="period",
-            :selectOptions="{label:'name',options:periodList,value:period.val}"
+            :selectOptions="{label:'name',options:periodList,value:period}"
             v-model="period"
         )
         base-btn(
@@ -14,7 +14,7 @@
             slot="control"
             type="select"
             name="branch",
-            :selectOptions="{label:'name',options:branchList,value:branch.val}"
+            :selectOptions="{label:'title',options:branchListAll,value:branch}"
             v-model="branch"
         )
         ul.page-stats-service__count(slot="control")
@@ -22,28 +22,56 @@
             li Сотрудников в команде: 10
         section
             .page-stats-service__table
-                stats-table-operators(type="employees" :period="period.val" caption="ТОП сотрудников (по оценкам)")
+                stats-table-operators(
+                    :btn-detail-hide="true"
+                    order="excellent_ratings"
+                    type="employees",
+                    :period="period.val",
+                    caption="ТОП сотрудников (по оценкам)"
+                    )
             .page-stats-service__table
-                stats-table-operator-best(type="employee" :period="period.val" caption="Самый быстрый сотрудник")
+                stats-table-operators(
+                    :btn-detail-hide="true"
+                    order="first_answer_average_speed"
+                    type="employees"
+                    :period="period.val"
+                    caption="Самый быстрый сотрудник"
+                    )
             .page-stats-service__table
-                stats-table-branches(type="branches" :period="period.val" caption="ТОП отделов (по оценкам)")
+                stats-table-branches(
+                    :btn-detail-hide="true"
+                    order="excellent_ratings"
+                    type="branches",
+                    :period="period.val"
+                    caption="ТОП отделов (по оценкам)"
+                )
             .page-stats-service__table
-                stats-table-branches(type="branches" :period="period.val" caption="ТОП отделов (по общей нагрузке)")
+                stats-table-branches(
+                    :btn-detail-hide="true"
+                    order="dialogues_percents"
+                    type="branches",
+                    :period="period.val"
+                    caption="ТОП отделов (по общей нагрузке)"
+                )
+
+            stats-result(type="company" :period="period.val")
 </template>
 
 <script>
 
 import TheLayoutTable from '@/components/TheLayoutTable'
 import StatsTableOperators from '@/components/StatsTableOperators'
-import StatsTableOperatorBest from '@/components/StatsTableOperatorBest'
+
 import StatsTableBranches from '@/components/StatsTableBranches'
+import StatsResult from '@/components/StatsResult'
 
 export default {
     components:{
         TheLayoutTable,
         StatsTableOperators,
-        StatsTableOperatorBest,
-        StatsTableBranches
+
+        StatsTableBranches,
+        StatsResult
     },
 
     data() {
@@ -57,10 +85,10 @@ export default {
                 {val:'year',name:'За год'},
             ],
             period:{
-                val:'day',name:'За день',
+                val:'year',name:'За Год',
             },
             branch:{
-                val:'day',name:'За день',
+                title:''
             },
             type:'branches',
 
@@ -69,7 +97,19 @@ export default {
         }
     },
     computed:{
-
+        branchListAll(){
+            return this.$store.state.user.branchListAll
+        }
+    },
+    watch:{
+        branchListAll:{
+            handler(val,oldVal){
+                if((val && val.length) && (oldVal && !oldVal.length)) {
+                    this.branch = val[0]
+                }
+            },
+            immediate: true
+        }
     }
 }
 </script>

@@ -1,11 +1,22 @@
 <template lang="pug">
     article.page-stats
         nav-aside
-            ul
-                li: router-link(:to='{name:"statsService"}') Качество обслуживания
-                li: router-link(:to='{name:"statsService"}') Статистика по сотрудникам
-                li: router-link(:to='{name:"statsService"}') Статистика по отделам
-                li: router-link(:to='{name:"statsPages"}') Статистика по страницам
+            router-link(
+                slot="item"
+                :to='{name:"statsService"}'
+            ) Качество обслуживания
+            router-link(
+                slot="item"
+                :to='{name:"statsEmployees"}'
+            ) Статистика по сотрудникам
+            router-link(
+                slot="item"
+                :to='{name:"statsBranches"}'
+            ) Статистика по отделам
+            router-link(
+                slot="item"
+                :to='{name:"statsPages"}'
+            ) Статистика по страницам
         section.page-stats__main
             h1.page-stats__title(v-text="title")
             router-view

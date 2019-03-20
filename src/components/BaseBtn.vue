@@ -3,7 +3,7 @@
         router-link(v-on="inputListeners" ,:class="classObject", :disabled="disabled" v-if="isRouter", :to="compRouterName")
             slot
         button(
-            v-else
+            v-else-if="type!=='a'"
             v-on="inputListeners",
             :type="type",
             :class="classObject",
@@ -15,10 +15,16 @@
                 base-icon(:name="icon.name")
                 span.btn__text-hidden(v-if="icon.textHidden" v-text="icon.textHidden")
             slot
+        a(
+            v-else
+            :class="classObject",
+        )
+            slot
 </template>
 
 <script>
-    import _ from 'underscore'
+
+    import lodash_isEmpty from 'lodash/isEmpty'
 
     export default {
         props: {
@@ -57,12 +63,12 @@
         },
         computed: {
             getTitle(){
-                if (!_.isEmpty(this.icon)) {
+                if (!lodash_isEmpty(this.icon)) {
                     if (this.icon.textHidden) return this.icon.textHidden
                 }
             },
             isRouter() {
-                return !_.isEmpty(this.router)
+                return !lodash_isEmpty(this.router)
             },
             compRouterName() {
                 return this.router
@@ -76,25 +82,25 @@
                    /* 'spinner spinner_sm': this.loaded*/
                 }
 
-                if (!_.isEmpty(this.theme)) {
+                if (!lodash_isEmpty(this.theme)) {
                     obj['btn btn_' + this.theme] = true;
                 } else {
                     obj['btn'] = true;
                 }
 
-                if (!_.isEmpty(this.padding)) {
+                if (!lodash_isEmpty(this.padding)) {
                     obj['btn_padding_' + this.padding] = true;
                 }
 
-                if (!_.isEmpty(this.color)) {
+                if (!lodash_isEmpty(this.color)) {
                     obj['btn_color_' + this.color] = true;
                 }
 
-                if (!_.isEmpty(this.size)) {
+                if (!lodash_isEmpty(this.size)) {
                     obj['btn_size_' + this.size] = true;
                 }
 
-                if (!_.isEmpty(this.icon)) {
+                if (!lodash_isEmpty(this.icon)) {
 
                     if (this.icon.top) obj['btn_icon-top'] = true;
                     if (this.icon.box) obj['btn_icon-box'] = true;

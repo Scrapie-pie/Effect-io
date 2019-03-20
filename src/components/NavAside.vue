@@ -1,6 +1,9 @@
 <template lang="pug">
     aside.nav-aside
         slot
+        ul.nav-aside__list(v-if="$slots.item")
+            li(class="nav-aside__item" v-for="link in $slots.item")
+                vnode(:node="link").nav-aside__link
 </template>
 
 <script>
@@ -15,6 +18,8 @@ export default {
     .nav-aside{
         $color_border:glob-color('border');
         $color_bg:glob-color('info-lighten');
+        $color_bg_active:glob-color('border');
+        $color_link:glob-color('main');
         $sz:calc-em(30);
 
         width:275px;
@@ -27,6 +32,16 @@ export default {
 
         @include media($width_lg){
             width:190px;
+        }
+
+        &__link {
+            text-decoration:none;
+            color:$color_link;
+            display:block;
+            padding:calc-em(20) calc-em(30);
+            &.router-link-active,&:hover {
+                background-color:$color_bg_active;
+            }
         }
 
     }

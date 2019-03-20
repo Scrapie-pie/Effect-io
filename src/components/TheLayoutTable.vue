@@ -3,7 +3,8 @@
         .layout-table__controls
             div(class="layout-table__control" v-for="item in $slots.control")
                 vnode(:node="item")
-            slot(name="controls")
+        .layout-table__head
+            slot(name="head")
         scroll-bar.layout-table__content
             slot
 

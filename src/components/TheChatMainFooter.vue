@@ -273,7 +273,7 @@
 
                 if(this.uploadFileList.length) {
                     files = this.uploadFileList.map(item=>{
-                        console.log(item);
+
                         item.name=item.src.name;
                         delete item.src
                         return item

@@ -43,7 +43,7 @@ Vue.component("vnode", {
     functional: true,
     render(h, context){
 
-        //if(context.data.staticClass) context.props.node.data.staticClass += ' '+context.data.staticClass
+        if(context.data.staticClass) context.props.node.data.staticClass += ' '+context.data.staticClass
         return context.props.node
     }
 })

@@ -20,8 +20,8 @@
                 appList: [
                    /* {text: 'recover', link: {name: 'recover'}},
                     {text: 'Ui', link: {name: 'ui'}},*/
-                    {text: 'Статистика', link: {name: 'statsService'},icon:'stats'},
-                    {text: 'Настройки', link: {name: 'settingsProfile'},icon:'settings'},
+                    {text: 'Статистика', link: {name: 'statsService'},icon:'statistics'},
+                    {text: 'Настройки', link: {name: 'settingsProfile'},icon:'settingsApp'},
                     //{text: 'Сменить учетную запись', link: {name: 'auth'}},
                     {text: 'Выход', link: {name: 'exit'}},
                 ],

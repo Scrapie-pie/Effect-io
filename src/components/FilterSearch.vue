@@ -33,7 +33,9 @@ export default {
         },
         itemList:{
             type:Array,
-            default:[],
+            default:function () {
+                return []
+            },
         }
     },
     data() {

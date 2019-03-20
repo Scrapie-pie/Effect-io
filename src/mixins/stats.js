@@ -1,12 +1,26 @@
 
 export default {
     props:{
+        filterListOn:{
+            type:Boolean,
+            default:false,
+        },
+        filterList:{
+            type:Array,
+            default:function () {
+                return []
+            },
+        },
         caption:{
             type:String,
             default:null,
         },
 
         type:{
+            type:String,
+            default:null,
+        },
+        order:{
             type:String,
             default:null,
         },
@@ -21,15 +35,34 @@ export default {
         user_id:{
             type:Number,
             default:null
+        },
+
+        btnDetailHide:{
+            type:Boolean,
+            default:false
         }
     },
     data() {
         return {
-            headList:[],
+            csv:0,
             bodyList:[],
         }
     },
+    watch:{
+        bodyListFormat(val){
+            if(val){
+                this.$emit('itemList',val)
+            }
+        },
+        params(val){
+            this.get()
+        }
+    },
     computed:{
+        itemList(){
+            if(this.filterListOn) return this.filterList
+            else return this.bodyListFormat
+        },
         bodyListFormat(){
             return this.bodyList
         },
@@ -39,19 +72,22 @@ export default {
         params(){
             return {
                 user_id:this.user_id,
-                branches_id:this.branches_id,
+                branch_id:this.branch_id,
                 period:this.period,
-                type:this.type
+                type:this.type,
+                csv:this.csv,
             }
         },
     },
     created(){
-        this.get()
+        this.get();
     },
 
     methods:{
         get(){
-            this.$http.get('statistic-get-by-params',this.requestData).then(({data})=>this.bodyList = data.data)
+            this.$http.get('statistic-get-by-params',this.requestData).then((response)=>{
+                this.bodyList = response.data.data
+            })
         }
     },
 }

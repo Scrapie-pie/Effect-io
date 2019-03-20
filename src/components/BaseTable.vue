@@ -3,7 +3,7 @@
 
 export default {
     render(h){
-        console.log(this);
+
 
         function bem(string) {
             let className = 'table'

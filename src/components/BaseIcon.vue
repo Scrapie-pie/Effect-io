@@ -40,6 +40,7 @@
     import smiles from '@/assets/img/icons/chat/smiles.svg';
 
 
+
     import send from '@/assets/img/icons/chat/send.svg';
 
     import transfer from '@/assets/img/icons/chat/transfer.svg';
@@ -66,6 +67,8 @@
     import settingsApp from '@/assets/img/icons/chat/menu/settingsApp.svg';
     import team from '@/assets/img/icons/chat/menu/team.svg';
     import visitors from '@/assets/img/icons/chat/menu/visitors.svg';
+    import statistics from '@/assets/img/icons/chat/menu/statistics.svg';
+
 
 
 
