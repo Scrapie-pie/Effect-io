@@ -1,5 +1,5 @@
 <template lang="pug">
-    the-layout-table.page-stats-service
+    the-layout-table.page-stats-inner
         base-filter-search(
             v-if="filterSearchShow"
             slot="control",
@@ -30,81 +30,82 @@
             :selectOptions="{label:'title',options:branchListAll,value:branch}"
             v-model="branch"
         )
-        ul.page-stats-service__count(v-if="routerName==='statsService'" slot="head")
+        ul.page-stats-inner__count(v-if="routerName==='statsService'" slot="head")
             li Отделов в команде: {{$store.state.user.branchListAll.length}}
             li Сотрудников в команде: {{$store.state.operators.all.length}}
-        section(v-if="routerName==='statsService'")
-            .page-stats-service__table
-                stats-operators(
-                    :btn-detail-hide="true"
-                    order="excellent_ratings"
-                    type="employees",
-                    :period="period.val",
-                    caption="ТОП сотрудников (по оценкам)"
-                )
-            .page-stats-service__table
-                stats-operators(
-                    :btn-detail-hide="true"
-                    order="first_answer_average_speed",
-                    :limit="1",
-                    type="employees"
-                    :period="period.val"
-                    caption="Самый быстрый сотрудник"
+        section.page-stats-inner__main
+            section(v-if="routerName==='statsService'")
+                .page-stats-inner__table
+                    stats-operators(
+                        :btn-detail-hide="true"
+                        order="excellent_ratings"
+                        type="employees",
+                        :period="period.val",
+                        caption="ТОП сотрудников (по оценкам)"
                     )
-            .page-stats-service__table
-                stats-branches(
-                    :btn-detail-hide="true"
-                    order="excellent_ratings"
-                    type="branches",
-                    :period="period.val"
-                    caption="ТОП отделов (по оценкам)"
-                )
-            .page-stats-service__table
-                stats-branches(
-                    :btn-detail-hide="true"
-                    order="dialogues_percents"
-                    type="branches",
-                    :period="period.val"
-                    caption="ТОП отделов (по общей нагрузке)"
-                )
-            stats-result(type="company" :period="period.val")
-        stats-operators(
-            v-if="routerName==='statsEmployees'"
-            type="employees",
-            :period="period.val",
-            @itemList="(val)=>itemList=val",
-            :filterListOn="true",
-            :filterList="filterSearchResult"
-        )
-        stats-result(
-            v-if="routerName==='statsEmployeesDetail'"
-            type="employee",
-            :user_id="user_id",
-            :period="period.val",
-        )
-        stats-branches(
-            v-if="routerName==='statsBranches'",
-            :filterBranchId="branch.id"
-            type="branches",
-            :period="period.val",
-            @itemList="(val)=>itemList=val",
-            :filterListOn="true",
-            :filterList="filterSearchResult"
-        )
-        stats-result(
-            v-if="routerName==='statsBranchesDetail'"
-            type="branch",
-            :branch_id="branch_id",
-            :period="period.val",
-        )
-        stats-pages(
-            v-if="routerName==='statsPages'"
-            type="pages",
-            :period="period.val",
-            @itemList="(val)=>itemList=val",
-            :filterListOn="true",
-            :filterList="filterSearchResult"
-        )
+                .page-stats-inner__table
+                    stats-operators(
+                        :btn-detail-hide="true"
+                        order="first_answer_average_speed",
+                        :limit="1",
+                        type="employees"
+                        :period="period.val"
+                        caption="Самый быстрый сотрудник"
+                        )
+                .page-stats-inner__table
+                    stats-branches(
+                        :btn-detail-hide="true"
+                        order="excellent_ratings"
+                        type="branches",
+                        :period="period.val"
+                        caption="ТОП отделов (по оценкам)"
+                    )
+                .page-stats-inner__table
+                    stats-branches(
+                        :btn-detail-hide="true"
+                        order="dialogues_percents"
+                        type="branches",
+                        :period="period.val"
+                        caption="ТОП отделов (по общей нагрузке)"
+                    )
+                stats-result(type="company" :period="period.val")
+            stats-operators(
+                v-if="routerName==='statsEmployees'"
+                type="employees",
+                :period="period.val",
+                @itemList="(val)=>itemList=val",
+                :filterListOn="true",
+                :filterList="filterSearchResult"
+            )
+            stats-result(
+                v-if="routerName==='statsEmployeesDetail'"
+                type="employee",
+                :user_id="user_id",
+                :period="period.val",
+            )
+            stats-branches(
+                v-if="routerName==='statsBranches'",
+                :filterBranchId="branch.id"
+                type="branches",
+                :period="period.val",
+                @itemList="(val)=>itemList=val",
+                :filterListOn="true",
+                :filterList="filterSearchResult"
+            )
+            stats-result(
+                v-if="routerName==='statsBranchesDetail'"
+                type="branch",
+                :branch_id="branch_id",
+                :period="period.val",
+            )
+            stats-pages(
+                v-if="routerName==='statsPages'"
+                type="pages",
+                :period="period.val",
+                @itemList="(val)=>itemList=val",
+                :filterListOn="true",
+                :filterList="filterSearchResult"
+            )
 </template>
 
 <script>
@@ -195,7 +196,7 @@ export default {
 </script>
 
 <style lang="scss">
-    .page-stats-service{
+    .page-stats-inner{
         $color_border:glob-color('border');
         &__count {
             @extend %row-flex;
@@ -208,6 +209,10 @@ export default {
             border:2px solid $color_border;
             margin-bottom:calc-em(20);
             padding:calc-em(15);
+        }
+
+        &__main {
+            max-width:1300px;
         }
     }
 </style>

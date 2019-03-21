@@ -69,8 +69,9 @@ export default {
         &__main {
             flex:1;
             padding-left:calc-em(15);
-            padding-right:calc-em(15);
+            margin-right:-1*calc-em(15);
             height:100%;
+
         }
     }
 </style>
