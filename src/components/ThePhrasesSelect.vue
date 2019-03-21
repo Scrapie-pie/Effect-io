@@ -5,7 +5,7 @@
         )
 
 
-            filter-search(
+            base-filter-search(
                 v-show="0"
                 :item-list="snippets"
                 fieldName="text" ,
@@ -27,12 +27,12 @@
 </template>
 
 <script>
-    import FilterSearch from '@/components/FilterSearch'
+
     import ActionList from '@/components/ActionList'
 
     export default {
         components:{
-            FilterSearch,
+
             ActionList
         },
         props:{

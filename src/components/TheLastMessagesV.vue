@@ -2,7 +2,7 @@
     nav-aside
         form.last-messages
             .last-messages__search()
-                filter-search(
+                base-filter-search(
                     :item-list="itemListSort",
                     @result="(val)=>filterSearchResult=val",
                     @text="(val)=>search=val"
@@ -39,13 +39,13 @@
     import lodash_once from 'lodash/once'
 
     import NavAside from '@/components/NavAside'
-    import filterSearch from '@/components/FilterSearch'
+
     import { viewModeChat,httpParams,scrollbar } from '@/mixins/mixins'
     import wrapTextUrls from '@/modules/wrapTextUrls'
 
     export default {
         mixins:[viewModeChat,httpParams ,scrollbar],
-        components:{filterSearch,NavAside},
+        components:{NavAside},
         filters: {
             name(item,visitorInfo){
                 if(item.very_hot) return item.name

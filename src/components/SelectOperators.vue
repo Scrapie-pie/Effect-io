@@ -36,7 +36,7 @@
             legend.select-operator__title(v-text="title")
 
             .select-operator__search-operators
-                filter-search(
+                base-filter-search(
                     :item-list="itemList",
                     @result="(val)=>filterSearchResult=val",
                     @text="(val)=>search=val",

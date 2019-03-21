@@ -2,7 +2,7 @@
     nav-aside
         form.last-messages
             .last-messages__search
-                filter-search(
+                base-filter-search(
                     :item-list="itemListSortUnread"
                     fieldName="fullName" ,
                     @result="(val)=>filterSearchResult=val",
@@ -33,11 +33,11 @@
 <script>
     import NavAside from '@/components/NavAside'
     import lodash_sortBy from 'lodash/sortBy'
-    import filterSearch from '@/components/FilterSearch'
+
     import { viewModeChat,httpParams } from '@/mixins/mixins'
     import wrapTextUrls from '@/modules/wrapTextUrls'
     export default {
-        components:{filterSearch,NavAside},
+        components:{NavAside},
         mixins:[viewModeChat,httpParams],
         filters: {
             lastMessage: function (value,item) {
