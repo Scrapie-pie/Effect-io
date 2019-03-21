@@ -6,15 +6,15 @@
             TheProcessActions(v-if="compShowProcess")
             fieldset.chat-main-footer__fieldset(v-else)
                 .chat-main-footer__box-control
-                    box-controls(:show="showMention", @boxControlClose="showMention=false")
+                    box-controls(v-if="showMention", @boxControlClose="showMention=false")
                         select-operators(name="mention")
-                    box-controls(:show="showPhrases", @boxControlClose="showPhrases=false")
+                    box-controls(v-if="showPhrases", @boxControlClose="showPhrases=false")
                         the-phrases-ready
-                    //box-controls(:show="showSmiles", @boxControlClose="showSmiles=false")
+                    //box-controls(v-if="showSmiles", @boxControlClose="showSmiles=false")
                         the-files-board(name="smiles", @getSmile="setMessageSmile")
-                    //box-controls(:show="showGifs", @boxControlClose="showGifs=false")
+                    //box-controls(v-if="showGifs", @boxControlClose="showGifs=false")
                         the-files-board(name="gifs")
-                    box-controls(:show="showOffer", @boxControlClose="showOffer=false")
+                    box-controls(v-if="showOffer", @boxControlClose="showOffer=false")
                         the-offer()
 
                 .chat-main-footer__contols

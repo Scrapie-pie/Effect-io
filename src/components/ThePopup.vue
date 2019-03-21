@@ -1,12 +1,12 @@
 <template lang="pug">
     section.popup
-        box-controls(:show="!!noticeText", type="popup", @boxControlClose="noticeText=false")
+        box-controls(v-if="!!noticeText", type="popup", @boxControlClose="noticeText=false")
             template(slot="text") {{noticeText}}
             base-btn(@click="noticeText=false") Понятно
-        box-controls(:show="notFind", type="popup", @boxControlClose="notFind=false")
+        box-controls(v-if="notFind", type="popup", @boxControlClose="notFind=false")
             template(slot="text") Поиск не работает в start версии
             base-btn Посмотреть тарифы
-        box-controls(:show="img",  type="gallery", @boxControlClose="img=false")
+        box-controls(v-if="img",  type="gallery", @boxControlClose="img=false")
             img(:src="img" alt="Увеличенная картинка")
 </template>
 

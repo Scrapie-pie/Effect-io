@@ -42,7 +42,7 @@
                     ) + Пригласить
                     .chat-main-header__select-operator
                         box-controls(
-                            :show="showSelectOperators",
+                            v-if="showSelectOperators",
                             @boxControlClose="showSelectOperators=false"
                             )
                             select-operators(:name="selectOperatorsMode")
@@ -55,13 +55,13 @@
                 ).chat-main-header__more-btn
                 .chat-main-header__more
                     box-controls(
-                        :show="showMoreChatActions",
+                        v-if="showMoreChatActions"
                         @boxControlClose="showMoreChatActions=false"
                     )
                         the-chat-main-header-actions()
                 .chat-main-header__select-operator
                     box-controls(
-                        :show="showSelectBranch",
+                        v-if="showSelectBranch"
                         @boxControlClose="showSelectBranch=false"
                     )
                         select-branch

@@ -23,7 +23,7 @@
             download
         ) Выгрузить в Csv
         base-field(
-            v-if="routerName==='statsBranches'"
+            v-if="routerName==='statsEmployees'"
             slot="control"
             type="select"
             name="branch",
@@ -138,7 +138,7 @@ export default {
                 val:'day',name:'За день',
             },
             branch:{
-                title:'Все',
+                title:'Все отделы',
                 id:null,
             },
         }

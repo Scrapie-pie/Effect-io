@@ -42,6 +42,12 @@ import {stats} from '@/mixins/mixins'
 
 export default {
     mixins:[stats],
+    props:{
+        filterBranchId:{
+            type:Number,
+            default:null,
+        },
+    },
     filters:{
         branchesBr
     },
@@ -74,13 +80,22 @@ export default {
 
             return list
         },
+
         bodyListFormat(){
+            return  this.filterListBranch
+        },
+        itemListWidthOperators(){
             return this.bodyList.map(item=>{
                 item.operator = this.$store.getters['operators/all'].find(itemSub=>itemSub.id===item.user_id)
                 if(item.operator) item.name=item.operator.fullName
                 return item
             })
         },
+        filterListBranch(){
+
+            if(this.filterBranchId) return this.itemListWidthOperators.filter(item=>item.operator.branches_ids.includes(this.filterBranchId))
+            else return this.itemListWidthOperators
+        }
     },
 }
 </script>

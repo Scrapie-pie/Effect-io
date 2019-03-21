@@ -1,7 +1,7 @@
 <template lang="pug">
     transition(name="fade" )
-        section.box-controls(v-if="show", :class="'box-controls_'+type")
-            .box-controls__overlay(v-if="overlay")
+        section.box-controls(:class="'box-controls_'+type")
+            .box-controls__overlay(v-if="overlay" ref="overlay")
             .box-controls__box()
                 base-btn(
                     :icon="{name:'close'}",
@@ -31,41 +31,64 @@
             show:Boolean,
             blur:Boolean
         },
-        watch:{
-            show(val){
-                if(val) {
-                    document.body
-                        .classList.add('is-opened-box-controls');
-                } else {
-                    document.body
-                        .classList.remove('is-opened-box-controls');
-                }
+      /*  watch:{
+            show:{
+                handler(val,oldVal){
+                    if(val) {
+
+                        setTimeout(()=>{
+                            document.body
+                                .classList.add('is-opened-box-controls');
+                        },50)
+
+                        //document.addEventListener('click', this.close);
+                        console.log(this.$refs.overlay);
+                        //this.$refs.overlay.addEventListener('click', this.close);
+
+                    } else {
+                        document.body
+                            .classList.remove('is-opened-box-controls');
+                        //this.$refs.overlay.removeEventListener('click', this.close);
+                    }
+                },
+                immediate: true
+
             }
-        },
+        },*/
         created(){
-            this.$root.$on('globBoxControlClose',()=>{
-                this.$emit('boxControlClose')
-            })
+            this.$root.$on('globBoxControlClose',this.boxControlClose)
+            setTimeout(()=>{
+                document.body
+                    .classList.add('is-opened-box-controls');
+            },50)
         },
         mounted() {
-            document.addEventListener('click', this.close);
+            console.log('mounted()', this.$refs);
+            this.$refs.overlay.addEventListener('click', this.close);
         },
-        updated() {
-            document.addEventListener('click', this.close);
-        },
+     /*   updated() {
+            console.log('updated');
+            this.$refs.overlay.addEventListener('click', this.close);
+        },*/
         beforeDestroy() {
-            document.removeEventListener('click', this.close);
+            this.$refs.overlay.removeEventListener('click', this.close);
             document.body.classList.remove('is-opened-box-controls');
+            this.$root.$off('globBoxControlClose',this.boxControlClose)
         },
         methods: {
-
+            boxControlClose(){
+                this.$emit('boxControlClose')
+            },
             close(e) {
-                if (!this.show) return;
+
+                //if (!this.show) return;
 
                 if (!e.target.matches('.box-controls__box, .box-controls__box *')) {
                     this.$emit('boxControlClose');
                     document.removeEventListener('click', this.close);
                 }
+
+
             },
 
         },
@@ -77,6 +100,7 @@
     .box-controls {
         $self:'.box-controls';
         $color-box:glob-color('light');
+        $transition:$glob-trans;
         &__box {
             &::before {
                 $sz:10px;
@@ -133,6 +157,15 @@
         }
 
         &_gallery {
+            position: fixed;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            display: flex;
+            justify-content: center;
+            overflow:auto;
+
             #{$self}__box {
                 position: fixed;
                 left: 0;
@@ -142,14 +175,24 @@
                 margin: 0;
                 background-color: transparent;
                 text-align:center;
+                display:flex;
+                align-items:center;
+                justify-content:center;
 
+                box-shadow:none;
+                position:static;
+                display:inline-block;
                 img {
-                    max-height:100%;
+                    margin-top:0;
+
+                    position:relative;
+                    z-index: 9999;
                 }
             }
 
             #{$self}__close {
                 fill:glob-color('light');
+                z-index: 9999;
             }
         }
 
@@ -180,7 +223,8 @@
             opacity:0;
             visibility:hidden;
             background-color:rgba(0, 0, 0, 0.3);
-
+            transition:$transition;
+            transition-duration:.2s;
             .is-opened-box-controls & {
                 opacity:1;
                 visibility:visible;
