@@ -26,8 +26,7 @@
                     td
                         span.color_success(v-text="item.dialogues_accepted")
                         span.color_error(v-text="'/'+item.dialogues_missed")
-                    td
-                        |{{item.first_answer_average_speed | format('time')}}
+
                     td
                         span.color_success(v-text="item.excellent_ratings")
                         span.color_info(v-text="'/'+item.middling_ratings+'/'")
@@ -64,7 +63,6 @@ export default {
                 'Отдел',
                 'Получено<br>диалогов',
                 'Принято/<br>пропущено диалогов',
-                'Средняя скорость<br>ответа оператора',
                 'Оценки',
             ]
 
