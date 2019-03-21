@@ -45,7 +45,8 @@
             .page-stats-service__table
                 stats-operators(
                     :btn-detail-hide="true"
-                    order="first_answer_average_speed"
+                    order="first_answer_average_speed",
+                    :limit="1",
                     type="employees"
                     :period="period.val"
                     caption="Самый быстрый сотрудник"

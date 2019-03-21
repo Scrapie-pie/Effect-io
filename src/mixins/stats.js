@@ -36,6 +36,10 @@ export default {
             type:String,
             default:null,
         },
+        limit:{
+            type:Number,
+            default:null,
+        },
         order:{
             type:String,
             default:null,
@@ -87,6 +91,8 @@ export default {
         },
         params(){
             return {
+                limit:this.limit,
+                order:this.order,
                 user_id:this.user_id,
                 branch_id:this.branch_id,
                 period:this.period,
