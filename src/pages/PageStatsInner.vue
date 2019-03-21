@@ -2,12 +2,11 @@
     the-layout-table.page-stats-service
         base-filter-search(
             v-if="filterSearchShow"
-            slot="control"
+            slot="control",
             :placeholder="placeholder",
             :item-list="itemList",
             @result="(val)=>filterSearchResult=val",
             @text="(val)=>search=val",
-
         )
         base-field(
             slot="control"
@@ -36,7 +35,7 @@
             li Сотрудников в команде: {{$store.state.operators.all.length}}
         section(v-if="routerName==='statsService'")
             .page-stats-service__table
-                stats-table-operators(
+                stats-operators(
                     :btn-detail-hide="true"
                     order="excellent_ratings"
                     type="employees",
@@ -44,7 +43,7 @@
                     caption="ТОП сотрудников (по оценкам)"
                 )
             .page-stats-service__table
-                stats-table-operators(
+                stats-operators(
                     :btn-detail-hide="true"
                     order="first_answer_average_speed"
                     type="employees"
@@ -52,7 +51,7 @@
                     caption="Самый быстрый сотрудник"
                     )
             .page-stats-service__table
-                stats-table-branches(
+                stats-branches(
                     :btn-detail-hide="true"
                     order="excellent_ratings"
                     type="branches",
@@ -60,7 +59,7 @@
                     caption="ТОП отделов (по оценкам)"
                 )
             .page-stats-service__table
-                stats-table-branches(
+                stats-branches(
                     :btn-detail-hide="true"
                     order="dialogues_percents"
                     type="branches",
@@ -68,7 +67,7 @@
                     caption="ТОП отделов (по общей нагрузке)"
                 )
             stats-result(type="company" :period="period.val")
-        stats-table-operators(
+        stats-operators(
             v-if="routerName==='statsEmployees'"
             type="employees",
             :period="period.val",
@@ -82,7 +81,7 @@
             :user_id="user_id",
             :period="period.val",
         )
-        stats-table-branches(
+        stats-branches(
             v-if="routerName==='statsBranches'",
             :filterBranchId="branch.id"
             type="branches",
@@ -111,16 +110,16 @@
 
 import config from "@/config/index";
 import TheLayoutTable from '@/components/TheLayoutTable'
-import StatsTableOperators from '@/components/StatsTableOperators'
-import StatsTableBranches from '@/components/StatsTableBranches'
+import StatsOperators from '@/components/StatsOperators'
+import StatsBranches from '@/components/StatsBranches'
 import StatsPages from '@/components/StatsPages'
 import StatsResult from '@/components/StatsResult'
 
 export default {
     components:{
         TheLayoutTable,
-        StatsTableOperators,
-        StatsTableBranches,
+        StatsOperators,
+        StatsBranches,
         StatsResult,
         StatsPages
     },
@@ -142,10 +141,6 @@ export default {
                 title:'Все',
                 id:null,
             },
-
-
-
-
         }
     },
     computed:{
@@ -185,7 +180,6 @@ export default {
         }
     },
     watch:{
-
     /*    branchListAll:{
             handler(val,oldVal){
                 if((val && val.length) && (oldVal && !oldVal.length)) {
@@ -195,9 +189,6 @@ export default {
             immediate: true
         }*/
     },
-    methods:{
-
-    }
 }
 </script>
 
@@ -209,7 +200,7 @@ export default {
             li{
                 @extend %h4
             }
-
+            margin-bottom:calc-em(20);
         }
         &__table {
             border:2px solid $color_border;

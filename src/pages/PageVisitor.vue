@@ -1,34 +1,35 @@
 <template lang="pug">
-    article.page-visitors
-        .page-visitors__controls
-            .page-visitors__control
-                base-field.page-visitors__search(
-                    type="search"
-                    name="search",
-                    placeholder="Поиск... (имя, тел., e-mail)"
-                    v-model="search",
-                    theme="soft"
-                )
-            .page-visitors__control
-                base-field(
-                    type="select"
-                    name="channel",
-                    :selectOptions="{label:'name',options:channelList,value:channel}"
-                    v-model="channel"
-                )
-            .page-visitors__control(v-if="itemListCount")
+    the-layout-table.page-visitors
+        base-field.page-visitors__search(
+            slot="control",
+            type="search"
+            name="search",
+            placeholder="Поиск... (имя, тел., e-mail)"
+            v-model="search",
+            theme="soft"
+        )
+
+        base-field(
+            slot="control",
+            type="select"
+            name="channel",
+            :selectOptions="{label:'name',options:channelList,value:channel}"
+            v-model="channel"
+        )
+
+        div(slot="control" v-if="itemListCount")
                 |На странице показано {{showItemLength}} из {{ itemListCount}}
         scroll-bar(v-if="showItemLength" @ps-y-reach-end="loadDate").page-visitors__scroll-bar
-            table.table
-                thead.table__thead
-                    tr.table__tr
-                        th.table__th Имя
-                        th.table__th Прикреплен сотрудник
-                        th.table__th Контакты
-                        th.table__th Регион
-                tbody.table__tbody(v-for="(item, index) in itemList", :keey="item.uuid+item.site_id")
-                    tr.table__tr.page-visitors__tr
-                        td.table__td
+            base-table
+                thead
+                    tr
+                        th Имя
+                        th Прикреплен сотрудник
+                        th Контакты
+                        th Регион
+                tbody
+                    tr.page-visitors__tr(v-for="(item, index) in itemList", :keey="item.uuid+item.site_id")
+                        td
                             base-people(
                                 type="visitor"
                                 :name="item.name"
@@ -36,31 +37,32 @@
                                 :avatar-url="item.photo",
                                 :avatar-stub="item.photo_stub"
                             )
-                        td.table__td
+                        td
                             base-btn.page-visitors__start-chat(
                                 v-if="!item.employee",
                                 @click="startChat(item)"
                             ) начать диалог
                             span(v-else v-text="item.employee")
-                        td.table__td
+                        td
                             a(:href="`tel:${item.phone}`" v-text="item.phone")
                             br(v-if="item.phone")
                             a(:href="`mailto:${item.mail}`" v-text="item.mail")
-                        td.table__td
+                        td
                             |{{item.country}}, {{item.region}}, {{item.city}}
         base-no-found(v-else name="visitors")
 </template>
 
 <script>
     import ContextMenu from '@/components/ContextMenu'
-
+    import TheLayoutTable from '@/components/TheLayoutTable'
 
 
     import lodash_debounce from 'lodash/debounce'
     import lodash_extend from 'lodash/extend'
     export default {
         components: {
-            ContextMenu
+            ContextMenu,
+            TheLayoutTable
         },
         data() {
             return {
@@ -188,14 +190,7 @@
             max-width:1300px;
         }
 
-        &__controls{
-            display:flex;
-            align-items:center;
-            margin-bottom:calc-em(50);
-        }
-        &__control{
-            margin-right:calc-em(20);
-        }
+
         &__search{
             width:calc-em(250);
         }

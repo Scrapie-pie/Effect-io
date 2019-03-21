@@ -13,6 +13,7 @@ export default [{
     name: 'stats',
     path: '/statistics',
     component: PageStats,
+    redirect:{name:'statsService'},
     children: [
         {
             name: 'statsService',

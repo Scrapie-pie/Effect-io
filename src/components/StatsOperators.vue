@@ -1,7 +1,7 @@
 <template lang="pug">
     base-table
-        caption(v-text="caption")
-        thead(v-if="order!=='first_answer_average_speed'")
+        caption(v-if="caption" v-text="caption")
+        thead
             tr: th(v-for="(item, index) in headList" :key="index" v-html="item")
         tbody
             tr(v-for="(item, index) in itemList" :key="item.id")
@@ -14,24 +14,26 @@
                         :avatar-url="item.operator.photo"
                     )
                 td(v-if="!btnDetailHide")
-                    base-btn(
+                    base-btn.base-table__show-hover(
+
                         padding="xslr",
                         :router="{name:'statsEmployeesDetail',params:{id:item.user_id}}"
                     ) Детальная статистика
-                td(v-if="item.operator" v-html="$options.filters.branchesBr(item.operator.branches_names)")
+                td(v-if="item.operator && order!=='first_answer_average_speed'" v-html="$options.filters.branchesBr(item.operator.branches_names)")
 
                 td(v-text="item.dialogues_requests")
                 template(v-if="order!=='first_answer_average_speed'")
                     td
                         span.color_success(v-text="item.dialogues_accepted")
                         span.color_error(v-text="'/'+item.dialogues_missed")
-                    td(v-text="item.first_answer_average_speed +' cек.'")
+                    td
+                        |{{item.first_answer_average_speed | format('time')}}
                     td
                         span.color_success(v-text="item.excellent_ratings")
                         span.color_info(v-text="'/'+item.middling_ratings+'/'")
                         span.color_error(v-text="item.badly_ratings")
-                td(v-else v-text="item[order]")
-
+                td(v-else)
+                    |{{item[order] | format('time')}}
 </template>
 
 <script>

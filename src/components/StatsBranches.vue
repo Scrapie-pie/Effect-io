@@ -1,14 +1,14 @@
 <template lang="pug">
     base-table
-        caption(v-text="caption")
+        caption(v-if="caption" v-text="caption")
         thead: tr: th(v-for="(item, index) in headList" :key="index" v-html="item" )
         tbody
             tr(v-for="(item, index) in itemList" :key="item.id")
                 td
                     span.h4 {{item.name}}
-                    div(v-if="item.operators.length") сотрудников в отделе: {{item.operators.length}}
+                    div(v-if="item.operators") сотрудников в отделе: {{item.operators.length}}
                 td(v-if="!btnDetailHide")
-                    base-btn(
+                    base-btn.base-table__show-hover(
                         padding="xslr"
                         :router="{name:'statsBranchesDetail',params:{id:item.branch_id}}"
                     ) Детальная статистика
@@ -18,13 +18,16 @@
                     td
                         span.color_success(v-text="item.dialogues_accepted")
                         span.color_error(v-text="'/'+item.dialogues_missed")
-                    td(v-text="item.first_answer_average_speed +' cек.'")
-                    td(v-text="item.average_guest_time_in_queue +' cек.'")
+                    td
+                        |{{item.first_answer_average_speed | format('time')}}
+                    td
+                        |{{item.average_guest_time_in_queue | format('time')}}
                     td
                         span.color_success(v-text="item.excellent_ratings")
                         span.color_info(v-text="'/'+item.middling_ratings+'/'")
                         span.color_error(v-text="item.badly_ratings")
-                td(v-else v-text="item[order]")
+                td(v-else)
+                    |{{item[order] | format('percent')}}
 
 </template>
 

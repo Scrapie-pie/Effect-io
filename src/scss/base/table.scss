@@ -56,5 +56,8 @@ tbody, tfoot, thead, tr, th, td{ vertical-align:inherit; }
   &__color-error {color:glob-color('error')}
   &__color-info {color:glob-color('info')}
 
-
+  &__tr:not(:hover) &__show-hover  {
+    opacity:0;
+    visibility:hidden;
+  }
 }

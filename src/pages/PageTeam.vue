@@ -1,76 +1,77 @@
 <template lang="pug">
-    article.page-operators
-        .page-operators__content
-            .page-operators__controls
-                .page-operators__control
-                    base-field(
-                        type="search"
-                        name="search",
-                        placeholder="Поиск по имени..."
-                        theme="soft"
-                        v-model="search"
-                    )
-                .page-operators__control(v-if="viewAdmin")
-                    base-btn(name="add" color="success-dark" size="lg" :router="{name:'settingsProfile',query:{add:'operator'}}") Добавить сотрудника
-            scroll-bar.page-operators__scroll-bar
-                table.table
-                    thead.table__thead
-                        tr.table__tr
-                            th.table__th Имя
-                            th.table__th
-                            th.table__th Контакты
-                            th.table__th Отдел
-                            th.table__th(v-if="viewAdmin") Активен
-                            th.table__th(v-if="viewAdmin") Досупные действия
-                    tbody.table__tbody(v-for="(item, index) in operatorListSortUnread", :key="item.id")
-                        tr.table__tr.page-operators__tr
-                            td.table__td
-                                base-people(
-                                    type="operator",
-                                    :count="item.unread.length",
-                                    :text="item.statusText",
-                                    :name="item.fullName",
-                                    :avatar-url="item.photo"
-                                )
-                            td.table__td
-                                .page-operators__last-message-wrap
-                                    //.page-operators__last-message
-                                        strong(v-text="item.last_message_author")
-                                        div(v-text="item.last_message+' супер длинный текст сообщения'")
-                                    base-btn.page-operators__start-chat(:router="{name:'teamChat',params:{id:item.id}}") Начать диалог
+    the-layout-table.page-operators
+        base-field(
+            slot="control",
+            type="search"
+            name="search",
+            placeholder="Поиск по имени..."
+            theme="soft"
+            v-model="search"
+        )
+        base-btn(
+            v-if="viewAdmin"
+            slot="control",
+            name="add" color="success-dark" size="lg" :router="{name:'settingsProfile',query:{add:'operator'}}"
+        ) Добавить сотрудника
+
+        base-table
+            thead
+                tr
+                    th Имя
+                    th
+                    th Контакты
+                    th Отдел
+                    th(v-if="viewAdmin") Активен
+                    th(v-if="viewAdmin") Досупные действия
+            tbody
+                tr.page-operators__tr(v-for="(item, index) in operatorListSortUnread", :key="item.id")
+                    td
+                        base-people(
+                            type="operator",
+                            :count="item.unread.length",
+                            :text="item.statusText",
+                            :name="item.fullName",
+                            :avatar-url="item.photo"
+                        )
+                    td
+                        .page-operators__last-message-wrap
+                            //.page-operators__last-message
+                                strong(v-text="item.last_message_author")
+                                div(v-text="item.last_message+' супер длинный текст сообщения'")
+                            base-btn.base-table__show-hover(:router="{name:'teamChat',params:{id:item.id}}") Начать диалог
 
 
-                            td.table__td
-                                a(
-                                v-if="!item.phones.type",
-                                :href="`tel:${item.phones.phone}`"
-                                ) {{item.phones | phoneAdditional}}
-                                a(
-                                v-else
-                                :href="`tel:${item.phones.sip}`"
-                                v-text="item.phones.sip"
-                                )
-                                br
-                                a(:href="`mailto:${item.mail}`" v-text="item.mail")
-                            td.table__td
-                                ul.page-operators__branch
-                                    li.page-operators__branch-item(v-for="(branch, index) in item.branches_ids", :key="branch" v-text="item.branches_names[index]")
+                    td
+                        a(
+                            v-if="!item.phones.type",
+                            :href="`tel:${item.phones.phone}`"
+                        ) {{item.phones | phoneAdditional}}
+                        a(
+                            v-else
+                            :href="`tel:${item.phones.sip}`"
+                            v-text="item.phones.sip"
+                        )
+                        br
+                        a(:href="`mailto:${item.mail}`" v-text="item.mail")
+                    td
+                        ul.page-operators__branch
+                            li.page-operators__branch-item(v-for="(branch, index) in item.branches_ids", :key="branch" v-text="item.branches_names[index]")
 
-                            td.table__td(v-if="viewAdmin")
-                                base-radio-check(
-                                v-if="anotherProfile(item.id)"
-                                    :name="'userIsActive'+item.id",
-                                :checked="item.active"  @click="changeActiveOperator(item)"
-                                )
-                            td.table__td(v-if="viewAdmin")
-                                context-menu
-                                    base-btn(:icon="{name:'edit',box:true,textHidden:'Открыть меню'}" color="info-lighten")
-                                    router-link(
-                                        slot="item",
-                                        :to="{name:'settingsProfile',query: { user_id: item.id }}"
-                                    ) Редактировать
+                    td(v-if="viewAdmin")
+                        base-radio-check(
+                        v-if="anotherProfile(item.id)"
+                            :name="'userIsActive'+item.id",
+                        :checked="item.active"  @click="changeActiveOperator(item)"
+                        )
+                    td(v-if="viewAdmin")
+                        context-menu
+                            base-btn(:icon="{name:'edit',box:true,textHidden:'Открыть меню'}" color="info-lighten")
+                            router-link(
+                                slot="item",
+                                :to="{name:'settingsProfile',query: { user_id: item.id }}"
+                            ) Редактировать
 
-        base-no-found.page-operators__base-no-found(v-if="operatorList.length<=1" name="team")
+        base-no-found.page-operators__base-no-found(v-if="operatorList.length<2" name="team")
             base-btn(
                 slot="team-content"
                 name="add"
@@ -86,13 +87,15 @@
 </template>
 
 <script>
-    //TODO соедиить шаблон с таблицей посетителей
+    import TheLayoutTable from '@/components/TheLayoutTable'
+
     import ContextMenu from '@/components/ContextMenu'
-    import _ from 'underscore'
+    import lodash_sortBy from 'lodash/sortBy'
 
     export default {
         components: {
-            ContextMenu
+            ContextMenu,
+            TheLayoutTable
         },
         filters: {
             phoneAdditional: function (value) {
@@ -126,8 +129,8 @@
                 return list
             },
             operatorListSortUnread(){
-                return _.sortBy(this.operatorListSearch,(item)=>{
-                    console.log(item.unread.length);
+                return lodash_sortBy(this.operatorListSearch,(item)=>{
+
                     return !item.unread.length
                 });
             },
@@ -159,24 +162,6 @@
         $transition:$glob-trans;
         $font-small:$glob-font-size_small;
 
-
-        &__content {
-            display:flex;
-            flex-direction:column;
-            height:100%;
-        }
-        &__scroll-bar {
-            height:100%;
-        }
-        &__controls{
-            display:flex;
-            align-items:center;
-            margin-bottom:calc-em(50);
-        }
-        &__control{
-            margin-right:calc-em(40);
-        }
-
         &__last-message-wrap {
             position:relative;
         }
@@ -191,15 +176,12 @@
             transform:translateY(-50%);
             transition:$transition;
         }
-        &__tr:not(:hover) &__start-chat  {
-            opacity:0;
-            visibility:hidden;
-        }
 
 
-        &__base-no-found {
+        &__base-no-found.no-found {
             height: auto;
             flex: 1;
+            margin-top: 20vh;
         }
     }
 
