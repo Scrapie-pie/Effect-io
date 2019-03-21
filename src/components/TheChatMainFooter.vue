@@ -10,7 +10,7 @@
                         select-operators(name="mention")
                     box-controls(v-if="showPhrases", @boxControlClose="showPhrases=false")
                         the-phrases-ready
-                    //box-controls(v-if="showSmiles", @boxControlClose="showSmiles=false")
+                    box-controls(v-if="showSmiles", @boxControlClose="showSmiles=false")
                         the-files-board(name="smiles", @getSmile="setMessageSmile")
                     //box-controls(v-if="showGifs", @boxControlClose="showGifs=false")
                         the-files-board(name="gifs")
@@ -25,9 +25,6 @@
                             @resultText="getPhrasesSelectText"
                         ).chat-main-footer__phrases-select
                         scroll-bar.chat-main-footer__scrollbar(ref="scrollbarMessage")
-                            //div(v-for="(symbol, index) in compMessageAndSmile" :key="index")
-                                smile-emoji(v-if="symbol.length>1" emoji="santa" set="apple" :size="16")
-                                span(v-else v-text="symbol")
                             textarea.chat-main-footer__input(
                                 placeholder="Enter - отправить сообщение, Shift+Enter - новая строка."
                                 ref="chatInput",
@@ -36,9 +33,6 @@
                                 @click.prevent="messageRead"
 
                             )
-
-
-
                             upload-file-list(
                                 :item-list="uploadFileList",
                                 @itemRemove="(index)=>uploadFileList.splice(index, 1)"
@@ -59,7 +53,7 @@
                             :icon="{name:'more-fill',textHidden:'Предложить посетителю'}",
                             @click.prevent="showOffer=true"
                         )
-                    //li.chat-main-footer__button
+                    li.chat-main-footer__button
                         base-btn(
                             :icon="{name:'smiles',textHidden:'Смайлы'}"
                             @click.prevent="showSmiles=true"
@@ -89,15 +83,7 @@
     import UploadFile from '@/components/UploadFile'
     import UploadFileList from '@/components/UploadFileList'
 
-    import { Emoji ,emojiIndex } from 'emoji-mart-vue'
-
-
-
-
-
     import autosize from 'autosize'
-    import lodash_split from 'lodash/split'
-
     import { viewModeChat,httpParams } from '@/mixins/mixins'
 
     export default {
@@ -110,7 +96,6 @@
             TheProcessActions,
             UploadFile,
             UploadFileList,
-            'smile-emoji':Emoji,
         },
         mixins:[viewModeChat,httpParams],
         watch:{
@@ -118,7 +103,6 @@
                 this.checkIsProcessPage();
             },
             message(val){
-
                 console.log('message',val,this.autosizeInit);
                 if(val && this.autosizeInit){
                     autosize(this.$refs.chatInput);
@@ -147,18 +131,10 @@
                 showPhrasesSelect:false,
                 showPhrasesSelectAllow:true,
                 message:'',
-                messageAndSmile:'',
                 uploadFileList:[]
-
-
-
             }
         },
         computed:{
-            compMessageAndSmile(){
-
-                return lodash_split(this.message,'')
-            },
             compShowProcess(){
                 return this.showProcess
             }
@@ -170,21 +146,23 @@
         },
         created() {
             this.checkIsProcessPage()
-
         },
-
         methods: {
-          /*  setMessageSmile(val){
-                console.log(emojiIndex.search('christmas').map((o) => o.native));
-                this.messageAndSmile= this.message+'{{smile}}{{thisSmile}}'+val.id+'{{smile}}';
-                this.message+=val.native
-            },*/
+            setMessageSmile(emoji){
+                const textarea = this.$refs.chatInput;
+                const cursorPosition = textarea.selectionEnd;
+                const start = this.message.substring(0, textarea.selectionStart)
+                const end = this.message.substring(textarea.selectionStart)
+
+                this.message=start + emoji.native + end;
+                textarea.focus();
+                this.$nextTick(() => {
+                    textarea.selectionEnd = cursorPosition + emoji.native.length
+                })
+            },
             getPhrasesSelectText(val){
                 autosize.destroy(this.$refs.chatInput);
                 this.message=val;
-
-
-
             /*
                 this.autosizeInit=true;*/
                 setTimeout(()=>{ //Todo костыль
@@ -193,10 +171,6 @@
                 },300)
             },
             messageRead(){
-
-
-
-
                 if(this.viewModeChat ==='operators') {
                     this.$http.put('message-operator-guest-mark-as-read', {
                         user_id:this.httpParams.params.id
@@ -227,7 +201,6 @@
                 }
             },
             onEnter: function (e) {
-
                 e.stopPropagation();
                 e.preventDefault();
                 e.returnValue = false;
@@ -241,12 +214,9 @@
                     files=[],
                     body = this.message;
 
-
-
                 if(this.viewModeChat=="visitors") {
 
                  let {guest_uuid,site_id} = this.httpParams.params;
-
 
                     data = {
                         guest_uuid,
@@ -282,8 +252,6 @@
                 }
 
 
-
-
                 if (!body && !files.length) return
                 this.$http.post('message-send', data);
 
@@ -301,7 +269,7 @@
                         }
                 }
                 this.uploadFileList=[]
-                console.log(' this.$root.$emit(\'messageAdd\',message);');
+
                 this.$root.$emit('messageAdd',message);
 
                 message.from_user_info.id = this.$store.state.user.profile.employee_id;
@@ -316,7 +284,6 @@
 
                     message.selfUuid = this.httpParams.params.uuid;
                     message.last_message_author = 'Вы';
-
                     this.$store.commit('visitors/selfMessageLastUpdate',message)
                 }
 
@@ -327,7 +294,6 @@
                     this.$refs.scrollbarMessage.update()
                 },200)
 
-
             },
             checkIsProcessPage() {
                 if(this.viewModeChat ==='process') {
@@ -336,10 +302,6 @@
                 else this.showProcess = false
             }
         },
-
-
-
-
     }
 </script>
 
@@ -353,23 +315,7 @@
         padding-top:calc-em(20);
 
         &__fieldset {min-width:0}
-        &__phrases-select {
-          /*  @extend %full-abs;
-            top:auto;
-            bottom:100%;
-            .box-controls__box {
-                opacity:.7;
-            }
-*/
-        }
 
-        &__controls{
-
-        }
-        &__textarea-wrap{
-
-
-        }
         &__scrollbar{
             max-height:7.5em;
         }

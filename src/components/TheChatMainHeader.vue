@@ -28,6 +28,12 @@
 
         ul.chat-main-header__controls(v-if="viewModeChat!='operators'")
             template(v-if="viewModeChat!='process'")
+                li.chat-main-header__control()
+                    base-btn(
+                    color="info-dark"
+                    padding="xs",
+                    @click.prevent="coBrowser"
+                    ) Совместный браузер
                 li.chat-main-header__control(v-if="roomActiveUserActive")
                     base-btn(
                         color="error"
@@ -145,6 +151,9 @@
             }
         },
         methods:{
+            coBrowser(){
+                this.$http.post('guest-co-browsing-request');
+            },
             chatCompletion(){
                     let data = this.httpParams.params;
                     data.intent = 'farewell'

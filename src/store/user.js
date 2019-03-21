@@ -58,6 +58,7 @@ export default {
     },
     actions: {
         getLogin({commit, dispatch}, user) {
+            if(!user.jwt) return
             localStorage.setItem('jwt', user.jwt);
             this._vm.$http.defaults.headers.common[ 'jwt' ] = user.jwt;
             this._vm.$http.defaults.headers['content-type']= 'application/json';
