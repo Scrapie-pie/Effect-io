@@ -91,6 +91,9 @@ export default {
             return this.bodyList
         },
     },
+    created(){
+
+    }
 }
 </script>
 

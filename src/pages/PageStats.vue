@@ -34,7 +34,24 @@ export default {
     },
     computed:{
         title(){
-            return this.$route.meta.title
+            let titleHead = this.$route.meta.title
+
+            if(this.routerName==='statsBranchesDetail') {
+
+                let branch = this.branchListAll.find(item=>item.id===+this.$route.params.id);
+                if (branch) return titleHead+': '+branch.title
+            }
+            if(this.routerName==='statsEmployeesDetail') {
+                let operator = this.$store.state.operators.all.find(item=>item.id===+this.$route.params.id)
+                if(operator) return titleHead+': '+operator.fullName
+            }
+            return titleHead
+        },
+        routerName(){
+            return this.$route.name
+        },
+        branchListAll(){
+            return this.$store.state.user.branchListAll
         }
     }
 }

@@ -35,7 +35,9 @@ export default [{
                     name: 'statsEmployeesDetail',
                     path: ':id',
                     component: PageStatsInner,
-
+                    meta:{
+                        title:'Статистика по сотруднику'
+                    },
                 },
             ]
         },
@@ -51,7 +53,9 @@ export default [{
                     name: 'statsBranchesDetail',
                     path: ':id',
                     component: PageStatsInner,
-
+                    meta:{
+                        title:'Статистика по отделу'
+                    },
                 },
             ]
         },
