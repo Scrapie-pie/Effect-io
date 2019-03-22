@@ -80,7 +80,7 @@
                     )
                     text-info.settings-list__text-info Вы можете назначить сотрудника в один или несколько отделов. Чтобы выбрать отдел, начните набирать его название в данном поле.
 
-                li.settings-list__item(v-if="viewAdmin")
+                li.settings-list__item(v-if="$store.getters['user/isRole'](['admin','owner'])")
                     h3.settings-list__name Настройки каналов
                     ul.settings-list__sub
                         li.settings-list__sub-item
@@ -109,14 +109,24 @@
                             base-radio-check.settings-list__control(v-if="0" name="notifications") Принимать звонки от клиентов
                             text-info.settings-list__text-info Выберите, в каких каналах данный сотрудник может общаться с клиентами.
 
-                li.settings-list__item(v-if="viewAdmin && anotherProfile")
-                    h3.settings-list__name Настройки доступа
-                    base-radio-check.settings-list__control(
-                        name="adminMode"
-                        v-model="adminMode",
 
-                    ) Включить права администратора
-                    text-info.settings-list__text-info Права администратора позволяют сотруднику: управлять другими аккаунтами сотрудников, просматривать статистику, менять данные основного аккаунта, добавлять/удалять/ редактировать данные всех сотрудников, отделов и каналов связи.
+                li.settings-list__item(v-if="anotherProfile && $store.getters['user/isRole'](['admin','owner'])")
+                    h3.settings-list__name Настройки доступа
+                    ul.settings-list__sub
+                        li.settings-list__sub-item
+                            base-radio-check.settings-list__control(
+                            :disabled="adminMode"
+                            name="operatorSeniorMode"
+                            v-model="operatorSeniorMode",
+
+                            ) Включить права старшего специалиста
+                        li.settings-list__sub-item
+                            base-radio-check.settings-list__control(
+                                :disabled="operatorSeniorMode"
+                                name="adminMode"
+                                v-model="adminMode",
+                            ) Включить права администратора
+                            text-info.settings-list__text-info Права администратора позволяют сотруднику: управлять другими аккаунтами сотрудников, просматривать статистику, менять данные основного аккаунта, добавлять/удалять/ редактировать данные всех сотрудников, отделов и каналов связи.
 
             base-btn(type="submit") Сохранить
 </template>
@@ -178,7 +188,8 @@
                     use_chat:null,
                     use_calls:null,
                 },
-                adminMode:null,
+                operatorSeniorMode:false,
+                adminMode:false,
                 branchListSelected:[],
                 branchListAll:[]
             }
@@ -192,13 +203,13 @@
                 return this.model.branches_ids
             },
             profile(){
-                return this.$store.getters['user/profile']
+                return this.$store.state.user.profile
+            },
+            myRoles(){
+                return this.$store.getters['user/roles']
             },
             anotherProfile(){
                 return  this.model.user_id !== this.profile.user_id
-            },
-            viewAdmin(){
-                return  this.profile.role_id === 13 || this.profile.role_id === 5 //либо админ либо владелец
             },
             compBranchListRemaining(){
                 let list = this.branches_ids;
@@ -238,6 +249,12 @@
                 this.model.branches_ids = val.map((item) => {
                     return item.id
                 })
+            },
+            operatorSeniorMode(val){
+                console.log('operatorSeniorMode',val);
+                if(val) {
+                    this.model.role_id = 14
+                } else this.model.role_id = 6
             },
             adminMode(val){
                 console.log('adminMode',val);
@@ -279,6 +296,7 @@
                 this.model.use_calls=this.profile.use_calls
 
                 this.adminMode=this.profile.role_id === 13;
+                this.operatorSeniorMode=this.profile.role_id === 14;
                 this.phoneUnmaskedValue=this.profile.phones.phone;
                 this.getBranchListAll()
             },
@@ -315,6 +333,7 @@
                         if(data.success) {
                             this.model=data.data.user;
                             this.adminMode=this.model.role_id === 13;
+                            this.operatorSeniorMode=this.model.role_id === 14;
                             this.phoneUnmaskedValue=this.model.phones.phone;
                             this.getBranchListAll()
                         }

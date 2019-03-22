@@ -1,20 +1,20 @@
 <template lang="pug">
 
-    label.radio-check(:class="[`radio-check_${type}`,{'radio-check_error': errors.has(name)}]")
+    label.base-radio-check(:class="classObject")
         input(
             v-bind="getInputOptions",
             v-on="inputListeners",
-        ).radio-check__input
-        span.radio-check__text-wrap
-            base-icon(name="check").radio-check__check
-            span.radio-check__text
+        ).base-radio-check__input
+        span.base-radio-check__text-wrap
+            base-icon(name="check").base-radio-check__check
+            span.base-radio-check__text
                 slot
 
 </template>
 
 <script>
     export default {
-        name: 'radio-check',
+        name: 'base-radio-check',
         inject: ['$validator'],
         inheritAttrs: false,
         model: {
@@ -48,6 +48,18 @@
         },
 
         computed: {
+            classObject() {
+
+
+                let parentClass = 'base-radio-check';
+                let obj = {}
+                obj[`${parentClass}_disabled`]=((this.disabled==='') || this.disabled)?true:false;
+                obj[`${parentClass}_error`]=this.errors.has(this.name);
+
+                obj[`${parentClass}_${this.type}`]=!!this.type;
+
+                return obj
+            },
             getInputOptions() {
 
                 let checked = this.checked
@@ -55,7 +67,7 @@
                 let obj = {
                   /*  textTrue:this.textTrue,
                     textFalse:this.textFalse,*/
-
+                    disabled:!!this.disabled,
                     type: this.type,
                     checked: checked,
                     value:this.value,
@@ -87,12 +99,16 @@
 </script>
 
 <style lang="scss">
-    .radio-check{
+    .base-radio-check{
         $self:&;
         $sz:calc-em(24);
         $color_border:glob-color('border');
         $color_main:glob-color('main');
         $transition:$glob-trans;
+
+        &_disabled {
+            cursor:default;
+        }
 
         &__input{
             @extend %visuallyhidden;
@@ -101,6 +117,9 @@
                 #{$self}__check{
                     transform:scale(1);
                 }
+            }
+            &:disabled ~ #{$self}__text-wrap {
+                opacity:.7;
             }
         }
         &__text:not(:empty) {

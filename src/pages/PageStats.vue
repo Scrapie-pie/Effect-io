@@ -1,6 +1,6 @@
 <template lang="pug">
     article.page-stats
-        nav-aside
+        nav-aside(v-if="")
             router-link(
                 slot="item"
                 :to='{name:"statsService"}'

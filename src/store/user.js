@@ -100,10 +100,16 @@ export default {
 
     },
     getters: {
-
-        isRole:state=> {// в JavaScript, когда `false && myString` возвратит `false`, а `true && myString` возвратит `myString`.
-
-          return state.profile.id === state.profile.owner_id && 'owner';
+        roles:state=> {// в JavaScript, когда `false && myString` возвратит `false`, а `true && myString` возвратит `myString`.
+            let {id,owner_id,role_id} = state.profile
+            return [
+                id === owner_id && 'owner',
+                role_id === 13 && 'admin',
+                role_id === 14 && 'operatorSenior',
+            ];
+        },
+        isRole:(state, getters)=> list =>{// в JavaScript, когда `false && myString` возвратит `false`, а `true && myString` возвратит `myString`.
+            return list.some(item=>getters.roles.includes(item))
         },
         branchListAll: state => {
             return state.branchListAll

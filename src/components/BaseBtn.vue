@@ -79,7 +79,7 @@
                 let obj = {
 
 
-                   /* 'spinner spinner_sm': this.loaded*/
+
                 }
 
                 if (!lodash_isEmpty(this.theme)) {
