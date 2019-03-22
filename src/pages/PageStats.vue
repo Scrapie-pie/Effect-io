@@ -1,6 +1,6 @@
 <template lang="pug">
     article.page-stats
-        nav-aside(v-if="")
+        nav-aside(v-if="$store.getters['user/isRole'](['admin','owner','operatorSenior'])")
             router-link(
                 slot="item"
                 :to='{name:"statsService"}'
@@ -31,6 +31,17 @@ export default {
     },
     data() {
         return {}
+    },
+    beforeRouteEnter (to, from, next) {
+        next(vm=>{
+            if(vm.$store.getters['user/isRole'](['admin','owner','operatorSenior'])) vm.$router.push({name:'statsService'})
+            else {
+                vm.$router.push( {
+                    name: 'statsEmployeesDetail',
+                    params:{id:vm.$store.state.user.profile.id}
+                },)
+            }
+        })
     },
     computed:{
         title(){

@@ -1,19 +1,11 @@
 
-
-
 const  PageStats = ()=> import('@/pages/PageStats')
 const  PageStatsInner  = ()=> import('@/pages/PageStatsInner')
-
-
-
-
-
 
 export default [{
     name: 'stats',
     path: '/statistics',
     component: PageStats,
-    redirect:{name:'statsService'},
     children: [
         {
             name: 'statsService',

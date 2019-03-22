@@ -78,8 +78,16 @@
 
 
         },
-        beforeRouteLeave (to, from, next) {
+        beforeRouteEnter (to, from, next) {
+            next(vm=>{
+                if(to.name==="common") {
+                    if(vm.$store.state.user.profile.common_room_id) vm.$router.push({name:'common'})
+                    else vm.$router.push( {name: 'processAll',},)
+                }
 
+            })
+        },
+        beforeRouteLeave (to, from, next) {
             this.$store.commit('resetState')
             return next()
         }
