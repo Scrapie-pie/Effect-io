@@ -10,7 +10,8 @@
 export default {
     data() {
         return {}
-    },   
+    },
+
 }
 </script>
 
@@ -22,7 +23,12 @@ export default {
         $color_link:glob-color('main');
         $sz:calc-em(30);
 
+
         width:275px;
+
+
+
+
         background-color:$color_bg;
         border-right:1px solid $color_border;
 

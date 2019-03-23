@@ -77,6 +77,8 @@
         padding:0 0 calc-em(30);
         border-radius:0;
 
+        z-index:2;
+
         @include media($width_lg){
             min-width:75px;
             width:75px;
