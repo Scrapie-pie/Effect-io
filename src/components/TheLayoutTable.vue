@@ -1,9 +1,8 @@
 <template lang="pug">
     section.layout-table
         .layout-table__controls
-            div(class="layout-table__control" v-for="(item,index) in $slots.control", :key="'control'+index")
-                vnode(:node="item")
-        .layout-table__head
+            .layout-table__control(v-for="item in $slots.control"): vnode(:node="item")
+        .layout-table__head(v-for="item in $slots.head"): vnode(:node="item")
             slot(name="head")
         scroll-bar.layout-table__content
             slot
@@ -56,6 +55,8 @@
 
     &__content {
         height:100%;
+        margin-right:-1* calc-em(15);
+        padding-right:calc-em(15);
     }
 }
 

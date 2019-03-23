@@ -16,18 +16,16 @@
         mixins: [hideHeader,httpParams],
         computed:{
             menuList(){
-                let menuList= [
+                return [
                     {text: 'Настройки профиля', link: {name: 'settingsProfile'}},
-                    {text: 'Настройки приложения', link: {name: 'settingsApp'}},
-                ];
-                console.log(this.$route.query);
+                    {text: 'Настройки приложения', link: {name: 'settingsApp'},hide:this.hideSettingsApp}
+                ]
+            },
+            hideSettingsApp(){  //у чужого пользователя одна страница настроек, по этому меню не нужно
                 let user_id = + this.$route.query.user_id;
-                if(user_id) { //у чужого пользователя одна страница настроек, по этому меню не нужно
-                    if (user_id !== this.$store.state.user.profile.id)  {
-                        menuList=[{text: 'Настройки профиля', link: {name: 'settingsProfile'}},]
-                    }
-                }
-                return menuList
+                if(user_id) {
+                    return user_id !== this.$store.state.user.profile.id
+                } else return false
             }
         }
 

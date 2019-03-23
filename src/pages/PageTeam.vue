@@ -161,7 +161,9 @@
     .page-operators{
         $transition:$glob-trans;
         $font-small:$glob-font-size_small;
-
+        .layout-table__content {
+            padding-bottom:calc-em(50);
+        }
         &__last-message-wrap {
             position:relative;
         }

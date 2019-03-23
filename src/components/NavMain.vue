@@ -2,6 +2,7 @@
     nav.nav-main
         ul.nav-main__list
             li.nav-main__item(
+                v-if="item.hide!==true"
                 v-for="(item, index) in itemList",
                 :key="index",
                 :class="'nav-main__item_'+item.link.name",

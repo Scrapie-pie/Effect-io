@@ -15,29 +15,31 @@
             UserStatus,
         },
         data() {
+
             return {
 
-                appList: [
-                   /* {text: 'recover', link: {name: 'recover'}},
-                    {text: 'Ui', link: {name: 'ui'}},*/
-                    {text: 'Статистика', link: {name: 'stats'},icon:'statistics'},
-                    {text: 'Настройки', link: {name: 'settingsProfile'},icon:'settingsApp'},
-                    //{text: 'Сменить учетную запись', link: {name: 'auth'}},
-                    {text: 'Выход', link: {name: 'exit'}},
-                ],
+
             }
         },
         computed:{
+            appList(){
+                return [
+                    /* {text: 'recover', link: {name: 'recover'}},
+                     {text: 'Ui', link: {name: 'ui'}},*/
+                    {text: 'Статистика', link: {name: 'stats'},icon:'statistics',hide:!this.$store.getters['user/isRole'](['admin','owner','operatorSenior'])},
+                    {text: 'Настройки', link: {name: 'settingsProfile'},icon:'settingsApp'},
+                    //{text: 'Сменить учетную запись', link: {name: 'auth'}},
+                    {text: 'Выход', link: {name: 'exit'}},
+                ]
+            },
             canalList(){
-                let list = [
+                return [
                     {text: 'Не обработано', link: {name:'processAll'},unread:this.unreadProcess,icon:'process'},
                     {text: 'Мои диалоги', link: {name:'messageAll'},unread:this.unreadGuest,icon:'chatId'},
                     {text: 'Команда', link: {name: 'team'},unread:this.unreadPrivate},
-                    {text: 'Посетители', link: {name: 'visitors'}}
-                ];
-                if(this.$store.state.user.profile.common_room_id) list.push({text: 'Общий чат ', link: {name: 'common'},unread:this.unreadCommon})
-
-                return list
+                    {text: 'Посетители', link: {name: 'visitors'}},
+                    {text: 'Общий чат ', link: {name: 'common'},unread:this.unreadCommon,hide:!this.$store.state.user.profile.common_room_id}
+                ]
 
             },
             unread(){

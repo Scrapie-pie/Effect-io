@@ -101,7 +101,8 @@ export default {
     },
     getters: {
         roles:state=> {// в JavaScript, когда `false && myString` возвратит `false`, а `true && myString` возвратит `myString`.
-            let {id,owner_id,role_id} = state.profile
+            let {id,owner_id,role_id} = state.profile;
+            if(!id && !owner_id && !role_id) return []
             return [
                 id === owner_id && 'owner',
                 role_id === 13 && 'admin',

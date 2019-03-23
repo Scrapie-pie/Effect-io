@@ -35,7 +35,6 @@ export default {
         return {}
     },
     beforeRouteEnter (to, from, next) {
-        console.log('beforeRouteEnter',to);
         next(vm=>{
             if(vm.$store.getters['user/isRole'](['admin','owner','operatorSenior'])) {
                 if(vm.$route.name==="stats") vm.$router.push({name:'statsService'})
@@ -89,7 +88,7 @@ export default {
         &__main {
             flex:1;
             padding-left:calc-em(15);
-            margin-right:-1*calc-em(15);
+
             height:100%;
 
         }

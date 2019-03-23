@@ -200,11 +200,12 @@ export default {
     .page-stats-inner{
         $color_border:glob-color('border');
         &__count {
+            margin-bottom:calc-em(20);
             @extend %row-flex;
+
             li{
                 @extend %h4
             }
-            margin-bottom:calc-em(20);
         }
         &__table {
             border:2px solid $color_border;
@@ -214,6 +215,8 @@ export default {
 
         &__main {
             max-width:1300px;
+            //padding-right:calc-em(15);
+            padding-bottom:calc-em(45);
         }
     }
 </style>

@@ -102,7 +102,7 @@ export default {
         $bg_color:glob-color('info-lighten');
         $el:'.stats-result';
         $border-radius:$glob-border-radius;
-        margin-bottom:calc-em(70);
+
         &__list {
             margin-bottom:calc-em(60);
             display:block;
