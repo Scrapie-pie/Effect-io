@@ -2,10 +2,23 @@
 const  PageStats = ()=> import('@/pages/PageStats')
 const  PageStatsInner  = ()=> import('@/pages/PageStatsInner')
 
+import store from '@/store/store'
+
 export default [{
     name: 'stats',
     path: '/statistics',
     component: PageStats,
+    redirect: to => {
+        if(store.getters['user/isRole'](['admin','owner','operatorSenior'])) {
+            return {name:'statsService'}
+        }
+        else {
+            return {
+                name: 'statsEmployeesDetail',
+                params:{id:store.state.user.profile.id}
+            }
+        }
+    },
     children: [
         {
             name: 'statsService',

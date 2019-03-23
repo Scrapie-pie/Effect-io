@@ -34,7 +34,7 @@
             li Отделов в команде: {{$store.state.user.branchListAll.length}}
             li Сотрудников в команде: {{$store.state.operators.all.length}}
         section.page-stats-inner__main
-            section(v-if="routerName==='statsService'")
+            template(v-if="routerName==='statsService'")
                 .page-stats-inner__table
                     stats-operators(
                         :btn-detail-hide="true"
@@ -71,11 +71,13 @@
                 stats-result(type="company" :period="period.val")
             stats-operators(
                 v-if="routerName==='statsEmployees'"
+
                 type="employees",
                 :period="period.val",
                 @itemList="(val)=>itemList=val",
                 :filterListOn="true",
-                :filterList="filterSearchResult"
+                :filterList="filterSearchResult",
+                :filterBranchId="branch.id"
             )
             stats-result(
                 v-if="routerName==='statsEmployeesDetail'"
@@ -85,7 +87,6 @@
             )
             stats-branches(
                 v-if="routerName==='statsBranches'",
-                :filterBranchId="branch.id"
                 type="branches",
                 :period="period.val",
                 @itemList="(val)=>itemList=val",

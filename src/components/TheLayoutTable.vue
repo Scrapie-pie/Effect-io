@@ -1,7 +1,7 @@
 <template lang="pug">
     section.layout-table
         .layout-table__controls
-            div(class="layout-table__control" v-for="item in $slots.control")
+            div(class="layout-table__control" v-for="(item,index) in $slots.control", :key="'control'+index")
                 vnode(:node="item")
         .layout-table__head
             slot(name="head")

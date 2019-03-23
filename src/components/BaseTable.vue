@@ -32,8 +32,9 @@ export default {
     },
 
 }
+import '@/scss/base/table.scss';
 </script>
 
 <style lang="scss">
-    .table-row{}
+
 </style>

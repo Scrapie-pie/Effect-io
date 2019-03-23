@@ -25,6 +25,8 @@
 <script>
     import NavAside from '@/components/NavAside';
 
+
+
 export default {
     components: {
         NavAside,
@@ -33,8 +35,12 @@ export default {
         return {}
     },
     beforeRouteEnter (to, from, next) {
+        console.log('beforeRouteEnter',to);
         next(vm=>{
-            if(vm.$store.getters['user/isRole'](['admin','owner','operatorSenior'])) vm.$router.push({name:'statsService'})
+            if(vm.$store.getters['user/isRole'](['admin','owner','operatorSenior'])) {
+                if(vm.$route.name==="stats") vm.$router.push({name:'statsService'})
+
+            }
             else {
                 vm.$router.push( {
                     name: 'statsEmployeesDetail',
@@ -64,6 +70,9 @@ export default {
         branchListAll(){
             return this.$store.state.user.branchListAll
         }
+    },
+    methods:{
+
     }
 }
 </script>

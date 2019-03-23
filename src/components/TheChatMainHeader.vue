@@ -152,7 +152,7 @@
         },
         methods:{
             coBrowser(){
-                this.$http.post('guest-co-browsing-request');
+                this.$http.post('guest-co-browsing-request',this.httpParams.params);
             },
             chatCompletion(){
                     let data = this.httpParams.params;

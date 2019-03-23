@@ -1,5 +1,5 @@
 <template lang="pug">
-    aside.nav-aside
+    nav.nav-aside
         slot
         ul.nav-aside__list(v-if="$slots.item")
             li(class="nav-aside__item" v-for="link in $slots.item")
