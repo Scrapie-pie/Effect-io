@@ -138,11 +138,11 @@
     import PasswordRefresh from '@/components/PasswordRefresh'
     import TextInfo from '@/components/TextInfo'
     import UploadAvatar from '@/components/UploadAvatar'
-    import TelInput from '@/components/TelInput'
+    //import TelInput from '@/components/TelInput'
 
     import browserNotification from '@/modules/browserNotification'
 
-    //const  TelInput = ()=> import('@/components/TelInput')
+    const  TelInput = ()=> import('@/components/TelInput')
 
     export default {
         components: {
@@ -230,18 +230,6 @@
             compBranchListAll(val){
                 this.branchListAll = val
             },
-            branchListAll:{
-                handler(val){
-                    if(val) {
-
-                        this.branchListSelected = val.filter((item)=>{
-                            return this.model.branches_ids.includes(item.id)
-                        });
-                    }
-                },
-                immediate: true
-
-            },
             phonesTypeSelect(val){
                 this.model.phones.type = val.value
             },
@@ -251,13 +239,13 @@
                 })
             },
             operatorSeniorMode(val){
-                console.log('operatorSeniorMode',val);
+
                 if(val) {
                     this.model.role_id = 14
                 } else this.model.role_id = 6
             },
             adminMode(val){
-                console.log('adminMode',val);
+
                 if(val) {
                     this.model.role_id = 13
                 } else this.model.role_id = 6
@@ -268,14 +256,23 @@
 
         },
         methods:{
+            setBranchListSelected(val){
+                if(val) {
+                    this.branchListAll = val
+                    this.branchListSelected =  val.filter((item)=>{
+                        return this.model.branches_ids.includes(item.id)
+                    });
+                }
+            },
             getBranchListAll(){
                 if(this.$store.state.user.branchListAll.length) {
-                    this.branchListAll = this.$store.getters['user/branchListAll']
+                    this.setBranchListSelected(this.$store.getters['user/branchListAll'])
                 } else {
                     this.$store.watch(
                         (state)=>state.user.branchListAll,
                         (val) => {
-                            return this.branchListAll = val
+                            return this.setBranchListSelected(val)
+
                     });
                 }
             },
