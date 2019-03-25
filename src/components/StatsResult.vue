@@ -51,7 +51,7 @@ export default {
         dialogsListLeft(){
             let list = [
                 {name:'Получено диалогов',val:'dialogues_requests'},
-                {name:'Приянто диалогов',val:'dialogues_accepted'},
+                {name:'Принято диалогов',val:'dialogues_accepted'},
                 {name:'Отклонено диалогов',val:'dialogues_declined'},
                 {name:'Пропущено диалогов',val:'dialogues_missed'},
             ]
