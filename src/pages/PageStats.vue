@@ -70,14 +70,21 @@ export default {
             return this.$store.state.user.branchListAll
         }
     },
-    mounted(){
-
+ /*   mounted(){
+        console.log('mounted');
         setTimeout(()=>{
             this.$el.classList.add('active')
         },500)
     },
-    updated(){
+    beforeDestroy(){
+        console.log('destroy');
+    },
+    beforeUpdate(){
+        console.log('beforeUpdate');
         this.$el.classList.add('active')
+    },*/
+    updated(){
+        //this.$el.classList.add('active')
     },
     methods:{
 
@@ -87,15 +94,20 @@ export default {
 
 <style lang="scss">
     .page-stats{
+
+
+
+
+
         flex-direction: row;
 
-        transition:$glob-trans;
+    /*    transition:$glob-trans;
 
 
         transform:translateX(-275px);
         &.active{
             transform:translateX(0);
-        }
+        }*/
 
         &__title {
             @extend %h4;

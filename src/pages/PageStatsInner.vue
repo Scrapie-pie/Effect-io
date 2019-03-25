@@ -30,10 +30,13 @@
             :selectOptions="{label:'title',options:branchListAll,value:branch}"
             v-model="branch"
         )
+
         ul.page-stats-inner__count(v-if="routerName==='statsService'" slot="head")
             li Отделов в команде: {{$store.state.user.branchListAll.length}}
             li Сотрудников в команде: {{$store.state.operators.all.length}}
+
         section.page-stats-inner__main
+
             template(v-if="routerName==='statsService'")
                 .page-stats-inner__table
                     stats-operators(
@@ -197,6 +200,7 @@ export default {
 </script>
 
 <style lang="scss">
+
     .page-stats-inner{
         $color_border:glob-color('border');
         &__count {

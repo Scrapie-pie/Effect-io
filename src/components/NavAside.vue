@@ -16,6 +16,18 @@ export default {
 </script>
 
 <style lang="scss">
+  /*  .push-left {
+        &-enter,&-leave-to {
+            transform:translateX(-275px);
+        }
+        &-enter-to,&-leave {
+
+            transform:translateX(0);
+        }
+        &-enter-active,&-leave-active {
+            transition:$glob-trans;
+        }
+    }*/
     .nav-aside{
         $color_border:glob-color('border');
         $color_bg:glob-color('info-lighten');
@@ -23,11 +35,7 @@ export default {
         $color_link:glob-color('main');
         $sz:calc-em(30);
 
-
         width:275px;
-
-
-
 
         background-color:$color_bg;
         border-right:1px solid $color_border;
