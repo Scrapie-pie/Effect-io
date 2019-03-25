@@ -38,7 +38,7 @@
                     {text: 'Мои диалоги', link: {name:'messageAll'},unread:this.unreadGuest,icon:'chatId'},
                     {text: 'Команда', link: {name: 'team'},unread:this.unreadPrivate},
                     {text: 'Посетители', link: {name: 'visitors'}},
-                    {text: 'Общий чат ', link: {name: 'common'},unread:this.unreadCommon,hide:!this.$store.state.user.profile.common_room_id}
+                    {text: 'Общий чат ', link: {name: 'common'},unread:this.unreadCommon,hide:!this.$store.state.user.profile.is_common_chat}
                 ]
 
             },

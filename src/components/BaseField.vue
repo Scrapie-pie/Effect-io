@@ -110,6 +110,7 @@
             getInputOptions() {
                 let obj = {
                     autocomplete:this.autocomplete,
+                    name:this.name,
                     type:this.type,
                     placeholder: this.getPlaceholder,
                     value:this.value

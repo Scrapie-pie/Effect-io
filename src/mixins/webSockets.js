@@ -165,6 +165,7 @@ export default {
                 if(val.room_id===this.$store.state.user.profile.common_room_id){
                     this.$store.commit('user/unreadUpdate',['common',1])
                     this.playSoundFile('sound_new_common_message')
+                    this.$root.$emit('messageAdd',val)
                     return
 
                 }
@@ -268,8 +269,9 @@ export default {
             console.log('update-employees user/profile update')
             let find = val.find((item)=>item.id===this.$store.state.user.profile.id)
             if(find) {
-                let {online,common_room_id} = find;
-                this.$store.commit('user/profileUpdate',{online,common_room_id})
+                console.log(find);
+                //if(!find.is_common_chat && this.viewModeChat==='common') this.$router.push({name:'processAll'})
+                this.$store.commit('user/profileUpdate',find)
 
             }
 
