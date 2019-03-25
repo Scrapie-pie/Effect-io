@@ -270,8 +270,11 @@ export default {
             let find = val.find((item)=>item.id===this.$store.state.user.profile.id)
             if(find) {
                 if(!find.is_common_chat && this.viewModeChat==='common') this.$router.push({name:'processAll'})
-                this.$store.commit('user/profileUpdate',find)
 
+                this.$store.commit('user/profileUpdate',find)
+                if(!this.$store.getters['user/isRole'](['admin','owner','operatorSenior']) && this.$route.path.includes('service')){
+                    this.$router.push({name:'processAll'})
+                }
             }
 
 
