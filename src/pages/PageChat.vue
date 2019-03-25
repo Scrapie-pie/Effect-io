@@ -81,7 +81,7 @@
         beforeRouteEnter (to, from, next) {
             next(vm=>{
                 if(to.name==="common") {
-                    if(vm.$store.state.user.profile.common_room_id) vm.$router.push({name:'common'})
+                    if(vm.$store.state.user.profile.is_common_chat) vm.$router.push({name:'common'})
                     else vm.$router.push( {name: 'processAll',},)
                 }
 
