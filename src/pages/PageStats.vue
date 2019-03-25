@@ -96,10 +96,10 @@ export default {
     .page-stats{
 
 
-
-
-
         flex-direction: row;
+
+
+
 
     /*    transition:$glob-trans;
 

@@ -221,6 +221,7 @@ export default {
             max-width:1300px;
             //padding-right:calc-em(15);
             padding-bottom:calc-em(45);
+           // min-width:1100px;
         }
     }
 </style>

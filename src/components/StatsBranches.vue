@@ -1,5 +1,5 @@
 <template lang="pug">
-    base-table
+    base-table.stats-branches
         caption(v-if="caption" v-text="caption")
         thead: tr: th(v-for="(item, index) in headList" :key="index" v-html="item" )
         tbody
@@ -85,6 +85,13 @@ export default {
 </script>
 
 <style lang="scss">
-
+    .stats-branches{
+        th:nth-child(1) {
+            width:253px;
+        }
+        th:nth-child(2) {
+            width:202px;
+        }
+    }
 </style>
 

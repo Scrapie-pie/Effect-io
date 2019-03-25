@@ -1,4 +1,4 @@
-table{ border-spacing:0; border-collapse:collapse; margin:0; width:100%;vertical-align:top }
+table{ border-spacing:0; border-collapse:collapse; margin:0; vertical-align:top }
 table:not([class]){
   margin-bottom:calc-em(20);
 }
@@ -12,7 +12,10 @@ tbody, tfoot, thead, tr, th, td{ vertical-align:inherit; }
   $color_bg-hover:glob-color('info-lighten');
   $color_border-left:glob-color('info');
   $transition:$glob-trans;
-  width:100%;
+  @include media($width_md,1) {
+    width:100%;
+  }
+
   table-layout:fixed;
   vertical-align:middle;
 
@@ -25,8 +28,13 @@ tbody, tfoot, thead, tr, th, td{ vertical-align:inherit; }
   %td {
     transition:$transition;
     transition-property:border,background-color;
-    padding-left:calc-em(15);
-    padding-right:calc-em(15);
+    padding-left:calc-em(5);
+    padding-right:calc-em(5);
+
+    @include media($width_md,1) {
+      padding-left:calc-em(15);
+      padding-right:calc-em(15);
+    }
   }
 
   &__td{

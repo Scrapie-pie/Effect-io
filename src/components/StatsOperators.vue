@@ -1,7 +1,7 @@
 <template lang="pug">
-    base-table
+    base-table.stats-operators
         caption(v-if="caption" v-text="caption")
-        thead
+        thead(v-if="headList.length")
             tr: th(v-for="(item, index) in headList" :key="index" v-html="item")
         tbody
             tr(v-for="(item, index) in itemList" :key="item.id")
@@ -19,10 +19,11 @@
                         padding="xslr",
                         :router="{name:'statsEmployeesDetail',params:{id:item.user_id}}"
                     ) Детальная статистика
-                td(v-if="item.operator && order!=='first_answer_average_speed'" v-html="$options.filters.branchesBr(item.operator.branches_names)")
+                td(v-if="item.operator" v-html="$options.filters.branchesBr(item.operator.branches_names)")
 
-                td(v-text="item.dialogues_requests")
+
                 template(v-if="order!=='first_answer_average_speed'")
+                    td(v-text="item.dialogues_requests")
                     td
                         span.color_success(v-text="item.dialogues_accepted")
                         span.color_error(v-text="'/'+item.dialogues_missed")
@@ -32,7 +33,7 @@
                         span.color_info(v-text="'/'+item.middling_ratings+'/'")
                         span.color_error(v-text="item.badly_ratings")
                 td(v-else)
-                    |{{item[order] | format('time')}}
+                    |Среднее время первого ответа на диалог {{item.first_answer_average_speed | format('time')}}
 </template>
 
 <script>
@@ -69,11 +70,8 @@ export default {
             if(this.btnDetailHide) list.splice(1, 1)
 
             if(this.order==="first_answer_average_speed") {
-                list = [
-                    'Название отдела',
-                    'Получено диалогов',
-                ]
-                list.push('Среднее время первого ответа на диалог')
+                list = []
+
             }
 
             return list
@@ -99,6 +97,10 @@ export default {
 </script>
 
 <style lang="scss">
-
+    .stats-operators{
+        td:nth-child(1),td:nth-child(2) {
+            width:253px;
+        }
+    }
 </style>
 
