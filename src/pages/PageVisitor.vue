@@ -19,7 +19,7 @@
 
         div(slot="control" v-if="itemListCount")
                 |На странице показано {{showItemLength}} из {{ itemListCount}}
-        scroll-bar(v-if="showItemLength" @ps-y-reach-end="loadDate").page-visitors__scroll-bar
+        scroll-bar(v-if="showItemLength" ref="scrollbar" , @ps-scroll-down="scrollLoad").page-visitors__scroll-bar
             base-table
                 thead
                     tr
@@ -59,16 +59,20 @@
 
     import lodash_debounce from 'lodash/debounce'
     import lodash_extend from 'lodash/extend'
+
+    import {scrollbar } from '@/mixins/mixins'
     export default {
+        mixins:[scrollbar],
         components: {
+
             ContextMenu,
             TheLayoutTable
         },
         data() {
             return {
-                getVisitorsListStart:true,
+                getItemListStart:true,
                 search: '',
-                limit:10,
+                limit:20,
                 pageN:1,
                 itemListCount: 0,
                 itemList:[],
@@ -110,7 +114,7 @@
             search:'debounceSearch',
             channel(){
                 this.resetSearch();
-                this.getVisitorsList();
+                this.getItemList();
             },
         },
         created() {
@@ -131,6 +135,10 @@
             })
         },
         methods:{
+            scrollLoad(e){
+                console.log(this.scrollLoadAllow(e));
+                if(this.scrollLoadAllow(e)) this.getItemList()
+            },
             startChat(visitor){
 
 
@@ -145,33 +153,35 @@
             debounceSearch:lodash_debounce(function()
                 {
                     this.resetSearch();
-                    this.getVisitorsList();
+                    this.getItemList();
                 }, 500),
             resetSearch(){
                 this.pageN=1;
                 this.itemListCount= 0;
                 this.itemList=[];
-                this.getVisitorsListStart=true;
+                this.getItemListStart=true;
             },
-            loadDate(event){
-                this.getVisitorsList()
-            },
-            getVisitorsList(){
-                if(!this.getVisitorsListStart) return;
 
-                this.getVisitorsListStart=false;
+            getItemList(){
+                if(!this.getItemListStart) return;
 
+                this.getItemListStart=false;
+                console.log(this.showItemLength,this.itemListCount,this.itemListCount);
                 if((this.showItemLength < this.itemListCount) || this.itemListCount===0) {
+                    console.log('getItemList');
                     this.$http.get('guest-list',this.requestData).then(({data})=>{
-                        this.getVisitorsListStart=true;
+                        this.getItemListStart=true;
                         if (data.data.count) {
                             this.itemList.push(...data.data.list);
                             this.itemListCount = data.data.count;
                             this.pageN += 1;
+                            console.log(this.showItemLength,this.itemListCount,this.itemListCount);
                         }
 
                     })
+
                 }
+
 
             },
 
@@ -188,6 +198,7 @@
 
         &__scroll-bar {
             max-width:1300px;
+            height:100%;
         }
 
 

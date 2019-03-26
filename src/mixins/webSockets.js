@@ -266,7 +266,7 @@ export default {
 
         },
         "update-employees"(val) {
-            console.log('update-employees user/profile update')
+
             let find = val.find((item)=>item.id===this.$store.state.user.profile.id)
             if(find) {
                 if(!find.is_common_chat && this.viewModeChat==='common') this.$router.push({name:'processAll'})

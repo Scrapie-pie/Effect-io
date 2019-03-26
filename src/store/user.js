@@ -30,8 +30,7 @@ export default {
             delete this._vm.$http.defaults.headers['content-type'];
         },
         profileUpdate(state, {online,is_common_chat,role_id}) {
-            console.log('profileUpdate',{online,is_common_chat,role_id});
-            console.log(_.extend(state.profile, {online,is_common_chat,role_id}));
+
             state.profile=_.extend(state.profile,{online,is_common_chat,role_id});
         },
         profile(state, val) {

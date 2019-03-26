@@ -7,7 +7,7 @@
                     @result="(val)=>filterSearchResult=val",
                     @text="(val)=>search=val"
                 )
-            scroll-bar.last-messages__scrollbar(@ps-scroll-down="scrollDown" ref="scrollbar")
+            scroll-bar.last-messages__scrollbar(@ps-scroll-down="scrollLoad" ref="scrollbar")
                 ul.last-messages__list
                     li.last-messages__item(
                         v-for="(item, index) in filterSearchResult",
@@ -233,7 +233,7 @@
                 this.itemList=[];
                 this.getItemListStart=true;
             },
-            scrollDown(e){
+            scrollLoad(e){
                 if(this.scrollLoadAllow(e)) this.getItemList()
             },
 

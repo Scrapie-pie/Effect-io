@@ -1,6 +1,7 @@
 
 export default {
     methods:{
+
         scrollbarScrollerPush(scrollbar,percent=100){
             //console.log('scrollerPushDown',scrollbar);
             let scrollerEl = scrollbar.$el,
