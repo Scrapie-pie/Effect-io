@@ -106,6 +106,7 @@ export default {
         &__list {
             margin-bottom:calc-em(60);
             display:block;
+            width:100%;
         }
         &__item {
             display:block;
