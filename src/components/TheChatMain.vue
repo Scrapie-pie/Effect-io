@@ -28,7 +28,7 @@
                                 :img="item.img",
                                 :files="item.files || []"
                             )
-                            p(v-else v-text="item.body" :style="{textAlign:'center'}")
+                            p(v-else v-text="item.body  | wrapTextUrls", :style="{textAlign:'center'}")
                         li.chat-main__messages-item.chat-main__messages-item_right(v-if="showVisitorTypingLive")
                             base-people(
                                 :key="'visitorTypingLive'"
