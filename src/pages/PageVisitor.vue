@@ -19,7 +19,7 @@
 
         div(slot="control" v-if="itemListCount")
                 |На странице показано {{showItemLength}} из {{ itemListCount}}
-        scroll-bar(v-if="showItemLength" ref="scrollbar" , @ps-scroll-down="scrollLoad" slot="empty").page-visitors__scroll-bar
+        scroll-bar(v-if="showItemLength" ref="scrollbar" , @ps-scroll-down="scrollLoad" ).page-visitors__scroll-bar
             base-table
                 thead
                     tr
