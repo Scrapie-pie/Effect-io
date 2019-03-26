@@ -28,9 +28,11 @@ export default {
                     return true
                 }
             } else if(percent < 20) {
+
                 return true
             }
         },
+
     },
 }
 

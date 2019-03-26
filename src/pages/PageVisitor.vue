@@ -1,5 +1,5 @@
 <template lang="pug">
-    the-layout-table.page-visitors
+    the-layout-table.page-visitors(@scrolldown="scrollLoad")
         base-field.page-visitors__search(
             slot="control",
             type="search"
@@ -7,7 +7,7 @@
             placeholder="Поиск... (имя, тел., e-mail)"
             v-model="search",
             theme="soft"
-        )
+            )
 
         base-field(
             slot="control",
@@ -15,40 +15,40 @@
             name="channel",
             :selectOptions="{label:'name',options:channelList,value:channel}"
             v-model="channel"
-        )
+            )
 
         div(slot="control" v-if="itemListCount")
                 |На странице показано {{showItemLength}} из {{ itemListCount}}
-        scroll-bar(v-if="showItemLength" ref="scrollbar" , @ps-scroll-down="scrollLoad" ).page-visitors__scroll-bar
-            base-table
-                thead
-                    tr
-                        th Имя
-                        th Прикреплен сотрудник
-                        th Контакты
-                        th Регион
-                tbody
-                    tr.page-visitors__tr(v-for="(item, index) in itemList", :keey="item.uuid+item.site_id")
-                        td
-                            base-people(
-                                type="visitor"
-                                :name="item.name"
-                                avatar-width="md",
-                                :avatar-url="item.photo",
-                                :avatar-stub="item.photo_stub"
-                            )
-                        td
-                            base-btn.page-visitors__start-chat(
-                                v-if="!item.employee",
-                                @click="startChat(item)"
-                            ) начать диалог
-                            span(v-else v-text="item.employee")
-                        td
-                            a(:href="`tel:${item.phone}`" v-text="item.phone")
-                            br(v-if="item.phone")
-                            a(:href="`mailto:${item.mail}`" v-text="item.mail")
-                        td
-                            |{{item.country}}, {{item.region}}, {{item.city}}
+
+        base-table(v-if="showItemLength" )
+            thead
+                tr
+                    th Имя
+                    th Прикреплен сотрудник
+                    th Контакты
+                    th Регион
+            tbody
+                tr.page-visitors__tr(v-for="(item, index) in itemList", :keey="item.uuid+item.site_id")
+                    td
+                        base-people(
+                            type="visitor"
+                            :name="item.name"
+                            avatar-width="md",
+                            :avatar-url="item.photo",
+                            :avatar-stub="item.photo_stub"
+                        )
+                    td
+                        base-btn.page-visitors__start-chat(
+                            v-if="!item.employee",
+                            @click="startChat(item)"
+                        ) начать диалог
+                        span(v-else v-text="item.employee")
+                    td
+                        a(:href="`tel:${item.phone}`" v-text="item.phone")
+                        br(v-if="item.phone")
+                        a(:href="`mailto:${item.mail}`" v-text="item.mail")
+                    td
+                        |{{item.country}}, {{item.region}}, {{item.city}}
         base-no-found(v-else name="visitors")
 </template>
 
@@ -118,6 +118,7 @@
             },
         },
         created() {
+
             this.channel = this.channelList[0];
             this.$root.$on('guestNewSession',(val)=>{
                 console.log('guestNewSession',val);
@@ -136,7 +137,7 @@
         },
         methods:{
             scrollLoad(e){
-                console.log(this.scrollLoadAllow(e));
+
                 if(this.scrollLoadAllow(e)) this.getItemList()
             },
             startChat(visitor){
@@ -196,10 +197,7 @@
     .page-visitors{
 
 
-        &__scroll-bar {
-            max-width:1300px;
-            height:100%;
-        }
+
 
 
         &__search{

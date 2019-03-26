@@ -4,55 +4,32 @@
             .layout-table__control(v-for="item in $slots.control"): vnode(:node="item")
         .layout-table__head(v-for="item in $slots.head"): vnode(:node="item")
             slot(name="head").
-        scroll-bar.layout-table__content(v-if="$slots.default"): vnode(v-for="item in $slots.default", :node="item")
-            slot
+        scroll-bar.layout-table__content(
+            v-if="$slots.default" ,
+            @ps-scroll-down="val=>$emit('scrolldown',val)"
+        )
+            vnode(v-for="(item,index) in $slots.default", :node="item" :key="index").layout-table__max-width
+                slot
         slot(name="empty")
-
-
 </template>
 
-<script>
-
-
-
-
-    export default {
-
-        props: {
-
-        },
-        data() {
-            return {
-
-            }
-        },
-        created(){
-            console.log(this);
-        },
-        mounted(){
-
-
-        },
-        methods:{
-
-        }
-
-    }
-</script>
-
-
 <style lang="scss">
+
 .layout-table{
     display:flex;
     flex-direction:column;
     height:100%;
 
+    &__max-width {
+        max-width:1300px;
+    }
 
     &__controls{
         display:flex;
         align-items:center;
         margin-bottom:calc-em(50);
     }
+
     &__control{
         margin-right:calc-em(40);
     }
@@ -63,6 +40,4 @@
         padding-right:calc-em(15);
     }
 }
-
-
 </style>

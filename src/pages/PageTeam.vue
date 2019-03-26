@@ -39,8 +39,6 @@
                                 strong(v-text="item.last_message_author")
                                 div(v-text="item.last_message+' супер длинный текст сообщения'")
                             base-btn.base-table__show-hover(:router="{name:'teamChat',params:{id:item.id}}") Начать диалог
-
-
                     td
                         a(
                             v-if="!item.phones.type",
@@ -66,7 +64,7 @@
                     td(v-if="viewAdmin")
                         context-menu
                             base-btn(:icon="{name:'edit',box:true,textHidden:'Открыть меню'}" color="info-lighten")
-                            router-link(
+                            router-link.page-operators__link(
                                 slot="item",
                                 :to="{name:'settingsProfile',query: { user_id: item.id }}"
                             ) Редактировать
@@ -79,11 +77,6 @@
                 size="lg",
                 :router="{name:'settingsProfile',query:{add:'operator'}}"
             ) Добавить сотрудника
-
-
-
-
-
 </template>
 
 <script>
@@ -135,6 +128,10 @@
                 });
             },
         },
+        created(){
+
+            this.$store.state.operators.all.length=1;
+        },
         methods:{
             anotherProfile(user_id){
                 return  user_id !== this.$store.getters['user/profile'].user_id
@@ -184,6 +181,7 @@
             height: auto;
             flex: 1;
             margin-top: 20vh;
+            max-width:100%;
         }
     }
 

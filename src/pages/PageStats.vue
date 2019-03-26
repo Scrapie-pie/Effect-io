@@ -70,25 +70,7 @@ export default {
             return this.$store.state.user.branchListAll
         }
     },
- /*   mounted(){
-        console.log('mounted');
-        setTimeout(()=>{
-            this.$el.classList.add('active')
-        },500)
-    },
-    beforeDestroy(){
-        console.log('destroy');
-    },
-    beforeUpdate(){
-        console.log('beforeUpdate');
-        this.$el.classList.add('active')
-    },*/
-    updated(){
-        //this.$el.classList.add('active')
-    },
-    methods:{
 
-    }
 }
 </script>
 
