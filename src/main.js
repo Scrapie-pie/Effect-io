@@ -42,8 +42,7 @@ import BaseFilterSearch from '@/components/FilterSearch'
 Vue.component("vnode", {
     functional: true,
     render(h, context){
-        console.log(context.props.node.data);
-        console.log(context);
+
         if(context.data && context.data.staticClass) {
             if(context.props.node.data) {
                 if(context.props.node.data.staticClass) context.props.node.data.staticClass += ' '+context.data.staticClass

@@ -1,5 +1,6 @@
 <template lang="pug">
     the-layout-table.page-stats-inner
+
         base-filter-search(
             v-if="filterSearchShow"
             slot="control",
@@ -36,7 +37,7 @@
             li Сотрудников в команде: {{$store.state.operators.all.length}}
 
         section.page-stats-inner__main
-
+            app-calendar
             template(v-if="routerName==='statsService'")
                 .page-stats-inner__table
                     stats-operators(
@@ -120,6 +121,7 @@ import StatsOperators from '@/components/StatsOperators'
 import StatsBranches from '@/components/StatsBranches'
 import StatsPages from '@/components/StatsPages'
 import StatsResult from '@/components/StatsResult'
+import AppCalendar from '@/components/AppCalendar'
 
 export default {
     components:{
@@ -127,7 +129,8 @@ export default {
         StatsOperators,
         StatsBranches,
         StatsResult,
-        StatsPages
+        StatsPages,
+        AppCalendar
     },
 
     data() {
