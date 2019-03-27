@@ -130,7 +130,7 @@
         },
         created(){
 
-            this.$store.state.operators.all.length=1;
+
         },
         methods:{
             anotherProfile(user_id){
