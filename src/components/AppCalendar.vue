@@ -41,7 +41,6 @@ export default {
     computed:{
         getOptions(){
             return {
-                value:this.value,
                 isInline:true,
                 showDayPopover:false,
                 isDoublePaned:true,
@@ -65,13 +64,13 @@ export default {
         },
 
         getEvents(){
-            return {
+          /*  return {
 
                 dayclick:(day) =>{
                     console.log(day);
                     this.selectedDay=day;
                 }
-            }
+            }*/
         },
 
     },

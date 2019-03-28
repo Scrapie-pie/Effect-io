@@ -1,31 +1,26 @@
 <template lang="pug">
-    form.filter-drop-menu(v-click-outside="val=>show=false")
+    form.filter-drop-menu(v-click-outside="val=>show=false" @submit.prevent="")
         fieldset.filter-drop-menu__fieldset
             legend.filter-drop-menu__title(@click="show=!show")
                 |{{title}}
                 span.filter-drop-menu__arrow(:class="{'filter-drop-menu__arrow_open':show}")
             ul.filter-drop-menu__list(:class="{'filter-drop-menu__list_open':show}"  ref="list")
-                li.filter-drop-menu__item
-                    label.filter-drop-menu__text
-                        input.filter-drop-menu__input(type="radio" name="period" value="1" v-model.number="period")
-                        | За сутки
-                li.filter-drop-menu__item
-                    label.filter-drop-menu__text
-                        input.filter-drop-menu__input(type="radio" name="period" value="7" v-model.number="period")
-                        | За 7 дней
-                li.filter-drop-menu__item
-                    label.filter-drop-menu__text
-                        input.filter-drop-menu__input(type="radio" name="period" value="30" v-model.number="period")
-                        | За 30 дней
-                li.filter-drop-menu__item
-                    label.filter-drop-menu__text
-                        input.filter-drop-menu__input(type="radio" name="period" value="-1" v-model.number="period")
-                        | Выбрать интервал
+                li.filter-drop-menu__item(v-for="(item, index) in itemList" :key="item.id")
+                    label.filter-drop-menu__label(@click="hideParent(item)")
+                        input.filter-drop-menu__input(type="radio", :name="name", :value="item.value", v-model.number="model")
+                        span.filter-drop-menu__text {{item.name}}
+
+
 </template>
 
 <script>
+
     import ClickOutside from 'vue-click-outside'
 export default {
+    components:{
+
+
+    },
     directives: {
         ClickOutside
     },
@@ -35,13 +30,31 @@ export default {
 
     data() {
         return {
-            show: true,
-            period:null,
+            show: false,
+            model:null,
+
+            periodList:[
+                {value:1,name:"За сутки"},
+                {value:7,name:"За 7 дней"},
+                {value:30,name:"За 30 дней"},
+                {value:-1,name:"Выбрать интервал"},
+            ]
         }
     },
     computed:{
         title(){
-            if (this.name==='period') return 'За сутки'
+            if (this.name==='period') return 'Период'
+        },
+        itemList(){
+            if (this.name==='period') return this.periodList
+        }
+    },
+    watch:{
+        model(val){
+
+            if(this.name==='period') {
+                this.$emit('get',val)
+            }
         }
     },
     mounted() {
@@ -49,12 +62,19 @@ export default {
         this.popupItem = this.$el
         //document.addEventListener('click', this.close);
     },
+    methods:{
+        hideParent(item){
+            return
+            if(this.name==='period') {this.show=false}
+        }
+    }
 }
 </script>
 
 <style lang="scss">
     .filter-drop-menu{
-        $color_hover:glob-color('info-light');
+        $el:'.filter-drop-menu';
+        $color_hover:glob-color('info-lighten');
         $transition:$glob-trans;
 
         position:relative;
@@ -97,7 +117,9 @@ export default {
         }
 
         &__input{
-            @extend %visuallyhidden
+            @extend %visuallyhidden;
+
+
         }
         &__text{
             position:relative;
@@ -111,7 +133,9 @@ export default {
             border:0;
             transition:$transition;
 
-            &:hover{background-color:$color_hover}
+
+
+            #{$el}__input:checked ~ &,&:hover{background-color:$color_hover}
 
 
 

@@ -37,8 +37,8 @@
             li Сотрудников в команде: {{$store.state.operators.all.length}}
 
         section.page-stats-inner__main
-            filter-drop-menu(name="period")
-            box-controls(@boxControlClose="showCalendar=false" v-if="showCalendar")
+            filter-drop-menu(name="period", @get="filterPeriod" )
+            box-controls(@boxControlClose="showCalendar=false" v-if="showCalendar"  type="popup")
                 app-calendar(@get="val=>dates=val")
             template(v-if="routerName==='statsService'")
                 .page-stats-inner__table
@@ -212,6 +212,12 @@ export default {
             immediate: true
         }*/
     },
+    methods:{
+        filterPeriod(val){
+            console.log(val);
+            if (val===-1) this.showCalendar=true
+        }
+    }
 }
 </script>
 
