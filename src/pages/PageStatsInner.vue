@@ -12,9 +12,9 @@
         base-field(
             slot="control"
             type="select"
-            name="period",
-            :selectOptions="{label:'name',options:periodList,value:period}"
-            v-model="period"
+            name="lastDay",
+            :selectOptions="{label:'name',options:lastDays,value:lastDay}"
+            v-model="lastDay"
         )
         base-btn(
             v-if="!filterSearchShow"
@@ -37,14 +37,16 @@
             li Сотрудников в команде: {{$store.state.operators.all.length}}
 
         section.page-stats-inner__main
-            app-calendar
+            filter-drop-menu(name="period")
+            box-controls(@boxControlClose="showCalendar=false" v-if="showCalendar")
+                app-calendar(@get="val=>dates=val")
             template(v-if="routerName==='statsService'")
                 .page-stats-inner__table
                     stats-operators(
                         :btn-detail-hide="true"
                         order="excellent_ratings"
                         type="employees",
-                        :period="period.val",
+                        :last_days="lastDay.val",
                         caption="ТОП сотрудников (по оценкам)"
                     )
                 .page-stats-inner__table
@@ -52,8 +54,8 @@
                         :btn-detail-hide="true"
                         order="first_answer_average_speed",
                         :limit="1",
-                        type="employees"
-                        :period="period.val"
+                        type="employees",
+                        :last_days="lastDay.val"
                         caption="Самый быстрый сотрудник"
                         )
                 .page-stats-inner__table
@@ -61,7 +63,7 @@
                         :btn-detail-hide="true"
                         order="excellent_ratings"
                         type="branches",
-                        :period="period.val"
+                        :last_days="lastDay.val"
                         caption="ТОП отделов (по оценкам)"
                     )
                 .page-stats-inner__table
@@ -69,15 +71,15 @@
                         :btn-detail-hide="true"
                         order="dialogues_percents"
                         type="branches",
-                        :period="period.val"
+                        :last_days="lastDay.val"
                         caption="ТОП отделов (по общей нагрузке)"
                     )
-                stats-result(type="company" :period="period.val")
+                stats-result(type="company", :last_days="lastDay.val")
             stats-operators(
                 v-if="routerName==='statsEmployees'"
 
                 type="employees",
-                :period="period.val",
+                :last_days="lastDay.val",
                 @itemList="(val)=>itemList=val",
                 :filterListOn="true",
                 :filterList="filterSearchResult",
@@ -87,12 +89,12 @@
                 v-if="routerName==='statsEmployeesDetail'"
                 type="employee",
                 :user_id="user_id",
-                :period="period.val",
+                :last_days="lastDay.val",
             )
             stats-branches(
                 v-if="routerName==='statsBranches'",
                 type="branches",
-                :period="period.val",
+                :last_days="lastDay.val",
                 @itemList="(val)=>itemList=val",
                 :filterListOn="true",
                 :filterList="filterSearchResult"
@@ -101,12 +103,12 @@
                 v-if="routerName==='statsBranchesDetail'"
                 type="branch",
                 :branch_id="branch_id",
-                :period="period.val",
+                :last_days="lastDay.val",
             )
             stats-pages(
                 v-if="routerName==='statsPages'"
                 type="pages",
-                :period="period.val",
+                :last_days="lastDay.val",
                 @itemList="(val)=>itemList=val",
                 :filterListOn="true",
                 :filterList="filterSearchResult"
@@ -123,6 +125,8 @@ import StatsPages from '@/components/StatsPages'
 import StatsResult from '@/components/StatsResult'
 import AppCalendar from '@/components/AppCalendar'
 
+import FilterDropMenu from '@/components/FilterDropMenu'
+
 export default {
     components:{
         TheLayoutTable,
@@ -130,21 +134,27 @@ export default {
         StatsBranches,
         StatsResult,
         StatsPages,
-        AppCalendar
+        AppCalendar,
+        FilterDropMenu
     },
 
     data() {
         return {
+            showCalendar:false,
             filterSearchResult:[],
             itemList:[],
-            periodList:[
-                {val:'day',name:'За день'},
-                {val:'month',name:'За месяц'},
-                {val:'quarter',name:'За квартал'},
-                {val:'year',name:'За год'},
+            lastDays:[
+                {val:1,name:'За сутки'},
+                {val:7,name:'За 7 дней'},
+                {val:30,name:'За 30 дней'},
+                {val:null,name:'Выбрать интервал'},
             ],
-            period:{
-                val:'day',name:'За день',
+            dates:{
+                date_from:null,
+                date_to:null,
+            },
+            lastDay:{
+                val:1,name:'За сутки',
             },
             branch:{
                 title:'Все отделы',
@@ -165,7 +175,7 @@ export default {
             if(this.routerName==='statsEmployeesDetail') return 'employee';
         },
         downloadLink(){
-            return `${config.api_server}app.php?statistic-get-by-params&user_id=${this.user_id}&branch_id=${this.branch_id}&period=${this.period.val}&type=${this.type}&csv=1&jwt=${this.$http.defaults.headers.common.jwt}`
+            return `${config.api_server}app.php?statistic-get-by-params&user_id=${this.user_id}&branch_id=${this.branch_id}&last_days=${this.lastDay.val}&type=${this.type}&csv=1&jwt=${this.$http.defaults.headers.common.jwt}`
         },
         placeholder(){
             if(this.routerName==='statsBranches') return 'Поиск по названию'
@@ -189,7 +199,10 @@ export default {
         }
     },
     watch:{
-
+        lastDay(val){
+            if(val.val===null)this.showCalendar=true
+            else this.showCalendar=false;
+        }
     /*    branchListAll:{
             handler(val,oldVal){
                 if((val && val.length) && (oldVal && !oldVal.length)) {

@@ -26,7 +26,7 @@ const getDefaultState = () => {
         roomActiveUsersInvited:[],
         roomActiveUsersRecipient:[],
         roomActiveIsAdmin:false,
-
+        connected: false,
     }
 }
 // initial state
@@ -42,6 +42,15 @@ export default new Vuex.Store({
     },
     state,
     mutations: {
+        SOCKET_CONNECT(state) {
+
+            state.connected = true;
+            console.log('SOCKET_CONNECT');
+        },
+        SOCKET_DISCONNECT(state) {
+            state.connected = false;
+            console.log('SOCKET_DISCONNECT');
+        },
         resetState (state) {
             Object.assign(state, getDefaultState())
         },

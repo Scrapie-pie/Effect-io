@@ -44,8 +44,16 @@ export default {
             type:String,
             default:null,
         },
-        period:{
+        date_from:{
             type:String,
+            default:null,
+        },
+        date_to:{
+            type:String,
+            default:null,
+        },
+        last_days:{
+            type:Number,
             default:null,
         },
         branch_id:{
@@ -95,7 +103,7 @@ export default {
                 order:this.order,
                 user_id:this.user_id,
                 branch_id:this.branch_id,
-                period:this.period,
+                last_days:this.last_days,
                 type:this.type,
                 csv:this.csv,
             }
