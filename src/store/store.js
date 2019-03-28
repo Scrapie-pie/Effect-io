@@ -42,6 +42,30 @@ export default new Vuex.Store({
     },
     state,
     mutations: {
+        SOCKET_CONNECT(state,val) {
+            console.log('SOCKET_CONNECT',val);
+        },
+        SOCKET_DISCONNECT(state,val) {
+            console.log('SOCKET_DISCONNECT',val);
+        },
+        SOCKET_ERROR (state,val)  {
+            console.log('SOCKET_ERROR',val);
+        },
+        SOCKET_DISCONNECT(state,val) {
+            console.log('SOCKET_DISCONNECT',val);
+        },
+        SOCKET_RECONNECT(state,val) {
+            console.log('SOCKET_RECONNECT',val);
+        },
+        SOCKET_RECONNECT_ERROR(state,val) {
+            console.log('SOCKET_RECONNECT',val);
+        },
+        SOCKET_RECONNECT_ATTEMPT(state,val) {
+            console.log('SOCKET_RECONNECT_ATTEMPT',val);
+        },
+        SOCKET_CONNECT_ERROR (state,val)  {
+            console.log('SOCKET_CONNECT_ERROR',val);
+        },
         resetState (state) {
             Object.assign(state, getDefaultState())
         },

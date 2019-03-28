@@ -49,10 +49,11 @@ export default {
 
         },
         webSocketInit() {
-            this.$socket.disconnect();
+            //this.$socket.disconnect();
             this.$socket.query = `uuid=${this.userId}`;
             this.$socket.io.opts.query = `uuid=${this.userId}`;
-            this.$socket.open();
+            this.$socket.open()
+
             return
 
             try {
@@ -96,6 +97,12 @@ export default {
         },
     },
     sockets: {
+        connect() {
+            console.log('socket connected')
+        },
+        disconnect() {
+            console.log('socket disconnect')
+        },
         "hot-guest"(val){
             //console.log('hot-guest',val);
             this.$store.commit('visitors/messageHot',{val,set:true})

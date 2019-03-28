@@ -21,9 +21,17 @@ Object.defineProperty(Vue.prototype, '$_', { value: _ })
 
 import VueSocketio from 'vue-socket.io-extended';
 import io from 'socket.io-client';
+
 import config from "@/config/index";
-Vue.use(VueSocketio, io(config.api_websocket),{
-    store,actionPrefix: 'socket',
+Vue.use(VueSocketio, io(config.api_websocket,{
+    autoConnect: false,
+    reconnection: true, // (Boolean) whether to reconnect automatically (false)
+    reconnectionAttempts: 5, // (Number) number of reconnection attempts before giving up (Infinity),
+    reconnectionDelay: 3000,
+}), {
+    store,
+    actionPrefix: 'socket',
+
 
 });
 
@@ -42,8 +50,7 @@ import BaseFilterSearch from '@/components/FilterSearch'
 Vue.component("vnode", {
     functional: true,
     render(h, context){
-        console.log(context.props.node.data);
-        console.log(context);
+
         if(context.data && context.data.staticClass) {
             if(context.props.node.data) {
                 if(context.props.node.data.staticClass) context.props.node.data.staticClass += ' '+context.data.staticClass
