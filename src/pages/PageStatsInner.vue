@@ -38,7 +38,7 @@
 
         section.page-stats-inner__main
             filter-drop-menu(name="period", @get="filterPeriod" )
-            filter-drop-menu(name="calendar", @get="filterPeriod" )
+
             box-controls(@boxControlClose="showCalendar=false" v-if="showCalendar"  type="popup")
                 app-calendar(@get="val=>dates=val")
             template(v-if="routerName==='statsService'")
