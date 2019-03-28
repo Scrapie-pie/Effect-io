@@ -2,6 +2,9 @@ module.exports = {
     /* publicPath: process.env.NODE_ENV === 'production'
          ? '/dist/'
          : '/',*/
+    devServer: {
+        port: 4000
+    },
     css: {
         sourceMap: true,
         loaderOptions: {
@@ -10,6 +13,7 @@ module.exports = {
             }
         }
     },
+
     chainWebpack: config => {
         config.module
             .rule('svg')
