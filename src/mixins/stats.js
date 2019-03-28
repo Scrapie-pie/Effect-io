@@ -52,6 +52,14 @@ export default {
             type:String,
             default:null,
         },
+        time_from:{
+            type:String,
+            default:null,
+        },
+        time_to:{
+            type:String,
+            default:null,
+        },
         last_days:{
             type:Number,
             default:null,
@@ -77,6 +85,7 @@ export default {
         }
     },
     watch:{
+
         bodyListFormat(val){
             if(val){
                 this.$emit('itemList',val)
@@ -87,6 +96,7 @@ export default {
         }
     },
     computed:{
+
         itemList(){
             if(this.filterListOn) return this.filterList
             else return this.bodyListFormat
@@ -99,11 +109,17 @@ export default {
         },
         params(){
             return {
+                last_days:this.last_days,
+                date_from:this.date_from,
+                date_to:this.date_to,
+                time_from:this.time_from,
+                time_to:this.time_to,
+
                 limit:this.limit,
                 order:this.order,
                 user_id:this.user_id,
                 branch_id:this.branch_id,
-                last_days:this.last_days,
+
                 type:this.type,
                 csv:this.csv,
             }
@@ -115,9 +131,14 @@ export default {
 
     methods:{
         get(){
-            this.$http.get('statistic-get-by-params',this.requestData).then((response)=>{
-                this.bodyList = response.data.data
-            })
+
+            if(this.last_days || (this.date_from && this.date_to)) {
+                console.log('get');
+                this.$http.get('statistic-get-by-params',this.requestData).then((response)=>{
+                    this.bodyList = response.data.data
+                })
+            }
+
         }
     },
 }

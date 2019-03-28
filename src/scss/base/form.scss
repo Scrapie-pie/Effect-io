@@ -1,6 +1,37 @@
 input[type="search"]::-webkit-search-cancel-button{
   -webkit-appearance:none;
 }
+
+input[type=time] {
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  &::-webkit-clear-button {
+    display: none;
+  }
+  -moz-appearance:textfield;
+  -moz-creation: searchfield;
+  -webkit-appearance: none;
+
+  &::-webkit-search-cancel-button {
+    -webkit-appearance: none;
+    display: none
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
 ::-ms-clear,
 ::-ms-reveal{
   display:none;

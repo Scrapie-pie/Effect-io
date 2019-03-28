@@ -4,21 +4,27 @@
             legend.filter-drop-menu__title(@click="show=!show")
                 |{{title}}
                 span.filter-drop-menu__arrow(:class="{'filter-drop-menu__arrow_open':show}")
-            ul.filter-drop-menu__list(:class="{'filter-drop-menu__list_open':show}"  ref="list")
-                li.filter-drop-menu__item(v-for="(item, index) in itemList" :key="item.id")
-                    label.filter-drop-menu__label(@click="hideParent(item)")
-                        input.filter-drop-menu__input(type="radio", :name="name", :value="item.value", v-model.number="model")
-                        span.filter-drop-menu__text {{item.name}}
+
+            .filter-drop-menu__box(:class="{'filter-drop-menu__box_open':show}")
+                template( v-if="name==='calendar'")
+                    app-calendar(@get="val=>model=val")
+
+                template(v-else)
+                    ul.filter-drop-menu__list
+                        li.filter-drop-menu__item(v-for="(item, index) in itemList" :key="index")
+                            label.filter-drop-menu__label(@click="hideParent(item)")
+                                input.filter-drop-menu__input(type="radio", :name="name", :value="item", v-model.number="model")
+                                span.filter-drop-menu__text {{item.name}}
 
 
 </template>
 
 <script>
-
+    import AppCalendar from '@/components/AppCalendar'
     import ClickOutside from 'vue-click-outside'
 export default {
     components:{
-
+        AppCalendar,
 
     },
     directives: {
@@ -43,18 +49,45 @@ export default {
     },
     computed:{
         title(){
-            if (this.name==='period') return 'Период'
+            if (this.name==='period') {
+
+                if(this.model) return this.model.name
+
+            }
+            if (this.name==='calendar') {
+                let strDate =''
+                if(this.model) {
+                    strDate = `${this.model.date_to} - ${this.model.date_from}`
+                } else strDate = 'Интервал не выбран'
+
+                return strDate
+            }
         },
         itemList(){
             if (this.name==='period') return this.periodList
         }
     },
     watch:{
-        model(val){
+        model:{
+            handler(val){
+                if(this.name==='period') {
+                    if (!val) {
+                       return this.model =  this.itemList[0]
+                    }
+                    this.$emit('get',val.value)
+                }
 
-            if(this.name==='period') {
-                this.$emit('get',val)
-            }
+
+                if(this.name==='calendar') {
+                    console.log(val);
+                    if(val && val.date_from && val.date_to)  this.$emit('get',val)
+
+                    this.show=false
+                }
+            },
+            immediate: true
+
+
         }
     },
     mounted() {
@@ -64,7 +97,6 @@ export default {
     },
     methods:{
         hideParent(item){
-            return
             if(this.name==='period') {this.show=false}
         }
     }
@@ -86,6 +118,7 @@ export default {
             width:auto;
             padding-right:40px;
             cursor:pointer;
+            margin-bottom:0;
         }
         &__arrow {
             @extend %g-icon-down;
@@ -97,7 +130,9 @@ export default {
                 @extend %g-icon-down_open
             }
         }
-        &__list{
+        &__box{
+            margin-top:calc-em(10);
+            transform:translateY(25%);
             @include box-decor();
             position:absolute;
             left:0;
@@ -112,7 +147,7 @@ export default {
             &_open{
                 opacity:1;
                 visibility:visible;
-
+                transform:translateY(0);
             }
         }
 

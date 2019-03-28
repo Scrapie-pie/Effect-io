@@ -26,12 +26,12 @@ export default {
     },
     computed:{
         headList(){
-            let list = [
+
+            return [
                 'URL',
                 'Получено диалогов',
                 'Процент от общего количества обращений (%)'
-            ];
-            return list
+            ]
         },
         bodyListFormat(){
             return this.bodyList.map(item=>{

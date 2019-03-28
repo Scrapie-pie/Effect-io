@@ -82,6 +82,7 @@ export default {
         },
         itemListWidthOperators(){
             return this.bodyList.map(item=>{
+
                 item.operator = this.$store.getters['operators/all'].find(itemSub=>itemSub.id===item.user_id)
                 if(item.operator) item.name=item.operator.fullName
                 return item
