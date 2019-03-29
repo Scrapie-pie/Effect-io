@@ -8,6 +8,31 @@
             .filter-drop-menu__box(:class="{'filter-drop-menu__box_open':show}")
                 template( v-if="name==='calendar'")
                     app-calendar(@get="val=>model=val")
+                template(v-if="name==='operators'")
+                    .filter-drop-menu__controls
+
+                        ul.filter-drop-menu__controls-list
+                            li.filter-drop-menu__controls-item
+                                //input(
+                                    :name="name",
+                                    :value="-1",
+                                    type="checkbox",
+                                    v-model.number="modelArray",
+                                    )
+                                base-radio-check(name="name" :value="-1" v-model="modelArray") Все сотрудники
+                            li.filter-drop-menu__controls-item(v-for="(item, index) in itemList" :key="item.id")
+                                base-radio-check(
+                                    :name="name",
+                                    :value="item.id"
+                                    v-model="modelArray",
+                                    :text="item.fullName +' ('+ $options.filters.branchesBr(item.branches_names)+')'"
+                                    )
+                                //input(
+                                    :name="name",
+                                    :value="item.id",
+                                    type="checkbox",
+                                    v-model.number="modelArray",
+                                    )
 
                 template(v-else)
                     ul.filter-drop-menu__list
@@ -22,6 +47,7 @@
 <script>
     import AppCalendar from '@/components/AppCalendar'
     import ClickOutside from 'vue-click-outside'
+    import branchesBr from '@/modules/branchesBr'
 export default {
     components:{
         AppCalendar,
@@ -29,6 +55,9 @@ export default {
     },
     directives: {
         ClickOutside
+    },
+    filters: {
+        branchesBr
     },
     props:{
         name:String,
@@ -38,7 +67,7 @@ export default {
         return {
             show: false,
             model:null,
-
+            modelArray:[],
             periodList:[
                 {value:1,name:"За сутки"},
                 {value:7,name:"За 7 дней"},
@@ -49,6 +78,11 @@ export default {
     },
     computed:{
         title(){
+            if (this.name==='operators') {
+
+                if(this.model) return 'Сотрудники'
+                else return 'Все сотрудники'
+            }
             if (this.name==='period') {
 
                 if(this.model) return this.model.name
@@ -65,7 +99,11 @@ export default {
         },
         itemList(){
             if (this.name==='period') return this.periodList
-        }
+            if (this.name==='operators') return this.operatorList
+        },
+        operatorList(){
+            return this.$store.getters['operators/all']
+        },
     },
     watch:{
         model:{
@@ -131,6 +169,7 @@ export default {
             }
         }
         &__box{
+
             margin-top:calc-em(10);
             transform:translateY(25%);
             @include box-decor();
@@ -138,7 +177,7 @@ export default {
             left:0;
             top:100%;
             z-index:1;
-            padding:calc-em(13) 0;
+            padding:calc-em(15) calc-em(15);
             opacity:0;
             visibility:hidden;
 
@@ -167,14 +206,19 @@ export default {
             background:none;
             border:0;
             transition:$transition;
-
-
-
             #{$el}__input:checked ~ &,&:hover{background-color:$color_hover}
+        }
 
-
-
-
+        &__controls{
+            &-item {
+                &:not(:first-child){
+                    margin-left:calc-em(35);
+                }
+                &+& {
+                    margin-top:calc-em(5);
+                }
+                white-space:nowrap;
+            }
         }
     }
 </style>

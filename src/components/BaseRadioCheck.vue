@@ -8,6 +8,8 @@
         span.base-radio-check__text-wrap
             base-icon(name="check").base-radio-check__check
             span.base-radio-check__text
+
+                span(v-html="text")
                 slot
 
 </template>
@@ -24,6 +26,10 @@
         props: {
        /*     textTrue:null,
             textFalse:null,*/
+            text: {
+                required: false,
+                default: ''
+            },
             value: {
                 required: false,
                 default: 1
@@ -63,7 +69,7 @@
             getInputOptions() {
 
                 let checked = this.checked
-                if(this.type==="radio") checked=  this.checked === this.value
+                if(this.type==="radio") checked = this.checked === this.value;
                 let obj = {
                   /*  textTrue:this.textTrue,
                     textFalse:this.textFalse,*/

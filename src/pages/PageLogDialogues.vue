@@ -1,59 +1,41 @@
 <template lang="pug">
-    the-layout-table.page-visitors(@scrolldown="scrollLoad")
-        base-filter-search.page-visitors__search(
-            slot="control",
-            :item-list="itemList",
-            @result="(val)=>filterSearchResult=val",
-            @text="(val)=>search=val"
-            placeholder="Поиск... (имя, тел., e-mail)"
-            theme="soft"
+    the-layout-table.page-log-dialogues(@scrolldown="scrollLoad")
+        filter-drop-menu(name="period", @get="filterPeriod" slot="control")
+        filter-drop-menu(
+            v-if="showCalendar"
+            name="calendar",
+            @get="filterCalendar"
+            slot="control"
         )
-        base-field(
-            slot="control",
-            type="select"
-            name="channel",
-            :selectOptions="{label:'name',options:channelList,value:channel}"
-            v-model="channel"
-            )
-
+        filter-drop-menu(
+            name="operators",
+            @get="filterOperators"
+            slot="control"
+        )
         div(slot="control" v-if="itemListCount")
-                |На странице показано {{showItemLength}} из {{ itemListCount}}
+            |На странице показано {{showItemLength}} из {{ itemListCount}}
 
         base-table(v-if="showItemLength" )
-            thead
-                tr
-                    th Имя
-                    th Прикреплен сотрудник
-                    th Контакты
-                    th Регион
+            thead(v-if="headList.length")
+                tr: th(v-for="(item, index) in headList" :key="index" v-html="item.text")
             tbody
-                tr.page-visitors__tr(v-for="(item, index) in filterSearchResult", :key="item.uuid+item.site_id")
+                tr.page-visitors__tr(v-for="(item, index) in itemList", :keey="item.uuid+item.site_id")
                     td
                         base-people(
-                            type="visitor"
+                            type="visitor",
                             :name="item.name"
                             avatar-width="md",
                             :avatar-url="item.photo",
                             :avatar-stub="item.photo_stub"
                         )
                     td
-                        base-btn.page-visitors__start-chat(
-                            v-if="!item.employee",
-                            @click="startChat(item)"
-                        ) начать диалог
-                        span(v-else v-text="item.employee")
-                    td
-                        a(:href="`tel:${item.phone}`" v-text="item.phone")
-                        br(v-if="item.phone")
-                        a(:href="`mailto:${item.mail}`" v-text="item.mail")
-                    td
-                        |{{item.country}}, {{item.region}}, {{item.city}}
         base-no-found(v-else name="visitors")
 </template>
 
 <script>
-    import ContextMenu from '@/components/ContextMenu'
+
     import TheLayoutTable from '@/components/TheLayoutTable'
+    import FilterDropMenu from '@/components/FilterDropMenu'
 
 
     import lodash_debounce from 'lodash/debounce'
@@ -64,11 +46,29 @@
         mixins:[scrollbar,paginator],
         components: {
 
-            ContextMenu,
+            FilterDropMenu,
             TheLayoutTable
         },
         data() {
             return {
+                showCalendar:false,
+
+
+                headList:[
+                    {text:'Имя',field:'name'},
+                    {text:'Дата',field:'date'},
+                    {text:'Канал',field:'channel'},
+                    {text:'Ожидание в очереди',field:'channel'},
+                    {text:'Оценка',field:'bal'},
+
+                ],
+
+                date_from:null,
+                date_to:null,
+                time_from:null,
+                time_to:null,
+                lastDay:null,
+
                 limit:5,
                 containerFullFillItemListClassName:{
                     scrollBar:'layout-table__content',
@@ -130,11 +130,38 @@
                     })
             },
             debounceSearch:lodash_debounce(function()
-                {
-                    this.resetSearch();
-                    this.getItemList();
-                }, 500),
+            {
+                this.resetSearch();
+                this.getItemList();
+            }, 500),
 
+            filterPeriod(val){
+
+                if (val===-1) {
+
+                    this.showCalendar=true;
+                    this.lastDay=null;
+                }
+                else {
+                    this.lastDay=val;
+                    this.showCalendar=false;
+                    this.date_from = null;
+                    this.date_to = null;
+                    this.time_from = null;
+                    this.time_to = null;
+                }
+            },
+            filterCalendar(val){
+                console.log(val);
+
+                this.date_from = val.date_from;
+                this.date_to = val.date_to;
+                this.time_from = val.time_from;
+                this.time_to = val.time_to;
+            },
+            filterOperators(val){
+                console.log(val);
+            }
 
 
 
@@ -144,30 +171,12 @@
 </script>
 
 <style lang="scss">
-    .page-visitors{
+    .page-log-dialogues{
 
-        &__search{
-            width:calc-em(250);
-        }
 
-        &__tr:not(:hover) &__start-chat {
-            border:0;
-            padding:0;
-            color:inherit;
-            background-color:transparent;
-            transition-property:color;
 
-            &::before {
-                content:'Вы можете ';
 
-            }
-        }
-        &__start-chat{
-            text-decoration:none;
-        }
-        &__start-chat:first-letter {
-            text-transform:uppercase;
-        }
+
     }
 
 

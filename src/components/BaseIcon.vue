@@ -68,6 +68,7 @@
     import team from '@/assets/img/icons/chat/menu/team.svg';
     import visitors from '@/assets/img/icons/chat/menu/visitors.svg';
     import statistics from '@/assets/img/icons/chat/menu/statistics.svg';
+    import log from '@/assets/img/icons/chat/menu/log.svg';
 
 
 

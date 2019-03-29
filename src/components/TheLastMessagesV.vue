@@ -36,15 +36,15 @@
 <script>
     import lodash_sortBy from 'lodash/sortBy'
     import lodash_debounce from 'lodash/debounce'
-    import lodash_once from 'lodash/once'
+
 
     import NavAside from '@/components/NavAside'
 
-    import { viewModeChat,httpParams,scrollbar } from '@/mixins/mixins'
+    import { viewModeChat,httpParams,scrollbar,paginator } from '@/mixins/mixins'
     import wrapTextUrls from '@/modules/wrapTextUrls'
 
     export default {
-        mixins:[viewModeChat,httpParams ,scrollbar],
+        mixins:[viewModeChat,httpParams ,scrollbar,paginator],
         components:{NavAside},
         filters: {
             name(item,visitorInfo){
@@ -56,20 +56,23 @@
         },
         data() {
             return {
-                classNameScrollBar:'last-messages',
+                containerFullFillItemListClassName:{
+                    scrollBar:'last-messages__scrollbar',
+                    item:'last-messages__item'
+                },
                 filterSearchResult:[],
-                getItemListStart:true,
 
-                search:'',
-                limit:20,
-                pageN:1,
                 pageNBeforeSearch:null,
                 type:'',
-                itemListCount: 0,
-                itemList:[],
+
             }
         },
         computed:{
+            paramsComp(){
+                return {
+                    type:this.type
+                }
+            },
             visitorInfo(){
                 return this.$store.state.visitors.itemOpen
             },
@@ -120,25 +123,8 @@
                 return itemList
 
             },
-            showItemLength(){
-                return this.itemList.length
-            },
-            pageNLast(){
-                return this.itemListCount / this.limit
-            },
-            getOffset(){
-                return this.limit * (this.pageN - 1)
-            },
-            requestData(){
-                return {
-                    params:{
-                        search:this.search,
-                        offset:this.getOffset,
-                        limit:this.limit,
-                        type:this.type
-                    }
-                }
-            }
+
+
         },
         watch:{
             pageN(val){
@@ -186,7 +172,7 @@
             setLastPageN(){
                 if (this.viewModeChat==="process" && this.$store.state.visitors.processLastPageN) this.pageN = this.$store.state.visitors.processLastPageN;
                 if (this.viewModeChat==="visitors" && this.$store.state.visitors.selfLastPageN) this.pageN = this.$store.state.visitors.selfLastPageN;
-                console.log('pageN',this.pageN);
+
             },
             itemFormat(item){
                 if(item.very_hot) { ///такое только в не обработанном
@@ -220,44 +206,14 @@
                     return
                 }
 
-
-
-
                 this.getItemList();
                 this.scrollbarScrollerPush(this.$refs.scrollbar,0)
                 }, 500
             ),
-            resetSearch(){
-                this.pageN=1;
-                this.itemListCount= 0;
-                this.itemList=[];
-                this.getItemListStart=true;
-            },
-            scrollLoad(e){
-                if(this.scrollLoadAllow(e)) this.getItemList()
-            },
-
-            getItemList(){
-                if(!this.getItemListStart) return;
-                this.getItemListStart=false;
-
-                if((this.showItemLength < this.itemListCount) || this.itemListCount===0) {
-                    console.log('getItemList');
-                    this.$http.get('guest-list',this.requestData).then(({data})=>{
-                        this.getItemListStart=true;
-                        if (data.data.count) {
-
-                            this.itemList.push(...data.data.list);
-                            this.itemListCount = data.data.count;
-                            this.getItemListUnique();
-                            this.pageN += 1;
 
 
-                            this.containerFullFillItemList()
-                        }
-                    })
-                }
-            },
+
+
             getItemListUnique(){
                 let itemListStore = this.itemListStore;
                 let itemListNew= []
@@ -265,7 +221,7 @@
                 this.itemList.filter((item)=>{
                     let findIndex = this.itemListStore.findIndex((itemStore)=>itemStore.uuid+itemStore.site_id === item.uuid+item.site_id);
                     if (findIndex !== -1) {
-                        itemListStore[findIndex] == item;
+                        itemListStore[findIndex] = item;
                         let {uuid,site_id} =  item
                         itemListOld.push({uuid,site_id})
                     } // обновляем в базе элемент если такой пришел из поиска
@@ -275,29 +231,14 @@
                         itemListNew.push({uuid,site_id}) // если в базе нет, добавляем в базу
                     }
                 })
-              /*  console.log('itemListNew');
-                console.table(itemListNew);
-                console.log('itemListOld');
-                console.table(itemListOld);*/
-                //console.log('***********',itemListStore.length);
+
 
 
                 if (this.viewModeChat==="process") this.$store.commit('visitors/process',{list:itemListStore})
                 if (this.viewModeChat==="visitors")    this.$store.commit('visitors/self',{list:itemListStore})
 
             },
-            containerFullFillItemList:lodash_once(function(){
 
-                //Заполняем свободную область элементами
-                setTimeout(()=>{
-                    let itemHeight = document.querySelector('.'+this.classNameScrollBar+'__item').clientHeight,
-                        containerHeight =  document.querySelector('.'+this.classNameScrollBar+'__scrollbar').clientHeight;
-                    console.log(this.showItemLength * itemHeight , containerHeight);
-                    if(this.showItemLength*itemHeight < containerHeight) this.getItemList()
-                },50)
-
-
-            })
         }
     }
 </script>
