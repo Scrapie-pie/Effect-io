@@ -59,29 +59,21 @@ export default {
     computed:{
         getOptions(){
             return {
+
+                tintColor:this.globColor('info'),
+
+
                 themeStyles:{
                     wrapper:null,
                     verticalDivider:null,
-                    weekdays:{
-                        backgroundColor: 'black'
+                    headerTitle:{
+                        fontSize:'19px',
+                        fontWeight:700,
+                        color:this.globColor('main'),
+                        textTransform:'capitalize'
                     },
-                    dayPopoverContent:{
-                        backgroundColor: 'black'
-                    },
-                    dayContent:(val)=>{
-                        console.log(val);
-                        if (val.isHovered) {
-                            return {
-                                backgroundColor: 'black'
-                            }
-                        }
-                        if (val.isFocused) {
-                            return {
-                                backgroundColor: 'black'
-                            }
-                        }
 
-                    }
+
                 },
                 isInline:true,
                 showDayPopover:false,
@@ -93,8 +85,8 @@ export default {
                 attributes: [
                     {
                         key: 'today',
-                        highlight: {
-                            backgroundColor: '#ff8080',
+                        bar: {
+                            backgroundColor: this.globColor('disabled'),
                             // Other properties are available too, like `height` & `borderRadius`
                         },
                         dates: new Date()
@@ -133,6 +125,9 @@ export default {
     },
 
     methods:{
+        globColor(nameColor){
+            return getComputedStyle(document.body).getPropertyValue(`--color-${nameColor}`)
+        },
         send(){
             this.$emit('get',this.dates)
         },

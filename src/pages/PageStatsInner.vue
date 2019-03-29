@@ -228,10 +228,6 @@ export default {
             if(this.routerName==='statsPages') return 'Поиск по url'
         },
         btnDownloadShow(){
-            console.log(this.lastDay !== null );
-            console.log((this.date_from !== null && this.date_to !== null));
-            console.log((this.lastDay !== null || (this.date_from !== null && this.date_to !== null)));
-
             return (this.lastDay!==null || (this.date_from!==null && this.date_to!==null))
         },
         filterSearchShow(){

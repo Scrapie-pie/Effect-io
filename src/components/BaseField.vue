@@ -115,7 +115,6 @@
                     placeholder: this.getPlaceholder,
                     value:this.value
                 }
-                console.log(Object.assign({maxLength:64}, this.$attrs, obj));
                 return Object.assign({maxLength:64}, this.$attrs, obj);
             },
             getSelectOptions() {
