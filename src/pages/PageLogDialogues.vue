@@ -1,17 +1,32 @@
 <template lang="pug">
     the-layout-table.page-log-dialogues(@scrolldown="scrollLoad")
-        filter-drop-menu(name="period", @get="filterPeriod" slot="control")
+        filter-drop-menu(name="period", @get="filterPeriod" slot="control" type="radio")
         filter-drop-menu(
             v-if="showCalendar"
             name="calendar",
             @get="filterCalendar"
             slot="control"
-        )
+            )
         filter-drop-menu(
-            name="operators",
-            @get="filterOperators"
+            name="operator",
+            @get="filterOperator"
             slot="control"
-        )
+            )
+        filter-drop-menu(
+            name="ball",
+            @get="filterBall"
+            slot="control"
+            )
+        filter-drop-menu(
+            name="channel",
+            @get="filterChannel"
+            slot="control"
+            )
+        filter-drop-menu(
+            name="status",
+            @get="filterStatus"
+            slot="control"
+            )
         div(slot="control" v-if="itemListCount")
             |На странице показано {{showItemLength}} из {{ itemListCount}}
 
@@ -74,23 +89,13 @@
                     scrollBar:'layout-table__content',
                     item:'base-table__tr'
                 },
-                channel: '',
-                channelList: [
-                    {id:null,name:"Все каналы"},
-                    {id:7,name:"Виджеты"},
-                    {id:2,name:"ВКонтакте"},
-                    {id:3,name:"Facebook"},
-                    {id:5,name:"Telegram"},
-                    {id:6,name:"Viber"},
-                    {id:13,name:"WhatsApp"},
-                    {id:4,name:"Slack"}
-                ],
+
             }
         },
         computed:{
             paramsComp(){
                 return {
-                    channel_type:this.channel.id,
+
                 }
             },
 
@@ -103,32 +108,10 @@
             },
         },
         created() {
-            this.channel = this.channelList[0];
-            this.$root.$on('guestNewSession',(val)=>{
-                console.log('guestNewSession',val);
-                val.name='Новый'
-                this.itemList.unshift(val)
-            })
-            this.$root.$on('guestUpdate',(val)=>{
-                console.log('guestUpdate');
-                let findIndex = this.itemList.findIndex(item=>item.uuid+item.site_id === val.guest_uuid+val.site_id)
-                if(findIndex!==-1) {
-                    let itemUpdate = Object.assign(this.itemList[findIndex],val)
-                    this.itemList.splice=(findIndex,1,itemUpdate)
 
-                }
-            })
         },
         methods:{
-            startChat(visitor){
-                this.$http.put('guest-take', {
-                    guest_uuid:visitor.uuid,
-                    site_id:visitor.site_id
-                })
-                    .then(({ data }) => {
-                        this.$router.push({name:'chatId',params: { uuid: visitor.uuid,site_id:visitor.site_id}});
-                    })
-            },
+
             debounceSearch:lodash_debounce(function()
             {
                 this.resetSearch();
@@ -136,7 +119,7 @@
             }, 500),
 
             filterPeriod(val){
-
+                console.log(val);
                 if (val===-1) {
 
                     this.showCalendar=true;
@@ -159,11 +142,18 @@
                 this.time_from = val.time_from;
                 this.time_to = val.time_to;
             },
-            filterOperators(val){
+            filterBall(val){
+                //console.log(val);
+            },
+            filterChannel(val){
+                //console.log(val);
+            },
+            filterStatus(val){
+                //console.log(val);
+            },
+            filterOperator(val){
                 console.log(val);
             }
-
-
 
         },
 

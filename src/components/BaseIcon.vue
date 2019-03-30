@@ -1,7 +1,7 @@
 <template lang="pug">
     span(hidden="true").icon-wrap
         svg.icon(
-        :id="`icon_${name}`"
+
             :class="`icon_${name}`"
         role="presentation"): use( :xlink:href="src" )
 </template>

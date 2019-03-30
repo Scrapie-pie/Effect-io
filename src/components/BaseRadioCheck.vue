@@ -20,7 +20,7 @@
         inject: ['$validator'],
         inheritAttrs: false,
         model: {
-            prop: 'checked',
+            prop: 'modelValue',
             event: 'change'
         },
         props: {
@@ -49,7 +49,15 @@
                 required: false,
                 default: false
             },
-
+            modelValue: {
+                default: ""
+            },
+            trueValue: {
+                default: 1
+            },
+            falseValue: {
+                default: 0
+            }
 
         },
 
@@ -61,21 +69,34 @@
                 let obj = {}
                 obj[`${parentClass}_disabled`]=((this.disabled==='') || this.disabled)?true:false;
                 obj[`${parentClass}_error`]=this.errors.has(this.name);
+                obj[`${parentClass}_checked`]=this.getChecked;
 
                 obj[`${parentClass}_${this.type}`]=!!this.type;
 
                 return obj
             },
+            getChecked(){
+
+                if(this.type==="radio") return this.modelValue == this.value;
+
+                if(this.type==="checkbox"){
+                    if(Array.isArray(this.modelValue)) {
+                        return  this.modelValue.includes(this.value)
+                    } else {
+                        return  this.modelValue == this.trueValue
+                    }
+                }
+            },
             getInputOptions() {
 
-                let checked = this.checked
-                if(this.type==="radio") checked = this.checked === this.value;
+
+                //console.log(checked);
                 let obj = {
-                  /*  textTrue:this.textTrue,
-                    textFalse:this.textFalse,*/
+                    trueValue:this.trueValue,
+                    falseValue:this.falseValue,
                     disabled:!!this.disabled,
                     type: this.type,
-                    checked: checked,
+                    checked: this.getChecked,
                     value:this.value,
                     name:this.name
                 }
@@ -92,8 +113,24 @@
                                 return vm.$emit('change', vm.value)
                             }
 
-                            if(event.target.checked) vm.$emit('change', 1) // На сервере строгая типизация
-                            else vm.$emit('change', 0)
+
+                            if (Array.isArray(vm.modelValue)) {
+                                let newValue = [...vm.modelValue]
+
+                                if (event.target.checked) {
+                                    newValue.push(vm.value)
+                                } else {
+                                    newValue.splice(newValue.indexOf(vm.value), 1)
+                                }
+
+                                vm.$emit('change', newValue)
+                            } else {
+                                vm.$emit('change', event.target.checked ? vm.trueValue : vm.falseValue)
+                            }
+
+
+                          /*  if(event.target.checked) vm.$emit('change', vm.value) // На сервере строгая типизация
+                            else vm.$emit('change', null)*/
 
 
                         }
@@ -115,7 +152,7 @@
         &_disabled {
             cursor:default;
         }
-
+        //&_checked &__check {transform:scale(1);}
         &__input{
             @extend %visuallyhidden;
 
@@ -130,8 +167,9 @@
         }
         &__text:not(:empty) {
 
-            margin-left:calc-em(15);
+            margin-left:calc-em(10);
         }
+
         &__text-wrap{
             position:relative;
             display:flex;
