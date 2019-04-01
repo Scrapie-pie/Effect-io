@@ -12,7 +12,7 @@
                     li.last-messages__item(
                         v-for="(item, index) in filterSearchResult",
                         :key="item.uuid+item.site_id",
-                        :class="{'last-messages__item_active':item.open,'last-messages__item_hot':item.hot,'last-messages__item_very-hot':item.very_hot}"
+                        :class="item.classList"
                     )
                         router-link.last-messages__btn(
                             :to="item.link"
@@ -35,7 +35,7 @@
 
 <script>
     import lodash_sortBy from 'lodash/sortBy'
-    import lodash_debounce from 'lodash/debounce'
+
 
 
     import NavAside from '@/components/NavAside'
@@ -68,6 +68,7 @@
             }
         },
         computed:{
+
             paramsComp(){
                 return {
                     type:this.type
@@ -174,7 +175,16 @@
                 if (this.viewModeChat==="visitors" && this.$store.state.visitors.selfLastPageN) this.pageN = this.$store.state.visitors.selfLastPageN;
 
             },
+            itemFormatSetClassList(item){
+                item.classList={}
+                item.classList['last-messages__item_active'] = item.open;
+                item.classList['last-messages__item_hot'] = item.hot
+                item.classList['last-messages__item_very-hot'] = item.very_hot
+
+                return item
+            },
             itemFormat(item){
+                item = itemFormatSetClassList(item)
                 if(item.very_hot) { ///такое только в не обработанном
                     item.avatarName='warning';
                     item.name = 'Диалог необходимо <br> принять <br> в приоритетном порядке!'
