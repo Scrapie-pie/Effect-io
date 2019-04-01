@@ -31,6 +31,10 @@
     import fbme from '@/assets/img/icons/social/fbme.svg';
     //import chat from '@/assets/img/icons/social/chat.svg';
 
+    import ball1 from '@/assets/img/icons/balls/ball1.svg';
+    import ball2 from '@/assets/img/icons/balls/ball2.svg';
+    import ball3 from '@/assets/img/icons/balls/ball3.svg';
+
 
     import phrases from '@/assets/img/icons/chat/phrases.svg';
     import more from '@/assets/img/icons/chat/more.svg';
@@ -145,7 +149,7 @@
         &_eye {
             fill:glob-color('disabled');
         }
-        &_file {
+        &_file,&_ball1,&_ball2,&_ball3   {
             width:30px;
             height:30px;
         }

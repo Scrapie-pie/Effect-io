@@ -56,7 +56,7 @@
     import TheLayoutTable from '@/components/TheLayoutTable'
 
 
-    import lodash_debounce from 'lodash/debounce'
+
 
 
     import {scrollbar,paginator } from '@/mixins/mixins'
@@ -69,7 +69,6 @@
         },
         data() {
             return {
-                limit:5,
                 containerFullFillItemListClassName:{
                     scrollBar:'layout-table__content',
                     item:'base-table__tr'
@@ -90,8 +89,8 @@
 
         },
         watch:{
-            search:'debounceSearch',
             channel(){
+                console.log('channel');
                 this.resetSearch();
                 this.getItemList();
             },
@@ -123,11 +122,7 @@
                         this.$router.push({name:'chatId',params: { uuid: visitor.uuid,site_id:visitor.site_id}});
                     })
             },
-            debounceSearch:lodash_debounce(function()
-                {
-                    this.resetSearch();
-                    this.getItemList();
-                }, 500),
+
 
 
 

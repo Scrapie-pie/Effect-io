@@ -1,4 +1,5 @@
 import lodash_once from 'lodash/once'
+import lodash_debounce from 'lodash/debounce'
 export default {
     data() {
         return {
@@ -37,26 +38,42 @@ export default {
         },
         requestData(){
             let params = Object.assign(this.params, this.paramsComp)
+            console.log('requestData',params);
             return {params}
         }
 
     },
+    watch:{
+        search:'debounceSearch',
+    },
     methods:{
+        debounceSearch:lodash_debounce(function(val,oldVal)
+        {
+            this.debounceSearchMethods(val,oldVal)
+        }, 500),
+        debounceSearchMethods(val,oldVal){
+            console.log('debounceSearchMethods');
+            this.resetSearch();
+            this.getItemList();
+        },
         scrollLoad(e){
+            //console.log('scrollLoad',e);
             if(this.scrollLoadAllow(e)) this.getItemList()
         },
         resetSearch(){
+            console.log('resetSearch');
             this.pageN=1;
             this.itemListCount= 0;
             this.itemList=[];
             this.getItemListStart=true;
         },
         getItemList(){
+            console.log('getItemList');
             if(!this.getItemListStart) return;
             this.getItemListStart=false;
 
             if((this.showItemLength < this.itemListCount) || this.itemListCount===0) {
-                console.log('getItemList');
+
                 this.$http.get('guest-list',this.requestData).then(({data})=>{
                     this.getItemListStart=true;
                     if (data.data.count) {

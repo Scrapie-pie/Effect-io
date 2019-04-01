@@ -131,7 +131,7 @@ export default {
         itemList:{
             handler(val,oldval)
             {
-                console.log(this.name);
+
                 if (this.allChecked) {
 
                     this.modelcheckbox = val
@@ -142,7 +142,7 @@ export default {
         modelradio:{
             handler(val){
                 if(this.name==='period') {
-                    console.log(val);
+
                     if (!val) {
 
                         return this.modelradio =  this.itemList[0]

@@ -195,8 +195,8 @@
                 last_message = author + last_message;
                 return last_message
             },
-            debounceSearch:lodash_debounce(function(val,oldVal) {
 
+            debounceSearchMethods(val,oldVal){
                 if(!oldVal) this.pageNBeforeSearch = this.pageN; //запоминаем загруженную страницу
 
                 this.resetSearch();
@@ -208,9 +208,7 @@
 
                 this.getItemList();
                 this.scrollbarScrollerPush(this.$refs.scrollbar,0)
-                }, 500
-            ),
-
+            },
 
 
 
