@@ -140,9 +140,9 @@ export default {
             itemList:[],
 
 
-            date_from:null,
-            date_to:null,
-            time_from:null,
+            date_from:'',
+            date_to:'',
+            time_from:'',
             time_to:null,
             last_days:null,
 
@@ -236,10 +236,10 @@ export default {
             else {
                 this.last_days=val;
                 this.showCalendar=false;
-                this.date_from = null;
-                this.date_to = null;
-                this.time_from = null;
-                this.time_to = null;
+                this.date_from = '';
+                this.date_to = '';
+                this.time_from = '';
+                this.time_to = '';
             }
         },
         filterCalendar(val){

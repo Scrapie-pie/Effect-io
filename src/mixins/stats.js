@@ -47,19 +47,19 @@ export default {
         },
         date_from:{
             type:String,
-            default:null,
+            default:'',
         },
         date_to:{
             type:String,
-            default:null,
+            default:'',
         },
         time_from:{
             type:String,
-            default:null,
+            default:'',
         },
         time_to:{
             type:String,
-            default:null,
+            default:'',
         },
         last_days:{
             type:Number,
