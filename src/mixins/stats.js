@@ -17,6 +17,7 @@ export default {
         }
     },
     props:{
+
         filterListOn:{
             type:Boolean,
             default:false,
@@ -76,6 +77,10 @@ export default {
         btnDetailHide:{
             type:Boolean,
             default:false
+        },
+        setBodyList:{
+            type:[Array,Object],
+            default:null,
         }
     },
     data() {
@@ -85,7 +90,11 @@ export default {
         }
     },
     watch:{
-
+        setBodyList(val){
+            if(val){
+                this.bodyList=val
+            }
+        },
         bodyListFormat(val){
             if(val){
                 this.$emit('itemList',val)

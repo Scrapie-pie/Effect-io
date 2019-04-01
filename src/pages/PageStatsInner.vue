@@ -15,13 +15,6 @@
             @result="(val)=>filterSearchResult=val",
             @text="(val)=>search=val",
         )
-        //base-field(
-            slot="control"
-            type="select"
-            name="lastDay",
-            :selectOptions="{label:'name',options:lastDays,value:lastDay}"
-            v-model="lastDay"
-            )
         base-btn(
             v-if="!filterSearchShow && btnDownloadShow"
             slot="control",
@@ -42,69 +35,18 @@
             li Отделов в команде: {{$store.state.user.branchListAll.length}}
             li Сотрудников в команде: {{$store.state.operators.all.length}}
 
-        section.page-stats-inner__main(v-show="lastDay || date_from")
+        section.page-stats-inner__main(v-show="last_days || date_from")
 
+            stats-service(
+                v-if="routerName==='statsService'",
+                :date_from="date_from",
+                :date_to="date_to",
+                :time_from="time_from",
+                :time_to="time_to",
+                :last_days="last_days",
+                :type="type"
+            )
 
-
-            template(v-if="routerName==='statsService'")
-                .page-stats-inner__table
-                    stats-operators(
-                        :btn-detail-hide="true"
-                        order="excellent_ratings"
-                        type="employees",
-                        :last_days="lastDay",
-                        caption="ТОП сотрудников (по оценкам)",
-                        :date_from="date_from",
-                        :date_to="date_to",
-                        :time_from="time_from",
-                        :time_to="time_to"
-
-                    )
-                .page-stats-inner__table
-                    stats-operators(
-                        :btn-detail-hide="true"
-                        order="first_answer_average_speed",
-                        :limit="1",
-                        type="employees",
-                        :last_days="lastDay"
-                        caption="Самый быстрый сотрудник",
-                        :date_from="date_from",
-                        :date_to="date_to",
-                        :time_from="time_from",
-                        :time_to="time_to"
-                    )
-                .page-stats-inner__table
-                    stats-branches(
-                        :date_from="date_from",
-                        :date_to="date_to"
-                        :btn-detail-hide="true"
-                        order="excellent_ratings"
-                        type="branches",
-                        :last_days="lastDay"
-                        caption="ТОП отделов (по оценкам)",
-                        :time_from="time_from",
-                        :time_to="time_to"
-                    )
-                .page-stats-inner__table
-                    stats-branches(
-                        :date_from="date_from",
-                        :date_to="date_to",
-                        :time_from="time_from",
-                        :time_to="time_to",
-                        :btn-detail-hide="true"
-                        order="dialogues_percents"
-                        type="branches",
-                        :last_days="lastDay"
-                        caption="ТОП отделов (по общей нагрузке)"
-                    )
-                stats-result(
-                    :date_from="date_from",
-                    :date_to="date_to",
-                    :time_from="time_from",
-                    :time_to="time_to",
-                    type="company",
-                    :last_days="lastDay"
-                    )
             stats-operators(
                 v-if="routerName==='statsEmployees'",
                 :date_from="date_from",
@@ -112,7 +54,7 @@
                 :time_from="time_from",
                 :time_to="time_to",
                 type="employees",
-                :last_days="lastDay",
+                :last_days="last_days",
                 @itemList="(val)=>itemList=val",
                 :filterListOn="true",
                 :filterList="filterSearchResult",
@@ -126,7 +68,7 @@
                 :time_to="time_to",
                 type="employee",
                 :user_id="user_id",
-                :last_days="lastDay",
+                :last_days="last_days",
             )
             stats-branches(
                 v-if="routerName==='statsBranches'",
@@ -135,7 +77,7 @@
                 :date_to="date_to",
                 :time_from="time_from",
                 :time_to="time_to",
-                :last_days="lastDay",
+                :last_days="last_days",
                 @itemList="(val)=>itemList=val",
                 :filterListOn="true",
                 :filterList="filterSearchResult"
@@ -144,7 +86,7 @@
                 v-if="routerName==='statsBranchesDetail'"
                 type="branch",
                 :branch_id="branch_id",
-                :last_days="lastDay",
+                :last_days="last_days",
                 :time_from="time_from",
                 :time_to="time_to",
                 :date_from="date_from",
@@ -153,7 +95,7 @@
             stats-pages(
                 v-if="routerName==='statsPages'"
                 type="pages",
-                :last_days="lastDay",
+                :last_days="last_days",
                 :date_from="date_from",
                 :date_to="date_to",
                 :time_from="time_from",
@@ -172,9 +114,12 @@ import StatsOperators from '@/components/StatsOperators'
 import StatsBranches from '@/components/StatsBranches'
 import StatsPages from '@/components/StatsPages'
 import StatsResult from '@/components/StatsResult'
+import StatsService from '@/components/StatsService'
 
 
 import FilterDropMenu from '@/components/FilterDropMenu'
+
+
 
 export default {
     components:{
@@ -183,6 +128,7 @@ export default {
         StatsBranches,
         StatsResult,
         StatsPages,
+        StatsService,
 
         FilterDropMenu
     },
@@ -198,8 +144,9 @@ export default {
             date_to:null,
             time_from:null,
             time_to:null,
+            last_days:null,
 
-            lastDay:null,
+
             branch:{
                 title:'Все отделы',
                 id:null,
@@ -220,7 +167,7 @@ export default {
         },
         downloadLink(){
             let dates=`&date_from=${this.date_from}&date_to=${this.date_to}&time_from=${this.time_from}&time_to=${this.time_to}`;
-            return `${config.api_server}app.php?statistic-get-by-params&user_id=${this.user_id}&branch_id=${this.branch_id}${dates}&last_days=${this.lastDay}&type=${this.type}&csv=1&jwt=${this.$http.defaults.headers.common.jwt}`
+            return `${config.api_server}app.php?statistic-get-by-params&user_id=${this.user_id}&branch_id=${this.branch_id}${dates}&last_days=${this.last_days}&type=${this.type}&csv=1&jwt=${this.$http.defaults.headers.common.jwt}`
         },
         placeholder(){
             if(this.routerName==='statsBranches') return 'Поиск по названию'
@@ -228,7 +175,7 @@ export default {
             if(this.routerName==='statsPages') return 'Поиск по url'
         },
         btnDownloadShow(){
-            return (this.lastDay!==null || (this.date_from!==null && this.date_to!==null))
+            return (this.last_days!==null || (this.date_from!==null && this.date_to!==null))
         },
         filterSearchShow(){
 
@@ -248,7 +195,7 @@ export default {
         }
     },
     watch:{
-        lastDay(val){
+        last_days(val){
             if(val===null)this.showCalendar=true
             else this.showCalendar=false;
         }
@@ -262,15 +209,32 @@ export default {
         }*/
     },
     methods:{
+        get(){
+
+            if(this.last_days || (this.date_from && this.date_to)) {
+
+                this.$http.get('statistic-get-by-params',{params:{
+                        last_days:this.last_days,
+                        date_from:this.date_from,
+                        date_to:this.date_to,
+                        time_from:this.time_from,
+                        time_to:this.time_to,
+                        type:this.type,
+                    }}).then((response)=>{
+                    console.log(response.data.data);
+                })
+            }
+
+        },
         filterPeriod(val){
 
             if (val===-1) {
 
                 this.showCalendar=true;
-                this.lastDay=null;
+                this.last_days=null;
             }
             else {
-                this.lastDay=val;
+                this.last_days=val;
                 this.showCalendar=false;
                 this.date_from = null;
                 this.date_to = null;
@@ -293,7 +257,7 @@ export default {
 <style lang="scss">
 
     .page-stats-inner{
-        $color_border:glob-color('border');
+
         &__count {
             margin-bottom:calc-em(20);
             @extend %row-flex;
@@ -302,11 +266,7 @@ export default {
                 @extend %h4
             }
         }
-        &__table {
-            border:2px solid $color_border;
-            margin-bottom:calc-em(20);
-            padding:calc-em(15);
-        }
+
 
         &__main {
             //padding-right:calc-em(15);

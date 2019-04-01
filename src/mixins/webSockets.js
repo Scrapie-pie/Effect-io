@@ -103,7 +103,7 @@ export default {
             console.log('socket disconnected...');
         },
         "hot-guest"(val){
-            //console.log('hot-guest',val);
+            console.log('hot-guest',val);
             this.$store.commit('visitors/messageHot',{val,set:true})
         },
         "typing-live"(val){
