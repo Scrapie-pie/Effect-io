@@ -1,46 +1,42 @@
 <template lang="pug">
 
     article.page-chat
-        template(v-if="viewModeChat == 'operators'")
-            base-no-found(v-show="messageNo" :name="$route.name")
-            section(v-show="!messageNo").page__view.page-chat
-                the-last-messages(v-if="viewModeChat=='operators'")
-                the-last-messages-v(v-else)
+        template(v-if="viewModeChat === 'common'")
+            section.page__view.page-chat
+                section.page-chat__main
+                    the-chat-main
 
+        template(v-if="viewModeChat === 'operators'")
+            section.page__view.page-chat
+                the-last-messages()
                 template(v-if="!show")
                     section.page-chat__main
                         the-chat-main
-                    aside.page-chat__info(v-if="viewModeChat!='operators'")
-                        the-client-info
 
-        template(v-if="viewModeChat == 'visitors'")
+
+        template(v-if="viewModeChat === 'visitors'")
             base-no-found(v-show="messageNo" :name="$route.name")
             section(v-show="!messageNo").page__view.page-chat
-                the-last-messages(v-if="viewModeChat=='operators'")
-                the-last-messages-v(v-else)
-
+                the-last-messages-v
                 template(v-if="!show")
                     section.page-chat__main
                             the-chat-main
-                    aside.page-chat__info(v-if="viewModeChat!='operators'")
+                    aside.page-chat__info
                         the-client-info
-        template(v-if="viewModeChat == 'process'")
+
+        template(v-if="viewModeChat === 'process'")
             base-no-found(v-show="processNo" :name="$route.name")
             section(v-show="!processNo").page__view.page-chat
-                the-last-messages(v-if="viewModeChat=='operators'")
-                the-last-messages-v(v-else)
+                the-last-messages-v
 
                 template(v-if="!show")
                     section.page-chat__main
                         the-chat-main
-                    aside.page-chat__info(v-if="viewModeChat!='operators'")
+                    aside.page-chat__info
                         the-client-info
 
 
-        template(v-if="viewModeChat == 'common'")
-            section().page__view.page-chat
-                section.page-chat__main
-                    the-chat-main
+
 
 
 </template>
@@ -65,12 +61,7 @@
             show(){
                 return (this.$route.name==='processAll' || this.$route.name==='messageAll')
             },
-            showProcess(){
-                return this.$route.name==='processAll' && !this.$store.state.visitors.process.length
-            },
-            showMessage(){
-                return this.$route.name==='messageAll'
-            },
+
             processNo(){
                 return this.$route.name==='processAll' && !this.$store.state.visitors.process.length
             },

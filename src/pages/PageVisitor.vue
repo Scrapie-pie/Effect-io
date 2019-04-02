@@ -114,6 +114,7 @@
         },
         methods:{
             startChat(visitor){
+                //return console.log(visitor);
                 this.$http.put('guest-take', {
                     guest_uuid:visitor.uuid,
                     site_id:visitor.site_id

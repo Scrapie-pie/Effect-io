@@ -95,11 +95,7 @@ export default {
         setSelfLastPageN(state,val){
             state.selfLastPageN=val;
         },
-        selfPush(state,val) {
-            console.log(val);
-            state.self.push(...val.list);
-            state.selfCount=val.count;
-        },
+
         selfMessageLastUpdate(state, val) {
             console.log('selfMessageLastUpdate',val);
             let findIndex = state.self.findIndex((item)=>{

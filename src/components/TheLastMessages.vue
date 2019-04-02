@@ -6,7 +6,7 @@
                     :item-list="itemListStore"
                     fieldName="fullName" ,
                     @result="(val)=>filterSearchResult=val",
-                    @text="(val)=>search=val"
+
                 )
             scroll-bar.last-messages__scrollbar(ref="scrollbar")
                 ul.last-messages__list
@@ -16,8 +16,8 @@
                         :class="item.classList"
                     )
                         router-link.last-messages__btn(
-                            :to="{name:'teamChat',params:{id:item.id}}"
-                            v-text="`${item.fullName}:${item.last_message}`"
+                            :to="item.rootLinkOptions.link"
+                            v-text="item.rootLinkOptions.text"
                         )
                         base-people.last-messages__people(v-bind="item.basePeopleOptions")
 </template>
@@ -94,6 +94,13 @@
 
               return item
             },
+            itemFormatSetLink(item){
+                item.rootLinkOptions = {
+                    link:{name:'teamChat',params:{id:item.id}},
+                    text:`${item.fullName}:${item.last_message}`
+                }
+                return item
+            },
             itemFormatSetClassList(item){
                 item.classList={}
                 item.classList['last-messages__item_active'] = item.id === this.httpParams.params.id;
@@ -101,6 +108,7 @@
             },
             itemFormat(item){
                 item = this.itemFormatSetClassList(item)
+                item = this.itemFormatSetLink(item)
                 item = this.itemFormatSetOptions(item)
               return item
             },

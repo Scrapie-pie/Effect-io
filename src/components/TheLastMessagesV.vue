@@ -184,7 +184,7 @@
                 return item
             },
             itemFormat(item){
-                item = itemFormatSetClassList(item)
+                item = this.itemFormatSetClassList(item)
                 if(item.very_hot) { ///такое только в не обработанном
                     item.avatarName='warning';
                     item.name = 'Диалог необходимо <br> принять <br> в приоритетном порядке!'
