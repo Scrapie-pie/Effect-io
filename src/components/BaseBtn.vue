@@ -1,5 +1,5 @@
 <template lang="pug">
-    transition
+    transition(name="btn")
         router-link(v-on="inputListeners" ,:class="classObject", :disabled="disabled" v-if="isRouter", :to="compRouterName")
             slot
         button(
@@ -130,6 +130,9 @@
 
 <style lang="scss">
     .btn{
+
+        &-leave-active,&-leave-to {display:none}
+
         $color_bg-default:glob-color('default');
         $color_error:glob-color('error');
 

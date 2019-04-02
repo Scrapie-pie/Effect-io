@@ -130,6 +130,7 @@
         },
         created(){
 
+
             this.$store.state.operators.all.length=1;
         },
         methods:{
