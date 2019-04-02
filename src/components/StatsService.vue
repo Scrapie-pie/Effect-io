@@ -11,6 +11,7 @@
                 :btn-detail-hide="true"
                 caption="Самый быстрый сотрудник",
                 :set-body-list="best_employees_by_speed"
+                order="first_answer_average_speed"
             )
         .stats-service__table
             stats-branches(
