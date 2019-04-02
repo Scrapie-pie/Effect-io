@@ -7,7 +7,7 @@
             )
         ul.app-calendar__times(v-if="dates")
             li.app-calendar__time
-                .app-calendar__time-text(v-text="'C '+dates.date_to")
+                .app-calendar__time-text(v-text="'C '+dates.date_from")
                 base-field.app-calendar__field(
                         type="time"
                         name="time_from",
@@ -17,7 +17,7 @@
 
                     )
             li.app-calendar__time
-                .app-calendar__time-text(v-text="'По '+dates.date_from")
+                .app-calendar__time-text(v-text="'По '+dates.date_to")
                 base-field.app-calendar__field(
                     type="time"
                     name="time_to",
@@ -110,8 +110,8 @@ export default {
             let val = this.selectedDay;
             let date_from,date_to;
             if(val && val.end && val.start) {
-                date_from = this.formatDate(val.end)
-                date_to = this.formatDate(val.start)
+                date_from = this.formatDate(val.start)
+                date_to = this.formatDate(val.end)
                 return {
                     date_from,
                     date_to,

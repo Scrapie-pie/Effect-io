@@ -57,7 +57,7 @@ export default {
             if (this.name==='calendar') {
                 let strDate =''
                 if(this.model) {
-                    strDate = `${this.model.date_to} - ${this.model.date_from}`
+                    strDate = `${this.model.date_from} - ${this.model.date_to}`
                 } else strDate = 'Интервал не выбран'
 
                 return strDate
