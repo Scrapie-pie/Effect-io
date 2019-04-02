@@ -15,20 +15,10 @@
                         :class="item.classList"
                     )
                         router-link.last-messages__btn(
-                            :to="item.link"
-                            v-text="item.last_message"
+                            :to="item.rootLinkOptions.link"
+                            v-text="item.rootLinkOptions.text"
                         )
-                        base-people.last-messages__people(
-                            :avatar-url="item.photo",
-                            :avatar-stub="item.photo_stub",
-                            :avatar-name="item.avatarName",
-                            :name="item | name(visitorInfo)",
-                            :text="item.last_authorAndMessage | wrapTextUrls",
-                            :bg-text-no-fill="true",
-                            :channel-name="$store.getters.channelName(item.channel_type)",
-                            :count="item.unread.length"
-                            hidden
-                        )
+                        base-people.last-messages__people(v-bind="item.basePeopleOptions")
 
 
 </template>
@@ -47,11 +37,7 @@
         mixins:[viewModeChat,httpParams ,scrollbar,paginator],
         components:{NavAside},
         filters: {
-            name(item,visitorInfo){
-                if(item.very_hot) return item.name
-                if(item.uuid+item.site_id === visitorInfo.uuid+visitorInfo.site_id) return visitorInfo.name
-                else return item.name
-            },
+
             wrapTextUrls
         },
         data() {
@@ -107,20 +93,16 @@
 
                 if (this.viewModeChat==="process")   {
                     itemList=this.$store.state.visitors.process.map(item=>{
-                        let {uuid,site_id} = item;
-                        item.link = {name:'process',params: { uuid,site_id}}
-                        item.unread = [];
                         return this.itemFormat(item)
                     });
                 }
 
                 if (this.viewModeChat==="visitors")  {
                     itemList=this.$store.state.visitors.self.map(item=>{
-                        let {uuid,site_id} = item;
-                        item.link = {name:'chatId',params: { uuid,site_id}}
                         return this.itemFormat(item)
                     });
                 }
+                console.log(itemList);
                 return itemList
 
             },
@@ -133,18 +115,19 @@
         watch:{
             itemListStoreItemPush:{
                 handler(val){
+                    if (this.viewModeChat!=="visitors") return
                     let  [visitorInfo,itemListStore] = val;
                     let {uuid, site_id,} = visitorInfo;
-                    let findIndex = itemListStore.findIndex(item=>uuid+site_id===item.uuid+site_id)
+                    let findIndex = itemListStore.findIndex(item=>uuid+site_id===item.uuid+item.site_id)
                     if(findIndex===-1) {
                         console.log('itemListStoreItemPush',visitorInfo,itemListStore);
 
-                        itemListStore.push({
+                        itemListStore.push(
                             visitorInfo
-                        })
+                        )
 
 
-                        if (this.viewModeChat==="visitors")    this.$store.commit('visitors/self',{list:itemListStore})
+                     this.$store.commit('visitors/self',{list:itemListStore})
                     }
 
 
@@ -161,8 +144,8 @@
             },
             filterSearchResult(val){
                 if (val.length && (this.$route.name==="processAll" || this.$route.name==="messageAll")) {
-                    if (val[0].link)  {
-                        this.$router.push(val[0].link)
+                    if (val[0].rootLinkOptions.link)  {
+                        this.$router.push(val[0].rootLinkOptions.link)
                     }
                 }
 
@@ -192,39 +175,81 @@
             }
         },
         methods:{
+            setName(item,visitorInfo){
+                if(item.very_hot) return item.name
+                if(item.uuid+item.site_id === visitorInfo.uuid+visitorInfo.site_id) return visitorInfo.name
+                else return item.name
+            },
             setLastPageN(){
                 if (this.viewModeChat==="process" && this.$store.state.visitors.processLastPageN) this.pageN = this.$store.state.visitors.processLastPageN;
                 if (this.viewModeChat==="visitors" && this.$store.state.visitors.selfLastPageN) this.pageN = this.$store.state.visitors.selfLastPageN;
 
             },
             itemFormatSetClassList(item){
+                let open
+                if(this.httpParams) {
+                    let {uuid,site_id} = this.httpParams.params;
+                    open = (item.uuid+item.site_id === uuid+site_id)
+                }
                 item.classList={}
-                item.classList['last-messages__item_active'] = item.open;
+                item.classList['last-messages__item_active'] = open;
                 item.classList['last-messages__item_hot'] = item.hot
                 item.classList['last-messages__item_very-hot'] = item.very_hot
 
                 return item
             },
+            itemFormatSetOptions(item){
+
+                item.basePeopleOptions={
+                    avatarUrl:item.photo,
+                    avatarStub:item.photo_stub,
+                    avatarName:item.avatarName,
+                    name:this.setName(item,this.visitorInfo),
+                    text:wrapTextUrls(item.last_authorAndMessage),
+                    channelName:this.$store.getters.channelName(item.channel_type),
+
+                    bgTextNoFill:true,
+                    count:item.unread.length,
+                    hidden:true
+                }
+
+
+                return item
+            },
+            itemFormatSetLink(item){
+                let routName=''
+                if(this.viewModeChat==="process") routName = this.viewModeChat
+                if(this.viewModeChat==="visitors") routName = 'chatId'
+                item.rootLinkOptions = {
+                    link:{name:routName,params:{uuid:item.uuid,site_id:item.site_id}},
+                    text:item.last_message
+                }
+                return item
+            },
             itemFormat(item){
+                if (!Array.isArray(item.unread)) item.unread=[]
+
                 item = this.itemFormatSetClassList(item)
+                item = this.itemFormatSetLink(item)
+
                 if(item.very_hot) { ///такое только в не обработанном
                     item.avatarName='warning';
                     item.name = 'Диалог необходимо <br> принять <br> в приоритетном порядке!'
                     item.last_authorAndMessage = 'Передача диалога...'
                 } else {
+
                     item.last_authorAndMessage = this.authorAndMessage(item);
                 }
-                if(this.httpParams) {
-                    let {uuid,site_id} = this.httpParams.params;
-                    item.open = (item.uuid+item.site_id === uuid+site_id)
-                }
+                item = this.itemFormatSetOptions(item)
+
                 return item
             },
             authorAndMessage({last_message_author,last_message,files}){
+
                 let author = '';
                 if(!last_message && files && files.length) last_message = 'Прикреплены файлы'
-                if(last_message_author) author = last_message_author +': '
-                last_message = author + last_message;
+                if(last_message_author) author = last_message_author +': ';
+                if(author && last_message) last_message = author + last_message;
                 return last_message
             },
 

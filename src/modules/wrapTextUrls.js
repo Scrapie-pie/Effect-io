@@ -1,6 +1,6 @@
 
 
-function wrapTextUrls(text){
+function wrapTextUrls(text=''){
     /**
      * Оборачивание всех найденных в тексте урлов и доменов в тег <a>
      * @author Simon Oganesyan
