@@ -124,24 +124,33 @@
                 return itemList
 
             },
+            itemListStoreItemPush(){
+                if(this.visitorInfo) return [this.visitorInfo,this.itemListStore]
 
+            }
 
         },
         watch:{
-            itemListStore:{
+            itemListStoreItemPush:{
                 handler(val){
-                    if(val.length) {
-                        console.log('itemListStore',val);
-                    } else {
-                        console.log('itemListStore else',val);
+                    let  [visitorInfo,itemListStore] = val;
+                    let {uuid, site_id,} = visitorInfo;
+                    let findIndex = itemListStore.findIndex(item=>uuid+site_id===item.uuid+site_id)
+                    if(findIndex===-1) {
+                        console.log('itemListStoreItemPush',visitorInfo,itemListStore);
 
-                        setTimeout(()=>{
-                            console.log(this.$store.state.visitors.itemOpen);
-                        },1000)
+                        itemListStore.push({
+                            visitorInfo
+                        })
+
+
+                        if (this.viewModeChat==="visitors")    this.$store.commit('visitors/self',{list:itemListStore})
                     }
 
+
+
                 },
-                immediate: true
+                immediate: false
             },
             pageN(val){
                 if(!this.search) {
