@@ -196,7 +196,7 @@ export default {
     },
     watch:{
         last_days(val){
-            if(val===null)this.showCalendar=true
+            if(!val)this.showCalendar=true
             else this.showCalendar=false;
         }
     /*    branchListAll:{
@@ -228,10 +228,10 @@ export default {
         },
         filterPeriod(val){
 
-            if (val===-1) {
+            if (val==='-1') {
 
                 this.showCalendar=true;
-                this.last_days=null;
+                this.last_days='';
             }
             else {
                 this.last_days=val;

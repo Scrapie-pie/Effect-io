@@ -62,8 +62,8 @@ export default {
             default:'',
         },
         last_days:{
-            type:Number,
-            default:null,
+            type:String,
+            default:'',
         },
         branch_id:{
             type:Number,

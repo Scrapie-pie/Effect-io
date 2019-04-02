@@ -40,10 +40,10 @@ export default {
             model:null,
 
             periodList:[
-                {value:1,name:"За сутки"},
-                {value:7,name:"За 7 дней"},
-                {value:30,name:"За 30 дней"},
-                {value:-1,name:"Выбрать интервал"},
+                {value:'1',name:"За сутки"},
+                {value:'7',name:"За 7 дней"},
+                {value:'30',name:"За 30 дней"},
+                {value:'-1',name:"Выбрать интервал"},
             ]
         }
     },
