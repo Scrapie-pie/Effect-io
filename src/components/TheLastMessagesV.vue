@@ -128,6 +128,21 @@
 
         },
         watch:{
+            itemListStore:{
+                handler(val){
+                    if(val.length) {
+                        console.log('itemListStore',val);
+                    } else {
+                        console.log('itemListStore else',val);
+
+                        setTimeout(()=>{
+                            console.log(this.$store.state.visitors.itemOpen);
+                        },1000)
+                    }
+
+                },
+                immediate: true
+            },
             pageN(val){
                 if(!this.search) {
                     if (this.viewModeChat==="process")  this.$store.commit('visitors/setProcessLastPageN',val);
@@ -136,7 +151,7 @@
                 }
             },
             filterSearchResult(val){
-                if (val.length && (this.$route.name=="processAll" || this.$route.name=="messageAll")) {
+                if (val.length && (this.$route.name==="processAll" || this.$route.name==="messageAll")) {
                     if (val[0].link)  {
                         this.$router.push(val[0].link)
                     }
@@ -151,8 +166,6 @@
                     this.setLastPageN()
                     if(this.itemListStore.length) return
                     this.resetSearch();
-
-
                     this.getItemList();
                 }
         },
