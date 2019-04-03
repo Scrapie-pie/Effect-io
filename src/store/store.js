@@ -26,7 +26,7 @@ const getDefaultState = () => {
         roomActiveUsersInvited:[],
         roomActiveUsersRecipient:[],
         roomActiveIsAdmin:false,
-
+        connected: false,
     }
 }
 // initial state

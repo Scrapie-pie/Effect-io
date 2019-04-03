@@ -17,6 +17,7 @@ export default {
         }
     },
     props:{
+
         filterListOn:{
             type:Boolean,
             default:false,
@@ -44,9 +45,25 @@ export default {
             type:String,
             default:null,
         },
-        period:{
+        date_from:{
             type:String,
-            default:null,
+            default:'',
+        },
+        date_to:{
+            type:String,
+            default:'',
+        },
+        time_from:{
+            type:String,
+            default:'',
+        },
+        time_to:{
+            type:String,
+            default:'',
+        },
+        last_days:{
+            type:String,
+            default:'',
         },
         branch_id:{
             type:Number,
@@ -60,6 +77,10 @@ export default {
         btnDetailHide:{
             type:Boolean,
             default:false
+        },
+        setBodyList:{
+            type:[Array,Object],
+            default:null,
         }
     },
     data() {
@@ -69,6 +90,11 @@ export default {
         }
     },
     watch:{
+        setBodyList(val){
+            if(val){
+                this.bodyList=val
+            }
+        },
         bodyListFormat(val){
             if(val){
                 this.$emit('itemList',val)
@@ -79,6 +105,7 @@ export default {
         }
     },
     computed:{
+
         itemList(){
             if(this.filterListOn) return this.filterList
             else return this.bodyListFormat
@@ -91,11 +118,17 @@ export default {
         },
         params(){
             return {
+                last_days:this.last_days,
+                date_from:this.date_from,
+                date_to:this.date_to,
+                time_from:this.time_from,
+                time_to:this.time_to,
+
                 limit:this.limit,
                 order:this.order,
                 user_id:this.user_id,
                 branch_id:this.branch_id,
-                period:this.period,
+
                 type:this.type,
                 csv:this.csv,
             }
@@ -107,9 +140,14 @@ export default {
 
     methods:{
         get(){
-            this.$http.get('statistic-get-by-params',this.requestData).then((response)=>{
-                this.bodyList = response.data.data
-            })
+
+            if(this.last_days || (this.date_from && this.date_to)) {
+
+                this.$http.get('statistic-get-by-params',this.requestData).then((response)=>{
+                    this.bodyList = response.data.data
+                })
+            }
+
         }
     },
 }

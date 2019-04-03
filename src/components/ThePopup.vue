@@ -1,6 +1,6 @@
 <template lang="pug">
     section.popup
-        box-controls(v-if="!!noticeText", type="popup", @boxControlClose="noticeText=false")
+        box-controls(v-if="!!noticeText", type="notice", @boxControlClose="noticeText=false")
             template(slot="text") {{noticeText}}
             base-btn(@click="noticeText=false") Понятно
         box-controls(v-if="notFind", type="popup", @boxControlClose="notFind=false")

@@ -8,7 +8,7 @@
                     @click="$emit('boxControlClose')"
                     title="Закрыть"
                 ).box-controls__close
-                base-icon(name="info").box-controls__icon(v-if="type==='popup'")
+                base-icon(name="info").box-controls__icon(v-if="type==='notice'")
 
                 p.box-controls__text
                     slot(name="text")
@@ -21,7 +21,7 @@
             type:{
                 type:String,
                 validator: function (value) {
-                    return ['popup','gallery'].indexOf(value) !== -1
+                    return ['popup','gallery','notice'].indexOf(value) !== -1
                 }
             },
             overlay:{
@@ -141,18 +141,21 @@
 
             }
 
-            #{$self}_popup & {
+            #{$self}_notice &,#{$self}_popup & {
                 position:fixed;
                 left:50%;
                 top:50%;
                 transform:translate(-50%,-50%);
                 display:inline-flex;
                 flex-direction:column;
-                height:300px;
-                width:300px;
+
                 align-items:center;
                 justify-content:center;
                 text-align:center;
+            }
+            #{$self}_notice &{
+                height:300px;
+                width:300px;
             }
         }
 
@@ -235,7 +238,7 @@
                 margin:0;
             }
 
-            #{$self}_popup & {
+            #{$self}_notice &,#{$self}_popup & {
                 position:fixed;
                 margin:0;
             }

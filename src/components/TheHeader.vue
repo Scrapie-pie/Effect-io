@@ -1,8 +1,8 @@
 <template lang="pug">
-    header.header
-        user-status.header__user-status
-        nav-main.header__nav-main(:item-list="canalList")
-        nav-main.header__nav-app(:item-list="appList")
+    header.the-header
+        user-status.the-header__user-status
+        nav-main.the-header__nav-main(:item-list="canalList")
+        nav-main.the-header__nav-app(:item-list="appList")
 </template>
 
 <script>
@@ -67,7 +67,7 @@
 
 
 <style lang="scss">
-    .header {
+    .the-header {
         position:relative;
         @include box-decor();
         display:flex;

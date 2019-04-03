@@ -5,7 +5,7 @@
             base-avatar.user-status__avatar(:url="profile.photo")
 
             .user-status__indicator(:class="`user-status__indicator_${statusCurrent.name}`")
-            ul.user-status__list(:class="{'user-status__list_open':show}")
+            ul.user-status__list(:class="{'user-status__list_open':show}" v-click-outside="val=>show=false")
                 li.user-status__item
                     label.user-status__text.user-status__text_online
                         input.user-status__input(type="radio" name="status" value="1" v-model.number="status")
@@ -31,7 +31,7 @@
 </template>
 
 <script>
-
+    import ClickOutside from 'vue-click-outside'
     import { viewModeChat} from '@/mixins/mixins'
     export default {
         /*  props:{
@@ -44,6 +44,9 @@
             }
           },*/
         mixins:[viewModeChat],
+        directives: {
+            ClickOutside
+        },
         data() {
             return {
                 show: false,
@@ -98,6 +101,7 @@
             },
             status(val){
                 console.log('status',val);
+                this.show=false;
                 if(val!==1) {
 
                     this.$store.commit('visitors/processRemoveItemAll')
@@ -110,13 +114,14 @@
             if (this.isAuth) this.makeActivity();
         },
         mounted() {
-            document.addEventListener('click', this.close);
+            this.popupItem = this.$el
+            //document.addEventListener('click', this.close);
         },
         updated() {
-            document.addEventListener('click', this.close);
+            //document.addEventListener('click', this.close);
         },
         beforeDestroy() {
-            document.removeEventListener('click', this.close);
+            //document.removeEventListener('click', this.close);
         },
         methods: {
             close(e) {
@@ -128,7 +133,9 @@
             toggle() {
                 this.show = !this.show;
             },
-
+            hide(){
+                this.show=false;
+            },
             operatorStatusUpdate(){
                 this.$http.put('operator-online-update',{
                     online:this.status
