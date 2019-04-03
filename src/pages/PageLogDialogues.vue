@@ -36,7 +36,7 @@
             thead(v-if="headList.length")
                 tr: th(v-for="(item, index) in headList" :key="index" v-html="item.text")
             tbody
-                tr(v-for="(item, index) in itemListStore", :keey="item.uuid+item.site_id")
+                tr(v-for="(item, index) in itemList", :keey="item.uuid+item.site_id")
                     td
                         base-people(
                             type="visitor",
@@ -136,18 +136,13 @@
                     last_days:this.last_days,
                 }
             },
-            itemListStore(){
-                let itemList = [];
-                console.log(this.$store.state.visitors.all);
-                itemList=this.$store.state.visitors.all
-                return itemList
 
-            },
 
         },
         watch:{
-            requestData(){
-
+            paramsComp(){
+                console.log('paramsComp');
+                this.resetSearch()
                 this.getItemList();
             },
         },
@@ -157,7 +152,15 @@
         },
         methods:{
             startChat(item){
-                return this.$router.push({name:'visor',params: { uuid: item.uuid,site_id:item.site_id}});
+
+                let {uuid, site_id,} = item;
+                let list = this.$store.state.visitors.visor.slice()
+                let findIndex = list.findIndex(item=>uuid+site_id===item.uuid+item.site_id)
+                if(findIndex===-1) {
+                    list.push(item)
+                    this.$store.commit('visitors/newList',{field:'visor',val:{list:list}})
+                }
+                return this.$router.push({name:'visor',params: { uuid, site_id}});
 
                 this.$http.post('chat-room-supervisor-enter', {
                     room_id:item.room_id,
@@ -168,7 +171,7 @@
             },
             filterPeriod(val){
                 //console.log(val);
-                if (val===-1) {
+                if (val==='-1') {
 
                     this.showCalendar=true;
                     this.last_days='';

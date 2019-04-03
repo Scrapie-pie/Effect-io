@@ -57,7 +57,7 @@
                                 |Ожидаем подтверждение от: {{item.first_name}}&nbsp;
                                 base-btn(theme="link" v-text="'Отменить передачу'" @click="transferCancel(item.id)")
 
-        footer.chat-main__footer(v-if="viewModeChat!=='visor'")
+        footer.chat-main__footer
             the-chat-main-footer
 
 </template>
