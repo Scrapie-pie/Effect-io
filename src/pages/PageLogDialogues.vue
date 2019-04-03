@@ -193,6 +193,7 @@
                 this.rating=val
             },
             filterChannel(val){
+                this.sites_ids = val
                 //console.log(val);
             },
             filterStatus(val){
