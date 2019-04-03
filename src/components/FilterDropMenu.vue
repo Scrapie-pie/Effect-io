@@ -20,7 +20,10 @@
                             ul.filter-drop-menu__controls-list(:class="`filter-drop-menu__controls-list_${type}`")
                                 li.filter-drop-menu__controls-item.filter-drop-menu__controls-item_main(v-if="type!=='radio'")
                                     base-radio-check(name="allChecked", v-model="allChecked" @click="allCheckedToggle") Все {{titleName[name]}}
-                                li.filter-drop-menu__controls-item(v-for="(item, index) in filterSearchResult" :key="item.id")
+                                li.filter-drop-menu__controls-item(
+                                v-for="(item, index) in filterSearchResult" :key="item.id",
+                                @click="hideParent(item)"
+                                )
                                     base-radio-check(
                                         v-bind="controlOpetions(item)"
                                         v-model="$data['model'+type]"
@@ -187,7 +190,7 @@ export default {
 
         },
         hideParent(item){
-            if(this.name==='period') {this.show=false}
+            if(this.type==='radio') {this.show=false}
         }
     }
 }
