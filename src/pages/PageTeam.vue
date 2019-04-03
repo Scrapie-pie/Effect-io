@@ -59,7 +59,7 @@
                         base-radio-check(
                         v-if="anotherProfile(item.id)"
                             :name="'userIsActive'+item.id",
-                        :checked="item.active"  @click="changeActiveOperator(item)"
+                        :modelValue="item.active"  @click="changeActiveOperator(item)"
                         )
                     td(v-if="viewAdmin")
                         context-menu

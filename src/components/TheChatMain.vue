@@ -156,7 +156,7 @@
         computed:{
             ...mapState(['roomActiveUsersInvited','roomActiveUsersRecipient','roomActiveIsAdmin','roomActive','roomActiveId']),
             showVisitorTypingLive(){
-                if(this.viewModeChat!=='visitors') return false
+                if(this.viewModeChat!=='visitors' || this.viewModeChat!=='visor') return false
              let {guest_uuid,site_id}  = this.roomActive.visitor,
                  {params} = this.httpParams
                 //console.log('showVisitorTypingLive',guest_uuid+site_id , params.guest_uuid+ params.site_id,this.visitorTypingLive.length);
