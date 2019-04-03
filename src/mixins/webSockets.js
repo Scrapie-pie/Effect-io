@@ -140,6 +140,9 @@ export default {
                 return  this.$store.commit('visitors/processMessageLastUpdate',val)
             }
 
+            if(val.status === "supervisor") {
+                return
+            }
 
 
             if(val.site_id) {
@@ -211,7 +214,7 @@ export default {
         },
         "guest-update"(val) {
             //Todo 'guest-update'
-            console.log('guest-update',val);
+            //console.log('guest-update',val);
 
             //this.$root.$emit('guestUpdate',val)
 
@@ -229,7 +232,7 @@ export default {
             this.$store.commit('user/branchListAll',val)
         },
         "room-users"(val){
-
+            console.log('room-users',val);
             this.$store.commit('roomActive',val)
         },
         "unprocessed"(val){

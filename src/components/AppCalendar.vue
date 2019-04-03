@@ -34,6 +34,7 @@
 <script>
 
     import { setupCalendar, Calendar,DatePicker} from 'v-calendar'
+    import datetimeDMY from '@/modules/datetimeDMY'
     import 'v-calendar/lib/v-calendar.min.css';
 
     // Remember to setup calendar (passing in defaults if needed)
@@ -110,8 +111,8 @@ export default {
             let val = this.selectedDay;
             let date_from,date_to;
             if(val && val.end && val.start) {
-                date_from = this.formatDate(val.start)
-                date_to = this.formatDate(val.end)
+                date_from = datetimeDMY(val.start)
+                date_to = datetimeDMY(val.end)
                 return {
                     date_from,
                     date_to,
@@ -131,14 +132,7 @@ export default {
         send(){
             this.$emit('get',this.dates)
         },
-        formatDate(val){
-            let today = val;
-            let dd = String(today.getDate()).padStart(2, '0');
-            let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-            let yyyy = today.getFullYear();
 
-            return dd + '.' + mm + '.' + yyyy;
-        }
     }
 }
 </script>

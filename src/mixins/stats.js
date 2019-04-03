@@ -1,3 +1,4 @@
+import datetimeStoHMS from '@/modules/datetimeStoHMS'
 
 export default {
     filters:{
@@ -5,13 +6,7 @@ export default {
             if(!value) return '-';
             if(type==='percent') value+=' %'
             if(type==='time') {
-                let sec = Number(value);
-                if(!sec) return '-'
-                let h = sec/3600 ^ 0 ;
-                let m = (sec-h*3600)/60 ^ 0 ;
-                let s = sec-h*3600-m*60 ;
-
-                value = (h?h+" ч. ":'')+(m?m+" мин. ":'')+(s?s+" сек.":'')
+                value = datetimeStoHMS(value)
             }
             return value
         }

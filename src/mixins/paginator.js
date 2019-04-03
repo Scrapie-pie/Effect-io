@@ -1,6 +1,8 @@
 import lodash_once from 'lodash/once'
 import lodash_debounce from 'lodash/debounce'
+import {viewModeChat} from '@/mixins/mixins'
 export default {
+    mixins:[viewModeChat],
     data() {
         return {
             containerFullFillItemListClassName:{
@@ -14,6 +16,7 @@ export default {
             pageN:1,
             itemListCount: 0,
             itemList:[],
+            apiMethod:'guest-list'
         }
     },
     computed:{
@@ -74,7 +77,7 @@ export default {
 
             if((this.showItemLength < this.itemListCount) || this.itemListCount===0) {
 
-                this.$http.get('guest-list',this.requestData).then(({data})=>{
+                this.$http.get(this.apiMethod,this.requestData).then(({data})=>{
                     this.getItemListStart=true;
                     if (data.data.count) {
 
@@ -87,9 +90,8 @@ export default {
                 })
             }
         },
-        getItemListUnique(){ //Пустой для совместимости
+        getItemListUnique(){},
 
-        },
         containerFullFillItemList:lodash_once(function(){
             if(!this.containerFullFillItemListClassName.item) return
             //Заполняем свободную область элементами

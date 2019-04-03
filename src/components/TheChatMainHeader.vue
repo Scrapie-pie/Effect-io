@@ -26,7 +26,7 @@
                         the-chat-main-header-history
 
 
-        ul.chat-main-header__controls(v-if="viewModeChat!='operators'")
+        ul.chat-main-header__controls(v-if="viewModeChat!='operators' && viewModeChat!='visor' ")
             template(v-if="viewModeChat!='process'")
                 li.chat-main-header__control()
                     base-btn(

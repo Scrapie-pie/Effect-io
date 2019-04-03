@@ -113,6 +113,9 @@
             })
         },
         methods:{
+            getItemListUnique(){ //Пустой для совместимости
+
+            },
             startChat(visitor){
                 //return console.log(visitor);
                 this.$http.put('guest-take', {

@@ -76,17 +76,17 @@ export default {
                 {id:3,name:'С оценкой "хорошо"'},
             ],
             statusList:[
-                {id:0,name:"Текущие (онлайн)"},
-                {id:1,name:'Завершенные автоматически'},
-                {id:2,name:'Завершенные вручную'},
-                {id:4,name:'Пропущенные'},
-                {id:5,name:'Просроченные (более 30 сек.)'},
+                {id:'active',name:"Текущие (онлайн)"},
+                {id:'auto_finished',name:'Завершенные автоматически'},
+                {id:'manually_finished',name:'Завершенные вручную'},
+                {id:'missed',name:'Пропущенные'},
+                {id:'overdue',name:'Просроченные (более 30 сек.)'},
             ],
             titleName:{
                 operator:'сотрудники',
                 ball:'оценки',
                 status:'статусы',
-                channel:'каналы',
+                siteCompany:'каналы',
             }
         }
     },
@@ -124,8 +124,13 @@ export default {
                 return item
             })
         },
-        channelList(){
-            return this.$store.state.channelList
+        siteCompanyList(){
+            return this.$store.state.user.siteCompanyList.map(item=>{
+                let chanalName=''
+                //if (item.channel_type!=7) chanalName = ' ('+this.$store.getters.channelName(item.channel_type)+')'
+                item.name=item.url + chanalName;
+                return item
+            })
         },
 
     },
@@ -162,8 +167,9 @@ export default {
         },
         modelcheckbox:{
             handler(val){
-                if (val.length!==this.itemList.length) this.allChecked=false
-                this.$emit('get',val)
+                if (val.length!==this.itemList.length) this.allChecked=false;
+
+                this.$emit('get',val.map(item=>item.id))
             },
             immediate: true
         }

@@ -8,7 +8,7 @@
             slot="control"
             )
         filter-drop-menu(
-            name="channel",
+            name="siteCompany",
             @get="filterChannel"
             slot="control"
         )
@@ -49,19 +49,22 @@
                         base-btn.base-table__show-hover(
                         @click="startChat(item)"
                         ) Просмотреть диалог
-                    td 1
-                    td 2
-                    td 3
+                    td
+                        |{{item.date | datetimeDMY }}
+                    td(v-text="item.channel")
+                    td
+                        |{{item.queue_time | datetimeStoHMS}}
                     td.page-log-dialogues__ball
-                        base-icon(:name="'ball'+ball")
-                        |{{ball| ballText}}
+                        base-icon(:name="'ball'+item.rating")
+                        |{{item.rating| ballText}}
 
         base-no-found(v-else name="visitors")
 
 </template>
 
 <script>
-
+    import datetimeDMY from '@/modules/datetimeDMY'
+    import datetimeStoHMS from '@/modules/datetimeStoHMS'
     import TheLayoutTable from '@/components/TheLayoutTable'
     import FilterDropMenu from '@/components/FilterDropMenu'
 
@@ -73,6 +76,8 @@
             TheLayoutTable
         },
         filters:{
+            datetimeDMY,
+            datetimeStoHMS,
             ballText(value){
                 if (value==1) return 'Плохо'
                 if (value==2) return 'Средне'
@@ -81,8 +86,9 @@
         },
         data() {
             return {
+                apiMethod:'chat-get-all',
                 showCalendar:false,
-                ball:3,
+
 
                 headList:[
                     {text:'Имя',field:'name'},
@@ -94,13 +100,20 @@
 
                 ],
 
-                date_from:null,
-                date_to:null,
-                time_from:null,
-                time_to:null,
-                lastDay:null,
+                date_from:'',
+                date_to:'',
+                time_from:'',
+                time_to:'',
+                last_days:'',
 
-                limit:5,
+
+                users_ids:[],
+                sites_ids:[],
+                branches_ids:[],
+                statuses:[],
+                rating:[],
+
+                limit:11,
                 containerFullFillItemListClassName:{
                     scrollBar:'layout-table__content',
                     item:'base-table__tr'
@@ -111,43 +124,65 @@
         computed:{
             paramsComp(){
                 return {
-
+                    users_ids:this.users_ids,
+                    sites_ids:this.sites_ids,
+                    branches_ids:this.branches_ids,
+                    statuses:this.statuses,
+                    rates:this.rates,
+                    date_from:this.date_from,
+                    date_to:this.date_to,
+                    time_from:this.time_from,
+                    time_to:this.time_to,
+                    last_days:this.last_days,
                 }
             },
 
-        },
-        watch:{
 
         },
+        watch:{
+            paramsComp(){
+                console.log('paramsComp');
+                this.resetSearch()
+                this.getItemList();
+            },
+        },
         created() {
-            this.getItemList()
+
+
         },
         methods:{
-            startChat(visitor){
-                this.$router.push({name:'logDialogItem',params: { uuid: visitor.uuid,site_id:visitor.site_id}});
-                return
-                this.$http.put('guest-take', {
-                    guest_uuid:visitor.uuid,
-                    site_id:visitor.site_id
+            startChat(item){
+
+                let {uuid, site_id,} = item;
+                let list = this.$store.state.visitors.visor.slice()
+                let findIndex = list.findIndex(item=>uuid+site_id===item.uuid+item.site_id)
+                if(findIndex===-1) {
+                    list.push(item)
+                    this.$store.commit('visitors/newList',{field:'visor',val:{list:list}})
+                }
+                return this.$router.push({name:'visor',params: { uuid, site_id}});
+
+                this.$http.post('chat-room-supervisor-enter', {
+                    room_id:item.room_id,
                 })
                     .then(({ data }) => {
-                        this.$router.push({name:'logDialogItem',params: { uuid: visitor.uuid,site_id:visitor.site_id}});
+
                     })
             },
             filterPeriod(val){
                 //console.log(val);
-                if (val===-1) {
+                if (val==='-1') {
 
                     this.showCalendar=true;
-                    this.lastDay=null;
+                    this.last_days='';
                 }
                 else {
-                    this.lastDay=val;
+                    this.last_days=val;
                     this.showCalendar=false;
-                    this.date_from = null;
-                    this.date_to = null;
-                    this.time_from = null;
-                    this.time_to = null;
+                    this.date_from = '';
+                    this.date_to = '';
+                    this.time_from = '';
+                    this.time_to = '';
                 }
             },
             filterCalendar(val){
@@ -160,15 +195,19 @@
             },
             filterBall(val){
                 //console.log(val);
+                this.rates=val
             },
             filterChannel(val){
-                //console.log(val);
+                this.sites_ids = val
+                console.log(val);
             },
             filterStatus(val){
                 //console.log(val);
+                this.statuses=val;
             },
             filterOperator(val){
                 //console.log(val);
+                this.users_ids = val
             }
 
         },

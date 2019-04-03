@@ -50,7 +50,6 @@
             }
         },
         computed:{
-
             paramsComp(){
                 return {
                     type:this.type
@@ -98,6 +97,12 @@
                         return this.itemFormat(item)
                     });
                 }
+                if (this.viewModeChat==="visor")  {
+                    itemList=this.$store.state.visitors[this.viewModeChat].map(item=>{
+                        return this.itemFormat(item)
+                    });
+                }
+
                 console.log(itemList);
                 return itemList
 
@@ -111,15 +116,19 @@
         watch:{
             itemListStoreItemPush:{
                 handler(val){
-                    let  [visitorInfo,itemListStore] = val;
+                   /* let  [visitorInfo,itemListStore] = val;
                     let {uuid, site_id,} = visitorInfo;
                     let findIndex = itemListStore.findIndex(item=>uuid+site_id===item.uuid+item.site_id)
                     if(findIndex===-1) {
                         itemListStore.push(visitorInfo)
-                        if (this.viewModeChat==="visitors") this.$store.commit('visitors/self',{list:itemListStore})
-                        if (this.viewModeChat==="process") this.$store.commit('visitors/process',{list:itemListStore})
+                        if (this.$route.name == "chatId") this.$store.commit('visitors/self',{list:itemListStore})
+                        if (this.$route.name == "process") this.$store.commit('visitors/process',{list:itemListStore}) //
 
-                    }
+                        if (this.viewModeChat==="visor")    {
+                            this.$store.commit('visitors/newList',{field:this.viewModeChat,val:{list:itemListStore}})
+                        }
+
+                    }*/
                 },
                 immediate: false
             },
@@ -139,6 +148,13 @@
 
             },
             '$route'(to,from){
+
+                if(this.viewModeChat==='visor') {
+
+                    return
+
+                }
+
                 if (this.viewModeChat==="process") this.type='unprocessed';
                 if (this.viewModeChat==="visitors") this.type='self';
 
@@ -151,9 +167,11 @@
         },
             search:'debounceSearch',
         },
+
+
         created(){
             console.log('create')
-
+            if(this.viewModeChat==='visor') return
             if (this.viewModeChat==="process") this.type='unprocessed';
             if (this.viewModeChat==="visitors") this.type='self';
             this.setLastPageN();
@@ -254,13 +272,13 @@
                 this.getItemList();
                 this.scrollbarScrollerPush(this.$refs.scrollbar,0)
             },
-
-
-
             getItemListUnique(){
-                let itemListStore = this.itemListStore;
+                console.log('getItemListUnique');
+                let itemListStore = this.itemListStore.slice();
+
                 let itemListNew= []
                 let itemListOld= []
+                console.log(itemListStore,this.itemList);
                 this.itemList.filter((item)=>{
                     let findIndex = this.itemListStore.findIndex((itemStore)=>itemStore.uuid+itemStore.site_id === item.uuid+item.site_id);
                     if (findIndex !== -1) {
@@ -280,7 +298,11 @@
                 if (this.viewModeChat==="process") this.$store.commit('visitors/process',{list:itemListStore})
                 if (this.viewModeChat==="visitors")    this.$store.commit('visitors/self',{list:itemListStore})
 
+
+
+
             },
+
 
         }
     }
