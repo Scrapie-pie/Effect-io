@@ -6,6 +6,7 @@
             name="calendar",
             @get="filterCalendar"
             slot="control"
+
             )
         filter-drop-menu(
             name="siteCompany",
@@ -107,11 +108,12 @@
                 last_days:'',
 
 
+                rates:[],
                 users_ids:[],
                 sites_ids:[],
                 branches_ids:[],
                 statuses:[],
-                rating:[],
+
 
                 limit:11,
                 containerFullFillItemListClassName:{
@@ -134,12 +136,16 @@
                     time_from:this.time_from,
                     time_to:this.time_to,
                     last_days:this.last_days,
+
                 }
             },
 
 
         },
         watch:{
+            itemList(val){
+              console.table(val)
+            },
             paramsComp(){
                 console.log('paramsComp');
                 this.resetSearch()
@@ -174,7 +180,7 @@
                 if (val==='-1') {
 
                     this.showCalendar=true;
-                    this.last_days='';
+
                 }
                 else {
                     this.last_days=val;
@@ -187,14 +193,14 @@
             },
             filterCalendar(val){
                 //console.log(val);
-
+                this.last_days='';
                 this.date_from = val.date_from;
                 this.date_to = val.date_to;
                 this.time_from = val.time_from;
                 this.time_to = val.time_to;
             },
             filterBall(val){
-                //console.log(val);
+                console.log(val);
                 this.rates=val
             },
             filterChannel(val){

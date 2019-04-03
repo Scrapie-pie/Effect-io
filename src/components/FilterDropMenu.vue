@@ -135,7 +135,13 @@ export default {
 
     },
     watch:{
-
+        show(val){
+            if(val===false){
+                if(this.type==='checkbox' && this.name!=='calendar') {
+                    this.$emit('get',this.modelcheckbox.map(item=>item.id))
+                }
+            }
+        },
         itemList:{
             handler(val,oldval)
             {
@@ -149,6 +155,7 @@ export default {
         },
         modelradio:{
             handler(val){
+                console.log('modelradio');
                 if(this.name==='period') {
 
                     if (!val) {
@@ -169,7 +176,7 @@ export default {
             handler(val){
                 if (val.length!==this.itemList.length) this.allChecked=false;
 
-                this.$emit('get',val.map(item=>item.id))
+                //this.$emit('get',val.map(item=>item.id))
             },
             immediate: true
         }

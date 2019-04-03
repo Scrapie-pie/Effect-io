@@ -79,13 +79,13 @@
                 return value
             },
             itemFormatSetOptions(item){
-                item.last_message = this.lastMessage(item.last_message,item)
-                item.last_message = wrapTextUrls(item.last_message)
+                let text = this.lastMessage(item.last_message,item)
+                text = wrapTextUrls(item.last_message)
                 item.basePeopleOptions={
                     status:item.online,
                     avatarUrl:item.photo,
                     name:item.fullName,
-                    text:item.last_message,
+                    text:text,
                     bgTextNoFill:true,
                     count:item.unread.length,
                     hidden:true
