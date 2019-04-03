@@ -232,7 +232,7 @@ export default {
             this.$store.commit('user/branchListAll',val)
         },
         "room-users"(val){
-
+            console.log('room-users',val);
             this.$store.commit('roomActive',val)
         },
         "unprocessed"(val){

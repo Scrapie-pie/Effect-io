@@ -107,7 +107,11 @@
             }
         },
         watch:{
-            '$route'(){
+
+            '$route'(to,from){
+
+
+
                 console.log('$route TheChatMain.vue');
                 this.getRoomUserAll()
                 this.historyMessageLoadStart=true;
@@ -150,7 +154,7 @@
 
         },
         computed:{
-            ...mapState(['roomActiveUsersInvited','roomActiveUsersRecipient','roomActiveIsAdmin','roomActive']),
+            ...mapState(['roomActiveUsersInvited','roomActiveUsersRecipient','roomActiveIsAdmin','roomActive','roomActiveId']),
             showVisitorTypingLive(){
                 if(this.viewModeChat!=='visitors') return false
              let {guest_uuid,site_id}  = this.roomActive.visitor,
@@ -196,6 +200,8 @@
         created() {
             console.log('created $on messageAd');
 
+
+
             this.getRoomUserAll()
             this.$root.$on('chatSystemMessages',(val)=>this.systemMessages.push(val))
 
@@ -216,7 +222,9 @@
         beforeDestroy(){
             this.$root.$off('messageAdd',this.emitMessageAdd)
         },
+
         methods: {
+
             emitMessageAdd(val){
                 console.log('this.$root.$on(\'messageAdd\'');
                 if(val.socket){//Todo Временное решение, на проверку дубликатов, пока Симон не исправит
@@ -245,7 +253,7 @@
             },
             invitedCancel(user_id){
                 this.$http.post('chat-room-user-cancel-invitation',{
-                    room_id:this.$store.state.roomActiveId,
+                    room_id:this.roomActiveId,
                     user_id
                 })
             },
@@ -289,6 +297,11 @@
                 }
                 else if(this.viewModeChat==='common') {
                     params.room_id = this.$store.state.user.profile.common_room_id
+                }
+                else if(this.viewModeChat==='visor') {
+                    let {guest_uuid,site_id } =  this.httpParams.params;
+                         params.guest_uuid = guest_uuid,
+                        params.site_id = site_id;
                 }
 
 

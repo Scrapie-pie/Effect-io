@@ -63,6 +63,7 @@
             TheClientInfo,
         },
         mixins:[viewModeChat],
+
         computed:{
             show(){
                 return (this.$route.name==='processAll' || this.$route.name==='messageAll')
@@ -72,14 +73,20 @@
                 return this.$route.name==='processAll' && !this.$store.state.visitors.process.length
             },
             messageNo(){
-                console.log('messageNo',this.$store.state.visitors.self.length);
+
                 return this.$route.name==='messageAll' && !this.$store.state.visitors.self.length
             },
 
 
         },
+        watch:{
+            '$route'(to,from){
+                this.visorSubscribeSocket(to,from)
+            }
+        },
         beforeRouteEnter (to, from, next) {
             next(vm=>{
+                vm.visorSubscribeSocket(to)
                 if(to.name==="common") {
                     if(vm.$store.state.user.profile.is_common_chat) vm.$router.push({name:'common'})
                     else vm.$router.push( {name: 'processAll',},)
@@ -88,8 +95,33 @@
             })
         },
         beforeRouteLeave (to, from, next) {
+            this.visorSubscribeSocket(null,from)
             this.$store.commit('resetState')
             return next()
+        },
+        methods:{
+            visorSubscribeSocket(to,from){
+
+                if(this.viewModeChat==='visor') {
+                    console.log('visorSubscribeSocket');
+                    if(to) {
+                        this.$http.post('chat-room-supervisor-enter', {
+                            site_id:to.params.site_id,
+                            uuid:to.params.uuid,
+                        })
+                    }
+
+
+                    if(from) {
+                        this.$http.post('chat-room-supervisor-exit', {
+                            site_id:from.params.site_id,
+                            uuid:from.params.uuid,
+                        })
+                    }
+
+
+                }
+            },
         }
 
 

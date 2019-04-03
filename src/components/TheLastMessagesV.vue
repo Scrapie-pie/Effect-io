@@ -50,7 +50,6 @@
             }
         },
         computed:{
-
             paramsComp(){
                 return {
                     type:this.type
@@ -149,7 +148,12 @@
 
             },
             '$route'(to,from){
-                if(this.viewModeChat==='visor') return
+
+                if(this.viewModeChat==='visor') {
+
+                    return
+
+                }
 
                 if (this.viewModeChat==="process") this.type='unprocessed';
                 if (this.viewModeChat==="visitors") this.type='self';
@@ -163,6 +167,8 @@
         },
             search:'debounceSearch',
         },
+
+
         created(){
             console.log('create')
             if(this.viewModeChat==='visor') return
