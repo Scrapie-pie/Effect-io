@@ -210,7 +210,8 @@ export default {
             this.$root.$emit('guestUpdate',val)
         },
         "guest-update"(val) {
-            //console.log('guest-update',val);
+            //Todo 'guest-update'
+            console.log('guest-update',val);
 
             //this.$root.$emit('guestUpdate',val)
 

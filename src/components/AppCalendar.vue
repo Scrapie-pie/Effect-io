@@ -146,11 +146,8 @@ export default {
 <style lang="scss">
     .app-calendar{
         $color_select:glob-color('info-light');
-        padding-left:calc-em(15);
-        padding-right:calc-em(15);
-        .c-day-popover .c-day-background {
-            //background-color:$color_select!important;
-        }
+
+
 
 
 

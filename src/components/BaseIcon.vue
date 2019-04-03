@@ -1,7 +1,7 @@
 <template lang="pug">
     span(hidden="true").icon-wrap
         svg.icon(
-        :id="`icon_${name}`"
+
             :class="`icon_${name}`"
         role="presentation"): use( :xlink:href="src" )
 </template>
@@ -30,6 +30,10 @@
     import tg from '@/assets/img/icons/social/tg.svg';
     import fbme from '@/assets/img/icons/social/fbme.svg';
     //import chat from '@/assets/img/icons/social/chat.svg';
+
+    import ball1 from '@/assets/img/icons/balls/ball1.svg';
+    import ball2 from '@/assets/img/icons/balls/ball2.svg';
+    import ball3 from '@/assets/img/icons/balls/ball3.svg';
 
 
     import phrases from '@/assets/img/icons/chat/phrases.svg';
@@ -68,6 +72,7 @@
     import team from '@/assets/img/icons/chat/menu/team.svg';
     import visitors from '@/assets/img/icons/chat/menu/visitors.svg';
     import statistics from '@/assets/img/icons/chat/menu/statistics.svg';
+    import log from '@/assets/img/icons/chat/menu/log.svg';
 
 
 
@@ -144,7 +149,7 @@
         &_eye {
             fill:glob-color('disabled');
         }
-        &_file {
+        &_file,&_ball1,&_ball2,&_ball3   {
             width:30px;
             height:30px;
         }

@@ -3,31 +3,23 @@
         form.last-messages
             .last-messages__search
                 base-filter-search(
-                    :item-list="itemListSortUnread"
+                    :item-list="itemListStore"
                     fieldName="fullName" ,
                     @result="(val)=>filterSearchResult=val",
-                    @text="(val)=>search=val"
+
                 )
-            scroll-bar.last-messages__scrollbar
+            scroll-bar.last-messages__scrollbar(ref="scrollbar")
                 ul.last-messages__list
                     li.last-messages__item(
                         v-for="(item, index) in filterSearchResult",
                         :key="item.id",
-                        :class="classObject(item)"
+                        :class="item.classList"
                     )
                         router-link.last-messages__btn(
-                            :to="{name:'teamChat',params:{id:item.id}}"
-                            v-text="`${item.fullName}:${item.last_message}`"
+                            :to="item.rootLinkOptions.link"
+                            v-text="item.rootLinkOptions.text"
                         )
-                        base-people.last-messages__people(
-                            :status="item.online",
-                            :avatar-url="item.photo",
-                            :name="item.fullName",
-                            :text="item.last_message | lastMessage(item) | wrapTextUrls",
-                            :bg-text-no-fill="true",
-                            :count="item.unread.length"
-                            hidden
-                        )
+                        base-people.last-messages__people(v-bind="item.basePeopleOptions")
 </template>
 
 <script>
@@ -39,14 +31,7 @@
     export default {
         components:{NavAside},
         mixins:[viewModeChat,httpParams],
-        filters: {
-            lastMessage: function (value,item) {
-                if(!value) return '';
-                if(item.first_name !== item.last_message_author) return 'Вы: '+value
-                return value
-            },
-            wrapTextUrls
-        },
+
         data() {
             return {
                 search:'',
@@ -54,13 +39,22 @@
             }
         },
         computed:{
-            itemList(){
-                return this.$store.getters['operators/all']
-            },
-            itemListSortUnread(){
-                return lodash_sortBy(this.itemList,(item)=>{
-                    return -item.unread.length
+
+            itemListStore(){
+                let itemList = [];
+
+                itemList=this.$store.getters['operators/all'].map(item=>{
+
+                    return this.itemFormat(item)
                 });
+
+                return itemList
+
+            },
+            itemListSort(){
+                return lodash_sortBy(this.itemListStore,[
+                    (item)=>-item.unread.length
+                ]);
             },
             itemListSortActiveFirst() {
                 let itemActive,
@@ -79,12 +73,46 @@
 
         },
         methods:{
-            classObject(item){
-                return {
-                    'last-messages__item_active':item.id === this.httpParams.params.id,
-                    'last-messages__item_warning':item.warning
+            lastMessage: function (value,item) {
+                if(!value) return '';
+                if(item.first_name !== item.last_message_author) return 'Вы: '+value
+                return value
+            },
+            itemFormatSetOptions(item){
+                item.last_message = this.lastMessage(item.last_message,item)
+                item.last_message = wrapTextUrls(item.last_message)
+                item.basePeopleOptions={
+                    status:item.online,
+                    avatarUrl:item.photo,
+                    name:item.fullName,
+                    text:item.last_message,
+                    bgTextNoFill:true,
+                    count:item.unread.length,
+                    hidden:true
                 }
-            }
+
+
+              return item
+            },
+            itemFormatSetLink(item){
+                item.rootLinkOptions = {
+                    link:{name:'teamChat',params:{id:item.id}},
+                    text:`${item.fullName}:${item.last_message}`
+                }
+                return item
+            },
+            itemFormatSetClassList(item){
+                item.classList={}
+                item.classList['last-messages__item_active'] = item.id === this.httpParams.params.id;
+                return item
+            },
+            itemFormat(item){
+                item = this.itemFormatSetClassList(item)
+                item = this.itemFormatSetLink(item)
+                item = this.itemFormatSetOptions(item)
+              return item
+            },
+
         }
 
     }

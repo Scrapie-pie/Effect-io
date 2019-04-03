@@ -12,64 +12,50 @@
                     li.last-messages__item(
                         v-for="(item, index) in filterSearchResult",
                         :key="item.uuid+item.site_id",
-                        :class="{'last-messages__item_active':item.open,'last-messages__item_hot':item.hot,'last-messages__item_very-hot':item.very_hot}"
+                        :class="item.classList"
                     )
                         router-link.last-messages__btn(
-                            :to="item.link"
-                            v-text="item.last_message"
+                            :to="item.rootLinkOptions.link"
+                            v-text="item.rootLinkOptions.text"
                         )
-                        base-people.last-messages__people(
-                            :avatar-url="item.photo",
-                            :avatar-stub="item.photo_stub",
-                            :avatar-name="item.avatarName",
-                            :name="item | name(visitorInfo)",
-                            :text="item.last_authorAndMessage | wrapTextUrls",
-                            :bg-text-no-fill="true",
-                            :channel-name="$store.getters.channelName(item.channel_type)",
-                            :count="item.unread.length"
-                            hidden
-                        )
+                        base-people.last-messages__people(v-bind="item.basePeopleOptions")
 
 
 </template>
 
 <script>
     import lodash_sortBy from 'lodash/sortBy'
-    import lodash_debounce from 'lodash/debounce'
-    import lodash_once from 'lodash/once'
+
+
 
     import NavAside from '@/components/NavAside'
 
-    import { viewModeChat,httpParams,scrollbar } from '@/mixins/mixins'
+    import { viewModeChat,httpParams,scrollbar,paginator } from '@/mixins/mixins'
     import wrapTextUrls from '@/modules/wrapTextUrls'
 
     export default {
-        mixins:[viewModeChat,httpParams ,scrollbar],
+        mixins:[viewModeChat,httpParams ,scrollbar,paginator],
         components:{NavAside},
-        filters: {
-            name(item,visitorInfo){
-                if(item.very_hot) return item.name
-                if(item.uuid+item.site_id === visitorInfo.uuid+visitorInfo.site_id) return visitorInfo.name
-                else return item.name
-            },
-            wrapTextUrls
-        },
         data() {
             return {
-                classNameScrollBar:'last-messages',
+                containerFullFillItemListClassName:{
+                    scrollBar:'last-messages__scrollbar',
+                    item:'last-messages__item'
+                },
                 filterSearchResult:[],
-                getItemListStart:true,
 
-                search:'',
-                limit:20,
-                pageN:1,
                 pageNBeforeSearch:null,
                 type:'',
-                itemListCount: 0,
-                itemList:[],
+
             }
         },
         computed:{
+
+            paramsComp(){
+                return {
+                    type:this.type
+                }
+            },
             visitorInfo(){
                 return this.$store.state.visitors.itemOpen
             },
@@ -103,44 +89,40 @@
 
                 if (this.viewModeChat==="process")   {
                     itemList=this.$store.state.visitors.process.map(item=>{
-                        let {uuid,site_id} = item;
-                        item.link = {name:'process',params: { uuid,site_id}}
-                        item.unread = [];
                         return this.itemFormat(item)
                     });
                 }
 
                 if (this.viewModeChat==="visitors")  {
                     itemList=this.$store.state.visitors.self.map(item=>{
-                        let {uuid,site_id} = item;
-                        item.link = {name:'chatId',params: { uuid,site_id}}
                         return this.itemFormat(item)
                     });
                 }
+                console.log(itemList);
                 return itemList
 
             },
-            showItemLength(){
-                return this.itemList.length
-            },
-            pageNLast(){
-                return this.itemListCount / this.limit
-            },
-            getOffset(){
-                return this.limit * (this.pageN - 1)
-            },
-            requestData(){
-                return {
-                    params:{
-                        search:this.search,
-                        offset:this.getOffset,
-                        limit:this.limit,
-                        type:this.type
-                    }
-                }
+            itemListStoreItemPush(){
+                if(this.visitorInfo) return [this.visitorInfo,this.itemListStore]
+
             }
+
         },
         watch:{
+            itemListStoreItemPush:{
+                handler(val){
+                    let  [visitorInfo,itemListStore] = val;
+                    let {uuid, site_id,} = visitorInfo;
+                    let findIndex = itemListStore.findIndex(item=>uuid+site_id===item.uuid+item.site_id)
+                    if(findIndex===-1) {
+                        itemListStore.push(visitorInfo)
+                        if (this.viewModeChat==="visitors") this.$store.commit('visitors/self',{list:itemListStore})
+                        if (this.viewModeChat==="process") this.$store.commit('visitors/process',{list:itemListStore})
+
+                    }
+                },
+                immediate: false
+            },
             pageN(val){
                 if(!this.search) {
                     if (this.viewModeChat==="process")  this.$store.commit('visitors/setProcessLastPageN',val);
@@ -149,9 +131,9 @@
                 }
             },
             filterSearchResult(val){
-                if (val.length && (this.$route.name=="processAll" || this.$route.name=="messageAll")) {
-                    if (val[0].link)  {
-                        this.$router.push(val[0].link)
+                if (val.length && (this.$route.name==="processAll" || this.$route.name==="messageAll")) {
+                    if (val[0].rootLinkOptions.link)  {
+                        this.$router.push(val[0].rootLinkOptions.link)
                     }
                 }
 
@@ -164,8 +146,6 @@
                     this.setLastPageN()
                     if(this.itemListStore.length) return
                     this.resetSearch();
-
-
                     this.getItemList();
                 }
         },
@@ -183,34 +163,85 @@
             }
         },
         methods:{
+            setName(item,visitorInfo){
+                if(item.very_hot) return item.name
+                if(item.uuid+item.site_id === visitorInfo.uuid+visitorInfo.site_id) return visitorInfo.name
+                else return item.name
+            },
             setLastPageN(){
                 if (this.viewModeChat==="process" && this.$store.state.visitors.processLastPageN) this.pageN = this.$store.state.visitors.processLastPageN;
                 if (this.viewModeChat==="visitors" && this.$store.state.visitors.selfLastPageN) this.pageN = this.$store.state.visitors.selfLastPageN;
-                console.log('pageN',this.pageN);
+
+            },
+            itemFormatSetClassList(item){
+                let open
+                if(this.httpParams) {
+                    let {uuid,site_id} = this.httpParams.params;
+                    open = (item.uuid+item.site_id === uuid+site_id)
+                }
+                item.classList={}
+                item.classList['last-messages__item_active'] = open;
+                item.classList['last-messages__item_hot'] = item.hot
+                item.classList['last-messages__item_very-hot'] = item.very_hot
+
+                return item
+            },
+            itemFormatSetOptions(item){
+
+                item.basePeopleOptions={
+                    avatarUrl:item.photo,
+                    avatarStub:item.photo_stub,
+                    avatarName:item.avatarName,
+                    name:this.setName(item,this.visitorInfo),
+                    text:wrapTextUrls(item.last_authorAndMessage),
+                    channelName:this.$store.getters.channelName(item.channel_type),
+
+                    bgTextNoFill:true,
+                    count:item.unread.length,
+                    hidden:true
+                }
+
+
+                return item
+            },
+            itemFormatSetLink(item){
+                let routName=''
+                if(this.viewModeChat==="process") routName = this.viewModeChat
+                if(this.viewModeChat==="visitors") routName = 'chatId'
+                item.rootLinkOptions = {
+                    link:{name:routName,params:{uuid:item.uuid,site_id:item.site_id}},
+                    text:item.last_message
+                }
+                return item
             },
             itemFormat(item){
+                if (!Array.isArray(item.unread)) item.unread=[]
+
+                item = this.itemFormatSetClassList(item)
+                item = this.itemFormatSetLink(item)
+
                 if(item.very_hot) { ///такое только в не обработанном
                     item.avatarName='warning';
                     item.name = 'Диалог необходимо <br> принять <br> в приоритетном порядке!'
                     item.last_authorAndMessage = 'Передача диалога...'
                 } else {
+
                     item.last_authorAndMessage = this.authorAndMessage(item);
                 }
-                if(this.httpParams) {
-                    let {uuid,site_id} = this.httpParams.params;
-                    item.open = (item.uuid+item.site_id === uuid+site_id)
-                }
+                item = this.itemFormatSetOptions(item)
+
                 return item
             },
             authorAndMessage({last_message_author,last_message,files}){
+
                 let author = '';
                 if(!last_message && files && files.length) last_message = 'Прикреплены файлы'
-                if(last_message_author) author = last_message_author +': '
-                last_message = author + last_message;
+                if(last_message_author) author = last_message_author +': ';
+                if(author && last_message) last_message = author + last_message;
                 return last_message
             },
-            debounceSearch:lodash_debounce(function(val,oldVal) {
 
+            debounceSearchMethods(val,oldVal){
                 if(!oldVal) this.pageNBeforeSearch = this.pageN; //запоминаем загруженную страницу
 
                 this.resetSearch();
@@ -220,44 +251,12 @@
                     return
                 }
 
-
-
-
                 this.getItemList();
                 this.scrollbarScrollerPush(this.$refs.scrollbar,0)
-                }, 500
-            ),
-            resetSearch(){
-                this.pageN=1;
-                this.itemListCount= 0;
-                this.itemList=[];
-                this.getItemListStart=true;
-            },
-            scrollLoad(e){
-                if(this.scrollLoadAllow(e)) this.getItemList()
             },
 
-            getItemList(){
-                if(!this.getItemListStart) return;
-                this.getItemListStart=false;
-
-                if((this.showItemLength < this.itemListCount) || this.itemListCount===0) {
-                    console.log('getItemList');
-                    this.$http.get('guest-list',this.requestData).then(({data})=>{
-                        this.getItemListStart=true;
-                        if (data.data.count) {
-
-                            this.itemList.push(...data.data.list);
-                            this.itemListCount = data.data.count;
-                            this.getItemListUnique();
-                            this.pageN += 1;
 
 
-                            this.containerFullFillItemList()
-                        }
-                    })
-                }
-            },
             getItemListUnique(){
                 let itemListStore = this.itemListStore;
                 let itemListNew= []
@@ -265,7 +264,7 @@
                 this.itemList.filter((item)=>{
                     let findIndex = this.itemListStore.findIndex((itemStore)=>itemStore.uuid+itemStore.site_id === item.uuid+item.site_id);
                     if (findIndex !== -1) {
-                        itemListStore[findIndex] == item;
+                        itemListStore[findIndex] = item;
                         let {uuid,site_id} =  item
                         itemListOld.push({uuid,site_id})
                     } // обновляем в базе элемент если такой пришел из поиска
@@ -275,29 +274,14 @@
                         itemListNew.push({uuid,site_id}) // если в базе нет, добавляем в базу
                     }
                 })
-              /*  console.log('itemListNew');
-                console.table(itemListNew);
-                console.log('itemListOld');
-                console.table(itemListOld);*/
-                //console.log('***********',itemListStore.length);
+
 
 
                 if (this.viewModeChat==="process") this.$store.commit('visitors/process',{list:itemListStore})
                 if (this.viewModeChat==="visitors")    this.$store.commit('visitors/self',{list:itemListStore})
 
             },
-            containerFullFillItemList:lodash_once(function(){
 
-                //Заполняем свободную область элементами
-                setTimeout(()=>{
-                    let itemHeight = document.querySelector('.'+this.classNameScrollBar+'__item').clientHeight,
-                        containerHeight =  document.querySelector('.'+this.classNameScrollBar+'__scrollbar').clientHeight;
-                    console.log(this.showItemLength * itemHeight , containerHeight);
-                    if(this.showItemLength*itemHeight < containerHeight) this.getItemList()
-                },50)
-
-
-            })
         }
     }
 </script>

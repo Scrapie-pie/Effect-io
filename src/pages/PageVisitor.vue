@@ -1,14 +1,13 @@
 <template lang="pug">
     the-layout-table.page-visitors(@scrolldown="scrollLoad")
-        base-field.page-visitors__search(
+        base-filter-search.page-visitors__search(
             slot="control",
-            type="search"
-            name="search",
+            :item-list="itemList",
+            @result="(val)=>filterSearchResult=val",
+            @text="(val)=>search=val"
             placeholder="Поиск... (имя, тел., e-mail)"
-            v-model="search",
             theme="soft"
-            )
-
+        )
         base-field(
             slot="control",
             type="select"
@@ -28,7 +27,7 @@
                     th Контакты
                     th Регион
             tbody
-                tr.page-visitors__tr(v-for="(item, index) in itemList", :keey="item.uuid+item.site_id")
+                tr.page-visitors__tr(v-for="(item, index) in filterSearchResult", :key="item.uuid+item.site_id")
                     td
                         base-people(
                             type="visitor"
@@ -57,12 +56,12 @@
     import TheLayoutTable from '@/components/TheLayoutTable'
 
 
-    import lodash_debounce from 'lodash/debounce'
-    import lodash_extend from 'lodash/extend'
 
-    import {scrollbar } from '@/mixins/mixins'
+
+
+    import {scrollbar,paginator } from '@/mixins/mixins'
     export default {
-        mixins:[scrollbar],
+        mixins:[scrollbar,paginator],
         components: {
 
             ContextMenu,
@@ -70,55 +69,33 @@
         },
         data() {
             return {
-                getItemListStart:true,
-                search: '',
-                limit:20,
-                pageN:1,
-                itemListCount: 0,
-                itemList:[],
+                containerFullFillItemListClassName:{
+                    scrollBar:'layout-table__content',
+                    item:'base-table__tr'
+                },
                 channel: '',
-                channelList: [
-                    {id:null,name:"Все каналы"},
-                    {id:7,name:"Виджеты"},
-                    {id:2,name:"ВКонтакте"},
-                    {id:3,name:"Facebook"},
-                    {id:5,name:"Telegram"},
-                    {id:6,name:"Viber"},
-                    {id:13,name:"WhatsApp"},
-                    {id:4,name:"Slack"}
-                ],
+
             }
         },
         computed:{
-            showItemLength(){
-                return this.itemList.length
+            channelList(){
+                return this.$store.state.channelList
             },
-            pageNLast(){
-                return this.itemListCount / this.limit
-            },
-            getOffset(){
-                return this.limit * (this.pageN - 1)
-            },
-            requestData(){
+            paramsComp(){
                 return {
-                    params:{
-                        search:this.search,
-                        offset:this.getOffset,
-                        limit:this.limit,
-                        channel_type:this.channel.id,
-                    }
+                    channel_type:this.channel.id,
                 }
-            }
+            },
+
         },
         watch:{
-            search:'debounceSearch',
             channel(){
+                console.log('channel');
                 this.resetSearch();
                 this.getItemList();
             },
         },
         created() {
-
             this.channel = this.channelList[0];
             this.$root.$on('guestNewSession',(val)=>{
                 console.log('guestNewSession',val);
@@ -136,13 +113,8 @@
             })
         },
         methods:{
-            scrollLoad(e){
-
-                if(this.scrollLoadAllow(e)) this.getItemList()
-            },
             startChat(visitor){
-
-
+                //return console.log(visitor);
                 this.$http.put('guest-take', {
                     guest_uuid:visitor.uuid,
                     site_id:visitor.site_id
@@ -151,54 +123,18 @@
                         this.$router.push({name:'chatId',params: { uuid: visitor.uuid,site_id:visitor.site_id}});
                     })
             },
-            debounceSearch:lodash_debounce(function()
-                {
-                    this.resetSearch();
-                    this.getItemList();
-                }, 500),
-            resetSearch(){
-                this.pageN=1;
-                this.itemListCount= 0;
-                this.itemList=[];
-                this.getItemListStart=true;
-            },
-
-            getItemList(){
-                if(!this.getItemListStart) return;
-
-                this.getItemListStart=false;
-                console.log(this.showItemLength,this.itemListCount,this.itemListCount);
-                if((this.showItemLength < this.itemListCount) || this.itemListCount===0) {
-                    console.log('getItemList');
-                    this.$http.get('guest-list',this.requestData).then(({data})=>{
-                        this.getItemListStart=true;
-                        if (data.data.count) {
-                            this.itemList.push(...data.data.list);
-                            this.itemListCount = data.data.count;
-                            this.pageN += 1;
-                            console.log(this.showItemLength,this.itemListCount,this.itemListCount);
-                        }
-
-                    })
-
-                }
 
 
-            },
+
+
 
         },
-        sockets:{
 
-        }
     }
 </script>
 
 <style lang="scss">
     .page-visitors{
-
-
-
-
 
         &__search{
             width:calc-em(250);

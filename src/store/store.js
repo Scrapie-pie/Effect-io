@@ -27,6 +27,16 @@ const getDefaultState = () => {
         roomActiveUsersRecipient:[],
         roomActiveIsAdmin:false,
         connected: false,
+        channelList: [
+            {id:null,name:"Все каналы"},
+            {id:7,name:"Виджеты"},
+            {id:2,name:"ВКонтакте"},
+            {id:3,name:"Facebook"},
+            {id:5,name:"Telegram"},
+            {id:6,name:"Viber"},
+            {id:13,name:"WhatsApp"},
+            {id:4,name:"Slack"}
+        ],
     }
 }
 // initial state

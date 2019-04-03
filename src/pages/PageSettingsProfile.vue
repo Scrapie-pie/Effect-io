@@ -93,20 +93,20 @@
                         li.settings-list__sub-item
                             base-radio-check.settings-list__control(name="use_chat" v-model="model.use_chat") Принимать чаты от клиентов
 
-                        li.settings-list__sub-item
-                            base-radio-check.settings-list__control(v-if="0" name="notifications") Принимать чаты от клиентов из ВКонтакте
+                        li.settings-list__sub-item(v-if="0")
+                            base-radio-check.settings-list__control( name="notifications") Принимать чаты от клиентов из ВКонтакте
 
-                        li.settings-list__sub-item
-                            base-radio-check.settings-list__control(v-if="0" name="notifications") Принимать чаты от клиентов из FaceBook
+                        li.settings-list__sub-item(v-if="0")
+                            base-radio-check.settings-list__control( name="notifications") Принимать чаты от клиентов из FaceBook
 
-                        li.settings-list__sub-item
-                            base-radio-check.settings-list__control(v-if="0" name="notifications") Принимать звонки от клиентов
+                        li.settings-list__sub-item(v-if="0")
+                            base-radio-check.settings-list__control( name="notifications") Принимать звонки от клиентов
 
-                        li.settings-list__sub-item
-                            base-radio-check.settings-list__control(v-if="0" name="notifications") Принимать звонки от клиентов
+                        li.settings-list__sub-item(v-if="0")
+                            base-radio-check.settings-list__control( name="notifications") Принимать звонки от клиентов
 
-                        li.settings-list__sub-item
-                            base-radio-check.settings-list__control(v-if="0" name="notifications") Принимать звонки от клиентов
+                        li.settings-list__sub-item(v-if="0")
+                            base-radio-check.settings-list__control( name="notifications") Принимать звонки от клиентов
                             text-info.settings-list__text-info Выберите, в каких каналах данный сотрудник может общаться с клиентами.
 
 

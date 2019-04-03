@@ -3,16 +3,20 @@ import Router from 'vue-router'
 import store from '@/store/store'
 import axios from "@/modules/axios";
 
-import AccountAuth from '@/components/AccountAuth'
+const AccountAuth  = () => import('@/components/AccountAuth')
 
-import PageTeam from '@/pages/PageTeam'
+const PageTeam = () => import('@/pages/PageTeam')
 //import PageTestScreen from '@/pages/PageTestScreen'
-const  PageTestScreen = ()=> import('@/pages/PageTestScreen')
-import PageVisitor from '@/pages/PageVisitor'
-import PageChat from '@/pages/PageChat'
+const PageTestScreen = ()=> import('@/pages/PageTestScreen')
+const PageVisitor = () => import('@/pages/PageVisitor')
+const PageChat = () => import('@/pages/PageChat')
+const PageLogDialogues = () => import('@/pages/PageLogDialogues')
 
-import Settings from '@/routes/settings'
-import Stats from '@/routes/stats'
+
+
+
+import settings from '@/routes/settings'
+import stats from '@/routes/stats'
 
 import Ui from '@/routes/ui'
 
@@ -25,7 +29,8 @@ let helpers = process.env.NODE_ENV !== 'production' ? [...Ui,  {
     component: PageTestScreen,
 }] : [];
 
-import BaseNoFound from '@/components/BaseNoFound'
+
+const BaseNoFound  = () => import('@/components/BaseNoFound')
 
 const router =  new Router({
     mode: 'history',
@@ -102,10 +107,19 @@ const router =  new Router({
             path: '/common',
             component: PageChat
         },
-        ...Settings,
-        ...Stats,
+        {
+            name: 'logDialogList',
+            path: '/log',
+            component: PageLogDialogues
+        },
+        {
+            name: 'logDialogItem', // Вынес в children, иначе при переходе срабатывала функция hideHeader
+            path: '/log/:id',
+            component: PageChat,
+        },
+        ...settings,
+        ...stats,
         ...helpers,
-        //...Ui,
         {
             name: 'exit',
             path:'/exit',

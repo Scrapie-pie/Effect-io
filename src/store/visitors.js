@@ -95,11 +95,7 @@ export default {
         setSelfLastPageN(state,val){
             state.selfLastPageN=val;
         },
-        selfPush(state,val) {
-            console.log(val);
-            state.self.push(...val.list);
-            state.selfCount=val.count;
-        },
+
         selfMessageLastUpdate(state, val) {
             console.log('selfMessageLastUpdate',val);
             let findIndex = state.self.findIndex((item)=>{
@@ -108,10 +104,15 @@ export default {
             })
 
             if(findIndex !== -1) {
+                this._vm.$set(state.self[findIndex],'last_message',val.body)
+                this._vm.$set(state.self[findIndex],'last_message_author',val.last_message_author)
+                if(!val.selfUuid) {
+                    let unread =  state.self[findIndex].unread
+                    unread.push(val.id)
+                    this._vm.$set(state.self[findIndex],'unread',unread)
 
-                state.self[findIndex].last_message = val.body;
-                state.self[findIndex].last_message_author = val.last_message_author
-                if(!val.selfUuid) state.self[findIndex].unread.push(val.id);
+
+                }
             }
         },
         selfMessageRemoveItem(state, {uuid,site_id}) {
