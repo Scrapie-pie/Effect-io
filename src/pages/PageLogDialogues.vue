@@ -124,6 +124,8 @@
         },
         methods:{
             startChat(visitor){
+                this.$router.push({name:'logDialogItem',params: { uuid: visitor.uuid,site_id:visitor.site_id}});
+                return
                 this.$http.put('guest-take', {
                     guest_uuid:visitor.uuid,
                     site_id:visitor.site_id
