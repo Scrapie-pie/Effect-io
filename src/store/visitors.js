@@ -4,6 +4,8 @@ const getDefaultState = () => {
     return {
         all:[],
         allCount:false,
+        visor:[],
+        visorCount:false,
         process:[],
         processCount:false,
         processLastPageN:1,
@@ -12,6 +14,8 @@ const getDefaultState = () => {
         selfLastPageN:null,
         itemOpen:false,
         itemOpenHistoryActions:false,
+
+
 
     }
 }
@@ -29,7 +33,13 @@ export default {
             Object.assign(state, getDefaultState())
         },
 
+        newList(state,{field, val}) {
 
+            state[field]=val.list;
+            if (val.count) state[field+'Count']=val.count;
+            console.log(state, field, val);
+
+        },
         all(state, val) { //Todo походу не нужен
             state.all=val.list;
             state.allCount=val.count;

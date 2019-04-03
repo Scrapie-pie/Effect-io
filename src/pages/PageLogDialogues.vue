@@ -36,7 +36,7 @@
             thead(v-if="headList.length")
                 tr: th(v-for="(item, index) in headList" :key="index" v-html="item.text")
             tbody
-                tr(v-for="(item, index) in itemList", :keey="item.uuid+item.site_id")
+                tr(v-for="(item, index) in itemListStore", :keey="item.uuid+item.site_id")
                     td
                         base-people(
                             type="visitor",
@@ -51,7 +51,8 @@
                         ) Просмотреть диалог
                     td(v-text="item.date")
                     td(v-text="item.channel")
-                    td(v-text="datetimeStoHMS(item.queue_time)")
+                    td
+                        |{{item.queue_time | datetimeStoHMS}}
                     td.page-log-dialogues__ball
                         base-icon(:name="'ball'+item.rate")
                         |{{item.rate| ballText}}
@@ -73,6 +74,7 @@
             TheLayoutTable
         },
         filters:{
+            datetimeStoHMS,
             ballText(value){
                 if (value==1) return 'Плохо'
                 if (value==2) return 'Средне'
@@ -81,8 +83,9 @@
         },
         data() {
             return {
+                apiMethod:'chat-get-all',
                 showCalendar:false,
-                ball:3,
+
 
                 headList:[
                     {text:'Имя',field:'name'},
@@ -94,13 +97,20 @@
 
                 ],
 
-                date_from:null,
-                date_to:null,
-                time_from:null,
-                time_to:null,
-                lastDay:null,
+                date_from:'',
+                date_to:'',
+                time_from:'',
+                time_to:'',
+                last_days:'',
 
-                limit:5,
+
+                users_ids:[],
+                sites_ids:[],
+                branches_ids:[],
+                statuses:[],
+                rating:[],
+
+                limit:11,
                 containerFullFillItemListClassName:{
                     scrollBar:'layout-table__content',
                     item:'base-table__tr'
@@ -111,20 +121,40 @@
         computed:{
             paramsComp(){
                 return {
-
+                    users_ids:this.users_ids,
+                    sites_ids:this.sites_ids,
+                    branches_ids:this.branches_ids,
+                    statuses:this.statuses,
+                    rating:this.rating,
+                    date_from:this.date_from,
+                    date_to:this.date_to,
+                    time_from:this.time_from,
+                    time_to:this.time_to,
+                    last_days:this.last_days,
                 }
+            },
+            itemListStore(){
+                let itemList = [];
+                console.log(this.$store.state.visitors.all);
+                itemList=this.$store.state.visitors.all
+                return itemList
+
             },
 
         },
         watch:{
+            requestData(){
 
+                this.getItemList();
+            },
         },
         created() {
-            this.getItemList()
+
+
         },
         methods:{
             startChat(visitor){
-                this.$router.push({name:'logDialogItem',params: { uuid: visitor.uuid,site_id:visitor.site_id}});
+                this.$router.push({name:'visor',params: { uuid: visitor.uuid,site_id:visitor.site_id}});
                 return
                 this.$http.put('guest-take', {
                     guest_uuid:visitor.uuid,
@@ -139,15 +169,15 @@
                 if (val===-1) {
 
                     this.showCalendar=true;
-                    this.lastDay=null;
+                    this.last_days='';
                 }
                 else {
-                    this.lastDay=val;
+                    this.last_days=val;
                     this.showCalendar=false;
-                    this.date_from = null;
-                    this.date_to = null;
-                    this.time_from = null;
-                    this.time_to = null;
+                    this.date_from = '';
+                    this.date_to = '';
+                    this.time_from = '';
+                    this.time_to = '';
                 }
             },
             filterCalendar(val){
@@ -160,15 +190,18 @@
             },
             filterBall(val){
                 //console.log(val);
+                this.rating=val
             },
             filterChannel(val){
                 //console.log(val);
             },
             filterStatus(val){
                 //console.log(val);
+                this.statuses=val;
             },
             filterOperator(val){
                 //console.log(val);
+                this.users_ids = val
             }
 
         },

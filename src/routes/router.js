@@ -108,13 +108,13 @@ const router =  new Router({
             component: PageChat
         },
         {
-            name: 'logDialogList',
-            path: '/log',
+            name: 'all',
+            path: '/all',
             component: PageLogDialogues
         },
         {
-            name: 'logDialogItem',
-            path: '/log/:uuid/:site_id',
+            name: 'visor',
+            path: '/all/:uuid/:site_id',
             component: PageChat,
         },
         ...settings,

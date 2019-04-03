@@ -76,11 +76,11 @@ export default {
                 {id:3,name:'С оценкой "хорошо"'},
             ],
             statusList:[
-                {id:0,name:"Текущие (онлайн)"},
-                {id:1,name:'Завершенные автоматически'},
-                {id:2,name:'Завершенные вручную'},
-                {id:4,name:'Пропущенные'},
-                {id:5,name:'Просроченные (более 30 сек.)'},
+                {id:'active',name:"Текущие (онлайн)"},
+                {id:'auto_finished',name:'Завершенные автоматически'},
+                {id:'manually_finished',name:'Завершенные вручную'},
+                {id:'missed',name:'Пропущенные'},
+                {id:'overdue',name:'Просроченные (более 30 сек.)'},
             ],
             titleName:{
                 operator:'сотрудники',
@@ -163,7 +163,7 @@ export default {
         modelcheckbox:{
             handler(val){
                 if (val.length!==this.itemList.length) this.allChecked=false
-                this.$emit('get',val)
+                this.$emit('get',val.map(item=>item.id))
             },
             immediate: true
         }

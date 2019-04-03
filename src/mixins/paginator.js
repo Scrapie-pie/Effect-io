@@ -1,6 +1,8 @@
 import lodash_once from 'lodash/once'
 import lodash_debounce from 'lodash/debounce'
+import {viewModeChat} from '@/mixins/mixins'
 export default {
+    mixins:[viewModeChat],
     data() {
         return {
             containerFullFillItemListClassName:{
@@ -14,6 +16,7 @@ export default {
             pageN:1,
             itemListCount: 0,
             itemList:[],
+            apiMethod:'guest-list'
         }
     },
     computed:{
@@ -74,7 +77,7 @@ export default {
 
             if((this.showItemLength < this.itemListCount) || this.itemListCount===0) {
 
-                this.$http.get('guest-list',this.requestData).then(({data})=>{
+                this.$http.get(this.apiMethod,this.requestData).then(({data})=>{
                     this.getItemListStart=true;
                     if (data.data.count) {
 
@@ -87,9 +90,39 @@ export default {
                 })
             }
         },
-        getItemListUnique(){ //Пустой для совместимости
+        getItemListUnique(){
+            console.log('getItemListUnique');
+            let itemListStore = this.itemListStore.slice();
+
+            let itemListNew= []
+            let itemListOld= []
+            console.log(itemListStore,this.itemList);
+            this.itemList.filter((item)=>{
+                let findIndex = this.itemListStore.findIndex((itemStore)=>itemStore.uuid+itemStore.site_id === item.uuid+item.site_id);
+                if (findIndex !== -1) {
+                    itemListStore[findIndex] = item;
+                    let {uuid,site_id} =  item
+                    itemListOld.push({uuid,site_id})
+                } // обновляем в базе элемент если такой пришел из поиска
+                else {
+                    itemListStore.push(item) // если в базе нет, добавляем в базу
+                    let {uuid,site_id} =  item
+                    itemListNew.push({uuid,site_id}) // если в базе нет, добавляем в базу
+                }
+            })
+
+
+
+            if (this.viewModeChat==="process") this.$store.commit('visitors/process',{list:itemListStore})
+            if (this.viewModeChat==="visitors")    this.$store.commit('visitors/self',{list:itemListStore})
+
+
+            if (this.viewModeChat==="all")    {
+                this.$store.commit('visitors/newList',{field:this.viewModeChat,val:{list:itemListStore}})
+            }
 
         },
+
         containerFullFillItemList:lodash_once(function(){
             if(!this.containerFullFillItemListClassName.item) return
             //Заполняем свободную область элементами

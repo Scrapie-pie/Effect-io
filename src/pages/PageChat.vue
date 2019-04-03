@@ -34,7 +34,7 @@
                     aside.page-chat__info
                         the-client-info
 
-        template(v-if="viewModeChat === 'logDialogItem'")
+        template(v-if="viewModeChat === 'visor'")
             section.page__view.page-chat
                 the-last-messages-v
                 section.page-chat__main

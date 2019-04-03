@@ -98,6 +98,12 @@
                         return this.itemFormat(item)
                     });
                 }
+                if (this.viewModeChat==="visor")  {
+                    itemList=this.$store.state.visitors[this.viewModeChat].map(item=>{
+                        return this.itemFormat(item)
+                    });
+                }
+
                 console.log(itemList);
                 return itemList
 
@@ -118,6 +124,10 @@
                         itemListStore.push(visitorInfo)
                         if (this.viewModeChat==="visitors") this.$store.commit('visitors/self',{list:itemListStore})
                         if (this.viewModeChat==="process") this.$store.commit('visitors/process',{list:itemListStore})
+
+                        if (this.viewModeChat==="visor")    {
+                            this.$store.commit('visitors/newList',{field:this.viewModeChat,val:{list:itemListStore}})
+                        }
 
                     }
                 },
@@ -256,31 +266,6 @@
             },
 
 
-
-            getItemListUnique(){
-                let itemListStore = this.itemListStore;
-                let itemListNew= []
-                let itemListOld= []
-                this.itemList.filter((item)=>{
-                    let findIndex = this.itemListStore.findIndex((itemStore)=>itemStore.uuid+itemStore.site_id === item.uuid+item.site_id);
-                    if (findIndex !== -1) {
-                        itemListStore[findIndex] = item;
-                        let {uuid,site_id} =  item
-                        itemListOld.push({uuid,site_id})
-                    } // обновляем в базе элемент если такой пришел из поиска
-                    else {
-                        itemListStore.push(item) // если в базе нет, добавляем в базу
-                        let {uuid,site_id} =  item
-                        itemListNew.push({uuid,site_id}) // если в базе нет, добавляем в базу
-                    }
-                })
-
-
-
-                if (this.viewModeChat==="process") this.$store.commit('visitors/process',{list:itemListStore})
-                if (this.viewModeChat==="visitors")    this.$store.commit('visitors/self',{list:itemListStore})
-
-            },
 
         }
     }
