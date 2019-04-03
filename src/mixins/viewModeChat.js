@@ -7,6 +7,7 @@ export default {
             if(this.$route.name == "process" || this.$route.name == "processAll") return 'process';
             if(this.$route.name == "chatId" || this.$route.name == "messageAll") return 'visitors';
             if(this.$route.name == "common" )return 'common';
+            if(this.$route.name == "logDialogItem" )return 'logDialogItem';
 
 
         },

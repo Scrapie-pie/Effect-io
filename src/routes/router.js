@@ -113,8 +113,8 @@ const router =  new Router({
             component: PageLogDialogues
         },
         {
-            name: 'logDialogItem', // Вынес в children, иначе при переходе срабатывала функция hideHeader
-            path: '/log/:id',
+            name: 'logDialogItem',
+            path: '/log/:uuid/:site_id',
             component: PageChat,
         },
         ...settings,

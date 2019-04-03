@@ -9,9 +9,8 @@
         template(v-if="viewModeChat === 'operators'")
             section.page__view.page-chat
                 the-last-messages()
-                template(v-if="!show")
-                    section.page-chat__main
-                        the-chat-main
+                section.page-chat__main
+                    the-chat-main
 
 
         template(v-if="viewModeChat === 'visitors'")
@@ -35,7 +34,13 @@
                     aside.page-chat__info
                         the-client-info
 
-
+        template(v-if="viewModeChat === 'logDialogItem'")
+            section.page__view.page-chat
+                the-last-messages-v
+                section.page-chat__main
+                    the-chat-main
+                aside.page-chat__info
+                    the-client-info
 
 
 

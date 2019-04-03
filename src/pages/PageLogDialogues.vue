@@ -49,19 +49,19 @@
                         base-btn.base-table__show-hover(
                         @click="startChat(item)"
                         ) Просмотреть диалог
-                    td 1
-                    td 2
-                    td 3
+                    td(v-text="item.date")
+                    td(v-text="item.channel")
+                    td(v-text="datetimeStoHMS(item.queue_time)")
                     td.page-log-dialogues__ball
-                        base-icon(:name="'ball'+ball")
-                        |{{ball| ballText}}
+                        base-icon(:name="'ball'+item.rate")
+                        |{{item.rate| ballText}}
 
         base-no-found(v-else name="visitors")
 
 </template>
 
 <script>
-
+    import datetimeStoHMS from '@/modules/datetimeStoHMS'
     import TheLayoutTable from '@/components/TheLayoutTable'
     import FilterDropMenu from '@/components/FilterDropMenu'
 
