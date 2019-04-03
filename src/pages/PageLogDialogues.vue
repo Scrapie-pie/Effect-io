@@ -157,11 +157,13 @@
         },
         methods:{
             startChat(item){
+                return this.$router.push({name:'visor',params: { uuid: item.uuid,site_id:item.site_id}});
+
                 this.$http.post('chat-room-supervisor-enter', {
                     room_id:item.room_id,
                 })
                     .then(({ data }) => {
-                        this.$router.push({name:'visor',params: { uuid: item.uuid,site_id:item.site_id}});
+
                     })
             },
             filterPeriod(val){

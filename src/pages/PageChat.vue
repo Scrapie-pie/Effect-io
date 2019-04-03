@@ -29,6 +29,7 @@
                 the-last-messages-v
 
                 template(v-if="!show")
+
                     section.page-chat__main
                         the-chat-main
                     aside.page-chat__info

@@ -140,6 +140,9 @@ export default {
                 return  this.$store.commit('visitors/processMessageLastUpdate',val)
             }
 
+            if(val.status === "supervisor") {
+                return
+            }
 
 
             if(val.site_id) {
