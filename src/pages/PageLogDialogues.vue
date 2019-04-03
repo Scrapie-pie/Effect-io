@@ -2,7 +2,7 @@
     the-layout-table.page-log-dialogues(@scrolldown="scrollLoad")
         filter-drop-menu(name="period", @get="filterPeriod" slot="control" type="radio")
         filter-drop-menu(
-            v-if="showCalendar"
+            v-show="showCalendar"
             name="calendar",
             @get="filterCalendar"
             slot="control"
@@ -107,6 +107,8 @@
                 time_to:'',
                 last_days:'',
 
+                tempDates:[],
+
 
                 rates:[],
                 users_ids:[],
@@ -143,9 +145,7 @@
 
         },
         watch:{
-            itemList(val){
-              console.table(val)
-            },
+
             paramsComp(){
                 console.log('paramsComp');
                 this.resetSearch()
@@ -181,6 +181,13 @@
 
                     this.showCalendar=true;
 
+                    if (this.tempDates.length){
+                        this.date_from = this.tempDates[0];
+                        this.date_to = this.tempDates[1];
+                        this.time_from = this.tempDates[2];
+                        this.time_to = this.tempDates[3];
+                    }
+
                 }
                 else {
                     this.last_days=val;
@@ -198,6 +205,8 @@
                 this.date_to = val.date_to;
                 this.time_from = val.time_from;
                 this.time_to = val.time_to;
+
+                this.tempDates=[this.date_from,this.date_to,this.time_from,this.time_to]
             },
             filterBall(val){
                 console.log(val);
