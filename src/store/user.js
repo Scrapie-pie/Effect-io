@@ -5,7 +5,7 @@ const getDefaultState = () => {
         profile:false,
         settings:false,
         branchListAll:[],
-
+        siteCompanyList:[]
 
     }
 }
@@ -52,6 +52,9 @@ export default {
         branchListAll(state, val) {
             state.branchListAll=val;
         },
+        siteCompanyList(state,val){
+            state.siteCompanyList=val;
+        }
 
 
     },
@@ -65,6 +68,7 @@ export default {
             commit('profile', user);
             dispatch('getSettings');
             dispatch('getBranchListAll');
+            dispatch('getSiteCompanyList');
             dispatch('operators/getAll',null,{root:true});
             dispatch('phrases/getItemList',null,{root:true});
         /*    dispatch('visitors/getAll',null,{root:true}); //Todo лишний или нет
@@ -94,6 +98,11 @@ export default {
         getBranchListAll({commit}) {
             this._vm.$http.get('branches-list').then(({data})=>{
                 commit('branchListAll',data.data)
+            })
+        },
+        getSiteCompanyList({commit}) {
+            this._vm.$http.get('site-company-list').then(({data})=>{
+                commit('siteCompanyList',data.data)
             })
         },
 

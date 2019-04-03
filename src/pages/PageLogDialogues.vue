@@ -8,7 +8,7 @@
             slot="control"
             )
         filter-drop-menu(
-            name="channel",
+            name="siteCompany",
             @get="filterChannel"
             slot="control"
         )
@@ -49,19 +49,21 @@
                         base-btn.base-table__show-hover(
                         @click="startChat(item)"
                         ) Просмотреть диалог
-                    td(v-text="item.date")
+                    td
+                        |{{item.date | datetimeDMY }}
                     td(v-text="item.channel")
                     td
                         |{{item.queue_time | datetimeStoHMS}}
                     td.page-log-dialogues__ball
-                        base-icon(:name="'ball'+item.rate")
-                        |{{item.rate| ballText}}
+                        base-icon(:name="'ball'+item.rating")
+                        |{{item.rating| ballText}}
 
         base-no-found(v-else name="visitors")
 
 </template>
 
 <script>
+    import datetimeDMY from '@/modules/datetimeDMY'
     import datetimeStoHMS from '@/modules/datetimeStoHMS'
     import TheLayoutTable from '@/components/TheLayoutTable'
     import FilterDropMenu from '@/components/FilterDropMenu'
@@ -74,6 +76,7 @@
             TheLayoutTable
         },
         filters:{
+            datetimeDMY,
             datetimeStoHMS,
             ballText(value){
                 if (value==1) return 'Плохо'
@@ -125,7 +128,7 @@
                     sites_ids:this.sites_ids,
                     branches_ids:this.branches_ids,
                     statuses:this.statuses,
-                    rating:this.rating,
+                    rates:this.rates,
                     date_from:this.date_from,
                     date_to:this.date_to,
                     time_from:this.time_from,
@@ -153,15 +156,12 @@
 
         },
         methods:{
-            startChat(visitor){
-                this.$router.push({name:'visor',params: { uuid: visitor.uuid,site_id:visitor.site_id}});
-                return
-                this.$http.put('guest-take', {
-                    guest_uuid:visitor.uuid,
-                    site_id:visitor.site_id
+            startChat(item){
+                this.$http.post('chat-room-supervisor-enter', {
+                    room_id:item.room_id,
                 })
                     .then(({ data }) => {
-                        this.$router.push({name:'logDialogItem',params: { uuid: visitor.uuid,site_id:visitor.site_id}});
+                        this.$router.push({name:'visor',params: { uuid: item.uuid,site_id:item.site_id}});
                     })
             },
             filterPeriod(val){
@@ -190,11 +190,11 @@
             },
             filterBall(val){
                 //console.log(val);
-                this.rating=val
+                this.rates=val
             },
             filterChannel(val){
                 this.sites_ids = val
-                //console.log(val);
+                console.log(val);
             },
             filterStatus(val){
                 //console.log(val);

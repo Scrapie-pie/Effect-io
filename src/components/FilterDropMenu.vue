@@ -86,7 +86,7 @@ export default {
                 operator:'сотрудники',
                 ball:'оценки',
                 status:'статусы',
-                channel:'каналы',
+                siteCompany:'каналы',
             }
         }
     },
@@ -124,8 +124,13 @@ export default {
                 return item
             })
         },
-        channelList(){
-            return this.$store.state.channelList
+        siteCompanyList(){
+            return this.$store.state.user.siteCompanyList.map(item=>{
+                let chanalName=''
+                //if (item.channel_type!=7) chanalName = ' ('+this.$store.getters.channelName(item.channel_type)+')'
+                item.name=item.url + chanalName;
+                return item
+            })
         },
 
     },
@@ -162,7 +167,8 @@ export default {
         },
         modelcheckbox:{
             handler(val){
-                if (val.length!==this.itemList.length) this.allChecked=false
+                if (val.length!==this.itemList.length) this.allChecked=false;
+
                 this.$emit('get',val.map(item=>item.id))
             },
             immediate: true

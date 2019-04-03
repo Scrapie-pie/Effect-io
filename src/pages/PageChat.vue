@@ -71,6 +71,7 @@
                 return this.$route.name==='processAll' && !this.$store.state.visitors.process.length
             },
             messageNo(){
+                console.log('messageNo',this.$store.state.visitors.self.length);
                 return this.$route.name==='messageAll' && !this.$store.state.visitors.self.length
             },
 

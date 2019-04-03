@@ -122,8 +122,8 @@
                     let findIndex = itemListStore.findIndex(item=>uuid+site_id===item.uuid+item.site_id)
                     if(findIndex===-1) {
                         itemListStore.push(visitorInfo)
-                        if (this.viewModeChat==="visitors") this.$store.commit('visitors/self',{list:itemListStore})
-                        if (this.viewModeChat==="process") this.$store.commit('visitors/process',{list:itemListStore})
+                        if (this.$route.name == "chatId") this.$store.commit('visitors/self',{list:itemListStore})
+                        if (this.$route.name == "process") this.$store.commit('visitors/process',{list:itemListStore}) //
 
                         if (this.viewModeChat==="visor")    {
                             this.$store.commit('visitors/newList',{field:this.viewModeChat,val:{list:itemListStore}})
@@ -149,6 +149,8 @@
 
             },
             '$route'(to,from){
+                if(this.viewModeChat==='visor') return
+
                 if (this.viewModeChat==="process") this.type='unprocessed';
                 if (this.viewModeChat==="visitors") this.type='self';
 
@@ -163,7 +165,7 @@
         },
         created(){
             console.log('create')
-
+            if(this.viewModeChat==='visor') return
             if (this.viewModeChat==="process") this.type='unprocessed';
             if (this.viewModeChat==="visitors") this.type='self';
             this.setLastPageN();
