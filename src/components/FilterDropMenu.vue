@@ -61,10 +61,10 @@ export default {
             modelcheckbox:[],
             allChecked:1,
             periodList:[
-                {id:1,name:"За сутки"},
-                {id:7,name:"За 7 дней"},
-                {id:30,name:"За 30 дней"},
-                {id:-1,name:"Выбрать интервал"},
+                {id:'1',name:"За сутки"},
+                {id:'7',name:"За 7 дней"},
+                {id:'30',name:"За 30 дней"},
+                {id:'-1',name:"Выбрать интервал"},
             ],
             ballList:[
                 {id:0,name:"Без оценки"},

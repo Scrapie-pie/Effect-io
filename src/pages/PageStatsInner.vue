@@ -1,6 +1,6 @@
 <template lang="pug">
     the-layout-table.page-stats-inner
-        filter-drop-menu(name="period", @get="filterPeriod" slot="control")
+        filter-drop-menu(name="period", @get="filterPeriod" slot="control" type="radio")
         filter-drop-menu(
             v-if="showCalendar"
             name="calendar",
