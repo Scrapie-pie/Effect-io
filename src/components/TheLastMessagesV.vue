@@ -115,19 +115,19 @@
         watch:{
             itemListStoreItemPush:{
                 handler(val){
-                    if (this.viewModeChat!=="visitors") return
+
                     let  [visitorInfo,itemListStore] = val;
                     let {uuid, site_id,} = visitorInfo;
                     let findIndex = itemListStore.findIndex(item=>uuid+site_id===item.uuid+item.site_id)
                     if(findIndex===-1) {
-                        console.log('itemListStoreItemPush',visitorInfo,itemListStore);
 
                         itemListStore.push(
                             visitorInfo
                         )
 
+                        if (this.viewModeChat==="visitors") this.$store.commit('visitors/self',{list:itemListStore})
+                        if (this.viewModeChat==="process") this.$store.commit('visitors/process',{list:itemListStore})
 
-                     this.$store.commit('visitors/self',{list:itemListStore})
                     }
 
 
