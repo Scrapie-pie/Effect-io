@@ -260,6 +260,9 @@
             },
 
             debounceSearchMethods(val,oldVal){
+
+                if(this.viewModeChat==='visor') return
+
                 if(!oldVal) this.pageNBeforeSearch = this.pageN; //запоминаем загруженную страницу
 
                 this.resetSearch();

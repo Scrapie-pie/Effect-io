@@ -54,7 +54,7 @@
 <script>
     import ContextMenu from '@/components/ContextMenu'
     import TheLayoutTable from '@/components/TheLayoutTable'
-
+    import {dialogPush } from '@/modules/modules'
 
 
 
@@ -116,14 +116,18 @@
             getItemListUnique(){ //Пустой для совместимости
 
             },
-            startChat(visitor){
-                //return console.log(visitor);
+            startChat(item){
+                //return console.log(item);
                 this.$http.put('guest-take', {
-                    guest_uuid:visitor.uuid,
-                    site_id:visitor.site_id
+                    guest_uuid:item.uuid,
+                    site_id:item.site_id
                 })
                     .then(({ data }) => {
-                        this.$router.push({name:'chatId',params: { uuid: visitor.uuid,site_id:visitor.site_id}});
+                        let {uuid,site_id} = item;
+
+                        dialogPush(this.$store,'self',item)
+
+                        this.$router.push({name:'chatId',params: { uuid,site_id}});
                     })
             },
 

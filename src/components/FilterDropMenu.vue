@@ -37,6 +37,7 @@
     import AppCalendar from '@/components/AppCalendar'
     import ClickOutside from 'vue-click-outside'
     import branchesBr from '@/modules/branchesBr'
+    import lodash_once from 'lodash/once'
 export default {
     components:{
         AppCalendar,
@@ -87,7 +88,9 @@ export default {
                 ball:'оценки',
                 status:'статусы',
                 siteCompany:'каналы',
-            }
+            },
+            modelPrev:[],
+            startOnce:true,
         }
     },
     computed:{
@@ -132,13 +135,44 @@ export default {
                 return item
             })
         },
-
+        getStart(){
+            if (this.type==='checkbox' && this.name!=='calendar' && this.modelcheckbox.length){
+                return this.modelcheckbox
+            }
+            if( this.type==='radio' && this.modelradio){
+                return this.modelradio
+            }
+        }
     },
     watch:{
+        getStart(val){
+
+            if (this.startOnce) {
+                    if (this.type==='checkbox' && this.name!=='calendar'){
+                        this.$emit('get',val.map(item=>item.id))
+
+                    }
+                    if( this.type==='radio'){
+                        this.$emit('get',val.id)
+                    }
+                    console.log('lodash_once',val);
+                    this.startOnce=false
+            }
+
+
+
+
+        },
         show(val){
-            if(val===false){
-                if(this.type==='checkbox' && this.name!=='calendar') {
-                    this.$emit('get',this.modelcheckbox.map(item=>item.id))
+            if(this.type==='checkbox' && this.name!=='calendar') {
+
+                if(val===false){
+
+                    if (this.modelPrev.join() !== this.modelcheckbox.join()){
+                        this.$emit('get',this.modelcheckbox.map(item=>item.id))
+
+                    }
+
                 }
             }
         },
@@ -155,7 +189,6 @@ export default {
         },
         modelradio:{
             handler(val){
-                console.log('modelradio');
                 if(this.name==='period') {
 
                     if (!val) {
@@ -173,13 +206,15 @@ export default {
             immediate: true
         },
         modelcheckbox:{
-            handler(val){
+            handler(val,valOld=[]){
                 if (val.length!==this.itemList.length) this.allChecked=false;
-
                 //this.$emit('get',val.map(item=>item.id))
             },
             immediate: true
         }
+    },
+    created(){
+        console.log('.log');
     },
     mounted() {
 

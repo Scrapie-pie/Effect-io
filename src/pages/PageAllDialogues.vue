@@ -64,8 +64,7 @@
 </template>
 
 <script>
-    import datetimeDMY from '@/modules/datetimeDMY'
-    import datetimeStoHMS from '@/modules/datetimeStoHMS'
+    import {datetimeDMY,datetimeStoHMS,dialogPush } from '@/modules/modules'
     import TheLayoutTable from '@/components/TheLayoutTable'
     import FilterDropMenu from '@/components/FilterDropMenu'
 
@@ -159,22 +158,12 @@
         },
         methods:{
             startChat(item){
+                let {uuid,site_id} = item;
 
-                let {uuid, site_id,} = item;
-                let list = this.$store.state.visitors.visor.slice()
-                let findIndex = list.findIndex(item=>uuid+site_id===item.uuid+item.site_id)
-                if(findIndex===-1) {
-                    list.push(item)
-                    this.$store.commit('visitors/newList',{field:'visor',val:{list:list}})
-                }
+                dialogPush(this.$store,'visor',item)
                 return this.$router.push({name:'visor',params: { uuid, site_id}});
 
-                this.$http.post('chat-room-supervisor-enter', {
-                    room_id:item.room_id,
-                })
-                    .then(({ data }) => {
 
-                    })
             },
             filterPeriod(val){
                 //console.log(val);

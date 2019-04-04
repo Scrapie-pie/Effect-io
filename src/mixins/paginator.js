@@ -1,4 +1,4 @@
-import lodash_once from 'lodash/once'
+
 import lodash_debounce from 'lodash/debounce'
 import {viewModeChat} from '@/mixins/mixins'
 export default {
@@ -98,7 +98,7 @@ export default {
             setTimeout(()=>{
                 let itemHeight = document.querySelector('.'+this.containerFullFillItemListClassName.item).clientHeight,
                     containerHeight =  document.querySelector('.'+this.containerFullFillItemListClassName.scrollBar).clientHeight;
-                console.log('containerFullFillItemList',this.showItemLength * itemHeight , containerHeight);
+
                 if(this.showItemLength*itemHeight < containerHeight) this.getItemList()
             },50)
         }

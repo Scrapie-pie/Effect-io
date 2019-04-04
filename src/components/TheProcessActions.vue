@@ -15,6 +15,7 @@
 
 <script>
  import {httpParams,routerPushProcessAllOrItemFirst } from '@/mixins/mixins'
+ import {dialogPush } from '@/modules/modules'
     import lodash_find from 'lodash/find'
 export default {
 
@@ -67,6 +68,7 @@ export default {
     methods:{
         routerNext(status){
             let {uuid,site_id} = this.httpParams.params;
+            let processItem = this.$store.state.visitors.process.find(item=>item.uuid+item.site_id===uuid+site_id)
 
             this.$store.commit('visitors/processRemoveItem',{ uuid,site_id});
             this.$store.commit('user/unreadUpdate',['unprocessed',-1])
@@ -76,6 +78,8 @@ export default {
             }
 
             if(status==="yes"){
+
+                dialogPush(this.$store,'self',processItem)
                 this.$router.push({name:'chatId',params: { uuid,site_id}});
             }
 

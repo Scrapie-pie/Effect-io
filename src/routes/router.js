@@ -10,7 +10,7 @@ const PageTeam = () => import('@/pages/PageTeam')
 const PageTestScreen = ()=> import('@/pages/PageTestScreen')
 const PageVisitor = () => import('@/pages/PageVisitor')
 const PageChat = () => import('@/pages/PageChat')
-const PageLogDialogues = () => import('@/pages/PageLogDialogues')
+const PageAllDialogues = () => import('@/pages/PageAllDialogues')
 
 
 
@@ -110,7 +110,7 @@ const router =  new Router({
         {
             name: 'all',
             path: '/all',
-            component: PageLogDialogues
+            component: PageAllDialogues
         },
         {
             name: 'visor',
