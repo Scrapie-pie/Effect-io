@@ -155,7 +155,7 @@ export default {
                     if( this.type==='radio'){
                         this.$emit('get',val.id)
                     }
-                    console.log('lodash_once',val);
+
                     this.startOnce=false
             }
 
@@ -167,8 +167,9 @@ export default {
             if(this.type==='checkbox' && this.name!=='calendar') {
 
                 if(val===false){
-
-                    if (this.modelPrev.join() !== this.modelcheckbox.join()){
+                    console.log(this.modelPrev.map(item => item.id).join());
+                    console.log(this.modelcheckbox.map(item => item.id).join());
+                    if (this.modelPrev.map(item=>item.id).join() !== this.modelcheckbox.map(item=>item.id).join()){
                         this.$emit('get',this.modelcheckbox.map(item=>item.id))
 
                     }
@@ -209,6 +210,7 @@ export default {
             handler(val,valOld=[]){
                 if (val.length!==this.itemList.length) this.allChecked=false;
                 //this.$emit('get',val.map(item=>item.id))
+                this.modelPrev = valOld
             },
             immediate: true
         }

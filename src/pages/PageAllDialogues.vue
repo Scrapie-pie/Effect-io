@@ -101,20 +101,21 @@
 
                 ],
 
+                users_ids:[],
+                sites_ids:[],
+                branches_ids:[],
+                statuses:[],
+                rates:[],
                 date_from:'',
                 date_to:'',
                 time_from:'',
                 time_to:'',
                 last_days:'',
 
+
+
+
                 tempDates:[],
-
-
-                rates:[],
-                users_ids:[],
-                sites_ids:[],
-                branches_ids:[],
-                statuses:[],
 
 
                 limit:11,
@@ -148,8 +149,27 @@
 
             paramsComp(){
                 console.log('paramsComp');
-                this.resetSearch()
-                this.getItemList();
+
+                if((
+                    this.users_ids.length &&
+                    this.sites_ids.length &&
+                    this.statuses.length &&
+                    this.rates.length
+                    ) &&
+                    this.last_days ||
+                    (
+                        this.date_from &&
+                        this.date_to &&
+                        this.time_from &&
+                        this.time_to
+                    )
+
+                ) {
+                    this.resetSearch()
+                    this.getItemList();
+                }
+
+
             },
         },
         created() {
