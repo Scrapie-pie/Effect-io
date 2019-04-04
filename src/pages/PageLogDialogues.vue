@@ -33,11 +33,11 @@
         div(slot="control" v-if="itemListCount")
             |На странице показано {{showItemLength}} из {{ itemListCount}}
 
-        base-table(v-if="showItemLength" )
+        base-table(v-if="showItemLength")
             thead(v-if="headList.length")
                 tr: th(v-for="(item, index) in headList" :key="index" v-html="item.text")
             tbody
-                tr(v-for="(item, index) in itemList", :keey="item.uuid+item.site_id")
+                tr(v-for="(item, index) in itemList", :key="item.uuid+item.site_id+item.chat_id")
                     td
                         base-people(
                             type="visitor",
@@ -59,7 +59,7 @@
                         base-icon(:name="'ball'+item.rating")
                         |{{item.rating| ballText}}
 
-        base-no-found(v-else name="visitors")
+
 
 </template>
 
@@ -87,6 +87,7 @@
         },
         data() {
             return {
+
                 apiMethod:'chat-get-all',
                 showCalendar:false,
 

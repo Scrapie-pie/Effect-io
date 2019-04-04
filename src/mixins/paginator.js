@@ -12,7 +12,7 @@ export default {
             filterSearchResult:[],
             getItemListStart:true,
             search: '',
-            limit:11,
+            limit:20,
             pageN:1,
             itemListCount: 0,
             itemList:[],
@@ -92,16 +92,16 @@ export default {
         },
         getItemListUnique(){},
 
-        containerFullFillItemList:lodash_once(function(){
+        containerFullFillItemList(){
             if(!this.containerFullFillItemListClassName.item) return
             //Заполняем свободную область элементами
             setTimeout(()=>{
                 let itemHeight = document.querySelector('.'+this.containerFullFillItemListClassName.item).clientHeight,
                     containerHeight =  document.querySelector('.'+this.containerFullFillItemListClassName.scrollBar).clientHeight;
-                console.log(this.showItemLength * itemHeight , containerHeight);
+                console.log('containerFullFillItemList',this.showItemLength * itemHeight , containerHeight);
                 if(this.showItemLength*itemHeight < containerHeight) this.getItemList()
             },50)
-        })
+        }
     }
 
 }

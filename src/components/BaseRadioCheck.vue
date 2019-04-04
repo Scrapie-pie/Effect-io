@@ -192,8 +192,8 @@
         &__check{
             position:absolute;
             left:0;
-            top:0;
-            margin-top:.4em;
+            top: 50%;
+            margin-top: -7px;
             margin-left:.4em;
             transform:scale(0);
             transition:$transition;
