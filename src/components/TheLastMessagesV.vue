@@ -103,7 +103,7 @@
                     });
                 }
 
-                console.log(itemList);
+
                 return itemList
 
             },

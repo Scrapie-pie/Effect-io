@@ -123,6 +123,20 @@ export default {
 
 
                 }
+            } else { //Если сообщение пришло, но в списке не было подгружено
+
+                let selfNew = {
+
+                }
+                selfNew.last_message = val.body;
+                selfNew.last_message_author = val.last_message_author;
+                selfNew.unread = [1];
+                selfNew.uuid = val.uuid;
+                selfNew.site_id = val.site_id;
+                selfNew.photo = val.from_user_info.photo;
+                selfNew.photo_stub = val.from_user_info.photo_stub;
+                state.self.push(selfNew)
+
             }
         },
         selfMessageRemoveItem(state, {uuid,site_id}) {

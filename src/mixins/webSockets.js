@@ -233,6 +233,7 @@ export default {
         },
         "room-users"(val){
             console.log('room-users',val);
+            val.socket=true; // для того что бы room_id не обновлять
             this.$store.commit('roomActive',val)
         },
         "unprocessed"(val){
