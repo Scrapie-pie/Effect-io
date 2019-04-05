@@ -116,6 +116,7 @@ export default {
             if(findIndex !== -1) {
                 this._vm.$set(state.self[findIndex],'last_message',val.body)
                 this._vm.$set(state.self[findIndex],'last_message_author',val.last_message_author)
+                this._vm.$set(state.self[findIndex],'name',val.from_user_info.name)
                 if(!val.selfUuid) {
                     let unread =  state.self[findIndex].unread
                     unread.push(val.id)
@@ -126,15 +127,16 @@ export default {
             } else { //Если сообщение пришло, но в списке не было подгружено
 
                 let selfNew = {
-
+                    last_message : val.body,
+                    last_message_author : val.last_message_author,
+                    unread : [1],
+                    uuid : val.uuid,
+                    site_id : val.site_id,
+                    photo : val.from_user_info.photo,
+                    photo_stub : val.from_user_info.photo_stub,
+                    name : val.from_user_info.name,
                 }
-                selfNew.last_message = val.body;
-                selfNew.last_message_author = val.last_message_author;
-                selfNew.unread = [1];
-                selfNew.uuid = val.uuid;
-                selfNew.site_id = val.site_id;
-                selfNew.photo = val.from_user_info.photo;
-                selfNew.photo_stub = val.from_user_info.photo_stub;
+
                 state.self.push(selfNew)
 
             }

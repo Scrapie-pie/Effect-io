@@ -1,5 +1,6 @@
 import config from "@/config/index";
 
+import {dialogPush} from '@/modules/modules'
 import browserNotification from '@/modules/browserNotification'
 import {browserNotificationMessage} from '@/modules/browserNotification'
 
@@ -249,6 +250,25 @@ export default {
                 }
 
             })
+        },
+        "auto-attach"(val){
+            console.log('auto-attach',val);
+            this.playSoundFile('sound_new_guest_message')
+
+            dialogPush(this.$store,'self',val)
+            this.$store.commit('user/unreadUpdate',['guest',1]);
+
+
+
+            browserNotificationMessage(val).then(click=>{
+                if(click==='toLink') {
+                    let {uuid,site_id} =  val
+                    this.$router.push({name:'chatId',params: { uuid,site_id}})
+                }
+
+            })
+
+
         },
         "self-remove"(val){
             console.log('self-remove',val,val.room_id , this.$store.state.roomActiveId)

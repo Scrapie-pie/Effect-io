@@ -130,7 +130,6 @@ export default {
         siteCompanyList(){
             return this.$store.state.user.siteCompanyList.map(item=>{
                 let chanalName=''
-                //if (item.channel_type!=7) chanalName = ' ('+this.$store.getters.channelName(item.channel_type)+')'
                 item.name=item.url + chanalName;
                 return item
             })
@@ -145,8 +144,7 @@ export default {
         }
     },
     watch:{
-        getStart(val){
-
+        getStart(val){ // отправляем один раз при инициализации
             if (this.startOnce) {
                     if (this.type==='checkbox' && this.name!=='calendar'){
                         this.$emit('get',val.map(item=>item.id))
@@ -167,10 +165,7 @@ export default {
             if(this.type==='checkbox' && this.name!=='calendar') {
 
                 if(val===false){
-                    console.log(this.modelPrev.map(item => item.id).join());
-                    console.log(this.modelcheckbox.map(item => item.id).join());
-                    console.log(this.modelPrev.map(item=>item.id).join() !== this.modelcheckbox.map(item=>item.id).join());
-                    if (this.modelPrev.map(item=>item.id).join() !== this.modelcheckbox.map(item=>item.id).join()){
+                    if (this.modelPrev.map(item=>item.id).join() !== this.modelcheckbox.map(item=>item.id).join()){ //если результат не меняли, ничего не отправляем
                         this.$emit('get',this.modelcheckbox.map(item=>item.id))
 
                     }
