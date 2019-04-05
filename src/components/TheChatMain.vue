@@ -33,9 +33,9 @@
                             base-people(
                                 :key="'visitorTypingLive'"
                                 avatar-width="md",
-                                :time="(new Date).getTime() / 1000"
+                                :time="(new Date).getTime() / 1000",
                                 :avatar-url="visitorInfo.photo",
-                                :avatar-stub="visitorInfo.photo_stub"
+                                :avatar-stub="visitorInfo.photo_stub",
                                 :name="visitorInfo.name",
                                 :text="visitorTypingLive | messageBreakLine",
                                 :right="true",
@@ -156,12 +156,14 @@
         computed:{
             ...mapState(['roomActiveUsersInvited','roomActiveUsersRecipient','roomActiveIsAdmin','roomActive','roomActiveId']),
             showVisitorTypingLive(){
-                if(this.viewModeChat!=='visitors' || this.viewModeChat!=='visor') return false
-             let {guest_uuid,site_id}  = this.roomActive.visitor,
-                 {params} = this.httpParams
-                //console.log('showVisitorTypingLive',guest_uuid+site_id , params.guest_uuid+ params.site_id,this.visitorTypingLive.length);
+                if(this.viewModeChat==='visitors' || this.viewModeChat==='visor') {
+                    let {guest_uuid,site_id}  = this.roomActive.visitor,
+                        {params} = this.httpParams
+                    //console.log('showVisitorTypingLive',guest_uuid+site_id , params.guest_uuid+ params.site_id,this.visitorTypingLive.length);
 
-                return (guest_uuid + site_id === params.guest_uuid + params.site_id) && this.visitorTypingLive.length
+                    return (guest_uuid + site_id === params.guest_uuid + params.site_id) && this.visitorTypingLive.length
+                }
+
             },
             compVisitorTypingLive(){
                 let {typingLive} = this.roomActive.visitor;
