@@ -169,11 +169,15 @@ export default {
                 if(val===false){
                     console.log(this.modelPrev.map(item => item.id).join());
                     console.log(this.modelcheckbox.map(item => item.id).join());
+                    console.log(this.modelPrev.map(item=>item.id).join() !== this.modelcheckbox.map(item=>item.id).join());
                     if (this.modelPrev.map(item=>item.id).join() !== this.modelcheckbox.map(item=>item.id).join()){
                         this.$emit('get',this.modelcheckbox.map(item=>item.id))
 
                     }
 
+                }
+                else { // открыл фильтр первый раз изменил результат, закрыл вкладку,ушел ответ, открыл вкладку, ничего не менял, закрыл, все равно ответ ушел - это исправляет ситуацию
+                    this.modelPrev=this.modelcheckbox
                 }
             }
         },
@@ -210,6 +214,8 @@ export default {
             handler(val,valOld=[]){
                 if (val.length!==this.itemList.length) this.allChecked=false;
                 //this.$emit('get',val.map(item=>item.id))
+
+                console.log('modelcheckbox handler',val,valOld);
                 this.modelPrev = valOld
             },
             immediate: true
