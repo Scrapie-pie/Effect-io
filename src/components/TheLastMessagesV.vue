@@ -319,6 +319,10 @@
         $color_bg-info:glob-color('info');
         $transition:$glob-trans;
 
+        display:flex;
+        flex-direction:column;
+        height:100%;
+
         .ps__scrollbar-y-rail {
             z-index:2;
         }

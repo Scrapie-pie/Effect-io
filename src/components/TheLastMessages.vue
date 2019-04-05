@@ -125,6 +125,10 @@
         $color_bg-error:glob-color('error');
         $transition:$glob-trans;
 
+        display:flex;
+        flex-direction:column;
+        height:100%;
+
         .ps__scrollbar-y-rail {
             z-index:2;
         }
@@ -135,7 +139,8 @@
         }
 
         &__scrollbar {
-            height:100%;
+
+
         }
 
         &__list{
