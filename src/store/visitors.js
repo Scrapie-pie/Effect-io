@@ -121,8 +121,8 @@ export default {
                 this._vm.$set(state.self[findIndex],'name',val.from_user_info.name)
                 if(!val.selfUuid) {
                     let unread =  state.self[findIndex].unread
-
-                    this._vm.$set(state.self[findIndex],'unread',unread.push(val.id))
+                    unread.push(val.id)
+                    this._vm.$set(state.self[findIndex],'unread',unread)
 
 
                 }
