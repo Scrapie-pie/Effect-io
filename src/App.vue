@@ -26,7 +26,23 @@
         mixins:[
             webSockets,
             routerPushProcessAllOrItemFirst],
-
+        computed:{
+            isAuth(){
+                return this.$store.getters['user/authenticated']
+            },
+        },
+        watch:{
+            isAuth(val){
+                if (val){
+                    window.onbeforeunload = function() {
+                        return "Данные не сохранены. Точно перейти?";
+                    };
+                }
+                else {
+                    window.onbeforeunload = false
+                }
+            }
+        },
         created() {
             document.body.classList.add('page');
 
@@ -35,6 +51,9 @@
             window.addEventListener('unhandledrejection', this.promiseErrorHandler);
 
             this.httpErrors();
+
+
+
         },
         beforeDestroy() {
             window.removeEventListener('unhandledrejection', this.promiseErrorHandler);
