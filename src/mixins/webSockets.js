@@ -19,10 +19,10 @@ export default {
         }
     },
     watch:{
-        userId(val){
+    /*    userId(val){
             if(val) this.webSocketInit()
             else this.$socket.disconnect()
-        }
+        }*/
     },
     methods: {
   /*      routerPushProcessAllOrItemFirst(){
@@ -53,9 +53,7 @@ export default {
         webSocketInit() {
             console.log('webSocketInit',this.userId);
             //this.$socket.disconnect();
-            this.$socket.query = `uuid=${this.userId}`;
-            this.$socket.io.opts.query = `uuid=${this.userId}`;
-            this.$socket.open()
+
 
             return
 
@@ -305,6 +303,7 @@ export default {
         },
         "update-employees"(val) {
             console.log('update-employees',val);
+            this.$store.commit('operators/all',val)
             let find = val.find((item)=>item.id===this.$store.state.user.profile.id)
             if(find) {
                 if(!find.is_common_chat && this.viewModeChat==='common') this.$router.push({name:'processAll'})
@@ -317,7 +316,7 @@ export default {
                 }
             }
 
-            this.$store.commit('operators/all',val)
+
 
 
 

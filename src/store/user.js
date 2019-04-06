@@ -1,4 +1,4 @@
-import _ from 'underscore'
+
 
 const getDefaultState = () => {
     return {
@@ -26,12 +26,21 @@ export default {
             })
             //this._vm.$http.put('logout')
             localStorage.removeItem('jwt')
+            this._vm.$socket.disconnect()
             delete this._vm.$http.defaults.headers.common[ 'jwt' ];
             delete this._vm.$http.defaults.headers['content-type'];
         },
         profileUpdate(state, {online,is_common_chat,role_id}) {
+            console.log(online, is_common_chat, role_id);
 
-            state.profile=_.extend(state.profile,{online,is_common_chat,role_id});
+            let obj = {}
+            if(online!==undefined) obj.online
+            if(is_common_chat!==undefined) obj.is_common_chat
+            if(role_id!==undefined) obj.role_id
+
+
+
+            state.profile=Object.assign(state.profile,obj);
         },
         profile(state, val) {
             state.profile=val;
@@ -65,6 +74,13 @@ export default {
             localStorage.setItem('jwt', user.jwt);
             this._vm.$http.defaults.headers.common[ 'jwt' ] = user.jwt;
             this._vm.$http.defaults.headers['content-type']= 'application/json';
+
+
+
+
+            this._vm.$socket.query = `uuid=${user.id}`;
+            this._vm.$socket.io.opts.query = `uuid=${user.id}`;
+            this._vm.$socket.open()
 
             commit('profile', user);
             dispatch('getSettings');
