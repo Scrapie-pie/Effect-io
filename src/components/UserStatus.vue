@@ -32,6 +32,7 @@
 
 <script>
     import ClickOutside from 'vue-click-outside'
+
     import { viewModeChat} from '@/mixins/mixins'
     export default {
         /*  props:{
@@ -103,10 +104,12 @@
                 console.log('status',val);
                 this.show=false;
                 if(val!==1) {
+                    this.$store.commit('visitors/newList',{field:'process',val:{list:[]}})
+                    this.$store.commit('visitors/newList',{field:'self',val:{list:[]}})
 
-                    this.$store.commit('visitors/processRemoveItemAll')
+                    this.$store.commit('user/unreadUpdate',['guest','clear'])
                     this.$store.commit('user/unreadUpdate',['unprocessed','clear'])
-                    if(this.viewModeChat==='process')this.$router.push({name:'processAll'});
+                    if(this.viewModeChat==='process' || this.viewModeChat==='visitors')this.$router.push({name:'processAll'});
                 }
             }
         },

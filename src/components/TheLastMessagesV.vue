@@ -64,7 +64,7 @@
                     [
                         (item)=>item.very_hot,
                         (item,index)=>index,
-                        (item)=>-item.unread.length
+                        (item)=>-item.basePeopleOptions.count
                     ]
                 );
             },
