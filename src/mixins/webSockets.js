@@ -254,10 +254,12 @@ export default {
             })
         },
         "auto-attach"(val){
+
             console.log('auto-attach',val);
             this.playSoundFile('sound_new_guest_message')
 
             dialogPush(this.$store,'self',val)
+
             this.$store.commit('user/unreadUpdate',['guest',1]);
 
 
@@ -300,7 +302,7 @@ export default {
 
         },
         "update-employees"(val) {
-
+            console.log('update-employees',val);
             let find = val.find((item)=>item.id===this.$store.state.user.profile.id)
             if(find) {
                 if(!find.is_common_chat && this.viewModeChat==='common') this.$router.push({name:'processAll'})
@@ -312,6 +314,8 @@ export default {
                     this.$router.push({name:'processAll'})
                 }
             }
+
+            this.$store.commit('operators/all',val)
 
 
 

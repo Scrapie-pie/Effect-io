@@ -7,19 +7,19 @@
             .user-status__indicator(:class="`user-status__indicator_${statusCurrent.name}`")
             ul.user-status__list(:class="{'user-status__list_open':show}" v-click-outside="val=>show=false")
                 li.user-status__item
-                    label.user-status__text.user-status__text_online
+                    label.user-status__text.user-status__text_online(@click="show=false")
                         input.user-status__input(type="radio" name="status" value="1" v-model.number="status")
                         | В сети (онлайн)
                 li.user-status__item
-                    label.user-status__text.user-status__text_offline
+                    label.user-status__text.user-status__text_offline(@click="show=false")
                         input.user-status__input(type="radio" name="status" value="0" v-model.number="status")
                         | Не в сети (оффлайн)
                 li.user-status__item
-                    label.user-status__text.user-status__text_break
+                    label.user-status__text.user-status__text_break(@click="show=false")
                         input.user-status__input(type="radio" name="status" value="2" v-model.number="status")
                         | Перерыв
                 li.user-status__item
-                    label.user-status__text.user-status__text_lunch
+                    label.user-status__text.user-status__text_lunch(@click="show=false")
                         input.user-status__input(type="radio" name="status" value="3" v-model.number="status")
                         | Обед
         form.user-status__status
@@ -97,15 +97,22 @@
                 else this.endActivity()
             },
             profile:{
-                handler: function (val, oldVal) {this.status = val.online;},
+                handler: function (val, oldVal) {
+                    console.log('profile',val.online);
+                    this.status = val.online;
+                    },
                 deep: true
             },
             status(val){
                 console.log('status',val);
+                this.$store.commit('user/profileUpdate',{online:val})
+
                 this.show=false;
                 if(val!==1) {
                     this.$store.commit('visitors/newList',{field:'process',val:{list:[]}})
                     this.$store.commit('visitors/newList',{field:'self',val:{list:[]}})
+
+
 
                     this.$store.commit('user/unreadUpdate',['guest','clear'])
                     this.$store.commit('user/unreadUpdate',['unprocessed','clear'])
@@ -179,6 +186,7 @@
 
 <style lang="scss">
     .user-status{
+        $el:'.user-status';
         $color_hover:glob-color('info-light');
         $color_online:glob-color('success');
         $color_break:#d7c502;
@@ -269,7 +277,8 @@
             }
         }
         &__input{
-            @extend %visuallyhidden
+            @extend %visuallyhidden;
+            &:checked~#{$el}__text{background-color:$color_hover}
         }
         &__text{
             position:relative;
@@ -282,6 +291,7 @@
             background:none;
             border:0;
             transition:$transition;
+
 
             &:hover{background-color:$color_hover}
 

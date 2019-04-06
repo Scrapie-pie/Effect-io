@@ -14,10 +14,7 @@ export default {
         resetState (state) {
             Object.assign(state, getDefaultState())
         },
-        'SOCKET_UPDATE-EMPLOYEES'(state, val){
-            console.log('SOCKET_UPDATE-EMPLOYEES',val);
-            state.all=val;
-        },
+
         all(state, val) {
             state.all=val;
         },
