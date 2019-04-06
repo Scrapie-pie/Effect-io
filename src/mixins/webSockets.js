@@ -21,6 +21,7 @@ export default {
     watch:{
         userId(val){
             if(val) this.webSocketInit()
+            else this.$socket.disconnect()
         }
     },
     methods: {
@@ -50,6 +51,7 @@ export default {
 
         },
         webSocketInit() {
+            console.log('webSocketInit',this.userId);
             //this.$socket.disconnect();
             this.$socket.query = `uuid=${this.userId}`;
             this.$socket.io.opts.query = `uuid=${this.userId}`;
