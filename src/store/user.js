@@ -34,11 +34,12 @@ export default {
             console.log(online, is_common_chat, role_id);
 
             let obj = {}
-            if(online!==undefined) obj.online
-            if(is_common_chat!==undefined) obj.is_common_chat
-            if(role_id!==undefined) obj.role_id
+            if(online!==undefined) obj.online=online
+            if(is_common_chat!==undefined) obj.is_common_chat=is_common_chat
+            if(role_id!==undefined) obj.role_id=role_id
 
-
+            console.log(obj);
+            console.log(Object.assign(state.profile, obj));
 
             state.profile=Object.assign(state.profile,obj);
         },
