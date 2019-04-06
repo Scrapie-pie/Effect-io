@@ -60,7 +60,7 @@
             },
             itemListSort(){
                 return lodash_sortBy(
-                    this.itemListStore,
+                    this.itemListStoreFormat,
                     [
                         (item)=>item.very_hot,
                         (item,index)=>index,
@@ -87,25 +87,22 @@
                 let itemList = [];
 
                 if (this.viewModeChat==="process")   {
-                    itemList=this.$store.state.visitors.process.map(item=>{
-                        return this.itemFormat(item)
-                    });
+                    itemList=this.$store.state.visitors.process
                 }
 
                 if (this.viewModeChat==="visitors")  {
-                    itemList=this.$store.state.visitors.self.map(item=>{
-                        return this.itemFormat(item)
-                    });
+                    itemList=this.$store.state.visitors.self
                 }
                 if (this.viewModeChat==="visor")  {
-                    itemList=this.$store.state.visitors[this.viewModeChat].map(item=>{
-                        return this.itemFormat(item)
-                    });
+                    itemList=this.$store.state.visitors[this.viewModeChat]
                 }
 
 
-                return itemList
+                return itemList.slice()
 
+            },
+            itemListStoreFormat(){
+                return this.itemListStore.map(item=>this.itemFormat(item))
             },
             itemListStoreItemPush(){
                 if(this.visitorInfo) return [this.visitorInfo,this.itemListStore]
@@ -233,7 +230,10 @@
                 return item
             },
             itemFormat(item){
-                if (!Array.isArray(item.unread)) item.unread=[]
+                item = Object.assign({},item) //Очень важная строчка, иначе в хранилище все поля форматирования попадали
+
+
+
 
                 item = this.itemFormatSetClassList(item)
                 item = this.itemFormatSetLink(item)

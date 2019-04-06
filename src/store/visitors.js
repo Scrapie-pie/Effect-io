@@ -35,9 +35,10 @@ export default {
 
         newList(state,{field, val}) {
 
-            state[field]=val.list;
-            if (val.count) state[field+'Count']=val.count;
-            console.log(state, field, val);
+            this._vm.$set(state,field,val.list)
+
+
+            if (val.count)     this._vm.$set(state,field+'Count',val.count)
 
         },
         all(state, val) { //Todo походу не нужен
@@ -82,6 +83,7 @@ export default {
                     state.process[findIndex].last_message_author = val.last_message_author
             }
             else {
+                val.unread=[]
                 val.last_message = val.body;
                 console.log('state.process.push unprocessed');
                 state.process.push(val);
@@ -129,7 +131,7 @@ export default {
                 let selfNew = {
                     last_message : val.body,
                     last_message_author : val.last_message_author,
-                    unread : [1],
+                    unread : [val.id],
                     uuid : val.uuid,
                     site_id : val.site_id,
                     photo : val.from_user_info.photo,
@@ -146,8 +148,8 @@ export default {
             if(findIndex !== -1) state.self.splice(findIndex, 1);
 
         },
-        messageRead(state,userIndex) {
-            state.self[userIndex].unread=[];
+        messageRead(state,findIndex) {
+            this._vm.$set(state.self[findIndex],'unread',[])
         },
         itemOpen(state, val) {
             state.itemOpen=val;

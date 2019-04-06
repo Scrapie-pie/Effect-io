@@ -240,6 +240,8 @@ export default {
         "unprocessed"(val){
             console.log('unprocessed',val);
 
+
+
             this.$store.commit('visitors/processMessageLastUpdate',val)
             this.$store.commit('user/unreadUpdate',['unprocessed',1])
             this.playSoundFile('sound_new_guest')
