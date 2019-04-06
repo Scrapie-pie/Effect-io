@@ -33,6 +33,7 @@
         },
         watch:{
             isAuth(val){
+                console.log('isAuth',val);
                 if (val){
                     window.onbeforeunload = function() {
                         return "Данные не сохранены. Точно перейти?";

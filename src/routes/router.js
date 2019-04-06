@@ -143,12 +143,16 @@ router.beforeEach((to, from, next) => {
     const not_auth_routes = ['auth', 'recover','exit'],
     authenticated = store.getters['user/authenticated'];
 
+    console.log(to.name,authenticated,'=authenticated');
 
     if(not_auth_routes.indexOf(to.name) >= 0) { // пропускаем на гостевые маршруты
 
         if(to.name==='exit')  {
             console.log('store.dispatch(\'user/logout\')');
-            store.dispatch('user/logout').then(()=>{return next({name:'auth'})})
+            store.dispatch('user/logout').then(()=>{
+                console.log('then');
+                return next({name:'auth'})
+            })
         }
 
         if(authenticated){
@@ -194,6 +198,7 @@ router.beforeEach((to, from, next) => {
                 console.log(error.response)
                 console.log('user/logout');
                 store.dispatch('user/logout').then(()=>{
+                    console.log('user/logout then');
                     return next({name:'auth',query:{return:to.fullPath}})
                 })
             })

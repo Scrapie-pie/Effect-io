@@ -98,7 +98,7 @@
             },
             profile:{
                 handler: function (val, oldVal) {
-                    console.log('profile',val.online);
+                    console.log('profile',val);
                     this.status = val.online;
                     },
                 deep: true

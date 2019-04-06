@@ -21,25 +21,25 @@ export default {
         },
         logout(state) {
             console.log('user logout');
+            this._vm.$socket.disconnect()
             this._vm.$http.put('operator-online-update',{
                 online:0
             })
             //this._vm.$http.put('logout')
             localStorage.removeItem('jwt')
-            this._vm.$socket.disconnect()
+
             delete this._vm.$http.defaults.headers.common[ 'jwt' ];
             delete this._vm.$http.defaults.headers['content-type'];
         },
         profileUpdate(state, {online,is_common_chat,role_id}) {
-            console.log(online, is_common_chat, role_id);
+
 
             let obj = {}
             if(online!==undefined) obj.online=online
             if(is_common_chat!==undefined) obj.is_common_chat=is_common_chat
             if(role_id!==undefined) obj.role_id=role_id
 
-            console.log(obj);
-            console.log(Object.assign(state.profile, obj));
+
 
             state.profile=Object.assign(state.profile,obj);
         },
@@ -47,11 +47,13 @@ export default {
             state.profile=val;
         },
         unreadUpdate(state,val){
+            console.log('unreadUpdate', val[0]);
+            if(state.profile.unread!==undefined) { //иначе при logout была ошибка
 
-            console.log('unreadUpdate',val[0]);
-            if(val[1]==='clear') return state.profile.unread[val[0]]=0;
-            if(state.profile.unread[val[0]]===0 && val[1]===-1)return
-            state.profile.unread[val[0]] += val[1]
+                if (val[1] === 'clear') return state.profile.unread[val[0]] = 0;
+                if (state.profile.unread[val[0]] === 0 && val[1] === -1) return
+                state.profile.unread[val[0]] += val[1]
+            }
         },
         settings(state, val) {
             state.settings=val;
@@ -99,11 +101,23 @@ export default {
         },
         logout({commit}) {
 
-            commit('logout')
-            commit('resetState')
-            commit('resetState', null, { root: true })
-            commit('operators/resetState', null, { root: true })
-            commit('visitors/resetState', null, { root: true })
+            //return new Promise((resolve) => {
+                // calculate when token expires
+
+
+                commit('resetState')
+                commit('resetState', null, { root: true })
+                commit('operators/resetState', null, { root: true })
+                commit('visitors/resetState', null, { root: true })
+                commit('logout')
+                console.log('logout resolve');
+                //resolve();
+            //});
+
+
+
+
+
 
 
 
@@ -148,7 +162,7 @@ export default {
             return state.profile;
         },
         authenticated: state => {
-            return !!state.profile
+            return !!state.profile.id
         }
     }
 }
