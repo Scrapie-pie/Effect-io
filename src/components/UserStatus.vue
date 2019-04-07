@@ -104,9 +104,11 @@
                 deep: true
             },
             status(val,valOld){
-                console.log('status',val);
+                console.log('status',val,valOld);
 
-                setTimeout(()=>{ //что бы успел выполнится @change="operatorStatusUpdate"
+
+
+
                     this.$store.commit('user/profileUpdate',{online:val})
                     this.show=false;
                     if(val!==1) {
@@ -119,9 +121,12 @@
                         this.$store.commit('visitors/newList',{field:'process',val:{list:[],count:0}})
                         this.$store.commit('visitors/newList',{field:'self',val:{list:[],count:0}})
                         console.log('statusSSS');
-                        if(this.viewModeChat==='process' || this.viewModeChat==='visitors')this.$router.push({name:'processAll'});
+                        setTimeout(()=>{
+                            if(this.viewModeChat==='process' || this.viewModeChat==='visitors')this.$router.push({name:'processAll'});
+                        },200)
+
                     }
-                },500)
+
 
 
             }

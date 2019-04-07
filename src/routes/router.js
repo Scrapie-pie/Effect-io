@@ -143,7 +143,7 @@ router.beforeEach((to, from, next) => {
     const not_auth_routes = ['auth', 'recover','exit'],
     authenticated = store.getters['user/authenticated'];
 
-    console.log(to.name,authenticated,'=authenticated');
+
 
     if(not_auth_routes.indexOf(to.name) >= 0) { // пропускаем на гостевые маршруты
 
