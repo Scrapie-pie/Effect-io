@@ -69,6 +69,7 @@ export default {
         routerNext(status){
             let {uuid,site_id} = this.httpParams.params;
             let processItem = this.$store.state.visitors.process.find(item=>item.uuid+item.site_id===uuid+site_id)
+            processItem.very_hot=0;
 
             this.$store.commit('visitors/processRemoveItem',{ uuid,site_id});
             this.$store.commit('user/unreadUpdate',['unprocessed',-1])

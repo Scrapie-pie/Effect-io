@@ -98,26 +98,32 @@
             },
             profile:{
                 handler: function (val, oldVal) {
-                    console.log('profile',val);
+                    //console.log('profile',val);
                     this.status = val.online;
                     },
                 deep: true
             },
-            status(val){
+            status(val,valOld){
                 console.log('status',val);
-                this.$store.commit('user/profileUpdate',{online:val})
 
-                this.show=false;
-                if(val!==1) {
-                    this.$store.commit('visitors/newList',{field:'process',val:{list:[]}})
-                    this.$store.commit('visitors/newList',{field:'self',val:{list:[]}})
-
+                setTimeout(()=>{ //что бы успел выполнится @change="operatorStatusUpdate"
+                    this.$store.commit('user/profileUpdate',{online:val})
+                    this.show=false;
+                    if(val!==1) {
 
 
-                    this.$store.commit('user/unreadUpdate',['guest','clear'])
-                    this.$store.commit('user/unreadUpdate',['unprocessed','clear'])
-                    if(this.viewModeChat==='process' || this.viewModeChat==='visitors')this.$router.push({name:'processAll'});
-                }
+
+
+                        this.$store.commit('user/unreadUpdate',['guest','clear'])
+                        this.$store.commit('user/unreadUpdate',['unprocessed','clear'])
+                        this.$store.commit('visitors/newList',{field:'process',val:{list:[],count:0}})
+                        this.$store.commit('visitors/newList',{field:'self',val:{list:[],count:0}})
+                        console.log('statusSSS');
+                        if(this.viewModeChat==='process' || this.viewModeChat==='visitors')this.$router.push({name:'processAll'});
+                    }
+                },500)
+
+
             }
         },
         created(){
@@ -147,6 +153,7 @@
                 this.show=false;
             },
             operatorStatusUpdate(){
+                console.log('operatorStatusUpdate');
                 this.$http.put('operator-online-update',{
                     online:this.status
                 })

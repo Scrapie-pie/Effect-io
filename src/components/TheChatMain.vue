@@ -228,7 +228,7 @@
         methods: {
 
             emitMessageAdd(val){
-                console.log('this.$root.$on(\'messageAdd\'');
+                //console.log('this.$root.$on(\'messageAdd\'');
                 if(val.socket){//Todo Временное решение, на проверку дубликатов, пока Симон не исправит
                     let findIndex = this.messageList.findIndex(item=>item.id===val.id)
 
@@ -316,11 +316,11 @@
                     if (!count) return
 
                     this.messageRun=count;
-                    console.log('historyMessageLoad');
+                    //console.log('historyMessageLoad');
 
-                    console.log('messages',messages);
+                    //console.log('messages',messages);
                     this.messageList.push(...messages);
-                    console.log('this.messageList.push',this.messageList);
+                    //console.log('this.messageList.push',this.messageList);
                 })
             }
         },

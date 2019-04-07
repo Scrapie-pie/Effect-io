@@ -34,10 +34,10 @@ export default {
         },
 
         newList(state,{field, val}) {
-
+            console.log('newList',val,state[field],field);
             this._vm.$set(state,field,val.list)
 
-
+            console.log(state[field]);
             if (val.count)     this._vm.$set(state,field+'Count',val.count)
 
         },
@@ -109,6 +109,7 @@ export default {
         },
 
         selfMessageLastUpdate(state, val) {
+
             console.log('selfMessageLastUpdate',val);
             let findIndex = state.self.findIndex((item)=>{
                 if(val.selfUuid) return item.uuid === val.selfUuid; //selfId значит мое сообщение

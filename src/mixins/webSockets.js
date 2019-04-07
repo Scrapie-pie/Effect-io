@@ -157,20 +157,21 @@ export default {
                 }
 
 
-                this.playSoundFile('sound_new_guest_message')
+                if(val.status==='active'){
+                    this.playSoundFile('sound_new_guest_message')
 
-                this.$store.commit('visitors/selfMessageLastUpdate',val)
-                this.$store.commit('user/unreadUpdate',['guest',1]);
+                    this.$store.commit('visitors/selfMessageLastUpdate',val)
+                    this.$store.commit('user/unreadUpdate',['guest',1]);
 
+                    browserNotificationMessage(val).then(click=>{
+                        if(click==='toLink') {
+                            let {uuid,site_id} =  val
+                            this.$router.push({name:'chatId',params: { uuid,site_id}})
+                        }
 
+                    })
+                }
 
-                browserNotificationMessage(val).then(click=>{
-                    if(click==='toLink') {
-                        let {uuid,site_id} =  val
-                        this.$router.push({name:'chatId',params: { uuid,site_id}})
-                    }
-
-                })
             } else {
 
                 if(val.room_id===this.$store.state.user.profile.common_room_id){

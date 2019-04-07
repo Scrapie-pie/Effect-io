@@ -91,7 +91,7 @@ export default new Vuex.Store({
 
         },
         roomActive(state, val) {
-            console.log('roomActive', val);
+            //console.log('roomActive', val);
 
             function getIds(status) {
                 let users = val.filter((item)=>item.status === status);

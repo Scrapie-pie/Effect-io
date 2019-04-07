@@ -63,7 +63,7 @@
             },50)
         },
         mounted() {
-            console.log('mounted()', this.$refs);
+            //console.log('mounted()', this.$refs);
             this.$refs.overlay.addEventListener('click', this.close);
         },
      /*   updated() {
