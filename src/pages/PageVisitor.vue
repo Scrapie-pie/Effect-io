@@ -99,7 +99,6 @@
             this.channel = this.channelList[0];
             this.$root.$on('guestNewSession',(val)=>{
                 console.log('guestNewSession',val);
-                val.name='Новый'
                 this.itemList.unshift(val)
             })
             this.$root.$on('guestUpdate',(val)=>{
