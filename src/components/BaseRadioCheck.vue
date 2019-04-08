@@ -174,6 +174,7 @@
             position:relative;
             display:flex;
             align-items:center;
+            min-width:0;
 
             &::before{
                 content:'';
@@ -182,6 +183,7 @@
                 height:$sz;
                 border:1px solid $color_border;
                 border-radius:50%;
+                flex: 0 0 auto;
             }
 
             &::after{

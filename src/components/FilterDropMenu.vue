@@ -97,12 +97,10 @@ export default {
     computed:{
 
         title(){
-            if (this.name==='period') {
+            if (this.type==='radio') {
                 if(this.modelradio) return this.modelradio.name
             }
-            if (this.name==='url') {
-                if(this.modelradio) return this.modelradio.url
-            }
+
             if (this.name==='calendar') {
                 let strDate =''
                 if(this.modelradio) {
@@ -196,12 +194,13 @@ export default {
         },
         modelradio:{
             handler(val){
-                if(this.name==='period' || this.name==='url') {
+
+                if(this.type==="radio") {
 
                     if (!val) {
 
-                        if(this.$route.query[this.name]){
-                            return this.modelradio =  this.itemList.find(item=>item.url===this.$route.query[this.name])
+                        if(this.setValueQuery()){
+                            return this.modelradio =  this.setValueQuery()
                         }
                         return this.modelradio =  this.itemList[0]
                     }
@@ -241,9 +240,15 @@ export default {
             return*/
             this.$http.get('site-pages').then(({data})=>{
 
-                data.forEach(item=>item.name=item.url)
-                this.urlListData=data;
+                data=data.data.map(item=>{
+                    return {id:item,name:item}
+                })
 
+                this.urlListData=[
+                    { id:'',name:'Все страницы'},
+                    ...data
+                ];
+                this.modelradio =  this.setValueQuery()
             })
         }
     },
@@ -253,6 +258,10 @@ export default {
 
     },
     methods:{
+        setValueQuery(){
+            if(this.$route.query[this.name]!==this.name) return false
+            return this.itemList.find(item=>item.name===this.$route.query[this.name])
+        },
         controlOpetions(item){
             let obj =  {
                 type:this.type,
