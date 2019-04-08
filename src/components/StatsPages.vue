@@ -31,6 +31,8 @@ export default {
     },
     computed:{
         sortClass(){
+
+
             return (this.sortPercentLarger===-1)?'stats-pages__btn-rotate':''
         },
         itemListSort(){
