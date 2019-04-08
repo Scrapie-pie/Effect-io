@@ -37,5 +37,5 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 cd /srv/api/RBCALL-3212
 php app/cli/services/clear_attempts.php
 
-cd /srv/api/RBCALL-3365
+cd /srv/api/RBCALL-3410
 php app/cli/services/tests/data.php

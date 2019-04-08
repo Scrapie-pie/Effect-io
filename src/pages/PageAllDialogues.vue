@@ -30,6 +30,12 @@
             @get="filterBall"
             slot="control"
         )
+        filter-drop-menu(
+            name="url",
+            type="radio",
+            @get="filterUrl"
+            slot="control"
+        )
         div(slot="control" v-if="itemListCount")
             |На странице показано {{showItemLength}} из {{ itemListCount}}
 
@@ -111,6 +117,7 @@
                 time_from:'',
                 time_to:'',
                 last_days:'',
+                url:null,
 
 
 
@@ -139,7 +146,7 @@
                     time_from:this.time_from,
                     time_to:this.time_to,
                     last_days:this.last_days,
-
+                    url:this.url,
                 }
             },
 
@@ -154,7 +161,8 @@
                     this.users_ids.length &&
                     this.sites_ids.length &&
                     this.statuses.length &&
-                    this.rates.length
+                    this.rates.length &&
+                    this.url!== null
                     ) &&
                     this.last_days ||
                     (
@@ -233,6 +241,10 @@
             filterOperator(val){
                 //console.log(val);
                 this.users_ids = val
+            },
+            filterUrl(val){
+                //console.log(val);
+                this.url = val
             }
 
         },

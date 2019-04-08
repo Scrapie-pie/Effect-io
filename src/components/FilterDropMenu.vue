@@ -83,6 +83,7 @@ export default {
                 {id:'missed',name:'Пропущенные'},
                 {id:'overdue',name:'Просроченные (более 30 сек.)'},
             ],
+            urlListData:[],
             titleName:{
                 operator:'сотрудники',
                 ball:'оценки',
@@ -98,6 +99,9 @@ export default {
         title(){
             if (this.name==='period') {
                 if(this.modelradio) return this.modelradio.name
+            }
+            if (this.name==='url') {
+                if(this.modelradio) return this.modelradio.url
             }
             if (this.name==='calendar') {
                 let strDate =''
@@ -120,6 +124,9 @@ export default {
         },
         calendarList(){
             return []
+        },
+        urlList(){
+            return this.urlListData
         },
         operatorList(){
             return this.$store.getters['operators/all'].map(item=>{
@@ -189,10 +196,13 @@ export default {
         },
         modelradio:{
             handler(val){
-                if(this.name==='period') {
+                if(this.name==='period' || this.name==='url') {
 
                     if (!val) {
 
+                        if(this.$route.query[this.name]){
+                            return this.modelradio =  this.itemList.find(item=>item.url===this.$route.query[this.name])
+                        }
                         return this.modelradio =  this.itemList[0]
                     }
                     this.$emit('get',val.id)
@@ -210,14 +220,32 @@ export default {
                 if (val.length!==this.itemList.length) this.allChecked=false;
                 //this.$emit('get',val.map(item=>item.id))
 
-                console.log('modelcheckbox handler',val,valOld);
+
                 this.modelPrev = valOld
             },
             immediate: true
         }
     },
     created(){
-        console.log('.log');
+
+
+        if(this.name==='url'){
+          /*  console.log('.log');
+            let data =[
+                {id:'',url:'Не выбрана'},
+                {id:1,url:'http://mishki.ucoz.net/'},
+                {id:2,url:'http://newfanhor.clan.su/index/0-2'},
+            ];
+            data.forEach(item=>item.name=item.url)
+            this.urlListData = data
+            return*/
+            this.$http.get('site-pages').then(({data})=>{
+
+                data.forEach(item=>item.name=item.url)
+                this.urlListData=data;
+
+            })
+        }
     },
     mounted() {
 
