@@ -41,7 +41,7 @@ export default {
                     return item
                 }),
                 [
-                    (item)=>item.dialogues_requests*this.sortPercentLarger,
+                    (item)=>item.dialogues_percents*this.sortPercentLarger,
                 ]
             );
         },
