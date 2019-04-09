@@ -24,25 +24,28 @@
 </template>
 
 <script>
-    import lodash_sortBy from 'lodash/sortBy'
-
-
-
     import NavAside from '@/components/NavAside'
+    import lodash_sortBy from 'lodash/sortBy'
 
     import { viewModeChat,httpParams,scrollbar,paginator } from '@/mixins/mixins'
     import wrapTextUrls from '@/modules/wrapTextUrls'
 
     export default {
-        mixins:[viewModeChat,httpParams ,scrollbar,paginator],
         components:{NavAside},
+        mixins:[viewModeChat,httpParams ,scrollbar,paginator],
         data() {
             return {
+                filterSearchResult:[],
+                sortMas:[
+                    (item)=>item.very_hot,
+                    (item,index)=>index,
+                    (item)=>-item.basePeopleOptions.count
+                ],
                 containerFullFillItemListClassName:{
                     scrollBar:'last-messages__scrollbar',
                     item:'last-messages__item'
                 },
-                filterSearchResult:[],
+
 
                 pageNBeforeSearch:null,
                 type:'',
@@ -50,23 +53,20 @@
             }
         },
         computed:{
-            paramsComp(){
-                return {
-                    type:this.type
-                }
+            itemListStore(){
+                let itemList = [];
+
+                if (this.viewModeChat==="process")itemList=this.$store.state.visitors.process
+                if (this.viewModeChat==="visitors")itemList=this.$store.state.visitors.self
+                if (this.viewModeChat==="visor")  itemList=this.$store.state.visitors[this.viewModeChat]
+
+                return itemList.slice()
+
             },
-            visitorInfo(){
-                return this.$store.state.visitors.itemOpen
+            itemListStoreFormat(){
+                return this.itemListStore.map(item=>this.itemFormat(item))
             },
-            itemListSort(){
-                return lodash_sortBy(
-                    this.itemListStoreFormat,
-                    [
-                        (item)=>item.very_hot,
-                        (item,index)=>index,
-                        (item)=>-item.basePeopleOptions.count
-                    ]
-                );
+            itemListSort(){return lodash_sortBy(this.itemListStoreFormat, this.sortMas);
             },
             itemListSortActiveFirst() {
                 let itemActive,
@@ -83,26 +83,14 @@
                 return list
             },
 
-            itemListStore(){
-                let itemList = [];
 
-                if (this.viewModeChat==="process")   {
-                    itemList=this.$store.state.visitors.process
+            paramsComp(){
+                return {
+                    type:this.type
                 }
-
-                if (this.viewModeChat==="visitors")  {
-                    itemList=this.$store.state.visitors.self
-                }
-                if (this.viewModeChat==="visor")  {
-                    itemList=this.$store.state.visitors[this.viewModeChat]
-                }
-
-
-                return itemList.slice()
-
             },
-            itemListStoreFormat(){
-                return this.itemListStore.map(item=>this.itemFormat(item))
+            visitorInfo(){
+                return this.$store.state.visitors.itemOpen
             },
             itemListStoreItemPush(){
                 if(this.visitorInfo) return [this.visitorInfo,this.itemListStore]

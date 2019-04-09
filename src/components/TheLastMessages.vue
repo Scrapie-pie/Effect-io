@@ -3,10 +3,9 @@
         form.last-messages
             .last-messages__search
                 base-filter-search(
-                    :item-list="itemListStore"
-                    fieldName="fullName" ,
+                    :item-list="itemListSort",
                     @result="(val)=>filterSearchResult=val",
-
+                    fieldName="fullName" ,
                 )
             scroll-bar.last-messages__scrollbar(ref="scrollbar")
                 ul.last-messages__list
@@ -34,27 +33,26 @@
 
         data() {
             return {
-                search:'',
+
                 filterSearchResult:[],
+                sortMas:[
+                        (item)=>-item.unread.length
+                ]
             }
         },
         computed:{
-
             itemListStore(){
                 let itemList = [];
 
-                itemList=this.$store.getters['operators/all'].map(item=>{
+                itemList=this.$store.getters['operators/all']
 
-                    return this.itemFormat(item)
-                });
-
-                return itemList
+                return itemList.slice()
 
             },
-            itemListSort(){
-                return lodash_sortBy(this.itemListStore,[
-                    (item)=>-item.unread.length
-                ]);
+            itemListStoreFormat(){
+                return this.itemListStore.map(item=>this.itemFormat(item))
+            },
+            itemListSort(){return lodash_sortBy(this.itemListStoreFormat,this.sortMas);
             },
             itemListSortActiveFirst() {
                 let itemActive,
@@ -107,6 +105,7 @@
                 return item
             },
             itemFormat(item){
+                item = Object.assign({},item)
                 item = this.itemFormatSetClassList(item)
                 item = this.itemFormatSetLink(item)
                 item = this.itemFormatSetOptions(item)
