@@ -31,10 +31,11 @@ export default {
             delete this._vm.$http.defaults.headers.common[ 'jwt' ];
             delete this._vm.$http.defaults.headers['content-type'];
         },
-        profileUpdate(state, {active,online,is_common_chat,role_id}) {
+        profileUpdate(state, {photo,active,online,is_common_chat,role_id}) {
 
-
+            console.log(photo);
             let obj = {}
+            if(photo!==undefined) obj.photo=photo
             if(online!==undefined) obj.online=online
             if(active!==undefined) obj.active=active
             if(is_common_chat!==undefined) obj.is_common_chat=is_common_chat
