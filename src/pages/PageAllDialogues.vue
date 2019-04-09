@@ -180,7 +180,7 @@
             startChat(item){
                 let {uuid,site_id} = item;
 
-                dialogPush(this.$store,'visor',item)
+                dialogPush(this,'visor',item)
                 return this.$router.push({name:'visor',params: { uuid, site_id}});
 
 

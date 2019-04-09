@@ -124,7 +124,7 @@
                     .then(({ data }) => {
                         let {uuid,site_id} = item;
 
-                        dialogPush(this.$store,'self',item)
+                        dialogPush(this,'self',item)
 
                         this.$router.push({name:'chatId',params: { uuid,site_id}});
                     })
