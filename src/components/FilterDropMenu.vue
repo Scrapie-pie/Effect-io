@@ -248,6 +248,7 @@ export default {
                     { id:'',name:'Все страницы'},
                     ...data
                 ];
+                console.log(this.itemList);
                 this.modelradio =  this.setValueQuery()
             })
         }
@@ -259,8 +260,13 @@ export default {
     },
     methods:{
         setValueQuery(){
-            if(this.$route.query[this.name]!==this.name) return false
-            return this.itemList.find(item=>item.name===this.$route.query[this.name])
+
+            if(this.name in this.$route.query===false) return false
+            return this.itemList.find(item=>{
+
+                console.log(item.name , this.$route.query[this.name]);
+                return item.name===this.$route.query[this.name]
+            })
         },
         controlOpetions(item){
             let obj =  {

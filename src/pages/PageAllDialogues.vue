@@ -1,6 +1,6 @@
 <template lang="pug">
     article.page-all
-        nav-aside.page-all__filter-list
+        nav-aside.page-all__filter-list(v-if="0")
             scroll-bar.page-all__scrollbar
                 filter-drop-menu(name="period", @get="filterPeriod"  type="radio")
                 filter-drop-menu(
