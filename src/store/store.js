@@ -9,9 +9,8 @@ import visitors from '@/store/visitors'
 
 Vue.use(Vuex)
 
-const getDefaultState = () => {
+const getDefaultStateRoom = () => {
     return {
-        loading:false,
         roomActiveId:false,
         roomActive:{
             visitor:{
@@ -26,6 +25,14 @@ const getDefaultState = () => {
         roomActiveUsersInvited:[],
         roomActiveUsersRecipient:[],
         roomActiveIsAdmin:false,
+    }
+}
+
+const getDefaultState = () => {
+
+    return Object.assign({
+        loading:false,
+
         connected: false,
         channelList: [
             {id:null,name:"Все каналы"},
@@ -37,7 +44,14 @@ const getDefaultState = () => {
             {id:13,name:"WhatsApp"},
             {id:4,name:"Slack"}
         ],
-    }
+        filterSelect:{
+            url:[],
+            calendar:{},
+            last_days:''
+        }
+    }, getDefaultStateRoom())
+
+
 }
 // initial state
 const state = getDefaultState()
@@ -121,7 +135,18 @@ export default new Vuex.Store({
 
             })
         },
+        roomActiveReset(state) {
+            Object.assign(state, getDefaultStateRoom())
+        },
+        setFilter(state,object){
 
+            for (let key in object) {
+                this._vm.$set(state.filterSelect,key,object[key])
+
+            }
+
+
+        }
 
     },
     actions: {

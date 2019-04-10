@@ -1,6 +1,6 @@
 <template lang="pug">
     the-layout-table.page-stats-inner
-        filter-drop-menu(name="period", @get="filterPeriod" slot="control" type="radio")
+        filter-drop-menu(name="last_days", @get="filterLast_days" slot="control" type="radio")
         filter-drop-menu(
             v-if="showCalendar"
             name="calendar",
@@ -226,7 +226,7 @@ export default {
             }
 
         },
-        filterPeriod(val){
+        filterLast_days(val){
 
             if (val==='-1') {
 

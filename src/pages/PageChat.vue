@@ -96,7 +96,8 @@
         },
         beforeRouteLeave (to, from, next) {
             this.visorSubscribeSocket(null,from)
-            this.$store.commit('resetState')
+            console.log('this.$store.commit(\'roomActiveReset\')');
+            this.$store.commit('roomActiveReset')
             return next()
         },
         methods:{

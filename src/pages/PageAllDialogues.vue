@@ -2,7 +2,7 @@
     article.page-all
         nav-aside.page-all__filter-list(v-if="0")
             scroll-bar.page-all__scrollbar
-                filter-drop-menu(name="period", @get="filterPeriod"  type="radio")
+                filter-drop-menu(name="last_days", @get="filterLast_days"  type="radio")
                 filter-drop-menu(
                 v-show="showCalendar"
                 name="calendar",
@@ -40,42 +40,44 @@
                 )
         the-layout-table.page-log-dialogues(@scrolldown="scrollLoad")
 
-            filter-drop-menu(name="period", @get="filterPeriod" slot="control" type="radio")
+            filter-drop-menu(name="last_days", @get="filterLast_days" slot="control" type="radio")
+
             filter-drop-menu(
                 v-show="showCalendar"
                 name="calendar",
                 @get="filterCalendar"
                 slot="control"
 
+               )
+            //
+                filter-drop-menu(
+                    name="siteCompany",
+                    @get="filterChannel"
+                    slot="control"
                 )
-            filter-drop-menu(
-                name="siteCompany",
-                @get="filterChannel"
-                slot="control"
-            )
-            filter-drop-menu(
-                name="operator",
-                @get="filterOperator"
-                slot="control"
-                )
+                filter-drop-menu(
+                    name="operator",
+                    @get="filterOperator"
+                    slot="control"
+                    )
 
 
-            filter-drop-menu(
-                name="status",
-                @get="filterStatus"
-                slot="control"
+                filter-drop-menu(
+                    name="status",
+                    @get="filterStatus"
+                    slot="control"
+                    )
+                filter-drop-menu(
+                    name="ball",
+                    @get="filterBall"
+                    slot="control"
                 )
-            filter-drop-menu(
-                name="ball",
-                @get="filterBall"
-                slot="control"
-            )
-            filter-drop-menu(
-                name="url",
+                filter-drop-menu(
+                    name="url",
 
-                @get="filterUrl"
-                slot="control"
-            )
+                    @get="filterUrl"
+                    slot="control"
+                )
             div(slot="control" v-if="itemListCount")
                 |На странице показано {{showItemLength}} из {{ itemListCount}}
 
@@ -235,7 +237,7 @@
 
 
             },
-            filterPeriod(val){
+            filterLast_days(val){
                 //console.log(val);
                 if (val==='-1') {
 

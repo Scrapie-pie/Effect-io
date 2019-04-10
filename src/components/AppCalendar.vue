@@ -54,10 +54,13 @@ export default {
             selectedDay:null,
             time_from:'00:00',
             time_to:'23:59',
-
+            selectedDayStoreOnce:true
         }
     },
     computed:{
+        selectedDayStore(){
+            return this.$store.state.filterSelect.calendar
+        },
         getOptions(){
             return {
 
@@ -114,6 +117,8 @@ export default {
                 date_from = datetimeDMY(val.start)
                 date_to = datetimeDMY(val.end)
                 return {
+                    start:val.start,
+                    end:val.end,
                     date_from,
                     date_to,
                     time_from:this.time_from,
@@ -124,12 +129,36 @@ export default {
 
         }
     },
+    watch:{
+        selectedDay(val){
+            console.log('selectedDay',val);
+        },
+        selectedDayStore:{
+            handler(val,oldval){
+                if(!val.length) return
+                if(!this.selectedDayStoreOnce) return
 
+                console.log('selectedDayStore',val);
+                let {end,start} = val[0]
+
+
+                this.selectedDay = {
+                    start:new Date(start),
+                    end:new Date(end)
+                }
+                this.$emit('get',this.dates)
+                this.selectedDayStoreOnce=false;
+            },
+            immediate: true
+        },
+
+    },
     methods:{
         globColor(nameColor){
             return getComputedStyle(document.body).getPropertyValue(`--color-${nameColor}`)
         },
         send(){
+            console.log('send');
             this.$emit('get',this.dates)
         },
 

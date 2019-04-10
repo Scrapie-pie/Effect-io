@@ -12,7 +12,7 @@
                 td.stats-pages__url(:title="item.url"): a(:href="item.url" v-text="item.url" target="_blank")
                 td
                     base-btn.base-table__show-hover(
-                        :router="{name:'all',query:{url:item.url}}"
+                        @click="nextLink(item)"
                     ) Открыть журнал
                 td
                     | {{item.dialogues_requests | format}}
@@ -57,6 +57,12 @@ export default {
         },
     },
     methods:{
+        nextLink(item){
+            this.$store.commit('setFilter',{url:[item.url]})
+            this.$router.push({
+                name:'all'
+            })
+        },
         sortToggle(){
             this.sortPercentLarger = -1*this.sortPercentLarger
         }
