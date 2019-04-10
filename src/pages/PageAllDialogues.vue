@@ -39,6 +39,7 @@
 
                 )
         the-layout-table.page-log-dialogues(@scrolldown="scrollLoad")
+
             filter-drop-menu(name="period", @get="filterPeriod" slot="control" type="radio")
             filter-drop-menu(
                 v-show="showCalendar"
@@ -71,7 +72,7 @@
             )
             filter-drop-menu(
                 name="url",
-                type="radio",
+
                 @get="filterUrl"
                 slot="control"
             )
@@ -196,7 +197,7 @@
         watch:{
 
             paramsComp(){
-                console.log('paramsComp');
+                //console.log('paramsComp');
 
                 if((
                     this.users_ids.length &&
@@ -268,12 +269,12 @@
                 this.tempDates=[this.date_from,this.date_to,this.time_from,this.time_to]
             },
             filterBall(val){
-                console.log(val);
+                //console.log(val);
                 this.rates=val
             },
             filterChannel(val){
                 this.sites_ids = val
-                console.log(val);
+                //console.log(val);
             },
             filterStatus(val){
                 //console.log(val);

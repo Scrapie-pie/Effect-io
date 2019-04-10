@@ -85,6 +85,7 @@ export default {
             ],
             urlListData:[],
             titleName:{
+                url:'страницы',
                 operator:'сотрудники',
                 ball:'оценки',
                 status:'статусы',
@@ -184,8 +185,10 @@ export default {
         itemList:{
             handler(val,oldval)
             {
-
-                if (this.allChecked) {
+                if(this.setValueQuery()) {
+                    this.modelcheckbox = [this.setValueQuery()]
+                }
+                else if (this.allChecked) { //если нет query п умолчанию выставляем все
 
                     this.modelcheckbox = val
                 }
@@ -216,6 +219,9 @@ export default {
         },
         modelcheckbox:{
             handler(val,valOld=[]){
+                console.log('handler',val, valOld, this.itemList);
+                //if(this.name==='url' && !this.itemList.length) return       console.log('modelcheckbox',val, valOld);
+
                 if (val.length!==this.itemList.length) this.allChecked=false;
                 //this.$emit('get',val.map(item=>item.id))
 
@@ -245,11 +251,10 @@ export default {
                 })
 
                 this.urlListData=[
-                    { id:'',name:'Все страницы'},
                     ...data
                 ];
-                console.log(this.itemList);
-                this.modelradio =  this.setValueQuery()
+
+
             })
         }
     },
@@ -264,7 +269,7 @@ export default {
             if(this.name in this.$route.query===false) return false
             return this.itemList.find(item=>{
 
-                console.log(item.name , this.$route.query[this.name]);
+
                 return item.name===this.$route.query[this.name]
             })
         },
@@ -278,6 +283,7 @@ export default {
             return obj
         },
         allCheckedToggle(){
+            console.log('allCheckedToggle');
             this.allChecked=!this.allChecked;
             if(this.allChecked) {this.modelcheckbox=this.itemList}
             else this.modelcheckbox=[]
