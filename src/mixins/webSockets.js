@@ -222,16 +222,22 @@ export default {
 
             if(!this.httpParams) return
             let {site_id,uuid} = this.httpParams.params;
+            
+            let updateNameItem = ((listName) => {
+                let itemList = this.$store.state.visitors[listName];
 
-            let itemList = this.$store.state.visitors.self;
+                let findIndex = itemList.findIndex(item=>item.uuid+item.site_id===val.uuid+val.site_id)
 
-            let findIndex = itemList.findIndex(item=>item.uuid+item.site_id===val.uuid+val.site_id)
+                if(findIndex !==-1){
+                    this.$set(itemList[findIndex],'name',val.name)
+                    console.log(itemList[findIndex].name);
+                }
 
-            if(findIndex !==-1){
-                this.$set(itemList[findIndex],'name',val.name)
-            }
+                this.$store.commit('visitors/newList',{field:listName,val:{list:itemList}})
+            })
 
-            this.$store.commit('visitors/newList',{field:'self',val:{list:itemList}})
+            updateNameItem('self')
+            updateNameItem('process')
 
             if(val.uuid+val.site_id===uuid+site_id){
                 this.$store.commit('visitors/itemOpen',val)  //{name,uuid,site_id} = val
