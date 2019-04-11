@@ -24,7 +24,7 @@
                     th(v-if="viewAdmin") Активен
                     th(v-if="viewAdmin") Досупные действия
             tbody
-                tr.page-operators__tr(v-for="(item, index) in operatorListSortUnread", :key="item.id")
+                tr.page-operators__tr(v-for="(item, index) in operatorListSort", :key="item.id")
                     td
                         base-people(
                             type="operator",
@@ -100,6 +100,11 @@
         data() {
             return {
                 search: '',
+                sortMas:[
+
+                    (item)=>-item.unread.length,
+                    (item)=>item.last_message_time,
+                ]
             }
         },
         computed:{
@@ -121,11 +126,8 @@
                 })
                 return list
             },
-            operatorListSortUnread(){
-                return lodash_sortBy(this.operatorListSearch,(item)=>{
-
-                    return !item.unread.length
-                });
+            operatorListSort(){
+                return lodash_sortBy(this.operatorListSearch,this.sortMas);
             },
         },
         created(){

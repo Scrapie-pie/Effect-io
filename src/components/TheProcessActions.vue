@@ -80,7 +80,7 @@ export default {
 
             if(status==="yes"){
 
-                dialogPush(this.$store,'self',processItem)
+                dialogPush(this,'self',processItem)
                 this.$router.push({name:'chatId',params: { uuid,site_id}});
             }
 
