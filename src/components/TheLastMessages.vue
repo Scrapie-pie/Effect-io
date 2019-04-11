@@ -38,7 +38,7 @@
                 sortMas:[
 
                     (item)=>-item.basePeopleOptions.count,
-                    (item)=>item.last_message_time,
+                    (item)=>-item.last_message_time,
                 ]
             }
         },
