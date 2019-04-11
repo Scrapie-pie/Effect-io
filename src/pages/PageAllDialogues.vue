@@ -4,7 +4,7 @@
             scroll-bar.page-all__scrollbar
                 filter-drop-menu(name="last_days", @get="filterLast_days"  type="radio")
                 filter-drop-menu(
-                v-show="showCalendar"
+                v-if="showCalendar"
                 name="calendar",
                 @get="filterCalendar"
 
@@ -43,41 +43,41 @@
             filter-drop-menu(name="last_days", @get="filterLast_days" slot="control" type="radio")
 
             filter-drop-menu(
-                v-show="showCalendar"
+                v-if="showCalendar"
                 name="calendar",
                 @get="filterCalendar"
                 slot="control"
 
                )
-            //
-                filter-drop-menu(
-                    name="siteCompany",
-                    @get="filterChannel"
-                    slot="control"
+
+            filter-drop-menu(
+                name="siteCompany",
+                @get="filterChannel"
+                slot="control"
+            )
+            filter-drop-menu(
+                name="operator",
+                @get="filterOperator"
+                slot="control"
                 )
-                filter-drop-menu(
-                    name="operator",
-                    @get="filterOperator"
-                    slot="control"
-                    )
 
 
-                filter-drop-menu(
-                    name="status",
-                    @get="filterStatus"
-                    slot="control"
-                    )
-                filter-drop-menu(
-                    name="ball",
-                    @get="filterBall"
-                    slot="control"
+            filter-drop-menu(
+                name="status",
+                @get="filterStatus"
+                slot="control"
                 )
-                filter-drop-menu(
-                    name="url",
+            filter-drop-menu(
+                name="ball",
+                @get="filterBall"
+                slot="control"
+            )
+            filter-drop-menu(
+                name="url",
 
-                    @get="filterUrl"
-                    slot="control"
-                )
+                @get="filterUrl"
+                slot="control"
+            )
             div(slot="control" v-if="itemListCount")
                 |На странице показано {{showItemLength}} из {{ itemListCount}}
 
@@ -243,13 +243,13 @@
 
                     this.showCalendar=true;
 
-                    if (this.tempDates.length){
+               /*     if (this.tempDates.length){
                         this.date_from = this.tempDates[0];
                         this.date_to = this.tempDates[1];
                         this.time_from = this.tempDates[2];
                         this.time_to = this.tempDates[3];
                     }
-
+*/
                 }
                 else {
                     this.last_days=val;
@@ -268,7 +268,7 @@
                 this.time_from = val.time_from;
                 this.time_to = val.time_to;
 
-                this.tempDates=[this.date_from,this.date_to,this.time_from,this.time_to]
+                //this.tempDates=[this.date_from,this.date_to,this.time_from,this.time_to]
             },
             filterBall(val){
                 //console.log(val);

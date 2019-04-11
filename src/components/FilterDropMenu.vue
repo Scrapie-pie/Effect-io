@@ -225,7 +225,6 @@ export default {
                 if(this.type==="radio") {
 
                     if (!val) return
-
                     this.$emit('get',val.id)
                     this.$store.commit('setFilter',{[this.name]:[val.id]})
 
