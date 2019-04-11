@@ -58,7 +58,7 @@ function browserNotificationMessage (val) {
 
 
 
-    if(!document.hidden || !store.state.user.settings.settings.push_notifications) {
+    if(!document.hidden || !store.state.user.settings.settings.push_notifications || val.intent === 'farewell') {
         return new Promise((resolve) => { // для совместимости  с clickFunc
             resolve();
         });
@@ -99,7 +99,7 @@ function browserNotificationMessage (val) {
 
 
 
-    notificationEngine(title,body)
+
 
 }
 
