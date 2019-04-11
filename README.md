@@ -39,3 +39,12 @@ php app/cli/services/clear_attempts.php
 
 cd /srv/api/RBCALL-3365
 php app/cli/services/tests/data.php
+
+cd /srv/oi/RBCALL-3439/
+git pull
+npm run build
+
+Переключение ветки апи
+cd /srv/api/RBCALL-3439/
+git fetch
+git checkout -b feature/RBCALL-3417
