@@ -31,14 +31,41 @@ export default {
             delete this._vm.$http.defaults.headers.common[ 'jwt' ];
             delete this._vm.$http.defaults.headers['content-type'];
         },
-        profileUpdate(state, {active,online,is_common_chat,role_id}) {
+        profileUpdate(state, {
+            avatar,
+            first_name,
+            last_name,
+            phones,
+            mail,
+            photo,
+            active,
+            online,
+            branches_ids,
+            is_common_chat,
+            role_id,
+            use_chat,
+            use_calls
+        }) {
+
+
+
 
 
             let obj = {}
+
+            if(avatar!==undefined) obj.avatar=avatar
+            if(first_name!==undefined) obj.first_name=first_name
+            if(last_name!==undefined) obj.last_name=last_name
+            if(phones!==undefined) obj.phones=phones
+            if(mail!==undefined) obj.mail=mail
+            if(photo!==undefined) obj.photo=photo
             if(online!==undefined) obj.online=online
             if(active!==undefined) obj.active=active
+            if(branches_ids!==undefined) obj.branches_ids=branches_ids
             if(is_common_chat!==undefined) obj.is_common_chat=is_common_chat
             if(role_id!==undefined) obj.role_id=role_id
+            if(use_chat!==undefined) obj.use_chat=use_chat
+            if(use_calls!==undefined) obj.use_calls=use_calls
 
 
 

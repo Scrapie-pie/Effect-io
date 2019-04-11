@@ -42,7 +42,6 @@
             label.field__label(v-if="label" v-text="label")
             base-select(
                 :class="{invalid_force: errors.has(name)}"
-                autocomplete="off",
                 key="id"
                 v-bind="getSelectOptions",
                 v-on="inputListeners",
@@ -94,7 +93,7 @@
             },
             autocomplete:{
                 required: false,
-                default: 'off'
+                default: "new-password"
             }
 
         },

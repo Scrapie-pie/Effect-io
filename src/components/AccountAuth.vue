@@ -12,6 +12,7 @@
                             type="email"
                             placeholder="Введите Е-email"
                             name="email"
+                            autocomplete="on"
                             v-validate="'required'"  v-model="login"
                         )
 
@@ -19,7 +20,8 @@
                         base-field(
                             type="password"
                             placeholder="Введите пароль"
-                            name="password"
+                            name="password",
+                            autocomplete="on"
                             v-validate="'required|max:32|min:6'"
                             data-vv-as="пароль"
                             v-model="password"

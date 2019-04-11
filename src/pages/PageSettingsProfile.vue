@@ -221,10 +221,12 @@
         watch:{
             profile:{
                 handler(val){
+                    console.log('watch profile',val);
                     if(val) {
                         this.getProfileByUserId()
                     }
                 },
+                deep: true,
                 immediate: true
             },
             compBranchListAll(val){
@@ -316,7 +318,7 @@
                 }
             },
             getProfileByUserId(){
-
+                console.log('getProfileByUserId');
                 if(!!this.isAddOperator) {
                     this.getBranchListAll()
                     return
