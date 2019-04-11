@@ -119,6 +119,8 @@ export default {
             if(findIndex !== -1) {
                 this._vm.$set(state.self[findIndex],'last_message',val.body)
                 this._vm.$set(state.self[findIndex],'last_message_author',val.last_message_author)
+                this._vm.$set(state.self[findIndex],'last_message_time',val.time)
+
                 //this._vm.$set(state.self[findIndex],'name',val.from_user_info.name)
                 if(!val.selfUuid) {
                     let unread =  state.self[findIndex].unread
@@ -133,6 +135,7 @@ export default {
                     last_message : val.body,
                     last_message_author : val.last_message_author,
                     unread : [val.id],
+                    last_message_time:val.time,
                     uuid : val.uuid,
                     site_id : val.site_id,
                     photo : val.from_user_info.photo,

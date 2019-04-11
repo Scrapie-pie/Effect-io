@@ -36,7 +36,9 @@
 
                 filterSearchResult:[],
                 sortMas:[
-                        (item)=>-item.unread.length
+
+                    (item)=>-item.basePeopleOptions.count,
+                    (item)=>item.last_message_time,
                 ]
             }
         },

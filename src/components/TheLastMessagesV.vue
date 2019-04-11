@@ -38,8 +38,8 @@
                 filterSearchResult:[],
                 sortMas:[
                     (item)=>item.very_hot,
-                    (item,index)=>index,
-                    (item)=>-item.basePeopleOptions.count
+                    (item)=>-item.basePeopleOptions.count,
+                    (item)=>-item.last_message_time,
                 ],
                 containerFullFillItemListClassName:{
                     scrollBar:'last-messages__scrollbar',
@@ -59,7 +59,11 @@
                 if (this.viewModeChat==="process")itemList=this.$store.state.visitors.process
                 if (this.viewModeChat==="visitors")itemList=this.$store.state.visitors.self
                 if (this.viewModeChat==="visor")  itemList=this.$store.state.visitors[this.viewModeChat]
-
+                console.table(itemList.slice().map(item => {
+                    console.log(item);
+                    let {last_message_time,unread,name } = item
+                    return {last_message_time,unread,name}
+                }));
                 return itemList.slice()
 
             },
@@ -203,6 +207,8 @@
                     count:item.unread.length,
                     hidden:true
                 }
+
+
 
 
                 return item
