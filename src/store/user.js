@@ -32,6 +32,7 @@ export default {
             delete this._vm.$http.defaults.headers['content-type'];
         },
         profileUpdate(state, {
+            avatar,
             first_name,
             last_name,
             phones,
@@ -52,6 +53,7 @@ export default {
 
             let obj = {}
 
+            if(avatar!==undefined) obj.avatar=avatar
             if(first_name!==undefined) obj.first_name=first_name
             if(last_name!==undefined) obj.last_name=last_name
             if(phones!==undefined) obj.phones=phones
