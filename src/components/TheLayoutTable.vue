@@ -27,11 +27,13 @@
     &__controls{
         display:flex;
         align-items:center;
-        margin-bottom:calc-em(50);
+        margin-bottom:calc-em(35);
+        flex-flow:wrap;
     }
 
     &__control{
         margin-right:calc-em(40);
+        margin-bottom:calc-em(15);
     }
 
     &__content {

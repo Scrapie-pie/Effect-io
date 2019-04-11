@@ -3,12 +3,17 @@
         thead
             tr
                 th URL
+                th
                 th Получено диалогов
                 th
                     |Процент от общего количества обращений (%) #[base-btn(:class="sortClass"  :icon="{box:true,textHidden:'Cортировка'}" padding="xs" color="success" @click="sortToggle") &#11015;]
         tbody
             tr(v-for="(item, index) in itemList" :key="item.url")
                 td.stats-pages__url(:title="item.url"): a(:href="item.url" v-text="item.url" target="_blank")
+                td
+                    base-btn.base-table__show-hover(
+                        @click="nextLink(item)"
+                    ) Открыть журнал
                 td
                     | {{item.dialogues_requests | format}}
                 td
@@ -31,6 +36,8 @@ export default {
     },
     computed:{
         sortClass(){
+
+
             return (this.sortPercentLarger===-1)?'stats-pages__btn-rotate':''
         },
         itemListSort(){
@@ -50,6 +57,12 @@ export default {
         },
     },
     methods:{
+        nextLink(item){
+            this.$store.commit('setFilter',{url:[item.url]})
+            this.$router.push({
+                name:'all'
+            })
+        },
         sortToggle(){
             this.sortPercentLarger = -1*this.sortPercentLarger
         }

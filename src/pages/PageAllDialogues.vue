@@ -1,63 +1,111 @@
 <template lang="pug">
-    the-layout-table.page-log-dialogues(@scrolldown="scrollLoad")
-        filter-drop-menu(name="period", @get="filterPeriod" slot="control" type="radio")
-        filter-drop-menu(
-            v-show="showCalendar"
-            name="calendar",
-            @get="filterCalendar"
-            slot="control"
+    article.page-all
+        nav-aside.page-all__filter-list(v-if="0")
+            scroll-bar.page-all__scrollbar
+                filter-drop-menu(name="last_days", @get="filterLast_days"  type="radio")
+                filter-drop-menu(
+                v-if="showCalendar"
+                name="calendar",
+                @get="filterCalendar"
 
+
+                )
+                filter-drop-menu(
+                name="siteCompany",
+                @get="filterChannel"
+
+                )
+                filter-drop-menu(
+                name="operator",
+                @get="filterOperator"
+
+                )
+
+
+                filter-drop-menu(
+                name="status",
+                @get="filterStatus"
+
+                )
+                filter-drop-menu(
+                name="ball",
+                @get="filterBall"
+
+                )
+                filter-drop-menu(
+                name="url",
+                type="radio",
+                @get="filterUrl"
+
+                )
+        the-layout-table.page-log-dialogues(@scrolldown="scrollLoad")
+
+            filter-drop-menu(name="last_days", @get="filterLast_days" slot="control" type="radio")
+
+            filter-drop-menu(
+                v-if="showCalendar"
+                name="calendar",
+                @get="filterCalendar"
+                slot="control"
+
+               )
+
+            filter-drop-menu(
+                name="siteCompany",
+                @get="filterChannel"
+                slot="control"
             )
-        filter-drop-menu(
-            name="siteCompany",
-            @get="filterChannel"
-            slot="control"
-        )
-        filter-drop-menu(
-            name="operator",
-            @get="filterOperator"
-            slot="control"
+            filter-drop-menu(
+                name="operator",
+                @get="filterOperator"
+                slot="control"
+                )
+
+
+            filter-drop-menu(
+                name="status",
+                @get="filterStatus"
+                slot="control"
+                )
+            filter-drop-menu(
+                name="ball",
+                @get="filterBall"
+                slot="control"
             )
+            filter-drop-menu(
+                name="url",
 
-
-        filter-drop-menu(
-            name="status",
-            @get="filterStatus"
-            slot="control"
+                @get="filterUrl"
+                slot="control"
             )
-        filter-drop-menu(
-            name="ball",
-            @get="filterBall"
-            slot="control"
-        )
-        div(slot="control" v-if="itemListCount")
-            |На странице показано {{showItemLength}} из {{ itemListCount}}
+            div(slot="control" v-if="itemListCount")
+                |На странице показано {{showItemLength}} из {{ itemListCount}}
 
-        base-table(v-if="showItemLength")
-            thead(v-if="headList.length")
-                tr: th(v-for="(item, index) in headList" :key="index" v-html="item.text")
-            tbody
-                tr(v-for="(item, index) in itemList", :key="item.uuid+item.site_id+item.chat_id")
-                    td
-                        base-people(
-                            type="visitor",
-                            :name="item.name"
-                            avatar-width="md",
-                            :avatar-url="item.photo",
-                            :avatar-stub="item.photo_stub"
-                        )
-                    td
-                        base-btn.base-table__show-hover(
-                        @click="startChat(item)"
-                        ) Просмотреть диалог
-                    td
-                        |{{item.date | datetimeDMY }}
-                    td(v-text="item.channel")
-                    td
-                        |{{item.queue_time | datetimeStoHMS}}
-                    td.page-log-dialogues__ball
-                        base-icon(:name="'ball'+item.rating")
-                        |{{item.rating| ballText}}
+            base-table(v-if="showItemLength")
+                thead(v-if="headList.length")
+                    tr: th(v-for="(item, index) in headList" :key="index" v-html="item.text")
+                tbody
+                    tr(v-for="(item, index) in itemList", :key="item.uuid+item.site_id+item.chat_id")
+                        td
+                            base-people(
+                                type="visitor",
+                                :name="item.name"
+                                avatar-width="md",
+                                :avatar-url="item.photo",
+                                :avatar-stub="item.photo_stub"
+                            )
+                        td
+                            base-btn.base-table__show-hover(
+                            @click="startChat(item)"
+                            ) Просмотреть диалог
+                        td
+                            |{{item.date | datetimeDMY }}
+                        td(v-text="item.channel")
+                        td
+                            |{{item.queue_time | datetimeStoHMS}}
+                        td.page-log-dialogues__ball
+                            base-icon(:name="'ball'+item.rating")
+                            |{{item.rating| ballText}}
 
 
 
@@ -67,13 +115,15 @@
     import {datetimeDMY,datetimeStoHMS,dialogPush } from '@/modules/modules'
     import TheLayoutTable from '@/components/TheLayoutTable'
     import FilterDropMenu from '@/components/FilterDropMenu'
+    import NavAside from '@/components/NavAside'
 
     import {scrollbar,paginator } from '@/mixins/mixins'
     export default {
         mixins:[scrollbar,paginator],
         components: {
             FilterDropMenu,
-            TheLayoutTable
+            TheLayoutTable,
+            NavAside
         },
         filters:{
             datetimeDMY,
@@ -111,6 +161,7 @@
                 time_from:'',
                 time_to:'',
                 last_days:'',
+                url:null,
 
 
 
@@ -139,7 +190,7 @@
                     time_from:this.time_from,
                     time_to:this.time_to,
                     last_days:this.last_days,
-
+                    url:this.url,
                 }
             },
 
@@ -148,13 +199,14 @@
         watch:{
 
             paramsComp(){
-                console.log('paramsComp');
+                //console.log('paramsComp');
 
                 if((
                     this.users_ids.length &&
                     this.sites_ids.length &&
                     this.statuses.length &&
-                    this.rates.length
+                    this.rates.length &&
+                    this.url!== null
                     ) &&
                     this.last_days ||
                     (
@@ -185,19 +237,19 @@
 
 
             },
-            filterPeriod(val){
+            filterLast_days(val){
                 //console.log(val);
                 if (val==='-1') {
 
                     this.showCalendar=true;
 
-                    if (this.tempDates.length){
+               /*     if (this.tempDates.length){
                         this.date_from = this.tempDates[0];
                         this.date_to = this.tempDates[1];
                         this.time_from = this.tempDates[2];
                         this.time_to = this.tempDates[3];
                     }
-
+*/
                 }
                 else {
                     this.last_days=val;
@@ -216,15 +268,15 @@
                 this.time_from = val.time_from;
                 this.time_to = val.time_to;
 
-                this.tempDates=[this.date_from,this.date_to,this.time_from,this.time_to]
+                //this.tempDates=[this.date_from,this.date_to,this.time_from,this.time_to]
             },
             filterBall(val){
-                console.log(val);
+                //console.log(val);
                 this.rates=val
             },
             filterChannel(val){
                 this.sites_ids = val
-                console.log(val);
+                //console.log(val);
             },
             filterStatus(val){
                 //console.log(val);
@@ -233,6 +285,10 @@
             filterOperator(val){
                 //console.log(val);
                 this.users_ids = val
+            },
+            filterUrl(val){
+                //console.log(val);
+                this.url = val
             }
 
         },
@@ -241,6 +297,37 @@
 </script>
 
 <style lang="scss">
+    .page-all {
+        flex-direction: row;
+        &__scrollbar {
+            height:100%;
+            padding-left:calc-em(10);
+            padding-right:calc-em(10);
+        }
+        &__filter-list {
+            margin-right:calc-em(15);
+
+            .filter-drop-menu{
+                &__box {
+                    opacity: 1;
+                    visibility: visible;
+                    -webkit-transform: translateY(0);
+                    transform: translateY(0);
+                    position:static;
+                }
+                &__controls-item{
+
+                    white-space:normal;
+                }
+                margin-bottom:calc-em(20);
+
+                .base-radio-check__text-wrap {
+                    white-space:normal;
+                }
+            }
+
+        }
+    }
     .page-log-dialogues{
         &__ball .icon {margin-right:calc-em(10)}
 

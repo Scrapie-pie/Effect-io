@@ -64,7 +64,7 @@ export default {
             modelradio:null,
             modelcheckbox:[],
             allChecked:1,
-            periodList:[
+            last_daysList:[
                 {id:'1',name:"За сутки"},
                 {id:'7',name:"За 7 дней"},
                 {id:'30',name:"За 30 дней"},
@@ -83,7 +83,9 @@ export default {
                 {id:'missed',name:'Пропущенные'},
                 {id:'overdue',name:'Просроченные (более 30 сек.)'},
             ],
+            urlListData:[],
             titleName:{
+                url:'страницы',
                 operator:'сотрудники',
                 ball:'оценки',
                 status:'статусы',
@@ -94,11 +96,23 @@ export default {
         }
     },
     computed:{
+        getFilterSelectStore(){
 
+            if(this.name in this.filterSelectStore===false) return false
+            return this.itemList.filter(item=>{
+                console.log(item.id,this.filterSelectStore[this.name],this.filterSelectStore[this.name].includes(item.id));
+
+                return this.filterSelectStore[this.name].includes(item.id)
+            })
+        },
+        filterSelectStore(){
+            return this.$store.state.filterSelect
+        },
         title(){
-            if (this.name==='period') {
+            if (this.type==='radio') {
                 if(this.modelradio) return this.modelradio.name
             }
+
             if (this.name==='calendar') {
                 let strDate =''
                 if(this.modelradio) {
@@ -120,6 +134,9 @@ export default {
         },
         calendarList(){
             return []
+        },
+        urlList(){
+            return this.urlListData
         },
         operatorList(){
             return this.$store.getters['operators/all'].map(item=>{
@@ -168,6 +185,7 @@ export default {
                     if (this.modelPrev.map(item=>item.id).join() !== this.modelcheckbox.map(item=>item.id).join()){ //если результат не меняли, ничего не отправляем
                         this.$emit('get',this.modelcheckbox.map(item=>item.id))
 
+
                     }
 
                 }
@@ -179,26 +197,44 @@ export default {
         itemList:{
             handler(val,oldval)
             {
+                console.log('itemList',val);
+                console.log('this.getFilterSelectStore',this.getFilterSelectStore);
+                if(this.type==="checkbox") {
+                    if(this.getFilterSelectStore.length) {
+                        this.modelcheckbox = this.getFilterSelectStore
+                    }
+                    else if (this.allChecked) { //если нет query п умолчанию выставляем все
 
-                if (this.allChecked) {
+                        this.modelcheckbox = val
+                    }
+                } else {
 
-                    this.modelcheckbox = val
+                    if(this.getFilterSelectStore.length) {
+                        this.modelradio = this.getFilterSelectStore[0]
+                    } else {
+                        this.modelradio =  val[0]
+                    }
                 }
+
             },
             immediate: true
         },
         modelradio:{
             handler(val){
-                if(this.name==='period') {
+                console.log('modelradio handler',val);
+                if(this.type==="radio") {
 
-                    if (!val) {
-
-                        return this.modelradio =  this.itemList[0]
-                    }
+                    if (!val) return
                     this.$emit('get',val.id)
+                    this.$store.commit('setFilter',{[this.name]:[val.id]})
+
                 }
                 if(this.name==='calendar') {
-                    if(val && val.date_from && val.date_to)  this.$emit('get',val)
+                    console.log('this.name === calendar',val);
+                    if(val && val.date_from && val.date_to)  {
+                        this.$emit('get',val)
+                        this.$store.commit('setFilter',{[this.name]:[val]})
+                    }
 
                     this.show=false
                 }
@@ -207,17 +243,44 @@ export default {
         },
         modelcheckbox:{
             handler(val,valOld=[]){
+                console.log('handler',val, valOld, this.itemList);
+                //if(this.name==='url' && !this.itemList.length) return       console.log('modelcheckbox',val, valOld);
+
                 if (val.length!==this.itemList.length) this.allChecked=false;
                 //this.$emit('get',val.map(item=>item.id))
 
-                console.log('modelcheckbox handler',val,valOld);
+
                 this.modelPrev = valOld
             },
             immediate: true
         }
     },
     created(){
-        console.log('.log');
+
+
+        if(this.name==='url'){
+          /*  console.log('.log');
+            let data =[
+                {id:'',url:'Не выбрана'},
+                {id:1,url:'http://mishki.ucoz.net/'},
+                {id:2,url:'http://newfanhor.clan.su/index/0-2'},
+            ];
+            data.forEach(item=>item.name=item.url)
+            this.urlListData = data
+            return*/
+            this.$http.get('site-pages').then(({data})=>{
+
+                data=data.data.map(item=>{
+                    return {id:item,name:item}
+                })
+
+                this.urlListData=[
+                    ...data
+                ];
+
+
+            })
+        }
     },
     mounted() {
 
@@ -225,6 +288,7 @@ export default {
 
     },
     methods:{
+
         controlOpetions(item){
             let obj =  {
                 type:this.type,
@@ -235,6 +299,7 @@ export default {
             return obj
         },
         allCheckedToggle(){
+            console.log('allCheckedToggle');
             this.allChecked=!this.allChecked;
             if(this.allChecked) {this.modelcheckbox=this.itemList}
             else this.modelcheckbox=[]
