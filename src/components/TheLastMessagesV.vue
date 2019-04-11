@@ -37,7 +37,8 @@
             return {
                 filterSearchResult:[],
                 sortMas:[
-                    (item)=>item.very_hot,
+                    (item)=>!item.very_hot,
+                    (item)=>!item.hot,
                     (item)=>-item.basePeopleOptions.count,
                     (item)=>-item.last_message_time,
                 ],
