@@ -2,6 +2,9 @@
     header.the-header
         user-status.the-header__user-status
         nav-main.the-header__nav-main(:item-list="canalList")
+        .the-header__code
+            |{{generateCode}}
+            base-btn.the-header__code-btn(@click="getGenerateCode", :icon="{name:'refresh', textHidden:'Генерация одноразового кода для подключения клиента конкретно к Вам'}" )
         nav-main.the-header__nav-app(:item-list="appList")
 </template>
 
@@ -17,7 +20,7 @@
         data() {
 
             return {
-
+                generateCode:''
 
             }
         },
@@ -61,6 +64,14 @@
             },
 
 
+        },
+        methods:{
+            getGenerateCode(){
+                this.$http.put('one-time-chat-generate-code')
+                    .then(({ data }) => {
+                        this.generateCode = data
+                    })
+            }
         }
 
     }
@@ -91,6 +102,16 @@
 
         &__user-status{
             padding-bottom: 7.5vh;
+        }
+        &__code {
+            display:flex;
+            align-items:center;
+            line-height:1;
+            padding:calc-em(8) calc-em(26);
+        }
+        &__code-btn {
+            transform: translateY(1px);
+            fill:glob-color('disabled');
         }
 
     }
