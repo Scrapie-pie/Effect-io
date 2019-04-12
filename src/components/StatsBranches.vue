@@ -13,21 +13,22 @@
                         :router="{name:'statsBranchesDetail',params:{id:item.branch_id}}"
                     ) Детальная статистика
                 td(v-text="item.dialogues_requests")
-                template(v-if="order!=='dialogues_percents'")
+                template(v-if="order!=='dialogues_requests'")
+                    template(v-if="order!=='dialogues_percents'")
 
-                    td
-                        span.color_success(v-text="item.dialogues_accepted")
-                        span.color_error(v-text="'/'+item.dialogues_missed")
-                    td
-                        |{{item.first_answer_average_speed | format('time')}}
-                    td
-                        |{{item.average_guest_time_in_queue | format('time')}}
-                    td
-                        span.color_success(v-text="item.excellent_ratings")
-                        span.color_info(v-text="'/'+item.middling_ratings+'/'")
-                        span.color_error(v-text="item.badly_ratings")
-                td(v-else)
-                    |{{item[order] | format('percent')}}
+                        td
+                            span.color_success(v-text="item.dialogues_accepted")
+                            span.color_error(v-text="'/'+item.dialogues_missed")
+                        td
+                            |{{item.first_answer_average_speed | format('time')}}
+                        td
+                            |{{item.average_guest_time_in_queue | format('time')}}
+                        td
+                            span.color_success(v-text="item.excellent_ratings")
+                            span.color_info(v-text="'/'+item.middling_ratings+'/'")
+                            span.color_error(v-text="item.badly_ratings")
+                    td(v-else)
+                        |{{item[order] | format('percent')}}
 
 </template>
 
@@ -65,6 +66,13 @@ export default {
                     ]
                     list.push('Процент от общего количества диалогов (всех отделов)')
                 }
+
+
+                if(this.order==="dialogues_requests") {
+                    list.length=2
+
+                }
+
                 return list
             },
         bodyListFormat(){

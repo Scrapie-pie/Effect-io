@@ -17,23 +17,23 @@
                     base-btn.base-table__show-hover(
 
                         padding="xslr",
-                        :router="{name:'statsEmployeesDetail',params:{id:item.user_id}}"
+                        :router="{name:'statsOperatorsDetail',params:{id:item.user_id}}"
                     ) Детальная статистика
                 td(v-if="item.operator" v-html="$options.filters.branchesBr(item.operator.branches_names)")
+                td(v-if="order==='dialogues_requests'" v-text="item.dialogues_requests")
+                template(v-else)
+                    template(v-if="order!=='first_answer_average_speed'")
+                        td(v-text="item.dialogues_requests")
+                        td
+                            span.color_success(v-text="item.dialogues_accepted")
+                            span.color_error(v-text="'/'+item.dialogues_missed")
 
-
-                template(v-if="order!=='first_answer_average_speed'")
-                    td(v-text="item.dialogues_requests")
-                    td
-                        span.color_success(v-text="item.dialogues_accepted")
-                        span.color_error(v-text="'/'+item.dialogues_missed")
-
-                    td
-                        span.color_success(v-text="item.excellent_ratings")
-                        span.color_info(v-text="'/'+item.middling_ratings+'/'")
-                        span.color_error(v-text="item.badly_ratings")
-                td(v-else)
-                    |Среднее время первого ответа на диалог {{item.first_answer_average_speed | format('time')}}
+                        td
+                            span.color_success(v-text="item.excellent_ratings")
+                            span.color_info(v-text="'/'+item.middling_ratings+'/'")
+                            span.color_error(v-text="item.badly_ratings")
+                    td(v-else)
+                        |Среднее время первого ответа на диалог {{item.first_answer_average_speed | format('time')}}
 </template>
 
 <script>
@@ -71,6 +71,11 @@ export default {
 
             if(this.order==="first_answer_average_speed") {
                 list = []
+
+            }
+
+            if(this.order==="dialogues_requests") {
+                list.length=3
 
             }
 

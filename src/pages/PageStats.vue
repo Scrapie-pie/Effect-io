@@ -7,7 +7,7 @@
             ) Качество обслуживания
             router-link(
                 slot="item"
-                :to='{name:"statsEmployees"}'
+                :to='{name:"statsOperators"}'
             ) Статистика по сотрудникам
             router-link(
                 slot="item"
@@ -17,6 +17,10 @@
                 slot="item"
                 :to='{name:"statsPages"}'
             ) Статистика по страницам
+            router-link(
+                slot="item"
+                :to='{name:"statsOnceChat"}'
+            ) Одноразовые чаты
         section.page-stats__main
             h1.page-stats__title(v-text="title")
             router-view
@@ -50,6 +54,7 @@ export default {
     },
     computed:{
         title(){
+            console.log(this.$route);
             let titleHead = this.$route.meta.title
 
             if(this.routerName==='statsBranchesDetail') {
@@ -57,7 +62,7 @@ export default {
                 let branch = this.branchListAll.find(item=>item.id===+this.$route.params.id);
                 if (branch) return titleHead+': '+branch.title
             }
-            if(this.routerName==='statsEmployeesDetail') {
+            if(this.routerName==='statsOperatorsDetail') {
                 let operator = this.$store.state.operators.all.find(item=>item.id===+this.$route.params.id)
                 if(operator) return titleHead+': '+operator.fullName
             }

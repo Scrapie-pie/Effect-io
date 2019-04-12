@@ -29,7 +29,7 @@ export default [{
             component: PageStatsInner
         },
         {
-            name: 'statsEmployees',
+            name: 'statsOperators',
             path: 'employees',
             meta:{
                 title:'Статистика по сотрудникам'
@@ -37,7 +37,7 @@ export default [{
             component: PageStatsInner,
             children: [
                 {
-                    name: 'statsEmployeesDetail',
+                    name: 'statsOperatorsDetail',
                     path: ':id',
                     component: PageStatsInner,
                     meta:{
@@ -69,6 +69,14 @@ export default [{
             path: 'pages',
             meta:{
                 title:'Статистика по страницам'
+            },
+            component: PageStatsInner
+        },
+        {
+            name: 'statsOnceChat',
+            path: 'onceChat',
+            meta:{
+                title:'Одноразовые чаты'
             },
             component: PageStatsInner
         },

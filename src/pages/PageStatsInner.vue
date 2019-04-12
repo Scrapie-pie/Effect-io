@@ -1,6 +1,11 @@
 <template lang="pug">
     the-layout-table.page-stats-inner
-        filter-drop-menu(name="last_days", @get="filterLast_days" slot="control" type="radio")
+        filter-drop-menu(
+            name="last_days",
+            @get="filterLast_days"
+            slot="control"
+            type="radio"
+        )
         filter-drop-menu(
             v-if="showCalendar"
             name="calendar",
@@ -23,7 +28,7 @@
             download
         ) Выгрузить в Csv
         base-field(
-            v-if="routerName==='statsEmployees'"
+            v-if="routerName==='statsOperators'"
             slot="control"
             type="select"
             name="branch",
@@ -36,85 +41,24 @@
             li Сотрудников в команде: {{$store.state.operators.all.length}}
 
         section.page-stats-inner__main(v-show="last_days || date_from")
-
-            stats-service(
-                v-if="routerName==='statsService'",
-                :date_from="date_from",
-                :date_to="date_to",
-                :time_from="time_from",
-                :time_to="time_to",
-                :last_days="last_days",
-                :type="type"
+            component(
+            :is="activeComponent",
+            v-bind="payload"
+            v-on="listeners"
             )
 
-            stats-operators(
-                v-if="routerName==='statsEmployees'",
-                :date_from="date_from",
-                :date_to="date_to",
-                :time_from="time_from",
-                :time_to="time_to",
-                type="employees",
-                :last_days="last_days",
-                @itemList="(val)=>itemList=val",
-                :filterListOn="true",
-                :filterList="filterSearchResult",
-                :filterBranchId="branch.id"
-            )
-            stats-result(
-                v-if="routerName==='statsEmployeesDetail'",
-                :date_from="date_from",
-                :date_to="date_to",
-                :time_from="time_from",
-                :time_to="time_to",
-                type="employee",
-                :user_id="user_id",
-                :last_days="last_days",
-            )
-            stats-branches(
-                v-if="routerName==='statsBranches'",
-                type="branches",
-                :date_from="date_from",
-                :date_to="date_to",
-                :time_from="time_from",
-                :time_to="time_to",
-                :last_days="last_days",
-                @itemList="(val)=>itemList=val",
-                :filterListOn="true",
-                :filterList="filterSearchResult"
-            )
-            stats-result(
-                v-if="routerName==='statsBranchesDetail'"
-                type="branch",
-                :branch_id="branch_id",
-                :last_days="last_days",
-                :time_from="time_from",
-                :time_to="time_to",
-                :date_from="date_from",
-                :date_to="date_to",
-            )
-            stats-pages(
-                v-if="routerName==='statsPages'"
-                type="pages",
-                :last_days="last_days",
-                :date_from="date_from",
-                :date_to="date_to",
-                :time_from="time_from",
-                :time_to="time_to",
-                @itemList="(val)=>itemList=val",
-                :filterListOn="true",
-                :filterList="filterSearchResult"
-            )
 </template>
 
 <script>
 
 import config from "@/config/index";
-import TheLayoutTable from '@/components/TheLayoutTable'
-import StatsOperators from '@/components/StatsOperators'
-import StatsBranches from '@/components/StatsBranches'
-import StatsPages from '@/components/StatsPages'
-import StatsResult from '@/components/StatsResult'
-import StatsService from '@/components/StatsService'
+const TheLayoutTable = ()=> import ('@/components/TheLayoutTable')
+const StatsOperators = ()=> import ('@/components/StatsOperators')
+const StatsBranches = ()=> import ('@/components/StatsBranches')
+const StatsPages = ()=> import ('@/components/StatsPages')
+const StatsResult = ()=> import ('@/components/StatsResult')
+const StatsService = ()=> import ('@/components/StatsService')
+const StatsOnceChat = ()=> import ('@/components/StatsOnceChat')
 
 
 import FilterDropMenu from '@/components/FilterDropMenu'
@@ -129,7 +73,7 @@ export default {
         StatsResult,
         StatsPages,
         StatsService,
-
+        StatsOnceChat,
         FilterDropMenu
     },
 
@@ -154,6 +98,56 @@ export default {
         }
     },
     computed:{
+        activeComponent(){
+            if(this.routerName==='statsOperatorsDetail') return 'statsResult'
+            if(this.routerName==='statsBranchesDetail') return 'statsResult'
+            return this.routerName
+        },
+        listeners: function () {
+
+            let obj = {}
+
+            if(
+                this.routerName==='statsPages' ||
+                this.routerName==='statsBranches' ||
+                this.routerName==='statsOperators'
+            ) {
+                obj.itemList = (val)=> {
+                    this.itemList=val
+                }
+            }
+
+
+            return Object.assign({}, this.$listeners, obj
+
+
+            )
+        },
+        payload(){
+
+            let obj={
+                type:this.type,
+                filterListOn:false,
+                filterList:this.filterSearchResult,
+            };
+
+            if(this.routerName==='statsOperatorsDetail') obj.user_id=this.user_id
+            if(this.routerName==='statsBranchesDetail') obj.branch_id=this.branch_id
+            if(this.routerName==='statsOperators') obj.filterBranchId=this.branch.id
+            if(this.routerName==='statsBranches' ||
+                this.routerName==='statsPages' ||
+                this.routerName==='statsOperators'
+            ) obj.filterListOn=true;
+
+            let main = {
+                date_from:this.date_from,
+                date_to:this.date_to,
+                time_from:this.time_from,
+                time_to:this.time_to,
+                last_days:this.last_days,
+            }
+            return Object.assign(main, this.$attrs, obj)
+        },
         branch_id(){
             return +this.$route.params.id;
         },
@@ -161,9 +155,14 @@ export default {
             return +this.$route.params.id;
         },
         type(){
+            if(this.routerName==='statsPages') return 'pages';
+            if(this.routerName==='statsOnceChat') return 'top';
             if(this.routerName==='statsService') return 'top';
+            if(this.routerName==='statsBranches') return 'branches';
             if(this.routerName==='statsBranchesDetail') return 'branch';
-            if(this.routerName==='statsEmployeesDetail') return 'employee';
+            if(this.routerName==='statsOperators') return 'employees';
+            if(this.routerName==='statsOperatorsDetail') return 'employee';
+
         },
         downloadLink(){
             let dates=`&date_from=${this.date_from}&date_to=${this.date_to}&time_from=${this.time_from}&time_to=${this.time_to}`;
@@ -171,18 +170,25 @@ export default {
         },
         placeholder(){
             if(this.routerName==='statsBranches') return 'Поиск по названию'
-            if(this.routerName==='statsEmployees') return 'Поиск по имени'
+            if(this.routerName==='statsOperators') return 'Поиск по имени'
             if(this.routerName==='statsPages') return 'Поиск по url'
         },
         btnDownloadShow(){
-            return (this.last_days!==null || (this.date_from!==null && this.date_to!==null))
+            return (
+                this.routerName!=='statsOnceChat' &&
+                this.last_days!=='' ||
+                (this.date_from!=='' && this.date_to!=='')
+
+
+            )
         },
         filterSearchShow(){
 
             return (
+              this.routerName!=='statsOnceChat' &&
               this.routerName!=='statsService' &&
               this.routerName!=='statsBranchesDetail' &&
-              this.routerName!=='statsEmployeesDetail'
+              this.routerName!=='statsOperatorsDetail'
           )
         },
         routerName(){
