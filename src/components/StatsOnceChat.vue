@@ -1,24 +1,24 @@
 <template lang="pug">
     section.stats-once-chat
-        ul.stats-once-chat__list
-            li.stats-once-chat__item
+        .stats-once-chat__list
+            .stats-once-chat__item
                 .stats-once-chat__table
                     stats-branches(
                     :btn-detail-hide="true"
-                    caption="ТОП отделам",
+                    caption="По отделам",
                     :set-body-list="best_branches_by_rating",
-                    :sort="true"
+                    :filterBranchIdsOn="true"
                     order="dialogues_requests"
                     )
                 p.stats-once-chat__all
                     | Всего принято диалогов по выбранным отделам: 766
-            li.stats-once-chat__item
+            .stats-once-chat__item
                 .stats-once-chat__table
                     stats-operators(
                         :btn-detail-hide="true"
-                        caption="ТОП сотрудникам",
+                        caption="По сотрудникам",
                         :set-body-list="best_employees_by_rating",
-                        :sort="true"
+                        :filterOperatorIdsOn="true"
                         order="dialogues_requests"
                     )
 
@@ -79,15 +79,29 @@ export default {
         $color_border:glob-color('border');
         &__list {
             display:flex;
+
             @extend %row-flex;
+            @include media($width_xl) {
+                flex-flow:wrap;
+            }
+        }
+        &__item {
+            @extend %row-flex-col;
+            min-width:570px;
+            margin-bottom:calc-em(20);
         }
         &__table {
             border:2px solid $color_border;
             margin-bottom:calc-em(20);
             padding:calc-em(15);
+
+            @include media($width_xl,1) {
+                height:100%;
+            }
         }
         &__all {
             @extend %h4;
+
         }
     }
 </style>

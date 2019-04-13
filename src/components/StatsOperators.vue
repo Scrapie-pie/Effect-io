@@ -1,6 +1,13 @@
 <template lang="pug">
     base-table.stats-operators
-        caption(v-if="caption" v-text="caption")
+        caption(v-if="caption")
+            .stats-operators__caption
+                .stats-operators__caption-item {{caption}}
+                filter-drop-menu.stats-operators__caption-item(
+                    v-if="filterOperatorIdsOn"
+                    name="operator",
+                    @get="(val)=>filterOperatorIds=val"
+                )
         thead(v-if="headList.length")
             tr: th(v-for="(item, index) in headList" :key="index" v-html="item")
         tbody
@@ -38,22 +45,30 @@
 
 <script>
 import branchesBr from '@/modules/branchesBr'
+const FilterDropMenu =()=>import('@/components/FilterDropMenu')
 import {stats} from '@/mixins/mixins'
 
 export default {
+    components:{
+        FilterDropMenu
+    },
     mixins:[stats],
     props:{
         filterBranchId:{
             type:Number,
             default:null,
         },
+        filterOperatorIdsOn:{
+            type:Boolean,
+            default:false,
+        }
     },
     filters:{
         branchesBr
     },
     data() {
         return {
-
+            filterOperatorIds:[]
         }
     },
     computed:{
@@ -83,7 +98,7 @@ export default {
         },
 
         bodyListFormat(){
-            return  this.filterListBranch
+            return  this.setFilterList
         },
         itemListWidthOperators(){
             return this.bodyList.map(item=>{
@@ -93,9 +108,11 @@ export default {
                 return item
             })
         },
-        filterListBranch(){
+
+        setFilterList(){
 
             if(this.filterBranchId) return this.itemListWidthOperators.filter(item=>item.operator.branches_ids.includes(this.filterBranchId))
+            if(this.filterOperatorIdsOn) return this.itemListWidthOperators.filter(item=>this.filterOperatorIds.includes(item.operator.id))
             else return this.itemListWidthOperators
         }
     },
@@ -104,6 +121,14 @@ export default {
 
 <style lang="scss">
     .stats-operators{
+        &__caption {
+            @extend %row-flex;
+            &-item {
+                @extend %row-flex-col;
+
+                &.filter-drop-menu {    font-weight: 400;}
+            }
+        }
         td:nth-child(1),td:nth-child(2) {
             width:253px;
         }

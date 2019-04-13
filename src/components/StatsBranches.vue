@@ -1,6 +1,14 @@
 <template lang="pug">
     base-table.stats-branches
-        caption(v-if="caption" v-text="caption")
+        caption(v-if="caption")
+            .stats-branches__caption
+                .stats-branches__caption-item {{caption}}
+                filter-drop-menu.stats-branches__caption-item(
+                    v-if="filterBranchIdsOn"
+                    name="branch",
+                    @get="(val)=>filterBranchIds=val"
+                )
+
         thead: tr: th(v-for="(item, index) in headList" :key="index" v-html="item" )
         tbody
             tr(v-for="(item, index) in itemList" :key="item.id")
@@ -33,49 +41,63 @@
 </template>
 
 <script>
-
+    const FilterDropMenu =()=>import('@/components/FilterDropMenu')
 import {stats} from '@/mixins/mixins'
 
 export default {
+    components:{
+        FilterDropMenu
+    },
     mixins:[stats],
+    props:{
 
+        filterBranchIdsOn:{
+            type:Boolean,
+            default:false,
+        }
+    },
 
     data() {
         return {
+            filterBranchIds:[]
         }
     },
     computed:{
-            headList(){
-                let list = [
+        headList(){
+            let list = [
+                'Название отдела',
+                '',
+                'Получено<br>диалогов',
+                'Принято/<br>пропущено диалогов',
+                'Средняя скорость<br>ответа оператора',
+                'Средняе время<br>ожидания в очереди',
+                'Оценки',
+            ]
+
+            if(this.btnDetailHide) list.splice(1, 1)
+
+
+            if(this.order==="dialogues_percents") {
+                list = [
                     'Название отдела',
-                    '',
-                    'Получено<br>диалогов',
-                    'Принято/<br>пропущено диалогов',
-                    'Средняя скорость<br>ответа оператора',
-                    'Средняе время<br>ожидания в очереди',
-                    'Оценки',
+                    'Получено диалогов',
                 ]
-
-                if(this.btnDetailHide) list.splice(1, 1)
-
-
-                if(this.order==="dialogues_percents") {
-                    list = [
-                        'Название отдела',
-                        'Получено диалогов',
-                    ]
-                    list.push('Процент от общего количества диалогов (всех отделов)')
-                }
+                list.push('Процент от общего количества диалогов (всех отделов)')
+            }
 
 
-                if(this.order==="dialogues_requests") {
-                    list.length=2
+            if(this.order==="dialogues_requests") {
+                list.length=2
 
-                }
+            }
 
-                return list
-            },
+            return list
+        },
         bodyListFormat(){
+            return  this.setFilterList
+        },
+
+        itemListWidthBranchName(){
             return this.bodyList.map(item=>{
                 item.branchName=''
                 let branch = this.$store.state.user.branchListAll.find(itemSub=>itemSub.id===item.branch_id)
@@ -88,12 +110,25 @@ export default {
                 return item
             })
         },
+        setFilterList(){
+
+            if(this.filterBranchIds) return this.itemListWidthBranchName.filter(item=>this.filterBranchIds.includes(item.branch_id))
+            else return this.itemListWidthBranchName
+        }
     },
 }
 </script>
 
 <style lang="scss">
     .stats-branches{
+        &__caption {
+            @extend %row-flex;
+            &-item {
+                @extend %row-flex-col;
+
+                &.filter-drop-menu {    font-weight: 400;}
+            }
+        }
         th:nth-child(1) {
             width:253px;
         }

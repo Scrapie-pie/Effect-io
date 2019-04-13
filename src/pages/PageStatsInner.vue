@@ -195,8 +195,8 @@ export default {
             return this.$route.name
         },
         branchListAll(){
-            let list = this.$store.state.user.branchListAll
-            list.push({title:'Все'})
+            let list = this.$store.state.user.branchListAll.slice()
+            list.push({title:'Все отделы'})
             return list
         }
     },

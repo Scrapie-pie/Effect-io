@@ -31,7 +31,7 @@
 
 
 
-export default {
+    export default {
     components: {
         NavAside,
     },
@@ -54,7 +54,7 @@ export default {
     },
     computed:{
         title(){
-            console.log(this.$route);
+
             let titleHead = this.$route.meta.title
 
             if(this.routerName==='statsBranchesDetail') {

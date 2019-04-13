@@ -85,6 +85,7 @@ export default {
             ],
             urlListData:[],
             titleName:{
+                branch:'отделы',
                 url:'страницы',
                 operator:'сотрудники',
                 ball:'оценки',
@@ -141,6 +142,13 @@ export default {
         operatorList(){
             return this.$store.getters['operators/all'].map(item=>{
                 item.name = item.fullName +' ('+ this.$options.filters.branchesBr(item.branches_names)+')'
+                return item
+            })
+        },
+        branchList(){
+            return this.$store.state.user.branchListAll.map(item=>{
+
+                item.name=item.title;
                 return item
             })
         },
