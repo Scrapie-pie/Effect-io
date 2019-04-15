@@ -19,27 +19,17 @@
     const StatsOperators = ()=> import ('@/components/StatsOperators')
     const StatsBranches = ()=> import ('@/components/StatsBranches')
 
-
     import {stats} from '@/mixins/mixins'
 export default {
-
     components:{
         StatsOperators,
         StatsBranches,
-
-
     },
     mixins:[stats],
     data() {
         return {
-            onceBranches:[],
-            onceEmployees:[],
 
-            best_branches_by_percents:[],
-            best_branches_by_rating:[],
-            best_employees_by_rating:[],
-            best_employees_by_speed:[],
-            company:{}
+
 
         }
     },
@@ -47,6 +37,9 @@ export default {
 
     },
     methods:{
+        get(){ //переписываем из stats
+
+        },
         payload(type){
 
             let obj = {
@@ -75,21 +68,7 @@ export default {
             return Object.assign(main, obj)
         },
     },
-    watch:{
-        bodyList(val){
-            console.log(val);
-            if(val){
-                    this.onceBranches=val.onceBranches;
-                    this.onceEmployees=val.onceEmployees;
 
-                this.best_branches_by_percents=val.best_branches_by_percents
-                this.best_branches_by_rating=val.best_branches_by_rating
-                this.best_employees_by_rating=val.best_employees_by_rating
-                this.best_employees_by_speed=val.best_employees_by_speed
-                this.company=val.company
-            }
-        }
-    }
 }
 </script>
 

@@ -215,23 +215,7 @@ export default {
         }*/
     },
     methods:{
-        get(){
 
-            if(this.last_days || (this.date_from && this.date_to)) {
-
-                this.$http.get('statistic-get-by-params',{params:{
-                        last_days:this.last_days,
-                        date_from:this.date_from,
-                        date_to:this.date_to,
-                        time_from:this.time_from,
-                        time_to:this.time_to,
-                        type:this.type,
-                    }}).then((response)=>{
-                    console.log(response.data.data);
-                })
-            }
-
-        },
         filterLast_days(val){
 
             if (val==='-1') {
