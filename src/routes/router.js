@@ -55,7 +55,7 @@ const router =  new Router({
             component: PageTeam,
         },
         {
-            name: 'teamChat', // Вынес в children, иначе при переходе срабатывала функция hideHeader
+            name: 'teamChat',
             path: '/team/:id',
             component: PageChat,
         },
@@ -114,13 +114,18 @@ const router =  new Router({
             component: PageAllDialogues
         },
         {
-            name: 'search',
+            name: 'searchList',
             path: '/search',
             component: PageSearchDialogues
         },
         {
+            name: 'search',
+            path: '/search/:uuid/:site_id/:chat_id',
+            component: PageChat,
+        },
+        {
             name: 'visor',
-            path: '/all/:uuid/:site_id',
+            path: '/all/:uuid/:site_id/:chat_id',
             component: PageChat,
         },
         ...settings,

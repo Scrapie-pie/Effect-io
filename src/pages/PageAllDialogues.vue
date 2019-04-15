@@ -226,12 +226,18 @@
 
 
         },
+        beforeRouteEnter (to, from, next) {
+            next(vm=>{
+                if(vm.viewModeChat==='all' && !vm.$store.getters['user/isRole'](['admin','owner','operatorSenior'])) return vm.$router.push({name: 'processAll'})
+
+            })
+        },
         methods:{
             startChat(item){
-                let {uuid,site_id} = item;
+                let {uuid,site_id,chat_id} = item;
 
-                dialogPush(this,'visor',item)
-                return this.$router.push({name:'visor',params: { uuid, site_id}});
+                dialogPush(this,'visor',item,'chat_id')
+                return this.$router.push({name:'visor',params: { uuid, site_id,chat_id}});
 
 
             },

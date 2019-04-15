@@ -14,9 +14,7 @@
         base-filter-search(
         slot="control",
         placeholder="Введите ID",
-        field-name="chat_id"
-        :item-list="itemList",
-        @result="(val)=>filterSearchResult=val",
+
         @text="(val)=>search=val",
         )
         div(slot="control" v-if="itemListCount")
@@ -26,6 +24,7 @@
             thead
                 tr
                     th Дата поступления
+                    th
                     th ID
                     th Продолжительность
                     th Имя клиента
@@ -33,7 +32,14 @@
                     th Сообщения в диалоге
             tbody
                 tr(v-for="(item, index) in itemList", :key="item.chat_id")
-                    td {{item.date | datetimeDMY}}
+                    td
+                        |{{item.date | datetimeDMY}}
+                        br
+                        |{{item.date | datetimeHMS}}
+                    td
+                        base-btn.base-table__show-hover(
+                        @click="startChat(item)"
+                        ) Просмотреть диалог
                     td(v-text="item.chat_id")
                     td {{item.time | datetimeStoHMS}}
                     td(v-text="item.name")
@@ -45,7 +51,7 @@
 </template>
 
 <script>
-    import {datetimeDMY,datetimeStoHMS,dialogPush } from '@/modules/modules'
+    import {datetimeDMY,datetimeHMS,datetimeStoHMS,dialogPush } from '@/modules/modules'
     import TheLayoutTable from '@/components/TheLayoutTable'
     import FilterDropMenu from '@/components/FilterDropMenu'
 
@@ -60,7 +66,7 @@
         filters:{
             datetimeDMY,
             datetimeStoHMS,
-
+            datetimeHMS
         },
         data() {
             return {
@@ -119,10 +125,10 @@
         },
         methods:{
             startChat(item){
-                let {uuid,site_id} = item;
+                let {uuid,site_id,chat_id} = item;
 
-                dialogPush(this,'visor',item)
-                return this.$router.push({name:'visor',params: { uuid, site_id}});
+                dialogPush(this,'search',item,'chat_id')
+                return this.$router.push({name:'search',params: { uuid, site_id,chat_id}});
 
 
             },
@@ -131,14 +137,6 @@
                 if (val==='-1') {
 
                     this.showCalendar=true;
-
-                    /*     if (this.tempDates.length){
-                             this.date_from = this.tempDates[0];
-                             this.date_to = this.tempDates[1];
-                             this.time_from = this.tempDates[2];
-                             this.time_to = this.tempDates[3];
-                         }
-     */
                 }
                 else {
                     this.last_days=val;

@@ -300,10 +300,11 @@
                 else if(this.viewModeChat==='common') {
                     params.room_id = this.$store.state.user.profile.common_room_id
                 }
-                else if(this.viewModeChat==='visor') {
-                    let {guest_uuid,site_id } =  this.httpParams.params;
+                else if(['search','visor'].includes(this.viewModeChat)) {
+                    let {guest_uuid,site_id,chat_id } =  this.httpParams.params;
                          params.guest_uuid = guest_uuid,
                         params.site_id = site_id;
+                        params.chat_id = chat_id;
                 }
 
 

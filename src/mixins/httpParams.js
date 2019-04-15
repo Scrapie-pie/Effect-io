@@ -18,7 +18,8 @@ export default {
             let id=this.$route.params.id,
                 uuid=this.$route.params.uuid,
                 guest_uuid=this.$route.params.uuid,
-                site_id = + this.$route.params.site_id;
+                site_id = + this.$route.params.site_id,
+                chat_id = + this.$route.params.chat_id;
             if(id) id=Number(id)
 
             if((uuid && site_id) || id) {
@@ -27,7 +28,8 @@ export default {
                         id,
                         uuid,
                         guest_uuid,
-                        site_id
+                        site_id,
+                        chat_id
                     }
                 }
             }
