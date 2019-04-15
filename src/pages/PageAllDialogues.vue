@@ -7,8 +7,6 @@
                 v-if="showCalendar"
                 name="calendar",
                 @get="filterCalendar"
-
-
                 )
                 filter-drop-menu(
                 name="siteCompany",

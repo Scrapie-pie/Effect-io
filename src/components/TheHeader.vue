@@ -26,6 +26,7 @@
                 return [
                     /* {text: 'recover', link: {name: 'recover'}},
                      {text: 'Ui', link: {name: 'ui'}},*/
+                    {text: 'Поиск по диалогам', link: {name: 'search'},icon:'log'},
                     {text: 'Журнал', link: {name: 'all'},icon:'log',hide:!this.$store.getters['user/isRole'](['admin','owner','operatorSenior'])},
                     {text: 'Статистика', link: {name: 'stats'},icon:'statistics',hide:!this.$store.getters['user/isRole'](['admin','owner','operatorSenior'])},
                     {text: 'Настройки', link: {name: 'settingsProfile'},icon:'settingsApp'},

@@ -11,6 +11,7 @@ const PageTestScreen = ()=> import('@/pages/PageTestScreen')
 const PageVisitor = () => import('@/pages/PageVisitor')
 const PageChat = () => import('@/pages/PageChat')
 const PageAllDialogues = () => import('@/pages/PageAllDialogues')
+const PageSearchDialogues = () => import('@/pages/PageSearchDialogues')
 
 
 
@@ -111,6 +112,11 @@ const router =  new Router({
             name: 'all',
             path: '/all',
             component: PageAllDialogues
+        },
+        {
+            name: 'search',
+            path: '/search',
+            component: PageSearchDialogues
         },
         {
             name: 'visor',
