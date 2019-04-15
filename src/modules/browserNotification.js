@@ -1,6 +1,6 @@
 
 
-function notificationEngine(title, body){
+function notificationEngine(title, body,link){
 
 
 
@@ -27,7 +27,7 @@ function notificationEngine(title, body){
 
             function clickFunc() {
                 window.focus(); this.close();
-                resolve('toLink');
+                resolve(link);
             }
             notification.onclick = clickFunc;
         });
@@ -58,13 +58,15 @@ function browserNotificationMessage (val) {
 
 
 
-    if(!document.hidden || !store.state.user.settings.settings.push_notifications || val.intent === 'farewell') {
+    if(!document.hidden || !store.state.user.settings.settings.push_notifications) {
         return new Promise((resolve) => { // для совместимости  с clickFunc
             resolve();
         });
     };
 
-    let title='',body='',link;
+    let title='',body='',link='toLink';
+
+    if(val.intent === 'farewell') link=null
 
     if(val.status==='unprocessed' || val.status==='invited' || val.status==='recipient') {
         if(val.status==='unprocessed'){
@@ -92,7 +94,7 @@ function browserNotificationMessage (val) {
         title = 'Команда';
         body = val.from_user_info.name+': ' +val.body;
     }
-    return  notificationEngine(title,body)
+    return  notificationEngine(title,body,link)
 
 
 
