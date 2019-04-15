@@ -76,7 +76,12 @@ export default {
         setBodyList:{
             type:[Array,Object],
             default:null,
+        },
+        is_one_time_chat:{
+            type:Number,
+            default:0,
         }
+
     },
     data() {
         return {
@@ -124,6 +129,8 @@ export default {
                 user_id:this.user_id,
                 branch_id:this.branch_id,
 
+                is_one_time_chat:this.is_one_time_chat,
+
                 type:this.type,
                 csv:this.csv,
             }
@@ -135,7 +142,7 @@ export default {
 
     methods:{
         get(){
-
+            console.log('get requestData',this.requestData);
             if(this.last_days || (this.date_from && this.date_to)) {
 
                 this.$http.get('statistic-get-by-params',this.requestData).then((response)=>{

@@ -156,7 +156,7 @@ export default {
         },
         type(){
             if(this.routerName==='statsPages') return 'pages';
-            if(this.routerName==='statsOnceChat') return 'top';
+
             if(this.routerName==='statsService') return 'top';
             if(this.routerName==='statsBranches') return 'branches';
             if(this.routerName==='statsBranchesDetail') return 'branch';

@@ -3,25 +3,12 @@
         .stats-once-chat__list
             .stats-once-chat__item
                 .stats-once-chat__table
-                    stats-branches(
-                    :btn-detail-hide="true"
-                    caption="По отделам",
-                    :set-body-list="best_branches_by_rating",
-                    :filterBranchIdsOn="true"
-                    order="dialogues_requests"
-                    )
+                    stats-branches(v-bind="payload('branches')")
                 p.stats-once-chat__all
                     | Всего принято диалогов по выбранным отделам: 766
             .stats-once-chat__item
                 .stats-once-chat__table
-                    stats-operators(
-                        :btn-detail-hide="true"
-                        caption="По сотрудникам",
-                        :set-body-list="best_employees_by_rating",
-                        :filterOperatorIdsOn="true"
-                        order="dialogues_requests"
-                    )
-
+                    stats-operators(v-bind="payload('employees')")
                 p.stats-once-chat__all
                     | Всего принято диалогов по выбранным сорудникам: 7366
 
@@ -35,7 +22,7 @@
 
     import {stats} from '@/mixins/mixins'
 export default {
-    name: "stats-service",
+
     components:{
         StatsOperators,
         StatsBranches,
@@ -55,6 +42,38 @@ export default {
             company:{}
 
         }
+    },
+    computed:{
+
+    },
+    methods:{
+        payload(type){
+
+            let obj = {
+                type
+            }
+
+            if(type==='branches') {
+                obj.caption="По отделам",
+                obj.filterBranchIdsOn=true
+            }
+            if(type==='employees') {
+                obj.caption="По сотрудникам",
+                obj.filterOperatorIdsOn=true
+            }
+            let main = {
+                date_from:this.date_from,
+                date_to:this.date_to,
+                time_from:this.time_from,
+                time_to:this.time_to,
+                last_days:this.last_days,
+                btnDetailHide:true,
+                order:'dialogues_requests',
+                is_one_time_chat:1,
+            }
+
+            return Object.assign(main, obj)
+        },
     },
     watch:{
         bodyList(val){
