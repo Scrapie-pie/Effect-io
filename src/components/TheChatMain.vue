@@ -29,7 +29,10 @@
                                 :files="item.files || []"
                             )
                             p(v-else v-html="$options.filters.wrapTextUrls(item.body)" :style="{textAlign:'center'}")
-                        li.chat-main__messages-item.chat-main__messages-item_right(v-if="showVisitorTypingLive")
+                        li.chat-main__messages-item.chat-main__messages-item_right(
+                            v-if="messageGroupDaysReverse.length-1===daysIndex && showVisitorTypingLive"
+                        )
+
                             base-people(
                                 :key="'visitorTypingLive'"
                                 avatar-width="md",
@@ -177,6 +180,7 @@
                 list.forEach(item=>{
                     item[1] = item[1].reverse()
                 })
+                console.log(list);
                 return list
             },
             messageGroupDays(){
