@@ -66,6 +66,7 @@
                 let operator = this.$store.state.operators.all.find(item=>item.id===+this.$route.params.id)
                 if(operator) return titleHead+': '+operator.fullName
             }
+
             return titleHead
         },
         routerName(){
