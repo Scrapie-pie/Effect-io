@@ -105,14 +105,14 @@ export default {
                     item.branchName = branch.title
                     item.name = branch.title //base-filter-search сейчас ищет по name
                 }
-                item.operators = this.$store.state.operators.all.filter(itemSub=>itemSub.branches_ids.includes(item.branch_id))
+                item.operators = this.$store.getters['operators/all'].filter(itemSub=>itemSub.branches_ids.includes(item.branch_id))
 
                 return item
             })
         },
         setFilterList(){
 
-            if(this.filterBranchIds) return this.itemListWidthBranchName.filter(item=>this.filterBranchIds.includes(item.branch_id))
+            if(this.filterBranchIds.length) return this.itemListWidthBranchName.filter(item=>this.filterBranchIds.includes(item.branch_id))
             else return this.itemListWidthBranchName
         }
     },

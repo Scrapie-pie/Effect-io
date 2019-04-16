@@ -56,14 +56,16 @@
         title(){
 
             let titleHead = this.$route.meta.title
-
+            console.log('title PageSats',titleHead);
             if(this.routerName==='statsBranchesDetail') {
 
                 let branch = this.branchListAll.find(item=>item.id===+this.$route.params.id);
+
                 if (branch) return titleHead+': '+branch.title
             }
             if(this.routerName==='statsOperatorsDetail') {
-                let operator = this.$store.state.operators.all.find(item=>item.id===+this.$route.params.id)
+                let operator = this.$store.getters['operators/all'].find(item=>item.id===+this.$route.params.id);
+
                 if(operator) return titleHead+': '+operator.fullName
             }
 
