@@ -57,7 +57,7 @@
                                 |Ожидаем подтверждение от: {{item.first_name}}&nbsp;
                                 base-btn(theme="link" v-text="'Отменить передачу'" @click="transferCancel(item.id)")
 
-        footer.chat-main__footer(v-if="viewModeChat!=='visor'")
+        footer.chat-main__footer(v-if="!['search','visor'].includes(viewModeChat)")
             the-chat-main-footer
 
 </template>
@@ -156,7 +156,7 @@
         computed:{
             ...mapState(['roomActiveUsersInvited','roomActiveUsersRecipient','roomActiveIsAdmin','roomActive','roomActiveId']),
             showVisitorTypingLive(){
-                if(this.viewModeChat==='visitors' || this.viewModeChat==='visor') {
+                if(['visitor','visor','search'].includes(this.viewModeChat)) {
                     let {guest_uuid,site_id}  = this.roomActive.visitor,
                         {params} = this.httpParams
                     //console.log('showVisitorTypingLive',guest_uuid+site_id , params.guest_uuid+ params.site_id,this.visitorTypingLive.length);
