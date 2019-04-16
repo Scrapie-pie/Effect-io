@@ -11,7 +11,7 @@
                 ul.last-messages__list
                     li.last-messages__item(
                         v-for="(item, index) in filterSearchResult",
-                        :key="item.uuid+item.site_id",
+                        :key="item.uuid+item.site_id+item.chat_id",
                         :class="item.classList"
                     )
                         router-link.last-messages__btn(
@@ -59,12 +59,9 @@
 
                 if (this.viewModeChat==="process")itemList=this.$store.state.visitors.process
                 if (this.viewModeChat==="visitors")itemList=this.$store.state.visitors.self
-                if (this.viewModeChat==="visor")  itemList=this.$store.state.visitors[this.viewModeChat]
-                console.table(itemList.slice().map(item => {
-                    console.log(item);
-                    let {last_message_time,unread,name } = item
-                    return {last_message_time,unread,name}
-                }));
+                if (['search','visor'].includes(this.viewModeChat))  itemList=this.$store.state.visitors[this.viewModeChat]
+
+
                 return itemList.slice()
 
             },
@@ -139,7 +136,7 @@
             },
             '$route'(to,from){
 
-                if(this.viewModeChat==='visor') {
+                if(['search','visor'].includes(this.viewModeChat)) {
 
                     return
 
@@ -161,7 +158,7 @@
 
         created(){
             console.log('create')
-            if(this.viewModeChat==='visor') return
+            if(['search','visor'].includes(this.viewModeChat)) return
             if (this.viewModeChat==="process") this.type='unprocessed';
             if (this.viewModeChat==="visitors") this.type='self';
             this.setLastPageN();
@@ -184,8 +181,9 @@
             itemFormatSetClassList(item){
                 let open
                 if(this.httpParams) {
-                    let {uuid,site_id} = this.httpParams.params;
-                    open = (item.uuid+item.site_id === uuid+site_id)
+                    let {uuid,site_id,chat_id} = this.httpParams.params;
+                    open = (item.uuid+item.site_id+item.chat_id === uuid+site_id+chat_id);
+                    console.log(item.uuid, item.site_id, item.chat_id , uuid, site_id, chat_id);
                 }
                 item.classList={}
                 item.classList['last-messages__item_active'] = open;
@@ -219,7 +217,7 @@
                 if(this.viewModeChat==="process") routName = this.viewModeChat
                 if(this.viewModeChat==="visitors") routName = 'chatId'
                 item.rootLinkOptions = {
-                    link:{name:routName,params:{uuid:item.uuid,site_id:item.site_id}},
+                    link:{name:routName,params:{uuid:item.uuid,site_id:item.site_id,chat_id:item.chat_id}},
                     text:item.last_message
                 }
                 return item
@@ -256,7 +254,7 @@
 
             debounceSearchMethods(val,oldVal){
 
-                if(this.viewModeChat==='visor') return
+                if(['search','visor'].includes(this.viewModeChat)) return
 
                 if(!oldVal) this.pageNBeforeSearch = this.pageN; //запоминаем загруженную страницу
 

@@ -5,6 +5,8 @@ const getDefaultState = () => {
         all:[],
         allCount:false,
         visor:[],
+        search:[],
+        searchCount:false,
         visorCount:false,
         process:[],
         processCount:false,

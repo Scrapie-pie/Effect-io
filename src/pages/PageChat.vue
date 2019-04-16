@@ -35,7 +35,7 @@
                     aside.page-chat__info
                         the-client-info
 
-        template(v-if="viewModeChat === 'visor'")
+        template(v-if="['search','visor'].includes(viewModeChat)")
             section.page__view.page-chat
                 the-last-messages-v
                 section.page-chat__main
@@ -81,12 +81,12 @@
         },
         watch:{
             '$route'(to,from){
-                this.visorSubscribeSocket(to,from)
+                this.messageSubscribeSocket(to,from)
             }
         },
         beforeRouteEnter (to, from, next) {
             next(vm=>{
-                vm.visorSubscribeSocket(to)
+                vm.messageSubscribeSocket(to)
                 if(to.name==="common") {
                     if(vm.$store.state.user.profile.is_common_chat) vm.$router.push({name:'common'})
                     else vm.$router.push( {name: 'processAll',},)
@@ -95,16 +95,19 @@
             })
         },
         beforeRouteLeave (to, from, next) {
-            this.visorSubscribeSocket(null,from)
+            this.messageSubscribeSocket(null,from)
             console.log('this.$store.commit(\'roomActiveReset\')');
             this.$store.commit('roomActiveReset')
             return next()
         },
         methods:{
-            visorSubscribeSocket(to,from){
+            messageSubscribeSocket(to,from){
 
-                if(this.viewModeChat==='visor') {
-                    console.log('visorSubscribeSocket');
+                console.log('messageSubscribeSocket',this);
+                if(this.viewModeChat==='visor' && !this.$store.getters['user/isRole'](['admin','owner','operatorSenior'])) return this.$router.push({name: 'processAll'})
+
+                if(['search','visor'].includes(this.viewModeChat)) {
+                    console.log('messageSubscribeSocket');
                     if(to) {
                         this.$http.post('chat-room-supervisor-enter', {
                             site_id:to.params.site_id,

@@ -9,6 +9,7 @@ export default {
             if(this.$route.name == "common" )return 'common';
             if(this.$route.name == "all" )return 'all';
             if(this.$route.name == "visor" )return 'visor';
+            if(this.$route.name == "search" )return 'search';
 
 
         },

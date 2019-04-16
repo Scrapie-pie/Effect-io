@@ -1,10 +1,17 @@
 
 
-function dialogPush(vm,dialogName,item){
+function dialogPush(vm,dialogName,item,findField){
     console.log(item);
-    let {uuid, site_id} = item;
     let list = vm.$store.state.visitors[dialogName].slice()
-    let findIndex = list.findIndex(item=>uuid+site_id===item.uuid+item.site_id)
+    let findIndex;
+    if(!findField) {
+        let {uuid, site_id} = item;
+        findIndex = list.findIndex(item=>uuid+site_id===item.uuid+item.site_id)
+    }
+    else {
+        let findFieldVal = item[findField];
+        findIndex = list.findIndex(item=>findFieldVal===item[findField])
+    }
     if(findIndex===-1) {
 
         let unread =(item.unread)?item.unread:[];
