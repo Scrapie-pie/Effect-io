@@ -273,11 +273,14 @@ export default {
         "auto-attach"(val){
 
             console.log('auto-attach',val);
+
+            if(val.code===this.$store.state.user.profile.code)   this.$store.commit('user/profileUpdate',{code:null})
+
             this.playSoundFile('sound_new_guest_message')
 
             dialogPush(this,'self',val)
 
-            this.$store.commit('user/unreadUpdate',['guest',1]);
+            //this.$store.commit('user/unreadUpdate',['guest',1]);
 
 
 

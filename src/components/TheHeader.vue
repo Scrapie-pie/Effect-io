@@ -28,7 +28,7 @@
             code(){
                 let profile = this.$store.state.user.profile || {}
 
-                return profile.code
+                return profile.code || '−−−−'
             },
             appList(){
                 return [
