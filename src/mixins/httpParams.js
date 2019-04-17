@@ -19,7 +19,8 @@ export default {
                 uuid=this.$route.params.uuid,
                 guest_uuid=this.$route.params.uuid,
                 site_id = + this.$route.params.site_id,
-                chat_id = + this.$route.params.chat_id;
+                chat_id = this.$route.params.chat_id;
+            if(chat_id) chat_id=Number(chat_id)
             if(id) id=Number(id)
 
             if((uuid && site_id) || id) {
