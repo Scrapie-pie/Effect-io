@@ -91,7 +91,7 @@ function browserNotificationMessage (val) {
 
     if(val.site_id){
         title = 'Мои диалоги';
-        body = val.from_user_info.name+': ' +val.body;
+        body = val.last_message_author+': ' +val.last_message;
     } else {
         title = 'Команда';
         body = val.from_user_info.name+': ' +val.body;

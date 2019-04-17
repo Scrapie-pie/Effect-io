@@ -108,7 +108,7 @@ export default new Vuex.Store({
             //console.log('roomActive', val);
 
             function getIds(status) {
-                let users = val.filter((item)=>item.status === status);
+                let users = val.filter((item)=>item.status === status && item.room_id===state.roomActiveId);
                 return users.map((item)=>item.user_id)
             }
 
@@ -124,6 +124,7 @@ export default new Vuex.Store({
 
             state.roomActiveIsAdmin = val.filter((item)=>item.isAdmin && item.user_id === state.user.profile.id).length;
             if (!val.socket) state.roomActiveId=val[0].room_id;
+            if(state.roomActiveId !==val[0].room_id) return
             state.roomActiveUsers=val;
             state.roomActiveUsersActive=getIds('active');
             state.roomActiveUsersRecipient=getIds('recipient').map(id=>{
