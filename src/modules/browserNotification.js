@@ -27,6 +27,7 @@ function notificationEngine(title, body,link){
 
             function clickFunc() {
                 window.focus(); this.close();
+                console.log('resolve', link);
                 resolve(link);
             }
             notification.onclick = clickFunc;
@@ -57,6 +58,7 @@ import store from '@/store/store'
 function browserNotificationMessage (val) {
 
 
+    console.log('browserNotificationMessage',val);
 
     if(!document.hidden || !store.state.user.settings.settings.push_notifications) {
         return new Promise((resolve) => { // для совместимости  с clickFunc

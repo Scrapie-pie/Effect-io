@@ -164,6 +164,7 @@ export default {
                     this.$store.commit('user/unreadUpdate',['guest',1]);
 
                     browserNotificationMessage(val).then(click=>{
+                        console.log('browserNotificationMessage click===\'toLink\'',click);
                         if(click==='toLink') {
                             let {uuid,site_id} =  val
                             this.$router.push({name:'chatId',params: { uuid,site_id}})
