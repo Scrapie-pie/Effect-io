@@ -113,7 +113,7 @@
 
                 else {
                     if(this.$store.state.user.profile.id === this.httpParams.params.id) return 'Здесь Вы можете оставить важные заметки, которые будут видны только Вам. Или поговорить с самим собой'
-                    let operator = this.$store.state.operators.all.find(item => item.id == this.$route.params.id)
+                    let operator = this.$store.getters['operators/all'].find(item => item.id == this.$route.params.id)
                     if (operator) return operator.fullName;
                     return ''
 
@@ -138,7 +138,7 @@
                 usersIds.forEach(itemId=>{
 
 
-                    let find =  this.$store.state.operators.all.find((item) => item.id === itemId )
+                    let find =  this.$store.getters['operators/all'].find((item) => item.id === itemId )
 
                     if(find) {
                         let {id,first_name} = find
