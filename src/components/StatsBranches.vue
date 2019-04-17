@@ -20,9 +20,9 @@
                         padding="xslr"
                         :router="{name:'statsBranchesDetail',params:{id:item.branch_id}}"
                     ) Детальная статистика
-                td(v-text="item.dialogues_requests")
-                template(v-if="order!=='dialogues_requests'")
-                    template(v-if="order!=='dialogues_percents'")
+                td(v-text="item.dialogues_requests || item.dialogues_accepted")
+                template(v-if="!['dialogues_accepted','dialogues_requests'].includes(order)")
+                    template(v-if="!['dialogues_accepted','dialogues_requests'].includes(order)")
 
                         td
                             span.color_success(v-text="item.dialogues_accepted")
@@ -86,7 +86,7 @@ export default {
             }
 
 
-            if(this.order==="dialogues_requests") {
+            if(['dialogues_accepted','dialogues_requests'].includes(this.order)) {
                 list.length=2
 
             }

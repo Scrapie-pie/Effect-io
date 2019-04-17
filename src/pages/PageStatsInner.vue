@@ -42,9 +42,9 @@
 
         section.page-stats-inner__main(v-show="last_days || date_from")
             component(
-            :is="activeComponent",
-            v-bind="payload"
-            v-on="listeners"
+                :is="activeComponent",
+                v-bind="payload"
+                v-on="listeners"
             )
 
 </template>

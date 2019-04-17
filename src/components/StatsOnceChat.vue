@@ -3,14 +3,14 @@
         .stats-once-chat__list
             .stats-once-chat__item
                 .stats-once-chat__table
-                    stats-branches(v-bind="payload('branches')")
+                    stats-branches(v-bind="payload('branches')", @itemList="(val)=>itemBranches=val")
                 p.stats-once-chat__all
-                    | Всего принято диалогов по выбранным отделам: 766
+                    | Всего принято диалогов по выбранным отделам: {{totalBranches}}
             .stats-once-chat__item
                 .stats-once-chat__table
-                    stats-operators(v-bind="payload('employees')")
+                    stats-operators(v-bind="payload('employees')", @itemList="(val)=>itemEmployees=val")
                 p.stats-once-chat__all
-                    | Всего принято диалогов по выбранным сорудникам: 7366
+                    | Всего принято диалогов по выбранным сорудникам: {{totalEmployees}}
 
 </template>
 
@@ -28,13 +28,27 @@ export default {
     mixins:[stats],
     data() {
         return {
-
-
+            itemBranches:[],
+            itemEmployees:[]
 
         }
     },
     computed:{
+        totalBranches(){
+            if(!this.itemBranches.length) return 0;
+            //console.log(this.itemBranches);
 
+            return this.itemBranches
+                .map(item=>item.dialogues_accepted)
+                .reduce((accumulator, currentItem)=>accumulator+currentItem)
+        },
+        totalEmployees(){
+
+            if(!this.itemEmployees.length) return 0;
+            return this.itemEmployees
+                .map(item=>item.dialogues_accepted)
+                .reduce((accumulator, currentItem)=>accumulator+currentItem)
+        },
     },
     methods:{
         get(){ //переписываем из stats
@@ -61,7 +75,7 @@ export default {
                 time_to:this.time_to,
                 last_days:this.last_days,
                 btnDetailHide:true,
-                order:'dialogues_requests',
+                order:'dialogues_accepted',
                 is_one_time_chat:1,
             }
 

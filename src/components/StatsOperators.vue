@@ -27,7 +27,8 @@
                         :router="{name:'statsOperatorsDetail',params:{id:item.user_id}}"
                     ) Детальная статистика
                 td(v-if="item.operator" v-html="$options.filters.branchesBr(item.operator.branches_names)")
-                td(v-if="order==='dialogues_requests'" v-text="item.dialogues_requests")
+                td(v-if="order==='dialogues_accepted'" v-text="item.dialogues_accepted")
+                td(v-else-if="order==='dialogues_requests'" v-text="item.dialogues_requests")
                 template(v-else)
                     template(v-if="order!=='first_answer_average_speed'")
                         td(v-text="item.dialogues_requests")
@@ -89,7 +90,7 @@ export default {
 
             }
 
-            if(this.order==="dialogues_requests") {
+            if(this.order==="dialogues_requests" ||this.order==='dialogues_accepted') {
                 list.length=3
 
             }
