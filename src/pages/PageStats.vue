@@ -7,7 +7,7 @@
             ) Качество обслуживания
             router-link(
                 slot="item"
-                :to='{name:"statsEmployees"}'
+                :to='{name:"statsOperators"}'
             ) Статистика по сотрудникам
             router-link(
                 slot="item"
@@ -17,6 +17,10 @@
                 slot="item"
                 :to='{name:"statsPages"}'
             ) Статистика по страницам
+            router-link(
+                slot="item"
+                :to='{name:"statsOnceChat"}'
+            ) Одноразовые чаты
         section.page-stats__main
             h1.page-stats__title(v-text="title")
             router-view
@@ -27,7 +31,7 @@
 
 
 
-export default {
+    export default {
     components: {
         NavAside,
     },
@@ -50,17 +54,21 @@ export default {
     },
     computed:{
         title(){
-            let titleHead = this.$route.meta.title
 
+            let titleHead = this.$route.meta.title
+            console.log('title PageSats',titleHead);
             if(this.routerName==='statsBranchesDetail') {
 
                 let branch = this.branchListAll.find(item=>item.id===+this.$route.params.id);
+
                 if (branch) return titleHead+': '+branch.title
             }
-            if(this.routerName==='statsEmployeesDetail') {
-                let operator = this.$store.state.operators.all.find(item=>item.id===+this.$route.params.id)
+            if(this.routerName==='statsOperatorsDetail') {
+                let operator = this.$store.getters['operators/all'].find(item=>item.id===+this.$route.params.id);
+
                 if(operator) return titleHead+': '+operator.fullName
             }
+
             return titleHead
         },
         routerName(){

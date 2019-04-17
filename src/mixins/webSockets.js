@@ -190,7 +190,7 @@ export default {
                 this.playSoundFile('sound_new_operator_message')
                 browserNotificationMessage(val).then(click=>{
                     if(click==='toLink') {
-                        let find = this.$store.state.operators.all.find((item)=>item.employee_id === val.from_user_info.id)
+                        let find = this.$store.getters['operators/all'].find((item)=>item.employee_id === val.from_user_info.id)
                         this.$router.push({name:'teamChat',params:{id:find.id}})
                     }
                 })
@@ -274,11 +274,14 @@ export default {
         "auto-attach"(val){
 
             console.log('auto-attach',val);
+
+            if(val.code===this.$store.state.user.profile.code)   this.$store.commit('user/profileUpdate',{code:null})
+
             this.playSoundFile('sound_new_guest_message')
 
             dialogPush(this,'self',val)
 
-            this.$store.commit('user/unreadUpdate',['guest',1]);
+            //this.$store.commit('user/unreadUpdate',['guest',1]);
 
 
 

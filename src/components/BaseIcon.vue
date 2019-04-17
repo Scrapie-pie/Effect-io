@@ -17,6 +17,7 @@
     //files.keys().forEach(files);
 
     import search from '@/assets/img/icons/search.svg';
+	import refresh from '@/assets/img/icons/refresh.svg';
     import check from '@/assets/img/icons/check.svg';
     import close from '@/assets/img/icons/close.svg';
     import eye from '@/assets/img/icons/eye.svg';
