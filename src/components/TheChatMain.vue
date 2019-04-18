@@ -28,7 +28,9 @@
                                 :img="item.img",
                                 :files="item.files || []"
                             )
+
                             p(v-else v-html="$options.filters.wrapTextUrls(item.body)" :style="{textAlign:'center'}")
+                            small(v-if="!item.delivered") Сообщение не доставлено
                         li.chat-main__messages-item.chat-main__messages-item_right(
                             v-if="messageGroupDaysReverse.length-1===daysIndex && showVisitorTypingLive"
                         )
@@ -219,6 +221,7 @@
             });
 
             this.$root.$on('messageAdd',this.emitMessageAdd)
+            this.$root.$on('messageDelivered',this.emitMessageDelivered)
 
             this.$root.$on('messageVisitorUpdateName',({name,uuid,site_id})=>{
                 lodash_find(this.messageList,{site_id,from_user_info:{uuid}})
@@ -230,10 +233,18 @@
         },
         beforeDestroy(){
             this.$root.$off('messageAdd',this.emitMessageAdd)
+            this.$root.$off('messageDelivered',this.emitMessageDelivered)
         },
 
         methods: {
+            emitMessageDelivered(val){
+                let findIndex = this.messageList.findIndex(item=>item.id===val.message_id)
 
+                if(findIndex ===-1) {
+
+                    this.$set(this.messageList[findIndex],'delivered',val.delivered)
+                }
+            },
             emitMessageAdd(val){
                 //console.log('this.$root.$on(\'messageAdd\'');
                 if(val.socket){//Todo Временное решение, на проверку дубликатов, пока Симон не исправит

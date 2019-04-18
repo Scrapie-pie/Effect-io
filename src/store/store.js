@@ -123,8 +123,8 @@ export default new Vuex.Store({
 
 
             state.roomActiveIsAdmin = val.filter((item)=>item.isAdmin && item.user_id === state.user.profile.id).length;
-            if (!val.socket) state.roomActiveId=val[0].room_id;
-            if(state.roomActiveId !==val[0].room_id) return
+            if (!val.socket) state.roomActiveId=val[0].room_id; //это тольк одля запроса, значит открыли чат
+            if(state.roomActiveId !==val[0].room_id) return // если комнаты совпадают, значит диалог открыт, обновляем, если сокет по чужым то игнорим
             state.roomActiveUsers=val;
             state.roomActiveUsersActive=getIds('active');
             state.roomActiveUsersRecipient=getIds('recipient').map(id=>{
