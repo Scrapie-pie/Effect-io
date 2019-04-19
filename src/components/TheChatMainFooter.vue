@@ -214,6 +214,7 @@
                     files=[],
                     body = this.message;
 
+
                 if(this.viewModeChat=="visitors") {
 
                  let {guest_uuid,site_id} = this.httpParams.params;
@@ -221,7 +222,7 @@
                     data = {
                         guest_uuid,
                         site_id,
-
+                        delivery_status:0,
                     }
 
                     let val = this.httpParams.params
@@ -232,11 +233,13 @@
                     to_id = + this.httpParams.params.id;
                     data = {
                         to_id,
+                        delivery_status:1,
                     }
 
                 }
                 else if(this.viewModeChat==="common") {
-                    data.room_id = this.$store.state.user.profile.common_room_id
+                    data.room_id = this.$store.state.user.profile.common_room_id;
+                    data.delivery_status=1;
                 }
 
                 data.body=body;
@@ -253,9 +256,10 @@
 
 
                 if (!body && !files.length) return
-                this.$http.post('message-send', data).then(({data})=>{
-                    console.log('message-send',data.data.id);
-                    let {id} = data.data;
+                this.$http.post('message-send', data).then((responsive)=>{
+
+                    console.log('message-send',responsive.data.data.id);
+                    let {id} = responsive.data.data;
 
                     let {first_name:name,photo,employee_id} = this.$store.state.user.profile,
                         time = (new Date).getTime() / 1000,
@@ -269,7 +273,7 @@
                                 name,
                                 photo
                             },
-                            delivered:1,
+                            delivery_status:data.delivery_status
                         }
                     this.uploadFileList=[]
 

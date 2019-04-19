@@ -16,6 +16,7 @@
     importAll(sistemFiles);*/
     //files.keys().forEach(files);
 
+    import prohibition from '@/assets/img/icons/prohibition.svg';
     import search from '@/assets/img/icons/search.svg';
 	import refresh from '@/assets/img/icons/refresh.svg';
     import check from '@/assets/img/icons/check.svg';

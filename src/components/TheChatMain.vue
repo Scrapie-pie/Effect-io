@@ -15,22 +15,23 @@
                             :key="item.id" ,
                             :class="{'chat-main__messages-item_right':item.from_user_info.id != $store.state.user.profile.employee_id}"
                         )
-                            base-people(
-                                v-if="item.from_role_id!=9"
-                                avatar-width="md",
-                                :avatar-url="item.from_user_info.photo",
-                                :avatar-stub="item.from_user_info.photo_stub",
-                                :name="item | name(visitorInfo)",
-                                :text="item.body | messageBreakLine | wrapTextUrls",
-                                :time="item.time",
+                            template(v-if="item.from_role_id!=9")
+                                base-people(
 
-                                :right="item.from_user_info.id != $store.state.user.profile.employee_id",
-                                :img="item.img",
-                                :files="item.files || []"
-                            )
+                                    avatar-width="md",
+                                    :avatar-url="item.from_user_info.photo",
+                                    :avatar-stub="item.from_user_info.photo_stub",
+                                    :name="item | name(visitorInfo)",
+                                    :text="item.body | messageBreakLine | wrapTextUrls",
+                                    :time="item.time",
+                                    :loader-message="item.delivery_status"
+                                    :right="item.from_user_info.id != $store.state.user.profile.employee_id",
+                                    :img="item.img",
+                                    :files="item.files || []"
+                                )
 
                             p(v-else v-html="$options.filters.wrapTextUrls(item.body)" :style="{textAlign:'center'}")
-                            small(v-if="!item.delivered") Сообщение не доставлено
+
                         li.chat-main__messages-item.chat-main__messages-item_right(
                             v-if="messageGroupDaysReverse.length-1===daysIndex && showVisitorTypingLive"
                         )
@@ -99,6 +100,12 @@
             },
             wrapTextUrls(text){
                 return wrapTextUrls(text)
+            },
+            deliveredText(numb) {
+                if(numb==0) return 'Доставляется'
+                if(numb==1) return 'Доставлено'
+                if(numb==2) return 'Не доставлено'
+                return
             }
         },
         data() {
@@ -239,10 +246,10 @@
         methods: {
             emitMessageDelivered(val){
                 let findIndex = this.messageList.findIndex(item=>item.id===val.message_id)
-
-                if(findIndex ===-1) {
-
-                    this.$set(this.messageList[findIndex],'delivered',val.delivered)
+                console.log('emitMessageDelivered',findIndex,val);
+                if(findIndex !==-1) {
+                    console.log(this.messageList[findIndex]);
+                    this.$set(this.messageList[findIndex],'delivery_status',val.delivery_status)
                 }
             },
             emitMessageAdd(val){
@@ -354,6 +361,7 @@
 <style lang="scss">
     .chat-main{
         $color_border:glob-color('border');
+
         $color_bg_date:glob-color('light');
         $color_bg_message:glob-color('info-lighten');
 
@@ -414,6 +422,7 @@
         &__list{
             margin-bottom:calc-em(25);
         }
+
         &__messages-item{
             & + &{
                 margin-top:calc-em(15);
