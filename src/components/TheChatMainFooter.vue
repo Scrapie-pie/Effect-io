@@ -11,7 +11,8 @@
                     box-controls(v-if="showPhrases", @boxControlClose="showPhrases=false")
                         the-phrases-ready
                     box-controls(v-if="showSmiles", @boxControlClose="showSmiles=false")
-                        the-files-board(name="smiles", @getSmile="setMessageSmile")
+                        //the-files-board(name="smiles", @getSmile="setMessageSmile")
+                        the-board-smile(@getSmile="setMessageSmile")
                     //box-controls(v-if="showGifs", @boxControlClose="showGifs=false")
                         the-files-board(name="gifs")
                     box-controls(v-if="showOffer", @boxControlClose="showOffer=false")
@@ -53,7 +54,7 @@
                             :icon="{name:'more-fill',textHidden:'Предложить посетителю'}",
                             @click.prevent="showOffer=true"
                         )
-                    //li.chat-main-footer__button
+                    li.chat-main-footer__button
                         base-btn(
                             :icon="{name:'smiles',textHidden:'Смайлы'}"
                             @click.prevent="showSmiles=true"
@@ -77,6 +78,7 @@
     import SelectOperators from '@/components/SelectOperators'
     import TheOffer from '@/components/TheOffer'
     import TheFilesBoard from '@/components/TheFilesBoard'
+    import TheBoardSmile from '@/components/TheBoardSmile'
     import ThePhrasesReady from '@/components/ThePhrasesReady'
     import ThePhrasesSelect from '@/components/ThePhrasesSelect'
     import TheProcessActions from '@/components/TheProcessActions'
@@ -96,6 +98,7 @@
             TheProcessActions,
             UploadFile,
             UploadFileList,
+            TheBoardSmile
         },
         mixins:[viewModeChat,httpParams],
         watch:{
