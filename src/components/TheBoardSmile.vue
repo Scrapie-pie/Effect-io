@@ -2,7 +2,9 @@
     <form class="board-smiles" @submit.prevent="">
 
             <textarea class="" v-model="input"></textarea>
-            <div contenteditable="true" v-html="inputImage"></div>
+
+                <input-emoji :text="input"></input-emoji>
+
 
             <emoji-picker :search="search">
                 <div
@@ -49,15 +51,18 @@
 <script>
     import EmojiPicker from 'vue-emoji-picker'
     import emojisList from 'vue-emoji-picker/src/emojis.js'
+    import inputEmoji from '@/components/inputEmoji'
     import 'emoji-data-css/files/gl-32-emoji.css'
     export default {
         components: {
             EmojiPicker,
+            inputEmoji
         },
 
         data() {
             return {
                 input: '',
+                inputEmoji: '',
                 search: '',
                 emojiMas:[]
             }
@@ -67,7 +72,7 @@
                 console.log(this.emojiMas);
                 if (!this.emojiMas.length) return this.input
 
-                let list = this.input.split('{{smile}}')
+                let list = this.inputEmoji.split('{{smile}}')
                 console.log(list);
                 list = list.map((item,index)=>{
 
@@ -93,7 +98,8 @@
             append(emoji,emojiName) {
                 console.log(emoji,emojiName,emojisList);
                 this.emojiMas.push({emoji,emojiName})
-                this.input += `{{smile}}{{${emojiName}}}{{smile}}`
+                //this.input += `{{smile}}{{${emojiName}}}{{smile}}`
+                this.input += emoji
             },
         },
         directives: {
