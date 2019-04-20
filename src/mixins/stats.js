@@ -3,7 +3,11 @@ import datetimeStoHMS from '@/modules/datetimeStoHMS'
 export default {
     filters:{
         format(value,type){
-            if(!value) return '-';
+            if(value === 0 && type === 'percent') {
+                value = 0;
+            } else if(!value ) {
+                return '-';
+            }
             if(type==='percent') value+=' %'
             if(type==='time') {
                 value = datetimeStoHMS(value)
