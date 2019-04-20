@@ -214,6 +214,7 @@
                     files=[],
                     body = this.message;
 
+
                 if(this.viewModeChat=="visitors") {
 
                  let {guest_uuid,site_id} = this.httpParams.params;
@@ -221,7 +222,7 @@
                     data = {
                         guest_uuid,
                         site_id,
-
+                        delivery_status:0,
                     }
 
                     let val = this.httpParams.params
@@ -232,11 +233,13 @@
                     to_id = + this.httpParams.params.id;
                     data = {
                         to_id,
+                        delivery_status:1,
                     }
 
                 }
                 else if(this.viewModeChat==="common") {
-                    data.room_id = this.$store.state.user.profile.common_room_id
+                    data.room_id = this.$store.state.user.profile.common_room_id;
+                    data.delivery_status=1;
                 }
 
                 data.body=body;
@@ -253,46 +256,54 @@
 
 
                 if (!body && !files.length) return
-                this.$http.post('message-send', data);
+                this.$http.post('message-send', data).then((responsive)=>{
 
+                    console.log('message-send',responsive.data.data.id);
+                    let {id} = responsive.data.data;
 
-                let {first_name:name,photo,employee_id} = this.$store.state.user.profile,
-                    time = (new Date).getTime() / 1000,
-                    message = {
-                        time,
-                        body,
-                        files,
-                        from_user_info:{
-                            id:employee_id,
-                            name,
-                            photo
+                    let {first_name:name,photo,employee_id} = this.$store.state.user.profile,
+                        time = (new Date).getTime() / 1000,
+                        message = {
+                            id,
+                            time,
+                            body,
+                            files,
+                            from_user_info:{
+                                id:employee_id,
+                                name,
+                                photo
+                            },
+                            delivery_status:data.delivery_status
                         }
-                }
-                this.uploadFileList=[]
+                    this.uploadFileList=[]
 
-                this.$root.$emit('messageAdd',message);
+                    this.$root.$emit('messageAdd',message);
 
-                message.from_user_info.id = this.$store.state.user.profile.employee_id;
+                    message.from_user_info.id = this.$store.state.user.profile.employee_id;
 
-                if(this.viewModeChat ==='operators') {
+                    if(this.viewModeChat ==='operators') {
 
-                    message.selfId = this.httpParams.params.id;
-                    this.$store.commit('operators/messageLastUpdate',message)
-                } //Todo у оператора}
+                        message.selfId = this.httpParams.params.id;
+                        this.$store.commit('operators/messageLastUpdate',message)
+                    } //Todo у оператора}
 
-                if(this.viewModeChat ==='visitors') {
+                    if(this.viewModeChat ==='visitors') {
 
-                    message.selfUuid = this.httpParams.params.uuid;
-                    message.last_message_author = 'Вы';
-                    this.$store.commit('visitors/selfMessageLastUpdate',message)
-                }
+                        message.selfUuid = this.httpParams.params.uuid;
+                        message.last_message_author = 'Вы';
+                        this.$store.commit('visitors/selfMessageLastUpdate',message)
+                    }
 
-                this.message='';
-                autosize.destroy(this.$refs.chatInput);
-                this.autosizeInit=true;
-                setTimeout(()=>{
-                    this.$refs.scrollbarMessage.update()
-                },200)
+                    this.message='';
+                    autosize.destroy(this.$refs.chatInput);
+                    this.autosizeInit=true;
+                    setTimeout(()=>{
+                        this.$refs.scrollbarMessage.update()
+                    },200)
+                });
+
+
+
 
             },
             checkIsProcessPage() {
