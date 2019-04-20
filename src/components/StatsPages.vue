@@ -17,7 +17,7 @@
                 td
                     | {{item.dialogues_requests | format}}
                 td
-                    |{{item.dialogues_percents | format}} %
+                    |{{item.dialogues_percents}} %
 
 
 </template>
