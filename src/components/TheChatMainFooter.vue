@@ -25,6 +25,7 @@
                             @resultText="getPhrasesSelectText"
                         ).chat-main-footer__phrases-select
                         scroll-bar.chat-main-footer__scrollbar(ref="scrollbarMessage")
+
                             textarea.chat-main-footer__input(
                                 placeholder="Enter - отправить сообщение, Shift+Enter - новая строка."
                                 ref="chatInput",
@@ -163,6 +164,7 @@
             getPhrasesSelectText(val){
                 autosize.destroy(this.$refs.chatInput);
                 this.message=val;
+                this.$refs.chatInput.focus()
             /*
                 this.autosizeInit=true;*/
                 setTimeout(()=>{ //Todo костыль
