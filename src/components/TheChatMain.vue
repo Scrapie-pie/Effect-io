@@ -250,6 +250,10 @@
                 if(findIndex !==-1) {
                     console.log(this.messageList[findIndex]);
                     this.$set(this.messageList[findIndex],'delivery_status',val.delivery_status)
+                } else {
+                    setTimeout(() => {
+                        this.emitMessageDelivered(val);
+                    }, 1000);
                 }
             },
             emitMessageAdd(val){
