@@ -81,6 +81,7 @@
     import SelectOperators from '@/components/SelectOperators'
     import SelectBranch from '@/components/SelectBranch'
     import { viewModeChat,httpParams,removeMessageAndPush } from '@/mixins/mixins'
+    import config from "@/config/index";
 
     export default {
         components: {
@@ -152,7 +153,9 @@
         },
         methods:{
             coBrowser(){
-                this.$http.post('co-browsing-request',this.httpParams.params);
+                const getParams = '?guestUuid=' + this.httpParams.params.uuid + '&siteId=' + this.httpParams.params.site_id;
+                const win = window.open(config.api_server.split('/app')[0] + '/cobrowsing', '_blank');
+                win.focus();
             },
             chatCompletion(){
                     let data = this.httpParams.params;
