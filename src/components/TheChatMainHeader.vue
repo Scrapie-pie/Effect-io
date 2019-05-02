@@ -154,7 +154,7 @@
         methods:{
             coBrowser(){
                 const getParams = '?guestUuid=' + this.httpParams.params.uuid + '&siteId=' + this.httpParams.params.site_id;
-                const win = window.open(config.api_server.split('/app')[0] + '/cobrowsing', '_blank');
+                const win = window.open(config.api_server.split('/app')[0] + '/cobrowsing' + getParams, '_blank');
                 win.focus();
             },
             chatCompletion(){
