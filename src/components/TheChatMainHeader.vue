@@ -153,9 +153,10 @@
         },
         methods:{
             coBrowser(){
-                const getParams = '?guestUuid=' + this.httpParams.params.uuid + '&siteId=' + this.httpParams.params.site_id;
-                const win = window.open(config.api_server.split('/app')[0] + '/cobrowsing' + getParams, '_blank');
+                const params = '?guestUuid=' + this.httpParams.params.uuid + '&siteId=' + this.httpParams.params.site_id;
+                const win = window.open(config.api_server.split('/app')[0] + '/cobrowsing' + params, '_blank');
                 win.focus();
+                this.$http.post('co-browsing-request',this.httpParams.params);
             },
             chatCompletion(){
                     let data = this.httpParams.params;
