@@ -1,6 +1,6 @@
 <template lang="pug">
     article.page-all
-        nav-aside.page-all__filter-list(v-if="0")
+        //nav-aside.page-all__filter-list(v-if="0")
             scroll-bar.page-all__scrollbar
                 filter-drop-menu(name="last_days", @get="filterLast_days"  type="radio")
                 filter-drop-menu(
@@ -242,11 +242,15 @@
 
             },
             filterLast_days(val){
-                //console.log(val);
+                console.log(val);
                 if (val==='-1') {
 
                     this.showCalendar=true;
-
+                    this.last_days='';
+                    this.date_from = '';
+                    this.date_to = '';
+                    this.time_from = '';
+                    this.time_to = '';
                /*     if (this.tempDates.length){
                         this.date_from = this.tempDates[0];
                         this.date_to = this.tempDates[1];
@@ -283,11 +287,11 @@
                 //console.log(val);
             },
             filterStatus(val){
-                //console.log(val);
+                console.log('filterStatus',val);
                 this.statuses=val;
             },
             filterOperator(val){
-                //console.log(val);
+                console.log('filterOperator',val);
                 this.users_ids = val
             },
             filterUrl(val){
