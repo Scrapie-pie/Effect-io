@@ -5,5 +5,7 @@ export { default as datetimeDMY } from '@/modules/datetimeDMY'
 export { default as datetimeStoHMS } from '@/modules/datetimeStoHMS'
 export { default as datetimeHMS } from '@/modules/datetimeHMS'
 export { default as dialogPush } from '@/modules/dialogPush'
-export { default as wrapTextUrls } from '@/modules/wrapTextUrls'
+export { default as wrapTextUrls } from '@/modules/wrapTextUrls';
+
+
 
