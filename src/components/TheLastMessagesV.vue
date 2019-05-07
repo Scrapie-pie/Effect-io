@@ -45,7 +45,7 @@
             return {
                 timerTable:{},
                 timerNowId:'',
-                timerNow:'',
+                timerNow:new Date().getTime()/1000,
 
                 filterSearchResult:[],
                 sortMas:[
