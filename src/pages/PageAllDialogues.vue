@@ -79,7 +79,7 @@
             div(slot="control" v-if="itemListCount")
                 |На странице показано {{showItemLength}} из {{ itemListCount}}
 
-            base-table(v-if="showItemLength")
+            base-table(v-if="showItemLength" v-show="last_days || date_from")
                 thead(v-if="headList.length")
                     tr: th(v-for="(item, index) in headList" :key="index" v-html="item.text")
                 tbody
@@ -115,9 +115,9 @@
     import FilterDropMenu from '@/components/FilterDropMenu'
     import NavAside from '@/components/NavAside'
 
-    import {scrollbar,paginator } from '@/mixins/mixins'
+    import {scrollbar,paginator,filterLastDaysAndCalendar } from '@/mixins/mixins'
     export default {
-        mixins:[scrollbar,paginator],
+        mixins:[scrollbar,paginator,filterLastDaysAndCalendar],
         components: {
             FilterDropMenu,
             TheLayoutTable,
@@ -136,8 +136,10 @@
             return {
 
                 apiMethod:'chat-get-all',
-                showCalendar:false,
-
+                containerFullFillItemListClassName:{
+                    scrollBar:'layout-table__content',
+                    item:'base-table__tr'
+                },
 
                 headList:[
                     {text:'Имя',field:'name'},
@@ -154,24 +156,10 @@
                 branches_ids:[],
                 statuses:[],
                 rates:[],
-                date_from:'',
-                date_to:'',
-                time_from:'',
-                time_to:'',
-                last_days:'',
+
                 url:null,
 
-
-
-
-                tempDates:[],
-
-
                 limit:11,
-                containerFullFillItemListClassName:{
-                    scrollBar:'layout-table__content',
-                    item:'base-table__tr'
-                },
 
             }
         },
@@ -241,43 +229,7 @@
 
 
             },
-            filterLast_days(val){
-                console.log(val);
-                if (val==='-1') {
 
-                    this.showCalendar=true;
-                    this.last_days='';
-                    this.date_from = '';
-                    this.date_to = '';
-                    this.time_from = '';
-                    this.time_to = '';
-               /*     if (this.tempDates.length){
-                        this.date_from = this.tempDates[0];
-                        this.date_to = this.tempDates[1];
-                        this.time_from = this.tempDates[2];
-                        this.time_to = this.tempDates[3];
-                    }
-*/
-                }
-                else {
-                    this.last_days=val;
-                    this.showCalendar=false;
-                    this.date_from = '';
-                    this.date_to = '';
-                    this.time_from = '';
-                    this.time_to = '';
-                }
-            },
-            filterCalendar(val){
-                //console.log(val);
-                this.last_days='';
-                this.date_from = val.date_from;
-                this.date_to = val.date_to;
-                this.time_from = val.time_from;
-                this.time_to = val.time_to;
-
-                //this.tempDates=[this.date_from,this.date_to,this.time_from,this.time_to]
-            },
             filterBall(val){
                 //console.log(val);
                 this.rates=val

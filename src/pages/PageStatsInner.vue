@@ -63,6 +63,7 @@ const StatsOnceChat = ()=> import ('@/components/StatsOnceChat')
 
 import FilterDropMenu from '@/components/FilterDropMenu'
 
+import {filterLastDaysAndCalendar } from '@/mixins/mixins'
 
 
 export default {
@@ -76,19 +77,15 @@ export default {
         StatsOnceChat,
         FilterDropMenu
     },
-
+    mixins:[filterLastDaysAndCalendar],
     data() {
         return {
-            showCalendar:false,
+
             filterSearchResult:[],
             itemList:[],
 
 
-            date_from:'',
-            date_to:'',
-            time_from:'',
-            time_to:null,
-            last_days:null,
+
 
 
             branch:{
@@ -205,42 +202,9 @@ export default {
             if(!val)this.showCalendar=true
             else this.showCalendar=false;
         }
-    /*    branchListAll:{
-            handler(val,oldVal){
-                if((val && val.length) && (oldVal && !oldVal.length)) {
-                    this.branch = val[0]
-                }
-            },
-            immediate: true
-        }*/
+
     },
-    methods:{
 
-        filterLast_days(val){
-
-            if (val==='-1') {
-
-                this.showCalendar=true;
-                this.last_days='';
-            }
-            else {
-                this.last_days=val;
-                this.showCalendar=false;
-                this.date_from = '';
-                this.date_to = '';
-                this.time_from = '';
-                this.time_to = '';
-            }
-        },
-        filterCalendar(val){
-            console.log(val);
-
-            this.date_from = val.date_from;
-            this.date_to = val.date_to;
-            this.time_from = val.time_from;
-            this.time_to = val.time_to;
-        }
-    }
 }
 </script>
 

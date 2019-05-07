@@ -127,7 +127,7 @@ export default {
 
         },
         itemList(){
-            console.log(this.name,this[this.name+'List']);
+            //console.log(this.name,this[this.name+'List']);
             return this[this.name+'List']
         },
         calendarList(){
@@ -208,7 +208,7 @@ export default {
                         this.modelcheckbox = this.getFilterSelectStore
                     }
                     else if (this.allChecked) { //если нет query п умолчанию выставляем все
-                        console.log(this.name,val);
+                        //console.log(this.name,val);
                         this.modelcheckbox = val
                     }
                 } else {
