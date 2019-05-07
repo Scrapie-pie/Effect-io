@@ -59,6 +59,7 @@ export default {
 
             if(findIndex !== -1) {
                 this._vm.$set(state.process[findIndex],'hot',set)
+                this._vm.$set(state.self[findIndex],'hotTime',new Date().getTime()/1000)
 
             }
              findIndex = state.self.findIndex((item)=>{
