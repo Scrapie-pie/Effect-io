@@ -15,7 +15,7 @@
                         :class="item.classList"
                     )
                         .last-messages__timer(
-                            dv-if="(item.hot || item.very_hot) && timerNow",
+                            v-if="(item.hot || item.very_hot) && timerNow",
                             v-text="timer(item,timerNow,index)"
                         )
 
@@ -118,31 +118,11 @@
         watch:{
             itemListStore(val,oldVal){
                 console.log('itemListStore',lodash_difference(oldVal,val));
-
                 lodash_difference(oldVal,val).forEach(item=>{
                     delete this.timerTable[item.uuid+item.site_id]
                 })
-
-
             },
-            itemListStoreItemPush:{
-                handler(val){
-                   /* let  [visitorInfo,itemListStore] = val;
-                    let {uuid, site_id,} = visitorInfo;
-                    let findIndex = itemListStore.findIndex(item=>uuid+site_id===item.uuid+item.site_id)
-                    if(findIndex===-1) {
-                        itemListStore.push(visitorInfo)
-                        if (this.$route.name == "chatId") this.$store.commit('visitors/self',{list:itemListStore})
-                        if (this.$route.name == "process") this.$store.commit('visitors/process',{list:itemListStore}) //
 
-                        if (this.viewModeChat==="visor")    {
-                            this.$store.commit('visitors/newList',{field:this.viewModeChat,val:{list:itemListStore}})
-                        }
-
-                    }*/
-                },
-                immediate: false
-            },
             pageN(val){
                 if(!this.search) {
                     if (this.viewModeChat==="process")  this.$store.commit('visitors/setProcessLastPageN',val);
@@ -204,19 +184,19 @@
                 if(item.socket) {
                     //console.log(item);
 
-                    if(!this.timerTable[item.uuid+item.site_id]) {
+                /*    if(!this.timerTable[item.uuid+item.site_id]) {
                         this.timerTable[item.uuid+item.site_id] = {
                             hot:item.hot||item.very_hot,
                             time:timerNow
                         }
                     } else {
 
-                    }
-                    return datetimeStoHMS(Math.round(timerNow-item.hotTime),true)
+                    }*/
+                    return datetimeStoHMS(Math.round(timerNow-item.hotTime+30),true)
                 }
                 else {
                     this.timerTable[item.uuid+item.site_id]=null
-                    return datetimeStoHMS(Math.round(timerNow-item.last_message_time),true)
+                    return datetimeStoHMS(Math.round(timerNow-item.last_message_time-30),true)
                 }
 
 
