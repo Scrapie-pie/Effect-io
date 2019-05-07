@@ -84,7 +84,7 @@ export default {
             if(findIndex !== -1) {
                     state.process[findIndex].last_message = val.body;
                     state.process[findIndex].last_message_author = val.last_message_author
-                    this._vm.$set(state.process[findIndex],'socket',val.socket)
+
             }
             else {
                 val.unread=[]
@@ -125,7 +125,7 @@ export default {
                 this._vm.$set(state.self[findIndex],'last_message',val.body)
                 this._vm.$set(state.self[findIndex],'last_message_author',val.last_message_author)
                 this._vm.$set(state.self[findIndex],'last_message_time',val.time)
-                this._vm.$set(state.self[findIndex],'socket',val.socket)
+
 
                 //this._vm.$set(state.self[findIndex],'name',val.from_user_info.name)
                 if(!val.selfUuid) {
@@ -138,7 +138,7 @@ export default {
             } else { //Если сообщение пришло, но в списке не было подгружено
 
                 let selfNew = {
-                    socket:val.socket,
+
                     last_message : val.body,
                     last_message_author : val.last_message_author,
                     unread : [val.id],

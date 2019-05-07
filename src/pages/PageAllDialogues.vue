@@ -110,7 +110,8 @@
 </template>
 
 <script>
-    import {datetimeDMY,datetimeStoHMS,dialogPush } from '@/modules/modules'
+    import {dialogPush } from '@/modules/modules'
+    import {datetimeDMY,datetimeStoHMS } from '@/modules/datetime'
     import TheLayoutTable from '@/components/TheLayoutTable'
     import FilterDropMenu from '@/components/FilterDropMenu'
     import NavAside from '@/components/NavAside'

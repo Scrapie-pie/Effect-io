@@ -177,7 +177,7 @@
         methods:{
             timer(item,timerNow,index){
 
-                if(item.socket) {
+                if(item.hotTime) {
                     console.log(item.hotTime);
                     return datetimeStoHMS(Math.round(timerNow-item.hotTime+30),true)
                 }
