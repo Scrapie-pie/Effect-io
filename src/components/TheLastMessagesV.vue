@@ -158,6 +158,10 @@
 
         created(){
             console.log('create')
+            this.timerNowId = setInterval(()=>{
+                this.timerNow=new Date().getTime()/1000
+                console.log('tic');
+            },1000)
             if(['search','visor'].includes(this.viewModeChat)) return
             if (this.viewModeChat==="process") this.type='unprocessed';
             if (this.viewModeChat==="visitors") this.type='self';
@@ -167,11 +171,17 @@
                 this.getItemList()
             }
 
-            this.timerNowId = setInterval(()=>{
-                    this.timerNow=new Date().getTime()/1000
-                },1000)
+
         },
+      /*  beforeUpdate(){
+
+            this.timerNowId = setInterval(()=>{
+                this.timerNow=new Date().getTime()/1000
+                console.log('tic updated');
+            },1000)
+        },*/
         beforeDestroy() {
+            console.log('beforeDestroy')
             clearInterval(this.timerNowId)
         },
         methods:{
