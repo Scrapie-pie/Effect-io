@@ -183,19 +183,10 @@
             timer(item,timerNow,index){
 
                 if(item.socket) {
-                    //console.log(item);
 
-                /*    if(!this.timerTable[item.uuid+item.site_id]) {
-                        this.timerTable[item.uuid+item.site_id] = {
-                            hot:item.hot||item.very_hot,
-                            time:timerNow
-                        }
-                    } else {
-
-                    }*/
                     return datetimeStoHMS(Math.round(timerNow-item.hotTime+30),true)
                 }
-                else {
+                else { //берем время из инита
                     this.timerTable[item.uuid+item.site_id]=null
                     return datetimeStoHMS(Math.round(timerNow-item.last_message_time-30),true)
                 }
