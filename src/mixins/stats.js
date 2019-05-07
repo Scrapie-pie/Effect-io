@@ -1,4 +1,4 @@
-import datetimeStoHMS from '@/modules/datetimeStoHMS'
+import {datetimeStoHMS} from '@/modules/datetime'
 
 export default {
     filters:{
