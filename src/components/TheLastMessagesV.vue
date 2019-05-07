@@ -43,7 +43,7 @@
 
         data() {
             return {
-                timerTable:{},
+
                 timerNowId:'',
                 timerNow:new Date().getTime()/1000,
 
@@ -117,12 +117,7 @@
 
         },
         watch:{
-            itemListStore(val,oldVal){
-                console.log('itemListStore',lodash_difference(oldVal,val));
-                lodash_difference(oldVal,val).forEach(item=>{
-                    delete this.timerTable[item.uuid+item.site_id]
-                })
-            },
+
 
             pageN(val){
                 if(!this.search) {
@@ -183,12 +178,13 @@
             timer(item,timerNow,index){
 
                 if(item.socket) {
-
+                    console.log(item.hotTime);
                     return datetimeStoHMS(Math.round(timerNow-item.hotTime+30),true)
                 }
                 else { //берем время из инита
-                    this.timerTable[item.uuid+item.site_id]=null
-                    return datetimeStoHMS(Math.round(timerNow-item.last_message_time-30),true)
+
+
+                    return datetimeStoHMS(Math.round(timerNow-item.hotTimeApi),true)
                 }
 
 

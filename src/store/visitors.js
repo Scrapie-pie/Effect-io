@@ -24,7 +24,10 @@ const getDefaultState = () => {
 // initial state
 const state = getDefaultState();
 
-
+function commonSelfProcces(item){
+    item.hotTimeApi = new Date().getTime()/1000-item.last_message_time_passed;
+    return item
+}
 
 
 export default {
@@ -69,7 +72,7 @@ export default {
             }
         },
         process(state, val) {
-            state.process=val.list;
+            state.process=val.list.map(commonSelfProcces);
             if (val.count) state.processCount=val.count;
         },
         setProcessLastPageN(state,val){
@@ -104,7 +107,8 @@ export default {
 
         },
         self(state, val) {
-            state.self=val.list;
+
+            state.self=val.list.map(commonSelfProcces);
             if (val.count) state.selfCount=val.count;
 
         },
