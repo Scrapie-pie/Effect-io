@@ -48,11 +48,11 @@
 
                )
 
-            filter-drop-menu(
+            //filter-drop-menu(
                 name="siteCompany",
                 @get="filterChannel"
                 slot="control"
-            )
+                )
             filter-drop-menu(
                 name="operator",
                 @get="filterOperator"
@@ -65,17 +65,17 @@
                 @get="filterStatus"
                 slot="control"
                 )
-            filter-drop-menu(
+            //filter-drop-menu(
                 name="ball",
                 @get="filterBall"
                 slot="control"
-            )
-            filter-drop-menu(
+                )
+            //filter-drop-menu(
                 name="url",
 
                 @get="filterUrl"
                 slot="control"
-            )
+                )
             div(slot="control" v-if="itemListCount")
                 |На странице показано {{showItemLength}} из {{ itemListCount}}
 
@@ -189,10 +189,10 @@
 
                 if((
                     this.users_ids.length &&
-                    this.sites_ids.length &&
-                    this.statuses.length &&
-                    this.rates.length &&
-                    this.url!== null
+                    //this.sites_ids.length &&
+                    this.statuses.length
+                    //this.rates.length &&
+                    //this.url!== null
                     ) &&
                     this.last_days ||
                     (

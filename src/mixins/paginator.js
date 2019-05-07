@@ -55,7 +55,7 @@ export default {
             this.debounceSearchMethods(val,oldVal)
         }, 500),
         debounceSearchMethods(val,oldVal){
-            console.log('debounceSearchMethods');
+            //console.log('debounceSearchMethods');
             this.resetSearch();
             this.getItemList();
         },
@@ -64,14 +64,14 @@ export default {
             if(this.scrollLoadAllow(e)) this.getItemList()
         },
         resetSearch(){
-            console.log('resetSearch');
+            //console.log('resetSearch');
             this.pageN=1;
             this.itemListCount= 0;
             this.itemList=[];
             this.getItemListStart=true;
         },
         getItemList(){
-            console.log('getItemList');
+            //console.log('getItemList');
             if(!this.getItemListStart) return;
             this.getItemListStart=false;
 

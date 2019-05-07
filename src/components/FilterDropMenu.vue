@@ -158,6 +158,7 @@ export default {
         },
         getStart(){
             if (this.type==='checkbox' && this.name!=='calendar' && this.modelcheckbox.length){
+                console.log(this.name,this.modelcheckbox);
                 return this.modelcheckbox
             }
             if( this.type==='radio' && this.modelradio){
@@ -166,9 +167,11 @@ export default {
         }
     },
     watch:{
+
         getStart(val){ // отправляем один раз при инициализации
             if (this.startOnce) {
                     if (this.type==='checkbox' && this.name!=='calendar'){
+                        console.log(this.name,val);
                         this.$emit('get',val.map(item=>item.id))
 
                     }
@@ -188,6 +191,7 @@ export default {
 
                 if(val===false){
                     if (this.modelPrev.map(item=>item.id).join() !== this.modelcheckbox.map(item=>item.id).join()){ //если результат не меняли, ничего не отправляем
+                        console.log(this.name,this.modelcheckbox);
                         this.$emit('get',this.modelcheckbox.map(item=>item.id))
 
 
@@ -253,7 +257,7 @@ export default {
                 if (val.length!==this.itemList.length) this.allChecked=false;
                 //this.$emit('get',val.map(item=>item.id))
 
-
+                console.log(this.name,val,valOld);
                 this.modelPrev = valOld
             },
             immediate: true
@@ -263,15 +267,7 @@ export default {
 
 
         if(this.name==='url'){
-          /*  console.log('.log');
-            let data =[
-                {id:'',url:'Не выбрана'},
-                {id:1,url:'http://mishki.ucoz.net/'},
-                {id:2,url:'http://newfanhor.clan.su/index/0-2'},
-            ];
-            data.forEach(item=>item.name=item.url)
-            this.urlListData = data
-            return*/
+
             this.$http.get('site-pages').then(({data})=>{
 
                 data=data.data.map(item=>{
@@ -291,6 +287,7 @@ export default {
         this.popupItem = this.$el
 
     },
+
     methods:{
 
         controlOpetions(item){
