@@ -46,6 +46,7 @@
                 timerTable:{},
                 timerNowId:'',
                 timerNow:'',
+
                 filterSearchResult:[],
                 sortMas:[
                     (item)=>!item.very_hot,
