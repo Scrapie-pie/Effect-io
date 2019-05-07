@@ -52,25 +52,21 @@ export default {
         },
 
         messageHot(state, {val:{guest_uuid:uuid,site_id},set}){
-            let findIndex = state.process.findIndex((item)=>{
 
-                return item.uuid+item.site_id === uuid+site_id
-            })
+            let main = (name)=> {
+                let findIndex = state[name].findIndex((item)=>item.uuid+item.site_id === uuid+site_id)
 
-            if(findIndex !== -1) {
-                this._vm.$set(state.process[findIndex],'hot',set)
-                this._vm.$set(state.self[findIndex],'hotTime',new Date().getTime()/1000)
+                if(findIndex !== -1) {
+                    this._vm.$set(state[name][findIndex],'hot',set)
+                    this._vm.$set(state[name][findIndex],'hotTime',new Date().getTime()/1000)
 
+                }
             }
-             findIndex = state.self.findIndex((item)=>{
-                return item.uuid+item.site_id === uuid+site_id
-            })
 
-            if(findIndex !== -1) {
-                this._vm.$set(state.self[findIndex],'hot',set)
-                this._vm.$set(state.self[findIndex],'hotTime',new Date().getTime()/1000)
+            main('process')
+            main('self')
 
-            }
+
         },
         process(state, val) {
             state.process=val.list.map(commonSelfProcces);
