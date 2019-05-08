@@ -15,7 +15,7 @@
                         :class="item.classList"
                     )
                         .last-messages__timer(
-                            v-if="(item.hot || item.very_hot) && timerNow",
+                            v-if="item.hot && timerNow",
                             v-text="timer(item,timerNow,index)"
                         )
 
