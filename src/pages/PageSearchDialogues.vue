@@ -51,7 +51,8 @@
 </template>
 
 <script>
-    import {datetimeDMY,datetimeHMS,datetimeStoHMS,dialogPush } from '@/modules/modules'
+    import {dialogPush } from '@/modules/modules'
+    import {datetimeDMY,datetimeHMS,datetimeStoHMS } from '@/modules/datetime'
     import TheLayoutTable from '@/components/TheLayoutTable'
     import FilterDropMenu from '@/components/FilterDropMenu'
 

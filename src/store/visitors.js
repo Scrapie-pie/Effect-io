@@ -24,7 +24,10 @@ const getDefaultState = () => {
 // initial state
 const state = getDefaultState();
 
-
+function commonSelfProcces(item){
+    item.hotTimeApi = new Date().getTime()/1000-item.last_message_time_passed;
+    return item
+}
 
 
 export default {
@@ -49,26 +52,24 @@ export default {
         },
 
         messageHot(state, {val:{guest_uuid:uuid,site_id},set}){
-            let findIndex = state.process.findIndex((item)=>{
 
-                return item.uuid+item.site_id === uuid+site_id
-            })
+            let main = (name)=> {
+                let findIndex = state[name].findIndex((item)=>item.uuid+item.site_id === uuid+site_id)
 
-            if(findIndex !== -1) {
-                this._vm.$set(state.process[findIndex],'hot',set)
+                if(findIndex !== -1) {
+                    this._vm.$set(state[name][findIndex],'hot',set)
+                    this._vm.$set(state[name][findIndex],'hotTime',new Date().getTime()/1000)
 
+                }
             }
-             findIndex = state.self.findIndex((item)=>{
-                return item.uuid+item.site_id === uuid+site_id
-            })
 
-            if(findIndex !== -1) {
-                this._vm.$set(state.self[findIndex],'hot',set)
+            main('process')
+            main('self')
 
-            }
+
         },
         process(state, val) {
-            state.process=val.list;
+            state.process=val.list.map(commonSelfProcces);
             if (val.count) state.processCount=val.count;
         },
         setProcessLastPageN(state,val){
@@ -83,6 +84,7 @@ export default {
             if(findIndex !== -1) {
                     state.process[findIndex].last_message = val.body;
                     state.process[findIndex].last_message_author = val.last_message_author
+
             }
             else {
                 val.unread=[]
@@ -102,7 +104,8 @@ export default {
 
         },
         self(state, val) {
-            state.self=val.list;
+
+            state.self=val.list.map(commonSelfProcces);
             if (val.count) state.selfCount=val.count;
 
         },
@@ -123,6 +126,7 @@ export default {
                 this._vm.$set(state.self[findIndex],'last_message_author',val.last_message_author)
                 this._vm.$set(state.self[findIndex],'last_message_time',val.time)
 
+
                 //this._vm.$set(state.self[findIndex],'name',val.from_user_info.name)
                 if(!val.selfUuid) {
                     let unread =  state.self[findIndex].unread
@@ -134,6 +138,7 @@ export default {
             } else { //Если сообщение пришло, но в списке не было подгружено
 
                 let selfNew = {
+
                     last_message : val.body,
                     last_message_author : val.last_message_author,
                     unread : [val.id],
