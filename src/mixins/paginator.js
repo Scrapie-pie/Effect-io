@@ -41,7 +41,7 @@ export default {
         },
         requestData(){
             let params = Object.assign(this.params, this.paramsComp)
-            console.log('requestData',params);
+            //console.log('requestData',params);
             return {params}
         }
 
@@ -71,13 +71,14 @@ export default {
             this.getItemListStart=true;
         },
         getItemList(){
-            //console.log('getItemList');
+
             if(!this.getItemListStart) return;
             this.getItemListStart=false;
 
             if((this.showItemLength < this.itemListCount) || this.itemListCount===0) {
 
                 this.$http.get(this.apiMethod,this.requestData).then(({data})=>{
+                    console.log('getItemList',this.requestData.params);
                     this.getItemListStart=true;
                     if (data.data.count) {
 

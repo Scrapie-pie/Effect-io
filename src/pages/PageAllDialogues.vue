@@ -38,18 +38,19 @@
                 )
         the-layout-table.page-log-dialogues(@scrolldown="scrollLoad")
 
-            filter-drop-menu(name="last_days", @get="filterLast_days" slot="control" type="radio")
+            filter-drop-menu(name="last_days", @get="filterLast_days" slot="control" type="radio" key="last_days")
 
             filter-drop-menu(
-                v-if="showCalendar"
+                v-show="showCalendar"
                 name="calendar",
                 @get="filterCalendar"
                 slot="control"
-
+                key="calendar"
                )
 
-            //filter-drop-menu(
+            filter-drop-menu(
                 name="siteCompany",
+                key="siteCompany",
                 @get="filterChannel"
                 slot="control"
                 )
@@ -57,21 +58,25 @@
                 name="operator",
                 @get="filterOperator"
                 slot="control"
+                key="operator"
                 )
 
 
             filter-drop-menu(
                 name="status",
+                key="status",
                 @get="filterStatus"
                 slot="control"
                 )
-            //filter-drop-menu(
+            filter-drop-menu(
                 name="ball",
+                key="ball",
                 @get="filterBall"
                 slot="control"
                 )
-            //filter-drop-menu(
+            filter-drop-menu(
                 name="url",
+                key="url",
 
                 @get="filterUrl"
                 slot="control"
@@ -189,10 +194,10 @@
 
                 if((
                     this.users_ids.length &&
-                    //this.sites_ids.length &&
-                    this.statuses.length
-                    //this.rates.length &&
-                    //this.url!== null
+                    this.sites_ids.length &&
+                    this.statuses.length &&
+                    this.rates.length &&
+                    this.url!== null
                     ) &&
                     this.last_days ||
                     (

@@ -158,7 +158,7 @@ export default {
         },
         getStart(){
             if (this.type==='checkbox' && this.name!=='calendar' && this.modelcheckbox.length){
-                console.log(this.name,this.modelcheckbox);
+
                 return this.modelcheckbox
             }
             if( this.type==='radio' && this.modelradio){
@@ -171,7 +171,7 @@ export default {
         getStart(val){ // отправляем один раз при инициализации
             if (this.startOnce) {
                     if (this.type==='checkbox' && this.name!=='calendar'){
-                        console.log(this.name,val);
+
                         this.$emit('get',val.map(item=>item.id))
 
                     }
@@ -191,7 +191,7 @@ export default {
 
                 if(val===false){
                     if (this.modelPrev.map(item=>item.id).join() !== this.modelcheckbox.map(item=>item.id).join()){ //если результат не меняли, ничего не отправляем
-                        console.log(this.name,this.modelcheckbox);
+
                         this.$emit('get',this.modelcheckbox.map(item=>item.id))
 
 
@@ -257,7 +257,7 @@ export default {
                 if (val.length!==this.itemList.length) this.allChecked=false;
                 //this.$emit('get',val.map(item=>item.id))
 
-                console.log(this.name,val,valOld);
+
                 this.modelPrev = valOld
             },
             immediate: true

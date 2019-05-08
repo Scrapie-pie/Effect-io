@@ -1,7 +1,7 @@
 <template lang="pug">
     section.layout-table
         .layout-table__controls
-            .layout-table__control(v-for="(item,index) in $slots.control" :key="index+'c'"): vnode(:node="item")
+            .layout-table__control(v-for="(item,index) in $slots.control", :key="index+'c'"): vnode(:node="item")
         .layout-table__head(v-for="item in $slots.head"): vnode(:node="item")
             slot(name="head").
         scroll-bar.layout-table__content(
