@@ -24,7 +24,7 @@ import io from 'socket.io-client';
 
 import config from "@/config/index";
 
-Vue.use(VueSocketio, io(config.api_websocket,{
+Vue.use(VueSocketio, io(config.api_websocket, {
     autoConnect: false,
     reconnection: true, // (Boolean) whether to reconnect automatically (false)
     reconnectionAttempts: 30, // (Number) number of reconnection attempts before giving up (Infinity),
