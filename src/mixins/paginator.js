@@ -64,7 +64,7 @@ export default {
             if(this.scrollLoadAllow(e)) this.getItemList()
         },
         resetSearch(){
-            //console.log('resetSearch');
+            console.log('resetSearch');
             this.pageN=1;
             this.itemListCount= 0;
             this.itemList=[];
