@@ -192,22 +192,39 @@
             paramsComp(){
                 //console.log('paramsComp');
 
-                if((
-                    this.users_ids.length &&
-                    this.sites_ids.length &&
-                    this.statuses.length &&
-                    this.rates.length &&
-                    this.url!== null
+                if(
+                    (
+                        this.users_ids.length &&
+                        this.sites_ids.length &&
+                        this.statuses.length &&
+                        this.rates.length &&
+                        this.url!== null
                     ) &&
-                    this.last_days ||
+                    (!!this.last_days ||
                     (
                         this.date_from &&
                         this.date_to &&
                         this.time_from &&
                         this.time_to
-                    )
+                    ))
 
                 ) {
+                    console.log(
+                        (
+                            this.users_ids.length &&
+                            this.sites_ids.length &&
+                            this.statuses.length &&
+                            this.rates.length &&
+                            this.url!== null
+                        ) &&
+                        (!!this.last_days ||
+                        (
+                            this.date_from &&
+                            this.date_to &&
+                            this.time_from &&
+                            this.time_to
+                        ))
+                    );
                     this.resetSearch()
                     this.getItemList();
                 }
@@ -236,12 +253,12 @@
             },
 
             filterBall(val){
-                //console.log(val);
+                console.log('filterBall',val);
                 this.rates=val
             },
             filterChannel(val){
                 this.sites_ids = val
-                //console.log(val);
+                console.log('filterChannel',val);
             },
             filterStatus(val){
                 console.log('filterStatus',val);
@@ -252,7 +269,7 @@
                 this.users_ids = val
             },
             filterUrl(val){
-                //console.log(val);
+                console.log('filterUrl',val);
                 this.url = val
             }
 

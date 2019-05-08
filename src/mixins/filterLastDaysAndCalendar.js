@@ -14,7 +14,7 @@ export default {
 
     methods:{
         filterLast_days(val){
-
+            console.log('filterLast_days',val);
             if (val==='-1') {
 
                 this.showCalendar=true;
@@ -35,6 +35,7 @@ export default {
             }
         },
         filterCalendar(val){
+            console.log('filterCalendar',val);
             this.last_days='';
             this.date_from = val.date_from;
             this.date_to = val.date_to;
