@@ -14,6 +14,11 @@
                         :key="item.uuid+item.site_id+item.chat_id",
                         :class="item.classList"
                     )
+                        .last-messages__timer(
+                            v-if="item.hot && timerNow",
+                            v-text="timer(item,timerNow,index)"
+                        )
+
                         router-link.last-messages__btn(
                             :to="item.rootLinkOptions.link"
                             v-text="item.rootLinkOptions.text"
@@ -26,15 +31,22 @@
 <script>
     import NavAside from '@/components/NavAside'
     import lodash_sortBy from 'lodash/sortBy'
+    import lodash_difference from 'lodash/difference'
 
     import { viewModeChat,httpParams,scrollbar,paginator } from '@/mixins/mixins'
-    import wrapTextUrls from '@/modules/wrapTextUrls'
+    import {wrapTextUrls} from '@/modules/modules'
+    import {datetimeStoHMS} from '@/modules/datetime'
 
     export default {
         components:{NavAside},
         mixins:[viewModeChat,httpParams ,scrollbar,paginator],
+
         data() {
             return {
+
+                timerNowId:'',
+                timerNow:new Date().getTime()/1000,
+
                 filterSearchResult:[],
                 sortMas:[
                     (item)=>!item.very_hot,
@@ -54,6 +66,10 @@
             }
         },
         computed:{
+
+
+
+
             itemListStore(){
                 let itemList = [];
 
@@ -101,24 +117,8 @@
 
         },
         watch:{
-            itemListStoreItemPush:{
-                handler(val){
-                   /* let  [visitorInfo,itemListStore] = val;
-                    let {uuid, site_id,} = visitorInfo;
-                    let findIndex = itemListStore.findIndex(item=>uuid+site_id===item.uuid+item.site_id)
-                    if(findIndex===-1) {
-                        itemListStore.push(visitorInfo)
-                        if (this.$route.name == "chatId") this.$store.commit('visitors/self',{list:itemListStore})
-                        if (this.$route.name == "process") this.$store.commit('visitors/process',{list:itemListStore}) //
 
-                        if (this.viewModeChat==="visor")    {
-                            this.$store.commit('visitors/newList',{field:this.viewModeChat,val:{list:itemListStore}})
-                        }
 
-                    }*/
-                },
-                immediate: false
-            },
             pageN(val){
                 if(!this.search) {
                     if (this.viewModeChat==="process")  this.$store.commit('visitors/setProcessLastPageN',val);
@@ -158,6 +158,10 @@
 
         created(){
             console.log('create')
+            this.timerNowId = setInterval(()=>{
+                this.timerNow=new Date().getTime()/1000
+                console.log('tic');
+            },1000)
             if(['search','visor'].includes(this.viewModeChat)) return
             if (this.viewModeChat==="process") this.type='unprocessed';
             if (this.viewModeChat==="visitors") this.type='self';
@@ -166,8 +170,39 @@
 
                 this.getItemList()
             }
+
+
+        },
+      /*  beforeUpdate(){
+
+            this.timerNowId = setInterval(()=>{
+                this.timerNow=new Date().getTime()/1000
+                console.log('tic updated');
+            },1000)
+        },*/
+        beforeDestroy() {
+            console.log('beforeDestroy')
+            clearInterval(this.timerNowId)
         },
         methods:{
+            timer(item,timerNow,index){
+
+                if(item.hotTime) {
+                    console.log(item.hotTime);
+                    return datetimeStoHMS(Math.round(timerNow-item.hotTime+30),true)
+                }
+                else { //берем время из инита
+
+
+                    return datetimeStoHMS(Math.round(timerNow-item.hotTimeApi),true)
+                }
+
+
+
+
+
+
+            },
             setName(item,visitorInfo){
                 if(item.very_hot) return item.name
                 if(item.uuid+item.site_id === visitorInfo.uuid+visitorInfo.site_id) return visitorInfo.name
@@ -183,7 +218,7 @@
                 if(this.httpParams) {
                     let {uuid,site_id,chat_id} = this.httpParams.params;
                     open = (item.uuid+item.site_id+item.chat_id === uuid+site_id+chat_id);
-                    console.log(item.uuid, item.site_id, item.chat_id , uuid, site_id, chat_id);
+
                 }
                 item.classList={}
                 item.classList['last-messages__item_active'] = open;
@@ -225,9 +260,6 @@
             itemFormat(item){
                 item = Object.assign({},item) //Очень важная строчка, иначе в хранилище все поля форматирования попадали
 
-
-
-
                 item = this.itemFormatSetClassList(item)
                 item = this.itemFormatSetLink(item)
 
@@ -240,7 +272,6 @@
                     item.last_authorAndMessage = this.authorAndMessage(item);
                 }
                 item = this.itemFormatSetOptions(item)
-
                 return item
             },
             authorAndMessage({last_message_author,last_message,files}){
@@ -310,6 +341,7 @@
         $color_bg-hover:glob-color('border');
         $color_bg-error:glob-color('error');
         $color_bg-info:glob-color('info');
+        $color_light:glob-color('light');
         $transition:$glob-trans;
 
         display:flex;
@@ -382,6 +414,18 @@
             border-color:transparent;
             font-size:0;
 
+        }
+
+
+        //////
+        &__timer {
+            background-color:$color_bg-error;
+            color:$color_light;
+            position:absolute;
+            right:0;
+            top:0;
+            //font-size:$glob-font-size_small;
+            padding:calc-em(3) calc-em(10);
         }
     }
 </style>

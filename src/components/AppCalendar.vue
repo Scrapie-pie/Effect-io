@@ -34,7 +34,7 @@
 <script>
 
     import { setupCalendar, Calendar,DatePicker} from 'v-calendar'
-    import datetimeDMY from '@/modules/datetimeDMY'
+    import {datetimeDMY} from '@/modules/datetime'
     import 'v-calendar/lib/v-calendar.min.css';
 
     // Remember to setup calendar (passing in defaults if needed)
