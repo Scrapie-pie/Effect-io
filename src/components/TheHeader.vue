@@ -37,6 +37,7 @@
                     {text: 'Поиск по диалогам', link: {name: 'searchList'},icon:'search'},
                     {text: 'Журнал', link: {name: 'all'},icon:'log',hide:!this.$store.getters['user/isRole'](['admin','owner','operatorSenior'])},
                     {text: 'Статистика', link: {name: 'stats'},icon:'statistics',hide:!this.$store.getters['user/isRole'](['admin','owner','operatorSenior'])},
+                    {text: 'Шаблоны', link: {name: 'phrases'},icon:'phrases'},
                     {text: 'Настройки', link: {name: 'settingsProfile'},icon:'settingsApp'},
                     //{text: 'Сменить учетную запись', link: {name: 'auth'}},
                     {text: 'Выход', link: {name: 'exit'}},
@@ -119,6 +120,10 @@
         &__code-btn {
             transform: translateY(1px);
             fill:glob-color('disabled');
+        }
+
+        .icon_phrases {
+            fill:#009efd
         }
 
     }

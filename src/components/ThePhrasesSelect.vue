@@ -16,7 +16,7 @@
             scroll-bar.phrases-select__scroll-bar
                 action-list(
                     key="action-list"
-                    v-if="!!filterSearchResult.length"
+                    v-if="!!filterSearchResult.length",
                     :item-list="filterSearchResult"
                     name="snippets"
                     name-field-text="text"

@@ -323,6 +323,10 @@
         $color_border:glob-color('border');
         $color_bg-send:glob-color('info-lighten');
 
+        .icon_phrases {
+            fill:#8c8c8c
+        }
+
         position:relative;
         border-top:1px solid $color_border;
         padding-top:calc-em(20);
