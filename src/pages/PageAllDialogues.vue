@@ -238,7 +238,13 @@
                 let {uuid,site_id,chat_id} = item;
 
                 dialogPush(this,'visor',item,'chat_id')
-                return this.$router.push({name:'visor',params: { uuid, site_id,chat_id}});
+
+
+                let routeData = this.$router.resolve({name:'visor',params: { uuid, site_id,chat_id}});
+                window.open(routeData.href, uuid+site_id+chat_id,"width=1100,height=500");
+
+
+                return
 
 
             },

@@ -1,5 +1,5 @@
 <template lang="pug">
-    header.the-header
+    header.the-header(v-if="headerShow")
         user-status.the-header__user-status
         nav-main.the-header__nav-main(:item-list="canalList")
         .the-header__code
@@ -12,11 +12,14 @@
     import NavMain from '@/components/NavMain';
     import UserStatus from '@/components/UserStatus';
 
+    import { viewModeChat} from '@/mixins/mixins'
+
     export default {
         components: {
             NavMain,
             UserStatus,
         },
+        mixins:[viewModeChat],
         data() {
 
             return {
@@ -25,6 +28,9 @@
             }
         },
         computed:{
+            headerShow(){
+                return !['search','visor'].includes(this.viewModeChat)
+            },
             code(){
                 let profile = this.$store.state.user.profile || {}
 

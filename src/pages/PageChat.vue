@@ -37,7 +37,6 @@
 
         template(v-if="['search','visor'].includes(viewModeChat)")
             section.page__view.page-chat
-                the-last-messages-v
                 section.page-chat__main
                     the-chat-main
                 aside.page-chat__info
@@ -81,6 +80,7 @@
         },
         watch:{
             '$route'(to,from){
+
                 this.messageSubscribeSocket(to,from)
             }
         },
@@ -99,6 +99,10 @@
             console.log('this.$store.commit(\'roomActiveReset\')');
             this.$store.commit('roomActiveReset')
             return next()
+        },
+        created(){
+
+
         },
         methods:{
             messageSubscribeSocket(to,from){
