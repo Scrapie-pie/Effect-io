@@ -15,7 +15,7 @@
                         :class="item.classList"
                     )
                         .last-messages__timer(
-                            v-if="item.hot && timerNow",
+                            v-if="timerVisible(item)",
                             v-text="timer(item,timerNow,index)"
                         )
 
@@ -113,7 +113,7 @@
             itemListStoreItemPush(){
                 if(this.visitorInfo) return [this.visitorInfo,this.itemListStore]
 
-            }
+            },
 
         },
         watch:{
@@ -127,6 +127,7 @@
                 }
             },
             filterSearchResult(val){
+                console.log('filterSearchResult',val);
                 if (val.length && (this.$route.name==="processAll" || this.$route.name==="messageAll")) {
                     if (val[0].rootLinkOptions.link)  {
                         this.$router.push(val[0].rootLinkOptions.link)
@@ -185,6 +186,11 @@
             clearInterval(this.timerNowId)
         },
         methods:{
+            timerVisible(item){
+                if (!this.timerNow) return
+                if(item.hot && (item.hotTime || item.hotTimeApi)) return true
+
+            },
             timer(item,timerNow,index){
 
                 if(item.hotTime) {
