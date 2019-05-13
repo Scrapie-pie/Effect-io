@@ -86,6 +86,7 @@
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
+                margin-bottom:calc-em(20);
             }
             &__text {
                 padding:calc-em(2) 0;
