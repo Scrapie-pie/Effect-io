@@ -188,20 +188,16 @@
         methods:{
             timerVisible(item){
                 if (!this.timerNow) return
-                if(item.hot && (item.hotTime || item.hotTimeApi)) return true
+                if(item.hot && (item.last_message_time_passed)) return true
 
             },
             timer(item,timerNow,index){
 
-                if(item.hotTime) {
-                    console.log(item.hotTime);
-                    return datetimeStoHMS(Math.round(timerNow-item.hotTime+30),true)
-                }
-                else { //берем время из инита
 
 
-                    return datetimeStoHMS(Math.round(timerNow-item.hotTimeApi),true)
-                }
+                    return datetimeStoHMS(Math.round(timerNow-item.last_message_time_passed),true)
+
+
 
 
 
