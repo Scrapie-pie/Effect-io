@@ -41,6 +41,7 @@ cd /srv/api/RBCALL-3410
 php app/cli/services/tests/data.php
 
 cd /srv/oi/RBCALL-3439/
+git reset --hard
 git pull
 npm run build
 

@@ -17,7 +17,7 @@
 </template>
 
 <script>
-    import clamp from 'text-overflow-clamp'
+
     export default {
         inheritAttrs: false,
         filters: {
