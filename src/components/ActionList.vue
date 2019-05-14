@@ -12,11 +12,12 @@
                     :checked="value==item.id"
                     v-on="inputListeners"
                 ).action-list__input
-                span.action-list__text
+                span.action-list__text()
                     |{{nameFieldText | setValue(item)}}
 </template>
 
 <script>
+    import clamp from 'text-overflow-clamp'
     export default {
         inheritAttrs: false,
         filters: {
@@ -59,6 +60,9 @@
                 )
             }
         },
+        mounted(){
+
+        }
     }
 </script>
 
