@@ -1,6 +1,6 @@
 <template lang="pug">
     article.page-all
-        nav-aside.page-all__filter-list(v-if="0")
+        //nav-aside.page-all__filter-list(v-if="0")
             scroll-bar.page-all__scrollbar
                 filter-drop-menu(name="last_days", @get="filterLast_days"  type="radio")
                 filter-drop-menu(
@@ -38,48 +38,53 @@
                 )
         the-layout-table.page-log-dialogues(@scrolldown="scrollLoad")
 
-            filter-drop-menu(name="last_days", @get="filterLast_days" slot="control" type="radio")
+            filter-drop-menu(name="last_days", @get="filterLast_days" slot="control" type="radio" key="last_days")
 
             filter-drop-menu(
-                v-if="showCalendar"
+                v-show="showCalendar"
                 name="calendar",
                 @get="filterCalendar"
                 slot="control"
-
+                key="calendar"
                )
 
             filter-drop-menu(
                 name="siteCompany",
+                key="siteCompany",
                 @get="filterChannel"
                 slot="control"
-            )
+                )
             filter-drop-menu(
                 name="operator",
                 @get="filterOperator"
                 slot="control"
+                key="operator"
                 )
 
 
             filter-drop-menu(
                 name="status",
+                key="status",
                 @get="filterStatus"
                 slot="control"
                 )
             filter-drop-menu(
                 name="ball",
+                key="ball",
                 @get="filterBall"
                 slot="control"
-            )
+                )
             filter-drop-menu(
                 name="url",
+                key="url",
 
                 @get="filterUrl"
                 slot="control"
-            )
+                )
             div(slot="control" v-if="itemListCount")
                 |На странице показано {{showItemLength}} из {{ itemListCount}}
 
-            base-table(v-if="showItemLength")
+            base-table(v-if="showItemLength" v-show="last_days || date_from")
                 thead(v-if="headList.length")
                     tr: th(v-for="(item, index) in headList" :key="index" v-html="item.text")
                 tbody
@@ -116,9 +121,9 @@
     import FilterDropMenu from '@/components/FilterDropMenu'
     import NavAside from '@/components/NavAside'
 
-    import {scrollbar,paginator } from '@/mixins/mixins'
+    import {scrollbar,paginator,filterLastDaysAndCalendar } from '@/mixins/mixins'
     export default {
-        mixins:[scrollbar,paginator],
+        mixins:[scrollbar,paginator,filterLastDaysAndCalendar],
         components: {
             FilterDropMenu,
             TheLayoutTable,
@@ -137,8 +142,10 @@
             return {
 
                 apiMethod:'chat-get-all',
-                showCalendar:false,
-
+                containerFullFillItemListClassName:{
+                    scrollBar:'layout-table__content',
+                    item:'base-table__tr'
+                },
 
                 headList:[
                     {text:'Имя',field:'name'},
@@ -155,24 +162,10 @@
                 branches_ids:[],
                 statuses:[],
                 rates:[],
-                date_from:'',
-                date_to:'',
-                time_from:'',
-                time_to:'',
-                last_days:'',
+
                 url:null,
 
-
-
-
-                tempDates:[],
-
-
                 limit:11,
-                containerFullFillItemListClassName:{
-                    scrollBar:'layout-table__content',
-                    item:'base-table__tr'
-                },
 
             }
         },
@@ -200,22 +193,39 @@
             paramsComp(){
                 //console.log('paramsComp');
 
-                if((
-                    this.users_ids.length &&
-                    this.sites_ids.length &&
-                    this.statuses.length &&
-                    this.rates.length &&
-                    this.url!== null
+                if(
+                    (
+                        this.users_ids.length &&
+                        this.sites_ids.length &&
+                        this.statuses.length &&
+                        this.rates.length &&
+                        this.url!== null
                     ) &&
-                    this.last_days ||
+                    (!!this.last_days ||
                     (
                         this.date_from &&
                         this.date_to &&
                         this.time_from &&
                         this.time_to
-                    )
+                    ))
 
                 ) {
+                    console.log(
+                        (
+                            this.users_ids.length &&
+                            this.sites_ids.length &&
+                            this.statuses.length &&
+                            this.rates.length &&
+                            this.url!== null
+                        ) &&
+                        (!!this.last_days ||
+                        (
+                            this.date_from &&
+                            this.date_to &&
+                            this.time_from &&
+                            this.time_to
+                        ))
+                    );
                     this.resetSearch()
                     this.getItemList();
                 }
@@ -242,57 +252,25 @@
 
 
             },
-            filterLast_days(val){
-                //console.log(val);
-                if (val==='-1') {
 
-                    this.showCalendar=true;
-
-               /*     if (this.tempDates.length){
-                        this.date_from = this.tempDates[0];
-                        this.date_to = this.tempDates[1];
-                        this.time_from = this.tempDates[2];
-                        this.time_to = this.tempDates[3];
-                    }
-*/
-                }
-                else {
-                    this.last_days=val;
-                    this.showCalendar=false;
-                    this.date_from = '';
-                    this.date_to = '';
-                    this.time_from = '';
-                    this.time_to = '';
-                }
-            },
-            filterCalendar(val){
-                //console.log(val);
-                this.last_days='';
-                this.date_from = val.date_from;
-                this.date_to = val.date_to;
-                this.time_from = val.time_from;
-                this.time_to = val.time_to;
-
-                //this.tempDates=[this.date_from,this.date_to,this.time_from,this.time_to]
-            },
             filterBall(val){
-                //console.log(val);
+                console.log('filterBall',val);
                 this.rates=val
             },
             filterChannel(val){
                 this.sites_ids = val
-                //console.log(val);
+                console.log('filterChannel',val);
             },
             filterStatus(val){
-                //console.log(val);
+                console.log('filterStatus',val);
                 this.statuses=val;
             },
             filterOperator(val){
-                //console.log(val);
+                console.log('filterOperator',val);
                 this.users_ids = val
             },
             filterUrl(val){
-                //console.log(val);
+                console.log('filterUrl',val);
                 this.url = val
             }
 

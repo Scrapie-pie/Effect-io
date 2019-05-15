@@ -7,4 +7,5 @@ export { default as routerPushProcessAllOrItemFirst } from '@/mixins/routerPushP
 export { default as removeMessageAndPush } from '@/mixins/removeMessageAndPush'
 export { default as stats } from '@/mixins/stats'
 export { default as paginator } from '@/mixins/paginator'
+export { default as filterLastDaysAndCalendar } from '@/mixins/filterLastDaysAndCalendar'
 
