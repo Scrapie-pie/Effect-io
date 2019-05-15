@@ -104,7 +104,7 @@
                 this.checkIsProcessPage();
             },
             message(val){
-                console.log('message',val,this.autosizeInit);
+
                 if(val && this.autosizeInit){
                     autosize(this.$refs.chatInput);
                     this.autosizeInit=false;
@@ -115,7 +115,10 @@
                 }
             },
             uploadFileList(val){
-                console.log(val);
+
+            },
+            bufferingSend(val){
+                console.log('bufferingSend',val);
             }
         },
 
@@ -132,7 +135,8 @@
                 showPhrasesSelect:false,
                 showPhrasesSelectAllow:true,
                 message:'',
-                uploadFileList:[]
+                uploadFileList:[],
+                bufferingSend:false
             }
         },
         computed:{
@@ -203,6 +207,7 @@
                 }
             },
             onEnter: function (e) {
+                //if(this.bufferingSend) return
                 e.stopPropagation();
                 e.preventDefault();
                 e.returnValue = false;
@@ -211,13 +216,28 @@
                 this.messageRead()
             },
             send(){
+
                 let data = {},
                     to_id,
                     files=[],
                     body = this.message;
 
+                if(this.uploadFileList.length) {
+                    files = this.uploadFileList.map(item=>{
 
-                if(this.viewModeChat=="visitors") {
+                        item.name=item.src.name;
+                        delete item.src
+                        return item
+                    })
+
+
+                }
+
+                if (!body && !files.length) return
+                if(this.bufferingSend) return
+                this.bufferingSend=true;
+
+                if(this.viewModeChat==="visitors") {
 
                  let {guest_uuid,site_id} = this.httpParams.params;
 
@@ -245,21 +265,13 @@
                 }
 
                 data.body=body;
-
-                if(this.uploadFileList.length) {
-                    files = this.uploadFileList.map(item=>{
-
-                        item.name=item.src.name;
-                        delete item.src
-                        return item
-                    })
-                    data.files=files;
-                }
+                data.files=files;
 
 
-                if (!body && !files.length) return
+
+
                 this.$http.post('message-send', data).then((responsive)=>{
-
+                    this.bufferingSend=false;
                     console.log('message-send',responsive.data.data.id);
                     let {id} = responsive.data.data;
 
@@ -302,6 +314,9 @@
                     setTimeout(()=>{
                         this.$refs.scrollbarMessage.update()
                     },200)
+
+                }).catch(()=>{
+                    this.bufferingSend=false;
                 });
 
 

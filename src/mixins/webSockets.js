@@ -247,7 +247,7 @@ export default {
 
         },
         'message-delivered'(val){
-            console.log(val);
+
             this.$root.$emit('messageDelivered',val)
         },
         "update-branches"(val) {

@@ -192,7 +192,7 @@
                 list.forEach(item=>{
                     item[1] = item[1].reverse()
                 })
-                console.log(list);
+
                 return list
             },
             messageGroupDays(){
