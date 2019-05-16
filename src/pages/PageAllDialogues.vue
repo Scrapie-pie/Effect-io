@@ -241,10 +241,10 @@
 
 
                 let routeData = this.$router.resolve({name:'visor',params: { uuid, site_id,chat_id}});
-                window.open(routeData.href, uuid+site_id+chat_id,"width=1100,height=500");
+                window.open(routeData.href, uuid+site_id+chat_id,"width=700,height=700");
 
 
-                return
+
 
 
             },

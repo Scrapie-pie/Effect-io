@@ -1,6 +1,9 @@
 <template lang="pug">
     article.chat-main
-        the-chat-main-header.chat-main__header(v-if!="viewModeChat!='common'")
+        the-chat-main-header.chat-main__header(v-if!="!['search','visor','common'].includes(viewModeChat)")
+        .chat-main__header(v-if="['search','visor'].includes(viewModeChat)")
+            h1.chat-main__header-title Просмотр диалога: {{chat_id}}
+
         scroll-bar.chat-main__body(ref="scrollbar", @ps-scroll-up="scrollLoad")
             ul.chat-main__list
                 //li.chat-main__item.chat-main__item_history_more
@@ -15,22 +18,14 @@
                             :key="item.id" ,
                             :class="{'chat-main__messages-item_right':item.from_user_info.id != $store.state.user.profile.employee_id}"
                         )
-                            template(v-if="item.from_role_id!=9")
-                                base-people(
+                            template(v-if="!['search','visor'].includes(viewModeChat)")
+                                template(v-if="item.from_role_id!=9")
+                                    base-people(v-bind="item.basePeopleOptions")
 
-                                    avatar-width="md",
-                                    :avatar-url="item.from_user_info.photo",
-                                    :avatar-stub="item.from_user_info.photo_stub",
-                                    :name="item | name(visitorInfo)",
-                                    :text="item.body | messageBreakLine | wrapTextUrls",
-                                    :time="item.time",
-                                    :loader-message="item.delivery_status"
-                                    :right="item.from_user_info.id != $store.state.user.profile.employee_id",
-                                    :img="item.img",
-                                    :files="item.files || []"
-                                )
 
-                            p(v-else v-html="$options.filters.wrapTextUrls(item.body)" :style="{textAlign:'center'}")
+                                p.chat-main__messages-sys(v-else v-html="$options.filters.wrapTextUrls(item.body)")
+                            template(v-else)
+                                message-item(v-bind="item.basePeopleOptions")
 
                         li.chat-main__messages-item.chat-main__messages-item_right(
                             v-if="messageGroupDaysReverse.length-1===daysIndex && showVisitorTypingLive"
@@ -48,20 +43,20 @@
                             )
 
                         template(v-if="(roomActiveUsersInvited.length || roomActiveUsersRecipient.length) && roomActiveIsAdmin")
-                            li.chat-main__messages-item(
+                            li.chat-main__messages-item.chat-main__messages-sys(
                                 v-for="(item, index) in roomActiveUsersInvited",
                                 :key="item.id",
-                                :style="{textAlign:'center'}"
+
                                 )
                                     |Ожидаем подтверждение от: {{item.first_name}}&nbsp;
-                                    base-btn(theme="link" v-text="'Отменить приглашение'" @click="invitedCancel(item.id)")
-                            li.chat-main__messages-item(
+                                    base-btn(theme="link" v-text="'Отменить приглашение'", @click="invitedCancel(item.id)")
+                            li.chat-main__messages-item.chat-main__messages-sys(
                                 v-for="(item, index) in roomActiveUsersRecipient",
                                 :key="item.id",
-                                :style="{textAlign:'center'}"
+
                             )
                                 |Ожидаем подтверждение от: {{item.first_name}}&nbsp;
-                                base-btn(theme="link" v-text="'Отменить передачу'" @click="transferCancel(item.id)")
+                                base-btn(theme="link" v-text="'Отменить передачу'", @click="transferCancel(item.id)")
 
         footer.chat-main__footer(v-if="!['search','visor'].includes(viewModeChat)")
             the-chat-main-footer
@@ -73,7 +68,9 @@
     import TheChatSystemMessages from '@/components/TheChatSystemMessages'
     import TheChatMainHeader from '@/components/TheChatMainHeader'
     import TheChatMainFooter from '@/components/TheChatMainFooter'
-    import wrapTextUrls from '@/modules/wrapTextUrls'
+    import MessageItem from '@/components/MessageItem'
+    import {wrapTextUrls} from '@/modules/modules'
+    import {datetimeDMY} from '@/modules/datetime'
 
 
 
@@ -82,24 +79,20 @@
 
     import lodash_groupBy from 'lodash/groupBy'
     import lodash_find from 'lodash/find'
-    import moment from 'moment'
+
     export default {
         components:{
             TheChatSystemMessages,
             TheChatMainHeader,
-            TheChatMainFooter
+            TheChatMainFooter,
+            MessageItem,
         },
         mixins:[viewModeChat,httpParams,scrollbar],
         filters: {
+            wrapTextUrls,
+
             messageBreakLine: function (value) {
                 return   value.replace(/(\r\n|\n|&lt;br&gt;)/g, "<br>") // из виджета &lt;br&gt;
-            },
-            name(item,visitorInfo){
-                if(item.from_user_info.uuid) return visitorInfo.name
-                else return item.from_user_info.name
-            },
-            wrapTextUrls(text){
-                return wrapTextUrls(text)
             },
             deliveredText(numb) {
                 if(numb==0) return 'Доставляется'
@@ -116,6 +109,7 @@
                 limit:20,
                 systemMessages:[],
                 visitorTypingLive:'',
+                chat_id:null
             }
         },
         watch:{
@@ -189,15 +183,34 @@
             messageGroupDaysReverse(){
 
                 let list = Object.entries(this.messageGroupDays).reverse() //['14.15.2018',[messages]]
-                list.forEach(item=>{
-                    item[1] = item[1].reverse()
+                list.forEach(itemParent=>{
+                    itemParent[1] = itemParent[1].map(item=>{
+
+                        item.basePeopleOptions = {
+                            roleId:item.from_role_id, //message-item component
+                            avatarWidth:"md",
+                            avatarUrl:item.from_user_info.photo,
+                            avatarStub:item.from_user_info.photo_stub,
+                            name:this.name(item,this.visitorInfo),
+                            text:this.$options.filters.wrapTextUrls(this.$options.filters.messageBreakLine(item.body)) ,
+                            time:item.time,
+                            loaderMessage:item.delivery_status,
+                            right:item.from_user_info.id !== this.$store.state.user.profile.employee_id,
+                            files:item.files || []
+                        }
+
+
+
+                        return item
+                    })
+                    itemParent[1] = itemParent[1].reverse()
                 })
                 console.log(list);
                 return list
             },
             messageGroupDays(){
                 return lodash_groupBy(this.messageList, (item)=>{
-                    return moment(item.time*1000).format('DD.MM.YYYY')
+                    return datetimeDMY(item.time)
                     //moment(item.time*1000).format('HH:mm')
                 })
             },
@@ -244,6 +257,11 @@
         },
 
         methods: {
+
+            name(item,visitorInfo){
+                if(item.from_user_info.uuid) return visitorInfo.name
+                else return item.from_user_info.name
+            },
             emitMessageDelivered(val){
                 let findIndex = this.messageList.findIndex(item=>item.id===val.message_id)
                 console.log('emitMessageDelivered',findIndex,val);
@@ -341,9 +359,12 @@
                 this.messageRun=false;
                 console.log('this.messageList',this.messageList);
                 return this.$http.get('message-history', {params}).then(({data})=>{
+
                     this.historyMessageLoadStart=true;
                     let {count,messages,users} = data.data;
                     if (!count) return
+
+                    this.chat_id = messages[0].chat_id;
 
                     this.messageRun=count;
                     //console.log('historyMessageLoad');
@@ -373,6 +394,11 @@
         flex-flow:column;
         height:100%;
         min-width:0;//для шаблонов, чтобы работало text-overflow: ellipsis;
+
+        &__header-title {
+            @extend %h4;
+            margin-bottom:0;
+        }
 
         &__item {
             padding-top:calc-em(25);
@@ -457,7 +483,9 @@
             }
 
         }
-
+        &__messages-sys {
+            text-align:center;
+        }
 
 
     }

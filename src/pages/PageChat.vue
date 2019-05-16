@@ -39,7 +39,7 @@
             section.page__view.page-chat
                 section.page-chat__main
                     the-chat-main
-                aside.page-chat__info
+                aside.page-chat__info(v-show="0")
                     the-client-info
 
 
@@ -100,10 +100,7 @@
             this.$store.commit('roomActiveReset')
             return next()
         },
-        created(){
 
-
-        },
         methods:{
             messageSubscribeSocket(to,from){
 
@@ -139,6 +136,7 @@
 </script>
 
 <style lang="scss">
+    .header-hide .the-header {display:none}
     .page-chat {
         $color_bg-app:glob-color('light');
         $box-shadow:$glob-box-shadow;
