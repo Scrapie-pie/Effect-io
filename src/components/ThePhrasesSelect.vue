@@ -15,6 +15,8 @@
             )
             scroll-bar.phrases-select__scroll-bar
                 action-list(
+                    :title="true"
+                    text-line="2"
                     key="action-list"
                     v-if="!!filterSearchResult.length",
                     :item-list="filterSearchResult"
@@ -72,20 +74,27 @@
 
 
             },
-        }
+        },
+
 
     }
 </script>
 
 <style lang="scss">
     .phrases-select {
+        $color_bg:glob-color('info-light');
+        $trans:$glob-trans;
         padding-right:calc-em(10);
+
+
+
 
         .action-list {
             &__item {
-                white-space: nowrap;
+               /* white-space: nowrap;
                 overflow: hidden;
-                text-overflow: ellipsis;
+                text-overflow: ellipsis;*/
+
             }
             &__text {
                 padding:calc-em(2) 0;
@@ -93,9 +102,41 @@
                 font-style:italic;
                 border:0;
 
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
+                white-space: normal;
+
+
+                & {
+                    max-height: 2.6em; /* exactly three lines */
+                }
+                position: relative;
+
+                &:before {
+                    @extend %full-abs;
+                    z-index:-1;
+                    border-radius:$glob-border-radius;
+                    content:'';
+
+                    transition:$trans;
+                    display:block;
+                }
+
+
+              /*  &:hover:before {
+                    background:$color_bg;
+                }
+                &:hover:after {display:none}*/
+                &:after {
+                    content: "";
+                    text-align: right;
+                    position: absolute;
+                    bottom: 0;
+                    right: 0;
+                    width: calc-em(60);
+                    height: 1.2em;
+                    background: linear-gradient(to right, rgba(255, 255, 255, 0), white 100%);
+                    pointer-events: none;
+
+                }
             }
             &__button{width:100%}
             &__input {
@@ -105,6 +146,9 @@
 
         &__scroll-bar {
             max-height:12em;
+        }
+        .ps__scrollbar-y-rail {
+            z-index:1;
         }
     }
 

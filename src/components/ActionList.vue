@@ -12,14 +12,20 @@
                     :checked="value==item.id"
                     v-on="inputListeners"
                 ).action-list__input
-                span.action-list__text
+                span.action-list__text(:title="nameFieldText | setValue(item) |setTitle(title)")
                     |{{nameFieldText | setValue(item)}}
 </template>
 
 <script>
+
     export default {
         inheritAttrs: false,
         filters: {
+            setTitle: function (text,title) {
+                if(!title) return '';
+                return text
+
+            },
             setValue: function (nameField,item) {
                 if(!nameField) return '';
                 return item[nameField]
@@ -34,7 +40,11 @@
             nameFieldText:'',
             nameFieldValue:'',
             value:'',
-            name:''
+            name:'',
+            title:{
+                type:Boolean,
+                default:false,
+            },
         },
         data(){
             return {
@@ -59,6 +69,9 @@
                 )
             }
         },
+        mounted(){
+
+        }
     }
 </script>
 
