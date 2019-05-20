@@ -15,6 +15,7 @@
             )
             scroll-bar.phrases-select__scroll-bar
                 action-list(
+                    :title="true"
                     text-line="2"
                     key="action-list"
                     v-if="!!filterSearchResult.length"
@@ -104,7 +105,7 @@
                 white-space: normal;
 
 
-                &:not(:hover) {
+                & {
                     max-height: 2.6em; /* exactly three lines */
                 }
                 position: relative;
@@ -120,10 +121,10 @@
                 }
 
 
-                &:hover:before {
+              /*  &:hover:before {
                     background:$color_bg;
                 }
-                &:hover:after {display:none}
+                &:hover:after {display:none}*/
                 &:after {
                     content: "";
                     text-align: right;
