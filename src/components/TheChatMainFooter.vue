@@ -1,5 +1,5 @@
 <template lang="pug">
-        form.chat-main-footer
+        form.chat-main-footer.js-dragDrop
 
             ///the-chat-system-messages
 
@@ -24,8 +24,7 @@
                             :filter-search="message" ,
                             @resultText="getPhrasesSelectText"
                         ).chat-main-footer__phrases-select
-                        scroll-bar.chat-main-footer__scrollbar(ref="scrollbarMessage")
-
+                        scroll-bar.chat-main-footer__scrollbar(ref="scrollbarMessage" )
                             textarea.chat-main-footer__input(
                                 placeholder="Enter - отправить сообщение, Shift+Enter - новая строка."
                                 ref="chatInput",
@@ -322,10 +321,34 @@
     .chat-main-footer{
         $color_border:glob-color('border');
         $color_bg-send:glob-color('info-lighten');
+        $color_success:glob-color('success');
 
         position:relative;
+        border:1px dashed transparent;
         border-top:1px solid $color_border;
         padding-top:calc-em(20);
+
+        &.drag-over {
+            &::after {
+                @extend %full-abs;
+                border:1px dashed $color_success;
+                background:glob-color('light');
+                content:'';
+                z-index:9;
+            }
+            &::after {
+
+                content:'Перетащите сюда файлы';
+                color:inherit;
+                @extend %full-abs;
+                display:flex;
+                align-items:center;
+                justify-content:center;
+                z-index:2;
+                @extend %h3
+
+            }
+        }
 
         &__fieldset {min-width:0}
 
@@ -337,9 +360,11 @@
             height:2em;
             line-height:1.5;
 
-            border:0;
+
             padding:0;
             overflow:hidden !important;
+            border:0;
+
         }
 
         &__buttons{

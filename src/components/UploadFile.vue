@@ -68,8 +68,10 @@
         },
         mounted () {
             this.addEvents({
-                fileContainer: this.$refs.image
+                fileContainer: this.$refs.image,
+                dragDrop:document.querySelector('.js-dragDrop')
             })
+
         },
         methods: {
             uploadFile() {
@@ -106,12 +108,16 @@
             addEvents (dropzones) {
                 for (let dropzone in dropzones) {
                     dropzones[dropzone].ondrop = (e) => {
+
                         e.preventDefault()
-                        e.target.classList.remove('drag-over')
+                        console.log('ondrop ');
+                        e.target.closest('.js-dragDrop').classList.remove('drag-over');
+
                         this.uploadIMG(e, dropzone)
                     }
 
                     dropzones[dropzone].ondragover = (e) => {
+                        console.log(e.target);
                         e.preventDefault()
                         e.dataTransfer.effectAllowed = 'copyMove'
 
@@ -119,11 +125,11 @@
 
                         if (this.checkFileSize(file)) {
                             e.dataTransfer.dropEffect = 'copy'
-                            e.target.classList.add('drag-over');
+                            e.target.closest('.js-dragDrop').classList.add('drag-over');
 
                         } else {
                             e.dataTransfer.dropEffect = 'none'
-                            e.target.classList.add('drag-error')
+                            e.target.closest('.js-dragDrop').classList.add('drag-error')
 
                             this.$root.$emit('popup-notice','Размер превышает 5мб');
 
