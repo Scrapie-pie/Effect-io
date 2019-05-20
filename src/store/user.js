@@ -77,7 +77,7 @@ export default {
             state.profile=val;
         },
         unreadUpdate(state,val){
-            console.log('unreadUpdate', val[0]);
+
             if(state.profile.unread!==undefined) { //иначе при logout была ошибка
 
                 if (val[1] === 'clear') return state.profile.unread[val[0]] = 0;

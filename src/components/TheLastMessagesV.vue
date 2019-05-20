@@ -157,10 +157,10 @@
 
 
         created(){
-            console.log('create')
+
             this.timerNowId = setInterval(()=>{
                 this.timerNow=new Date().getTime()/1000
-                console.log('tic');
+
             },1000)
             if(['search','visor'].includes(this.viewModeChat)) return
             if (this.viewModeChat==="process") this.type='unprocessed';
