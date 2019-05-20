@@ -2,24 +2,31 @@
     form.the-redirect-client(@submit.prevent="submit" v-if="viewModeChat==='visitors'")
         fieldset
             legend Перенаправление клиента
-            base-field.the-redirect-client__base-field(placeholder="Введите URL" name="redirect" v-model="model")
+            base-field.the-redirect-client__base-field(placeholder="Введите URL" name="redirect" v-model="url")
             base-btn(type="submit" color="info" size="sm" padding="xs") Перенаправить
 </template>
 
 <script>
-    import { viewModeChat } from '@/mixins/mixins'
+    import { viewModeChat,httpParams } from '@/mixins/mixins'
 export default {
     name: "the-redirect-client",
-    mixins:[viewModeChat],
+    mixins:[viewModeChat,httpParams],
     data() {
         return {
-            model:''
+            url:''
         }
     },
     methods:{
         submit(){
-            this.model='';
-            console.log('submit');
+
+            let data = this.httpParams.params;
+            data.url = this.url;
+            this.url='';
+            this.$http.post('guest-redirect',data)
+                .then(()=> {
+                    console.log('guest-redirect');
+                })
+
         }
     }
 }

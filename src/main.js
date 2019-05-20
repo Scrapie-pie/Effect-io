@@ -28,6 +28,12 @@ Vue.use(VueSocketio, io(config.api_websocket,{
     reconnection: true, // (Boolean) whether to reconnect automatically (false)
     reconnectionAttempts: 5, // (Number) number of reconnection attempts before giving up (Infinity),
     reconnectionDelay: 3000,
+    transports: ['websocket'],
+    upgrade: false,
+    secure: true,
+    query: {
+        user: 'employee'
+    }
 }), {
     store,
     actionPrefix: 'socket',
