@@ -52,6 +52,7 @@
 </template>
 
 <script>
+    import 'vue-select/dist/vue-select.css'
     import '@/scss/base/field.scss'
 
     import vSelect from 'vue-select' // https://github.com/sagalbot/vue-select
