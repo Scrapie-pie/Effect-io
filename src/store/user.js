@@ -109,8 +109,10 @@ export default {
             this._vm.$http.defaults.headers['content-type']= 'application/json';
 
 
-            this._vm.$socket.query = `uuid=${user.id}`;
-            this._vm.$socket.io.opts.query = `uuid=${user.id}`;
+
+
+            this._vm.$socket.query = `uuid=${user.uuid}&user=employee`;
+            this._vm.$socket.io.opts.query = `uuid=${user.uuid}&user=employee`;
             this._vm.$socket.open()
 
             commit('profile', user);
