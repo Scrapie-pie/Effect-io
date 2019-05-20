@@ -1,4 +1,11 @@
+function truncate(str, maxlength) {
+    if (str.length > maxlength) {
+        return str.slice(0, maxlength - 3) + '...';
+        // итоговая длина равна maxlength
+    }
 
+    return str;
+}
 
 function wrapTextUrls(text=''){
     /**
@@ -18,6 +25,8 @@ function wrapTextUrls(text=''){
                     first = p1 === '//' ? '' : p1,
                     second = p1 === '//' ? p1 + p6 : p6,
                     url = (p6.indexOf('//') !== -1 ? '' : 'http://') + p6;
+
+                    second = truncate(second,30)
                 if(isEmail){
                     return '<a href="mailto:' + match + '">' + match + '</a>';
                 } else {
