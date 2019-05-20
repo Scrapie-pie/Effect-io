@@ -23,16 +23,21 @@ import VueSocketio from 'vue-socket.io-extended';
 import io from 'socket.io-client';
 
 import config from "@/config/index";
-Vue.use(VueSocketio, io(config.api_websocket,{
+
+Vue.use(VueSocketio, io(config.api_websocket, {
     autoConnect: false,
     reconnection: true, // (Boolean) whether to reconnect automatically (false)
-    reconnectionAttempts: 5, // (Number) number of reconnection attempts before giving up (Infinity),
+    reconnectionAttempts: 30, // (Number) number of reconnection attempts before giving up (Infinity),
     reconnectionDelay: 3000,
+    transports: ['websocket'],
+    upgrade: false,
+    secure: true,
+    query: {
+        user: 'employee'
+    }
 }), {
     store,
     actionPrefix: 'socket',
-
-
 });
 
 import BaseIcon from "@/components/BaseIcon";
