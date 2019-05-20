@@ -21,9 +21,8 @@
                 )
                     |{{time | formatTime}}
                 base-count.base-people__count(:count="count")
-                span(v-if="loaderMessage==0", :class="loaderMessageClass" title="Доставляется")
-                base-icon(v-if="loaderMessage==1", name="check"  :class="loaderMessageClass" title="Доставлено")
-                base-icon(v-if="loaderMessage==2", name="prohibition"  :class="loaderMessageClass" title="Не доставлено")
+                loader-message.base-people__loader-message(:status="loaderMessage")
+
             p.base-people__text(
                 v-if="text"
                 v-html="text"
@@ -31,12 +30,7 @@
             )
 
 
-            p.base-people__img(v-if="img")
-                img(
-                    :src="img"
-                    alt=""
-                     @click="$root.$emit('popup-img',img)"
-                )
+
             figure.base-people__files(v-if="files.length")
                 ul.base-people__files-list
                     li.base-people__files-item(v-for="(item, index) in files" :key="item.link")
@@ -46,28 +40,33 @@
                             :alt="item.name",
                             @click="$root.$emit('popup-img',item.link)"
                         )
-                        a(
-                            v-else
-                            v-text="item.name",
-                            :href="item.link"
-                            target="_blank"
-                        )
+                        div(v-else)
+                            base-icon.base-people__files-icon(name="file")
+                            a(
+
+                                v-text="item.name",
+                                :href="item.link"
+                                target="_blank"
+                            )
 
 </template>
 
 <script>
-    import moment from 'moment'
+    import {datetimeHMS} from '@/modules/datetime'
+
     import BaseCount from '@/components/BaseCount';
+    import LoaderMessage from '@/components/LoaderMessage';
     export default {
         components: {
-            BaseCount
+            BaseCount,
+            LoaderMessage
         },
         filters: {
             formatTime: function (value) {
 
                 if (value) {
                     //let date = moment(value*1000)
-                    return moment(value*1000).format('HH:mm:ss')
+                    return datetimeHMS(value)
 
                 } else {
                     return ''
@@ -83,7 +82,6 @@
                     return [0,1,2,3].indexOf(value) !== -1
                 }
             },
-            img: false,
             right: Boolean,
             channelName: String,
             count: {
@@ -124,11 +122,6 @@
 
         },
         computed: {
-            loaderMessageClass(){
-
-                if(this.loaderMessage==0) return 'base-people__loader-message spinner spinner_xs'
-                return 'base-people__loader-message base-people__loader-message_'+this.loaderMessage
-            },
             statusText() {
                 let text;
                 switch (this.status) {
@@ -305,40 +298,16 @@
             background-color:transparent;
         }
 
-        &__files-item {
+        &__files-list{
             margin-top:calc-em(10)
         }
-
-        &__loader-message {
-            &::after {
-                position:absolute;
-                content:'';
+        &__files-icon {
+            .icon_file {
+                margin-top:-5px;
+                margin-bottom:-5px;
             }
-            &.spinner {
-                width:16px;
-            }
-            &.spinner:before {
-                width:14px;
-                height:14px;
-                margin-top:-14px;
-                margin-left:-7px;
-            }
-            &_1 {
-                .icon {
-                    width:10px;
-                    height:7px;
-                    fill:glob-color('success');
-                    transform:translateY(-3px);
-                }
-            }
-            &_2 {
-                .icon {
-                    width: 12px;
-                    height: 14px;
-
-                }
-            }
-
         }
+
+
     }
 </style>

@@ -37,10 +37,9 @@
 
         template(v-if="['search','visor'].includes(viewModeChat)")
             section.page__view.page-chat
-                the-last-messages-v
                 section.page-chat__main
                     the-chat-main
-                aside.page-chat__info
+                aside.page-chat__info(v-show="0")
                     the-client-info
 
 
@@ -81,6 +80,7 @@
         },
         watch:{
             '$route'(to,from){
+
                 this.messageSubscribeSocket(to,from)
             }
         },
@@ -100,6 +100,7 @@
             this.$store.commit('roomActiveReset')
             return next()
         },
+
         methods:{
             messageSubscribeSocket(to,from){
 
@@ -135,6 +136,7 @@
 </script>
 
 <style lang="scss">
+    .header-hide .the-header {display:none}
     .page-chat {
         $color_bg-app:glob-color('light');
         $box-shadow:$glob-box-shadow;

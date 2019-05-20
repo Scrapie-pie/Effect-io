@@ -122,7 +122,10 @@
                 let {uuid,site_id,chat_id} = item;
 
                 dialogPush(this,'search',item,'chat_id')
-                return this.$router.push({name:'search',params: { uuid, site_id,chat_id}});
+
+                let routeData = this.$router.resolve({name:'search',params: { uuid, site_id,chat_id}});
+                window.open(routeData.href, uuid+site_id+chat_id,"width=1100,height=500");
+
 
 
             },
