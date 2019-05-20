@@ -338,6 +338,10 @@
         $color_bg-send:glob-color('info-lighten');
         $color_success:glob-color('success');
 
+        .icon_phrases {
+            fill:#8c8c8c
+        }
+
         position:relative;
         border:1px dashed transparent;
         border-top:1px solid $color_border;

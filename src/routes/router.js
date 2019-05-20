@@ -12,6 +12,7 @@ const PageVisitor = () => import('@/pages/PageVisitor')
 const PageChat = () => import('@/pages/PageChat')
 const PageAllDialogues = () => import('@/pages/PageAllDialogues')
 const PageSearchDialogues = () => import('@/pages/PageSearchDialogues')
+const PagePhrases = () => import('@/pages/PagePhrases')
 
 
 
@@ -127,6 +128,11 @@ const router =  new Router({
             name: 'visor',
             path: '/all/:uuid/:site_id/:chat_id',
             component: PageChat,
+        },
+        {
+            name: 'phrases',
+            path: 'phrases',
+            component: PagePhrases,
         },
         ...settings,
         ...stats,
