@@ -3,7 +3,7 @@
         fieldset
             legend Перенаправление клиента
             base-field.the-redirect-client__base-field(placeholder="Введите URL" name="redirect" v-model="url")
-            base-btn(type="submit" color="info-dark" size="sm" padding="xs") Перенаправить
+            base-btn(type="submit" color="info-dark" ) Перенаправить
 </template>
 
 <script>
@@ -34,7 +34,7 @@ export default {
 
 <style lang="scss">
     .the-redirect-client{
-        $color_bg:glob-color('info-light');
+        $color_bg:glob-color('info-lighten');
         background-color:$color_bg;
         padding:calc-em(15);
 
