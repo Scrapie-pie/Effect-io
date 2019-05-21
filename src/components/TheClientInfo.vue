@@ -64,6 +64,7 @@
                                 li.client-info__sub-item(v-for="(item, index) in audienceSegments",:key="index")
                                     | {{item.name}} : {{item.text}}
             TheRedirectClient
+
 </template>
 
 <script>
