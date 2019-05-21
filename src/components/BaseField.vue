@@ -52,6 +52,7 @@
 </template>
 
 <script>
+
     import 'vue-select/dist/vue-select.css'
     import '@/scss/base/field.scss'
 
