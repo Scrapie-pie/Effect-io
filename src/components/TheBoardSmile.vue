@@ -75,7 +75,7 @@
                 this.input += emoji;
                 let result = {input:this.input,list:this.emojiMas}
                 console.log('result',result)
-                this.$emit('result',result)
+                this.$emit('result',{emoji,emojiName})
                 this.$root.$emit('globBoxControlClose')
             },
         },

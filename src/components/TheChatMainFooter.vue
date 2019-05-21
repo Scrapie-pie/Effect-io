@@ -12,7 +12,7 @@
                         the-phrases-ready
                     box-controls(v-if="showSmiles", @boxControlClose="showSmiles=false")
                         //the-files-board(name="smiles", @getSmile="setMessageSmile")
-                        the-board-smile(@getSmile="setMessageSmile", @result="(val)=>textWidthSmiles = val")
+                        the-board-smile(@getSmile="setMessageSmile", @result="setTextWidthSmiles")
                     //box-controls(v-if="showGifs", @boxControlClose="showGifs=false")
                         the-files-board(name="gifs")
                     box-controls(v-if="showOffer", @boxControlClose="showOffer=false")
@@ -26,7 +26,7 @@
                             @resultText="getPhrasesSelectText"
                         ).chat-main-footer__phrases-select
                         scroll-bar.chat-main-footer__scrollbar(ref="scrollbarMessage")
-                            input-emoji( :text="textWidthSmiles.input", :list="textWidthSmiles.list")
+                            input-emoji( :text="textWidthSmiles", :list="listWidthSmiles")
                             textarea.chat-main-footer__input(
                                 placeholder="Enter - отправить сообщение, Shift+Enter - новая строка."
                                 ref="chatInput",
@@ -133,7 +133,9 @@
                 showOffer:false,
                 showSmiles:false,
                 showPhrases:false,
-                textWidthSmiles:{},
+
+                textWidthSmiles:'',
+                listWidthSmiles:[],
 
                 showPhrasesSelect:false,
                 showPhrasesSelectAllow:true,
@@ -155,6 +157,10 @@
             this.checkIsProcessPage()
         },
         methods: {
+            setTextWidthSmiles({emoji,emojiName}){
+                this.textWidthSmiles += emoji
+                this.listWidthSmiles.push({emoji,emojiName})
+            },
             setMessageSmile(emoji){
                 const textarea = this.$refs.chatInput;
                 const cursorPosition = textarea.selectionEnd;
