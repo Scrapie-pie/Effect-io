@@ -57,6 +57,17 @@
     import '@/scss/base/field.scss'
 
     import vSelect from 'vue-select' // https://github.com/sagalbot/vue-select
+
+    vSelect.props.components.default = () => ({
+        Deselect: {
+            render: createElement => createElement('span', '×'),
+        },
+        OpenIndicator: {
+            render: createElement => createElement('span', ''),
+        },
+    });
+
+
     export default {
         components: {'base-select': vSelect},
         inject: ['$validator'],

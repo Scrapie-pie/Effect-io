@@ -147,38 +147,44 @@
     background:none;
   }
 
-  &__select.v-select.dropdown{
+  &__select.v-select{
     $color_main:glob-color('main');
     $color_secondary:glob-color('secondary');
     $color_info:glob-color('info-lighten');
 
-    .dropdown-toggle{
+    .vs__dropdown-toggle{
       @extend #{$self}__input;
     }
 
-    &:not(.single){
+    .vs__search {
+      line-height:1;
+      padding:0;
+      margin:-1px 0;
+    }
 
-      .dropdown-toggle{
+    &:not(.vs--single){
+
+      .vs__dropdown-toggle{
         padding:calc-em(3.1) 0;
         padding-left:calc-em(2);
         min-height:calc-em(39);
       }
 
-      .selected-tag + .selected-tag{
+      .vs__selected + .vs__selected{
         //margin-left:calc-em(10);
       }
 
       .form-control{
         padding-left:calc-em(20);
       }
-      .selected-tag + .form-control{
+      .vs__selected + .form-control{
         padding-left:calc-em(5);
       }
 
-      .selected-tag{
+      .vs__selected{
         position:relative;
         padding:.3em 1em;
-        padding-right:40px;
+
         margin:calc-em(2) calc-em(2);
         border-radius:6px;
         &:first-child{
@@ -186,7 +192,7 @@
         }
 
       }
-      .close{
+      .vs__close{
         color:$color_main;
         font-size:2em;
         font-weight:300;
@@ -199,7 +205,7 @@
       }
     }
 
-    &.single .selected-tag{
+    &.vs--single .vs__selected{
       /* padding-right: em(6)!important;
        text-overflow: ellipsis;
        overflow: hidden;
@@ -209,18 +215,18 @@
     }
 
     .form-control,
-    .selected-tag,
+    .vs__selected,
     .vs__selected-options{
       margin:0;
       padding:0;
       border:0;
       line-height:1
     }
-    .clear{display:none}
+    .vs__clear{display:none}
 
-    &.open .selected-tag{position:relative}
+    &.vs--open .vs__selected{position:relative}
 
-    .dropdown-menu{
+    .vs__dropdown-menu{
       padding:.8em 0;
       border:1px solid white;
       box-shadow:$box-shadow;
@@ -229,25 +235,27 @@
       border-radius:$border-radius_field;
       max-height:400px !important;
 
-      li > a{
+      .vs__dropdown-option{
         line-height:1.2;
         padding:.8em 15px;
         color:$color_secondary;
         white-space:normal;
         border-bottom:0;
+
+
+        &--highlight{
+          background:none;
+          //color:glob-color('info-lighten');
+        }
+
+        &--selected{
+          background:$color_info;
+        }
       }
 
-      .highlight > a{
-        background:none;
-        //color:glob-color('info-lighten');
-      }
-
-      .active a{
-        background:$color_info;
-      }
 
     }
-    .open-indicator{
+    .vs__open-indicator{
       @extend %g-icon-down; //todo может убрать из глобалки и перенести сюда
 
       bottom:50%;
@@ -255,10 +263,10 @@
       right:5px;
       &:before, &:after{ border:0; vertical-align:inherit; }
     }
-    [role="presentation"].open-indicator{
+    [role="presentation"].vs__open-indicator{
       position:absolute;
     }
-    &.open .open-indicator{
+    &.vs--open .vs__open-indicator{
       $deg:45deg;
       &::before{ transform:rotate(-($deg)) }
       &::after{ transform:rotate($deg) }
@@ -267,7 +275,7 @@
       right:5px;
     }
 
-    .spinner{
+    .vs__spinner{
       top:0;
       right:-2em;
       border-left-color:$color_main;
@@ -285,11 +293,11 @@
 
     }
 
-    &.disabled .dropdown-toggle input{
+    &.disabled .vs__dropdown-toggle input{
       background-color:inherit;
       cursor:default;
     }
-    &.disabled .dropdown-toggle{
+    &.disabled .vs__dropdown-toggle{
       background-color:$color_disabled-field;
     }
 
