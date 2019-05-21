@@ -3,7 +3,7 @@
         fieldset
             legend Перенаправление клиента
             base-field.the-redirect-client__base-field(placeholder="Введите URL" name="redirect" v-model="url")
-            base-btn(type="submit" color="info" size="sm" padding="xs") Перенаправить
+            base-btn(type="submit" color="info-dark" size="sm" padding="xs") Перенаправить
 </template>
 
 <script>
@@ -18,7 +18,7 @@ export default {
     },
     methods:{
         submit(){
-
+            if (!this.url) return
             let data = this.httpParams.params;
             data.url = this.url;
             this.url='';
@@ -37,7 +37,7 @@ export default {
         $color_bg:glob-color('info-light');
         background-color:$color_bg;
         padding:calc-em(15);
-        border-radius:$glob-border-radius_field;
+
 
         &__base-field {
             .field__input {
