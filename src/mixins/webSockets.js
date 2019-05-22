@@ -283,6 +283,7 @@ export default {
 
             this.playSoundFile('sound_new_guest_message')
 
+            val.awaiting_answer_time = new Date().getTime()/1000-val.awaiting_answer_time;
             dialogPush(this,'self',val)
 
             //this.$store.commit('user/unreadUpdate',['guest',1]);

@@ -188,14 +188,14 @@
         methods:{
             timerVisible(item){
                 if (!this.timerNow) return
-                if(item.hot && (item.last_message_time_passed)) return true
+                if(item.hot && (item.awaiting_answer_time)) return true
 
             },
             timer(item,timerNow,index){
 
 
 
-                    return datetimeStoHMS(Math.round(timerNow-item.last_message_time_passed),true)
+                    return datetimeStoHMS(Math.round(timerNow-item.awaiting_answer_time),true)
 
 
 
