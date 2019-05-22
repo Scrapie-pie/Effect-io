@@ -24,7 +24,9 @@ export default {
             }
             return caretOffset;
         },
+
         getCaretPosition() {
+
             if (window.getSelection && window.getSelection().getRangeAt) {
                 var range = window.getSelection().getRangeAt(0);
                 var selectedObj = window.getSelection();
@@ -47,13 +49,18 @@ export default {
         },
 
     },
-    created(){
-        document.body.onkeyup = this.getCaretPosition;
-        document.body.onmouseup = this.getCaretPosition;
+    mounted(){
+
+        this.$el.addEventListener('keyup', this.getCaretPosition);
+        //this.$el.addEventListener('click', this.getCaretPosition);
+        this.$el.addEventListener('mouseup', this.getCaretPosition);
+
     },
     beforeDestroy(){
-        document.body.onkeyup = null;
-        document.body.onmouseup = null;
+        this.$el.removeEventListener('onkeyup', this.getCaretPosition);
+        this.$el.removeEventListener('onmouseup', this.getCaretPosition);
+
+
     }
 }
 

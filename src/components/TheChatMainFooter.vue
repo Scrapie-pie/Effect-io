@@ -222,6 +222,27 @@
                 this.messageRead()
             },
             send(){
+
+                let ct = document.getElementById('contenteditable').childNodes;
+
+                let listText=[]
+
+                ct.forEach((item,index)=>{
+                    if(item.nodeName == 'BR'){
+                        listText[index] = '\n'
+                    }
+                    else if(item.nodeName == 'IMG'){
+                        listText[index] = item.attributes.alt.value
+                    } else {
+                        listText[index]=item.textContent
+                    }
+
+                })
+                listText = listText.join();
+                console.log(listText);
+
+
+
                 let data = {},
                     to_id,
                     files=[],

@@ -18,7 +18,7 @@
                         <fieldset class="board-smiles__item" v-for="(emojiGroup, category) in emojis" :key="category">
                             <legend class="board-smiles__category">{{ category }}</legend>
                                 <button
-                                        :class="'btn-smile gl gl-32 gl-'+emojiName "
+                                        :class="'btn-smile gl-32 gl-32-'+emojiName "
                                         v-for="(emoji, emojiName) in emojiGroup"
                                         :key="emojiName"
                                         @click="append(emoji,emojiName)"
@@ -37,7 +37,7 @@
 <script>
     import EmojiPicker from 'vue-emoji-picker'
 
-
+    import '@/scss/vendors/gl-32-emoji.css'
     import {getCaretPosition} from '@/mixins/mixins'
 
     console.log(EmojiPicker,'EmojiPicker');
@@ -92,7 +92,7 @@
 
 <style lang="scss">
     .board-smiles{
-        @import '~emoji-data-css/files/gl-32-emoji.css';
+
         &__scrollbar {
             max-height:50vh;
         }
