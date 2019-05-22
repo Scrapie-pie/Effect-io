@@ -4,7 +4,7 @@
         .chat-main__header(v-if="['search','visor'].includes(viewModeChat)")
             h1.chat-main__header-title Просмотр диалога: {{chat_id}}
 
-        scroll-bar.chat-main__body(ref="scrollbar", @ps-scroll-up="scrollLoad")
+        scroll-bar.chat-main__body(ref="scrollbar", @ps-scroll-up="scrollLoad", :class="{'chat-main__body_simple':['search','visor'].includes(viewModeChat)}")
             ul.chat-main__list
                 //li.chat-main__item.chat-main__item_history_more
                     base-btn(theme="link", @click="historyMessageLoad") Загрузить более раннюю история общения с посетителем
@@ -413,7 +413,7 @@
         }
 
 
-        &__body{
+        &__body:not(&__body_simple){
             margin-top:auto;
             height:auto;
 

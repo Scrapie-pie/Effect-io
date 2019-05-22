@@ -90,11 +90,10 @@ export default {
         $color_system:glob-color('main');
         display:flex;
         text-align:left;
-        align-items: end;
+        align-items: flex-end;
         &__time-wrap {
             margin-right:calc-em(15);
             display:flex;
-            align-items:center;
             align-items: flex-end;
         }
         &__name {

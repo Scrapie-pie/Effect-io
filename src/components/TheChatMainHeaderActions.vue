@@ -114,8 +114,6 @@
 
         &__buttons {
             @extend %row-flex;
-
-
         }
 
         &__title {
@@ -126,7 +124,6 @@
         &__text-only-scr {
             @extend %visuallyhidden;
         }
-
 
 
         &__more-btn {
