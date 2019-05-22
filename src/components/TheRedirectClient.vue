@@ -2,7 +2,7 @@
     form.the-redirect-client(@submit.prevent="submit" v-if="viewModeChat==='visitors'")
         fieldset
             legend Перенаправление клиента
-            base-field.the-redirect-client__base-field(placeholder="Введите URL" name="redirect" v-model="url")
+            base-field.the-redirect-client__base-field(placeholder="Введите URL" name="redirect" v-model="url" maxLength="2048")
             base-btn(type="submit" color="info-dark" ) Перенаправить
 </template>
 
