@@ -171,6 +171,7 @@
         },
         computed:{
             paramsComp(){
+
                 return {
                     users_ids:this.users_ids,
                     sites_ids:this.sites_ids,
@@ -191,8 +192,23 @@
         watch:{
 
             paramsComp(){
-                //console.log('paramsComp');
-
+                console.log('paramsComp');
+                console.log(
+                    (
+                        this.users_ids.length &&
+                        this.sites_ids.length &&
+                        this.statuses.length &&
+                        this.rates.length &&
+                        this.url!== null
+                    ) &&
+                    (!!this.last_days ||
+                        (
+                            this.date_from &&
+                            this.date_to &&
+                            this.time_from &&
+                            this.time_to
+                        ))
+                );
                 if(
                     (
                         this.users_ids.length &&
@@ -210,22 +226,7 @@
                     ))
 
                 ) {
-                    console.log(
-                        (
-                            this.users_ids.length &&
-                            this.sites_ids.length &&
-                            this.statuses.length &&
-                            this.rates.length &&
-                            this.url!== null
-                        ) &&
-                        (!!this.last_days ||
-                        (
-                            this.date_from &&
-                            this.date_to &&
-                            this.time_from &&
-                            this.time_to
-                        ))
-                    );
+
                     this.resetSearch()
                     this.getItemList();
                 }
