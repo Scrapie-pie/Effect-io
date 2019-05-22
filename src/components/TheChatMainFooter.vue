@@ -158,8 +158,16 @@
         },
         methods: {
             setTextWidthSmiles({emoji,emojiName}){
-                this.textWidthSmiles += emoji
-                this.listWidthSmiles.push({emoji,emojiName})
+                this.textWidthSmiles='';
+                let text = this.textWidthTagToText()
+                setTimeout(()=>{
+                    this.textWidthSmiles = text + emoji
+                    this.listWidthSmiles.push({emoji,emojiName})
+                },1)
+
+
+
+
             },
             setMessageSmile(emoji){
                 const textarea = this.$refs.chatInput;
@@ -221,13 +229,12 @@
                 this.send();
                 this.messageRead()
             },
-            send(){
+            textWidthTagToText(){
+                let ct = document.getElementById('contenteditable');
 
-                let ct = document.getElementById('contenteditable').childNodes;
 
                 let listText=[]
-
-                ct.forEach((item,index)=>{
+                ct.childNodes.forEach((item,index)=>{
                     if(item.nodeName == 'BR'){
                         listText[index] = '\n'
                     }
@@ -236,10 +243,15 @@
                     } else {
                         listText[index]=item.textContent
                     }
-
                 })
+
                 listText = listText.join();
-                console.log(listText);
+                ct.innerText=''
+                return listText
+            },
+            send(){
+
+
 
 
 
