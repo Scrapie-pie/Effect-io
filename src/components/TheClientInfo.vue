@@ -63,16 +63,20 @@
                             ul.client-info__sub(v-show="showAudienceSegments")
                                 li.client-info__sub-item(v-for="(item, index) in audienceSegments",:key="index")
                                     | {{item.name}} : {{item.text}}
+            TheRedirectClient
+
 </template>
 
 <script>
     import SocialLinks from '@/components/SocialLinks';
+    import TheRedirectClient from '@/components/TheRedirectClient';
     import autosize from 'autosize'
     import {httpParams} from "@/mixins/mixins";
 
     export default {
         components: {
-            SocialLinks
+            SocialLinks,
+            TheRedirectClient
         },
         mixins:[httpParams],
         data() {
