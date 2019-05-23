@@ -94,6 +94,7 @@ export default {
         &__time-wrap {
             margin-right:calc-em(15);
             display:flex;
+
             align-items: flex-end;
         }
         &__name {
