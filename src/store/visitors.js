@@ -25,7 +25,7 @@ const getDefaultState = () => {
 const state = getDefaultState();
 
 function commonSelfProcces(item){
-    item.last_message_time_passed = new Date().getTime()/1000-item.last_message_time_passed;
+    item.awaiting_answer_time = new Date().getTime()/1000-item.awaiting_answer_time;
     return item
 }
 
@@ -51,14 +51,14 @@ export default {
             state.allCount=val.count;
         },
 
-        messageHot(state, {val:{guest_uuid:uuid,site_id,last_message_time_passed},set}){
+        messageHot(state, {val:{guest_uuid:uuid,site_id,awaiting_answer_time},set}){
 
             let main = (name)=> {
                 let findIndex = state[name].findIndex((item)=>item.uuid+item.site_id === uuid+site_id)
 
                 if(findIndex !== -1) {
                     this._vm.$set(state[name][findIndex],'hot',set)
-                    this._vm.$set(state[name][findIndex],'last_message_time_passed',new Date().getTime()/1000 - last_message_time_passed)
+                    this._vm.$set(state[name][findIndex],'awaiting_answer_time',new Date().getTime()/1000 - awaiting_answer_time)
 
                 }
             }
