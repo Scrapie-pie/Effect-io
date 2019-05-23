@@ -26,7 +26,7 @@ export default {
         },
 
         getCaretPosition() {
-
+                window.sel=window.getSelection();
             if (window.getSelection && window.getSelection().getRangeAt) {
                 var range = window.getSelection().getRangeAt(0);
                 var selectedObj = window.getSelection();
@@ -34,11 +34,16 @@ export default {
                 var childNodes = selectedObj.anchorNode.parentNode.childNodes;
                 for (var i = 0; i < childNodes.length; i++) {
                     if (childNodes[i] == selectedObj.anchorNode) {
+                        console.log(childNodes[i]);
                         break;
                     }
-                    if (childNodes[i].outerHTML)
+                    if (childNodes[i].outerHTML) {
+                        console.log(childNodes[i]);
                         rangeCount += childNodes[i].outerHTML.length;
+                    }
+
                     else if (childNodes[i].nodeType == 3) {
+                        console.log(childNodes[i]);
                         rangeCount += childNodes[i].textContent.length;
                     }
                 }

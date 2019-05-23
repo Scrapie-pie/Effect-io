@@ -26,7 +26,7 @@
                             @resultText="getPhrasesSelectText"
                         ).chat-main-footer__phrases-select
                         scroll-bar.chat-main-footer__scrollbar(ref="scrollbarMessage")
-                            input-emoji( :text="textWidthSmiles", :list="listWidthSmiles")
+                            input-emoji( :text="textWidthSmiles")
                             textarea.chat-main-footer__input(
                                 placeholder="Enter - отправить сообщение, Shift+Enter - новая строка."
                                 ref="chatInput",
@@ -135,7 +135,7 @@
                 showPhrases:false,
 
                 textWidthSmiles:'',
-                listWidthSmiles:[],
+
 
                 showPhrasesSelect:false,
                 showPhrasesSelectAllow:true,
@@ -157,12 +157,12 @@
             this.checkIsProcessPage()
         },
         methods: {
-            setTextWidthSmiles({emoji,emojiName}){
+            setTextWidthSmiles({emoji}){
                 this.textWidthSmiles='';
                 let text = this.textWidthTagToText()
                 setTimeout(()=>{
                     this.textWidthSmiles = text + emoji
-                    this.listWidthSmiles.push({emoji,emojiName})
+
                 },1)
 
 
@@ -244,15 +244,17 @@
                         listText[index]=item.textContent
                     }
                 })
+                console.log(listText);
+                listText = listText.join('');
+                console.log(listText);
+                ct.innerText='';
 
-                listText = listText.join();
-                ct.innerText=''
                 return listText
             },
             send(){
 
 
-
+                this.message = this.textWidthTagToText()
 
 
                 let data = {},

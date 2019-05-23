@@ -23,8 +23,9 @@
                 base-count.base-people__count(:count="count")
             p.base-people__text(
                 v-if="text"
-                v-html="text"
+
             )
+                input-emoji(type="text" :text="text")
             p.base-people__img(v-if="img")
                 img(
                     :src="img"
@@ -50,11 +51,13 @@
 </template>
 
 <script>
+    import inputEmoji from '@/components/inputEmoji'
     import moment from 'moment'
     import BaseCount from '@/components/BaseCount';
     export default {
         components: {
-            BaseCount
+            BaseCount,
+            inputEmoji
         },
         filters: {
             formatTime: function (value) {
@@ -77,7 +80,7 @@
                     return [0,1,2,3].indexOf(value) !== -1
                 }
             },
-            img: false,
+            img:false,
             right: Boolean,
             channelName: String,
             count: {
@@ -276,6 +279,7 @@
             text-overflow:ellipsis;
             overflow:hidden;
 
+            img {vertical-align:middle}
 
         }
         &__text + &__img {margin-top:calc-em(15)}

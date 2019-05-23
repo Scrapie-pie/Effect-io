@@ -54,7 +54,7 @@
                 input: '',
                 inputEmoji: '',
                 search: '',
-                emojiMas:[]
+
             }
         },
 
@@ -70,12 +70,12 @@
 
             append(emoji,emojiName) {
                 console.log(emoji,emojiName);
-                this.emojiMas.push({emoji,emojiName})
+
                 //this.input += `{{smile}}{{${emojiName}}}{{smile}}`
                 this.input += emoji;
                 let result = {input:this.input,list:this.emojiMas}
                 console.log('result',result)
-                this.$emit('result',{emoji,emojiName})
+                this.$emit('result',{emoji})
                 this.$root.$emit('globBoxControlClose')
             },
         },
