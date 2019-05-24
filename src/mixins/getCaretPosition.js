@@ -38,7 +38,7 @@ export default {
                         break;
                     }
                     if (childNodes[i].outerHTML) {
-                        console.log(childNodes[i]);
+                        console.log(childNodes[i].nodeName);
                         rangeCount += childNodes[i].outerHTML.length;
                     }
 
