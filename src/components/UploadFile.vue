@@ -80,7 +80,7 @@
                 formData.append('file', this.file, this.file.name)
 
                 if(this.viewModeChat=="visitors") formData.append('uuid', this.httpParams.params.uuid)
-                if(this.viewModeChat=="common") formData.append('uuid', this.$store.state.user.profile.id)
+                else if(this.viewModeChat=="common") formData.append('uuid', this.$store.state.user.profile.id)
                 else formData.append('uuid', this.httpParams.params.id)
 
 
