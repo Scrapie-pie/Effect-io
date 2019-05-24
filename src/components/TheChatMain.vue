@@ -308,7 +308,11 @@
             },
 
             getRoomUserAll(){
-                if (this.viewModeChat==='operators' || this.viewModeChat==='common') return
+                if (this.viewModeChat==='operators') return
+                if (this.viewModeChat==='common') {
+                    this.$store.commit('roomActive',[{room_id:this.$store.state.user.profile.common_room_id}])
+                    return
+                }
                 this.$http.get('chat-room-user-all',this.httpParams).then(({data})=>{
                     data.data.visitor =  this.httpParams.params;
                     //console.log(this.httpParams);

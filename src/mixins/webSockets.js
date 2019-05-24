@@ -118,9 +118,7 @@ export default {
             console.log('sockets new-message',val);
             val.socket=true; //Todo Временное решение, на проверку дубликатов, пока Симон не исправит
 
-            if (val.from_user_info && val.from_user_info.id) {
-                if(this.$store.state.user.profile.employee_id === val.from_user_info.id) return; //Принимаем только чужие сообщения
-            }
+
 
             if (val.site_id && (val.room_id === this.$store.state.roomActiveId)) { // если есть val.site_id значит общение в диалогах
                 console.log('// Нужно, что бы чужое сообщение оказалось каждое в своем чате');
@@ -148,7 +146,7 @@ export default {
 
             if(val.site_id) {
 
-
+                console.log(val.site_id);
                 if(this.httpParams) {
                     let {guest_uuid,site_id} = this.httpParams.params;
                     if(val.from_user_info.uuid+val.site_id === guest_uuid+site_id) { //Если это сообщение посетителя в чате то нужно очистить TypingLive
@@ -174,11 +172,11 @@ export default {
                 }
 
             } else {
-
+                console.log(val.room_id,this.$store.state.user.profile.common_room_id,this.$store.state.roomActiveId);
                 if(val.room_id===this.$store.state.user.profile.common_room_id){
                     this.$store.commit('user/unreadUpdate',['common',1])
                     this.playSoundFile('sound_new_common_message')
-                    this.$root.$emit('messageAdd',val)
+                    if(this.$store.state.roomActiveId ===val.room_id) this.$root.$emit('messageAdd',val)
                     return
 
                 }
