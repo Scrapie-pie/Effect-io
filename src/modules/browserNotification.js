@@ -60,7 +60,7 @@ function browserNotificationMessage (val) {
 
     console.log('browserNotificationMessage',val);
 
-    if(!document.hidden || !store.state.user.settings.settings.push_notifications) {
+    if(!document.hidden || (!store.state.user.settings.settings.push_notifications && !val.withBrowserNotification)) {
         return new Promise((resolve) => { // для совместимости  с clickFunc
             resolve();
         });
