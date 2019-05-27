@@ -224,7 +224,21 @@
             getPhrasesSelectText(val){
                 autosize.destroy(this.$refs.chatInput);
                 this.message=val;
-                this.textWidthSmiles=val;
+
+                this.textWidthSmiles='';
+                this.textWidthTagToText()
+                setTimeout(()=>{
+
+                    this.textWidthSmiles = val
+
+                },1)
+
+
+
+
+
+                //this.textWidthSmiles='';
+
             /*
                 this.autosizeInit=true;*/
                 setTimeout(()=>{ //Todo костыль
@@ -395,6 +409,9 @@
             border:0;
             padding:0;
             overflow:hidden !important;
+            height:0;
+            width:0;
+            @extend %visuallyhidden
         }
 
         &__buttons{
