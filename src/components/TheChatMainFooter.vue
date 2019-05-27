@@ -21,12 +21,16 @@
                 .chat-main-footer__contols
                     .chat-main-footer__textarea-wrap
                         the-phrases-select(
-                            v-if="viewModeChat=='visitors'"
+                            v-if="viewModeChat==='visitors'",
                             :filter-search="message" ,
                             @resultText="getPhrasesSelectText"
                         ).chat-main-footer__phrases-select
                         scroll-bar.chat-main-footer__scrollbar(ref="scrollbarMessage")
-                            input-emoji( :text="textWidthSmiles")
+                            input-emoji(
+                            :text="textWidthSmiles",
+                            @caret="val=>textCaret=val",
+                            @getText="val=>message=val"
+                            )
                             textarea.chat-main-footer__input(
                                 placeholder="Enter - отправить сообщение, Shift+Enter - новая строка."
                                 ref="chatInput",
@@ -85,7 +89,10 @@
     import TheProcessActions from '@/components/TheProcessActions'
     import UploadFile from '@/components/UploadFile'
     import UploadFileList from '@/components/UploadFileList'
-    import inputEmoji from '@/components/inputEmoji'
+    import inputEmoji from '@/components/inputEmoji';
+
+
+    import lodash_split from 'lodash/split'
 
     import autosize from 'autosize'
     import { viewModeChat,httpParams } from '@/mixins/mixins'
@@ -135,7 +142,7 @@
                 showPhrases:false,
 
                 textWidthSmiles:'',
-
+                textCaret:null,
 
                 showPhrasesSelect:false,
                 showPhrasesSelectAllow:true,
@@ -157,16 +164,49 @@
             this.checkIsProcessPage()
         },
         methods: {
+            textWidthTagToText(){
+                let ct = document.getElementById('contenteditable');
+
+
+                let listText=[]
+                ct.childNodes.forEach((item,index)=>{
+                    if(item.nodeName == 'BR'){
+                        listText[index] = '\n'
+                    }
+                    else if(item.nodeName == 'IMG'){
+                        listText[index] = item.attributes.alt.value
+                    } else {
+                        listText[index]=item.textContent
+                    }
+                })
+                console.log(listText);
+                listText = listText.join('');
+                console.log(listText);
+                ct.innerText='';
+
+                return listText
+            },
             setTextWidthSmiles({emoji}){
                 this.textWidthSmiles='';
                 let text = this.textWidthTagToText()
                 setTimeout(()=>{
-                    this.textWidthSmiles = text + emoji
+                    console.log(this.textCaret);
+
+                    let textMas = lodash_split(text,'')
+                    let textMasFinish = this.textCaret
+                    for(let i=0;i<textMasFinish;i++){
+                        console.log(textMas[i]);
+                        if(textMas[i].length > 1) {this.textCaret+=1;
+                            console.log(this.textCaret,'sm');
+                        }
+                    }
+
+                    let str_left=text.substring(0,this.textCaret);
+                    let str_right=text.substr(this.textCaret);
+                    console.log('str_left, str_right',str_left, str_right);
+                    this.textWidthSmiles = str_left + emoji + str_right
 
                 },1)
-
-
-
 
             },
             setMessageSmile(emoji){
@@ -184,6 +224,7 @@
             getPhrasesSelectText(val){
                 autosize.destroy(this.$refs.chatInput);
                 this.message=val;
+                this.textWidthSmiles=val;
             /*
                 this.autosizeInit=true;*/
                 setTimeout(()=>{ //Todo костыль
@@ -229,28 +270,7 @@
                 this.send();
                 this.messageRead()
             },
-            textWidthTagToText(){
-                let ct = document.getElementById('contenteditable');
 
-
-                let listText=[]
-                ct.childNodes.forEach((item,index)=>{
-                    if(item.nodeName == 'BR'){
-                        listText[index] = '\n'
-                    }
-                    else if(item.nodeName == 'IMG'){
-                        listText[index] = item.attributes.alt.value
-                    } else {
-                        listText[index]=item.textContent
-                    }
-                })
-                console.log(listText);
-                listText = listText.join('');
-                console.log(listText);
-                ct.innerText='';
-
-                return listText
-            },
             send(){
 
 
