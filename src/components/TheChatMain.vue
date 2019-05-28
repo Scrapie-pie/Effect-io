@@ -28,7 +28,7 @@
                                 :img="item.img",
                                 :files="item.files || []"
                             )
-                            input-emoji(tag="p" v-else type="text" :text="item.body | wrapTextUrls" :style="{textAlign:'center'}")
+                            input-emoji(tag="p" v-else type="text", :text="item.body | wrapTextUrls", :style="{textAlign:'center'}")
                             //p( v-html="$options.filters.wrapTextUrls(item.body)" )
                         li.chat-main__messages-item.chat-main__messages-item_right(
                             v-if="messageGroupDaysReverse.length-1===daysIndex && showVisitorTypingLive"
