@@ -7,9 +7,8 @@
             strong.message-item__name(v-html="name" v-if="name")
             p.message-item__text(
                 v-if="text"
-                v-html="text"
             )
-
+                input-emoji(type="text" :text="text")
             figure.message-item__files(v-if="files.length")
                 ul.message-item__files-list
                     li.message-item__files-item(v-for="(item, index) in files" :key="item.link")
@@ -31,11 +30,12 @@
 </template>
 
 <script>
+    import inputEmoji from '@/components/inputEmoji'
     import LoaderMessage from '@/components/LoaderMessage';
     import {datetimeHMS} from '@/modules/datetime'
 export default {
     components: {
-
+        inputEmoji,
         LoaderMessage
     },
     filters: {

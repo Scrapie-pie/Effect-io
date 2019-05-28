@@ -27,8 +27,10 @@
                         ).chat-main-footer__phrases-select
 
                         scroll-bar.chat-main-footer__scrollbar(ref="scrollbarMessage")
-                            div(@keydown.enter.exact="onEnter",
-                                @click.prevent="messageRead")
+                            div(
+                                @keydown.enter.exact="onEnter",
+                                @click.prevent="messageRead"
+                                )
 
                                 input-emoji(
                                     :text="textWidthSmiles",

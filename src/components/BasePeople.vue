@@ -28,12 +28,7 @@
 
             )
                 input-emoji(type="text" :text="text")
-            p.base-people__img(v-if="img")
-                img(
-                    :src="img"
-                    alt=""
-                     @click="$root.$emit('popup-img',img)"
-                )
+
             figure.base-people__files(v-if="files.length")
                 ul.base-people__files-list
                     li.base-people__files-item(v-for="(item, index) in files" :key="item.link")
