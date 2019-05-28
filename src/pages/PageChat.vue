@@ -108,7 +108,7 @@
                 if(this.viewModeChat==='visor' && !this.$store.getters['user/isRole'](['admin','owner','operatorSenior'])) return this.$router.push({name: 'processAll'})
 
                 if(['search','visor'].includes(this.viewModeChat)) {
-                    console.log('messageSubscribeSocket');
+                    window.onbeforeunload = false
                     if(to) {
                         this.$http.post('chat-room-supervisor-enter', {
                             site_id:to.params.site_id,
