@@ -8,4 +8,4 @@ export { default as removeMessageAndPush } from '@/mixins/removeMessageAndPush'
 export { default as stats } from '@/mixins/stats'
 export { default as paginator } from '@/mixins/paginator'
 export { default as filterLastDaysAndCalendar } from '@/mixins/filterLastDaysAndCalendar'
-
+export { default as getCaretPosition } from '@/mixins/getCaretPosition'

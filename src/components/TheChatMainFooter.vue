@@ -11,7 +11,8 @@
                     box-controls(v-if="showPhrases", @boxControlClose="showPhrases=false")
                         the-phrases-ready
                     box-controls(v-if="showSmiles", @boxControlClose="showSmiles=false")
-                        the-files-board(name="smiles", @getSmile="setMessageSmile")
+                        //the-files-board(name="smiles", @getSmile="setMessageSmile")
+                        the-board-smile(@getSmile="setMessageSmile", @result="setTextWidthSmiles")
                     //box-controls(v-if="showGifs", @boxControlClose="showGifs=false")
                         the-files-board(name="gifs")
                     box-controls(v-if="showOffer", @boxControlClose="showOffer=false")
@@ -20,11 +21,21 @@
                 .chat-main-footer__contols
                     .chat-main-footer__textarea-wrap
                         the-phrases-select(
-                            v-if="viewModeChat=='visitors'"
+                            v-if="viewModeChat==='visitors'",
                             :filter-search="message" ,
                             @resultText="getPhrasesSelectText"
                         ).chat-main-footer__phrases-select
-                        scroll-bar.chat-main-footer__scrollbar(ref="scrollbarMessage" )
+
+                        scroll-bar.chat-main-footer__scrollbar(ref="scrollbarMessage")
+                            div(@keydown.enter.exact="onEnter",
+                                @click.prevent="messageRead")
+
+                                input-emoji(
+                                    :text="textWidthSmiles",
+                                    @caret="val=>textCaret=val",
+                                    @getText="val=>message=val"
+
+                                )
                             textarea.chat-main-footer__input(
                                 placeholder="Enter - отправить сообщение, Shift+Enter - новая строка."
                                 ref="chatInput",
@@ -32,7 +43,7 @@
                                 @keydown.enter.exact="onEnter",
                                 @click.prevent="messageRead"
 
-                            )
+                                )
                             upload-file-list(
                                 :item-list="uploadFileList",
                                 @itemRemove="(index)=>uploadFileList.splice(index, 1)"
@@ -53,7 +64,7 @@
                             :icon="{name:'more-fill',textHidden:'Предложить посетителю'}",
                             @click.prevent="showOffer=true"
                         )
-                    //li.chat-main-footer__button
+                    li.chat-main-footer__button
                         base-btn(
                             :icon="{name:'smiles',textHidden:'Смайлы'}"
                             @click.prevent="showSmiles=true"
@@ -77,11 +88,16 @@
     import SelectOperators from '@/components/SelectOperators'
     import TheOffer from '@/components/TheOffer'
     import TheFilesBoard from '@/components/TheFilesBoard'
+    import TheBoardSmile from '@/components/TheBoardSmile'
     import ThePhrasesReady from '@/components/ThePhrasesReady'
     import ThePhrasesSelect from '@/components/ThePhrasesSelect'
     import TheProcessActions from '@/components/TheProcessActions'
     import UploadFile from '@/components/UploadFile'
     import UploadFileList from '@/components/UploadFileList'
+    import inputEmoji from '@/components/inputEmoji';
+
+
+    import lodash_split from 'lodash/split'
 
     import autosize from 'autosize'
     import { viewModeChat,httpParams } from '@/mixins/mixins'
@@ -96,6 +112,8 @@
             TheProcessActions,
             UploadFile,
             UploadFileList,
+            TheBoardSmile,
+            inputEmoji
         },
         mixins:[viewModeChat,httpParams],
         watch:{
@@ -131,6 +149,9 @@
                 showSmiles:false,
                 showPhrases:false,
 
+                textWidthSmiles:'',
+                textCaret:null,
+
                 showPhrasesSelect:false,
                 showPhrasesSelectAllow:true,
                 message:'',
@@ -152,6 +173,51 @@
             this.checkIsProcessPage()
         },
         methods: {
+            textWidthTagToText(){
+                let ct = document.getElementById('contenteditable');
+
+
+                let listText=[]
+                ct.childNodes.forEach((item,index)=>{
+                    if(item.nodeName == 'BR'){
+                        listText[index] = '\n'
+                    }
+                    else if(item.nodeName == 'IMG'){
+                        listText[index] = item.attributes.alt.value
+                    } else {
+                        listText[index]=item.textContent
+                    }
+                })
+                console.log(listText);
+                listText = listText.join('');
+                console.log(listText);
+                ct.innerText='';
+
+                return listText
+            },
+            setTextWidthSmiles({emoji}){
+                this.textWidthSmiles='';
+                let text = this.textWidthTagToText()
+                setTimeout(()=>{
+                    console.log(this.textCaret);
+
+                    let textMas = lodash_split(text,'')
+                    let textMasFinish = this.textCaret
+                    for(let i=0;i<textMasFinish;i++){
+                        console.log(textMas[i]);
+                        if(textMas[i].length > 1) {this.textCaret+=1;
+                            console.log(this.textCaret,'sm');
+                        }
+                    }
+
+                    let str_left=text.substring(0,this.textCaret);
+                    let str_right=text.substr(this.textCaret);
+                    console.log('str_left, str_right',str_left, str_right);
+                    this.textWidthSmiles = str_left + emoji + str_right
+
+                },1)
+
+            },
             setMessageSmile(emoji){
                 const textarea = this.$refs.chatInput;
                 const cursorPosition = textarea.selectionEnd;
@@ -168,8 +234,15 @@
                 autosize.destroy(this.$refs.chatInput);
                 this.message=val;
                 this.$refs.chatInput.focus()
-            /*
-                this.autosizeInit=true;*/
+
+                this.textWidthSmiles='';
+                this.textWidthTagToText()
+                setTimeout(()=>{
+
+                    this.textWidthSmiles = val
+
+                },1)
+
                 setTimeout(()=>{ //Todo костыль
                     autosize(this.$refs.chatInput);
                     this.$refs.scrollbarMessage.update()
@@ -214,7 +287,13 @@
                 this.send();
                 this.messageRead()
             },
+
             send(){
+
+
+
+                this.message = this.textWidthTagToText()
+
 
                 let data = {},
                     to_id,
@@ -379,11 +458,12 @@
             height:2em;
             line-height:1.5;
 
-
+            border:0;
             padding:0;
             overflow:hidden !important;
-            border:0;
-
+            height:0;
+            width:0;
+            @extend %visuallyhidden
         }
 
         &__buttons{

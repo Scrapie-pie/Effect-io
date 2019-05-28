@@ -23,7 +23,8 @@
                                     base-people(v-bind="item.basePeopleOptions")
 
 
-                                p.chat-main__messages-sys(v-else v-html="$options.filters.wrapTextUrls(item.body)")
+
+                                input-emoji.chat-main__messages-sys(tag="p" v-else type="text", :text="item.body | wrapTextUrls")
                             template(v-else)
                                 message-item(v-bind="item.basePeopleOptions")
 
@@ -71,6 +72,7 @@
     import MessageItem from '@/components/MessageItem'
     import {wrapTextUrls} from '@/modules/modules'
     import {datetimeDMY} from '@/modules/datetime'
+    import inputEmoji from '@/components/inputEmoji';
 
 
 
@@ -82,6 +84,7 @@
 
     export default {
         components:{
+            inputEmoji,
             TheChatSystemMessages,
             TheChatMainHeader,
             TheChatMainFooter,

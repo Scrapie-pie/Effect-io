@@ -25,12 +25,15 @@
 
             p.base-people__text(
                 v-if="text"
-                v-html="text"
 
             )
-
-
-
+                input-emoji(type="text" :text="text")
+            p.base-people__img(v-if="img")
+                img(
+                    :src="img"
+                    alt=""
+                     @click="$root.$emit('popup-img',img)"
+                )
             figure.base-people__files(v-if="files.length")
                 ul.base-people__files-list
                     li.base-people__files-item(v-for="(item, index) in files" :key="item.link")
@@ -53,13 +56,15 @@
 
 <script>
     import {datetimeHMS} from '@/modules/datetime'
-
+    import inputEmoji from '@/components/inputEmoji'
+    import moment from 'moment'
     import BaseCount from '@/components/BaseCount';
     import LoaderMessage from '@/components/LoaderMessage';
     export default {
         components: {
+            LoaderMessage,
             BaseCount,
-            LoaderMessage
+            inputEmoji
         },
         filters: {
             formatTime: function (value) {
@@ -284,6 +289,7 @@
             text-overflow:ellipsis;
             overflow:hidden;
 
+            img {vertical-align:middle}
 
         }
         &__text + &__img {margin-top:calc-em(15)}
