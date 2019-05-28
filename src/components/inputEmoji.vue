@@ -18,6 +18,10 @@
     import {getCaretPosition} from '@/mixins/mixins'
 export default {
     props: {
+        tag:{
+            type:String,
+            default:'span'
+        },
         type:'',
         text:'',
         list:{
@@ -68,10 +72,10 @@ export default {
         console.log(splitStr);
 
 
-
+        const Tag = this.tag
         if (this.type==='text') {
-            splitStr = splitStr.join('')
-            return (<span domPropsInnerHTML={splitStr}></span>)
+            splitStr = splitStr.join('');
+            return (<Tag class="input-emoji" domPropsInnerHTML={splitStr}></Tag>)
         }
         else return (<div  class="input-emoji" id="contenteditable" contenteditable="true" placeholder="Enter - отправить сообщение, Shift+Enter - новая строка.">{splitStr}</div>)
     }

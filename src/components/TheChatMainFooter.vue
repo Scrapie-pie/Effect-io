@@ -26,11 +26,15 @@
                             @resultText="getPhrasesSelectText"
                         ).chat-main-footer__phrases-select
                         scroll-bar.chat-main-footer__scrollbar(ref="scrollbarMessage")
-                            input-emoji(
-                            :text="textWidthSmiles",
-                            @caret="val=>textCaret=val",
-                            @getText="val=>message=val"
-                            )
+                            div(@keydown.enter.exact="onEnter",
+                                @click.prevent="messageRead")
+
+                                input-emoji(
+                                    :text="textWidthSmiles",
+                                    @caret="val=>textCaret=val",
+                                    @getText="val=>message=val"
+
+                                )
                             textarea.chat-main-footer__input(
                                 placeholder="Enter - отправить сообщение, Shift+Enter - новая строка."
                                 ref="chatInput",
@@ -38,7 +42,7 @@
                                 @keydown.enter.exact="onEnter",
                                 @click.prevent="messageRead"
 
-                            )
+                                )
                             upload-file-list(
                                 :item-list="uploadFileList",
                                 @itemRemove="(index)=>uploadFileList.splice(index, 1)"

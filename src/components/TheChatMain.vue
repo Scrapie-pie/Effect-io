@@ -28,7 +28,8 @@
                                 :img="item.img",
                                 :files="item.files || []"
                             )
-                            p(v-else v-html="$options.filters.wrapTextUrls(item.body)" :style="{textAlign:'center'}")
+                            input-emoji(tag="p" v-else type="text" :text="item.body | wrapTextUrls" :style="{textAlign:'center'}")
+                            //p( v-html="$options.filters.wrapTextUrls(item.body)" )
                         li.chat-main__messages-item.chat-main__messages-item_right(
                             v-if="messageGroupDaysReverse.length-1===daysIndex && showVisitorTypingLive"
                         )
@@ -70,6 +71,7 @@
     import TheChatSystemMessages from '@/components/TheChatSystemMessages'
     import TheChatMainHeader from '@/components/TheChatMainHeader'
     import TheChatMainFooter from '@/components/TheChatMainFooter'
+    import inputEmoji from '@/components/inputEmoji';
     import wrapTextUrls from '@/modules/wrapTextUrls'
 
 
@@ -82,6 +84,7 @@
     import moment from 'moment'
     export default {
         components:{
+            inputEmoji,
             TheChatSystemMessages,
             TheChatMainHeader,
             TheChatMainFooter
