@@ -10,6 +10,7 @@ axios.interceptors.request.use(function (config) {
 
         if(config.url!=='screen.html') config.url='app.php?'+config.url
 
+
     return config;
 }, function (error) {
     // Do something with request error

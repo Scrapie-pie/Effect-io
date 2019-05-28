@@ -9,7 +9,18 @@
                     @get="(val)=>filterBranchIds=val"
                 )
 
-        thead: tr: th(v-for="(item, index) in headList" :key="index" v-html="item" )
+        thead
+            tr
+                th(v-for="(item, index) in headList" :key="index")
+                    .stats-branches__head
+                        span(v-html="item")
+                        |&nbsp;
+                        btn-sort(
+                            v-if="item",
+                            :toggle="compSort[index]",
+                            @result="val=>setSortField(val,index)"
+                        )
+
         tbody
             tr(v-for="(item, index) in itemList" :key="item.id")
                 td
@@ -20,7 +31,7 @@
                         padding="xslr"
                         :router="{name:'statsBranchesDetail',params:{id:item.branch_id}}"
                     ) Детальная статистика
-                td(v-text="item.dialogues_requests || item.dialogues_accepted")
+                td(v-text="item.dialogues_requests")
                 template(v-if="!['dialogues_accepted','dialogues_requests'].includes(order)")
                     template(v-if="!['dialogues_accepted','dialogues_requests'].includes(order)")
 
@@ -41,12 +52,20 @@
 </template>
 
 <script>
-    const FilterDropMenu =()=>import('@/components/FilterDropMenu')
-import {stats} from '@/mixins/mixins'
 
+    const sortDefault = ()=> {return {
+        val:[true,false,false,false,false,false,false],
+        field:['name','','dialogues_requests','dialogues_accepted','first_answer_average_speed','average_guest_time_in_queue','excellent_ratings']
+    }}
+    console.log('sortDefault',sortDefault());
+    const FilterDropMenu =()=>import('@/components/FilterDropMenu')
+    import BtnSort  from '@/components/BtnSort'
+import {stats} from '@/mixins/mixins'
+    import lodash_sortBy from 'lodash/sortBy'
 export default {
     components:{
-        FilterDropMenu
+        FilterDropMenu,
+        BtnSort
     },
     mixins:[stats],
     props:{
@@ -59,18 +78,27 @@ export default {
 
     data() {
         return {
+            sortFields:['name','','dialogues_requests','dialogues_accepted','first_answer_average_speed','average_guest_time_in_queue','excellent_ratings'],
+            sort:sortDefault(),
+            currentSort:{
+                val:sortDefault().val[0],
+                field:sortDefault().field[0]
+            },
             filterBranchIds:[]
         }
     },
     computed:{
+        compSort(){
+            return this.sort.val
+        },
         headList(){
             let list = [
                 'Название отдела',
                 '',
                 'Получено<br>диалогов',
-                'Принято/<br>пропущено диалогов',
+                'Принято/<br>пропущено<br> диалогов',
                 'Средняя скорость<br>ответа оператора',
-                'Средняе время<br>ожидания в очереди',
+                'Средняе время<br>ожидания <br> в очереди',
                 'Оценки',
             ]
 
@@ -94,7 +122,28 @@ export default {
             return list
         },
         bodyListFormat(){
-            return  this.setFilterList
+            return  lodash_sortBy(
+                this.setFilterList.map(item=>{
+
+
+
+                    return item
+                }),
+                [
+                    (item)=>{
+
+                        console.log(item);
+                        if(this.currentSort.field==='name') {
+                            console.log(item[this.currentSort.field].length * (this.currentSort.val ? -1 : 1));
+                            return item[this.currentSort.field].length*(this.currentSort.val?-1:1);
+                        }
+                        else  {
+                            console.log(item[this.currentSort.field] * (this.currentSort.val ? -1 : 1));
+                            return item[this.currentSort.field]*(this.currentSort.val?-1:1)
+                        }
+                    }
+                ]
+            );
         },
 
         itemListWidthBranchName(){
@@ -116,11 +165,30 @@ export default {
             else return this.itemListWidthBranchName
         }
     },
+
+    methods:{
+        setSortField(val,index){
+            this.$set(this.sort,'val',sortDefault().val)
+            this.$set(this.sort.val,index,val);
+            this.currentSort = {
+                'val':val,
+                'field':this.sort.field[index],
+
+            }
+        },
+        setCurrentFieldSort(index){
+
+        }
+    }
 }
 </script>
 
 <style lang="scss">
     .stats-branches{
+        &__head {
+            display:flex;
+            align-items:center;
+        }
         &__caption {
             @extend %row-flex;
             &-item {
