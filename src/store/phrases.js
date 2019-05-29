@@ -61,7 +61,7 @@ export default {
                 })
         },
         getItemList({commit}){
-            this._vm.$http.get('snippet-read')
+            this._vm.$http.get('snippet/read-snippet')
                 .then(({ data }) => {
                     commit('setPhraseList',data.data)
                 })

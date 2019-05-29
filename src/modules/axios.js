@@ -1,14 +1,31 @@
 import Vue from 'vue'
 import axios from 'axios'
-import config from "@/config/index";
+import globalConfig from "@/config/index";
 
 // Настройки http-запросов
-axios.defaults.baseURL = config.api_server;
+axios.defaults.baseURL = globalConfig.api_server;
 axios.defaults.headers.common['Content-Type'] = 'application/json';
 
 axios.interceptors.request.use(function (config) {
 
-        if(config.url!=='screen.html') config.url='app.php?'+config.url
+    const oldUrls = [
+        'login',
+        'branches-list'
+    ];
+
+    if(oldUrls.indexOf(config.url) != -1) {
+        config.baseURL = globalConfig.api_server_old
+        config.url='app.php?'+config.url
+    }
+
+    // if(config.url == 'login' ) {
+    //     config.baseURL = globalConfig.api_server_old
+    //     config.url='app.php?'+config.url
+    // }
+
+    // else if (config.url!=='screen.html') {
+    //     //config.url='app.php?'+config.url
+    // }
 
     return config;
 }, function (error) {

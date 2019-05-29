@@ -22,7 +22,7 @@ export default {
         logout(state) {
             console.log('user logout');
             this._vm.$socket.disconnect()
-            this._vm.$http.put('operator-online-update',{
+            this._vm.$http.put('employee/online-update',{
                 online:0
             })
             //this._vm.$http.put('logout')
@@ -143,15 +143,9 @@ export default {
             //});
 
 
-
-
-
-
-
-
         },
         getSettings({commit}) {
-            this._vm.$http.get('company-get-settings').then(({data})=>{
+            this._vm.$http.get('company/get-settings').then(({data})=>{
                 commit('settings',data.data)
             })
         },
@@ -161,7 +155,7 @@ export default {
             })
         },
         getSiteCompanyList({commit}) {
-            this._vm.$http.get('site-company-list').then(({data})=>{
+            this._vm.$http.get('site/company-list').then(({data})=>{
                 commit('siteCompanyList',data.data)
             })
         },
