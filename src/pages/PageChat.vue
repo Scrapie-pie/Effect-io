@@ -110,7 +110,7 @@
                 if(['search','visor'].includes(this.viewModeChat)) {
                     console.log('messageSubscribeSocket');
                     if(to) {
-                        this.$http.post('chat-room-supervisor-enter', {
+                        this.$http.post('chat-room-user/supervisor-enter', {
                             site_id:to.params.site_id,
                             uuid:to.params.uuid,
                         })
@@ -118,7 +118,7 @@
 
 
                     if(from) {
-                        this.$http.post('chat-room-supervisor-exit', {
+                        this.$http.post('chat-room-user/supervisor-exit', {
                             site_id:from.params.site_id,
                             uuid:from.params.uuid,
                         })

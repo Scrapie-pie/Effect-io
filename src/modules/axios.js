@@ -10,7 +10,13 @@ axios.interceptors.request.use(function (config) {
 
     const oldUrls = [
         'login',
-        'read-history'
+        'read-history',
+        'admin-employee-create',
+        'upload-avatar',
+        'message-send',
+        'read-history',
+        'user-password-update',
+        'statistic-get-by-params'
     ];
 
     if(oldUrls.indexOf(config.url) != -1) {

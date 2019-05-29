@@ -33,7 +33,7 @@
                     this.$http.post('message-send', data);
 
                 }
-                if(this.model === "contacts") this.$http.post('guest-contacts-request', data);
+                if(this.model === "contacts") this.$http.post('guest/contacts-request', data);
 
             }
         }

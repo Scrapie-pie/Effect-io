@@ -49,7 +49,7 @@ export default {
                 })
         },
         snippetUpdate({commit},{id,text}){
-            this._vm.$http.put('snippet-update',{id,text})
+            this._vm.$http.put('snippet/update-snippet',{id,text})
                 .then(() => {
                     commit('setSnippetText', {id,text})
                 })

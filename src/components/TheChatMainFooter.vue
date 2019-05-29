@@ -177,7 +177,7 @@
             },
             messageRead(){
                 if(this.viewModeChat ==='operators') {
-                    this.$http.put('message-operator-guest-mark-as-read', {
+                    this.$http.put('message/operator-mark-as-read', {
                         user_id:this.httpParams.params.id
                     });
                     this.$store.dispatch('setMessageRead', {
@@ -187,7 +187,7 @@
                     );
                 } //Todo у оператора
                 if(this.viewModeChat ==='visitors'){
-                    this.$http.put('message-operator-guest-mark-as-read', {
+                    this.$http.put('message/operator-mark-as-read', {
                         room_id:this.$store.state.roomActiveId
                     });
                     this.$store.dispatch('setMessageRead', {
@@ -198,7 +198,7 @@
                     );
                 }
                 if(this.viewModeChat ==='common'){
-                    this.$http.put('message-operator-guest-mark-as-read', {
+                    this.$http.put('message/operator-mark-as-read', {
                         room_id:this.$store.state.user.profile.common_room_id
                     });
 
