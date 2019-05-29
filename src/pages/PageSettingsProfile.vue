@@ -369,7 +369,7 @@
                             return  this.createOperator()
                         }
 
-                        this.$http.post('user-update', this.model).then(({data})=>{
+                        this.$http.post('user/update-profile', this.model).then(({data})=>{
                             console.log();
                             if(data.data.id === this.profile.id)  this.$store.commit('user/profileUpdate', data.data)
                             browserNotification('Сохранено')

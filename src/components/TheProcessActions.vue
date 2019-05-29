@@ -94,22 +94,22 @@ export default {
             if(this.status) this[this.status]().then(() => this.routerNext('yes'));
         },
         recipient(){
-            return this.$http.put('guest-transfer-acceptance',this.httpParams.params)
+            return this.$http.put('chat-room-user/transfer-acceptance',this.httpParams.params)
         },
         recipientNo(){
-            return this.$http.put('guest-transfer-decline',this.httpParams.params)
+            return this.$http.put('chat-room-user/transfer-decline',this.httpParams.params)
         },
         unprocessed(){
-            return this.$http.put('guest-take', this.httpParams.params)
+            return this.$http.put('chat-room-user/take', this.httpParams.params)
         },
         unprocessedNo(){
-           return this.$http.post('chat-room-user-decline-guest', this.httpParams.params)
+           return this.$http.post('chat-room-user/decline-guest', this.httpParams.params)
         },
         invited(){
-           return this.$http.post('chat-room-user-accept-invitation', {room_id:this.roomId})
+           return this.$http.post('chat-room-user/accept-invitation', {room_id:this.roomId})
         },
         invitedNo(){
-            return this.$http.post('chat-room-user-decline-invitation', {room_id:this.roomId})
+            return this.$http.post('chat-room-user/decline-invitation', {room_id:this.roomId})
         },
     }
 }
