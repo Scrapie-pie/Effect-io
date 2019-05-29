@@ -298,10 +298,10 @@
             transferCancel(to_id){
                 let data = this.httpParams.params
                 data.to_id = to_id
-                this.$http.put('guest-transfer-cancel',data)
+                this.$http.put('chat-room-user/transfer-cancel',data)
             },
             invitedCancel(user_id){
-                this.$http.post('chat-room-user-cancel-invitation',{
+                this.$http.post('chat-room-user/cancel-invitation',{
                     room_id:this.roomActiveId,
                     user_id
                 })
