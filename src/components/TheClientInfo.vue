@@ -1,5 +1,5 @@
 <template lang="pug">
-    scroll-bar.client-info
+    scroll-bar.client-info(:class="{'spinner':$wait.waiting('guest-info')}")
         base-people(
             :name="info.name" ,
             :text="clientInfoContacts",

@@ -64,15 +64,18 @@
             httpErrors(){
 
                 this.$http.interceptors.request.use( (config)=> {
-
+                    console.log();
                     if(
                         config.url.includes('message-operator-guest-mark-as-read') ||
                         config.url.includes('message-send')
+
                     ) {
 
                     }
                     else {
-                        this.$store.commit('loading',true)
+                        console.log('conf',config.url.split('?')[0]);
+                        this.$wait.start(config.url.split('?')[0]);
+                        //this.$store.commit('loading',true)
                     }
 
 
@@ -84,10 +87,14 @@
 
 
                 this.$http.interceptors.response.use((resp)=>{
-                    this.$store.commit('loading',false)
+                    console.log('resp',resp.config.url.split('?')[1]);
+                    this.$wait.end(resp.config.url.split('?')[1]);
+                    //this.$store.commit('loading',false)
                     return resp
                 },(err)=> {
-                    this.$store.commit('loading',false)
+                    console.log(err);
+                    //this.$wait.end(err.config.url.split('?')[0]);
+                    //this.$store.commit('loading',false)
                 /*    console.table(err);
                     console.log(err.config);
                     console.log(err.response);

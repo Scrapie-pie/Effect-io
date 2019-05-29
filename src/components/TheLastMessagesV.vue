@@ -1,5 +1,5 @@
 <template lang="pug">
-    nav-aside
+    nav-aside(:class="{'spinner':$wait.waiting('guest-list')}")
         form.last-messages
             .last-messages__search()
                 base-filter-search(

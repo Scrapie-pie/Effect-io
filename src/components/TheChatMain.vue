@@ -4,12 +4,16 @@
         .chat-main__header(v-if="['search','visor'].includes(viewModeChat)")
             h1.chat-main__header-title Просмотр диалога: {{chat_id}}
 
+
+
+
         scroll-bar.chat-main__body(ref="scrollbar", @ps-scroll-up="scrollLoad", :class="{'chat-main__body_simple':['search','visor'].includes(viewModeChat)}")
-            ul.chat-main__list
+
+            ul.chat-main__list()
                 //li.chat-main__item.chat-main__item_history_more
                     base-btn(theme="link", @click="historyMessageLoad") Загрузить более раннюю история общения с посетителем
 
-
+                li.chat-main__item.spinner(v-if="$wait.waiting('message-history')")
                 li.chat-main__item(v-for="(days, daysIndex) in messageGroupDaysReverse",:key="days.index")
                     time.chat-main__date {{days[0]}}
                     ul.chat-main__messages
@@ -364,7 +368,7 @@
 
                 this.historyMessageLoadStart=false;
                 this.messageRun=false;
-                console.log('this.messageList',this.messageList);
+
                 return this.$http.get('message-history', {params}).then(({data})=>{
 
                     this.historyMessageLoadStart=true;
@@ -379,6 +383,7 @@
                     //console.log('messages',messages);
                     this.messageList.push(...messages);
                     //console.log('this.messageList.push',this.messageList);
+                    //this.$wait.end('message-history');
                 })
             }
         },
@@ -402,12 +407,18 @@
         height:100%;
         min-width:0;//для шаблонов, чтобы работало text-overflow: ellipsis;
 
+        &__spinner {
+            height:100%;
+        }
+
         &__header-title {
             @extend %h4;
             margin-bottom:0;
         }
 
         &__item {
+            &.spinner {height:50px;}
+
             padding-top:calc-em(25);
 
             &_history_more {text-align:center}

@@ -79,10 +79,13 @@
                             @click.prevent="showGifs=true"
                         )
                     li.chat-main-footer__button.chat-main-footer__button_send
+
                         base-btn.chat-main-footer__send(
+
                             @click="send"
                             :icon="{name:'send',textHidden:'Отправить сообщение'}"
                         )
+
 </template>
 
 <script>
@@ -293,7 +296,6 @@
             send(){
 
 
-
                 this.message = this.textWidthTagToText()
 
 
@@ -351,6 +353,7 @@
 
 
                 this.$http.post('message-send', data).then((responsive)=>{
+
                     this.bufferingSend=false;
                     console.log('message-send',responsive.data.data.id);
                     let {id} = responsive.data.data;
@@ -395,8 +398,11 @@
                         this.$refs.scrollbarMessage.update()
                     },200)
 
+
+
                 }).catch(()=>{
                     this.bufferingSend=false;
+
                 });
 
 

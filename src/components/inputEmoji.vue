@@ -12,7 +12,7 @@
                ...Object.entries(emojisBase['Places']),
                ...Object.entries(emojisBase['Symbols']),
        ]
-    console.log(emojisBaseAll);
+
     import '@/scss/vendors/gl-16-emoji.css'
     import lodash_split from 'lodash/split'
     import {getCaretPosition} from '@/mixins/mixins'
@@ -52,7 +52,7 @@ export default {
 
                 return itemFind[1]==item
             })
-            console.log(find);
+
             if(find) {
                 if(!Array.isArray(find)) return item
             } else {
@@ -67,9 +67,7 @@ export default {
             }
             return item
         })
-        console.log(this.text);
 
-        console.log(splitStr);
 
 
         const Tag = this.tag

@@ -7,7 +7,9 @@ import router from '@/routes/router'
 import store from './store/store'
 import axios from '@/modules/axios'
 
+import VueWait from 'vue-wait'
 
+Vue.use(VueWait)
 
 
 
@@ -126,6 +128,17 @@ window.showError = function (error) {
 }
 
 new Vue({
+    wait: new VueWait({
+        useVuex: true, // You must pass this option `true` to use Vuex
+        vuexModuleName: 'wait',      // Vuex module name
+
+        registerComponent: true,     // Registers `v-wait` component
+        componentName: 'v-wait',     // <v-wait> component name, you can set `my-loader` etc.
+
+        registerDirective: true,     // Registers `v-wait` directive
+        directiveName: 'wait',       // <span v-wait /> directive name, you can set `my-loader` etc.
+
+    }),
     router,
     store,
     render: h => h(App)
