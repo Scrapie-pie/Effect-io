@@ -150,7 +150,7 @@ export default {
             })
         },
         getBranchListAll({commit}) {
-            this._vm.$http.get('branches-list').then(({data})=>{
+            this._vm.$http.get('branchs/list').then(({data})=>{
                 commit('branchListAll',data.data)
             })
         },
