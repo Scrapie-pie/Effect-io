@@ -9,7 +9,8 @@ axios.defaults.headers.common['Content-Type'] = 'application/json';
 axios.interceptors.request.use(function (config) {
 
     const oldUrls = [
-        'login'
+        'login',
+        'read-history'
     ];
 
     if(oldUrls.indexOf(config.url) != -1) {

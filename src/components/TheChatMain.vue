@@ -313,7 +313,7 @@
                     this.$store.commit('roomActive',[{room_id:this.$store.state.user.profile.common_room_id}])
                     return
                 }
-                this.$http.get('chat-room-user-all',this.httpParams).then(({data})=>{
+                this.$http.get('chat-room-user/all',this.httpParams).then(({data})=>{
                     data.data.visitor =  this.httpParams.params;
                     //console.log(this.httpParams);
                     this.$store.commit('roomActive',data.data)
@@ -362,7 +362,7 @@
                 this.historyMessageLoadStart=false;
                 this.messageRun=false;
                 console.log('this.messageList',this.messageList);
-                return this.$http.get('message-history', {params}).then(({data})=>{
+                return this.$http.get('message/history', {params}).then(({data})=>{
 
                     this.historyMessageLoadStart=true;
                     let {count,messages,users} = data.data;

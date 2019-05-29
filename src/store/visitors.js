@@ -213,7 +213,7 @@ export default {
 
            // return new Promise((resolve) => {
 
-            return this._vm.$http.get('guest-info', params).then(({data})=>{
+            return this._vm.$http.get('guest/info', params).then(({data})=>{
                 commit('itemOpen',data.data)
 
             })
