@@ -3,7 +3,7 @@
         fieldset
             legend Перенаправление клиента
             base-field.the-redirect-client__base-field(placeholder="Введите URL" name="redirect" v-model="url" maxLength="2048")
-            base-btn(type="submit" color="info-dark" ) Перенаправить
+            base-btn(type="submit" color="info-dark" wait-name="btnGuestRedirect") Перенаправить
 </template>
 
 <script>

@@ -1,16 +1,17 @@
 <template lang="pug">
     transition(name="btn")
-        router-link(v-on="inputListeners" ,:class="classObject", :disabled="disabled" v-if="isRouter", :to="compRouterName")
+        router-link(v-on="inputListeners" ,:class="classObject", :disabled="compDisabled" v-if="isRouter", :to="compRouterName")
             slot
         button(
             v-else-if="type!=='a'"
             v-on="inputListeners",
             :type="type",
             :class="classObject",
-            :disabled="disabled"
+            :disabled="compDisabled"
             ref="btn",
             :title="getTitle"
         )
+            base-wait(:name="waitName")
             template(v-if="icon")
                 base-icon(v-if="icon.name" ,:name="icon.name")
                 span.btn__text-hidden(v-if="icon.textHidden" v-text="icon.textHidden")
@@ -34,6 +35,10 @@
             icon: Object,
 
 
+            waitName: {
+                required: false,
+                default: ''
+            },
             loaded: {
                 required: false,
                 default: true
@@ -62,6 +67,12 @@
 
         },
         computed: {
+            wait(){
+                return this.$wait.waiting(this.waitName)
+            },
+            compDisabled(){
+                return this.disabled || this.wait
+            },
             getTitle(){
                 if (!lodash_isEmpty(this.icon)) {
                     if (this.icon.textHidden) return this.icon.textHidden
@@ -98,6 +109,13 @@
 
                 if (!lodash_isEmpty(this.size)) {
                     obj['btn_size_' + this.size] = true;
+                }
+
+                if (this.compDisabled) {
+                    obj['btn_disabled'] = true;
+                }
+                if (this.wait) {
+                    obj['btn_wait'] = true;
                 }
 
                 if (!lodash_isEmpty(this.icon)) {
@@ -162,10 +180,13 @@
 
         will-change:transform;
 
-        &:hover {
+        &:hover,&:disabled {
             opacity:.8;
         }
-        &:active {
+        &:disabled{
+            cursor:default;
+        }
+        &:active:not(:disabled) {
             transform:translateY(1px);
         }
 

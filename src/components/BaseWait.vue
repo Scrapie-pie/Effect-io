@@ -72,7 +72,9 @@ export default {
         background: rgba(255, 255, 255, 0.6);
 
 
-
+        .btn_wait & {
+            background:none;
+        }
 
 
         &_relative {

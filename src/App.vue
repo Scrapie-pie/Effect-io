@@ -57,10 +57,7 @@
             this.httpErrors();
 
 
-            window.w = this.$wait
-            setTimeout(()=>{
-
-            },1000)
+            this.$wait.start('btnGuestRedirect')
 
         },
         beforeDestroy() {
@@ -88,7 +85,8 @@
                     pagePhrases:['snippet-read'],
                     uploadAvatar:['upload-avatar'],
                     pageSettingsApp:['company-get-settings'],
-                    uploadFileList:['upload-message-file']
+                    uploadFileList:['upload-message-file'],
+                    btnGuestRedirect:['guest-redirect']
 
                 }
 
