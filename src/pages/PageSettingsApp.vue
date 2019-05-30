@@ -163,7 +163,7 @@
                 }
 
 
-                  this.$http.put('company-settings-update',data)
+                  this.$http.put('company/settings-update',data)
                       .then(()=>{
                           browserNotification('Сохранено')
                           this.$store.commit('user/settingsUpdate',data)

@@ -14,7 +14,6 @@ axios.interceptors.request.use(function (config) {
         'admin-employee-create',
         'upload-avatar',
         'message-send',
-        'read-history',
         'user-password-update',
         'statistic-get-by-params'
     ];
