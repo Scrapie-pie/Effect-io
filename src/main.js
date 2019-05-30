@@ -53,6 +53,7 @@ import BaseNoFound from "@/components/BaseNoFound";
 import BaseTable from "@/components/BaseTable";
 
 import BaseFilterSearch from '@/components/FilterSearch'
+import BaseWait from '@/components/BaseWait'
 
 Vue.component("vnode", {
     functional: true,
@@ -84,6 +85,7 @@ Vue.component('base-no-found', BaseNoFound);
 
 Vue.component('base-filter-search',BaseFilterSearch);
 Vue.component('base-table',BaseTable);
+Vue.component('base-wait',BaseWait);
 
 
 /*let requireComponent = require.context('@/src/components/', true, /^Base[A-Z]/) //todo не работает(

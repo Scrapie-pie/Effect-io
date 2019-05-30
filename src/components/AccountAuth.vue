@@ -1,5 +1,6 @@
 <template lang="pug">
     form.account-auth(@submit.prevent="submit")
+
         fieldset.account-auth__box
             legend.account-auth__title(v-text="title")
             .account-auth__logo
@@ -47,11 +48,12 @@
                         base-btn(theme="sign" type="submit" v-if="!passwordSent") Восстановить пароль
                     router-link.account-auth__link(:to='{name:"auth"}' v-if="!passwordSent") Я помню пароль
                     router-link.account-auth__link(:to='{name:"auth"}' v-else) Вернуться ко входу
+            base-wait(name="accountAuth")
 
 </template>
 
 <script>
-
+    import { mapWaitingActions, mapWaitingGetters } from 'vue-wait'
     import { hideHeader } from '@/mixins/mixins'
     export default {
         components: {},
@@ -82,6 +84,10 @@
             this.selectTemplate()
         },
         methods: {
+            ...mapWaitingActions('user', {
+                sendLoginRequest: { action: 'getLogin', loader: 'login' },
+
+            }),
             selectTemplate() {
                 if (this.$route.name == 'recover') {
                     this.title = 'Для восстановления пароля введите Ваш email';
@@ -193,6 +199,7 @@
             width:100%;
             max-width:370px;
             box-shadow:0 2px 50px 1px rgba(0, 0, 0, 0.12);
+            position:relative;
         }
 
         &__title{

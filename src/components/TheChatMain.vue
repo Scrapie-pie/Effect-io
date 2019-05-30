@@ -13,7 +13,8 @@
                 //li.chat-main__item.chat-main__item_history_more
                     base-btn(theme="link", @click="historyMessageLoad") Загрузить более раннюю история общения с посетителем
 
-                li.chat-main__item.spinner(v-if="$wait.waiting('message-history')")
+                li.chat-main__item
+                    base-wait(name="chatMainBody" position="r")
                 li.chat-main__item(v-for="(days, daysIndex) in messageGroupDaysReverse",:key="days.index")
                     time.chat-main__date {{days[0]}}
                     ul.chat-main__messages

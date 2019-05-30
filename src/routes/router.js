@@ -131,7 +131,7 @@ const router =  new Router({
         },
         {
             name: 'phrases',
-            path: 'phrases',
+            path: '/phrases',
             component: PagePhrases,
         },
         ...settings,

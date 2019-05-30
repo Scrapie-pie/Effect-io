@@ -1,5 +1,6 @@
 <template lang="pug">
     section
+        base-wait(name="pageSettingsApp")
         form(@submit.prevent="submit")
             ul.settings-list
                 li.settings-list__item

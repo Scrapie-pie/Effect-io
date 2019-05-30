@@ -1,5 +1,6 @@
 <template lang="pug">
     label(ref="image",:class="{spinner:!loader}").upload-avatar
+        base-wait(name="uploadAvatar")
         input(
             v-bind="getInputOptions",
             ref="input",

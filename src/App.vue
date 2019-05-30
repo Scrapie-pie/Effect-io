@@ -1,7 +1,8 @@
 <template lang="pug">
-    #app.page__app(:class="{'spinner spinner-main-page':$store.state.loading}")
+    #app.page__app
         the-header.page__header.page__padding
         main.page__main
+            base-wait(name="pageMain")
             transition(name="fade" mode="out-in")
                 router-view.page__view.page__padding
         the-popup
@@ -16,10 +17,12 @@
     import ThePopup from "@/components/ThePopup";
 
     import {webSockets,routerPushProcessAllOrItemFirst } from '@/mixins/mixins'
+    import AppSpinner from "./components/BaseWait";
 
 
     export default {
         components: {
+            AppSpinner,
             TheHeader,
             ThePopup
         },
@@ -54,6 +57,10 @@
             this.httpErrors();
 
 
+            window.w = this.$wait
+            setTimeout(()=>{
+
+            },1000)
 
         },
         beforeDestroy() {
@@ -61,14 +68,48 @@
         },
         methods: {
 
+            startEndLoader(url,action) {
+
+                let mapLoaders = {
+                    accountAuth:['login'],
+                    pageMain:[
+                        'chat-get-all',
+
+                    ],
+                    chatMainBody:['message-history'],
+                    lastMessages:[
+                        'guest-list',
+                        'employee-company-list'
+                    ],
+                    clientInfo:['guest-info'],
+                    pageVisitors:['guest-list'],
+                    pageTeam:['employee-company-list'],
+                    pageStats:['statistic-get-by-params'],
+                    pagePhrases:['snippet-read'],
+                    uploadAvatar:['upload-avatar'],
+                    pageSettingsApp:['company-get-settings'],
+                    uploadFileList:['upload-message-file']
+
+                }
+
+                for (let key in mapLoaders) {
+                    if(mapLoaders[key].some(item=>item===url)) this.$wait[action](key);
+                }
+            },
+
             httpErrors(){
 
-                this.$http.interceptors.request.use( (config)=> {
-                    console.log();
-                    if(
-                        config.url.includes('message-operator-guest-mark-as-read') ||
-                        config.url.includes('message-send')
 
+
+
+
+                this.$http.interceptors.request.use( (config)=> {
+                    this.startEndLoader(config.url,'start')
+
+               /*     if(
+                        config.url.includes('message-operator-guest-mark-as-read') ||
+                        config.url.includes('message-send'),
+                        config.url.includes('login')
                     ) {
 
                     }
@@ -76,7 +117,13 @@
                         console.log('conf',config.url.split('?')[0]);
                         this.$wait.start(config.url.split('?')[0]);
                         //this.$store.commit('loading',true)
-                    }
+                    }*/
+
+
+
+
+
+
 
 
                     return config;
@@ -87,12 +134,14 @@
 
 
                 this.$http.interceptors.response.use((resp)=>{
-                    console.log('resp',resp.config.url.split('?')[1]);
-                    this.$wait.end(resp.config.url.split('?')[1]);
-                    //this.$store.commit('loading',false)
+
+                    this.startEndLoader(resp.config.url.split('?')[1],'end')
+
                     return resp
                 },(err)=> {
                     console.log(err);
+
+                    this.startEndLoader(err.config.url.split('?')[1],'end')
                     //this.$wait.end(err.config.url.split('?')[0]);
                     //this.$store.commit('loading',false)
                 /*    console.table(err);
@@ -204,6 +253,7 @@
             display:flex;
             flex:1 0 auto;
             min-width:0;//для шаблонов, чтобы работало text-overflow: ellipsis;
+            position:relative;
         }
 
         &__scrollbar {
