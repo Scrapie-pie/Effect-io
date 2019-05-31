@@ -118,6 +118,12 @@ export default {
             console.log('sockets new-message',val);
             val.socket=true; //Todo Временное решение, на проверку дубликатов, пока Симон не исправит
 
+            if(val.from_role_id != 8 && val.from_role_id != 9) {
+
+                val.guest_uuid=val.uuid
+                this.$store.commit('visitors/messageHot',{val,set:false})
+            }
+
 
 
             if (val.site_id && (val.room_id === this.$store.state.roomActiveId)) { // если есть val.site_id значит общение в диалогах
