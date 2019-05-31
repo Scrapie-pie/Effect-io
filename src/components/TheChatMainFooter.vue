@@ -235,14 +235,15 @@
             getPhrasesSelectText(val){
                 autosize.destroy(this.$refs.chatInput);
                 this.message=val;
-                this.$refs.chatInput.focus()
+
 
                 this.textWidthSmiles='';
                 this.textWidthTagToText()
                 setTimeout(()=>{
-
                     this.textWidthSmiles = val
-
+                    setTimeout(()=>{
+                        this.$refs.chatInput.focus()
+                    },100)
                 },1)
 
                 setTimeout(()=>{ //Todo костыль
