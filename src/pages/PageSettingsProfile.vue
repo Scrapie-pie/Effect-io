@@ -328,7 +328,7 @@
                 if(user_id) {
                     if (user_id == this.profile.user_id) return this.fillProfile()
 
-                    this.$http.get('user-profile', {params:{user_id:user_id}}).then(({data})=>{
+                    this.$http.get('user/get-profile', {params:{user_id:user_id}}).then(({data})=>{
                         if(data.success) {
                             this.model=data.data.user;
                             this.adminMode=this.model.role_id === 13;
@@ -353,7 +353,7 @@
                 this.model.avatar=event;
             },
             createOperator(){
-                this.$http.post('admin-employee-create', this.model).then(({data})=>{
+                this.$http.post('employees', this.model).then(({data})=>{
                     browserNotification('Оператор создан')
                     this.$router.push({name:'team'})
                 })

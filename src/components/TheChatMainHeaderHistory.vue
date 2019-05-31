@@ -26,7 +26,7 @@
 
                 if(!this.httpParams) return
 
-                this.$http.get('read-history', this.httpParams).then(({data})=>{
+                this.$http.get('history', this.httpParams).then(({data})=>{
                     this.itemList=data.data
                 })
 

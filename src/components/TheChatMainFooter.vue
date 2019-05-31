@@ -269,9 +269,9 @@
 
 
 
-                this.$http.post('message-send', data).then((responsive)=>{
+                this.$http.post('message/save', data).then((responsive)=>{
                     this.bufferingSend=false;
-                    console.log('message-send',responsive.data.data.id);
+                    console.log('message/save',responsive.data.data.id);
                     let {id} = responsive.data.data;
 
                     let {first_name:name,photo,employee_id} = this.$store.state.user.profile,

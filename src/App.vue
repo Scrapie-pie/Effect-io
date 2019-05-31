@@ -67,7 +67,7 @@
 
                     if(
                         config.url.includes('message/operator-mark-as-read') ||
-                        config.url.includes('message-send')
+                        config.url.includes('message/save')
                     ) {
 
                     }

@@ -161,7 +161,7 @@
             chatCompletion(){
                     let data = this.httpParams.params;
                     data.intent = 'farewell'
-                this.$http.post('message-send', data);
+                this.$http.post('message/save', data);
                 //this.removeMessageAndPush()
 
             },
