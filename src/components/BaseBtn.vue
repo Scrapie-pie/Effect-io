@@ -11,7 +11,7 @@
             ref="btn",
             :title="getTitle"
         )
-            base-wait(:name="waitName")
+            //base-wait(:name="waitName")
             template(v-if="icon")
                 base-icon(v-if="icon.name" ,:name="icon.name")
                 span.btn__text-hidden(v-if="icon.textHidden" v-text="icon.textHidden")
@@ -148,6 +148,27 @@
 
 <style lang="scss">
     .btn{
+
+        &_wait {
+            animation: btn_wait 1.2s infinite;
+            will-change:transform;
+        }
+
+        @keyframes btn_wait {
+            0% {
+                transform: scale(1);
+                animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+            }
+
+            50% {
+                transform: scale(0.95);
+                animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
 
         &-leave-active,&-leave-to {display:none}
 

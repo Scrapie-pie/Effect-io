@@ -57,7 +57,7 @@
             this.httpErrors();
 
 
-            this.$wait.start('btnGuestRedirect')
+
 
         },
         beforeDestroy() {
@@ -78,15 +78,26 @@
                         'guest-list',
                         'employee-company-list'
                     ],
-                    clientInfo:['guest-info'],
-                    pageVisitors:['guest-list'],
-                    pageTeam:['employee-company-list'],
+                    clientInfo:['guest-info','guest-update-by-operator'],
+                    pageVisitors:['guest-list','guest-take'],
+                    pageTeam:['employee-company-list','user-update'],
                     pageStats:['statistic-get-by-params'],
-                    pagePhrases:['snippet-read'],
+                    phrasesReady:['snippet-read','snippet-update','snippet-delete'],
                     uploadAvatar:['upload-avatar'],
                     pageSettingsApp:['company-get-settings'],
+                    pageSettingsProfile:['user-password-update','user-update'],
                     uploadFileList:['upload-message-file'],
-                    btnGuestRedirect:['guest-redirect']
+                    btnGuestRedirect:['guest-redirect'],
+                    guestRedirect:['guest-redirect'],
+                    chatMain:[
+                        'message-send',
+                        'guest-contacts-request',
+                        'co-browsing-request',
+                        'guest-blocking',
+                        'guest-transfer-to-branch-request'
+                    ],
+                    userStatus:['operator-online-update'],
+                    header:['one-time-chat-generate-code']
 
                 }
 

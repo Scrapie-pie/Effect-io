@@ -1,5 +1,6 @@
 <template lang="pug">
     article.chat-main
+        base-wait(name="chatMain")
         the-chat-main-header.chat-main__header(v-if!="!['search','visor','common'].includes(viewModeChat)")
         .chat-main__header(v-if="['search','visor'].includes(viewModeChat)")
             h1.chat-main__header-title Просмотр диалога: {{chat_id}}
@@ -10,9 +11,6 @@
         scroll-bar.chat-main__body(ref="scrollbar", @ps-scroll-up="scrollLoad", :class="{'chat-main__body_simple':['search','visor'].includes(viewModeChat)}")
 
             ul.chat-main__list()
-                //li.chat-main__item.chat-main__item_history_more
-                    base-btn(theme="link", @click="historyMessageLoad") Загрузить более раннюю история общения с посетителем
-
                 li.chat-main__item
                     base-wait(name="chatMainBody" position="r")
                 li.chat-main__item(v-for="(days, daysIndex) in messageGroupDaysReverse",:key="days.index")
@@ -403,6 +401,7 @@
         $color_bg_date:glob-color('light');
         $color_bg_message:glob-color('info-lighten');
 
+        position:relative;
         display:flex;
         flex-flow:column;
         height:100%;

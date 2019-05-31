@@ -1,6 +1,5 @@
 <template lang="pug">
     section.page-phrases
-        base-wait(name="pagePhrases")
         the-phrases-ready
 </template>
 

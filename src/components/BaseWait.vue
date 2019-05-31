@@ -1,5 +1,5 @@
 <template lang="pug">
-    .base-wait(:class="className" v-if="$wait.waiting(name)")
+    .base-wait(:class="className" v-if="show")
         i.base-wait__text {{name}} loading...
         .base-wait__lds-roller
 
@@ -14,12 +14,16 @@ export default {
         name:null,
         position:null,
         size:'',
+
     },
     data() {
-        return {}
+        return {
+            show:false,
+        }
     },
     computed:{
         wait(){
+
             return this.$wait.waiting(this.name)
         },
         className(){
@@ -34,7 +38,23 @@ export default {
     watch:{
         wait:{
             handler(val){
-                this.toggleParentClass(val)
+                if(val) {
+                    setTimeout(()=>{
+                        if(!this.wait) return
+
+                        this.show=val
+                        this.toggleParentClass(val)
+                    },500)
+
+                } else {
+                    this.show=val
+                    this.toggleParentClass(val)
+                }
+
+
+
+
+
             },
             immediate: false
 
@@ -112,7 +132,7 @@ export default {
             margin: 6px;
             box-sizing: border-box;
             border: 26px solid glob-color('info');
-            border-color: glob-color('info') transparent glob-color('error') transparent;
+            border-color: glob-color('info') transparent glob-color('info') transparent;
             animation: lds-roller 1.2s infinite;
             @extend %full-abs;
         }

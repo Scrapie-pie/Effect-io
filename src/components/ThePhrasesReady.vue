@@ -1,5 +1,6 @@
 <template lang="pug">
     form.phrases-ready(@submit.prevent="submit")
+        base-wait(name="phrasesReady")
         transition(name="fade" mode="out-in")
             fieldset.phrases-ready__wrap(v-if="!showPhrasesNew" key="showPhrasesNew")
                 legend.phrases-ready__text-only-scr Готовый список фраз
