@@ -1,5 +1,5 @@
 <template lang="pug">
-    base-btn(:class="sortClass",  :icon="{box:true,textHidden:'Cортировка'}"  color="success", @click="sortToggle") &#11015;
+    base-btn(:class="sortClass",  :icon="{box:false,textHidden:'Cортировка'}" , @click="sortToggle") &#9207;
 </template>
 
 <script>
@@ -35,8 +35,10 @@ export default {
 <style lang="scss">
     .btn-sort{
         padding:0 calc-em(5);
+        color:glob-color('info');
         &_rotate{
             transform:rotate(180deg);
+            color:glob-color('success');
         }
     }
 </style>

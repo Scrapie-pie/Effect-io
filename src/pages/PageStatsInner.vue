@@ -42,13 +42,17 @@
             li Отделов в команде: {{$store.state.user.branchListAll.length}}
             li Сотрудников в команде: {{$store.state.operators.all.length}}
 
-        section.page-stats-inner__main(v-show="last_days || date_from")
+        section.page-stats-inner__main.no-mw(v-show="last_days || date_from")
             component(
                 :is="activeComponent",
                 v-bind="payload"
                 v-on="listeners"
+                )
+            component(
+                :is="'StatsResultLine'",
+                v-bind="payload"
+                v-on="listeners"
             )
-
 </template>
 
 <script>
@@ -61,7 +65,7 @@ const StatsPages = ()=> import ('@/components/StatsPages')
 const StatsResult = ()=> import ('@/components/StatsResult')
 const StatsService = ()=> import ('@/components/StatsService')
 const StatsOnceChat = ()=> import ('@/components/StatsOnceChat')
-
+const StatsResultLine = ()=> import ('@/components/StatsResultLine')
 
 import FilterDropMenu from '@/components/FilterDropMenu'
 
@@ -77,19 +81,14 @@ export default {
         StatsPages,
         StatsService,
         StatsOnceChat,
-        FilterDropMenu
+        FilterDropMenu,
+        StatsResultLine
     },
     mixins:[filterLastDaysAndCalendar],
     data() {
         return {
-
             filterSearchResult:[],
             itemList:[],
-
-
-
-
-
             branch:{
                 title:'Все отделы',
                 id:null,
@@ -228,6 +227,12 @@ export default {
             //padding-right:calc-em(15);
             padding-bottom:calc-em(45);
            // min-width:1100px;
+
+
+
+        }
+        &__main.no-mw {
+            max-width:100%;
         }
     }
 </style>
