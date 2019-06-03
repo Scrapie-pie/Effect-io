@@ -313,12 +313,15 @@
                     this.$store.commit('roomActive',[{room_id:this.$store.state.user.profile.common_room_id}])
                     return
                 }
-                this.$http.get('chat-room-user/all',this.httpParams).then(({data})=>{
-                    data.data.visitor =  this.httpParams.params;
-                    //console.log(this.httpParams);
-                    this.$store.commit('roomActive',data.data)
 
-                })
+                if (this.httpParams) {
+                    this.$http.get('chat-room-user/all', this.httpParams).then(({data}) => {
+                        data.data.visitor = this.httpParams.params;
+                        //console.log(this.httpParams);
+                        this.$store.commit('roomActive', data.data)
+
+                    })
+                }
             },
             scrollLoad(e){
 
