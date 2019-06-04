@@ -22,9 +22,9 @@ export default {
             let data = this.httpParams.params;
             data.url = this.url;
             this.url='';
-            this.$http.post('guest-redirect',data)
+            this.$http.post('guest/redirect',data)
                 .then(()=> {
-                    console.log('guest-redirect');
+                    console.log('guest/redirect');
                 })
 
         }

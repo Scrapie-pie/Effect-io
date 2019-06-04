@@ -11,6 +11,7 @@ axios.interceptors.request.use(function (config) {
     const oldUrls = [
         'login',
         'upload-avatar',
+        'upload-message-file',
         'statistic-get-by-params'
     ];
 
