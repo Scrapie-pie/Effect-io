@@ -21,6 +21,14 @@ export default [{
     },
     children: [
         {
+            name: 'statsAll',
+            path: 'all',
+            meta:{
+                title:'Общая статистика'
+            },
+            component: PageStatsInner
+        },
+        {
             name: 'statsService',
             path: 'service',
             meta:{

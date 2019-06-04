@@ -48,11 +48,7 @@
                 v-bind="payload"
                 v-on="listeners"
                 )
-            component(
-                :is="'StatsResultLine'",
-                v-bind="payload"
-                v-on="listeners"
-            )
+
 </template>
 
 <script>
@@ -65,7 +61,7 @@ const StatsPages = ()=> import ('@/components/StatsPages')
 const StatsResult = ()=> import ('@/components/StatsResult')
 const StatsService = ()=> import ('@/components/StatsService')
 const StatsOnceChat = ()=> import ('@/components/StatsOnceChat')
-const StatsResultLine = ()=> import ('@/components/StatsResultLine')
+const StatsAll = ()=> import ('@/components/StatsAll')
 
 import FilterDropMenu from '@/components/FilterDropMenu'
 
@@ -82,7 +78,7 @@ export default {
         StatsService,
         StatsOnceChat,
         FilterDropMenu,
-        StatsResultLine
+        StatsAll
     },
     mixins:[filterLastDaysAndCalendar],
     data() {
@@ -97,6 +93,7 @@ export default {
     },
     computed:{
         activeComponent(){
+
             if(this.routerName==='statsOperatorsDetail') return 'statsResult'
             if(this.routerName==='statsBranchesDetail') return 'statsResult'
             return this.routerName
@@ -157,6 +154,7 @@ export default {
 
             if(this.routerName==='statsService') return 'top';
             if(this.routerName==='statsBranches') return 'branches';
+            if(this.routerName==='statsAll') return 'branches';
             if(this.routerName==='statsBranchesDetail') return 'branch';
             if(this.routerName==='statsOperators') return 'employees';
             if(this.routerName==='statsOperatorsDetail') return 'employee';

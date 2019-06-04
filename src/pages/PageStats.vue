@@ -14,6 +14,11 @@
                 li.page-stats__item
                     router-link.page-stats__link(
 
+                    :to='{name:"statsAll"}'
+                    ) Общая статистика
+                li.page-stats__item
+                    router-link.page-stats__link(
+
                         :to='{name:"statsBranches"}'
                     ) Статистика по отделам
                 li.page-stats__item
