@@ -149,7 +149,7 @@
 
     import BtnSort  from '@/components/BtnSort'
     import {stats} from '@/mixins/mixins'
-    import lodash_sortBy from 'lodash/sortBy'
+
 
     export default {
         components:{
@@ -181,27 +181,7 @@
             },
 
             bodyListFormat(){
-                return  lodash_sortBy(
-                    this.setFilterList.map(item=>{
-
-
-
-                        return item
-                    }),
-                    [
-                        (item)=>{
-                            console.log(item);
-                            if(this.sortFieldsCurrentSort.field==='name') {
-                                console.log(item[this.sortFieldsCurrentSort.field].length * (this.sortFieldsCurrentSort.val ? -1 : 1));
-                                return item[this.sortFieldsCurrentSort.field].length*(this.sortFieldsCurrentSort.val?-1:1);
-                            }
-                            else  {
-                                console.log(item[this.sortFieldsCurrentSort.field] * (this.sortFieldsCurrentSort.val ? -1 : 1));
-                                return item[this.sortFieldsCurrentSort.field]*(this.sortFieldsCurrentSort.val?-1:1)
-                            }
-                        }
-                    ]
-                );
+                return  this.sortFieldsListGet
             },
             itemListWidthBranchName(){
                 return this.bodyList.map(item=>{
@@ -216,10 +196,8 @@
                     return item
                 })
             },
-            setFilterList(){
-
-                if(this.filterBranchIds.length) return this.itemListWidthBranchName.filter(item=>this.filterBranchIds.includes(item.branch_id))
-                else return this.itemListWidthBranchName
+            sortFieldsListSet(){
+                return this.itemListWidthBranchName
             }
         },
 

@@ -1,5 +1,5 @@
 import lodash_empty from 'lodash/isEmpty'
-
+import lodash_sortBy from 'lodash/sortBy'
 export default {
     data() {
         return {
@@ -19,6 +19,31 @@ export default {
         sortFieldsComp(){
             return this.sortFieldsSort
         },
+        sortFieldsListGet(){
+            return lodash_sortBy(
+                this.sortFieldsListSet.map(item=>{
+
+
+
+                    return item
+                }),
+                [
+                    (item)=>{
+                        if(this.sortFieldsCurrentSort.field==='name') {
+                            console.log(item[this.sortFieldsCurrentSort.field].length * (this.sortFieldsCurrentSort.val ? -1 : 1));
+                            return item[this.sortFieldsCurrentSort.field].length*(this.sortFieldsCurrentSort.val?-1:1);
+                        }
+                        else  {
+                            if(this.sortFieldsCurrentSort.field==='first_answers_in_20_40_seconds') {
+                                console.log(this.sortFieldsCurrentSort.field,item);
+                            }
+                            if (item[this.sortFieldsCurrentSort.field] === 0) return 0
+                            return item[this.sortFieldsCurrentSort.field]*(this.sortFieldsCurrentSort.val?-1:1)
+                        }
+                    }
+                ]
+            );
+        }
     },
     methods:{
         sortFieldsSetName(sortFieldsList){ // once
