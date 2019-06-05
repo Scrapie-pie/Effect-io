@@ -13,6 +13,12 @@ export default {
         }
     },
     watch:{
+        sortFieldsDefault(val){
+            console.log('sortFieldsDefault',val);
+        },
+        sortFieldsSort(val){
+            console.log('sortFieldsSort',val);
+        },
         sortFieldsList:'sortFieldsSetName'
     },
     computed:{

@@ -6,7 +6,6 @@
                     th
                         .stats-table-line__th-wrap
                             |Общие по отделу
-
                     th
                         .stats-table-line__th-wrap
                             |Поступило <br> всего
@@ -102,7 +101,10 @@
 
             tbody
                 tr(v-for="(item, index) in itemList", :key="item.id")
-                    td {{item.name}}
+                    td
+                        router-link(:to="{name:'statsAllBranch',params:{id:item.branch_id}}") {{item.name}}
+                        router-link(:to="{name:'statsAllOperator',params:{id:item.user_id}}") {{item.name}}
+
                     td {{item.dialogues_requests}}
                     td {{item.dialogues_accepted}}
                     td {{item.dialogues_accepted}}
@@ -145,12 +147,8 @@
 
 <script>
     import {sortFields} from '@/mixins/mixins'
-
-
     import BtnSort  from '@/components/BtnSort'
     import {stats} from '@/mixins/mixins'
-
-
     export default {
         components:{
             BtnSort

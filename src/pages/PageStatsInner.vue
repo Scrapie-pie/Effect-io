@@ -93,7 +93,8 @@ export default {
     },
     computed:{
         activeComponent(){
-
+            if(this.routerName==='statsAllBranch') return 'statsAll';
+            if(this.routerName==='statsAllOperator') return 'statsAll';
             if(this.routerName==='statsOperatorsDetail') return 'statsResult'
             if(this.routerName==='statsBranchesDetail') return 'statsResult'
             return this.routerName
@@ -126,8 +127,12 @@ export default {
                 filterList:this.filterSearchResult,
             };
 
+            if(this.routerName==='statsAllBranch') obj.branch_id=this.branch_id
+            if(this.routerName==='statsAllOperator') obj.user_id=this.user_id
+
             if(this.routerName==='statsOperatorsDetail') obj.user_id=this.user_id
             if(this.routerName==='statsBranchesDetail') obj.branch_id=this.branch_id
+
             if(this.routerName==='statsOperators') obj.filterBranchId=this.branch.id
             if(this.routerName==='statsBranches' ||
                 this.routerName==='statsPages' ||
@@ -151,6 +156,10 @@ export default {
         },
         type(){
             if(this.routerName==='statsPages') return 'pages';
+
+            if(this.routerName==='statsAll') return 'branches';
+            if(this.routerName==='statsAllBranch') return 'branch';
+            if(this.routerName==='statsAllOperator') return 'employee';
 
             if(this.routerName==='statsService') return 'top';
             if(this.routerName==='statsBranches') return 'branches';
