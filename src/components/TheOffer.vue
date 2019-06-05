@@ -30,10 +30,10 @@
                 this.$root.$emit('globBoxControlClose')
                 if(this.model === "call") {
                     data.type=this.model;
-                    this.$http.post('message-send', data);
+                    this.$http.post('message/save', data);
 
                 }
-                if(this.model === "contacts") this.$http.post('guest-contacts-request', data);
+                if(this.model === "contacts") this.$http.post('guest/contacts-request', data);
 
             }
         }

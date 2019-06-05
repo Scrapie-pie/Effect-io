@@ -301,10 +301,10 @@
             transferCancel(to_id){
                 let data = this.httpParams.params
                 data.to_id = to_id
-                this.$http.put('guest-transfer-cancel',data)
+                this.$http.put('chat-room-user/transfer-cancel',data)
             },
             invitedCancel(user_id){
-                this.$http.post('chat-room-user-cancel-invitation',{
+                this.$http.post('chat-room-user/cancel-invitation',{
                     room_id:this.roomActiveId,
                     user_id
                 })
@@ -316,12 +316,15 @@
                     this.$store.commit('roomActive',[{room_id:this.$store.state.user.profile.common_room_id}])
                     return
                 }
-                this.$http.get('chat-room-user-all',this.httpParams).then(({data})=>{
-                    data.data.visitor =  this.httpParams.params;
-                    //console.log(this.httpParams);
-                    this.$store.commit('roomActive',data.data)
 
-                })
+                if (this.httpParams) {
+                    this.$http.get('chat-room-user/all', this.httpParams).then(({data}) => {
+                        data.data.visitor = this.httpParams.params;
+                        //console.log(this.httpParams);
+                        this.$store.commit('roomActive', data.data)
+
+                    })
+                }
             },
             scrollLoad(e){
 
@@ -365,7 +368,7 @@
                 this.historyMessageLoadStart=false;
                 this.messageRun=false;
                 console.log('this.messageList',this.messageList);
-                return this.$http.get('message-history', {params}).then(({data})=>{
+                return this.$http.get('message/history', {params}).then(({data})=>{
 
                     this.historyMessageLoadStart=true;
                     let {count,messages,users} = data.data;

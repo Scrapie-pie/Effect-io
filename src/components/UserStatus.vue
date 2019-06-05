@@ -159,7 +159,7 @@
             },
             operatorStatusUpdate(){
                 console.log('operatorStatusUpdate');
-                this.$http.put('operator-online-update',{
+                this.$http.put('employee/online-update',{
                     online:this.status
                 })
             },

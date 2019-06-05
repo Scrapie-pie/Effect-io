@@ -172,7 +172,7 @@ export default {
     },
     actions: {
         getItems({ commit, dispatch },data) {
-            this._vm.$http.get('guest-list',data).then(({data})=>{
+            this._vm.$http.get('guest/list',data).then(({data})=>{
                 if(!_.isEmpty(data.params.type) && data.params.type === "self") commit('self',data.data)
                 if(!_.isEmpty(data.params.type) && data.params.type === "unprocessed") commit('process',data.data)
                 else { commit('all',data.data) }
@@ -180,20 +180,20 @@ export default {
             })
         },
         getAll({ commit, dispatch }) {
-            this._vm.$http.get('guest-list',{}).then(({data})=>{
+            this._vm.$http.get('guest/list',{}).then(({data})=>{
 
                 commit('all',data.data)
             })
         },
         getProcess({ commit, dispatch },params) {
             params = _.extend({type: 'unprocessed', limit: 1}, params);
-            this._vm.$http.get('guest-list',{params}).then(({data})=>{
+            this._vm.$http.get('guest/list',{params}).then(({data})=>{
                 commit('process',data.data)
             })
         },
         getSelf({ commit, dispatch },params) {
             params = _.extend({type: 'self', limit: 1}, params);
-            this._vm.$http.get('guest-list',{params}).then(({data})=>{
+            this._vm.$http.get('guest/list',{params}).then(({data})=>{
                 commit('self',data.data)
             })
         },
@@ -213,7 +213,7 @@ export default {
 
            // return new Promise((resolve) => {
 
-            return this._vm.$http.get('guest-info', params).then(({data})=>{
+            return this._vm.$http.get('guest/info', params).then(({data})=>{
                 commit('itemOpen',data.data)
 
             })

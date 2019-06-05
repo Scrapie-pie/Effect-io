@@ -73,7 +73,7 @@
         data() {
             return {
 
-                apiMethod:'chat-get-all',
+                apiMethod:'chat/get-all',
                 containerFullFillItemListClassName:{
                     scrollBar:'layout-table__content',
                     item:'base-table__tr'

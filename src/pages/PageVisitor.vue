@@ -117,7 +117,7 @@
             },
             startChat(item){
                 //return console.log(item);
-                this.$http.put('guest-take', {
+                this.$http.put('chat-room-user/take', {
                     guest_uuid:item.uuid,
                     site_id:item.site_id
                 })

@@ -143,7 +143,7 @@
                 data.users_ids=this.itemListIds;
                 data.comment=this.comment;
 
-                this.$http.post('chat-room-user-invite', data)
+                this.$http.post('chat-room-user/invite', data)
                     .then(({ data }) => {
                         this.$root.$emit('globBoxControlClose')
                     })
@@ -154,7 +154,7 @@
                 data.to_id=this.itemListIds[0];
                 data.comment=this.comment;
 
-                this.$http.put('guest-transfer-request', data)
+                this.$http.put('chat-room-user/transfer-request', data)
                     .then(({ data }) => {
                         this.$root.$emit('globBoxControlClose')
                     })
