@@ -61,7 +61,7 @@ export default {
         },
         save(){
             this.setUserId()
-            this.$http.put('user-password-update', this.model)
+            this.$http.put('user/password-update', this.model)
                 .then(({ data }) => {
                 this.password='';
                 this.confirm_password='';

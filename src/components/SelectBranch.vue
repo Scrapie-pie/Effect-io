@@ -88,7 +88,7 @@
                 data.branch_id=this.itemListIds[0];
                 data.comment=this.comment;
 
-                this.$http.put('guest-transfer-to-branch-request', data)
+                this.$http.put('chat-room-user/transfer-to-branch-request', data)
                     .then(({ data }) => {
                         this.$root.$emit('globBoxControlClose')
                     })

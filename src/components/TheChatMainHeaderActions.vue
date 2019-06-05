@@ -64,7 +64,7 @@
         },
         methods:{
             exitRoom(){
-                this.$http.post('chat-room-user-exit', {room_id:this.$store.state.roomActiveId})
+                this.$http.post('chat-room-user/exit', {room_id:this.$store.state.roomActiveId})
                     .then(()=> {
                         this.removeMessageAndPush()
                     })
@@ -82,7 +82,7 @@
             },
             blockClient(){
 
-                this.$http.post('guest-blocking', this.httpParams.params)
+                this.$http.post('guest/blocking', this.httpParams.params)
                     .then(() => {
 
 

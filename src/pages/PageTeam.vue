@@ -146,7 +146,7 @@
                         user_id:operator.id,
                         active:active
                     }
-                this.$http.post('user-update', data).then(({data})=>{
+                this.$http.post('user/update-profile', data).then(({data})=>{
 
                 })
 

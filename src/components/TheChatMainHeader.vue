@@ -154,20 +154,20 @@
         methods:{
             coBrowser(){
                 const params = '?guestUuid=' + this.httpParams.params.uuid + '&siteId=' + this.httpParams.params.site_id;
-                const win = window.open(config.api_server.split('/app')[0] + '/cobrowsing' + params, '_blank');
+                const win = window.open(config.api_server_old.split('/app')[0] + '/cobrowsing' + params, '_blank');
                 win.focus();
-                this.$http.post('co-browsing-request',this.httpParams.params);
+                this.$http.post('co-browsing/request',this.httpParams.params);
             },
             chatCompletion(){
                     let data = this.httpParams.params;
                     data.intent = 'farewell'
-                this.$http.post('message-send', data);
+                this.$http.post('message/save', data);
                 //this.removeMessageAndPush()
 
             },
             removeFromRoom(user_id){
                 let room_id = this.$store.state.roomActiveId;
-                this.$http.post('chat-room-user-remove',{room_id,user_id});
+                this.$http.post('chat-room-user/remove',{room_id,user_id});
             },
             getActions(e){
                 if (e = 'blockClient' ) this.showConfirmBlockClient=true;

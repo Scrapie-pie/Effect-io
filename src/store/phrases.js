@@ -37,7 +37,7 @@ export default {
     actions: {
         snippetCreate({commit},{text,category:{title,id},is_common}){
             let category = title;
-            this._vm.$http.post('snippet-create',{text,category,is_common})
+            this._vm.$http.post('snippet/create-snippet',{text,category,is_common})
                 .then(({ data }) => {
                     if(!id) { //значит новая категория, обновим список
                         commit('categoryAdd',{
@@ -49,19 +49,19 @@ export default {
                 })
         },
         snippetUpdate({commit},{id,text}){
-            this._vm.$http.put('snippet-update',{id,text})
+            this._vm.$http.put('snippet/update-snippet',{id,text})
                 .then(() => {
                     commit('setSnippetText', {id,text})
                 })
         },
         snippetDelete({commit},id){
-            this._vm.$http.delete('snippet-delete',{params:{id}})
+            this._vm.$http.delete('snippet/delete-snippet',{params:{id}})
                 .then(() => {
                     commit('setSnippetDelete', id)
                 })
         },
         getItemList({commit}){
-            this._vm.$http.get('snippet-read')
+            this._vm.$http.get('snippet/read-snippet')
                 .then(({ data }) => {
                     commit('setPhraseList',data.data)
                 })

@@ -153,7 +153,7 @@
                 let data = {
                     email: this.login,
                 };
-                this.$http.post('forgot-password', data, {
+                this.$http.post('mailing/lost-password', data, {
                     headers: { 'content-type': 'application/json' }
                 }).then(() => {
 

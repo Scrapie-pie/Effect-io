@@ -268,7 +268,7 @@ export default {
 
         if(this.name==='url'){
 
-            this.$http.get('site-pages').then(({data})=>{
+            this.$http.get('site/pages').then(({data})=>{
 
                 data=data.data.map(item=>{
                     return {id:item,name:item}

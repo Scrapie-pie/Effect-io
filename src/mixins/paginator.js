@@ -16,7 +16,7 @@ export default {
             pageN:1,
             itemListCount: 0,
             itemList:[],
-            apiMethod:'guest-list'
+            apiMethod:'guest/list'
         }
     },
     computed:{

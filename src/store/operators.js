@@ -52,7 +52,7 @@ export default {
     },
     actions: {
         getAll({ commit, dispatch }) {
-            this._vm.$http.get('employee-company-list',{
+            this._vm.$http.get('employee/company-list',{
                 params:{
                     with_branches_ids:1,
                     with_unread:1,

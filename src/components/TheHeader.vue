@@ -80,7 +80,7 @@
         },
         methods:{
             getGenerateCode(){
-                this.$http.put('one-time-chat-generate-code')
+                this.$http.put('one-time-chat/generate-code')
                     .then(({ data }) => {
                         this.$store.commit('user/profileUpdate',{code:data.data})
                     })
