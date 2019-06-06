@@ -27,12 +27,7 @@ export default {
         },
         sortFieldsListGet(){
             return lodash_sortBy(
-                this.sortFieldsListSet.map(item=>{
-
-
-
-                    return item
-                }),
+                this.sortFieldsListSet,
                 [
                     (item)=>{
                         if(this.sortFieldsCurrentSort.field==='name') {
@@ -40,10 +35,6 @@ export default {
                             return item[this.sortFieldsCurrentSort.field].length*(this.sortFieldsCurrentSort.val?-1:1);
                         }
                         else  {
-                            console.log(this.sortFieldsCurrentSort.field,item);
-                            if(this.sortFieldsCurrentSort.field==='first_answers_in_20_40_seconds') {
-                                console.log(this.sortFieldsCurrentSort.field,item);
-                            }
                             if (item[this.sortFieldsCurrentSort.field] === 0) return 0
                             return item[this.sortFieldsCurrentSort.field]*(this.sortFieldsCurrentSort.val?-1:1)
                         }

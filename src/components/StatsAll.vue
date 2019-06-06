@@ -99,7 +99,7 @@
                             btn-sort(:toggle="sortFieldsComp['middling_ratings']", @result="val=>sortFieldsSetSortField(val,'middling_ratings')")
 
             tbody
-                tr(v-for="(item, index) in mergeitemList", :key="item.id")
+                tr(v-for="(item, index) in itemList", :key="item.id")
                     td
                         router-link(
                             v-if="item.id"
@@ -180,12 +180,7 @@
             employeesParams(){
                 return Object.assign({},this.params,{type:'employees'})
             },
-            mergeitemList(){
 
-                if(this.$route.name==='statsAllBranch') return [...this.itemList,...this.operatorList]
-                return this.itemList
-
-            },
             link(){
                 if(this.$route.name==='statsAll') return 'statsAllBranch'
                 if(this.$route.name==='statsAllBranch') return 'statsAllOperator'
@@ -196,10 +191,12 @@
             showLeft(){
                 return this.countStep !== 0
             },
-
             bodyListFormat(){
-                return  this.bodyList
+                return  this.sortFieldsListGet
             },
+            sortFieldsListSet(){
+                return this.bodyList
+            }
         },
         created(){
 
@@ -210,7 +207,11 @@
         watch:{
             employeesParams:{
                 handler(val){
-                    if(this.$route.name==='statsAllBranch' && val) this.getOperators()
+                    if(this.$route.name==='statsAllBranch' && val) {
+
+
+                        this.getOperators()
+                    }
 
                 },
                 immediate: true
@@ -223,7 +224,8 @@
                         this.$http.get('statistic-get-by-params',{
                             params:this.employeesParams
                         }).then((response)=>{
-                            this.operatorList = response.data.data
+                            this.bodyList = [...this.bodyList,...response.data.data]
+
                         })
                     }
             },

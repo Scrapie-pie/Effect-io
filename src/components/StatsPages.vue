@@ -6,7 +6,7 @@
                 th
                 th Получено диалогов
                 th
-                    |Процент от общего количества обращений (%) #[btn-sort(:toggle="sortPercentLarger", @result="val=>sortPercentLarger=val")]
+                    |Процент от общего количества обращений (%) #[btn-sort(:toggle="sortFieldsComp['sortPercentLarger']", @result="val=>sortFieldsSetSortField(val,'sortPercentLarger')")]
 
         tbody
             tr(v-for="(item, index) in itemList" :key="item.url")
@@ -25,35 +25,31 @@
 
 <script>
     import BtnSort  from '@/components/BtnSort'
-    import lodash_sortBy from 'lodash/sortBy'
-import {stats} from '@/mixins/mixins'
+
+import {stats,sortFields} from '@/mixins/mixins'
 
 export default {
     components:{
         BtnSort
     },
-    mixins:[stats],
+    mixins:[stats,sortFields],
     data() {
         return {
-            sortPercentLarger:true,
+
         }
     },
     computed:{
-        itemListSort(){
-            return lodash_sortBy(
-                this.bodyList.map(item=>{
-                    item.name=item.url; //base-filter-search сейчас ищет по name
 
-                    return item
-                }),
-                [
-                    (item)=>item.dialogues_percents*(this.sortPercentLarger?1:-1),
-                ]
-            );
-        },
         bodyListFormat(){
-            return this.itemListSort
+            return  this.sortFieldsListGet
         },
+        sortFieldsListSet(){
+            return this.bodyList.map(item=>{
+                item.name=item.url; //base-filter-search сейчас ищет по name
+
+                return item
+            })
+        }
     },
     methods:{
         nextLink(item){
