@@ -40,7 +40,7 @@ export default [{
         },
         {
             name: 'statsAllOperator',
-            path: '/:id',
+            path: 'employees/:id',
             meta:{
                 title:'Статистика по сотруднику'
             },

@@ -1,5 +1,6 @@
 <template lang="pug">
-    base-btn(:class="sortClass",  :icon="{box:false,textHidden:'Cортировка'}" , @click="sortToggle") &#9207;
+    base-btn(:class="sortClass",  :icon="{box:false,textHidden:'Cортировка'}" , @click="sortToggle")
+        span.btn-sort__triangle
 </template>
 
 <script>
@@ -36,9 +37,26 @@ export default {
     .btn-sort{
         padding:0 calc-em(5);
         color:glob-color('info');
+        position:relative;
+        top:4px;
+
+        &__triangle::before {
+            content:'';
+            display:block;
+            position:relative;
+            top:3px;
+            border: 4px solid transparent;
+            border-top: 4px solid glob-color('info');
+
+
+        }
+        &_rotate &__triangle::before {
+            border-top-color:glob-color('success');;
+        }
         &_rotate{
             transform:rotate(180deg);
-            color:glob-color('success');
+
+
         }
     }
 </style>

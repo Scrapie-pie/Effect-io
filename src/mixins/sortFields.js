@@ -40,6 +40,7 @@ export default {
                             return item[this.sortFieldsCurrentSort.field].length*(this.sortFieldsCurrentSort.val?-1:1);
                         }
                         else  {
+                            console.log(this.sortFieldsCurrentSort.field,item);
                             if(this.sortFieldsCurrentSort.field==='first_answers_in_20_40_seconds') {
                                 console.log(this.sortFieldsCurrentSort.field,item);
                             }

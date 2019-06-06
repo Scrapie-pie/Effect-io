@@ -189,6 +189,10 @@
             .is-hided-header & {
                 margin-left:-165px;
 
+                @include media($width_lg){
+                    margin-left: -75px;
+                }
+
             }
         }
 

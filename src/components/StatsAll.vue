@@ -4,8 +4,7 @@
             thead.stats-table-line__thead
                 tr
                     th
-                        .stats-table-line__th-wrap
-                            |Общие по отделу
+
                     th
                         .stats-table-line__th-wrap
                             |Поступило <br> всего
@@ -100,29 +99,34 @@
                             btn-sort(:toggle="sortFieldsComp['middling_ratings']", @result="val=>sortFieldsSetSortField(val,'middling_ratings')")
 
             tbody
-                tr(v-for="(item, index) in itemList", :key="item.id")
+                tr(v-for="(item, index) in mergeitemList", :key="item.id")
                     td
-                        router-link(:to="{name:'statsAllBranch',params:{id:item.branch_id}}") {{item.name}}
-                        router-link(:to="{name:'statsAllOperator',params:{id:item.user_id}}") {{item.name}}
+                        router-link(
+                            v-if="item.id"
+                            :to="{name:link,params:{id:item.id}}"
+                        ) {{item.name}}
+                        span(v-else) {{item.name}}
+
 
                     td {{item.dialogues_requests}}
                     td {{item.dialogues_accepted}}
-                    td {{item.dialogues_accepted}}
                     td {{item.dialogues_missed}}
-                    td {{item.missed_average_time}}
-                    td {{item.first_answer_average_speed}}
-                    td {{item.first_answers_in_20_40_seconds }}{{item.first_answers_in_20_40_seconds_percents}}
-                    td {{item.first_answers_in_60_more_seconds }}{{item.first_answers_in_60_more_seconds_percents}}
+                    td {{item.missed_average_time | datetimeStoHMS(true)}}
+                    td {{item.first_answer_average_speed | datetimeStoHMS(true)}}
+                    td {{item.first_answers_in_20_40_seconds }} #[br] {{item.first_answers_in_20_40_seconds_percents}}%
+                    td {{item.first_answers_in_40_60_seconds }} #[br] {{item.first_answers_in_40_60_seconds_percents}}%
+                    td {{item.first_answers_in_60_more_seconds }} #[br]{{item.first_answers_in_60_more_seconds_percents}}%
+
                     td {{item.dialogues_transferred_to_branches}}
                     td {{item.chats_with_new_guests}}
-                    td {{item.operators_time_in_online}}
-                    td {{item.operators_time_in_chats}}
-                    td {{item.operators_time_in_1_chat}}
-                    td {{item.operators_time_in_2_chats}}
-                    td {{item.operators_time_in_3_chats}}
-                    td {{item.operators_time_in_4_and_more_chats}}
-                    td {{item.average_time_in_chats}}
-                    td {{item.operators_time_in_break}}
+                    td {{item.operators_time_in_online  | datetimeStoHMS(true)}}
+                    td {{item.operators_time_in_chats  | datetimeStoHMS(true)}}
+                    td {{item.operators_time_in_1_chat  | datetimeStoHMS(true)}}
+                    td {{item.operators_time_in_2_chats  | datetimeStoHMS(true)}}
+                    td {{item.operators_time_in_3_chats  | datetimeStoHMS(true)}}
+                    td {{item.operators_time_in_4_and_more_chats  | datetimeStoHMS(true)}}
+                    td {{item.average_time_in_chats | datetimeStoHMS(true)}}
+                    td {{item.operators_time_in_break  | datetimeStoHMS(true)}}
                     td {{item.operator_messages}}
                     td {{item.guest_messages}}
                     td {{item.excellent_ratings}}
@@ -149,11 +153,15 @@
     import {sortFields} from '@/mixins/mixins'
     import BtnSort  from '@/components/BtnSort'
     import {stats} from '@/mixins/mixins'
+    import {datetimeStoHMS} from '@/modules/datetime'
     export default {
         components:{
             BtnSort
         },
         mixins:[stats,sortFields],
+        filters:{
+            datetimeStoHMS
+        },
         props:{
 
         },
@@ -165,11 +173,22 @@
                 translateX:0,
                 maxStep : 2,
                 countStep:0,
+                operatorList:[]
             }
         },
         computed:{
-            sortFieldsList(){
-                    return this.bodyListFormat
+            employeesParams(){
+                return Object.assign({},this.params,{type:'employees'})
+            },
+            mergeitemList(){
+
+                if(this.$route.name==='statsAllBranch') return [...this.itemList,...this.operatorList]
+                return this.itemList
+
+            },
+            link(){
+                if(this.$route.name==='statsAll') return 'statsAllBranch'
+                if(this.$route.name==='statsAllBranch') return 'statsAllOperator'
             },
             showRight(){
                 return this.countStep < this.maxStep
@@ -179,31 +198,38 @@
             },
 
             bodyListFormat(){
-                return  this.sortFieldsListGet
+                return  this.bodyList
             },
-            itemListWidthBranchName(){
-                return this.bodyList.map(item=>{
-                    item.branchName=''
-                    let branch = this.$store.state.user.branchListAll.find(itemSub=>itemSub.id===item.branch_id)
-                    if(branch) {
-                        item.branchName = branch.title
-                        item.name = branch.title //base-filter-search сейчас ищет по name
-                    }
-                    item.operators = this.$store.getters['operators/all'].filter(itemSub=>itemSub.branches_ids.includes(item.branch_id))
-
-                    return item
-                })
-            },
-            sortFieldsListSet(){
-                return this.itemListWidthBranchName
-            }
         },
+        created(){
 
+
+
+
+        },
+        watch:{
+            employeesParams:{
+                handler(val){
+                    if(this.$route.name==='statsAllBranch' && val) this.getOperators()
+
+                },
+                immediate: true
+            },
+
+        },
         methods:{
-
+            getOperators(){
+                    if(this.last_days || (this.date_from && this.date_to)) {
+                        this.$http.get('statistic-get-by-params',{
+                            params:this.employeesParams
+                        }).then((response)=>{
+                            this.operatorList = response.data.data
+                        })
+                    }
+            },
             scrollPush(direction) {
                 let el = this.$refs.scrollPushEl.$el;
-                let step = Math.abs(window.innerWidth-el.offsetWidth)  / this.maxStep *-1
+                let step = Math.abs(window.innerWidth-el.offsetWidth-20)  / this.maxStep *-1
 
 
                 console.log(direction,this.countStep);
@@ -222,14 +248,18 @@
 
 <style lang="scss">
     .stats-table-line{
+
         &__table {
             table-layout: auto;
             transition:$glob-trans;
+
+            td {
+                white-space:nowrap;
+            }
         }
 
         &__thead {
             vertical-align:top;
-            min-width: 2120px;
 
         }
         &__th-wrap {

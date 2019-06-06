@@ -193,6 +193,9 @@ export default {
               this.routerName!=='statsOnceChat' &&
               this.routerName!=='statsService' &&
               this.routerName!=='statsBranchesDetail' &&
+              this.routerName!=='statsAll' &&
+              this.routerName!=='statsAllBranch' &&
+              this.routerName!=='statsAllOperator' &&
               this.routerName!=='statsOperatorsDetail'
           )
         },
