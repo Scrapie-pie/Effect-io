@@ -21,6 +21,41 @@ export default [{
     },
     children: [
         {
+            name: 'statsAll',
+            path: 'all',
+            meta:{
+                title:'Общая статистика'
+            },
+            component: PageStatsInner,
+            children: [
+                {
+                    name: 'statsAllBranch',
+                    path: ':id',
+                    component: PageStatsInner,
+                    meta:{
+                        title:'Статистика по отделам'
+                    },
+                },
+            ]
+        },
+        {
+            name: 'statsAllOperator',
+            path: 'employees/:id',
+            meta:{
+                title:'Статистика по сотруднику'
+            },
+            component: PageStatsInner,
+
+        },
+        {
+            name: 'statsAllBranch',
+            path: 'all',
+            meta:{
+                title:'Статистика по отделам'
+            },
+            component: PageStatsInner
+        },
+        {
             name: 'statsService',
             path: 'service',
             meta:{

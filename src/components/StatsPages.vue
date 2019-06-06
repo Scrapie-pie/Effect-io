@@ -6,7 +6,8 @@
                 th
                 th Получено диалогов
                 th
-                    |Процент от общего количества обращений (%) #[base-btn(:class="sortClass"  :icon="{box:true,textHidden:'Cортировка'}" padding="xs" color="success" @click="sortToggle") &#11015;]
+                    |Процент от общего количества обращений (%) #[btn-sort(:toggle="sortFieldsComp['sortPercentLarger']", @result="val=>sortFieldsSetSortField(val,'sortPercentLarger')")]
+
         tbody
             tr(v-for="(item, index) in itemList" :key="item.url")
                 td.stats-pages__url(:title="item.url"): a(:href="item.url" v-text="item.url" target="_blank")
@@ -23,38 +24,32 @@
 </template>
 
 <script>
-    import lodash_sortBy from 'lodash/sortBy'
-import {stats} from '@/mixins/mixins'
+    import BtnSort  from '@/components/BtnSort'
+
+import {stats,sortFields} from '@/mixins/mixins'
 
 export default {
-    mixins:[stats],
-
+    components:{
+        BtnSort
+    },
+    mixins:[stats,sortFields],
     data() {
         return {
-            sortPercentLarger:1,
+
         }
     },
     computed:{
-        sortClass(){
 
-
-            return (this.sortPercentLarger===-1)?'stats-pages__btn-rotate':''
-        },
-        itemListSort(){
-            return lodash_sortBy(
-                this.bodyList.map(item=>{
-                    item.name=item.url; //base-filter-search сейчас ищет по name
-
-                    return item
-                }),
-                [
-                    (item)=>item.dialogues_percents*this.sortPercentLarger,
-                ]
-            );
-        },
         bodyListFormat(){
-            return this.itemListSort
+            return  this.sortFieldsListGet
         },
+        sortFieldsListSet(){
+            return this.bodyList.map(item=>{
+                item.name=item.url; //base-filter-search сейчас ищет по name
+
+                return item
+            })
+        }
     },
     methods:{
         nextLink(item){
@@ -63,9 +58,6 @@ export default {
                 name:'all'
             })
         },
-        sortToggle(){
-            this.sortPercentLarger = -1*this.sortPercentLarger
-        }
     }
 }
 </script>

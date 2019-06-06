@@ -9,7 +9,18 @@
                     @get="(val)=>filterBranchIds=val"
                 )
 
-        thead: tr: th(v-for="(item, index) in headList" :key="index" v-html="item" )
+        thead
+            tr
+                th(v-for="(item, index) in headList" :key="index")
+                    .stats-branches__head
+                        span(v-html="item[0]")
+                        |&nbsp;
+                        btn-sort(
+                        v-if="item[1]",
+                        :toggle="sortFieldsComp[item[1]]",
+                        @result="val=>sortFieldsSetSortField(val,item[1])"
+                        )
+
         tbody
             tr(v-for="(item, index) in itemList" :key="item.id")
                 td
@@ -20,7 +31,7 @@
                         padding="xslr"
                         :router="{name:'statsBranchesDetail',params:{id:item.branch_id}}"
                     ) Детальная статистика
-                td(v-text="item.dialogues_requests || item.dialogues_accepted")
+                td(v-text="item.dialogues_requests")
                 template(v-if="!['dialogues_accepted','dialogues_requests'].includes(order)")
                     template(v-if="!['dialogues_accepted','dialogues_requests'].includes(order)")
 
@@ -41,14 +52,18 @@
 </template>
 
 <script>
+
+
     const FilterDropMenu =()=>import('@/components/FilterDropMenu')
-import {stats} from '@/mixins/mixins'
+    import BtnSort  from '@/components/BtnSort'
+import {stats,sortFields} from '@/mixins/mixins'
 
 export default {
     components:{
-        FilterDropMenu
+        FilterDropMenu,
+        BtnSort
     },
-    mixins:[stats],
+    mixins:[stats,sortFields],
     props:{
 
         filterBranchIdsOn:{
@@ -59,19 +74,23 @@ export default {
 
     data() {
         return {
+
             filterBranchIds:[]
         }
     },
     computed:{
+
         headList(){
             let list = [
-                'Название отдела',
-                '',
-                'Получено<br>диалогов',
-                'Принято/<br>пропущено диалогов',
-                'Средняя скорость<br>ответа оператора',
-                'Средняе время<br>ожидания в очереди',
-                'Оценки',
+                ['Название отдела','name'],
+                ['',''],
+                ['Получено<br>диалогов','dialogues_requests'],
+                ['Принято/<br>пропущено<br> диалогов','dialogues_accepted'],
+                ['Средняя скорость<br>ответа оператора','first_answer_average_speed'],
+                ['Средняе время<br>ожидания <br> в очереди','average_guest_time_in_queue'],
+
+
+                ['Оценки','excellent_ratings'],
             ]
 
             if(this.btnDetailHide) list.splice(1, 1)
@@ -94,7 +113,7 @@ export default {
             return list
         },
         bodyListFormat(){
-            return  this.setFilterList
+            return  this.sortFieldsListGet
         },
 
         itemListWidthBranchName(){
@@ -110,17 +129,39 @@ export default {
                 return item
             })
         },
-        setFilterList(){
+        sortFieldsListSet(){
 
             if(this.filterBranchIds.length) return this.itemListWidthBranchName.filter(item=>this.filterBranchIds.includes(item.branch_id))
             else return this.itemListWidthBranchName
         }
     },
+
+    methods:{
+        indexToName(index) {
+            return Object.keys(this.sortFieldsComp)[index]
+        },
+        setSortField(val,index){
+            this.$set(this.sort,'val',sortDefault().val)
+            this.$set(this.sort.val,index,val);
+            this.currentSort = {
+                'val':val,
+                'field':this.sort.field[index],
+
+            }
+        },
+        setCurrentFieldSort(index){
+
+        }
+    }
 }
 </script>
 
 <style lang="scss">
     .stats-branches{
+        &__head {
+            display:flex;
+            align-items:center;
+        }
         &__caption {
             @extend %row-flex;
             &-item {

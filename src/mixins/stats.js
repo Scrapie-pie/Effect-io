@@ -1,5 +1,6 @@
 import {datetimeStoHMS} from '@/modules/datetime'
 
+
 export default {
     filters:{
         format(value,type){
@@ -91,6 +92,7 @@ export default {
         return {
             csv:0,
             bodyList:[],
+
         }
     },
     watch:{
@@ -137,6 +139,7 @@ export default {
 
                 type:this.type,
                 csv:this.csv,
+                fake:0,
             }
         },
     },
@@ -145,12 +148,14 @@ export default {
     },
 
     methods:{
+
         get(){
             console.log('get requestData',this.requestData);
             if(this.last_days || (this.date_from && this.date_to)) {
 
                 this.$http.get('statistic-get-by-params',this.requestData).then((response)=>{
                     this.bodyList = response.data.data
+
                 })
             }
 
