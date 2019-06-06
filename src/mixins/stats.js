@@ -139,7 +139,7 @@ export default {
 
                 type:this.type,
                 csv:this.csv,
-              /*  fake:1,*/
+                fake:1,
             }
         },
     },
