@@ -13,12 +13,12 @@
             tr
                 th(v-for="(item, index) in headList" :key="index")
                     .stats-branches__head
-                        span(v-html="item")
+                        span(v-html="item[0]")
                         |&nbsp;
                         btn-sort(
-                            v-if="item",
-                            :toggle="compSort[index]",
-                            @result="val=>setSortField(val,index)"
+                        v-if="item[1]",
+                        :toggle="sortFieldsComp[item[1]]",
+                        @result="val=>sortFieldsSetSortField(val,item[1])"
                         )
 
         tbody
@@ -53,21 +53,17 @@
 
 <script>
 
-    const sortDefault = ()=> {return {
-        val:[true,false,false,false,false,false,false],
-        field:['name','','dialogues_requests','dialogues_accepted','first_answer_average_speed','average_guest_time_in_queue','excellent_ratings']
-    }}
-    console.log('sortDefault',sortDefault());
+
     const FilterDropMenu =()=>import('@/components/FilterDropMenu')
     import BtnSort  from '@/components/BtnSort'
-import {stats} from '@/mixins/mixins'
-    import lodash_sortBy from 'lodash/sortBy'
+import {stats,sortFields} from '@/mixins/mixins'
+
 export default {
     components:{
         FilterDropMenu,
         BtnSort
     },
-    mixins:[stats],
+    mixins:[stats,sortFields],
     props:{
 
         filterBranchIdsOn:{
@@ -78,28 +74,23 @@ export default {
 
     data() {
         return {
-            sortFields:['name','','dialogues_requests','dialogues_accepted','first_answer_average_speed','average_guest_time_in_queue','excellent_ratings'],
-            sort:sortDefault(),
-            currentSort:{
-                val:sortDefault().val[0],
-                field:sortDefault().field[0]
-            },
+
             filterBranchIds:[]
         }
     },
     computed:{
-        compSort(){
-            return this.sort.val
-        },
+
         headList(){
             let list = [
-                'Название отдела',
-                '',
-                'Получено<br>диалогов',
-                'Принято/<br>пропущено<br> диалогов',
-                'Средняя скорость<br>ответа оператора',
-                'Средняе время<br>ожидания <br> в очереди',
-                'Оценки',
+                ['Название отдела','name'],
+                ['',''],
+                ['Получено<br>диалогов','dialogues_requests'],
+                ['Принято/<br>пропущено<br> диалогов','dialogues_accepted'],
+                ['Средняя скорость<br>ответа оператора','first_answer_average_speed'],
+                ['Средняе время<br>ожидания <br> в очереди','average_guest_time_in_queue'],
+
+
+                ['Оценки','excellent_ratings'],
             ]
 
             if(this.btnDetailHide) list.splice(1, 1)
@@ -122,28 +113,7 @@ export default {
             return list
         },
         bodyListFormat(){
-            return  lodash_sortBy(
-                this.setFilterList.map(item=>{
-
-
-
-                    return item
-                }),
-                [
-                    (item)=>{
-
-                        console.log(item);
-                        if(this.currentSort.field==='name') {
-                            console.log(item[this.currentSort.field].length * (this.currentSort.val ? -1 : 1));
-                            return item[this.currentSort.field].length*(this.currentSort.val?-1:1);
-                        }
-                        else  {
-                            console.log(item[this.currentSort.field] * (this.currentSort.val ? -1 : 1));
-                            return item[this.currentSort.field]*(this.currentSort.val?-1:1)
-                        }
-                    }
-                ]
-            );
+            return  this.sortFieldsListGet
         },
 
         itemListWidthBranchName(){
@@ -159,7 +129,7 @@ export default {
                 return item
             })
         },
-        setFilterList(){
+        sortFieldsListSet(){
 
             if(this.filterBranchIds.length) return this.itemListWidthBranchName.filter(item=>this.filterBranchIds.includes(item.branch_id))
             else return this.itemListWidthBranchName
@@ -167,6 +137,9 @@ export default {
     },
 
     methods:{
+        indexToName(index) {
+            return Object.keys(this.sortFieldsComp)[index]
+        },
         setSortField(val,index){
             this.$set(this.sort,'val',sortDefault().val)
             this.$set(this.sort.val,index,val);

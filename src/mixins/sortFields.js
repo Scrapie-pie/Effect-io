@@ -13,12 +13,6 @@ export default {
         }
     },
     watch:{
-        sortFieldsDefault(val){
-            console.log('sortFieldsDefault',val);
-        },
-        sortFieldsSort(val){
-            console.log('sortFieldsSort',val);
-        },
         sortFieldsList:'sortFieldsSetName'
     },
     computed:{
@@ -31,7 +25,7 @@ export default {
                 [
                     (item)=>{
                         if(this.sortFieldsCurrentSort.field==='name') {
-                            console.log(item[this.sortFieldsCurrentSort.field].length * (this.sortFieldsCurrentSort.val ? -1 : 1));
+
                             return item[this.sortFieldsCurrentSort.field].length*(this.sortFieldsCurrentSort.val?-1:1);
                         }
                         else  {
@@ -44,6 +38,10 @@ export default {
         }
     },
     methods:{
+        sortFieldsToggleName(index) {
+            console.log(this.sortFieldsComp);
+            return this.sortFieldsComp[Object.keys(this.sortFieldsComp)[index]]
+        },
         sortFieldsSetName(sortFieldsList){ // once
             if(lodash_empty(sortFieldsList)) return
             if(!lodash_empty(this.sortFieldsDefault)) return

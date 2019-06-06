@@ -9,7 +9,15 @@
                     @get="(val)=>filterOperatorIds=val"
                 )
         thead(v-if="headList.length")
-            tr: th(v-for="(item, index) in headList" :key="index" v-html="item")
+            tr
+                th(v-for="(item, index) in headList" :key="index")
+                    span(v-html="item[0]")
+                    |&nbsp;
+                    btn-sort(
+                    v-if="item[1]",
+                    :toggle="sortFieldsComp[item[1]]",
+                    @result="val=>sortFieldsSetSortField(val,item[1])"
+                    )
         tbody
             tr(v-for="(item, index) in itemList" :key="item.id")
                 td
@@ -47,13 +55,15 @@
 <script>
 import branchesBr from '@/modules/branchesBr'
 const FilterDropMenu =()=>import('@/components/FilterDropMenu')
-import {stats} from '@/mixins/mixins'
+import {stats,sortFields} from '@/mixins/mixins'
+import BtnSort  from '@/components/BtnSort'
 
 export default {
     components:{
-        FilterDropMenu
+        FilterDropMenu,
+        BtnSort
     },
-    mixins:[stats],
+    mixins:[stats,sortFields],
     props:{
         filterBranchId:{
             type:Number,
@@ -75,12 +85,12 @@ export default {
     computed:{
         headList(){
             let list = [
-                'Имя',
-                '',
-                'Отдел',
-                'Получено<br>диалогов',
-                'Принято/<br>пропущено диалогов',
-                'Оценки',
+                ['Имя','name'],
+                ['',''],
+                ['Отдел',null],
+                ['Получено<br>диалогов','dialogues_requests'],
+                ['Принято/<br>пропущено диалогов','dialogues_accepted'],
+                ['Оценки','excellent_ratings'],
             ]
 
             if(this.btnDetailHide) list.splice(1, 1)
@@ -99,7 +109,7 @@ export default {
         },
 
         bodyListFormat(){
-            return  this.setFilterList
+            return  this.sortFieldsListGet
         },
         itemListWidthOperators(){
             return this.bodyList.map(item=>{
@@ -110,7 +120,7 @@ export default {
             })
         },
 
-        setFilterList(){
+        sortFieldsListSet(){
 
             if(this.filterBranchId) return this.itemListWidthOperators.filter(item=>item.operator.branches_ids.includes(this.filterBranchId))
             if(this.filterOperatorIdsOn) return this.itemListWidthOperators.filter(item=>this.filterOperatorIds.includes(item.operator.id))
