@@ -99,6 +99,40 @@
                             btn-sort(:toggle="sortFieldsComp['middling_ratings']", @result="val=>sortFieldsSetSortField(val,'middling_ratings')")
 
             tbody
+                tr(v-for="(item, index) in commonRow", :key="item.id")
+                    td
+                        router-link(
+                        v-if="item.id"
+                            :to="{name:link,params:{id:item.id}}"
+                        ) {{item.name}}
+                        span(v-else) {{item.name}}
+
+
+                    td {{item.dialogues_requests}}
+                    td {{item.dialogues_accepted}}
+                    td {{item.dialogues_missed}}
+                    td {{item.missed_average_time | datetimeStoHMS(true)}}
+                    td {{item.first_answer_average_speed | datetimeStoHMS(true)}}
+                    td {{item.first_answers_in_20_40_seconds }} #[br] {{item.first_answers_in_20_40_seconds_percents}}%
+                    td {{item.first_answers_in_40_60_seconds }} #[br] {{item.first_answers_in_40_60_seconds_percents}}%
+                    td {{item.first_answers_in_60_more_seconds }} #[br]{{item.first_answers_in_60_more_seconds_percents}}%
+
+                    td {{item.dialogues_transferred_to_branches}}
+                    td {{item.chats_with_new_guests}}
+                    td {{item.operators_time_in_online  | datetimeStoHMS(true)}}
+                    td {{item.operators_time_in_chats  | datetimeStoHMS(true)}}
+                    td {{item.operators_time_in_1_chat  | datetimeStoHMS(true)}}
+                    td {{item.operators_time_in_2_chats  | datetimeStoHMS(true)}}
+                    td {{item.operators_time_in_3_chats  | datetimeStoHMS(true)}}
+                    td {{item.operators_time_in_4_and_more_chats  | datetimeStoHMS(true)}}
+                    td {{item.average_time_in_chats | datetimeStoHMS(true)}}
+                    td {{item.operators_time_in_break  | datetimeStoHMS(true)}}
+                    td {{item.operator_messages}}
+                    td {{item.guest_messages}}
+                    td {{item.excellent_ratings}}
+                    td {{item.badly_ratings}}
+                    td {{item.middling_ratings}}
+
                 tr(v-for="(item, index) in itemList", :key="item.id")
                     td
                         router-link(
@@ -173,7 +207,8 @@
                 translateX:0,
                 maxStep : 2,
                 countStep:0,
-                operatorList:[]
+                operatorList:[],
+                commonRow:[]
             }
         },
         computed:{
@@ -195,8 +230,12 @@
                 return  this.sortFieldsListGet
             },
             sortFieldsListSet(){
-                return this.bodyList
-            }
+                this.commonRow = [this.bodyList[0]];
+
+                let list = this.bodyList.slice(1)
+                return list
+            },
+
         },
         created(){
 
@@ -210,7 +249,10 @@
                     if(this.$route.name==='statsAllBranch' && val) {
 
 
-                        this.getOperators()
+
+                        setTimeout(()=>{
+                            this.getOperators()
+                        },250)
                     }
 
                 },

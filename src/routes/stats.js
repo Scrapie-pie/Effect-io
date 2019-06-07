@@ -33,7 +33,7 @@ export default [{
                     path: ':id',
                     component: PageStatsInner,
                     meta:{
-                        title:'Статистика по отделам'
+                        title:'Статистика по отделу'
                     },
                 },
             ]
@@ -47,14 +47,7 @@ export default [{
             component: PageStatsInner,
 
         },
-        {
-            name: 'statsAllBranch',
-            path: 'all',
-            meta:{
-                title:'Статистика по отделам'
-            },
-            component: PageStatsInner
-        },
+
         {
             name: 'statsService',
             path: 'service',

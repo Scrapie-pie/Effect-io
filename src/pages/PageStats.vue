@@ -16,12 +16,12 @@
 
                     :to='{name:"statsAll"}'
                     ) Общая статистика
-                li.page-stats__item
+                //li.page-stats__item
                     router-link.page-stats__link(
 
                         :to='{name:"statsBranches"}'
                     ) Статистика по отделам
-                li.page-stats__item
+                //li.page-stats__item
                     router-link.page-stats__link(
                         :to='{name:"statsOperators"}'
                     ) Статистика по сотрудникам
@@ -70,14 +70,15 @@
         title(){
 
             let titleHead = this.$route.meta.title
-            console.log('title PageSats',titleHead);
-            if(this.routerName==='statsBranchesDetail') {
-
+            console.log('title PageSats',this.routerName,titleHead);
+            if(this.routerName==='statsBranchesDetail' || this.routerName==='statsAllBranch') {
+                console.log(this.branchListAll);
                 let branch = this.branchListAll.find(item=>item.id===+this.$route.params.id);
+                console.log(branch);
 
                 if (branch) return titleHead+': '+branch.title
             }
-            if(this.routerName==='statsOperatorsDetail') {
+            if(this.routerName==='statsOperatorsDetail'  || this.routerName==='statsAllOperator') {
                 let operator = this.$store.getters['operators/all'].find(item=>item.id===+this.$route.params.id);
 
                 if(operator) return titleHead+': '+operator.fullName
