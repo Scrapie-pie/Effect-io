@@ -42,12 +42,12 @@
             li Отделов в команде: {{$store.state.user.branchListAll.length}}
             li Сотрудников в команде: {{$store.state.operators.all.length}}
 
-        section.page-stats-inner__main(v-show="last_days || date_from")
+        section.page-stats-inner__main.no-mw(v-show="last_days || date_from")
             component(
                 :is="activeComponent",
                 v-bind="payload"
                 v-on="listeners"
-            )
+                )
 
 </template>
 
@@ -61,7 +61,7 @@ const StatsPages = ()=> import ('@/components/StatsPages')
 const StatsResult = ()=> import ('@/components/StatsResult')
 const StatsService = ()=> import ('@/components/StatsService')
 const StatsOnceChat = ()=> import ('@/components/StatsOnceChat')
-
+const StatsAll = ()=> import ('@/components/StatsAll')
 
 import FilterDropMenu from '@/components/FilterDropMenu'
 
@@ -77,19 +77,14 @@ export default {
         StatsPages,
         StatsService,
         StatsOnceChat,
-        FilterDropMenu
+        FilterDropMenu,
+        StatsAll
     },
     mixins:[filterLastDaysAndCalendar],
     data() {
         return {
-
             filterSearchResult:[],
             itemList:[],
-
-
-
-
-
             branch:{
                 title:'Все отделы',
                 id:null,
@@ -98,6 +93,8 @@ export default {
     },
     computed:{
         activeComponent(){
+            if(this.routerName==='statsAllBranch') return 'statsAll';
+            if(this.routerName==='statsAllOperator') return 'statsAll';
             if(this.routerName==='statsOperatorsDetail') return 'statsResult'
             if(this.routerName==='statsBranchesDetail') return 'statsResult'
             return this.routerName
@@ -130,8 +127,12 @@ export default {
                 filterList:this.filterSearchResult,
             };
 
+            if(this.routerName==='statsAllBranch') obj.branch_id=this.branch_id
+            if(this.routerName==='statsAllOperator') obj.user_id=this.user_id
+
             if(this.routerName==='statsOperatorsDetail') obj.user_id=this.user_id
             if(this.routerName==='statsBranchesDetail') obj.branch_id=this.branch_id
+
             if(this.routerName==='statsOperators') obj.filterBranchId=this.branch.id
             if(this.routerName==='statsBranches' ||
                 this.routerName==='statsPages' ||
@@ -156,8 +157,13 @@ export default {
         type(){
             if(this.routerName==='statsPages') return 'pages';
 
+            if(this.routerName==='statsAll') return 'branches';
+            if(this.routerName==='statsAllBranch') return 'branch';
+            if(this.routerName==='statsAllOperator') return 'employee';
+
             if(this.routerName==='statsService') return 'top';
             if(this.routerName==='statsBranches') return 'branches';
+            if(this.routerName==='statsAll') return 'branches';
             if(this.routerName==='statsBranchesDetail') return 'branch';
             if(this.routerName==='statsOperators') return 'employees';
             if(this.routerName==='statsOperatorsDetail') return 'employee';
@@ -187,6 +193,9 @@ export default {
               this.routerName!=='statsOnceChat' &&
               this.routerName!=='statsService' &&
               this.routerName!=='statsBranchesDetail' &&
+              this.routerName!=='statsAll' &&
+              this.routerName!=='statsAllBranch' &&
+              this.routerName!=='statsAllOperator' &&
               this.routerName!=='statsOperatorsDetail'
           )
         },
@@ -228,6 +237,12 @@ export default {
             //padding-right:calc-em(15);
             padding-bottom:calc-em(45);
            // min-width:1100px;
+
+
+
+        }
+        &__main.no-mw {
+            max-width:100%;
         }
     }
 </style>
