@@ -12,7 +12,7 @@
                ...Object.entries(emojisBase['Places']),
                ...Object.entries(emojisBase['Symbols']),
        ]
-    console.log(emojisBaseAll);
+
     import '@/scss/vendors/gl-16-emoji.css'
     import lodash_split from 'lodash/split'
     import {getCaretPosition} from '@/mixins/mixins'
@@ -33,11 +33,35 @@ export default {
     },
     watch:{
         text(val){
-            this.$emit('getText',val)
+            this.$emit('getText',val);
+
+            setTimeout(()=>{
+                this.placeCaretAtEnd(this.$el)
+            },100)
+
+
+
+
         }
     },
     methods:{
-
+        placeCaretAtEnd(el) {
+            el.focus();
+            if (typeof window.getSelection != "undefined"
+                && typeof document.createRange != "undefined") {
+                var range = document.createRange();
+                range.selectNodeContents(el);
+                range.collapse(false);
+                var sel = window.getSelection();
+                sel.removeAllRanges();
+                sel.addRange(range);
+            } else if (typeof document.body.createTextRange != "undefined") {
+                var textRange = document.body.createTextRange();
+                textRange.moveToElementText(el);
+                textRange.collapse(false);
+                textRange.select();
+            }
+        }
     },
     mixins:[getCaretPosition],
     render(h){
@@ -67,9 +91,7 @@ export default {
             }
             return item
         })
-        console.log(this.text);
 
-        console.log(splitStr);
 
 
         const Tag = this.tag
@@ -77,15 +99,16 @@ export default {
             splitStr = splitStr.join('');
             return (<Tag class="input-emoji" domPropsInnerHTML={splitStr}></Tag>)
         }
-        else return (<div  class="input-emoji" id="contenteditable" contenteditable="true" placeholder="Enter - отправить сообщение, Shift+Enter - новая строка.">{splitStr}</div>)
+        else return (<pre  class="input-emoji" id="contenteditable" contenteditable="true" placeholder="Enter - отправить сообщение, Shift+Enter - новая строка.">{splitStr}</pre>)
     }
 }
 </script>
 
 <style lang="scss">
 .input-emoji  {
-
+    font-family:inherit;
     cursor:text;
+    margin:0;
     img {vertical-align:middle}
     &[contenteditable=true]:empty:before {
         content: attr(placeholder);
