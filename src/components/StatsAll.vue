@@ -99,13 +99,9 @@
                             btn-sort(:toggle="sortFieldsComp['middling_ratings']", @result="val=>sortFieldsSetSortField(val,'middling_ratings')")
 
             tbody
-                tr(v-for="(item, index) in commonRow", :key="item.id")
+                tr(v-for="(item, index) in commonRow", :key="index")
                     td
-                        router-link(
-                        v-if="item.id"
-                            :to="{name:link,params:{id:item.id}}"
-                        ) {{item.name}}
-                        span(v-else) {{item.name}}
+                        | {{item.name}}
 
 
                     td {{item.dialogues_requests}}
@@ -230,8 +226,9 @@
                 return  this.sortFieldsListGet
             },
             sortFieldsListSet(){
-                this.commonRow = [this.bodyList[0]];
-
+                if(!this.bodyList.length) return []
+                if(this.bodyList.length) this.commonRow = [this.bodyList[0]];
+                console.log('commonRow',this.commonRow);
                 let list = this.bodyList.slice(1)
                 return list
             },
@@ -267,7 +264,7 @@
                             params:this.employeesParams
                         }).then((response)=>{
                             this.bodyList = [...this.bodyList,...response.data.data]
-
+                            //document.getElementById('layoutTableContent').update()
                         })
                     }
             },
@@ -292,7 +289,7 @@
 
 <style lang="scss">
     .stats-table-line{
-
+        overflow:hidden;
         &__table {
             table-layout: auto;
             transition:$glob-trans;

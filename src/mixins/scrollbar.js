@@ -8,7 +8,7 @@ export default {
                 valPx = this.scrollerPxToPercent(scrollerEl, percent);
             scrollerEl.scrollTop = valPx;
             scrollbar.update()
-            //console.log('scrollerEl',scrollerEl,valPx);
+            console.log('scrollerEl',scrollerEl,valPx);
         },
         scrollerPxToPercent(scroller,scrollTop){
             let height = scroller.clientHeight,

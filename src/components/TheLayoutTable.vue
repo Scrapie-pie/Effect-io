@@ -7,6 +7,7 @@
         scroll-bar.layout-table__content(
             v-if="$slots.default" ,
             @ps-scroll-down="val=>$emit('scrolldown',val)"
+            ref="layoutTableContent"
         )
             vnode(v-for="(item,index) in $slots.default", :node="item" :key="index").layout-table__max-width
                 slot
@@ -43,3 +44,15 @@
     }
 }
 </style>
+<script>
+    import {scrollbar } from '@/mixins/mixins'
+export default {
+    mixins:[scrollbar],
+    watch:{
+        '$route' (to, from) {
+            console.log('layoutTableContent',this.$refs.layoutTableContent);
+            this.scrollbarScrollerPush(this.$refs.layoutTableContent,0)
+        },
+    }
+}
+</script>
