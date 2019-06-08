@@ -4,6 +4,10 @@
             thead.stats-table-line__thead
                 tr
                     th
+                        base-radio-check(
+                        v-if="$route.name==='statsAllBranch'"
+                        v-model="by_dates" name="by_dates"
+                        ) По датам
 
                     th
                         .stats-table-line__th-wrap
@@ -243,7 +247,8 @@
         watch:{
             employeesParams:{
                 handler(val){
-                    if(this.$route.name==='statsAllBranch' && val) {
+                    if(this.$route.name==='statsAllBranch' && val
+                        && (this.by_dates===0 && this.last_days || (this.date_from && this.date_to))) { //Иначе запрос 2 раза иногда вызывался и создавал дубликат
 
 
 
@@ -259,14 +264,14 @@
         },
         methods:{
             getOperators(){
-                    if(this.last_days || (this.date_from && this.date_to)) {
+                console.log('getOperators');
                         this.$http.get('statistic-get-by-params',{
                             params:this.employeesParams
                         }).then((response)=>{
                             this.bodyList = [...this.bodyList,...response.data.data]
                             //document.getElementById('layoutTableContent').update()
                         })
-                    }
+
             },
             scrollPush(direction) {
                 let el = this.$refs.scrollPushEl.$el;

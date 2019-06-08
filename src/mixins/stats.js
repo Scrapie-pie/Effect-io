@@ -92,7 +92,7 @@ export default {
         return {
             csv:0,
             bodyList:[],
-
+            by_dates:0,
         }
     },
     watch:{
@@ -139,7 +139,7 @@ export default {
 
                 type:this.type,
                 csv:this.csv,
-                fake:0,
+                by_dates:this.by_dates
             }
         },
     },

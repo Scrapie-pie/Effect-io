@@ -59,7 +59,7 @@ export default {
     },
     computed:{
         selectedDayStore(){
-            console.log('selectedDayStore',this.$store.state.filterSelect.last_days[0]);
+
             if(this.$store.state.filterSelect.last_days[0]==-1) return this.$store.state.filterSelect.calendar
             else return []
 
@@ -138,7 +138,7 @@ export default {
         },
         selectedDayStore:{
             handler(val,oldval){
-                console.log('selectedDayStore',val);
+
                 if(!val.length) return
                 if(!this.selectedDayStoreOnce) return
 

@@ -40,7 +40,7 @@
     import '@/scss/vendors/gl-32-emoji.css'
     import {getCaretPosition} from '@/mixins/mixins'
 
-    console.log(EmojiPicker,'EmojiPicker');
+
 
     export default {
         components: {

@@ -104,7 +104,7 @@
                 deep: true
             },
             status(val,valOld){
-                console.log('status',val,valOld);
+
 
 
 
@@ -120,7 +120,7 @@
                         this.$store.commit('user/unreadUpdate',['unprocessed','clear'])
                         this.$store.commit('visitors/newList',{field:'process',val:{list:[],count:0}})
                         this.$store.commit('visitors/newList',{field:'self',val:{list:[],count:0}})
-                        console.log('statusSSS');
+
                         setTimeout(()=>{
                             if(this.viewModeChat==='process' || this.viewModeChat==='visitors')this.$router.push({name:'processAll'});
                         },200)

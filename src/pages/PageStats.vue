@@ -70,11 +70,11 @@
         title(){
 
             let titleHead = this.$route.meta.title
-            console.log('title PageSats',this.routerName,titleHead);
+
             if(this.routerName==='statsBranchesDetail' || this.routerName==='statsAllBranch') {
-                console.log(this.branchListAll);
+
                 let branch = this.branchListAll.find(item=>item.id===+this.$route.params.id);
-                console.log(branch);
+
 
                 if (branch) return titleHead+': '+branch.title
             }

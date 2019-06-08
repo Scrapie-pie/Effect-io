@@ -33,7 +33,7 @@
         },
         watch:{
             isAuth(val){
-                console.log('isAuth window.onbeforeunload',val);
+
 
 
 
