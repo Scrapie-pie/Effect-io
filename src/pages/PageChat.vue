@@ -104,7 +104,7 @@
         methods:{
             messageSubscribeSocket(to,from){
 
-                console.log('messageSubscribeSocket',this);
+
                 if(this.viewModeChat==='visor' && !this.$store.getters['user/isRole'](['admin','owner','operatorSenior'])) return this.$router.push({name: 'processAll'})
 
                 if(['search','visor'].includes(this.viewModeChat)) {

@@ -136,9 +136,7 @@
             uploadFileList(val){
 
             },
-            bufferingSend(val){
-                console.log('bufferingSend',val);
-            }
+
         },
 
         data() {

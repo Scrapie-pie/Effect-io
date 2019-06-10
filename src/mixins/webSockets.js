@@ -235,7 +235,7 @@ export default {
 
                 if(findIndex !==-1){
                     this.$set(itemList[findIndex],'name',val.name)
-                    console.log(itemList[findIndex].name);
+
                 }
 
                 this.$store.commit('visitors/newList',{field:listName,val:{list:itemList}})
@@ -332,14 +332,14 @@ export default {
 
         },
         "update-employees"(val) {
-            console.log('update-employees',val);
+
             this.$store.commit('operators/all',val)
             let find = val.find((item)=>item.id===this.$store.state.user.profile.id)
             if(find) {
                 if(!find.is_common_chat && this.viewModeChat==='common') this.$router.push({name:'processAll'})
 
 
-                console.log('user/profileUpdate', find);
+
                 this.$store.commit('user/profileUpdate',find)
                 if(!this.$store.getters['user/isRole'](['admin','owner','operatorSenior']) && this.$route.path.includes('service')){
                     this.$router.push({name:'processAll'})

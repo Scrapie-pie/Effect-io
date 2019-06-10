@@ -78,7 +78,7 @@ export default {
             if((this.showItemLength < this.itemListCount) || this.itemListCount===0) {
 
                 this.$http.get(this.apiMethod,this.requestData).then(({data})=>{
-                    console.log('getItemList',this.requestData.params);
+
                     this.getItemListStart=true;
                     if (data.data.count) {
 

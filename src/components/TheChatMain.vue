@@ -232,7 +232,7 @@
             },
         },
         created() {
-            console.log('created $on messageAd');
+
 
 
 
@@ -367,7 +367,7 @@
 
                 this.historyMessageLoadStart=false;
                 this.messageRun=false;
-                console.log('this.messageList',this.messageList);
+
                 return this.$http.get('message/history', {params}).then(({data})=>{
 
                     this.historyMessageLoadStart=true;

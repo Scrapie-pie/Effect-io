@@ -25,7 +25,6 @@
 
             p.base-people__text(
                 v-if="text"
-
             )
                 input-emoji(type="text" :text="text")
 

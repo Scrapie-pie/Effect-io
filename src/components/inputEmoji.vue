@@ -34,7 +34,8 @@ export default {
     watch:{
         text(val){
             this.$emit('getText',val);
-
+            console.log('text',val);
+            if (this.type==='text') return
             setTimeout(()=>{
                 this.placeCaretAtEnd(this.$el)
             },100)
@@ -76,7 +77,7 @@ export default {
 
                 return itemFind[1]==item
             })
-            console.log(find);
+
             if(find) {
                 if(!Array.isArray(find)) return item
             } else {

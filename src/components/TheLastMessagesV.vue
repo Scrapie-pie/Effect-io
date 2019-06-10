@@ -127,7 +127,7 @@
                 }
             },
             filterSearchResult(val){
-                console.log('filterSearchResult',val);
+
                 if (val.length && (this.$route.name==="processAll" || this.$route.name==="messageAll")) {
                     if (val[0].rootLinkOptions.link)  {
                         this.$router.push(val[0].rootLinkOptions.link)
@@ -182,7 +182,7 @@
             },1000)
         },*/
         beforeDestroy() {
-            console.log('beforeDestroy')
+
             clearInterval(this.timerNowId)
         },
         methods:{
@@ -302,12 +302,12 @@
                 this.scrollbarScrollerPush(this.$refs.scrollbar,0)
             },
             getItemListUnique(){
-                console.log('getItemListUnique');
+
                 let itemListStore = this.itemListStore.slice();
 
                 let itemListNew= []
                 let itemListOld= []
-                console.log(itemListStore,this.itemList);
+
                 this.itemList.filter((item)=>{
                     let findIndex = this.itemListStore.findIndex((itemStore)=>itemStore.uuid+itemStore.site_id === item.uuid+item.site_id);
                     if (findIndex !== -1) {
