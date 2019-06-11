@@ -13,7 +13,7 @@
             slot="control",
             name="add" color="success-dark" size="lg" :router="{name:'settingsProfile',query:{add:'operator'}}"
         ) Добавить сотрудника
-
+        base-wait(name="pageTeam")
         base-table
             thead
                 tr

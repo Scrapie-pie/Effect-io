@@ -1,7 +1,8 @@
 <template lang="pug">
-    #app.page__app(:class="{'spinner spinner-main-page':$store.state.loading}")
+    #app.page__app
         the-header.page__header.page__padding
         main.page__main
+            base-wait(name="pageMain")
             transition(name="fade" mode="out-in")
                 router-view.page__view.page__padding
         the-popup
@@ -16,10 +17,12 @@
     import ThePopup from "@/components/ThePopup";
 
     import {webSockets,routerPushProcessAllOrItemFirst } from '@/mixins/mixins'
+    import AppSpinner from "./components/BaseWait";
 
 
     export default {
         components: {
+            AppSpinner,
             TheHeader,
             ThePopup
         },
@@ -65,19 +68,63 @@
         },
         methods: {
 
+            startEndLoader(url,action) {
+
+                let mapLoaders = {
+                    accountAuth:['login'],
+                    pageMain:[
+                        'chat-get-all',
+
+                    ],
+                    chatMainBody:['message-history'],
+                    lastMessages:[
+                        'guest-list',
+                        'employee-company-list'
+                    ],
+                    clientInfo:['guest-info','guest-update-by-operator'],
+                    pageVisitors:['guest-list','guest-take'],
+                    pageTeam:['employee-company-list','user-update'],
+                    pageStats:['statistic-get-by-params'],
+                    phrasesReady:['snippet-read','snippet-update','snippet-delete'],
+                    uploadAvatar:['upload-avatar'],
+                    pageSettingsApp:['company-get-settings'],
+                    pageSettingsProfile:['user-password-update','user-update'],
+                    uploadFileList:['upload-message-file'],
+                    btnGuestRedirect:['guest-redirect'],
+                    guestRedirect:['guest-redirect'],
+                    chatMain:[
+                        'message-send',
+                        'guest-contacts-request',
+                        'co-browsing-request',
+                        'guest-blocking',
+                        'guest-transfer-to-branch-request'
+                    ],
+                    userStatus:['operator-online-update'],
+                    header:['one-time-chat-generate-code']
+
+                }
+
+                for (let key in mapLoaders) {
+                    if(mapLoaders[key].some(item=>item===url)) this.$wait[action](key);
+                }
+            },
+
             httpErrors(){
 
+
+
+
+
                 this.$http.interceptors.request.use( (config)=> {
+                    this.startEndLoader(config.url,'start')
 
-                    if(
-                        config.url.includes('message/operator-mark-as-read') ||
-                        config.url.includes('message/save')
-                    ) {
 
-                    }
-                    else {
-                        this.$store.commit('loading',true)
-                    }
+
+
+
+
+
+
 
 
                     return config;
@@ -88,10 +135,16 @@
 
 
                 this.$http.interceptors.response.use((resp)=>{
-                    this.$store.commit('loading',false)
+
+                    this.startEndLoader(resp.config.url.split('?')[1],'end')
+
                     return resp
                 },(err)=> {
-                    this.$store.commit('loading',false)
+                    console.log(err);
+
+                    this.startEndLoader(err.config.url.split('?')[1],'end')
+                    //this.$wait.end(err.config.url.split('?')[0]);
+                    //this.$store.commit('loading',false)
                 /*    console.table(err);
                     console.log(err.config);
                     console.log(err.response);
@@ -205,6 +258,7 @@
             display:flex;
             flex:1 0 auto;
             min-width:0;//для шаблонов, чтобы работало text-overflow: ellipsis;
+            position:relative;
         }
 
         &__scrollbar {

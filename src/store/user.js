@@ -119,18 +119,12 @@ export default {
             dispatch('getSiteCompanyList');
             dispatch('operators/getAll',null,{root:true});
             dispatch('phrases/getItemList',null,{root:true});
-        /*    dispatch('visitors/getAll',null,{root:true}); //Todo лишний или нет
-            dispatch('visitors/getProcess',null,{root:true});*/
-            /*dispatch('visitors/getSelf',null,{root:true}).then((data)=>{
-                console.log('getSelf',data);
-            });*/
+
 
 
         },
         logout({commit}) {
 
-            //return new Promise((resolve) => {
-                // calculate when token expires
 
 
                 commit('resetState')
@@ -139,8 +133,7 @@ export default {
                 commit('visitors/resetState', null, { root: true })
                 commit('logout')
                 console.log('logout resolve');
-                //resolve();
-            //});
+
 
 
         },

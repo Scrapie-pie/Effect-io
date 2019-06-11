@@ -1,6 +1,7 @@
 <template lang="pug">
     figure.upload-file-list
         ul.upload-file-list__list
+
             li.upload-file-list__item(v-for="(item, index) in itemList" :key="item.link")
                 .upload-file-list__preview
                     base-avatar(
@@ -13,6 +14,8 @@
                     @click="$emit('itemRemove',index)"
                     title="Удалить"
                 ).upload-file-list__close
+            li.upload-file-list__item
+                base-wait(name="uploadFileList" position="r" size="md")
 </template>
 
 <script>
@@ -28,6 +31,9 @@ export default {
     },
     computed:{
 
+
+    },
+    created(){
 
     },
     methods:{
@@ -50,9 +56,11 @@ export default {
 
 <style lang="scss">
     .upload-file-list{
+        margin-top:calc-em(10);
         &__item {
             display:inline-flex;
             align-items:center;
+            vertical-align:middle;
         }
         &__preview {
             margin-right:calc-em(10);

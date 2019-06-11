@@ -1,6 +1,7 @@
 <template lang="pug">
     form.user-status(@change="operatorStatusUpdate")
         .user-status__avatar-wrap
+            base-wait(name="userStatus")
             //|я {{profile.first_name}}
             base-avatar.user-status__avatar(:url="profile.photo")
 

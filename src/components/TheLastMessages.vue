@@ -9,6 +9,8 @@
                 )
             scroll-bar.last-messages__scrollbar(ref="scrollbar")
                 ul.last-messages__list
+                    li.last-messages__item
+                        base-wait(name="lastMessages" position="r")
                     li.last-messages__item(
                         v-for="(item, index) in filterSearchResult",
                         :key="item.id",

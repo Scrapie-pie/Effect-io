@@ -1,5 +1,6 @@
 <template lang="pug">
     scroll-bar.client-info
+        base-wait(name="clientInfo")
         base-people(
             :name="info.name" ,
             :text="clientInfoContacts",

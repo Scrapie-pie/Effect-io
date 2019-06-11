@@ -7,6 +7,10 @@ import router from '@/routes/router'
 import store from './store/store'
 import axios from '@/modules/axios'
 
+import VueWait from 'vue-wait'
+
+Vue.use(VueWait)
+
 import clicky from 'vue-clicky'
 clicky({
     shift:true, //default: false - clicky won't trigger unless shift is pressed
@@ -56,6 +60,7 @@ import BaseNoFound from "@/components/BaseNoFound";
 import BaseTable from "@/components/BaseTable";
 
 import BaseFilterSearch from '@/components/FilterSearch'
+import BaseWait from '@/components/BaseWait'
 
 Vue.component("vnode", {
     functional: true,
@@ -87,6 +92,7 @@ Vue.component('base-no-found', BaseNoFound);
 
 Vue.component('base-filter-search',BaseFilterSearch);
 Vue.component('base-table',BaseTable);
+Vue.component('base-wait',BaseWait);
 
 
 /*let requireComponent = require.context('@/src/components/', true, /^Base[A-Z]/) //todo не работает(
@@ -131,6 +137,17 @@ window.showError = function (error) {
 }
 
 new Vue({
+    wait: new VueWait({
+        useVuex: true, // You must pass this option `true` to use Vuex
+        vuexModuleName: 'wait',      // Vuex module name
+
+        registerComponent: true,     // Registers `v-wait` component
+        componentName: 'v-wait',     // <v-wait> component name, you can set `my-loader` etc.
+
+        registerDirective: true,     // Registers `v-wait` directive
+        directiveName: 'wait',       // <span v-wait /> directive name, you can set `my-loader` etc.
+
+    }),
     router,
     store,
     render: h => h(App)

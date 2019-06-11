@@ -108,6 +108,7 @@
         &__main{
             width:70%;
             margin:0 auto;
+            position:relative;
         }
 
 

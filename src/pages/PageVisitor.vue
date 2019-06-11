@@ -19,6 +19,8 @@
         div(slot="control" v-if="itemListCount")
                 |На странице показано {{showItemLength}} из {{ itemListCount}}
 
+
+        base-wait(name="pageVisitors")
         base-table(v-if="showItemLength" )
             thead
                 tr

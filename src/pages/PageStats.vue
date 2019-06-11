@@ -35,6 +35,7 @@
                             :to='{name:"statsOnceChat"}'
                         ) Одноразовые чаты
         section.page-stats__main
+            base-wait(name="pageStats")
             h1.page-stats__title(v-text="title")
             router-view
 </template>
@@ -134,7 +135,7 @@
         &__main {
             flex:1;
             padding-left:calc-em(15);
-
+            position:relative;
             height:100%;
 
         }

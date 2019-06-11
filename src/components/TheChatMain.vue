@@ -1,15 +1,18 @@
 <template lang="pug">
     article.chat-main
+        base-wait(name="chatMain")
         the-chat-main-header.chat-main__header(v-if!="!['search','visor','common'].includes(viewModeChat)")
         .chat-main__header(v-if="['search','visor'].includes(viewModeChat)")
             h1.chat-main__header-title Просмотр диалога: {{chat_id}}
 
+
+
+
         scroll-bar.chat-main__body(ref="scrollbar", @ps-scroll-up="scrollLoad", :class="{'chat-main__body_simple':['search','visor'].includes(viewModeChat)}")
-            ul.chat-main__list
-                //li.chat-main__item.chat-main__item_history_more
-                    base-btn(theme="link", @click="historyMessageLoad") Загрузить более раннюю история общения с посетителем
 
-
+            ul.chat-main__list()
+                li.chat-main__item
+                    base-wait(name="chatMainBody" position="r")
                 li.chat-main__item(v-for="(days, daysIndex) in messageGroupDaysReverse",:key="days.index")
                     time.chat-main__date {{days[0]}}
                     ul.chat-main__messages
@@ -232,7 +235,7 @@
             },
         },
         created() {
-
+            console.log('created $on messageAd');
 
 
 
@@ -301,10 +304,10 @@
             transferCancel(to_id){
                 let data = this.httpParams.params
                 data.to_id = to_id
-                this.$http.put('chat-room-user/transfer-cancel',data)
+                this.$http.put('guest-transfer-cancel',data)
             },
             invitedCancel(user_id){
-                this.$http.post('chat-room-user/cancel-invitation',{
+                this.$http.post('chat-room-user-cancel-invitation',{
                     room_id:this.roomActiveId,
                     user_id
                 })
@@ -316,15 +319,12 @@
                     this.$store.commit('roomActive',[{room_id:this.$store.state.user.profile.common_room_id}])
                     return
                 }
+                this.$http.get('chat-room-user-all',this.httpParams).then(({data})=>{
+                    data.data.visitor =  this.httpParams.params;
+                    //console.log(this.httpParams);
+                    this.$store.commit('roomActive',data.data)
 
-                if (this.httpParams) {
-                    this.$http.get('chat-room-user/all', this.httpParams).then(({data}) => {
-                        data.data.visitor = this.httpParams.params;
-                        //console.log(this.httpParams);
-                        this.$store.commit('roomActive', data.data)
-
-                    })
-                }
+                })
             },
             scrollLoad(e){
 
@@ -382,6 +382,7 @@
                     //console.log('messages',messages);
                     this.messageList.push(...messages);
                     //console.log('this.messageList.push',this.messageList);
+                    //this.$wait.end('message-history');
                 })
             }
         },
@@ -400,10 +401,15 @@
         $color_bg_date:glob-color('light');
         $color_bg_message:glob-color('info-lighten');
 
+        position:relative;
         display:flex;
         flex-flow:column;
         height:100%;
         min-width:0;//для шаблонов, чтобы работало text-overflow: ellipsis;
+
+        &__spinner {
+            height:100%;
+        }
 
         &__header-title {
             @extend %h4;
@@ -411,6 +417,8 @@
         }
 
         &__item {
+            &.spinner {height:50px;}
+
             padding-top:calc-em(25);
 
             &_history_more {text-align:center}

@@ -1,5 +1,6 @@
 <template lang="pug">
     header.the-header(v-if="headerShow")
+        base-wait(name="header")
         user-status.the-header__user-status
         nav-main.the-header__nav-main(:item-list="canalList")
         .the-header__code

@@ -1,9 +1,10 @@
 <template lang="pug">
     form.the-redirect-client(@submit.prevent="submit" v-if="viewModeChat==='visitors'")
+        base-wait(name="guestRedirect")
         fieldset
             legend Перенаправление клиента
             base-field.the-redirect-client__base-field(placeholder="Введите URL" name="redirect" v-model="url" maxLength="2048")
-            base-btn(type="submit" color="info-dark" ) Перенаправить
+            base-btn(type="submit" color="info-dark" wait-name="btnGuestRedirect") Перенаправить
 </template>
 
 <script>
@@ -37,6 +38,7 @@ export default {
         $color_bg:glob-color('info-lighten');
         background-color:$color_bg;
         padding:calc-em(15);
+        position:relative;
 
 
         &__base-field {

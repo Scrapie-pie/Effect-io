@@ -79,10 +79,13 @@
                             @click.prevent="showGifs=true"
                         )
                     li.chat-main-footer__button.chat-main-footer__button_send
+
                         base-btn.chat-main-footer__send(
+
                             @click="send"
                             :icon="{name:'send',textHidden:'Отправить сообщение'}"
                         )
+
 </template>
 
 <script>
@@ -136,7 +139,9 @@
             uploadFileList(val){
 
             },
-
+            bufferingSend(val){
+                console.log('bufferingSend',val);
+            }
         },
 
         data() {
@@ -233,15 +238,14 @@
             getPhrasesSelectText(val){
                 autosize.destroy(this.$refs.chatInput);
                 this.message=val;
-
+                this.$refs.chatInput.focus()
 
                 this.textWidthSmiles='';
                 this.textWidthTagToText()
                 setTimeout(()=>{
+
                     this.textWidthSmiles = val
-                    setTimeout(()=>{
-                        this.$refs.chatInput.focus()
-                    },100)
+
                 },1)
 
                 setTimeout(()=>{ //Todo костыль
@@ -251,7 +255,7 @@
             },
             messageRead(){
                 if(this.viewModeChat ==='operators') {
-                    this.$http.put('message/operator-mark-as-read', {
+                    this.$http.put('message-operator-guest-mark-as-read', {
                         user_id:this.httpParams.params.id
                     });
                     this.$store.dispatch('setMessageRead', {
@@ -261,7 +265,7 @@
                     );
                 } //Todo у оператора
                 if(this.viewModeChat ==='visitors'){
-                    this.$http.put('message/operator-mark-as-read', {
+                    this.$http.put('message-operator-guest-mark-as-read', {
                         room_id:this.$store.state.roomActiveId
                     });
                     this.$store.dispatch('setMessageRead', {
@@ -272,7 +276,7 @@
                     );
                 }
                 if(this.viewModeChat ==='common'){
-                    this.$http.put('message/operator-mark-as-read', {
+                    this.$http.put('message-operator-guest-mark-as-read', {
                         room_id:this.$store.state.user.profile.common_room_id
                     });
 
@@ -290,7 +294,6 @@
             },
 
             send(){
-
 
 
                 this.message = this.textWidthTagToText()
@@ -394,8 +397,11 @@
                         this.$refs.scrollbarMessage.update()
                     },200)
 
+
+
                 }).catch(()=>{
                     this.bufferingSend=false;
+
                 });
 
 
