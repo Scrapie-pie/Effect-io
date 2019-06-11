@@ -145,8 +145,14 @@ export default new Vuex.Store({
                 this._vm.$set(state.filterSelect,key,object[key])
 
             }
+            localStorage.setItem('filterSelect', JSON.stringify(state.filterSelect));
 
-
+        },
+        setFilterlocalStorage(){
+            let object = JSON.parse(localStorage.getItem('filterSelect'));
+            for (let key in object) {
+                this._vm.$set(state.filterSelect,key,object[key])
+            }
         }
 
     },
