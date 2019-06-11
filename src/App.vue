@@ -73,39 +73,49 @@
                 let mapLoaders = {
                     accountAuth:['login'],
                     pageMain:[
-                        'chat-get-all',
+                        'chat/get-all',
 
                     ],
-                    chatMainBody:['message-history'],
+                    chatMainBody:['message/history'],
                     lastMessages:[
-                        'guest-list',
-                        'employee-company-list'
+                        'guest/list',
+                        'employee/company-list'
                     ],
-                    clientInfo:['guest-info','guest-update-by-operator'],
-                    pageVisitors:['guest-list','guest-take'],
-                    pageTeam:['employee-company-list','user-update'],
+                    clientInfo:['guest/info','guest/update-by-operator'],
+                    pageVisitors:['guest/list','chat-room-user/take'],
+                    pageTeam:['employee/company-list','user/update-profile'],
                     pageStats:['statistic-get-by-params'],
-                    phrasesReady:['snippet-read','snippet-update','snippet-delete'],
+                    phrasesReady:['snippet/read-snippet','snippet/update-snippet','snippet/delete-snippet'],
                     uploadAvatar:['upload-avatar'],
-                    pageSettingsApp:['company-get-settings'],
-                    pageSettingsProfile:['user-password-update','user-update'],
+                    pageSettingsApp:['company/get-settings'],
+                    pageSettingsProfile:['user/password-update','user/update-profile'],
                     uploadFileList:['upload-message-file'],
-                    btnGuestRedirect:['guest-redirect'],
-                    guestRedirect:['guest-redirect'],
+                    btnGuestRedirect:['guest/redirect'],
+                    guestRedirect:['guest/redirect'],
                     chatMain:[
-                        'message-send',
-                        'guest-contacts-request',
-                        'co-browsing-request',
-                        'guest-blocking',
-                        'guest-transfer-to-branch-request'
+                        'message/save',
+                        'guest/contacts-request',
+                        'co-browsing/request',
+                        'guest/blocking',
+                        'chat-room-user/transfer-request'
                     ],
-                    userStatus:['operator-online-update'],
-                    header:['one-time-chat-generate-code']
+                    userStatus:['employee/online-update'],
+                    header:['one-time-chat/generate-code']
 
                 }
 
                 for (let key in mapLoaders) {
-                    if(mapLoaders[key].some(item=>item===url)) this.$wait[action](key);
+                    if(mapLoaders[key].some(
+                        item=>{
+                            if(item===url) {}
+
+                            return item===url
+
+                        }
+                        )) {
+                        console.log(action,key);
+                        this.$wait[action](key);
+                    }
                 }
             },
 
@@ -116,6 +126,7 @@
 
 
                 this.$http.interceptors.request.use( (config)=> {
+                    console.log('start',config.url);
                     this.startEndLoader(config.url,'start')
 
 
@@ -136,12 +147,13 @@
 
                 this.$http.interceptors.response.use((resp)=>{
 
+                    this.startEndLoader(resp.config.url.split(resp.config.baseURL+'/')[1],'end')
                     this.startEndLoader(resp.config.url.split('?')[1],'end')
-
                     return resp
                 },(err)=> {
                     console.log(err);
 
+                    this.startEndLoader(err.config.url.split(err.config.baseURL+'/')[1],'end')
                     this.startEndLoader(err.config.url.split('?')[1],'end')
                     //this.$wait.end(err.config.url.split('?')[0]);
                     //this.$store.commit('loading',false)
