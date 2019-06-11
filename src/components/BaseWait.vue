@@ -44,7 +44,7 @@ export default {
 
                         this.show=val
                         this.toggleParentClass(val)
-                    },1)
+                    },500)
 
                 } else {
                     this.show=val
