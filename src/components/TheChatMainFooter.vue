@@ -78,6 +78,8 @@
                             :icon="{name:'gifs',textHidden:'Гифки'}"
                             @click.prevent="showGifs=true"
                         )
+                    li.chat-main-footer__button
+                        base-radio-check(name="spelling" v-model="spelling") Проверка орфографии
                     li.chat-main-footer__button.chat-main-footer__button_send
 
                         base-btn.chat-main-footer__send(
@@ -151,6 +153,7 @@
                 showOffer:false,
                 showSmiles:false,
                 showPhrases:false,
+                spelling:0,
 
                 textWidthSmiles:'',
                 textCaret:null,
@@ -303,6 +306,7 @@
                     files=[],
                     body = this.message;
 
+
                 if(this.uploadFileList.length) {
                     files = this.uploadFileList.map(item=>{
 
@@ -347,7 +351,7 @@
 
                 data.body=body;
                 data.files=files;
-
+                data.spelling=this.spelling;
 
 
 
@@ -359,6 +363,7 @@
                     let {first_name:name,photo,employee_id} = this.$store.state.user.profile,
                         time = (new Date).getTime() / 1000,
                         message = {
+
                             id,
                             time,
                             body,
