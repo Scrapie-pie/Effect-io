@@ -113,7 +113,7 @@
 
                         }
                         )) {
-                        console.log(action,key);
+
                         this.$wait[action](key);
                     }
                 }
@@ -126,7 +126,7 @@
 
 
                 this.$http.interceptors.request.use( (config)=> {
-                    console.log('start',config.url);
+
                     this.startEndLoader(config.url,'start')
 
 
