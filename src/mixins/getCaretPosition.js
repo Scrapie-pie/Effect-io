@@ -63,9 +63,9 @@ export default {
         getCaretPosition() {
 
             var range = window.getSelection().getRangeAt(0);
-            console.log('keyup', this.textWidthTagToText());
+
             this.$emit('getText',this.textWidthTagToText())
-            console.log("Caret pos: " + this.getCharacterOffsetWithin_final(range, this.$el))
+
             this.$emit('caret',this.getCharacterOffsetWithin_final(range, this.$el))
         }
 

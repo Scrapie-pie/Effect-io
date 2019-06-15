@@ -17,6 +17,13 @@
                         the-files-board(name="gifs")
                     box-controls(v-if="showOffer", @boxControlClose="showOffer=false")
                         the-offer()
+                    box-controls(v-if="spellingShow", @boxControlClose="spellingShow=false").chat-main-footer__the-spelling-form
+                        TheSpellingForm(
+                            :list="spellingList",
+                            :message="spellingMessage",
+                            @ignoredWords="val=>spellingIgnoredWords=val",
+                            @resultMessage="getPhrasesSelectText"
+                        )
 
                 .chat-main-footer__contols
                     .chat-main-footer__textarea-wrap
@@ -79,12 +86,12 @@
                             @click.prevent="showGifs=true"
                         )
                     li.chat-main-footer__button
-                        base-radio-check(name="spelling" v-model="spelling") Проверка орфографии
+                        base-radio-check(name="spellingCheck" v-model="spellingCheck") Проверка орфографии
                     li.chat-main-footer__button.chat-main-footer__button_send
 
                         base-btn.chat-main-footer__send(
 
-                            @click="send"
+                            @click="send",
                             :icon="{name:'send',textHidden:'Отправить сообщение'}"
                         )
 
@@ -102,12 +109,13 @@
     import UploadFile from '@/components/UploadFile'
     import UploadFileList from '@/components/UploadFileList'
     import inputEmoji from '@/components/inputEmoji';
+    import TheSpellingForm from '@/components/TheSpellingForm';
 
 
     import lodash_split from 'lodash/split'
 
     import autosize from 'autosize'
-    import { viewModeChat,httpParams } from '@/mixins/mixins'
+    import { viewModeChat,httpParams,spelling } from '@/mixins/mixins'
 
     export default {
         components:{
@@ -120,9 +128,10 @@
             UploadFile,
             UploadFileList,
             TheBoardSmile,
-            inputEmoji
+            inputEmoji,
+            TheSpellingForm
         },
-        mixins:[viewModeChat,httpParams],
+        mixins:[viewModeChat,httpParams,spelling],
         watch:{
             '$route' (to, from) {
                 this.checkIsProcessPage();
@@ -153,7 +162,7 @@
                 showOffer:false,
                 showSmiles:false,
                 showPhrases:false,
-                spelling:0,
+
 
                 textWidthSmiles:'',
                 textCaret:null,
@@ -162,7 +171,9 @@
                 showPhrasesSelectAllow:true,
                 message:'',
                 uploadFileList:[],
-                bufferingSend:false
+                bufferingSend:false,
+
+
             }
         },
         computed:{
@@ -351,13 +362,15 @@
 
                 data.body=body;
                 data.files=files;
-                data.spelling=this.spelling;
+                data.spelling=this.spellingCheck;
+                data.spelling_ignored_words=this.spellingIgnoredWords;
+                this.spellingMessage = this.message
 
 
 
                 this.$http.post('message/save', data).then((responsive)=>{
                     this.bufferingSend=false;
-                    console.log('message/save',responsive.data.data.id);
+
                     let {id} = responsive.data.data;
 
                     let {first_name:name,photo,employee_id} = this.$store.state.user.profile,
@@ -395,6 +408,7 @@
                     }
 
                     this.message='';
+                    this.spellingIgnoredWords=[]
                     autosize.destroy(this.$refs.chatInput);
                     this.autosizeInit=true;
                     setTimeout(()=>{
@@ -403,7 +417,11 @@
 
 
 
-                }).catch(()=>{
+                }).catch(({response})=>{
+                    if(response.status===400) {
+                        console.log('spellingSuggestions',response.data.spellingSuggestions);
+                        this.spellingShowBox(response.data.spellingSuggestions)
+                    }
                     this.bufferingSend=false;
 
                 });
@@ -505,6 +523,15 @@
                 top:auto;
             }
         }
+
+        &__the-spelling-form {
+            .box-controls__box {
+                max-width:550px;
+            }
+
+        }
+
+
 
 
     }

@@ -2,14 +2,14 @@
     ul.action-list
         li.action-list__item(
             v-for="(item, index) in itemList",
-            :key="item.id"
+            :key="item.id+item.title"
         )
             label.action-list__button
                 input(
                     type="radio",
                     :name="name",
                     :value="nameFieldValue | setValue(item)",
-                    :checked="value==item.id"
+                    :checked="value | getChecked(item.id)"
                     v-on="inputListeners"
                 ).action-list__input
                 span.action-list__text(:title="nameFieldText | setValue(item) |setTitle(title)")
@@ -21,6 +21,9 @@
     export default {
         inheritAttrs: false,
         filters: {
+            getChecked: function (value,id){
+                return value === id
+            },
             setTitle: function (text,title) {
                 if(!title) return '';
                 return text
@@ -68,6 +71,9 @@
                     }
                 )
             }
+        },
+        methods:{
+
         },
         mounted(){
 
