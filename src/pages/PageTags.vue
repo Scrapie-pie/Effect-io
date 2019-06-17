@@ -5,7 +5,7 @@
             fieldset
                 label.page-tags__label Введите кажный новый тэг в новой строке.
                 base-field.page-tags__textarea(name="tags" type="textarea" rows="20" v-model="textarea")
-
+                base-radio-check(name="obligationTag" v-model="is_tag_required_in_chat") Обязательное присвоение тэга
                 base-btn(@click="save") Сохранить
 
 </template>
@@ -25,8 +25,7 @@ export default {
     },
     computed:{
         ...mapGetters([
-            'itemListText',
-            'is_tag_required_in_chat'
+            'itemListTextArea'
 
         ]),
         tags(){
@@ -43,7 +42,7 @@ export default {
         }
     },
     created(){
-
+        this.textarea = this.itemListTextArea
     }
 }
 </script>

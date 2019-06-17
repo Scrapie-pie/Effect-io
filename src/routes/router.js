@@ -209,7 +209,7 @@ router.beforeEach((to, from, next) => {
                 headers: { 'content-type': 'application/json' }
             }).then(({ data }) => {
 
-                store.dispatch('user/getLogin', data.user).then(()=>{
+                store.dispatch('user/getLogin', data.data.user).then(()=>{
                     if (to.query.return) return next(to.query.return) // отправляем по ранее сохраненному маршруту
                     else {
                         if (pathTarget) return next(pathTarget)

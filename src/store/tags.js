@@ -50,7 +50,9 @@ export default {
         is_tag_required_in_chat: state => {
             return state.is_tag_required_in_chat
         },
-        itemList
+        itemListTextArea: state => {
+            return state.itemList.join('\n')
+        },
     }
 
 }
