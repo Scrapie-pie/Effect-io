@@ -140,7 +140,7 @@
                 }).then(({data}) => {
 
 
-                    this.$store.dispatch('user/getLogin', data.user).then(()=>{
+                    this.$store.dispatch('user/getLogin', data.data.user).then(()=>{
                         if (this.$route.query.return) this.$router.push(this.$route.query.return)
                         else this.$router.push({name:'processAll'})
                     })
