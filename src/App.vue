@@ -86,10 +86,10 @@
                     pageTeam:['employee/company-list','user/update-profile'],
                     pageStats:['statistic/get-by-params'],
                     phrasesReady:['snippet/read-snippet','snippet/update-snippet','snippet/delete-snippet'],
-                    uploadAvatar:['upload-avatar'],
+                    uploadAvatar:['upload/upload/avatar'],
                     pageSettingsApp:['company/get-settings'],
                     pageSettingsProfile:['user/password-update','user/update-profile'],
-                    uploadFileList:['upload-message-file'],
+                    uploadFileList:['upload/upload/message-file'],
                     btnGuestRedirect:['guest/redirect'],
                     guestRedirect:['guest/redirect'],
                     chatMain:[

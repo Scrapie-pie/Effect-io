@@ -81,7 +81,7 @@
 
                 this.loader = false;
                 console.log(formData);
-                return this.$http.post('upload-avatar', formData, {
+                return this.$http.post('upload/upload/avatar', formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     }

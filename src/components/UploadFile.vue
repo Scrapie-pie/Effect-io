@@ -91,7 +91,7 @@
 
                 console.log(formData);
 
-                return this.$http.post('upload-message-file',formData, {
+                return this.$http.post('upload/upload/message-file',formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     }

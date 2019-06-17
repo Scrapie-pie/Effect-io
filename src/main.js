@@ -80,7 +80,7 @@ Vue.component("vnode", {
 Vue.component('scroll-bar', VuePerfectScrollbar);
 Vue.component('base-icon', BaseIcon);
 Vue.component('base-field', BaseField);
-Vue.component('base-field', BaseField);
+
 
 
 Vue.component('base-btn', BaseBtn);

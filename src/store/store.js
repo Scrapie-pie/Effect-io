@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 
 import user from '@/store/user'
 import phrases from '@/store/phrases'
+import tags from '@/store/tags'
 import operators from '@/store/operators'
 import visitors from '@/store/visitors'
 
@@ -60,7 +61,7 @@ export default new Vuex.Store({
     modules: {
         user,
         phrases,
-
+        tags,
         operators,
         visitors
     },
