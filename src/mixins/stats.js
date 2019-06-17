@@ -153,7 +153,7 @@ export default {
             console.log('get requestData',this.requestData);
             if(this.last_days || (this.date_from && this.date_to)) {
 
-                this.$http.get('statistic-get-by-params',this.requestData).then((response)=>{
+                this.$http.get('statistic/get-by-params',this.requestData).then((response)=>{
                     this.bodyList = response.data.data
 
                 })

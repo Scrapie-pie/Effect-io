@@ -45,6 +45,7 @@
                     {text: 'Журнал', link: {name: 'all'},icon:'log',hide:!this.$store.getters['user/isRole'](['admin','owner','operatorSenior'])},
                     {text: 'Статистика', link: {name: 'stats'},icon:'statistics',hide:!this.$store.getters['user/isRole'](['admin','owner','operatorSenior'])},
                     {text: 'Шаблоны', link: {name: 'phrases'},icon:'phrases'},
+                    {text: 'Теги', link: {name: 'tags'},icon:'tags'},
                     {text: 'Настройки', link: {name: 'settingsProfile'},icon:'settingsApp'},
                     //{text: 'Сменить учетную запись', link: {name: 'auth'}},
                     {text: 'Выход', link: {name: 'exit'}},

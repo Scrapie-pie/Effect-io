@@ -84,10 +84,7 @@
             this.selectTemplate()
         },
         methods: {
-            ...mapWaitingActions('user', {
-                sendLoginRequest: { action: 'getLogin', loader: 'login' },
 
-            }),
             selectTemplate() {
                 if (this.$route.name == 'recover') {
                     this.title = 'Для восстановления пароля введите Ваш email';
@@ -138,7 +135,7 @@
                     password: 'qF5grpgY5e_',
 
                 }*/
-                this.$http.post('login', data, {
+                this.$http.post('user/login-oi', data, {
                     headers: { 'content-type': 'application/json' }
                 }).then(({data}) => {
 

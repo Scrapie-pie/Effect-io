@@ -13,6 +13,7 @@ const PageChat = () => import('@/pages/PageChat')
 const PageAllDialogues = () => import('@/pages/PageAllDialogues')
 const PageSearchDialogues = () => import('@/pages/PageSearchDialogues')
 const PagePhrases = () => import('@/pages/PagePhrases')
+const PageTags = () => import('@/pages/PageTags')
 
 
 
@@ -134,6 +135,11 @@ const router =  new Router({
             path: '/phrases',
             component: PagePhrases,
         },
+        {
+            name: 'tags',
+            path: '/tags',
+            component: PageTags,
+        },
         ...settings,
         ...stats,
         ...helpers,
@@ -158,7 +164,7 @@ router.beforeEach((to, from, next) => {
 
 
     const not_auth_routes = ['auth', 'recover','exit'],
-    authenticated = store.getters['user/authenticated'];
+        authenticated = store.getters['user/authenticated'];
 
 
 

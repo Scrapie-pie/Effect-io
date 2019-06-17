@@ -108,6 +108,14 @@ export default [{
             },
             component: PageStatsInner
         },
+        {
+            name: 'statsTags',
+            path: 'tags',
+            meta:{
+                title:'Статистика по тегам'
+            },
+            component: PageStatsInner
+        },
 
 
     ]

@@ -34,6 +34,10 @@
                     router-link.page-stats__link(
                             :to='{name:"statsOnceChat"}'
                         ) Одноразовые чаты
+                li.page-stats__item
+                    router-link.page-stats__link(
+                    :to='{name:"statsTags"}'
+                    ) Статистика по тегам
         section.page-stats__main
             base-wait(name="pageStats")
             h1.page-stats__title(v-text="title")

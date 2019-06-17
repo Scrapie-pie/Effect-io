@@ -62,6 +62,7 @@ const StatsResult = ()=> import ('@/components/StatsResult')
 const StatsService = ()=> import ('@/components/StatsService')
 const StatsOnceChat = ()=> import ('@/components/StatsOnceChat')
 const StatsAll = ()=> import ('@/components/StatsAll')
+const StatsTags = ()=> import ('@/components/StatsTags')
 
 import FilterDropMenu from '@/components/FilterDropMenu'
 
@@ -78,7 +79,8 @@ export default {
         StatsService,
         StatsOnceChat,
         FilterDropMenu,
-        StatsAll
+        StatsAll,
+        StatsTags
     },
     mixins:[filterLastDaysAndCalendar],
     data() {
@@ -155,6 +157,7 @@ export default {
             return +this.$route.params.id;
         },
         type(){
+            if(this.routerName==='statsTags') return 'tags';
             if(this.routerName==='statsPages') return 'pages';
 
             if(this.routerName==='statsAll') return 'branches';
@@ -171,7 +174,7 @@ export default {
         },
         downloadLink(){
             let dates=`&date_from=${this.date_from}&date_to=${this.date_to}&time_from=${this.time_from}&time_to=${this.time_to}`;
-            return `${config.api_server_old}app.php?statistic-get-by-params&user_id=${this.user_id}&branch_id=${this.branch_id}${dates}&last_days=${this.last_days}&type=${this.type}&csv=1&jwt=${this.$http.defaults.headers.common.jwt}`
+            return `${config.api_server_old}app.php?statistic/get-by-params&user_id=${this.user_id}&branch_id=${this.branch_id}${dates}&last_days=${this.last_days}&type=${this.type}&csv=1&jwt=${this.$http.defaults.headers.common.jwt}`
         },
         placeholder(){
             if(this.routerName==='statsBranches') return 'Поиск по названию'

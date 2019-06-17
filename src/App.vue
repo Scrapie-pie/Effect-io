@@ -71,7 +71,7 @@
             startEndLoader(url,action) {
 
                 let mapLoaders = {
-                    accountAuth:['login'],
+                    accountAuth:['user/login-oi'],
                     pageMain:[
                         'chat/get-all',
 
@@ -84,7 +84,7 @@
                     clientInfo:['guest/info','guest/update-by-operator'],
                     pageVisitors:['guest/list','chat-room-user/take'],
                     pageTeam:['employee/company-list','user/update-profile'],
-                    pageStats:['statistic-get-by-params'],
+                    pageStats:['statistic/get-by-params'],
                     phrasesReady:['snippet/read-snippet','snippet/update-snippet','snippet/delete-snippet'],
                     uploadAvatar:['upload-avatar'],
                     pageSettingsApp:['company/get-settings'],

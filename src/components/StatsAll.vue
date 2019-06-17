@@ -184,9 +184,9 @@
 </template>
 
 <script>
-    import {sortFields} from '@/mixins/mixins'
+    import {sortFields,stats} from '@/mixins/mixins'
     import BtnSort  from '@/components/BtnSort'
-    import {stats} from '@/mixins/mixins'
+
     import {datetimeStoHMS} from '@/modules/datetime'
     export default {
         components:{
@@ -232,7 +232,7 @@
             sortFieldsListSet(){
                 if(!this.bodyList.length) return []
                 if(this.bodyList.length) this.commonRow = [this.bodyList[0]];
-                console.log('commonRow',this.commonRow);
+
                 let list = this.bodyList.slice(1)
                 return list
             },
@@ -265,7 +265,7 @@
         methods:{
             getOperators(){
                 console.log('getOperators');
-                        this.$http.get('statistic-get-by-params',{
+                        this.$http.get('statistic/get-by-params',{
                             params:this.employeesParams
                         }).then((response)=>{
                             this.bodyList = [...this.bodyList,...response.data.data]

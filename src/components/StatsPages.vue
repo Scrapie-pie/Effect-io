@@ -66,9 +66,6 @@ export default {
     .stats-pages{
         width:auto;
 
-        &__btn-rotate{
-            transform:rotate(180deg);
-        }
 
         &__url {
             @extend %text-overflow

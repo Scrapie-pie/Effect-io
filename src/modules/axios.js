@@ -12,7 +12,7 @@ axios.interceptors.request.use(function (config) {
         'login',
         'upload-avatar',
         'upload-message-file',
-        'statistic-get-by-params'
+        'statistic/get-by-params'
     ];
 
     if(oldUrls.indexOf(config.url) != -1) {
