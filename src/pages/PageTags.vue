@@ -6,12 +6,12 @@
                 label.page-tags__label Введите кажный новый тэг в новой строке.
                 base-field.page-tags__textarea(name="tags" type="textarea" rows="20" v-model="textarea")
 
-                base-btn(@click="send") Сохранить
+                base-btn(@click="save") Сохранить
 
 </template>
 
 <script>
-
+    import { mapGetters } from 'vuex';
 export default {
 
     components:{
@@ -24,17 +24,26 @@ export default {
         }
     },
     computed:{
+        ...mapGetters([
+            'itemListText',
+            'is_tag_required_in_chat'
+
+        ]),
         tags(){
             return this.textarea.split('\n')
         }
     },
     methods:{
-        send(){
-            this.$http.post('tag/tag/set-settings', {
+        save(){
+
+            this.$store.dispatch('tags/update',{
                 tags:this.tags,
                 is_tag_required_in_chat:this.is_tag_required_in_chat,
             });
         }
+    },
+    created(){
+
     }
 }
 </script>

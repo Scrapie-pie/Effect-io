@@ -205,7 +205,7 @@ router.beforeEach((to, from, next) => {
 
         const jwt = localStorage.getItem('jwt');
         if (jwt) {
-            axios.post('login', {jwt}, {
+            axios.post('user/login-oi', {jwt}, {
                 headers: { 'content-type': 'application/json' }
             }).then(({ data }) => {
 

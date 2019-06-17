@@ -131,6 +131,8 @@ export default {
                 commit('resetState', null, { root: true })
                 commit('operators/resetState', null, { root: true })
                 commit('visitors/resetState', null, { root: true })
+                commit('phrases/resetState', null, { root: true })
+                commit('tags/resetState', null, { root: true })
                 commit('logout')
                 console.log('logout resolve');
 

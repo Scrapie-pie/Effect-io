@@ -1,4 +1,4 @@
-import _ from 'underscore'
+
 
 const getDefaultState = () => {
     return {
@@ -13,6 +13,9 @@ export default {
     namespaced: true,
     state,
     mutations: {
+        resetState (state) {
+            Object.assign(state, getDefaultState())
+        },
         categoryAdd(state,val){
             state.categories.push(val);
         },

@@ -1,9 +1,10 @@
-import _ from 'underscore'
+
 
 const getDefaultState = () => {
     return {
-        tags:[],
-        is_tag_required_in_chat:0
+        itemList:[],
+        is_tag_required_in_chat:0,
+        getFirst:false,
     }
 }
 // initial state
@@ -13,26 +14,43 @@ export default {
     namespaced: true,
     state,
     mutations: {
-        setItemList(state,val){
-            state.tags = val
+        resetState (state) {
+            Object.assign(state, getDefaultState())
+        },
+        set(state,val){
+            state.itemList = val
 
         },
     },
     actions: {
-
-        updateItemList({commit},{tags,is_tag_required_in_chat}){
+        update({commit},{tags,is_tag_required_in_chat}){
             this._vm.$http.post('tag/tag/set-settings',{tags,is_tag_required_in_chat})
                 .then(({ data }) => {
-                    commit('setItemList', data.data)
+                    commit('set', data.data)
                 })
         },
-
-        getItemList({commit}){
+        get({commit}){
+            if(this.getFirst) return
             this._vm.$http.get('tag/tag/list')
                 .then(({ data }) => {
-                    commit('setItemList',data.data)
+                    commit('set',data.data)
                 })
         },
+        setTagChat({commit},{tag_id,site_id,guest_uuid}){
+            this._vm.$http.post('tag/tag/set-chat-tag',{tag_id,site_id,guest_uuid})
+        },
     },
+    getters: {
+        itemListFull: state => {
+            return state.itemList
+        },
+        itemListText: state => {
+            return state.itemList.map(item=>item.tag)
+        },
+        is_tag_required_in_chat: state => {
+            return state.is_tag_required_in_chat
+        },
+        itemList
+    }
 
 }
