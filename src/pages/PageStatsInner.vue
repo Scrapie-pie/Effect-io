@@ -174,7 +174,7 @@ export default {
         },
         downloadLink(){
             let dates=`&date_from=${this.date_from}&date_to=${this.date_to}&time_from=${this.time_from}&time_to=${this.time_to}`;
-            return `${config.api_server_old}app.php?statistic/get-by-params&user_id=${this.user_id}&branch_id=${this.branch_id}${dates}&last_days=${this.last_days}&type=${this.type}&csv=1&jwt=${this.$http.defaults.headers.common.jwt}`
+            return `${config.api_server}statistic/get-by-params?user_id=${this.user_id}&branch_id=${this.branch_id}${dates}&last_days=${this.last_days}&type=${this.type}&csv=1&jwt=${this.$http.defaults.headers.common.jwt}`
         },
         placeholder(){
             if(this.routerName==='statsBranches') return 'Поиск по названию'

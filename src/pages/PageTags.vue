@@ -1,5 +1,5 @@
 <template lang="pug">
-    section.page-tags
+    scroll-bar.page-tags(tag="section")
 
         form
             fieldset
@@ -7,7 +7,14 @@
                 ul.page-tags__list
                     li.page-tags__item
                         label.page-tags__label Введите кажный новый тэг в новой строке.
-                        base-field.page-tags__textarea(name="tags" type="textarea" rows="10" v-model="textarea" maxlength="2000")
+                        base-field.page-tags__textarea(
+                            ref="textarea"
+                            name="tags"
+                            type="textarea"
+                            rows="10"
+                            v-model="textarea"
+                            maxlength="2000"
+                        )
                     li.page-tags__item
                         base-radio-check(name="obligationTag" v-model="is_tag_required_in_chat") Обязательное присвоение тэга
                     li.page-tags__item.page-tags__item_btn
@@ -16,6 +23,7 @@
 </template>
 
 <script>
+    import autosize from 'autosize'
     import { mapGetters } from 'vuex';
 export default {
 
@@ -24,6 +32,7 @@ export default {
     },
     data() {
         return {
+            autosizeInit:true,
             textarea:'',
             is_tag_required_in_chat:0
         }
@@ -39,7 +48,6 @@ export default {
             return this.itemList.map(item=>item.tag)
         },
         itemListTextArea() {
-            console.log(this.itemListText);
             if(!this.itemListText.length) return ''
             return  this.itemListText.join('\n')
         },
@@ -55,7 +63,24 @@ export default {
             });
         }
     },
+    beforeRouteEnter (to, from, next) {
+        next(vm=>{
+            if(!vm.$store.getters['user/isRole'](['admin','owner','operatorSenior'])) return vm.$router.push({name: 'processAll'})
+
+        })
+    },
     watch:{
+        textarea(val){
+
+            if(val) {
+
+                setTimeout(()=>{
+                    autosize(this.$refs.textarea.$el.querySelector('textarea'));
+                },1)
+            }
+
+
+        },
         itemListTextArea:{
             handler(val){
                 this.textarea = val
@@ -77,6 +102,11 @@ export default {
         this.$store.dispatch('tags/get');
 
         //this.is_tag_required_in_chat = this.settings.settings.is_tag_required_in_chat
+
+    },
+    mounted(){
+        //console.log(this.$refs.textarea.$el.querySelector('textarea'));
+
 
     }
 }
