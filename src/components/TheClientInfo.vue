@@ -24,7 +24,7 @@
                             name="comment"
                         )
                     li.client-info__item
-                        base-btn(name="setTag" @click="setTag") Поставить тэг
+                        base-btn(name="setTag" @click="showPopupTag") Поставить тэг
                     li.client-info__item
 
                         h4.client-info__name(@click="showContacts=!showContacts")
@@ -137,6 +137,9 @@
             autosize.destroy(this.$refs.clientComment.$refs.input);
         },
         methods:{
+            showPopupTag(){
+
+            },
             getInfo(){
                 if(!this.httpParams) return;
                 this.$store.dispatch('visitors/getItemOpen', this.httpParams)
