@@ -107,7 +107,8 @@
                 for (let key in mapLoaders) {
                     if(mapLoaders[key].some(
                         item=>{
-                            if(item===url) {}
+                            if(item===url) {
+                                console.log(url,key,action);}
 
                             return item===url
 

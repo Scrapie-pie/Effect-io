@@ -25,24 +25,40 @@ export default {
     },
     computed:{
         ...mapGetters([
-            'itemListTextArea'
-
+            'itemList',
         ]),
+        itemListText(){
+            return this.itemList.map(item=>item.tag)
+        },
+        itemListTextArea() {
+            if(!this.itemList.length) return ''
+            return  this.itemList.join('\n')
+        },
         tags(){
             return this.textarea.split('\n')
         }
     },
     methods:{
         save(){
-
             this.$store.dispatch('tags/update',{
                 tags:this.tags,
                 is_tag_required_in_chat:this.is_tag_required_in_chat,
             });
         }
     },
+    watch:{
+        itemListTextArea:{
+            handler(val){
+                this.textarea = val
+            },
+
+            immediate: true
+        },
+
+    },
     created(){
-        this.textarea = this.itemListTextArea
+        this.$store.dispatch('tags/get');
+
     }
 }
 </script>

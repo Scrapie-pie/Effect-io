@@ -41,18 +41,14 @@ export default {
         },
     },
     getters: {
-        itemListFull: state => {
+        itemList: state => {
             return state.itemList
         },
-        itemListText: state => {
-            return state.itemList.map(item=>item.tag)
-        },
+
         is_tag_required_in_chat: state => {
             return state.is_tag_required_in_chat
         },
-        itemListTextArea: state => {
-            return state.itemList.join('\n')
-        },
+
     }
 
 }
