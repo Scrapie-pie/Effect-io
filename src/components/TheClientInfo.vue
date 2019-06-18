@@ -24,7 +24,9 @@
                             name="comment"
                         )
                     li.client-info__item
-                        base-btn(name="setTag" @click="showPopupTag") Поставить тэг
+                        base-btn(name="setTag", @click="showTags") Поставить тэг
+                        box-controls(type="popup" showTagsPopup v-if="showTagsPopup", @boxControlClose="showTagsPopup=false")
+                            select-tags
                     li.client-info__item
 
                         h4.client-info__name(@click="showContacts=!showContacts")
@@ -75,10 +77,13 @@
     import autosize from 'autosize'
     import {httpParams} from "@/mixins/mixins";
 
+    import SelectTags from '@/components/SelectTags'
+
     export default {
         components: {
             SocialLinks,
-            TheRedirectClient
+            TheRedirectClient,
+            SelectTags
         },
         mixins:[httpParams],
         data() {
@@ -87,6 +92,7 @@
                 site_id:null,
                 showContacts: false,
                 showAudienceSegments: false,
+                showTagsPopup:false,
                 clientInfo: {}
 
 
@@ -126,6 +132,8 @@
         created(){
             this.getInfo()
 
+
+
         },
         mounted() {
             setTimeout(()=>{
@@ -137,8 +145,10 @@
             autosize.destroy(this.$refs.clientComment.$refs.input);
         },
         methods:{
-            showPopupTag(){
+            showTags(){
 
+                this.$store.dispatch('tags/get')
+                this.showTagsPopup=true;
             },
             getInfo(){
                 if(!this.httpParams) return;

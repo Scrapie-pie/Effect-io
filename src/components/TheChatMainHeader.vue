@@ -52,7 +52,11 @@
                             @boxControlClose="showSelectOperators=false"
                             )
                             select-operators(:name="selectOperatorsMode")
-
+                        box-controls(
+                            v-if="showSelectTags",
+                            @boxControlClose="showSelectTags=false"
+                        )
+                            select-tags(:name="selectOperatorsMode")
 
             li.chat-main-header__control.chat-main-header__control_more
                 base-btn(
@@ -98,6 +102,7 @@
                 showSelectOperators:false,
                 showSelectBranch:false,
                 showMoreChatActions:false,
+                showSelectTags:false,
                 selectOperatorsMode:''
                 //moreActionsClose:false,
             }
@@ -204,6 +209,10 @@
                     this.showSelectOperators=true
                     console.log('showTransfer');
                 },500)
+
+            })
+            this.$root.$on('showSelectTag',()=>{
+                this.showSelectTags=true;
 
             })
         },

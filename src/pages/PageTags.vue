@@ -24,7 +24,9 @@
 
 <script>
     import autosize from 'autosize'
-    import { mapGetters } from 'vuex';
+    import { mapGetters,mapActions } from 'vuex';
+
+    import browserNotification from '@/modules/browserNotification'
 export default {
 
     components:{
@@ -41,9 +43,7 @@ export default {
         ...mapGetters('tags',[
             'itemList'
         ]),
-        ...mapGetters('user',[
-            'settings'
-            ]),
+
         itemListText(){
             return this.itemList.map(item=>item.tag)
         },
@@ -60,7 +60,11 @@ export default {
             this.$store.dispatch('tags/update',{
                 tags:this.tags,
                 is_tag_required_in_chat:this.is_tag_required_in_chat,
+            }).then(()=>{
+                browserNotification('Сохранено')
+                this.$router.push({name: 'processAll'})
             });
+
         }
     },
     beforeRouteEnter (to, from, next) {
