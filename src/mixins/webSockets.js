@@ -45,7 +45,8 @@ export default {
             console.log(config.api_server);
             console.log(index,sounds[index].file);*/
                 if(!sounds[index].file) return
-                let audio = new Audio(config.api_server.split('/app')[0] + sounds[index].file);
+
+            let audio = new Audio(sounds[index].file);
                 audio.volume = .5;
                 audio.play();
 

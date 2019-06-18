@@ -2,8 +2,7 @@
 
 const getDefaultState = () => {
     return {
-        itemList:[],
-        is_tag_required_in_chat:0,
+        items:[],
         getFirst:false,
     }
 }
@@ -18,7 +17,7 @@ export default {
             Object.assign(state, getDefaultState())
         },
         set(state,val){
-            state.itemList = val
+            state.items = val
 
         },
     },
@@ -42,13 +41,8 @@ export default {
     },
     getters: {
         itemList: state => {
-            return state.itemList
+            return state.items
         },
-
-        is_tag_required_in_chat: state => {
-            return state.is_tag_required_in_chat
-        },
-
     }
 
 }

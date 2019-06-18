@@ -89,7 +89,7 @@
                 this.loader = false;
 
 
-                console.log(formData);
+
 
                 return this.$http.post('upload/upload/message-file',formData, {
                     headers: {
@@ -98,9 +98,9 @@
                 }).then(({data})=>{
 
                     this.loader = true;
-                    console.log(data);
-                    this.$emit('upload', data.file)
-                    this.$emit('input', data.file.link)
+
+                    this.$emit('upload', data.data)
+                    this.$emit('input',  data.data.link)
                     this.clear()
 
                 }).catch(()=>this.loader = true)

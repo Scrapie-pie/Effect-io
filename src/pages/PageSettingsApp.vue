@@ -175,7 +175,8 @@
             playSoundFile:function(sound ,prev_sound) {
                 if (!prev_sound.name) return  //Что бы не проигрывалось при заходе на страницу
                 if(sound.file) {
-                    let audio = new Audio(config.api_server.split('/app')[0]+sound.file);
+
+                    let audio = new Audio(sound.file);
                 audio.volume=.5;
                 audio.play();
             }

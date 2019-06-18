@@ -74,7 +74,7 @@
                     accountAuth:['user/login-oi'],
                     pageMain:[
                         'chat/get-all',
-
+                        'tag/tag/set-settings'
                     ],
                     chatMainBody:['message/history'],
                     lastMessages:[
@@ -149,17 +149,16 @@
 
                 this.$http.interceptors.response.use((resp)=>{
 
-                    console.log(resp.config.baseURL);
+                    /*console.log(resp.config.baseURL);
                     console.log(resp.config.url);
-                    console.log(resp.config.url.split(resp.config.baseURL)[1]);
+                    console.log(resp.config.url.split(resp.config.baseURL)[1]);*/
 
                     this.startEndLoader(resp.config.url.split(resp.config.baseURL)[1],'end')
                     this.startEndLoader(resp.config.url.split('?')[1],'end')
                     return resp
                 },(err)=> {
-                    console.log(err);
-                    console.log(err.config.baseURL);
-                    console.log(err.config.url);
+                    console.table(err);
+
                     this.startEndLoader(err.config.url.split(err.config.baseURL)[1],'end')
                     this.startEndLoader(err.config.url.split('?')[1],'end')
                     //this.$wait.end(err.config.url.split('?')[0]);

@@ -1,12 +1,17 @@
 <template lang="pug">
     section.page-tags
-        h1.page-tags__title Теги
+
         form
             fieldset
-                label.page-tags__label Введите кажный новый тэг в новой строке.
-                base-field.page-tags__textarea(name="tags" type="textarea" rows="20" v-model="textarea")
-                base-radio-check(name="obligationTag" v-model="is_tag_required_in_chat") Обязательное присвоение тэга
-                base-btn(@click="save") Сохранить
+                legend.page-tags__title Тэги
+                ul.page-tags__list
+                    li.page-tags__item
+                        label.page-tags__label Введите кажный новый тэг в новой строке.
+                        base-field.page-tags__textarea(name="tags" type="textarea" rows="10" v-model="textarea" maxlength="2000")
+                    li.page-tags__item
+                        base-radio-check(name="obligationTag" v-model="is_tag_required_in_chat") Обязательное присвоение тэга
+                    li.page-tags__item.page-tags__item_btn
+                        base-btn(@click="save") Сохранить
 
 </template>
 
@@ -24,15 +29,19 @@ export default {
         }
     },
     computed:{
-        ...mapGetters([
-            'itemList',
+        ...mapGetters('tags',[
+            'itemList'
         ]),
+        ...mapGetters('user',[
+            'settings'
+            ]),
         itemListText(){
             return this.itemList.map(item=>item.tag)
         },
         itemListTextArea() {
-            if(!this.itemList.length) return ''
-            return  this.itemList.join('\n')
+            console.log(this.itemListText);
+            if(!this.itemListText.length) return ''
+            return  this.itemListText.join('\n')
         },
         tags(){
             return this.textarea.split('\n')
@@ -55,9 +64,19 @@ export default {
             immediate: true
         },
 
+        settings:{
+            handler(val){
+                    if(val) this.is_tag_required_in_chat =  val.settings.is_tag_required_in_chat
+            },
+
+            immediate: true
+        },
+
     },
     created(){
         this.$store.dispatch('tags/get');
+
+        //this.is_tag_required_in_chat = this.settings.settings.is_tag_required_in_chat
 
     }
 }
@@ -66,15 +85,22 @@ export default {
 <style lang="scss">
     .page-tags {
         &__title {
-            @extend %h4
+            @extend %h4;
+            margin-bottom:calc-em(40);
         }
         &__label {
-            margin-top:calc-em(30);
             margin-bottom:calc-em(15);
+        }
+        &__item {
+            margin-bottom:calc-em(20);
+            &_btn {
+                margin-top:calc-em(40);
+            }
         }
         &__textarea  {
             .field__input {
-                height:calc-em(200);
+                min-height:calc-em(100);
+                height:auto;
             }
 
         }
