@@ -37,7 +37,7 @@ export default {
                 })
                 .then(()=>{
 
-                console.log('слово добавлено');
+
             });
 
         }
