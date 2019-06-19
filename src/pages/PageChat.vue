@@ -96,7 +96,6 @@
         },
         beforeRouteLeave (to, from, next) {
             this.messageSubscribeSocket(null,from)
-            console.log('this.$store.commit(\'roomActiveReset\')');
             this.$store.commit('roomActiveReset')
             return next()
         },
@@ -108,7 +107,11 @@
                 if(this.viewModeChat==='visor' && !this.$store.getters['user/isRole'](['admin','owner','operatorSenior'])) return this.$router.push({name: 'processAll'})
 
                 if(['search','visor'].includes(this.viewModeChat)) {
+
                     window.onbeforeunload = false
+
+                    return //времено отключил
+
                     if(to) {
                         this.$http.post('chat-room-user/supervisor-enter', {
                             site_id:to.params.site_id,

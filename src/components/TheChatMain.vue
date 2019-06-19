@@ -170,7 +170,7 @@
             showVisitorTypingLive(){
 
 
-                if(['visitors','visor','search'].includes(this.viewModeChat)) {
+                if(['visitors'].includes(this.viewModeChat)) {
 
                     let {guest_uuid,site_id}  = this.roomActive.visitor,
                         {params} = this.httpParams
