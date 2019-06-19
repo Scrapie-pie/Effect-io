@@ -50,8 +50,12 @@ export default {
     mixins:[scrollbar],
     watch:{
         '$route' (to, from) {
-            console.log('layoutTableContent',this.$refs.layoutTableContent);
-            this.scrollbarScrollerPush(this.$refs.layoutTableContent,0)
+
+            setTimeout(()=>{
+                console.log('layoutTableContent',this.$refs.layoutTableContent);
+                this.scrollbarScrollerPush(this.$refs.layoutTableContent,0)
+            },1000)
+
         },
     }
 }

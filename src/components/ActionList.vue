@@ -2,7 +2,7 @@
     ul.action-list
         li.action-list__item(
             v-for="(item, index) in itemList",
-            :key="item.id+item.title"
+            :key="item.id+item[nameFieldText]"
         )
             label.action-list__button
                 input(
@@ -117,6 +117,7 @@
             display:block;
             overflow:hidden;
             text-overflow:ellipsis;
+            text-align:left;
         }
     }
 </style>

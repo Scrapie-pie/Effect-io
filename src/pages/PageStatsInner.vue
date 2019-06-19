@@ -199,7 +199,8 @@ export default {
               this.routerName!=='statsAll' &&
               this.routerName!=='statsAllBranch' &&
               this.routerName!=='statsAllOperator' &&
-              this.routerName!=='statsOperatorsDetail'
+              this.routerName!=='statsOperatorsDetail' &&
+              this.routerName!=='statsTags'
           )
         },
         routerName(){

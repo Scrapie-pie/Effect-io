@@ -30,6 +30,9 @@ export default {
 
     },
     watch:{
+     /*   '$route' (to, from) {
+            this.spellingCheck = this.$store.state.user.profile.spelling
+        },*/
         spellingCheck(val){
             this.$http.post('spelling/spelling/settings',
                 {

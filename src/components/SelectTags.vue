@@ -9,23 +9,29 @@
                     field-name="tag"
                 )
                 scroll-bar.select-tags__controls-scrollbar
-                    ul.select-tags__controls
+                    action-list(
+                        :title="true"
+                        text-line="2"
+                        key="tags-list",
 
-                        li.select-tags__controls-item(
-                            v-for="(item, index) in filterSearchResult" :key="item.id",
-                        )
-                            base-radio-check(
-                                name="tag"
-                                type="radio"
-                                v-model="model"
-                                :value="item"
-                            ) {{item.tag}}
+                        :item-list="filterSearchResult"
+                        name="tags"
+                        name-field-text="tag"
+                        name-field-value="id"
+                        v-model="model"
+                    )
+
 </template>
 
 <script>
+    import ActionList from '@/components/ActionList'
     import {httpParams} from '@/mixins/mixins'
     import { mapGetters,mapActions } from 'vuex';
 export default {
+    components:{
+
+        ActionList
+    },
     mixins:[httpParams],
     name: "select-tags", 
     data() {
@@ -47,8 +53,10 @@ export default {
             if(val) {
 
                 let data = this.httpParams.params
-                data.tag_id = val.id
+                data.tag_id = val
                 this.setTagChat(data)
+                this.$root.$emit('globBoxControlClose')
+
             }
         }
     },
@@ -66,50 +74,38 @@ export default {
         $transition:$glob-trans;
 
         width:415px;
+        &__box {
+            min-width: 0;
+        }
 
+        .action-list {
+            &__text {
+                padding:calc-em(2) 0;
+                border:0;
+                & {
+                    max-height: 2.6em; /* exactly three lines */
+                }
+                position: relative;
+                @extend %text-truncate
+            }
+
+
+        }
 
         &__title {
             text-align:left;
             margin-bottom:2em;
         }
 
-            .base-radio-check{
-
-                &__input:checked + .base-radio-check__text-wrap{
-                    background-color:$color_hover
-                }
-                &__text-wrap{
-                    padding:calc-em(5) calc-em(15);
-                    white-space:nowrap;
-                    transition:$transition;
-                    &:before {display:none}
-                }
-                &__check {display:none}
-                &__text {margin-left:0}
-            }
-            #{$el}__box{padding-left:0;padding-right:0}
-
         &__controls{
-
             &-scrollbar {
                 margin-right:-1*calc-em(15);
                 padding-right:calc-em(15);
-                max-height:85vh;
+                max-height:75vh;
             }
             &-search {
                 margin-bottom:calc-em(15);
                 max-width:244px;
-            }
-
-            &-item {
-                #{$el}_checkbox &:not(&_main) {
-                    margin-left:calc-em(25);
-                }
-
-                &+& {
-                    margin-top:calc-em(5);
-                }
-                white-space:nowrap;
             }
         }
 

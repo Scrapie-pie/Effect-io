@@ -307,6 +307,7 @@ export default {
         },
         "self-remove"(val){
             console.log('self-remove',val,val.room_id , this.$store.state.roomActiveId)
+
             //if(val.room_id === this.$store.state.roomActiveId) return
 
 

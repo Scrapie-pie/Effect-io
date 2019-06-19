@@ -125,18 +125,7 @@
                     background:$color_bg;
                 }
                 &:hover:after {display:none}*/
-                &:after {
-                    content: "";
-                    text-align: right;
-                    position: absolute;
-                    bottom: 0;
-                    right: 0;
-                    width: calc-em(60);
-                    height: 1.2em;
-                    background: linear-gradient(to right, rgba(255, 255, 255, 0), white 100%);
-                    pointer-events: none;
-
-                }
+               @extend %text-truncate
             }
             &__button{width:100%}
             &__input {

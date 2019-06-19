@@ -1,6 +1,7 @@
 <template lang="pug">
     nav-aside
         form.last-messages
+            base-wait(name="lastMessages")
             .last-messages__search()
                 base-filter-search(
                     :item-list="itemListSort",
@@ -9,8 +10,6 @@
                 )
             scroll-bar.last-messages__scrollbar(@ps-scroll-down="scrollLoad" ref="scrollbar")
                 ul.last-messages__list
-                    li.last-messages__item
-                        base-wait(name="lastMessages" position="r")
                     li.last-messages__item(
                         v-for="(item, index) in filterSearchResult",
                         :key="item.uuid+item.site_id+item.chat_id",
@@ -351,6 +350,7 @@
         display:flex;
         flex-direction:column;
         height:100%;
+        position:relative;
 
         .ps__scrollbar-y-rail {
             z-index:2;

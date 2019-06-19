@@ -43,6 +43,9 @@ export default {
         ...mapGetters('tags',[
             'itemList'
         ]),
+        ...mapGetters('user',[
+            'settings'
+        ]),
 
         itemListText(){
             return this.itemList.map(item=>item.tag)
@@ -95,7 +98,7 @@ export default {
 
         settings:{
             handler(val){
-                    if(val) this.is_tag_required_in_chat =  val.settings.is_tag_required_in_chat
+                if(val) this.is_tag_required_in_chat =  val.settings.is_tag_required_in_chat
             },
 
             immediate: true
@@ -105,7 +108,7 @@ export default {
     created(){
         this.$store.dispatch('tags/get');
 
-        //this.is_tag_required_in_chat = this.settings.settings.is_tag_required_in_chat
+
 
     },
     mounted(){
