@@ -2,9 +2,11 @@
 const  PageStats = ()=> import('@/pages/PageStats')
 const  PageStatsInner  = ()=> import('@/pages/PageStatsInner')
 
+
 import store from '@/store/store'
 
 export default [{
+
     name: 'stats',
     path: '/statistics',
     component: PageStats,
@@ -119,7 +121,9 @@ export default [{
 
 
     ]
-}]
+
+},
+]
 
 
 

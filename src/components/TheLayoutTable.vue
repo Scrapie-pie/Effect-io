@@ -3,7 +3,8 @@
         .layout-table__controls
             .layout-table__control(v-for="(item,index) in $slots.control", :key="index+'c'"): vnode(:node="item")
         .layout-table__head(v-for="item in $slots.head"): vnode(:node="item")
-            slot(name="head").
+            slot(name="head")
+
         scroll-bar.layout-table__content(
             v-if="$slots.default" ,
             @ps-scroll-down="val=>$emit('scrolldown',val)"
@@ -41,6 +42,7 @@
         height:100%;
         margin-right:-1* calc-em(15);
         padding-right:calc-em(15);
+
     }
 }
 </style>
