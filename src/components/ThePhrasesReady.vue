@@ -50,33 +50,34 @@
                             v-model="create.category",
                             id="newCategory"
                         )
-                    li.phrases-ready__add-item
-                        label.phrases-ready__label(for="newPhrase" v-text="(!showPhrasesEdit)?'Введите фразу':'Редактировать фразу'")
-                        base-field(
-                            id="newPhrase",
-                            type="textarea",
-                            name="newPhrase"
-                            v-model="create.text",
-                            maxLength="2000"
+                    template(v-if="create.category")
+                        li.phrases-ready__add-item
+                            label.phrases-ready__label(for="newPhrase" v-text="(!showPhrasesEdit)?'Введите фразу':'Редактировать фразу'")
+                            base-field(
+                                id="newPhrase",
+                                type="textarea",
+                                name="newPhrase"
+                                v-model="create.text",
+                                maxLength="2000"
 
-                        )
-                    li.phrases-ready__add-item(v-if="!showPhrasesEdit")
-                        base-radio-check(
-                            type="radio"
-                            v-model="create.is_common",
-                            :value="1"
-                            name="is_common"
-                        ) Все сотрудники будут видеть данный шаблон!
-                    li.phrases-ready__add-item(v-if="!showPhrasesEdit")
-                        base-radio-check(
-                            type="radio" ,
-                            :value="0",
-                            v-model="create.is_common",
-                            name="is_common"
-                        ) Данный шаблон будет виден только мне
-                    li.phrases-ready__add-item
-                        base-btn.phrases-ready__add-item-button(v-text="(!showPhrasesEdit)?'Добавить шаблон':'Сохранить'" type="submit")
-                        base-btn(v-text="'Отмена'" color="error", @click="cancel")
+                            )
+                        li.phrases-ready__add-item(v-if="!showPhrasesEdit")
+                            base-radio-check(
+                                type="radio"
+                                v-model="create.is_common",
+                                :value="1"
+                                name="is_common"
+                            ) Все сотрудники будут видеть данный шаблон!
+                        li.phrases-ready__add-item(v-if="!showPhrasesEdit")
+                            base-radio-check(
+                                type="radio" ,
+                                :value="0",
+                                v-model="create.is_common",
+                                name="is_common"
+                            ) Данный шаблон будет виден только мне
+                        li.phrases-ready__add-item
+                            base-btn.phrases-ready__add-item-button(v-text="(!showPhrasesEdit)?'Добавить шаблон':'Сохранить'" type="submit")
+                            base-btn(v-text="'Отмена'" color="error", @click="cancel")
 </template>
 
 <script>
