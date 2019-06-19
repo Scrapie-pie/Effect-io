@@ -1,6 +1,6 @@
 <template lang="pug">
     scroll-bar.page-tags(tag="section")
-
+        base-wait(name="pageTags")
         form
             fieldset
                 legend.page-tags__title Тэги
@@ -65,7 +65,7 @@ export default {
                 is_tag_required_in_chat:this.is_tag_required_in_chat,
             }).then(()=>{
                 browserNotification('Сохранено')
-                this.$router.push({name: 'processAll'});
+                //this.$router.push({name: 'processAll'});
                 this.$store.commit('user/settingsUpdateFields',{is_tag_required_in_chat:this.is_tag_required_in_chat})
             });
 
@@ -84,7 +84,7 @@ export default {
 
                 setTimeout(()=>{
                     autosize(this.$refs.textarea.$el.querySelector('textarea'));
-                },1)
+                },500)
             }
 
 

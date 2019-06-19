@@ -1,5 +1,6 @@
 <template lang="pug">
     form.select-tags
+        base-wait(name="pageTags")
         fieldset.select-tags__box
             legend.select-tags__title Выберите тэг
             .select-tags__controls
@@ -48,6 +49,11 @@ export default {
 
 
     },
+    created(){
+      /*  setTimeout(()=>{
+            this.$wait.start('pageTags');
+        },1000)*/
+    },
     watch:{
         model(val){
             if(val) {
@@ -72,7 +78,7 @@ export default {
         $el:'.select-tags';
         $color_hover:glob-color('info-lighten');
         $transition:$glob-trans;
-
+        position:relative;
         width:415px;
         &__box {
             min-width: 0;

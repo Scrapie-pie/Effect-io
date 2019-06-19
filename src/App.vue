@@ -74,7 +74,7 @@
                     accountAuth:['user/login-oi'],
                     pageMain:[
                         'chat/get-all',
-                        'tag/tag/set-settings'
+
                     ],
                     chatMainBody:['message/history'],
                     lastMessages:[
@@ -89,6 +89,7 @@
                     uploadAvatar:['upload/upload/avatar'],
                     pageSettingsApp:['company/get-settings'],
                     pageSettingsProfile:['user/password-update','user/update-profile'],
+                    pageTags:['tag/tag/set-settings','tag/tag/list'],
                     uploadFileList:['upload/upload/message-file'],
                     btnGuestRedirect:['guest/redirect'],
                     guestRedirect:['guest/redirect'],
