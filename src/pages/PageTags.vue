@@ -65,7 +65,8 @@ export default {
                 is_tag_required_in_chat:this.is_tag_required_in_chat,
             }).then(()=>{
                 browserNotification('Сохранено')
-                this.$router.push({name: 'processAll'})
+                this.$router.push({name: 'processAll'});
+                this.$store.commit('user/settingsUpdateFields',{is_tag_required_in_chat:this.is_tag_required_in_chat})
             });
 
         }
@@ -98,6 +99,8 @@ export default {
 
         settings:{
             handler(val){
+                console.log(val);
+
                 if(val) this.is_tag_required_in_chat =  val.settings.is_tag_required_in_chat
             },
 

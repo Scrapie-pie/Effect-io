@@ -421,7 +421,8 @@
 
                 }).catch(({response})=>{
                     if(response.status===400) {
-                        this.message = this.spellingMessage
+                        this.getPhrasesSelectText(this.spellingMessage)
+
                         console.log('spellingSuggestions',response.data.spellingSuggestions);
                         this.spellingShowBox(response.data.spellingSuggestions)
                     }

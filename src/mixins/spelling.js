@@ -24,6 +24,7 @@ export default {
             if(list.length) {
                 this.spellingList = list
                 this.spellingShow=true;
+                console.log('spellingShowBox',list);
 
             }
         }
@@ -39,7 +40,7 @@ export default {
                     enabled:this.spellingCheck
                 })
                 .then(()=>{
-
+                    this.$store.commit('user/profileUpdate',{spelling:this.spellingCheck})
 
             });
 

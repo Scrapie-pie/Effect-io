@@ -32,6 +32,7 @@ export default {
             delete this._vm.$http.defaults.headers['content-type'];
         },
         profileUpdate(state, {
+            spelling,
             code,
             avatar,
             first_name,
@@ -54,6 +55,7 @@ export default {
 
             let obj = {}
 
+            if(spelling!==undefined) obj.spelling=spelling
             if(code!==undefined) obj.code=code
             if(avatar!==undefined) obj.avatar=avatar
             if(first_name!==undefined) obj.first_name=first_name
@@ -87,6 +89,9 @@ export default {
         },
         settings(state, val) {
             state.settings=val;
+        },
+        settingsUpdateFields(state, obj) {
+            state.settings.settings=Object.assign(state.settings.settings,obj);
         },
         settingsUpdate(state, val) {
             state.settings.settings=val;
