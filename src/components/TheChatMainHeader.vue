@@ -38,7 +38,8 @@
                     base-btn(
                         color="error"
                         padding="xs",
-                        @click.prevent="chatCompletion"
+                        @click.prevent="chatCompletion",
+                        v-wait:disabled='"chatMain"'
                     ) Завершить диалог
                 li.chat-main-header__control()
                     base-btn(
@@ -165,9 +166,10 @@
             },
             chatCompletion(){
                     let data = this.httpParams.params;
-                    data.intent = 'farewell'
-                this.$http.post('message/save', data);
-                //this.removeMessageAndPush()
+                    data.intent = 'farewell';
+
+
+                this.$http.post('message/save', data)
 
             },
             removeFromRoom(user_id){
