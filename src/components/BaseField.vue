@@ -35,7 +35,7 @@
                     span.field__eye-text Показать пароль
 
             strong.field__error(
-                v-if="errors.has(name) && type!=='amount'"
+                v-if="errors.has(name)"
                 v-html="errors.first(name)"
             )
 
@@ -48,6 +48,10 @@
                 v-on="inputListeners",
             ).field__select
                 template(slot="no-options") Ничего не найдено
+            strong.field__error(
+                v-if="errors.has(name)"
+                v-html="errors.first(name)"
+            )
 
 </template>
 
