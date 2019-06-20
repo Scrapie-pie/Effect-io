@@ -10,7 +10,9 @@ export default {
             spellingCheck:0,
             spellingList:1,
             spellingIgnoredWords:[],
-            spellingMessage:''
+            spellingMessage:'',
+            spellingResultMessage:''
+
         }
     },
 
@@ -20,6 +22,7 @@ export default {
     },
 
     methods:{
+
         spellingShowBox(list){
             if(list.length) {
                 this.spellingList = list

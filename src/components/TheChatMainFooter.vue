@@ -17,12 +17,12 @@
                         the-files-board(name="gifs")
                     box-controls(v-if="showOffer", @boxControlClose="showOffer=false")
                         the-offer()
-                    box-controls(v-if="spellingShow", @boxControlClose="spellingShow=false").chat-main-footer__the-spelling-form
+                    box-controls(v-if="spellingShow", @boxControlClose="spellingShow=false;getPhrasesSelectText(spellingResultMessage)").chat-main-footer__the-spelling-form
                         TheSpellingForm(
                             :list="spellingList",
                             :message="spellingMessage",
                             @ignoredWords="val=>spellingIgnoredWords=val",
-                            @resultMessage="getPhrasesSelectText"
+                            @resultMessage="(val)=>spellingResultMessage=val"
                         )
 
                 .chat-main-footer__contols
@@ -85,7 +85,7 @@
                             :icon="{name:'gifs',textHidden:'Гифки'}"
                             @click.prevent="showGifs=true"
                         )
-                    li.chat-main-footer__button
+                    li.chat-main-footer__button(v-if="viewModeChat=='visitors'")
                         base-radio-check(name="spellingCheck" v-model="spellingCheck") Проверка орфографии
                     li.chat-main-footer__button.chat-main-footer__button_send
 

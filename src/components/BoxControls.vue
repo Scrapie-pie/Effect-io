@@ -76,8 +76,8 @@
             this.$root.$off('globBoxControlClose',this.boxControlClose)
         },
         methods: {
-            boxControlClose(){
-                this.$emit('boxControlClose')
+            boxControlClose(val){
+                this.$emit('boxControlClose',val)
             },
             close(e) {
 

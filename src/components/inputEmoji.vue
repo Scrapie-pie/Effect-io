@@ -115,6 +115,29 @@ export default {
         content: attr(placeholder);
         display: block; /* For Firefox */
         color:glob-color('placeholder');
+        animation: fadeInFromNone 0.5s ease-out;
+    }
+
+    @keyframes fadeInFromNone {
+        0% {
+            display: none;
+            opacity: 0;
+        }
+
+        1% {
+            display: block;
+            opacity: 0;
+        }
+
+        50% {
+            display: block;
+            opacity: 0;
+        }
+
+        100% {
+            display: block;
+            opacity: 1;
+        }
     }
 }
 </style>

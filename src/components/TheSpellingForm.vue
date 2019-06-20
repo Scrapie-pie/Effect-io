@@ -92,9 +92,11 @@
 
                 if(val!=null && this.index<=this.indexLast) {
                     this.newMessage = this.newMessage.replace(this.list[this.index].word,this.selectWord.title)
+
                     if(this.index===this.indexLast) {
-                        //this.$root.$emit('globBoxControlClose')
                         this.$emit('resultMessage',this.newMessage);
+                        this.$root.$emit('globBoxControlClose')
+
 
                     } else {
                         this.selectWordId=null
@@ -108,8 +110,9 @@
             index(val){
                 console.log(val,this.indexLast);
                 if(val>this.indexLast) {
-                    //this.$root.$emit('globBoxControlClose')
                     this.$emit('resultMessage',this.newMessage);
+                    this.$root.$emit('globBoxControlClose')
+
                 }
             }
           /*  suggestions:{
@@ -126,6 +129,7 @@
         },
         created(){
             console.log('TheSpellingForm');
+            this.$emit('resultMessage',this.message);
         },
         methods:{
             skipWord(){
