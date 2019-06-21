@@ -226,7 +226,7 @@ export default {
         },
         "guest-update"(val) {
             //Todo 'guest-update'
-            //console.log('guest-update',val);
+            console.log('guest-update',val);
 
             //this.$root.$emit('guestUpdate',val)
 

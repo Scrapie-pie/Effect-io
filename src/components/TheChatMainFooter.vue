@@ -319,10 +319,11 @@
 
 
                 if(this.uploadFileList.length) {
-                    files = this.uploadFileList.map(item=>{
+                    files = this.uploadFileList.slice();
+                    files = files.map(item=>{
 
                         item.name=item.src.name;
-                        delete item.src
+
                         return item
                     })
 
@@ -388,7 +389,7 @@
                             },
                             delivery_status:data.delivery_status
                         }
-                    this.uploadFileList=[]
+
 
                     this.$root.$emit('messageAdd',message);
 
@@ -407,18 +408,19 @@
                         this.$store.commit('visitors/selfMessageLastUpdate',message)
                     }
 
+
+
+
+
+                }).then(()=>{
                     this.message='';
                     this.spellingIgnoredWords=[]
+                    this.uploadFileList=[]
                     autosize.destroy(this.$refs.chatInput);
                     this.autosizeInit=true;
                     setTimeout(()=>{
                         this.$refs.scrollbarMessage.update()
                     },200)
-
-
-
-                }).then(()=>{
-
                 }).catch(({response})=>{
                     if(response.status===400) {
                         this.getPhrasesSelectText(this.spellingMessage)
