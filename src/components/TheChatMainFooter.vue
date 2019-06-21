@@ -21,7 +21,7 @@
                         TheSpellingForm(
                             :list="spellingList",
                             :message="spellingMessage",
-                            @ignoredWords="val=>spellingIgnoredWords=val",
+                            @ignoredWords="val=>spellingIgnoredWords.push(...val)",
                             @resultMessage="(val)=>spellingResultMessage=val"
                         )
 
@@ -323,7 +323,7 @@
                     files = files.map(item=>{
 
                         item.name=item.src.name;
-
+                        delete item.src
                         return item
                     })
 
