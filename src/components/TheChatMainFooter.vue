@@ -323,7 +323,7 @@
                     files = files.map(item=>{
 
                         item.name=item.src.name;
-                        delete item.src
+                        //delete item.src
                         return item
                     })
 
