@@ -113,6 +113,7 @@
 
 
     import lodash_split from 'lodash/split'
+    import lodash_cloneDeep from 'lodash/cloneDeep'
 
     import autosize from 'autosize'
     import { viewModeChat,httpParams,spelling } from '@/mixins/mixins'
@@ -319,7 +320,8 @@
 
 
                 if(this.uploadFileList.length) {
-                    files = this.uploadFileList.slice();
+
+                    files =   lodash_cloneDeep(this.uploadFileList)
                     files = files.map(item=>{
 
                         item.name=item.src.name;

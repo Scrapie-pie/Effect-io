@@ -89,8 +89,8 @@
 
                     this.loader = true;
                     console.log(data);
-                    this.$emit('upload_url', data.file)
-                    this.$emit('input', data.file)
+                    this.$emit('upload_url', data.data.file)
+                    this.$emit('input', data.data.file)
 
                 }).catch(()=>this.loader = true)
             },

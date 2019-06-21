@@ -351,6 +351,7 @@
 
             },
             getUploadAvatar(event){
+                console.log(event);
                 this.model.avatar=event;
             },
             createOperator(){
