@@ -23,127 +23,111 @@
 </template>
 
 <script>
-    import autosize from 'autosize'
-    import { mapGetters,mapActions } from 'vuex';
+import autosize from 'autosize'
+import { mapGetters, mapActions } from 'vuex'
 
-    import browserNotification from '@/modules/browserNotification'
+import browserNotification from '@/modules/browserNotification'
 export default {
+	components: {},
+	data() {
+		return {
+			autosizeInit: true,
+			textarea: '',
+			is_tag_required_in_chat: 0
+		}
+	},
+	computed: {
+		...mapGetters('tags', ['itemList']),
+		...mapGetters('user', ['settings']),
 
-    components:{
+		itemListText() {
+			return this.itemList.map(item => item.tag)
+		},
+		itemListTextArea() {
+			if (!this.itemListText.length) return ''
+			return this.itemListText.join('\n')
+		},
+		tags() {
+			return this.textarea.split('\n')
+		}
+	},
+	watch: {
+		textarea(val) {
+			if (val) {
+				setTimeout(() => {
+					autosize(this.$refs.textarea.$el.querySelector('textarea'))
+				}, 500)
+			}
+		},
+		itemListTextArea: {
+			handler(val) {
+				this.textarea = val
+			},
 
-    },
-    data() {
-        return {
-            autosizeInit:true,
-            textarea:'',
-            is_tag_required_in_chat:0
-        }
-    },
-    computed:{
-        ...mapGetters('tags',[
-            'itemList'
-        ]),
-        ...mapGetters('user',[
-            'settings'
-        ]),
+			immediate: true
+		},
 
-        itemListText(){
-            return this.itemList.map(item=>item.tag)
-        },
-        itemListTextArea() {
-            if(!this.itemListText.length) return ''
-            return  this.itemListText.join('\n')
-        },
-        tags(){
-            return this.textarea.split('\n')
-        }
-    },
-    methods:{
-        save(){
-            this.$store.dispatch('tags/update',{
-                tags:this.tags,
-                is_tag_required_in_chat:this.is_tag_required_in_chat,
-            }).then(()=>{
-                browserNotification('Сохранено')
-                //this.$router.push({name: 'processAll'});
-                this.$store.commit('user/settingsUpdateFields',{is_tag_required_in_chat:this.is_tag_required_in_chat})
-            });
+		settings: {
+			handler(val) {
+				console.log(val)
 
-        }
-    },
-    beforeRouteEnter (to, from, next) {
-        next(vm=>{
-            if(!vm.$store.getters['user/isRole'](['admin','owner','operatorSenior'])) return vm.$router.push({name: 'processAll'})
+				if (val) this.is_tag_required_in_chat = val.settings.is_tag_required_in_chat
+			},
 
-        })
-    },
-    watch:{
-        textarea(val){
-
-            if(val) {
-
-                setTimeout(()=>{
-                    autosize(this.$refs.textarea.$el.querySelector('textarea'));
-                },500)
-            }
-
-
-        },
-        itemListTextArea:{
-            handler(val){
-                this.textarea = val
-            },
-
-            immediate: true
-        },
-
-        settings:{
-            handler(val){
-                console.log(val);
-
-                if(val) this.is_tag_required_in_chat =  val.settings.is_tag_required_in_chat
-            },
-
-            immediate: true
-        },
-
-    },
-    created(){
-        this.$store.dispatch('tags/get');
-
-
-
-    },
-    mounted(){
-        //console.log(this.$refs.textarea.$el.querySelector('textarea'));
-
-
-    }
+			immediate: true
+		}
+	},
+	created() {
+		this.$store.dispatch('tags/get')
+	},
+	mounted() {
+		//console.log(this.$refs.textarea.$el.querySelector('textarea'));
+	},
+	methods: {
+		save() {
+			this.$store
+				.dispatch('tags/update', {
+					tags: this.tags,
+					is_tag_required_in_chat: this.is_tag_required_in_chat
+				})
+				.then(() => {
+					browserNotification('Сохранено')
+					//this.$router.push({name: 'processAll'});
+					this.$store.commit('user/settingsUpdateFields', {
+						is_tag_required_in_chat: this.is_tag_required_in_chat
+					})
+				})
+		}
+	},
+	beforeRouteEnter(to, from, next) {
+		next(vm => {
+			if (!vm.$store.getters['user/isRole'](['admin', 'owner', 'operatorSenior']))
+				return vm.$router.push({ name: 'processAll' })
+		})
+	}
 }
 </script>
 
 <style lang="scss">
-    .page-tags {
-        &__title {
-            @extend %h4;
-            margin-bottom:calc-em(40);
-        }
-        &__label {
-            margin-bottom:calc-em(15);
-        }
-        &__item {
-            margin-bottom:calc-em(20);
-            &_btn {
-                margin-top:calc-em(40);
-            }
-        }
-        &__textarea  {
-            .field__input {
-                min-height:calc-em(100);
-                height:auto;
-            }
-
-        }
-    }
-
+.page-tags {
+	&__title {
+		@extend %h4;
+		margin-bottom: calc-em(40);
+	}
+	&__label {
+		margin-bottom: calc-em(15);
+	}
+	&__item {
+		margin-bottom: calc-em(20);
+		&_btn {
+			margin-top: calc-em(40);
+		}
+	}
+	&__textarea {
+		.field__input {
+			min-height: calc-em(100);
+			height: auto;
+		}
+	}
+}
 </style>

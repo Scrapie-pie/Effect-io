@@ -56,160 +56,168 @@
 </template>
 
 <script>
+import 'vue-select/dist/vue-select.css'
+import '@/scss/base/field.scss'
 
-    import 'vue-select/dist/vue-select.css'
-    import '@/scss/base/field.scss'
+import vSelect from 'vue-select' // https://github.com/sagalbot/vue-select
 
-    import vSelect from 'vue-select' // https://github.com/sagalbot/vue-select
+vSelect.props.components.default = () => ({
+	Deselect: {
+		render: createElement => createElement('span', '×')
+	},
+	OpenIndicator: {
+		render: createElement => createElement('span', '')
+	}
+})
 
-    vSelect.props.components.default = () => ({
-        Deselect: {
-            render: createElement => createElement('span', '×'),
-        },
-        OpenIndicator: {
-            render: createElement => createElement('span', ''),
-        },
-    });
+export default {
+	components: { 'base-select': vSelect },
+	inject: ['$validator'],
+	inheritAttrs: false,
+	props: {
+		theme: {
+			type: String,
+			required: false,
+			default: ''
+		},
+		select: {
+			type: Boolean,
+			required: false,
+			default: false
+		},
+		selectOptions: {
+			type: Object,
+			required: false,
+			default: () => {}
+		},
+		label: {
+			type: String,
+			required: false,
+			default: ''
+		},
+		placeholder: {
+			type: String,
+			required: false,
+			default: ''
+		},
+		name: {
+			type: String,
+			required: true
+		},
+		type: {
+			type: String,
+			required: false,
+			default: 'text'
+		},
+		disabled: {
+			type: Boolean,
+			required: false,
+			default: false
+		},
+		value: {
+			required: false,
+			default: ''
+		},
+		autocomplete: {
+			type: String,
+			required: false,
+			default: 'new-password'
+		}
+	},
+	data() {
+		return {
+			focus: false,
+			options: {}
+		}
+	},
 
+	computed: {
+		getInputOptions() {
+			let obj = {
+				autocomplete: this.autocomplete,
+				name: this.name,
+				type: this.type,
+				placeholder: this.getPlaceholder,
+				value: this.value
+			}
+			return Object.assign({ maxLength: 64 }, this.$attrs, obj)
+		},
+		getSelectOptions() {
+			return Object.assign(
+				{
+					/*resetOnOptionsChange:false*/
+				},
+				this.$attrs,
+				this.selectOptions
+			)
+		},
+		selectLoading() {
+			if (this.selectOptions.options.length) return false
+			return true
+		},
 
-    export default {
-        components: {'base-select': vSelect},
-        inject: ['$validator'],
-        inheritAttrs: false,
-        props: {
-            theme: String,
-            select: {
-                required: false,
-                default: false
-            },
-            selectOptions: {
-                required: false,
-                default: false
-            },
-            label: {
-                required: false,
-                default: ''
-            },
-            placeholder: {
-                required: false,
-                default: ''
-            },
-            name: {
-                required: true
-            },
-            type: {
-                required: false,
-                default: 'text'
-            },
-            disabled: {
-                required: false,
-                default: false
-            },
-            value: {
-                required: false,
-                default: ''
-            },
-            autocomplete:{
-                required: false,
-                default: "new-password"
-            }
+		getPlaceholder() {
+			if (this.label != '') return
+			if (this.placeholder == '' && this.type == 'search') return 'Поиск'
+			else return this.placeholder
+		},
+		classObject() {
+			return {
+				field_theme_soft: this.theme == 'soft',
+				field_has_value: !!this.value,
+				field_focus: this.focus,
+				field_disabled: this.disabled,
+				field_label: this.label,
+				field_select: this.type == 'select',
+				field_error: this.errors.has(this.name)
+			}
+		},
 
-        },
-        data() {
-            return {
-                focus: false,
-                options: {},
+		inputListeners: function() {
+			var vm = this
+			// `Object.assign` объединяет объекты вместе, чтобы получить новый объект
+			return Object.assign(
+				{},
+				// Мы добавляем все слушатели из родителя
+				this.$listeners,
+				// Затем мы можем добавить собственные слушатели или
+				// перезаписать поведение некоторых существующих.
+				{
+					// Это обеспечит, что будет работать v-model на компоненте
+					focus: function(event) {
+						vm.$emit('focus')
+						vm.focus = true
+					},
+					blur: function(event) {
+						vm.$emit('blur')
+						if (event.target.value) return
+						vm.focus = false
+					},
+					input: function(event) {
+						if (vm.type == 'select') {
+							vm.$emit('input', event)
 
-            }
-        },
+							return
+						}
+						vm.$emit('input', event.target.value)
+					}
+				}
+			)
+		}
+	},
 
-        computed: {
-            getInputOptions() {
-                let obj = {
-                    autocomplete:this.autocomplete,
-                    name:this.name,
-                    type:this.type,
-                    placeholder: this.getPlaceholder,
-                    value:this.value
-                }
-                return Object.assign({maxLength:64}, this.$attrs, obj);
-            },
-            getSelectOptions() {
+	methods: {
+		clearSearch() {
+			this.$emit('input', '')
+		},
+		togglePassword() {
+			let el = this.$refs.input
 
-                return Object.assign({/*resetOnOptionsChange:false*/}, this.$attrs, this.selectOptions);
-            },
-            selectLoading() {
-                if (this.selectOptions.options.length) return false
-                return true
-            },
+			let tp = el.getAttribute('type')
 
-            getPlaceholder() {
-                if (this.label != '') return;
-                if (this.placeholder == '' && this.type == 'search') return 'Поиск';
-                else return this.placeholder
-            },
-            classObject() {
-                return {
-                    'field_theme_soft': this.theme == 'soft',
-                    'field_has_value': !!this.value,
-                    'field_focus': (this.focus),
-                    'field_disabled': this.disabled,
-                    'field_label': this.label,
-                    'field_select': this.type == 'select',
-                    'field_error': this.errors.has(this.name)
-                }
-            },
-
-            inputListeners: function () {
-                var vm = this
-                // `Object.assign` объединяет объекты вместе, чтобы получить новый объект
-                return Object.assign({},
-                    // Мы добавляем все слушатели из родителя
-                    this.$listeners,
-                    // Затем мы можем добавить собственные слушатели или
-                    // перезаписать поведение некоторых существующих.
-                    {
-                        // Это обеспечит, что будет работать v-model на компоненте
-                        focus: function (event) {
-                            vm.$emit('focus');
-                            vm.focus = true
-                        },
-                        blur: function (event) {
-                            vm.$emit('blur');
-                            if (event.target.value) return
-                            vm.focus = false
-                        },
-                        input: function (event) {
-
-
-                            if (vm.type == 'select') {
-
-                                vm.$emit('input', event)
-
-                                return
-                            }
-                            vm.$emit('input', event.target.value)
-                        },
-                    }
-                )
-            }
-        },
-
-        methods: {
-            clearSearch(){
-                this.$emit('input', '')
-            },
-            togglePassword() {
-                let el = this.$refs.input
-
-                let tp = el.getAttribute('type')
-
-                if (tp == 'password') el.setAttribute('type', 'text')
-                else el.setAttribute('type', 'password')
-            }
-        }
-
-    }
-
+			if (tp == 'password') el.setAttribute('type', 'text')
+			else el.setAttribute('type', 'password')
+		}
+	}
+}
 </script>
-

@@ -133,277 +133,266 @@
 </template>
 
 <script>
-    //Todo добавить скролинг при ошибки к полю ошибки
+//Todo добавить скролинг при ошибки к полю ошибки
 
+import PasswordRefresh from '@/components/PasswordRefresh'
+import TextInfo from '@/components/TextInfo'
+import UploadAvatar from '@/components/UploadAvatar'
+//import TelInput from '@/components/TelInput'
 
-    import PasswordRefresh from '@/components/PasswordRefresh'
-    import TextInfo from '@/components/TextInfo'
-    import UploadAvatar from '@/components/UploadAvatar'
-    //import TelInput from '@/components/TelInput'
+import browserNotification from '@/modules/browserNotification'
 
-    import browserNotification from '@/modules/browserNotification'
+const TelInput = () => import('@/components/TelInput')
 
-    const  TelInput = ()=> import('@/components/TelInput')
+export default {
+	components: {
+		TextInfo,
+		UploadAvatar,
+		PasswordRefresh,
+		TelInput
+	},
 
-    export default {
-        components: {
-            TextInfo,
-            UploadAvatar,
-            PasswordRefresh,
-            TelInput
-        },
+	data() {
+		return {
+			isAddOperator: !!this.$route.query.add,
+			phoneUnmaskedValue: '',
+			phonesTypeSelect: {},
+			phonesType: [
+				{
+					name: 'Телефон',
+					value: 0
+				},
+				{
+					name: 'Sip',
+					value: 1
+				}
+			],
+			model: {
+				pass: '', //нужен для создания нового оператора
+				user_id: null,
+				owner_id: null, //нужен для проверки userIdNoOwner()
+				avatar: null,
+				first_name: null,
+				last_name: null,
+				phone: null,
+				phones: {
+					type: 0,
+					phone: '',
+					sip: ''
+				},
+				mail: null,
+				role_id: null,
+				is_common_chat: null,
+				branches_ids: [],
+				use_chat: null,
+				use_calls: null
+			},
+			operatorSeniorMode: false,
+			adminMode: false,
+			branchListSelected: [],
+			branchListAll: []
+		}
+	},
 
-        data() {
-            return {
+	computed: {
+		compBranchListAll() {
+			return this.$store.state.user.branchListAll
+		},
+		branches_ids() {
+			return this.model.branches_ids
+		},
+		profile() {
+			return this.$store.state.user.profile
+		},
+		myRoles() {
+			return this.$store.getters['user/roles']
+		},
+		anotherProfile() {
+			return this.model.user_id !== this.profile.user_id
+		},
+		compBranchListRemaining() {
+			let list = this.branches_ids
+			return this.branchListAll.filter(item => {
+				return !list.includes(item.id)
+			})
+		}
+	},
+	watch: {
+		profile: {
+			handler(val) {
+				console.log('watch profile', val)
+				if (val) {
+					this.getProfileByUserId()
+				}
+			},
+			deep: true,
+			immediate: true
+		},
+		compBranchListAll(val) {
+			this.branchListAll = val
+		},
+		phonesTypeSelect(val) {
+			this.model.phones.type = val.value
+		},
+		branchListSelected(val) {
+			this.model.branches_ids = val.map(item => {
+				return item.id
+			})
+		},
+		operatorSeniorMode(val) {
+			if (val) {
+				this.model.role_id = 14
+			} else this.model.role_id = 6
+		},
+		adminMode(val) {
+			if (val) {
+				this.model.role_id = 13
+			} else this.model.role_id = 6
+		}
+	},
+	created() {
+		//this.clearFormValue();
+	},
+	methods: {
+		setBranchListSelected(val) {
+			if (val) {
+				this.branchListAll = val
+				this.branchListSelected = val.filter(item => {
+					return this.model.branches_ids.includes(item.id)
+				})
+			}
+		},
+		getBranchListAll() {
+			if (this.$store.state.user.branchListAll.length) {
+				this.setBranchListSelected(this.$store.getters['user/branchListAll'])
+			} else {
+				this.$store.watch(
+					state => state.user.branchListAll,
+					val => {
+						return this.setBranchListSelected(val)
+					}
+				)
+			}
+		},
+		fillProfile() {
+			;(this.model.user_id = this.profile.user_id),
+				(this.model.owner_id = this.profile.owner_id), //нужен для проверки userIdNoOwner()
+				(this.model.avatar = this.profile.avatar),
+				(this.model.first_name = this.profile.first_name),
+				(this.model.last_name = this.profile.last_name),
+				(this.model.phone = this.profile.phone),
+				(this.model.phones = this.profile.phones),
+				(this.model.mail = this.profile.mail),
+				(this.model.role_id = this.profile.role_id),
+				(this.model.is_common_chat = this.profile.is_common_chat),
+				(this.model.branches_ids = this.profile.branches_ids),
+				(this.model.use_chat = this.profile.use_chat),
+				(this.model.use_calls = this.profile.use_calls)
 
-                isAddOperator:!!this.$route.query.add,
-                phoneUnmaskedValue:'',
-                phonesTypeSelect:{},
-                phonesType:[
-                    {
-                        name:'Телефон',
-                        value:0
-                    },
-                    {
-                        name:'Sip',
-                        value:1
-                    }
-                ],
-                model:{
-                    pass:'', //нужен для создания нового оператора
-                    user_id:null,
-                    owner_id:null, //нужен для проверки userIdNoOwner()
-                    avatar:null,
-                    first_name:null,
-                    last_name:null,
-                    phone:null,
-                    phones:{
-                        type:0,
-                        phone:'',
-                        sip:'',
-                    },
-                    mail:null,
-                    role_id:null,
-                    is_common_chat:null,
-                    branches_ids:[],
-                    use_chat:null,
-                    use_calls:null,
-                },
-                operatorSeniorMode:false,
-                adminMode:false,
-                branchListSelected:[],
-                branchListAll:[]
-            }
-        },
+			this.adminMode = this.profile.role_id === 13
+			this.operatorSeniorMode = this.profile.role_id === 14
+			this.phoneUnmaskedValue = this.profile.phones.phone
+			this.getBranchListAll()
+		},
+		setPassword(val) {
+			this.model.pass = val
+		},
+		clearFormValue() {
+			if (!this.isAddOperator) return
+			for (let prop in this.model) {
+				if (prop == 'phones') {
+					this.model[prop].phone = ''
+					this.model[prop].additional = ''
+					this.model[prop].sip = ''
+				} else this.model[prop] = ''
 
-        computed:{
-            compBranchListAll(){
-                return this.$store.state.user.branchListAll
-            },
-            branches_ids(){
-                return this.model.branches_ids
-            },
-            profile(){
-                return this.$store.state.user.profile
-            },
-            myRoles(){
-                return this.$store.getters['user/roles']
-            },
-            anotherProfile(){
-                return  this.model.user_id !== this.profile.user_id
-            },
-            compBranchListRemaining(){
-                let list = this.branches_ids;
-                return this.branchListAll.filter((item)=>{
-                    return !list.includes(item.id)
-                });
-            },
-        },
-        watch:{
-            profile:{
-                handler(val){
-                    console.log('watch profile',val);
-                    if(val) {
-                        this.getProfileByUserId()
-                    }
-                },
-                deep: true,
-                immediate: true
-            },
-            compBranchListAll(val){
-                this.branchListAll = val
-            },
-            phonesTypeSelect(val){
-                this.model.phones.type = val.value
-            },
-            branchListSelected(val) {
-                this.model.branches_ids = val.map((item) => {
-                    return item.id
-                })
-            },
-            operatorSeniorMode(val){
+				this.role_id = 6
+			}
+		},
+		getProfileByUserId() {
+			console.log('getProfileByUserId')
+			if (this.isAddOperator) {
+				this.getBranchListAll()
+				return
+			}
 
-                if(val) {
-                    this.model.role_id = 14
-                } else this.model.role_id = 6
-            },
-            adminMode(val){
+			let user_id = +this.$route.query.user_id
+			if (user_id) {
+				if (user_id == this.profile.user_id) return this.fillProfile()
 
-                if(val) {
-                    this.model.role_id = 13
-                } else this.model.role_id = 6
-            }
-        },
-        created(){
-            //this.clearFormValue();
+				this.$http
+					.get('user/get-profile', { params: { user_id: user_id } })
+					.then(({ data }) => {
+						if (data.success) {
+							this.model = data.data.user
+							this.adminMode = this.model.role_id === 13
+							this.operatorSeniorMode = this.model.role_id === 14
+							this.phoneUnmaskedValue = this.model.phones.phone
+							this.getBranchListAll()
+						}
+					})
+					.catch(errors => {
+						if (errors.response.status == 404) this.$router.push({ name: 'process' })
+					})
+			} else {
+				this.fillProfile()
+			}
+		},
+		unmaskedvalue(val) {
+			this.phoneUnmaskedValue = val
+		},
+		getUploadAvatar(event) {
+			console.log(event)
+			this.model.avatar = event
+		},
+		createOperator() {
+			this.$http.post('employees', this.model).then(({ data }) => {
+				browserNotification('Оператор создан')
+				this.$router.push({ name: 'team' })
+			})
+		},
+		userUpdate() {
+			this.$validator.validateAll().then(response => {
+				if (response) {
+					this.model.phones.phone = this.phoneUnmaskedValue
 
-        },
-        methods:{
-            setBranchListSelected(val){
-                if(val) {
-                    this.branchListAll = val
-                    this.branchListSelected =  val.filter((item)=>{
-                        return this.model.branches_ids.includes(item.id)
-                    });
-                }
-            },
-            getBranchListAll(){
-                if(this.$store.state.user.branchListAll.length) {
-                    this.setBranchListSelected(this.$store.getters['user/branchListAll'])
-                } else {
-                    this.$store.watch(
-                        (state)=>state.user.branchListAll,
-                        (val) => {
-                            return this.setBranchListSelected(val)
+					if (this.isAddOperator) {
+						return this.createOperator()
+					}
 
-                    });
-                }
-            },
-            fillProfile(){
+					this.$http
+						.post('user/update-profile', this.model)
+						.then(({ data }) => {
+							console.log()
+							if (data.data.id === this.profile.id)
+								this.$store.commit('user/profileUpdate', data.data)
+							browserNotification('Сохранено')
+							this.$router.push({ name: 'team' })
+						})
+						.catch(({ response }) => {
+							console.log('errors')
+							console.log(response.data)
 
-                this.model.user_id=this.profile.user_id,
-                this.model.owner_id=this.profile.owner_id, //нужен для проверки userIdNoOwner()
-                this.model.avatar=this.profile.avatar,
-                this.model.first_name=this.profile.first_name,
-                this.model.last_name=this.profile.last_name,
-                this.model.phone=this.profile.phone,
-                this.model.phones=this.profile.phones,
-                this.model.mail=this.profile.mail,
-                this.model.role_id=this.profile.role_id,
-                this.model.is_common_chat=this.profile.is_common_chat,
-                this.model.branches_ids=this.profile.branches_ids,
-                this.model.use_chat=this.profile.use_chat,
-                this.model.use_calls=this.profile.use_calls
-
-                this.adminMode=this.profile.role_id === 13;
-                this.operatorSeniorMode=this.profile.role_id === 14;
-                this.phoneUnmaskedValue=this.profile.phones.phone;
-                this.getBranchListAll()
-            },
-            setPassword(val){
-                this.model.pass = val
-            },
-            clearFormValue(){
-
-                if(!this.isAddOperator) return;
-                for (let prop in this.model) {
-                    if (prop == 'phones') {
-                        this.model[prop].phone ='';
-                        this.model[prop].additional ='';
-                        this.model[prop].sip ='';
-                    } else this.model[prop] = '';
-
-                    this.role_id = 6
-
-
-                }
-            },
-            getProfileByUserId(){
-                console.log('getProfileByUserId');
-                if(!!this.isAddOperator) {
-                    this.getBranchListAll()
-                    return
-                }
-
-                let user_id = + this.$route.query.user_id;
-                if(user_id) {
-                    if (user_id == this.profile.user_id) return this.fillProfile()
-
-                    this.$http.get('user/get-profile', {params:{user_id:user_id}}).then(({data})=>{
-                        if(data.success) {
-                            this.model=data.data.user;
-                            this.adminMode=this.model.role_id === 13;
-                            this.operatorSeniorMode=this.model.role_id === 14;
-                            this.phoneUnmaskedValue=this.model.phones.phone;
-                            this.getBranchListAll()
-                        }
-                    }).catch((errors)=>{
-                        if (errors.response.status == 404) this.$router.push({name:'process'})
-
-                    })
-                } else {
-                    this.fillProfile()
-                }
-
-            },
-            unmaskedvalue(val){
-                this.phoneUnmaskedValue=val;
-
-            },
-            getUploadAvatar(event){
-                console.log(event);
-                this.model.avatar=event;
-            },
-            createOperator(){
-                this.$http.post('employees', this.model).then(({data})=>{
-                    browserNotification('Оператор создан')
-                    this.$router.push({name:'team'})
-                })
-            },
-            userUpdate(){
-
-                this.$validator.validateAll().then(response => {
-                    if (response) {
-
-                        this.model.phones.phone= this.phoneUnmaskedValue;
-
-                        if(this.isAddOperator) {
-                            return  this.createOperator()
-                        }
-
-                        this.$http.post('user/update-profile', this.model).then(({data})=>{
-                            console.log();
-                            if(data.data.id === this.profile.id)  this.$store.commit('user/profileUpdate', data.data)
-                            browserNotification('Сохранено')
-                            this.$router.push({name:'team'})
-                        }).catch(({response})=>{
-                            console.log('errors');
-                            console.log(response.data);
-
-                            if(response.data.errors) { // добавляет ошибки с бека в валидатор
-                                for (let prop in response.data.errors) {
-                                    let id = this.$validator.fields.find({ name: prop });
-                                    let err = {
-                                        field: prop,
-                                        msg:response.data.errors[prop].message,
-                                        id:id
-                                    };
-                                    this.errors.add(err);
-                                    this.$validator.flag(prop, {
-                                        valid: false,
-                                        dirty: true
-                                    });
-                                }
-
-
-                            }
-                        })
-                    }
-
-                });
-
-
-            }
-        }
-    }
+							if (response.data.errors) {
+								// добавляет ошибки с бека в валидатор
+								for (let prop in response.data.errors) {
+									let id = this.$validator.fields.find({ name: prop })
+									let err = {
+										field: prop,
+										msg: response.data.errors[prop].message,
+										id: id
+									}
+									this.errors.add(err)
+									this.$validator.flag(prop, {
+										valid: false,
+										dirty: true
+									})
+								}
+							}
+						})
+				}
+			})
+		}
+	}
+}
 </script>

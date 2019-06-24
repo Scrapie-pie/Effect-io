@@ -52,130 +52,109 @@
 </template>
 
 <script>
-
-
-    const FilterDropMenu =()=>import('@/components/FilterDropMenu')
-    import BtnSort  from '@/components/BtnSort'
-import {stats,sortFields} from '@/mixins/mixins'
+const FilterDropMenu = () => import('@/components/FilterDropMenu')
+import BtnSort from '@/components/BtnSort'
+import { stats, sortFields } from '@/mixins/mixins'
 
 export default {
-    components:{
-        FilterDropMenu,
-        BtnSort
-    },
-    mixins:[stats,sortFields],
-    props:{
+	components: {
+		FilterDropMenu,
+		BtnSort
+	},
+	mixins: [stats, sortFields],
+	props: {
+		filterBranchIdsOn: {
+			type: Boolean,
+			default: false
+		}
+	},
 
-        filterBranchIdsOn:{
-            type:Boolean,
-            default:false,
-        }
-    },
+	data() {
+		return {
+			filterBranchIds: []
+		}
+	},
+	computed: {
+		headList() {
+			let list = [
+				['Название отдела', 'name'],
+				['', ''],
+				['Получено<br>диалогов', 'dialogues_requests'],
+				['Принято/<br>пропущено<br> диалогов', 'dialogues_accepted'],
+				['Средняя скорость<br>ответа оператора', 'first_answer_average_speed'],
+				['Средняе время<br>ожидания <br> в очереди', 'average_guest_time_in_queue'],
 
-    data() {
-        return {
+				['Оценки', 'excellent_ratings']
+			]
 
-            filterBranchIds:[]
-        }
-    },
-    computed:{
+			if (this.btnDetailHide) list.splice(1, 1)
 
-        headList(){
-            let list = [
-                ['Название отдела','name'],
-                ['',''],
-                ['Получено<br>диалогов','dialogues_requests'],
-                ['Принято/<br>пропущено<br> диалогов','dialogues_accepted'],
-                ['Средняя скорость<br>ответа оператора','first_answer_average_speed'],
-                ['Средняе время<br>ожидания <br> в очереди','average_guest_time_in_queue'],
+			if (this.order === 'dialogues_percents') {
+				list = ['Название отдела', 'Получено диалогов']
+				list.push('Процент от общего количества диалогов (всех отделов)')
+			}
 
+			if (['dialogues_accepted', 'dialogues_requests'].includes(this.order)) {
+				list.length = 2
+			}
 
-                ['Оценки','excellent_ratings'],
-            ]
+			return list
+		},
+		bodyListFormat() {
+			return this.sortFieldsListGet
+		},
 
-            if(this.btnDetailHide) list.splice(1, 1)
+		itemListWidthBranchName() {
+			return this.bodyList.map(item => {
+				item.branchName = ''
+				let branch = this.$store.state.user.branchListAll.find(
+					itemSub => itemSub.id === item.branch_id
+				)
+				if (branch) {
+					item.branchName = branch.title
+					item.name = branch.title //base-filter-search сейчас ищет по name
+				}
+				item.operators = this.$store.getters['operators/all'].filter(itemSub =>
+					itemSub.branches_ids.includes(item.branch_id)
+				)
 
+				return item
+			})
+		},
+		sortFieldsListSet() {
+			if (this.filterBranchIds.length)
+				return this.itemListWidthBranchName.filter(item =>
+					this.filterBranchIds.includes(item.branch_id)
+				)
+			else return this.itemListWidthBranchName
+		}
+	},
 
-            if(this.order==="dialogues_percents") {
-                list = [
-                    'Название отдела',
-                    'Получено диалогов',
-                ]
-                list.push('Процент от общего количества диалогов (всех отделов)')
-            }
-
-
-            if(['dialogues_accepted','dialogues_requests'].includes(this.order)) {
-                list.length=2
-
-            }
-
-            return list
-        },
-        bodyListFormat(){
-            return  this.sortFieldsListGet
-        },
-
-        itemListWidthBranchName(){
-            return this.bodyList.map(item=>{
-                item.branchName=''
-                let branch = this.$store.state.user.branchListAll.find(itemSub=>itemSub.id===item.branch_id)
-                if(branch) {
-                    item.branchName = branch.title
-                    item.name = branch.title //base-filter-search сейчас ищет по name
-                }
-                item.operators = this.$store.getters['operators/all'].filter(itemSub=>itemSub.branches_ids.includes(item.branch_id))
-
-                return item
-            })
-        },
-        sortFieldsListSet(){
-
-            if(this.filterBranchIds.length) return this.itemListWidthBranchName.filter(item=>this.filterBranchIds.includes(item.branch_id))
-            else return this.itemListWidthBranchName
-        }
-    },
-
-    methods:{
-        indexToName(index) {
-            return Object.keys(this.sortFieldsComp)[index]
-        },
-        setSortField(val,index){
-            this.$set(this.sort,'val',sortDefault().val)
-            this.$set(this.sort.val,index,val);
-            this.currentSort = {
-                'val':val,
-                'field':this.sort.field[index],
-
-            }
-        },
-        setCurrentFieldSort(index){
-
-        }
-    }
+	methods: {}
 }
 </script>
 
 <style lang="scss">
-    .stats-branches{
-        &__head {
-            display:flex;
-            align-items:center;
-        }
-        &__caption {
-            @extend %row-flex;
-            &-item {
-                @extend %row-flex-col;
+.stats-branches {
+	&__head {
+		display: flex;
+		align-items: center;
+	}
+	&__caption {
+		@extend %row-flex;
+		&-item {
+			@extend %row-flex-col;
 
-                &.filter-drop-menu {    font-weight: 400;}
-            }
-        }
-        th:nth-child(1) {
-            width:253px;
-        }
-        th:nth-child(2) {
-            width:202px;
-        }
-    }
+			&.filter-drop-menu {
+				font-weight: 400;
+			}
+		}
+	}
+	th:nth-child(1) {
+		width: 253px;
+	}
+	th:nth-child(2) {
+		width: 202px;
+	}
+}
 </style>
-

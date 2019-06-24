@@ -20,97 +20,84 @@
 </template>
 
 <script>
-
-
-    export default {
-        props: {
-            headerPaddingNo:Boolean
-        },
-        data() {
-            return {
-
-            }
-        },
-        created(){
-
-        },
-        mounted(){
-            setTimeout(()=>{
-                console.log('scrollbarLayout');
-                window.scrl = this.$refs.scrollbarLayout
-            },3000)
-
-        }
-
-    }
+export default {
+	props: {
+		headerPaddingNo: Boolean
+	},
+	data() {
+		return {}
+	},
+	created() {},
+	mounted() {
+		setTimeout(() => {
+			console.log('scrollbarLayout')
+			window.scrl = this.$refs.scrollbarLayout
+		}, 3000)
+	}
+}
 </script>
 
-
 <style lang="scss">
+.layout {
+	margin-right: -(calc-em(15));
+	padding-right: calc-em(15);
+	/* overflow:auto;*/
+	position: relative;
+	overflow: hidden;
+	&__header {
+		position: relative;
+		text-align: center;
+		box-shadow: 0 0 14px 1px rgba(0, 1, 0, 0.11);
+		padding: calc-em(14) 0;
+		margin-bottom: calc-em(70);
 
+		&-inner {
+			display: flex;
+			justify-content: center;
+		}
 
-    .layout{
-        margin-right:-(calc-em(15));
-        padding-right:calc-em(15);
-       /* overflow:auto;*/
-        position:relative;
-        overflow:hidden;
-        &__header{
-            position:relative;
-            text-align:center;
-            box-shadow:0 0 14px 1px rgba(0, 1, 0, .11);
-            padding:calc-em(14) 0;
-            margin-bottom:calc-em(70);
+		&_padding-wrap_no {
+			margin-top: -(calc-em(30));
+			margin-left: -(calc-em(15));
+			margin-right: -(calc-em(15));
+		}
+	}
 
-            &-inner {
-                display:flex;
-                justify-content:center;
-            }
+	&__close {
+		position: absolute;
+		right: calc-em(15);
+		top: 0;
+		margin: calc-em(15);
+	}
 
-            &_padding-wrap_no {
-                margin-top:-(calc-em(30));
-                margin-left:-(calc-em(15));
-                margin-right:-(calc-em(15));
-            }
-        }
+	&__close-text-only-scr {
+		@extend %visuallyhidden;
+	}
+	&__title {
+		margin-bottom: 0;
+	}
 
-        &__close {
-            position:absolute;
-            right:calc-em(15);
-            top:0;
-            margin:calc-em(15);
-        }
+	&__grid {
+		max-width: 900px;
+		margin: 0 auto;
+		padding: 0 15px;
+	}
 
-        &__close-text-only-scr {
-            @extend %visuallyhidden;
-        }
-        &__title{margin-bottom:0}
+	&__content {
+	}
 
-        &__grid{
-            max-width:900px;
-            margin:0 auto;
-            padding:0 15px;
-        }
+	&__inner {
+		display: flex;
+	}
 
-        &__content {
+	&__nav {
+		padding-right: 6%;
+	}
 
-        }
-
-        &__inner{
-            display:flex;
-        }
-
-        &__nav{
-            padding-right:6%;
-        }
-
-
-        &__main{
-            width:70%;
-            margin:0 auto;
-            position:relative;
-        }
-
-
-    }
+	&__main {
+		width: 70%;
+		margin: 0 auto;
+		position: relative;
+	}
+}
 </style>

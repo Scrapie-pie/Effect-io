@@ -7,23 +7,29 @@
 </template>
 
 <script>
-    export default {
-        props: {
-            link:String,
-            name:String,
-        }
-    }
+export default {
+	props: {
+		link: {
+			type: String,
+			default: ''
+		},
+		name: {
+			type: String,
+			default: ''
+		}
+	}
+}
 </script>
 
 <style lang="scss">
-    .social-links{
-        display:flex;
-        align-items:center;
+.social-links {
+	display: flex;
+	align-items: center;
 
-        .icon{
-            width:24px;
-            height:24px;
-            margin:0 calc-em(2);
-        }
-    }
+	.icon {
+		width: 24px;
+		height: 24px;
+		margin: 0 calc-em(2);
+	}
+}
 </style>

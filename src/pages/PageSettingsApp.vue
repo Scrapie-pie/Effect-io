@@ -62,125 +62,121 @@
 </template>
 
 <script>
-    import config from "@/config/index";
-    import TextInfo from '@/components/TextInfo'
-    import browserNotification from '@/modules/browserNotification'
+import config from '@/config/index'
+import TextInfo from '@/components/TextInfo'
+import browserNotification from '@/modules/browserNotification'
 
-    export default {
+export default {
+	components: {
+		TextInfo
+	},
+	data() {
+		return {
+			model: {
+				push_notifications: '',
+				sound_new_common_message: {},
+				sound_new_guest: {},
+				sound_new_guest_message: {},
+				sound_new_operator_message: {},
+				language: ''
+			},
+			languages: [],
+			sounds: []
+		}
+	},
+	computed: {
+		settings() {
+			return this.$store.getters['user/settings']
+		}
+	},
+	watch: {
+		'model.sound_new_common_message': 'playSoundFile',
+		'model.sound_new_guest': 'playSoundFile',
+		'model.sound_new_guest_message': 'playSoundFile',
+		'model.sound_new_operator_message': 'playSoundFile',
+		settings: {
+			handler(val) {
+				if (val) {
+					let sounds = val.sounds.map((elem, index) => {
+						elem.index = index
+						return elem
+					})
+					this.sounds = sounds
+					this.model.push_notifications = val.settings.push_notifications
+					this.model.sound_new_common_message =
+						sounds[val.settings.sound_new_common_message] // = object
+					this.model.sound_new_guest = sounds[val.settings.sound_new_guest]
+					this.model.sound_new_guest_message =
+						sounds[val.settings.sound_new_guest_message]
+					this.model.sound_new_operator_message =
+						sounds[val.settings.sound_new_operator_message]
 
-        components: {
-            TextInfo
-        },
-        watch: {
-            'model.sound_new_common_message': 'playSoundFile',
-            'model.sound_new_guest': 'playSoundFile',
-            'model.sound_new_guest_message': 'playSoundFile',
-            'model.sound_new_operator_message': 'playSoundFile',
-            settings: {
-                handler(val) {
-                    if (val) {
-                        let sounds = val.sounds.map((elem, index) => {
-                            elem.index = index;
-                            return elem
-                        });
-                        this.sounds = sounds;
-                        this.model.push_notifications = val.settings.push_notifications;
-                        this.model.sound_new_common_message = sounds[val.settings.sound_new_common_message]; // = object
-                        this.model.sound_new_guest = sounds[val.settings.sound_new_guest];
-                        this.model.sound_new_guest_message = sounds[val.settings.sound_new_guest_message];
-                        this.model.sound_new_operator_message = sounds[val.settings.sound_new_operator_message];
+					//val.languages = {ru:"Русский",us:"Английский"}
 
-                        //val.languages = {ru:"Русский",us:"Английский"}
+					let languages = []
+					for (let prop in val.languages) {
+						languages.push({
+							prefix: prop,
+							name: val.languages[prop]
+						})
+					}
+					this.languages = languages
 
-                        let languages = []
-                        for (let prop in val.languages) {
-                            languages.push({
-                                prefix: prop,
-                                name: val.languages[prop]
-                            })
+					this.model.language = {
+						prefix: val.settings.language,
+						name: val.languages[val.settings.language]
+					}
+				}
+			},
+			immediate: true
+		}
+	},
+	created() {},
+	methods: {
+		notificationsEnable() {
+			if (this.model.push_notifications) return // Когда мы кликаем значение еще старое, по этому я инвертирую проверку
 
-                        }
-                        this.languages = languages;
+			Notification.requestPermission(permission => {
+				if (permission === 'denied') {
+					this.$root.$emit(
+						'popup-notice',
+						'Вы запретили уведомления, их можно разрешить в настройках вашего браузера'
+					)
+					this.model.push_notifications = 0
+				}
 
-                        this.model.language = {
-                            prefix: val.settings.language,
-                            name: val.languages[val.settings.language]
-                        }
+				if (permission === 'granted') {
+					browserNotification(
+						'Уведомления включены',
+						'Таким образом мы будем Вас уведомлять'
+					)
+				}
+			})
+		},
+		submit() {
+			let data = {
+				push_notifications: this.model.push_notifications,
+				sound_new_common_message: this.model.sound_new_common_message.index,
+				sound_new_guest: this.model.sound_new_guest.index,
+				sound_new_guest_message: this.model.sound_new_guest_message.index,
+				sound_new_operator_message: this.model.sound_new_operator_message.index,
+				language: this.model.language.prefix
+			}
 
-                    }
-                },
-                immediate: true
-            },
-        },
-        data() {
-            return {
-                model:{
-                    push_notifications:'',
-                    sound_new_common_message:{},
-                    sound_new_guest:{},
-                    sound_new_guest_message:{},
-                    sound_new_operator_message:{},
-                    language:'',
-
-                },
-                languages:[],
-                sounds:[]
-            }
-        },
-        computed:{
-            settings(){
-                return this.$store.getters['user/settings']
-            }
-        },
-        created(){
-
-        },
-        methods: {
-            notificationsEnable(){
-                if(this.model.push_notifications) return // Когда мы кликаем значение еще старое, по этому я инвертирую проверку
-
-                Notification.requestPermission((permission)=>{
-
-                    if(permission==='denied')  {
-                        this.$root.$emit('popup-notice','Вы запретили уведомления, их можно разрешить в настройках вашего браузера')
-                        this.model.push_notifications=0;
-
-                    }
-
-                    if(permission==='granted') {
-                        browserNotification('Уведомления включены', 'Таким образом мы будем Вас уведомлять')
-                    }
-
-                });
-            },
-            submit(){
-                let data = {
-                    push_notifications:this.model.push_notifications,
-                    sound_new_common_message:this.model.sound_new_common_message.index,
-                    sound_new_guest:this.model.sound_new_guest.index,
-                    sound_new_guest_message:this.model.sound_new_guest_message.index,
-                    sound_new_operator_message:this.model.sound_new_operator_message.index,
-                    language:this.model.language.prefix
-                }
-
-
-                  this.$http.put('company/settings-update',data)
-                      .then(()=>{
-                          browserNotification('Сохранено')
-                          this.$store.commit('user/settingsUpdate',data)
-                          this.$router.push({name:'team'})
-
-                   })
-            },
-            playSoundFile:function(sound ,prev_sound) {
-                if (!prev_sound.name) return  //Что бы не проигрывалось при заходе на страницу
-                if(sound.file) {
-
-                    let audio = new Audio(sound.file);
-                audio.volume=.5;
-                audio.play();
-            }
-            },
-        }
-    }
+			this.$http.put('company/settings-update', data).then(() => {
+				browserNotification('Сохранено')
+				this.$store.commit('user/settingsUpdate', data)
+				this.$router.push({ name: 'team' })
+			})
+		},
+		playSoundFile: function(sound, prev_sound) {
+			if (!prev_sound.name) return //Что бы не проигрывалось при заходе на страницу
+			if (sound.file) {
+				let audio = new Audio(sound.file)
+				audio.volume = 0.5
+				audio.play()
+			}
+		}
+	}
+}
 </script>

@@ -26,65 +26,62 @@
 
 <script>
 export default {
-    name: "password-refresh",
-    props:{
-        hideBtn:{
-            type:Boolean,
-            default:false,
-        }
-    },
-    data() {
-        return {
+	name: 'PasswordRefresh',
+	props: {
+		hideBtn: {
+			type: Boolean,
+			default: false
+		}
+	},
+	data() {
+		return {
+			model: {
+				password: '',
+				confirm_password: '',
+				user_id: ''
+			}
+		}
+	},
 
-            model: {
-                password: '',
-                confirm_password: '',
-                user_id: ''
-            }
-
-        }
-    },
-
-    watch:{
-        'model.confirm_password'(val){
-            if(val === this.model.password) this.$emit('getPassword',val)
-
-        }
-    },
-    methods:{
-        setUserId() {
-            this.model.user_id = this.$route.query.user_id;
-            if(!this.model.user_id) {
-                this.model.user_id = this.$store.getters['user/profile'].user_id;
-            }
-
-        },
-        save(){
-            this.setUserId()
-            this.$http.put('user/password-update', this.model)
-                .then(({ data }) => {
-                this.password='';
-                this.confirm_password='';
-            }).catch(({ response }) => {
-                this.password='';
-                this.confirm_password='';
-            })
-        }
-    }
+	watch: {
+		'model.confirm_password'(val) {
+			if (val === this.model.password) this.$emit('getPassword', val)
+		}
+	},
+	methods: {
+		setUserId() {
+			this.model.user_id = this.$route.query.user_id
+			if (!this.model.user_id) {
+				this.model.user_id = this.$store.getters['user/profile'].user_id
+			}
+		},
+		save() {
+			this.setUserId()
+			this.$http
+				.put('user/password-update', this.model)
+				.then(({ data }) => {
+					this.password = ''
+					this.confirm_password = ''
+				})
+				.catch(({ response }) => {
+					this.password = ''
+					this.confirm_password = ''
+				})
+		}
+	}
 }
 </script>
 
 <style lang="scss">
-    .password-refresh {
-        &__row {
-            @extend %row-flex;
-
-        }
-        &__col {
-            width:100%;
-        }
-        &__btn {
-            transform:translateY(calc-em(4));
-        }
-    }
+.password-refresh {
+	&__row {
+		@extend %row-flex;
+	}
+	&__col {
+		width: 100%;
+	}
+	&__btn {
+		transform: translateY(calc-em(4));
+	}
+}
 </style>
