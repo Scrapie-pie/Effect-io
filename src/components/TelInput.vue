@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import { intlTelInputUtils } from 'intl-tel-input/build/js/utils' //Todo отптимизировать, сделать ленивую загрузку
+import 'intl-tel-input/build/js/utils' //Todo отптимизировать, сделать ленивую загрузку
 import intlTelInput from 'intl-tel-input'
 import 'intl-tel-input/build/css/intlTelInput.min.css'
 
@@ -131,7 +131,7 @@ export default {
 		},
 		setMask() {
 			let country_data = this.iti.getSelectedCountryData(),
-				format = intlTelInputUtils.getExampleNumber(country_data.iso2, false, 1),
+				format = intlTelInputUtils.getExampleNumber(country_data.iso2, false, 1),  // eslint-disable-line
 				mask = format.replace('+' + country_data.dialCode, '').replace(/\d/g, '#'),
 				finishMask = '+' + country_data.dialCode.replace(/9/g, '\\9') + mask
 

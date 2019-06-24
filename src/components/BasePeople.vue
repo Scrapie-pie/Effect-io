@@ -77,53 +77,25 @@ export default {
 				return [0, 1, 2, 3].indexOf(value) !== -1
 			}
 		},
-		right: {
-			type: Boolean,
-			default: false
-		},
-		channelName: {
-			type: String,
-			default: ''
-		},
+		right: Boolean,
+		channelName: String,
 		count: {
 			type: Number,
 			default: 0
 		},
 		bgTextNoFill: Boolean,
-		name: {
-			type: String,
-			default: ''
-		},
-		text: {
-			type: String,
-			default: ''
-		},
-		time: {
-			type: Number,
-			default: 0
-		},
-		avatarWidth: {
-			type: String,
-			default: ''
-		},
-		avatarUrl: {
-			type: String,
-			default: ''
-		},
-		avatarStub: {
-			type: Number,
-			default: 0
-		},
-		avatarName: {
-			type: String,
-			default: ''
-		},
+		name: String,
+		text: String,
+		time: Number,
+		avatarWidth: String,
+		avatarUrl: String,
+		avatarStub: Number,
+		avatarName: String,
 		type: {
 			type: String,
 			validator: function(value) {
 				return ['visitor', 'operator'].indexOf(value) !== -1
-			},
-			default: 'visitor'
+			}
 		},
 		files: {
 			type: Array,

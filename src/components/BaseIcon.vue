@@ -89,7 +89,6 @@ import n20 from '@/assets/img/icons/avatars/n20.svg'
 export default {
 	props: {
 		name: {
-			type: String,
 			required: true
 		}
 	},
