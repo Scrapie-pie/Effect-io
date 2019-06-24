@@ -239,7 +239,7 @@ export default {
 
         &__main {
             //padding-right:calc-em(15);
-            padding-bottom:calc-em(45);
+            //padding-bottom:calc-em(45);
            // min-width:1100px;
 
 

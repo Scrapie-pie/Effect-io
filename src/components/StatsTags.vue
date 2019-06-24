@@ -23,6 +23,27 @@
                     | {{item.chats}}
                 td
                     |{{item.percents}} %
+            tr(v-for="(item, index) in itemList", :key="index")
+                td
+                    | {{item.name}}
+                td
+                    | {{item.chats}}
+                td
+                    |{{item.percents}} %
+            tr(v-for="(item, index) in itemList", :key="index")
+                td
+                    | {{item.name}}
+                td
+                    | {{item.chats}}
+                td
+                    |{{item.percents}} %
+            tr(v-for="(item, index) in itemList", :key="index")
+                td
+                    | {{item.name}}
+                td
+                    | {{item.chats}}
+                td
+                    |{{item.percents}} %
 
 
 </template>
@@ -60,7 +81,7 @@ export default {
 <style lang="scss">
     .stats-tags{
         width:auto;
-
+        height:100%;
 
 
 

@@ -123,7 +123,7 @@
                         this.$store.commit('visitors/newList',{field:'self',val:{list:[],count:0}})
 
                         setTimeout(()=>{
-                            if(this.viewModeChat==='process' || this.viewModeChat==='visitors')this.$router.push({name:'processAll'});
+                            if(this.viewModeChat==='process' || this.viewModeChat==='visitors')this.$router.push({name:'team'});
                         },200)
 
                     }

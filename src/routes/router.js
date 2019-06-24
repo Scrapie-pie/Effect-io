@@ -14,6 +14,7 @@ const PageAllDialogues = () => import('@/pages/PageAllDialogues')
 const PageSearchDialogues = () => import('@/pages/PageSearchDialogues')
 const PagePhrases = () => import('@/pages/PagePhrases')
 const PageTags = () => import('@/pages/PageTags')
+const StatsTags = () => import('@/components/StatsTags')
 
 
 
@@ -39,7 +40,6 @@ const router =  new Router({
     mode: 'history',
     base: process.env.BASE_URL,
     routes: [
-
         {
             name: 'auth',
             path: '/',
@@ -153,6 +153,7 @@ const router =  new Router({
             redirect: '/',
 
         },
+
     ]
 
 })

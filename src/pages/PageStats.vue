@@ -141,6 +141,8 @@
             padding-left:calc-em(15);
             position:relative;
             height:100%;
+            display: flex;
+            flex-direction:column;
 
         }
     }
