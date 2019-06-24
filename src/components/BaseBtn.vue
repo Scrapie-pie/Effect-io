@@ -67,8 +67,7 @@ export default {
 
 		router: {
 			type: Object,
-			required: false,
-
+			required: false
 		},
 		type: {
 			type: String,

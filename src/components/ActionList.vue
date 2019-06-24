@@ -46,7 +46,6 @@ export default {
 			default: ''
 		},
 		value: {
-			type: String,
 			default: ''
 		},
 		name: {

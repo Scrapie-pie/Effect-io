@@ -54,7 +54,7 @@ export default {
 			required: false,
 			default: false
 		},
-		modelValue: [Number,String,Array,Object],
+		modelValue: [Number, String, Array, Object],
 		trueValue: {
 			type: Number,
 			default: 1

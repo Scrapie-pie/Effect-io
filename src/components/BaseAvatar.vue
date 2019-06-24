@@ -24,7 +24,7 @@ export default {
 		},
 		width: {
 			validator: function(value) {
-				return ['lg', 'md',''].indexOf(value) !== -1
+				return ['lg', 'md', ''].indexOf(value) !== -1
 			},
 			type: String,
 			default: ''

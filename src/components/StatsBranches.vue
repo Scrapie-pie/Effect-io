@@ -130,20 +130,7 @@ export default {
 		}
 	},
 
-	methods: {
-		indexToName(index) {
-			return Object.keys(this.sortFieldsComp)[index]
-		},
-		setSortField(val, index) {
-			this.$set(this.sort, 'val', sortDefault().val)
-			this.$set(this.sort.val, index, val)
-			this.currentSort = {
-				val: val,
-				field: this.sort.field[index]
-			}
-		},
-		setCurrentFieldSort(index) {}
-	}
+	methods: {}
 }
 </script>
 

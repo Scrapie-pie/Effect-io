@@ -88,7 +88,7 @@ export default {
 		selectOptions: {
 			type: Object,
 			required: false,
-			default: ()=>{}
+			default: () => {}
 		},
 		label: {
 			type: String,
@@ -115,7 +115,6 @@ export default {
 			default: false
 		},
 		value: {
-
 			required: false,
 			default: ''
 		},

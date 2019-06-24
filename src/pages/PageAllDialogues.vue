@@ -115,216 +115,180 @@
 </template>
 
 <script>
-    import {dialogPush } from '@/modules/modules'
-    import {datetimeDMY,datetimeStoHMS } from '@/modules/datetime'
-    import TheLayoutTable from '@/components/TheLayoutTable'
-    import FilterDropMenu from '@/components/FilterDropMenu'
-    import NavAside from '@/components/NavAside'
+import { dialogPush } from '@/modules/modules'
+import { datetimeDMY, datetimeStoHMS } from '@/modules/datetime'
+import TheLayoutTable from '@/components/TheLayoutTable'
+import FilterDropMenu from '@/components/FilterDropMenu'
+import NavAside from '@/components/NavAside'
 
-    import {scrollbar,paginator,filterLastDaysAndCalendar } from '@/mixins/mixins'
-    export default {
-        mixins:[scrollbar,paginator,filterLastDaysAndCalendar],
-        components: {
-            FilterDropMenu,
-            TheLayoutTable,
-            NavAside
-        },
-        filters:{
-            datetimeDMY,
-            datetimeStoHMS,
-            ballText(value){
-                if (value==1) return 'Плохо'
-                if (value==2) return 'Средне'
-                if (value==3) return 'Хорошо'
-            }
-        },
-        data() {
-            return {
+import { scrollbar, paginator, filterLastDaysAndCalendar } from '@/mixins/mixins'
+export default {
+	components: {
+		FilterDropMenu,
+		TheLayoutTable,
+		NavAside
+	},
+	filters: {
+		datetimeDMY,
+		datetimeStoHMS,
+		ballText(value) {
+			if (value == 1) return 'Плохо'
+			if (value == 2) return 'Средне'
+			if (value == 3) return 'Хорошо'
+		}
+	},
+	mixins: [scrollbar, paginator, filterLastDaysAndCalendar],
+	data() {
+		return {
+			apiMethod: 'chat/get-all',
+			containerFullFillItemListClassName: {
+				scrollBar: 'layout-table__content',
+				item: 'base-table__tr'
+			},
 
-                apiMethod:'chat/get-all',
-                containerFullFillItemListClassName:{
-                    scrollBar:'layout-table__content',
-                    item:'base-table__tr'
-                },
+			headList: [
+				{ text: 'Имя', field: 'name' },
+				{ text: '', field: 'btn' },
+				{ text: 'Дата', field: 'date' },
+				{ text: 'Канал', field: 'channel' },
+				{ text: 'Ожидание в очереди', field: 'channel' },
+				{ text: 'Оценка', field: 'bal' }
+			],
 
-                headList:[
-                    {text:'Имя',field:'name'},
-                    {text:'',field:'btn'},
-                    {text:'Дата',field:'date'},
-                    {text:'Канал',field:'channel'},
-                    {text:'Ожидание в очереди',field:'channel'},
-                    {text:'Оценка',field:'bal'},
+			users_ids: [],
+			sites_ids: [],
+			branches_ids: [],
+			statuses: [],
+			rates: [],
 
-                ],
+			url: null,
 
-                users_ids:[],
-                sites_ids:[],
-                branches_ids:[],
-                statuses:[],
-                rates:[],
+			limit: 11
+		}
+	},
+	computed: {
+		paramsComp() {
+			return {
+				users_ids: this.users_ids,
+				sites_ids: this.sites_ids,
+				branches_ids: this.branches_ids,
+				statuses: this.statuses,
+				rates: this.rates,
+				date_from: this.date_from,
+				date_to: this.date_to,
+				time_from: this.time_from,
+				time_to: this.time_to,
+				last_days: this.last_days,
+				url: this.url
+			}
+		}
+	},
+	watch: {
+		paramsComp() {
+			console.log('paramsComp')
+			console.log(
+				this.users_ids.length &&
+					this.sites_ids.length &&
+					this.statuses.length &&
+					this.rates.length &&
+					this.url !== null &&
+					(!!this.last_days ||
+						(this.date_from && this.date_to && this.time_from && this.time_to))
+			)
+			if (
+				this.users_ids.length &&
+				this.sites_ids.length &&
+				this.statuses.length &&
+				this.rates.length &&
+				this.url !== null &&
+				(!!this.last_days ||
+					(this.date_from && this.date_to && this.time_from && this.time_to))
+			) {
+				this.resetSearch()
+				this.getItemList()
+			}
+		}
+	},
+	created() {},
+	beforeRouteEnter(to, from, next) {
+		next(vm => {
+			if (
+				vm.viewModeChat === 'all' &&
+				!vm.$store.getters['user/isRole'](['admin', 'owner', 'operatorSenior'])
+			)
+				return vm.$router.push({ name: 'processAll' })
+		})
+	},
+	methods: {
+		startChat(item) {
+			let { uuid, site_id, chat_id } = item
 
-                url:null,
+			dialogPush(this, 'visor', item, 'chat_id')
 
-                limit:11,
+			let routeData = this.$router.resolve({
+				name: 'visor',
+				params: { uuid, site_id, chat_id }
+			})
+			window.open(routeData.href, uuid + site_id + chat_id, 'width=700,height=700')
+		},
 
-            }
-        },
-        computed:{
-            paramsComp(){
-
-                return {
-                    users_ids:this.users_ids,
-                    sites_ids:this.sites_ids,
-                    branches_ids:this.branches_ids,
-                    statuses:this.statuses,
-                    rates:this.rates,
-                    date_from:this.date_from,
-                    date_to:this.date_to,
-                    time_from:this.time_from,
-                    time_to:this.time_to,
-                    last_days:this.last_days,
-                    url:this.url,
-                }
-            },
-
-
-        },
-        watch:{
-
-            paramsComp(){
-                console.log('paramsComp');
-                console.log(
-                    (
-                        this.users_ids.length &&
-                        this.sites_ids.length &&
-                        this.statuses.length &&
-                        this.rates.length &&
-                        this.url!== null
-                    ) &&
-                    (!!this.last_days ||
-                        (
-                            this.date_from &&
-                            this.date_to &&
-                            this.time_from &&
-                            this.time_to
-                        ))
-                );
-                if(
-                    (
-                        this.users_ids.length &&
-                        this.sites_ids.length &&
-                        this.statuses.length &&
-                        this.rates.length &&
-                        this.url!== null
-                    ) &&
-                    (!!this.last_days ||
-                    (
-                        this.date_from &&
-                        this.date_to &&
-                        this.time_from &&
-                        this.time_to
-                    ))
-
-                ) {
-
-                    this.resetSearch()
-                    this.getItemList();
-                }
-
-
-            },
-        },
-        created() {
-
-
-        },
-        beforeRouteEnter (to, from, next) {
-            next(vm=>{
-                if(vm.viewModeChat==='all' && !vm.$store.getters['user/isRole'](['admin','owner','operatorSenior'])) return vm.$router.push({name: 'processAll'})
-
-            })
-        },
-        methods:{
-            startChat(item){
-                let {uuid,site_id,chat_id} = item;
-
-                dialogPush(this,'visor',item,'chat_id')
-
-
-                let routeData = this.$router.resolve({name:'visor',params: { uuid, site_id,chat_id}});
-                window.open(routeData.href, uuid+site_id+chat_id,"width=700,height=700");
-
-
-
-
-
-            },
-
-            filterBall(val){
-                console.log('filterBall',val);
-                this.rates=val
-            },
-            filterChannel(val){
-                this.sites_ids = val
-                console.log('filterChannel',val);
-            },
-            filterStatus(val){
-                console.log('filterStatus',val);
-                this.statuses=val;
-            },
-            filterOperator(val){
-                console.log('filterOperator',val);
-                this.users_ids = val
-            },
-            filterUrl(val){
-                console.log('filterUrl',val);
-                this.url = val
-            }
-
-        },
-
-    }
+		filterBall(val) {
+			console.log('filterBall', val)
+			this.rates = val
+		},
+		filterChannel(val) {
+			this.sites_ids = val
+			console.log('filterChannel', val)
+		},
+		filterStatus(val) {
+			console.log('filterStatus', val)
+			this.statuses = val
+		},
+		filterOperator(val) {
+			console.log('filterOperator', val)
+			this.users_ids = val
+		},
+		filterUrl(val) {
+			console.log('filterUrl', val)
+			this.url = val
+		}
+	}
+}
 </script>
 
 <style lang="scss">
-    .page-all {
-        flex-direction: row;
-        &__scrollbar {
-            height:100%;
-            padding-left:calc-em(10);
-            padding-right:calc-em(10);
-        }
-        &__filter-list {
-            margin-right:calc-em(15);
+.page-all {
+	flex-direction: row;
+	&__scrollbar {
+		height: 100%;
+		padding-left: calc-em(10);
+		padding-right: calc-em(10);
+	}
+	&__filter-list {
+		margin-right: calc-em(15);
 
-            .filter-drop-menu{
-                &__box {
-                    opacity: 1;
-                    visibility: visible;
-                    -webkit-transform: translateY(0);
-                    transform: translateY(0);
-                    position:static;
-                }
-                &__controls-item{
+		.filter-drop-menu {
+			&__box {
+				opacity: 1;
+				visibility: visible;
+				-webkit-transform: translateY(0);
+				transform: translateY(0);
+				position: static;
+			}
+			&__controls-item {
+				white-space: normal;
+			}
+			margin-bottom: calc-em(20);
 
-                    white-space:normal;
-                }
-                margin-bottom:calc-em(20);
-
-                .base-radio-check__text-wrap {
-                    white-space:normal;
-                }
-            }
-
-        }
-    }
-    .page-log-dialogues{
-        &__ball .icon {margin-right:calc-em(10)}
-
-
-
-
-    }
-
-
+			.base-radio-check__text-wrap {
+				white-space: normal;
+			}
+		}
+	}
+}
+.page-log-dialogues {
+	&__ball .icon {
+		margin-right: calc-em(10);
+	}
+}
 </style>

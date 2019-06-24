@@ -21,7 +21,7 @@ export default {
 		type: {
 			type: String,
 			validator: function(value) {
-				return ['popup', 'gallery', 'notice',''].indexOf(value) !== -1
+				return ['popup', 'gallery', 'notice', ''].indexOf(value) !== -1
 			},
 			default: ''
 		},
