@@ -53,68 +53,61 @@
 </template>
 
 <script>
-    import { mapWaitingActions, mapWaitingGetters } from 'vue-wait'
-    import { hideHeader } from '@/mixins/mixins'
-    export default {
-        components: {},
-        mixins:[hideHeader],
-        data() {
-            return {
-                recoveryPage: false,
-                login: '', //testrbcall@mail.ru fanhorsis@yandex.ru http://mishki.ucoz.net
-                password: '', //321tceffE
-                title: 'Для входа в личный кабинет введите свои учетные данные',
-                passwordSent: false,
-                errorApiText:''
-            }
-        },
-        watch: {
-            errorApiText(val) {
-                if(val) {
-                    setTimeout(()=>{
-                        this.errorApiText=false;
-                    },5000)
-                }
-            },
-            '$route'(from, to) {
-                this.selectTemplate()
-            }
-        },
-        created() {
-            this.selectTemplate()
-        },
-        methods: {
+import { mapWaitingActions, mapWaitingGetters } from 'vue-wait'
+import { hideHeader } from '@/mixins/mixins'
+export default {
+	components: {},
+	mixins: [hideHeader],
+	data() {
+		return {
+			recoveryPage: false,
+			login: '', //testrbcall@mail.ru fanhorsis@yandex.ru http://mishki.ucoz.net
+			password: '', //321tceffE
+			title: 'Для входа в личный кабинет введите свои учетные данные',
+			passwordSent: false,
+			errorApiText: ''
+		}
+	},
+	watch: {
+		errorApiText(val) {
+			if (val) {
+				setTimeout(() => {
+					this.errorApiText = false
+				}, 5000)
+			}
+		},
+		$route(from, to) {
+			this.selectTemplate()
+		}
+	},
+	created() {
+		this.selectTemplate()
+	},
+	methods: {
+		selectTemplate() {
+			if (this.$route.name == 'recover') {
+				this.title = 'Для восстановления пароля введите Ваш email'
+				this.recoveryPage = true
+			} else this.recoveryPage = false
+		},
+		submit() {
+			this.$validator.validateAll().then(success => {
+				if (success) {
+					if (this.recoveryPage) {
+						this.recoverRequest()
+					} else {
+						this.sendLoginRequest()
+					}
+				}
+			})
+		},
+		sendLoginRequest() {
+			let data = {
+				name: this.login,
+				password: this.password
+			}
 
-            selectTemplate() {
-                if (this.$route.name == 'recover') {
-                    this.title = 'Для восстановления пароля введите Ваш email';
-                    this.recoveryPage = true;
-                }
-                else this.recoveryPage = false
-            },
-            submit() {
-                this.$validator.validateAll()
-                    .then(success => {
-                        if (success) {
-                            if (this.recoveryPage) {
-                                this.recoverRequest()
-                            }
-                            else {
-                                this.sendLoginRequest()
-                            }
-                        }
-                    })
-
-            },
-            sendLoginRequest() {
-
-                let data = {
-                    name: this.login,
-                    password: this.password,
-
-                }
-
-           /*
+			/*
               data = {
                     name: 'fanhorsis@gmail.com',
                     password: 'msitnikov',
@@ -125,136 +118,133 @@
                     password: 'TooManyRequestsHttpException',
 
                 }*/
-            /*     data = {
+			/*     data = {
                     name: 'testrbcall@mail.ru',
                     password: '321tceffE',
 
                 }*/
-             /*   data = {
+			/*   data = {
                     name: 'r.bochkarev@bk.ru',
                     password: 'qF5grpgY5e_',
 
                 }*/
-                this.$http.post('user/login-oi', data, {
-                    headers: { 'content-type': 'application/json' }
-                }).then(({data}) => {
-
-
-                    this.$store.dispatch('user/getLogin', data.data.user).then(()=>{
-                        if (this.$route.query.return) this.$router.push(this.$route.query.return)
-                        else this.$router.push({name:'processAll'})
-                    })
-
-                }).catch((errors)=>{
-
-                    this.errorApiText = errors.response.data.message;
-
-                })
-
-            },
-            recoverRequest() {
-                let data = {
-                    email: this.login,
-                };
-                this.$http.post('mailing/lost-password', data, {
-                    headers: { 'content-type': 'application/json' }
-                }).then(() => {
-
-                    this.passwordSent = true;
-                })
-            }
-
-        }
-    }
+			this.$http
+				.post('user/login-oi', data, {
+					headers: { 'content-type': 'application/json' }
+				})
+				.then(({ data }) => {
+					this.$store.dispatch('user/getLogin', data.data.user).then(() => {
+						if (this.$route.query.return) this.$router.push(this.$route.query.return)
+						else this.$router.push({ name: 'processAll' })
+					})
+				})
+				.catch(errors => {
+					this.errorApiText = errors.response.data.message
+				})
+		},
+		recoverRequest() {
+			let data = {
+				email: this.login
+			}
+			this.$http
+				.post('mailing/lost-password', data, {
+					headers: { 'content-type': 'application/json' }
+				})
+				.then(() => {
+					this.passwordSent = true
+				})
+		}
+	}
+}
 </script>
 
 <style lang="scss">
-    .account-auth{
-        $color_error:glob-color('error');
-        $font-size_small:$glob-font-size_small;
-        margin-left:-($glob-indent-main-lr);
-        margin-right:-($glob-indent-main-lr);
+.account-auth {
+	$color_error: glob-color('error');
+	$font-size_small: $glob-font-size_small;
+	margin-left: -($glob-indent-main-lr);
+	margin-right: -($glob-indent-main-lr);
 
-        display:flex;
-        align-items:center;
-        justify-content:center;
-        height:100%;
-        background-color:#f5f6f9;
-        text-align:center;
-        min-height:500px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
+	background-color: #f5f6f9;
+	text-align: center;
+	min-height: 500px;
 
-        &__error-text {
-            color:$color_error;
-            font-size:$font-size_small;
-            margin-bottom:calc-em(20);
-            margin-top:-2em;
-        }
+	&__error-text {
+		color: $color_error;
+		font-size: $font-size_small;
+		margin-bottom: calc-em(20);
+		margin-top: -2em;
+	}
 
-        &__box{
-            @include box-decor();
-            padding:2em 2em 2em;
-            width:100%;
-            max-width:370px;
-            box-shadow:0 2px 50px 1px rgba(0, 0, 0, 0.12);
-            position:relative;
-        }
+	&__box {
+		@include box-decor();
+		padding: 2em 2em 2em;
+		width: 100%;
+		max-width: 370px;
+		box-shadow: 0 2px 50px 1px rgba(0, 0, 0, 0.12);
+		position: relative;
+	}
 
-        &__title{
-            @extend %visuallyhidden;
-        }
+	&__title {
+		@extend %visuallyhidden;
+	}
 
-        &__logo{
-            margin-bottom:2em;
-        }
+	&__logo {
+		margin-bottom: 2em;
+	}
 
-        &__list{
-            display:flex;
-            flex-flow:column;
-            justify-content:center;
-            height:130px;
-        }
+	&__list {
+		display: flex;
+		flex-flow: column;
+		justify-content: center;
+		height: 130px;
+	}
 
-        &__item{
-            margin-bottom:2em;
-        }
+	&__item {
+		margin-bottom: 2em;
+	}
 
-        &__field{
-            .field__input{
-                border:0;
-                border-radius:0;
-                border-bottom:1px solid glob-color('info');
-                text-align:center;
-                font-size:$glob-font-size_h1;
-                font-weight:300;
-                $p:calc-em(5);
-                padding-top:$p;
-                padding-bottom:$p;
-            }
-        }
+	&__field {
+		.field__input {
+			border: 0;
+			border-radius: 0;
+			border-bottom: 1px solid glob-color('info');
+			text-align: center;
+			font-size: $glob-font-size_h1;
+			font-weight: 300;
+			$p: calc-em(5);
+			padding-top: $p;
+			padding-bottom: $p;
+		}
+	}
 
-        &__btn{
-            margin-bottom:3.5em;
-            height:51px;
-            .btn{
-                $p:calc-em(13);
-                padding-top:$p;
-                padding-bottom:$p;
-                font-size:calc-em(16);
-                width:100%;
-            }
-        }
+	&__btn {
+		margin-bottom: 3.5em;
+		height: 51px;
+		.btn {
+			$p: calc-em(13);
+			padding-top: $p;
+			padding-bottom: $p;
+			font-size: calc-em(16);
+			width: 100%;
+		}
+	}
 
-        &__bottom{
-            padding-top:.5em;
-        }
-        &__link{
-            color:glob-color('main');
-        }
+	&__bottom {
+		padding-top: 0.5em;
+	}
+	&__link {
+		color: glob-color('main');
+	}
 
-        &__text{
-            font-size:$glob-font-size_h1;
-            font-weight:300;
-            line-height:1.7;
-        }
-    }
+	&__text {
+		font-size: $glob-font-size_h1;
+		font-weight: 300;
+		line-height: 1.7;
+	}
+}
 </style>

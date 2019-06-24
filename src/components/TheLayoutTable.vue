@@ -16,49 +16,45 @@
 </template>
 
 <style lang="scss">
+.layout-table {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
 
-.layout-table{
-    display:flex;
-    flex-direction:column;
-    height:100%;
+	&__max-width {
+		max-width: 1300px;
+	}
 
-    &__max-width {
-        max-width:1300px;
-    }
+	&__controls {
+		display: flex;
+		align-items: center;
+		margin-bottom: calc-em(35);
+		flex-flow: wrap;
+	}
 
-    &__controls{
-        display:flex;
-        align-items:center;
-        margin-bottom:calc-em(35);
-        flex-flow:wrap;
-    }
+	&__control {
+		margin-right: calc-em(40);
+		margin-bottom: calc-em(15);
+	}
 
-    &__control{
-        margin-right:calc-em(40);
-        margin-bottom:calc-em(15);
-    }
-
-    &__content {
-        height:100%;
-        margin-right:-1* calc-em(15);
-        padding-right:calc-em(15);
-
-    }
+	&__content {
+		height: 100%;
+		margin-right: -1 * calc-em(15);
+		padding-right: calc-em(15);
+	}
 }
 </style>
 <script>
-    import {scrollbar } from '@/mixins/mixins'
+import { scrollbar } from '@/mixins/mixins'
 export default {
-    mixins:[scrollbar],
-    watch:{
-        '$route' (to, from) {
-
-            setTimeout(()=>{
-                console.log('layoutTableContent',this.$refs.layoutTableContent);
-                this.scrollbarScrollerPush(this.$refs.layoutTableContent,0)
-            },1000)
-
-        },
-    }
+	mixins: [scrollbar],
+	watch: {
+		$route(to, from) {
+			setTimeout(() => {
+				console.log('layoutTableContent', this.$refs.layoutTableContent)
+				this.scrollbarScrollerPush(this.$refs.layoutTableContent, 0)
+			}, 1000)
+		}
+	}
 }
 </script>

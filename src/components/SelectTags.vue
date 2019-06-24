@@ -25,97 +25,83 @@
 </template>
 
 <script>
-    import ActionList from '@/components/ActionList'
-    import {httpParams} from '@/mixins/mixins'
-    import { mapGetters,mapActions } from 'vuex';
+import ActionList from '@/components/ActionList'
+import { httpParams } from '@/mixins/mixins'
+import { mapGetters, mapActions } from 'vuex'
 export default {
-    components:{
-
-        ActionList
-    },
-    mixins:[httpParams],
-    name: "select-tags", 
-    data() {
-        return {
-            model:'',
-            filterSearchResult:[]
-        }
-    },
-    computed:{
-        ...mapGetters('tags',[
-            'itemList'
-        ]),
-
-
-
-    },
-    created(){
-      /*  setTimeout(()=>{
+	name: 'SelectTags',
+	components: {
+		ActionList
+	},
+	mixins: [httpParams],
+	data() {
+		return {
+			model: '',
+			filterSearchResult: []
+		}
+	},
+	computed: {
+		...mapGetters('tags', ['itemList'])
+	},
+	watch: {
+		model(val) {
+			if (val) {
+				let data = this.httpParams.params
+				data.tag_id = val
+				this.setTagChat(data)
+				this.$root.$emit('globBoxControlClose')
+			}
+		}
+	},
+	created() {
+		/*  setTimeout(()=>{
             this.$wait.start('pageTags');
         },1000)*/
-    },
-    watch:{
-        model(val){
-            if(val) {
-
-                let data = this.httpParams.params
-                data.tag_id = val
-                this.setTagChat(data)
-                this.$root.$emit('globBoxControlClose')
-
-            }
-        }
-    },
-    methods:{
-        ...mapActions('tags',[
-            'setTagChat'
-        ])}
+	},
+	methods: {
+		...mapActions('tags', ['setTagChat'])
+	}
 }
 </script>
 
 <style lang="scss">
-    .select-tags{
-        $el:'.select-tags';
-        $color_hover:glob-color('info-lighten');
-        $transition:$glob-trans;
-        position:relative;
-        width:415px;
-        &__box {
-            min-width: 0;
-        }
+.select-tags {
+	$el: '.select-tags';
+	$color_hover: glob-color('info-lighten');
+	$transition: $glob-trans;
+	position: relative;
+	width: 415px;
+	&__box {
+		min-width: 0;
+	}
 
-        .action-list {
-            &__text {
-                padding:calc-em(2) 0;
-                border:0;
-                & {
-                    max-height: 2.6em; /* exactly three lines */
-                }
-                position: relative;
-                @extend %text-truncate
-            }
+	.action-list {
+		&__text {
+			padding: calc-em(2) 0;
+			border: 0;
+			& {
+				max-height: 2.6em; /* exactly three lines */
+			}
+			position: relative;
+			@extend %text-truncate;
+		}
+	}
 
+	&__title {
+		text-align: left;
+		margin-bottom: 2em;
+	}
 
-        }
-
-        &__title {
-            text-align:left;
-            margin-bottom:2em;
-        }
-
-        &__controls{
-            &-scrollbar {
-                margin-right:-1*calc-em(15);
-                padding-right:calc-em(15);
-                max-height:75vh;
-            }
-            &-search {
-                margin-bottom:calc-em(15);
-                max-width:244px;
-            }
-        }
-
-    }
-
-
+	&__controls {
+		&-scrollbar {
+			margin-right: -1 * calc-em(15);
+			padding-right: calc-em(15);
+			max-height: 75vh;
+		}
+		&-search {
+			margin-bottom: calc-em(15);
+			max-width: 244px;
+		}
+	}
+}
 </style>

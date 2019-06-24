@@ -45,85 +45,78 @@
 </template>
 
 <script>
-    import NavAside from '@/components/NavAside';
-    import { hideHeader } from '@/mixins/mixins'
+import NavAside from '@/components/NavAside'
+import { hideHeader } from '@/mixins/mixins'
 
+export default {
+	components: {
+		NavAside
+	},
+	mixins: [hideHeader],
+	data() {
+		return {}
+	},
+	beforeRouteEnter(to, from, next) {
+		next(vm => {
+			if (vm.$store.getters['user/isRole'](['admin', 'owner', 'operatorSenior'])) {
+				if (vm.$route.name === 'stats') vm.$router.push({ name: 'statsService' })
+			} else {
+				vm.$router.push({
+					name: 'statsEmployeesDetail',
+					params: { id: vm.$store.state.user.profile.id }
+				})
+			}
+		})
+	},
+	computed: {
+		title() {
+			let titleHead = this.$route.meta.title
 
-    export default {
-    mixins: [hideHeader],
-    components: {
-        NavAside,
-    },
-    data() {
-        return {}
-    },
-    beforeRouteEnter (to, from, next) {
-        next(vm=>{
-            if(vm.$store.getters['user/isRole'](['admin','owner','operatorSenior'])) {
-                if(vm.$route.name==="stats") vm.$router.push({name:'statsService'})
+			if (this.routerName === 'statsBranchesDetail' || this.routerName === 'statsAllBranch') {
+				let branch = this.branchListAll.find(item => item.id === +this.$route.params.id)
 
-            }
-            else {
-                vm.$router.push( {
-                    name: 'statsEmployeesDetail',
-                    params:{id:vm.$store.state.user.profile.id}
-                },)
-            }
-        })
-    },
-    computed:{
-        title(){
+				if (branch) return titleHead + ': ' + branch.title
+			}
+			if (
+				this.routerName === 'statsOperatorsDetail' ||
+				this.routerName === 'statsAllOperator'
+			) {
+				let operator = this.$store.getters['operators/all'].find(
+					item => item.id === +this.$route.params.id
+				)
 
-            let titleHead = this.$route.meta.title
+				if (operator) return titleHead + ': ' + operator.fullName
+			}
 
-            if(this.routerName==='statsBranchesDetail' || this.routerName==='statsAllBranch') {
-
-                let branch = this.branchListAll.find(item=>item.id===+this.$route.params.id);
-
-
-                if (branch) return titleHead+': '+branch.title
-            }
-            if(this.routerName==='statsOperatorsDetail'  || this.routerName==='statsAllOperator') {
-                let operator = this.$store.getters['operators/all'].find(item=>item.id===+this.$route.params.id);
-
-                if(operator) return titleHead+': '+operator.fullName
-            }
-
-            return titleHead
-        },
-        routerName(){
-            return this.$route.name
-        },
-        branchListAll(){
-            return this.$store.state.user.branchListAll
-        }
-    },
-
+			return titleHead
+		},
+		routerName() {
+			return this.$route.name
+		},
+		branchListAll() {
+			return this.$store.state.user.branchListAll
+		}
+	}
 }
 </script>
 
 <style lang="scss">
-    .page-stats{
+.page-stats {
+	&__list {
+		display: flex;
+		margin-bottom: calc-em(50);
+	}
+	&__item {
+		margin-left: calc-em(15);
+		margin-right: calc-em(15);
+		margin-bottom: calc-em(10);
+	}
+	&__link {
+		font-size: $glob-font-size_h4;
+		font-weight: bold;
+	}
 
-
-        &__list {
-            display:flex;
-            margin-bottom:calc-em(50);
-        }
-        &__item {
-            margin-left:calc-em(15);
-            margin-right:calc-em(15);
-            margin-bottom:calc-em(10);
-        }
-        &__link {
-            font-size:$glob-font-size_h4;
-            font-weight:bold;
-        }
-
-
-
-
-    /*    transition:$glob-trans;
+	/*    transition:$glob-trans;
 
 
         transform:translateX(-275px);
@@ -131,19 +124,18 @@
             transform:translateX(0);
         }*/
 
-        &__title {
-            @extend %h4;
-            margin-bottom:calc-em(40);
-        }
+	&__title {
+		@extend %h4;
+		margin-bottom: calc-em(40);
+	}
 
-        &__main {
-            flex:1;
-            padding-left:calc-em(15);
-            position:relative;
-            height:100%;
-            display: flex;
-            flex-direction:column;
-
-        }
-    }
+	&__main {
+		flex: 1;
+		padding-left: calc-em(15);
+		position: relative;
+		height: 100%;
+		display: flex;
+		flex-direction: column;
+	}
+}
 </style>

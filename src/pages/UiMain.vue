@@ -213,49 +213,44 @@
 </template>
 
 <script>
+import TheChatMainFooter from '@/components/TheChatMainFooter'
+import TheChatMainHeader from '@/components/TheChatMainHeader'
+import TheOffer from '@/components/TheOffer'
+import TheFilesBoard from '@/components/TheFilesBoard'
+import TheChatMainHeaderHistory from '@/components/TheChatMainHeaderHistory'
+import TheChatMainHeaderActions from '@/components/TheChatMainHeaderActions'
+import ThePhrasesReady from '@/components/ThePhrasesReady'
+import SelectOperators from '@/components/SelectOperators'
+import AccountAuth from '@/components/AccountAuth'
+import TextInfo from '@/components/TextInfo'
+import UploadAvatar from '@/components/UploadAvatar'
 
-    import TheChatMainFooter from '@/components/TheChatMainFooter'
-    import TheChatMainHeader from '@/components/TheChatMainHeader'
-    import TheOffer from '@/components/TheOffer'
-    import TheFilesBoard from '@/components/TheFilesBoard'
-    import TheChatMainHeaderHistory from '@/components/TheChatMainHeaderHistory'
-    import TheChatMainHeaderActions from '@/components/TheChatMainHeaderActions'
-    import ThePhrasesReady from '@/components/ThePhrasesReady'
-    import SelectOperators from '@/components/SelectOperators'
-    import AccountAuth from '@/components/AccountAuth'
-    import TextInfo from '@/components/TextInfo'
-    import UploadAvatar from '@/components/UploadAvatar'
-
-    export default {
-
-        components: {
-            TheChatMainHeader,
-            TheChatMainFooter,
-            TheOffer,
-            TheFilesBoard,
-            TheChatMainHeaderHistory,
-            TheChatMainHeaderActions,
-            ThePhrasesReady,
-            SelectOperators,
-            AccountAuth,
-            TextInfo,
-            UploadAvatar
-        }
-    }
+export default {
+	components: {
+		TheChatMainHeader,
+		TheChatMainFooter,
+		TheOffer,
+		TheFilesBoard,
+		TheChatMainHeaderHistory,
+		TheChatMainHeaderActions,
+		ThePhrasesReady,
+		SelectOperators,
+		AccountAuth,
+		TextInfo,
+		UploadAvatar
+	}
+}
 </script>
 
 <style lang="scss">
-
-    .ul-row {
-        @extend %row-flex;
-    }
-    .ui-list{
-
-        flex-flow:wrap;
-        &__item{
-            outline:1px solid black;
-            padding:15px;
-
-        }
-    }
+.ul-row {
+	@extend %row-flex;
+}
+.ui-list {
+	flex-flow: wrap;
+	&__item {
+		outline: 1px solid black;
+		padding: 15px;
+	}
+}
 </style>
