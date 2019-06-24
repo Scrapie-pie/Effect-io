@@ -51,7 +51,7 @@
 <script>
     import {datetimeHMS} from '@/modules/datetime'
     import inputEmoji from '@/components/inputEmoji'
-    import moment from 'moment'
+
     import BaseCount from '@/components/BaseCount';
     import LoaderMessage from '@/components/LoaderMessage';
     export default {
@@ -64,7 +64,7 @@
             formatTime: function (value) {
 
                 if (value) {
-                    //let date = moment(value*1000)
+
                     return datetimeHMS(value)
 
                 } else {
