@@ -20,13 +20,15 @@ clicky({
 })
 
 
-Vue.prototype.$http = axios;
+//Vue.prototype.$http = axios;
+
+Object.defineProperty(Vue.prototype, '$http', { value: axios })
 
 import VuePerfectScrollbar from 'vue-perfect-scrollbar'
 
 
-import _ from 'underscore'; //Todo избавить от underscore заменить на lodash
-Object.defineProperty(Vue.prototype, '$_', { value: _ })
+
+
 
 import VueSocketio from 'vue-socket.io-extended';
 import io from 'socket.io-client';

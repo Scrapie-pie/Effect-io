@@ -11,7 +11,7 @@
 <script>
 import lodash_debounce from 'lodash/debounce'
 import lodash_isEmpty from 'lodash/isEmpty'
-import _ from 'underscore'
+
 export default {
     name: "filter-search",
     props:{

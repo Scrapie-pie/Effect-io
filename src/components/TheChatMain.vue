@@ -321,7 +321,9 @@
                 }
 
                 if (this.httpParams) {
+                    console.log('chat-room-user/all start');
                     this.$http.get('chat-room-user/all', this.httpParams).then(({data}) => {
+                        console.log('chat-room-user/all', data.data);
                         data.data.visitor = this.httpParams.params;
                         //console.log(this.httpParams);
                         this.$store.commit('roomActive', data.data)

@@ -1,4 +1,5 @@
-import _ from 'underscore'
+
+import lodash_isEmpty from 'lodash/isEmpty'
 
 const getDefaultState = () => {
     return {
@@ -173,8 +174,8 @@ export default {
     actions: {
         getItems({ commit, dispatch },data) {
             this._vm.$http.get('guest/list',data).then(({data})=>{
-                if(!_.isEmpty(data.params.type) && data.params.type === "self") commit('self',data.data)
-                if(!_.isEmpty(data.params.type) && data.params.type === "unprocessed") commit('process',data.data)
+                if(!lodash_isEmpty(data.params.type) && data.params.type === "self") commit('self',data.data)
+                if(!lodash_isEmpty(data.params.type) && data.params.type === "unprocessed") commit('process',data.data)
                 else { commit('all',data.data) }
 
             })
@@ -186,13 +187,13 @@ export default {
             })
         },
         getProcess({ commit, dispatch },params) {
-            params = _.extend({type: 'unprocessed', limit: 1}, params);
+            params = Object.assign({type: 'unprocessed', limit: 1}, params);
             this._vm.$http.get('guest/list',{params}).then(({data})=>{
                 commit('process',data.data)
             })
         },
         getSelf({ commit, dispatch },params) {
-            params = _.extend({type: 'self', limit: 1}, params);
+            params = Object.assign({type: 'self', limit: 1}, params);
             this._vm.$http.get('guest/list',{params}).then(({data})=>{
                 commit('self',data.data)
             })
