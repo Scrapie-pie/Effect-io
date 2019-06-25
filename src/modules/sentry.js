@@ -9,6 +9,4 @@ Sentry.init({
 	//debug: process.env.NODE_ENV === 'development' ? true : false
 })
 
-console.log('env',process.env.NODE_ENV);
 
-babos()
