@@ -10,6 +10,8 @@
     "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {
+    "@sentry/browser": "^5.4.3",
+    "@sentry/integrations": "^5.4.2",
     "@vue/eslint-config-prettier": "^4.0.1",
     "autosize": "^4.0.2",
     "axios": "^0.18.1",
@@ -61,8 +63,8 @@
       "@vue/prettier"
     ],
     "rules": {
-		"vue/require-prop-types" : "off",
-		"vue/require-default-prop" : "off",
+      "_vue/require-prop-types": "off",
+      "_vue/require-default-prop": "off",
       "no-unused-vars": "off",
       "no-empty-pattern": "off",
       "no-console": "off"

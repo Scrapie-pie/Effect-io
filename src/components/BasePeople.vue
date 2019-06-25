@@ -84,7 +84,7 @@ export default {
 			default: 0
 		},
 		bgTextNoFill: Boolean,
-		name: String,
+		name: Boolean,
 		text: String,
 		time: Number,
 		avatarWidth: String,

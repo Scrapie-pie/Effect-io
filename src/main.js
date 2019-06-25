@@ -17,6 +17,8 @@ clicky({
 	left: true //default: false - trigger on left click instead of right click
 })
 
+import '@/modules/sentry'
+
 //Vue.prototype.$http = axios;
 
 Object.defineProperty(Vue.prototype, '$http', { value: axios })
