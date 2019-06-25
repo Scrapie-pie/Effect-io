@@ -79,8 +79,6 @@ export default {
 
 			formData.append('file', this.file, this.file.name)
 
-
-
 			this.loader = false
 
 			return this.$http

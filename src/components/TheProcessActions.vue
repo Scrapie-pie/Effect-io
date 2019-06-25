@@ -45,7 +45,9 @@ export default {
 			} = this.httpParams
 
 			if (guest_uuid && site_id)
-				return lodash_find(this.$store.state.visitors.process, { guest_uuid, site_id }) || {}
+				return (
+					lodash_find(this.$store.state.visitors.process, { guest_uuid, site_id }) || {}
+				)
 
 			return {}
 		},

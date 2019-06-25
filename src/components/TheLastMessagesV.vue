@@ -190,7 +190,8 @@ export default {
 			let open
 			if (this.httpParams) {
 				let { guest_uuid, site_id, chat_id } = this.httpParams.params
-				open = item.guest_uuid + item.site_id + item.chat_id === guest_uuid + site_id + chat_id
+				open =
+					item.guest_uuid + item.site_id + item.chat_id === guest_uuid + site_id + chat_id
 			}
 			item.classList = {}
 			item.classList['last-messages__item_active'] = open
@@ -222,7 +223,11 @@ export default {
 			item.rootLinkOptions = {
 				link: {
 					name: routName,
-					params: { guest_uuid: item.guest_uuid, site_id: item.site_id, chat_id: item.chat_id }
+					params: {
+						guest_uuid: item.guest_uuid,
+						site_id: item.site_id,
+						chat_id: item.chat_id
+					}
 				},
 				text: item.last_message
 			}
@@ -277,7 +282,8 @@ export default {
 
 			this.itemList.filter(item => {
 				let findIndex = this.itemListStore.findIndex(
-					itemStore => itemStore.guest_uuid + itemStore.site_id === item.guest_uuid + item.site_id
+					itemStore =>
+						itemStore.guest_uuid + itemStore.site_id === item.guest_uuid + item.site_id
 				)
 				if (findIndex !== -1) {
 					itemListStore[findIndex] = item

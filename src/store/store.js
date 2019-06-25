@@ -160,7 +160,8 @@ export default new Vuex.Store({
 				unreadType = 'guest'
 			}
 			let findIndex = itemList.findIndex(item => {
-				if (type === 'visitors') return item.guest_uuid + item.site_id === guest_uuid + site_id
+				if (type === 'visitors')
+					return item.guest_uuid + item.site_id === guest_uuid + site_id
 				if (type === 'operators') return item.id === id
 			})
 			if (findIndex !== -1) {

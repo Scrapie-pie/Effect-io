@@ -17,12 +17,10 @@ clicky({
 	left: true //default: false - trigger on left click instead of right click
 })
 
-if(process.env.NODE_ENV !== 'development') {
+if (process.env.NODE_ENV !== 'development') {
 	const sentry = () => import('@/modules/sentry')
 	sentry()
 }
-
-
 
 //Vue.prototype.$http = axios;
 
