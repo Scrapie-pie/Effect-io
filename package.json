@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build --moder",
-    "report": "vue-cli-service build -- report",
+    "build": "vue-cli-service build --moder --mode staging",
+    "prod-build": "vue-cli-service build --moder --mode production",
     "lint": "vue-cli-service lint --fix",
     "test:unit": "vue-cli-service test:unit"
   },
@@ -63,8 +63,8 @@
       "@vue/prettier"
     ],
     "rules": {
-      "_vue/require-prop-types": "off",
-      "_vue/require-default-prop": "off",
+      "vue/require-prop-types": "off",
+      "vue/require-default-prop": "off",
       "no-unused-vars": "off",
       "no-empty-pattern": "off",
       "no-console": "off"

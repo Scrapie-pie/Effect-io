@@ -41,7 +41,7 @@ php app/cli/services/clear_attempts.php
 cd /srv/api/RBCALL-3410
 php app/cli/services/tests/data.php
 
-cd /srv/oi/RBCALL-3439/
+cd /srv/oi/RBCALL-3607/
 git reset --hard
 git pull
 npm run build
