@@ -48,13 +48,13 @@ export default {
 		messageHot(
 			state,
 			{
-				val: { guest_uuid: uuid, site_id, awaiting_answer_time },
+				val: { guest_uuid, site_id, awaiting_answer_time },
 				set
 			}
 		) {
 			let main = name => {
 				let findIndex = state[name].findIndex(
-					item => item.uuid + item.site_id === uuid + site_id
+					item => item.guest_uuid + item.site_id === guest_uuid + site_id
 				)
 
 				if (findIndex !== -1) {
@@ -79,7 +79,7 @@ export default {
 		},
 		processMessageLastUpdate(state, val) {
 			let findIndex = state.process.findIndex(item => {
-				return item.uuid + item.site_id === val.uuid + val.site_id
+				return item.guest_uuid + item.site_id === val.guest_uuid + val.site_id
 			})
 
 			if (findIndex !== -1) {
@@ -93,9 +93,9 @@ export default {
 				state.processCount += 1
 			}
 		},
-		processRemoveItem(state, { uuid, site_id }) {
+		processRemoveItem(state, { guest_uuid, site_id }) {
 			let findIndex = state.process.findIndex(
-				item => item.uuid + item.site_id === uuid + site_id
+				item => item.guest_uuid + item.site_id === guest_uuid + site_id
 			)
 			if (findIndex !== -1) state.process.splice(findIndex, 1)
 		},
@@ -113,9 +113,9 @@ export default {
 
 		selfMessageLastUpdate(state, val) {
 			let findIndex = state.self.findIndex(item => {
-				if (val.selfUuid) return item.uuid === val.selfUuid
+				if (val.selfUuid) return item.guest_uuid === val.selfUuid
 				//selfId значит мое сообщение
-				else return item.uuid + item.site_id === val.uuid + val.site_id
+				else return item.guest_uuid + item.site_id === val.guest_uuid + val.site_id
 			})
 
 			if (findIndex !== -1) {
@@ -137,7 +137,7 @@ export default {
 					last_message_author: val.last_message_author,
 					unread: [val.id],
 					last_message_time: val.time,
-					uuid: val.uuid,
+					guest_uuid: val.guest_uuid,
 					site_id: val.site_id,
 					photo: val.from_user_info.photo,
 					photo_stub: val.from_user_info.photo_stub,
@@ -147,9 +147,9 @@ export default {
 				state.self.push(selfNew)
 			}
 		},
-		selfMessageRemoveItem(state, { uuid, site_id }) {
+		selfMessageRemoveItem(state, { guest_uuid, site_id }) {
 			let findIndex = state.self.findIndex(
-				item => item.uuid + item.site_id === uuid + site_id
+				item => item.guest_uuid + item.site_id === guest_uuid + site_id
 			)
 			if (findIndex !== -1) state.self.splice(findIndex, 1)
 		},
@@ -220,7 +220,7 @@ export default {
 		},
 		itemOpenIds: state => {
 			return {
-				guest_uuid: state.itemOpen.uuid,
+				guest_uuid: state.itemOpen.guest_uuid,
 				site_id: state.itemOpen.site_id
 			}
 		}

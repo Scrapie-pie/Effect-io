@@ -111,14 +111,14 @@ export default {
 				if (to) {
 					this.$http.post('chat-room-user/supervisor-enter', {
 						site_id: to.params.site_id,
-						uuid: to.params.uuid
+						guest_uuid: to.params.guest_uuid
 					})
 				}
 
 				if (from) {
 					this.$http.post('chat-room-user/supervisor-exit', {
 						site_id: from.params.site_id,
-						uuid: from.params.uuid
+						guest_uuid: from.params.guest_uuid
 					})
 				}
 				/*eslint-enabled */

@@ -79,9 +79,7 @@ export default {
 
 			formData.append('file', this.file, this.file.name)
 
-			if (this.viewModeChat == 'visitors')
-				formData.append('uuid', this.httpParams.params.uuid)
-			else formData.append('uuid', this.$store.state.user.profile.uuid)
+
 
 			this.loader = false
 

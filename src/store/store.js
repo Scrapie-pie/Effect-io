@@ -148,7 +148,7 @@ export default new Vuex.Store({
 		}
 	},
 	actions: {
-		setMessageRead({ state, commit, dispatch }, { id, site_id, uuid, type }) {
+		setMessageRead({ state, commit, dispatch }, { id, site_id, guest_uuid, type }) {
 			let itemList = [],
 				unreadType // private,guest
 			if (type === 'operators') {
@@ -160,7 +160,7 @@ export default new Vuex.Store({
 				unreadType = 'guest'
 			}
 			let findIndex = itemList.findIndex(item => {
-				if (type === 'visitors') return item.uuid + item.site_id === uuid + site_id
+				if (type === 'visitors') return item.guest_uuid + item.site_id === guest_uuid + site_id
 				if (type === 'operators') return item.id === id
 			})
 			if (findIndex !== -1) {

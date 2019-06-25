@@ -104,15 +104,15 @@ export default {
 	created() {},
 	methods: {
 		startChat(item) {
-			let { uuid, site_id, chat_id } = item
+			let { guest_uuid, site_id, chat_id } = item
 
 			dialogPush(this, 'search', item, 'chat_id')
 
 			let routeData = this.$router.resolve({
 				name: 'search',
-				params: { uuid, site_id, chat_id }
+				params: { guest_uuid, site_id, chat_id }
 			})
-			window.open(routeData.href, uuid + site_id + chat_id, 'width=1100,height=500')
+			window.open(routeData.href, guest_uuid + site_id + chat_id, 'width=1100,height=500')
 		}
 	}
 }

@@ -29,7 +29,7 @@
                     th Контакты
                     th Регион
             tbody
-                tr.page-visitors__tr(v-for="(item, index) in filterSearchResult", :key="item.uuid+item.site_id")
+                tr.page-visitors__tr(v-for="(item, index) in filterSearchResult", :key="item.guest_uuid+item.site_id")
                     td
                         base-people(
                             type="visitor"
@@ -100,7 +100,7 @@ export default {
 		this.$root.$on('guestUpdate', val => {
 			console.log('guestUpdate')
 			let findIndex = this.itemList.findIndex(
-				item => item.uuid + item.site_id === val.guest_uuid + val.site_id
+				item => item.guest_uuid + item.site_id === val.guest_uuid + val.site_id
 			)
 			if (findIndex !== -1) {
 				let itemUpdate = Object.assign(this.itemList[findIndex], val)
@@ -116,15 +116,15 @@ export default {
 			//return console.log(item);
 			this.$http
 				.put('chat-room-user/take', {
-					guest_uuid: item.uuid,
+					guest_uuid: item.guest_uuid,
 					site_id: item.site_id
 				})
 				.then(({ data }) => {
-					let { uuid, site_id } = item
+					let { guest_uuid, site_id } = item
 
 					dialogPush(this, 'self', item)
 
-					this.$router.push({ name: 'chatId', params: { uuid, site_id } })
+					this.$router.push({ name: 'chatId', params: { guest_uuid, site_id } })
 				})
 		}
 	}

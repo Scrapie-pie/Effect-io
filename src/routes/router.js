@@ -65,7 +65,7 @@ const router = new Router({
 
 		{
 			name: 'chatId',
-			path: '/messages/:uuid/:site_id',
+			path: '/messages/:guest_uuid/:site_id',
 			component: PageChat
 		},
 		{
@@ -81,7 +81,7 @@ const router = new Router({
 
 		{
 			name: 'process',
-			path: '/process/:uuid/:site_id',
+			path: '/process/:guest_uuid/:site_id',
 			component: PageChat
 		},
 		{
@@ -112,12 +112,12 @@ const router = new Router({
 		},
 		{
 			name: 'search',
-			path: '/search/:uuid/:site_id/:chat_id',
+			path: '/search/:guest_uuid/:site_id/:chat_id',
 			component: PageChat
 		},
 		{
 			name: 'visor',
-			path: '/all/:uuid/:site_id/:chat_id',
+			path: '/all/:guest_uuid/:site_id/:chat_id',
 			component: PageChat
 		},
 		{

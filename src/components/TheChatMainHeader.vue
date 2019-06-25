@@ -178,7 +178,7 @@ export default {
 		coBrowser() {
 			const params =
 				'?guestUuid=' +
-				this.httpParams.params.uuid +
+				this.httpParams.params.guest_uuid +
 				'&siteId=' +
 				this.httpParams.params.site_id
 			const win = window.open(

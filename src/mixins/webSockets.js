@@ -30,8 +30,8 @@ export default {
             if(!itemList.length) this.$router.push({name:'processAll'}); //Todo проверить доделать этот варивант
             else {
                 console.log(!itemList.length,itemList,itemList.length,itemList[0]);
-                let {uuid,site_id} = itemList[0];
-                this.$router.push({name:'process',params: { uuid,site_id}});
+                let {guest_uuid,site_id} = itemList[0];
+                this.$router.push({name:'process',params: { guest_uuid,site_id}});
             }
         },*/
 		playSoundFile(nameFile) {
@@ -113,7 +113,7 @@ export default {
 			val.socket = true //Todo Временное решение, на проверку дубликатов, пока Симон не исправит
 
 			if (val.from_role_id != 8 && val.from_role_id != 9) {
-				val.guest_uuid = val.uuid
+				val.guest_uuid = val.guest_uuid
 				this.$store.commit('visitors/messageHot', { val, set: false })
 			}
 
@@ -144,7 +144,7 @@ export default {
 				console.log(val.site_id)
 				if (this.httpParams) {
 					let { guest_uuid, site_id } = this.httpParams.params
-					if (val.from_user_info.uuid + val.site_id === guest_uuid + site_id) {
+					if (val.from_user_info.guest_uuid + val.site_id === guest_uuid + site_id) {
 						//Если это сообщение посетителя в чате то нужно очистить TypingLive
 						this.$store.commit('roomActiveTypingLive', {
 							message: '',
@@ -163,8 +163,8 @@ export default {
 					browserNotificationMessage(val).then(click => {
 						console.log("browserNotificationMessage click==='toLink'", click)
 						if (click === 'toLink') {
-							let { uuid, site_id } = val
-							this.$router.push({ name: 'chatId', params: { uuid, site_id } })
+							let { guest_uuid, site_id } = val
+							this.$router.push({ name: 'chatId', params: { guest_uuid, site_id } })
 						}
 					})
 				}
@@ -216,13 +216,13 @@ export default {
 			//this.$root.$emit('guestUpdate',val)
 
 			if (!this.httpParams) return
-			let { site_id, uuid } = this.httpParams.params
+			let { site_id, guest_uuid } = this.httpParams.params
 
 			let updateNameItem = listName => {
 				let itemList = this.$store.state.visitors[listName]
 
 				let findIndex = itemList.findIndex(
-					item => item.uuid + item.site_id === val.uuid + val.site_id
+					item => item.guest_uuid + item.site_id === val.guest_uuid + val.site_id
 				)
 
 				if (findIndex !== -1) {
@@ -235,8 +235,8 @@ export default {
 			updateNameItem('self')
 			updateNameItem('process')
 
-			if (val.uuid + val.site_id === uuid + site_id) {
-				this.$store.commit('visitors/itemOpen', val) //{name,uuid,site_id} = val
+			if (val.guest_uuid + val.site_id === guest_uuid + site_id) {
+				this.$store.commit('visitors/itemOpen', val) //{name,guest_uuid,site_id} = val
 			}
 		},
 		'message-delivered'(val) {
@@ -259,8 +259,8 @@ export default {
 			this.playSoundFile('sound_new_guest')
 			browserNotificationMessage(val).then(click => {
 				if (click === 'toLink') {
-					let { uuid, site_id } = val
-					this.$router.push({ name: 'process', params: { uuid, site_id } })
+					let { guest_uuid, site_id } = val
+					this.$router.push({ name: 'process', params: { guest_uuid, site_id } })
 				}
 			})
 		},
@@ -279,8 +279,8 @@ export default {
 
 			browserNotificationMessage(val).then(click => {
 				if (click === 'toLink') {
-					let { uuid, site_id } = val
-					this.$router.push({ name: 'chatId', params: { uuid, site_id } })
+					let { guest_uuid, site_id } = val
+					this.$router.push({ name: 'chatId', params: { guest_uuid, site_id } })
 				}
 			})
 		},
@@ -290,7 +290,7 @@ export default {
 			//if(val.room_id === this.$store.state.roomActiveId) return
 
 			this.$store.dispatch('setMessageRead', {
-				uuid: val.uuid,
+				guest_uuid: val.guest_uuid,
 				site_id: val.site_id,
 				type: 'visitors'
 			})

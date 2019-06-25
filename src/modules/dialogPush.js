@@ -3,8 +3,8 @@ function dialogPush(vm, dialogName, item, findField) {
 	let list = vm.$store.state.visitors[dialogName].slice()
 	let findIndex
 	if (!findField) {
-		let { uuid, site_id } = item
-		findIndex = list.findIndex(item => uuid + site_id === item.uuid + item.site_id)
+		let { guest_uuid, site_id } = item
+		findIndex = list.findIndex(item => guest_uuid + site_id === item.guest_uuid + item.site_id)
 	} else {
 		let findFieldVal = item[findField]
 		findIndex = list.findIndex(item => findFieldVal === item[findField])

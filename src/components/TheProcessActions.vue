@@ -41,11 +41,11 @@ export default {
 		},
 		process() {
 			let {
-				params: { uuid, site_id }
+				params: { guest_uuid, site_id }
 			} = this.httpParams
 
-			if (uuid && site_id)
-				return lodash_find(this.$store.state.visitors.process, { uuid, site_id }) || {}
+			if (guest_uuid && site_id)
+				return lodash_find(this.$store.state.visitors.process, { guest_uuid, site_id }) || {}
 
 			return {}
 		},
@@ -70,13 +70,13 @@ export default {
 
 	methods: {
 		routerNext(status) {
-			let { uuid, site_id } = this.httpParams.params
+			let { guest_uuid, site_id } = this.httpParams.params
 			let processItem = this.$store.state.visitors.process.find(
-				item => item.uuid + item.site_id === uuid + site_id
+				item => item.guest_uuid + item.site_id === guest_uuid + site_id
 			)
 			processItem.very_hot = 0
 
-			this.$store.commit('visitors/processRemoveItem', { uuid, site_id })
+			this.$store.commit('visitors/processRemoveItem', { guest_uuid, site_id })
 			this.$store.commit('user/unreadUpdate', ['unprocessed', -1])
 
 			if (status === 'no') {
@@ -85,7 +85,7 @@ export default {
 
 			if (status === 'yes') {
 				dialogPush(this, 'self', processItem)
-				this.$router.push({ name: 'chatId', params: { uuid, site_id } })
+				this.$router.push({ name: 'chatId', params: { guest_uuid, site_id } })
 			}
 		},
 

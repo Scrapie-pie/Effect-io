@@ -88,7 +88,7 @@
                 thead(v-if="headList.length")
                     tr: th(v-for="(item, index) in headList" :key="index" v-html="item.text")
                 tbody
-                    tr(v-for="(item, index) in itemList", :key="item.uuid+item.site_id+item.chat_id")
+                    tr(v-for="(item, index) in itemList", :key="item.guest_uuid+item.site_id+item.chat_id")
                         td
                             base-people(
                                 type="visitor",
@@ -221,15 +221,15 @@ export default {
 	},
 	methods: {
 		startChat(item) {
-			let { uuid, site_id, chat_id } = item
+			let { guest_uuid, site_id, chat_id } = item
 
 			dialogPush(this, 'visor', item, 'chat_id')
 
 			let routeData = this.$router.resolve({
 				name: 'visor',
-				params: { uuid, site_id, chat_id }
+				params: { guest_uuid, site_id, chat_id }
 			})
-			window.open(routeData.href, uuid + site_id + chat_id, 'width=700,height=700')
+			window.open(routeData.href, guest_uuid + site_id + chat_id, 'width=700,height=700')
 		},
 
 		filterBall(val) {

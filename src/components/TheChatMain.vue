@@ -233,10 +233,10 @@ export default {
 		this.$root.$on('messageAdd', this.emitMessageAdd)
 		this.$root.$on('messageDelivered', this.emitMessageDelivered)
 
-		this.$root.$on('messageVisitorUpdateName', ({ name, uuid, site_id }) => {
-			lodash_find(this.messageList, { site_id, from_user_info: { uuid } })
+		this.$root.$on('messageVisitorUpdateName', ({ name, guest_uuid, site_id }) => {
+			lodash_find(this.messageList, { site_id, from_user_info: { guest_uuid } })
 			this.messageList.forEach(item => {
-				if (item.site_id + item.from_user_info.uuid === site_id + uuid)
+				if (item.site_id + item.from_user_info.guest_uuid === site_id + guest_uuid)
 					item.from_user_info.name = name
 			})
 		})
@@ -248,7 +248,7 @@ export default {
 
 	methods: {
 		name(item, visitorInfo) {
-			if (item.from_user_info.uuid) return visitorInfo.name
+			if (item.from_user_info.guest_uuid) return visitorInfo.name
 			else return item.from_user_info.name
 		},
 		emitMessageDelivered(val) {

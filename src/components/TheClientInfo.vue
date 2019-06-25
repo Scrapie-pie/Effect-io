@@ -88,7 +88,7 @@ export default {
 	mixins: [httpParams],
 	data() {
 		return {
-			uuid: null,
+			guest_uuid: null,
 			site_id: null,
 			showContacts: false,
 			showAudienceSegments: false,
@@ -167,7 +167,7 @@ export default {
 		guestUpdateByOperator() {
 			this.$http
 				.put('guest/update-by-operator', {
-					guest_uuid: this.info.uuid,
+					guest_uuid: this.info.guest_uuid,
 					comment: this.info.comment,
 					additional_contact_1: this.info.additional_contact_1,
 					additional_contact_2: this.info.additional_contact_2,

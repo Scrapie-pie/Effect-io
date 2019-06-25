@@ -3,7 +3,7 @@ export default {
 		removeMessageAndPush() {
 			this.$root.$emit('globBoxControlClose')
 			this.$store.dispatch('setMessageRead', {
-				uuid: this.httpParams.params.uuid,
+				guest_uuid: this.httpParams.params.guest_uuid,
 				site_id: this.httpParams.params.site_id,
 				type: 'visitors'
 			})

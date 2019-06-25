@@ -268,7 +268,7 @@ export default {
 					room_id: this.$store.state.roomActiveId
 				})
 				this.$store.dispatch('setMessageRead', {
-					uuid: this.httpParams.params.uuid,
+					guest_uuid: this.httpParams.params.guest_uuid,
 					site_id: this.httpParams.params.site_id,
 					type: this.viewModeChat
 				})
@@ -372,7 +372,7 @@ export default {
 					} //Todo у оператора}
 
 					if (this.viewModeChat === 'visitors') {
-						message.selfUuid = this.httpParams.params.uuid
+						message.selfUuid = this.httpParams.params.guest_uuid
 						message.last_message_author = 'Вы'
 						this.$store.commit('visitors/selfMessageLastUpdate', message)
 					}

@@ -12,7 +12,7 @@
                 ul.last-messages__list
                     li.last-messages__item(
                         v-for="(item, index) in filterSearchResult",
-                        :key="item.uuid+item.site_id+item.chat_id",
+                        :key="item.guest_uuid+item.site_id+item.chat_id",
                         :class="item.classList"
                     )
                         .last-messages__timer(
@@ -83,7 +83,7 @@ export default {
 		itemListSortActiveFirst() {
 			let itemActive,
 				list = this.itemListSort.filter((item, index) => {
-					if (item.uuid === this.httpParams.params.uuid) {
+					if (item.guest_uuid === this.httpParams.params.guest_uuid) {
 						//Todo у оператора id
 						itemActive = item
 						return false
@@ -176,7 +176,7 @@ export default {
 		},
 		setName(item, visitorInfo) {
 			if (item.very_hot) return item.name
-			if (item.uuid + item.site_id === visitorInfo.uuid + visitorInfo.site_id)
+			if (item.guest_uuid + item.site_id === visitorInfo.guest_uuid + visitorInfo.site_id)
 				return visitorInfo.name
 			else return item.name
 		},
@@ -189,8 +189,8 @@ export default {
 		itemFormatSetClassList(item) {
 			let open
 			if (this.httpParams) {
-				let { uuid, site_id, chat_id } = this.httpParams.params
-				open = item.uuid + item.site_id + item.chat_id === uuid + site_id + chat_id
+				let { guest_uuid, site_id, chat_id } = this.httpParams.params
+				open = item.guest_uuid + item.site_id + item.chat_id === guest_uuid + site_id + chat_id
 			}
 			item.classList = {}
 			item.classList['last-messages__item_active'] = open
@@ -222,7 +222,7 @@ export default {
 			item.rootLinkOptions = {
 				link: {
 					name: routName,
-					params: { uuid: item.uuid, site_id: item.site_id, chat_id: item.chat_id }
+					params: { guest_uuid: item.guest_uuid, site_id: item.site_id, chat_id: item.chat_id }
 				},
 				text: item.last_message
 			}
@@ -277,17 +277,17 @@ export default {
 
 			this.itemList.filter(item => {
 				let findIndex = this.itemListStore.findIndex(
-					itemStore => itemStore.uuid + itemStore.site_id === item.uuid + item.site_id
+					itemStore => itemStore.guest_uuid + itemStore.site_id === item.guest_uuid + item.site_id
 				)
 				if (findIndex !== -1) {
 					itemListStore[findIndex] = item
-					let { uuid, site_id } = item
-					itemListOld.push({ uuid, site_id })
+					let { guest_uuid, site_id } = item
+					itemListOld.push({ guest_uuid, site_id })
 				} // обновляем в базе элемент если такой пришел из поиска
 				else {
 					itemListStore.push(item) // если в базе нет, добавляем в базу
-					let { uuid, site_id } = item
-					itemListNew.push({ uuid, site_id }) // если в базе нет, добавляем в базу
+					let { guest_uuid, site_id } = item
+					itemListNew.push({ guest_uuid, site_id }) // если в базе нет, добавляем в базу
 				}
 			})
 
