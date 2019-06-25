@@ -9,7 +9,7 @@ module.exports = {
 		port: 4000
 	},
 	css: {
-		sourceMap: false,
+		sourceMap: true,
 		loaderOptions: {
 			sass: {
 				data: '@import "@/scss/settings.scss";'
