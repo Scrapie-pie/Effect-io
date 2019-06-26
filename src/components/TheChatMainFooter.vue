@@ -86,7 +86,7 @@
                             @click.prevent="showGifs=true"
                         )
                     li.chat-main-footer__button(v-if="viewModeChat=='visitors'")
-                        base-radio-check(name="spellingCheck" v-model="spellingCheck") Проверка орфографии
+                        base-radio-check(name="spellingCheck" v-model="spellingCheck", @click="toggleSpellingCheck") Проверка орфографии
                     li.chat-main-footer__button.chat-main-footer__button_send
 
                         base-btn.chat-main-footer__send(

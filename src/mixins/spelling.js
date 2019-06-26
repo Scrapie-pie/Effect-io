@@ -15,6 +15,17 @@ export default {
     },
 
     methods: {
+        toggleSpellingCheck() {
+            this.$http
+                .post('spelling/spelling/settings', {
+                    enabled: !this.spellingCheck
+                })
+                .then(() => {
+                    this.$store.commit('user/profileUpdate', {
+                        spelling: !this.spellingCheck
+                    })
+                })
+        },
         spellingShowBox(list) {
             if (list.length) {
                 this.spellingList = list
@@ -23,20 +34,5 @@ export default {
             }
         }
     },
-    watch: {
-        /*   '$route' (to, from) {
-            this.spellingCheck = this.$store.state.user.profile.spelling
-        },*/
-        spellingCheck(val) {
-            this.$http
-                .post('spelling/spelling/settings', {
-                    enabled: this.spellingCheck
-                })
-                .then(() => {
-                    this.$store.commit('user/profileUpdate', {
-                        spelling: this.spellingCheck
-                    })
-                })
-        }
-    }
+
 }
