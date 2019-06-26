@@ -20,50 +20,50 @@
 
 <script>
 export default {
-	props: {
-		itemList: {
-			type: Array,
-			default: () => []
-		}
-	},
-	data() {
-		return {}
-	},
-	computed: {},
-	created() {},
-	methods: {
-		props(item) {
-			let obj = {
-				width: 'md'
-			}
-			if (item.link_min) obj.url = item.link_min
-			else obj.name = 'file'
+    props: {
+        itemList: {
+            type: Array,
+            default: () => []
+        }
+    },
+    data() {
+        return {}
+    },
+    computed: {},
+    created() {},
+    methods: {
+        props(item) {
+            let obj = {
+                width: 'md'
+            }
+            if (item.link_min) obj.url = item.link_min
+            else obj.name = 'file'
 
-			return obj
-		},
-		itemRemove(index) {
-			this.$emit('itemRemove', index)
-		}
-	}
+            return obj
+        },
+        itemRemove(index) {
+            this.$emit('itemRemove', index)
+        }
+    }
 }
 </script>
 
 <style lang="scss">
 .upload-file-list {
-	margin-top: calc-em(10);
-	&__item {
-		display: inline-flex;
-		align-items: center;
-		vertical-align: middle;
-	}
-	&__preview {
-		margin-right: calc-em(10);
-	}
-	&__close {
-		.icon {
-			width: 10px;
-			height: 10px;
-		}
-	}
+    margin-top: calc-em(10);
+    &__item {
+        display: inline-flex;
+        align-items: center;
+        vertical-align: middle;
+    }
+    &__preview {
+        margin-right: calc-em(10);
+    }
+    &__close {
+        .icon {
+            width: 10px;
+            height: 10px;
+        }
+    }
 }
 </style>

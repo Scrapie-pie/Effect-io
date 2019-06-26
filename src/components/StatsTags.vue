@@ -34,28 +34,28 @@ import BtnSort from '@/components/BtnSort'
 import { stats, sortFields } from '@/mixins/mixins'
 
 export default {
-	components: {
-		BtnSort
-	},
-	mixins: [stats, sortFields],
-	data() {
-		return {}
-	},
-	computed: {
-		bodyListFormat() {
-			return this.sortFieldsListGet
-		},
-		sortFieldsListSet() {
-			return this.bodyList
-		}
-	},
-	methods: {}
+    components: {
+        BtnSort
+    },
+    mixins: [stats, sortFields],
+    data() {
+        return {}
+    },
+    computed: {
+        bodyListFormat() {
+            return this.sortFieldsListGet
+        },
+        sortFieldsListSet() {
+            return this.bodyList
+        }
+    },
+    methods: {}
 }
 </script>
 
 <style lang="scss">
 .stats-tags {
-	width: auto;
-	height: 100%;
+    width: auto;
+    height: 100%;
 }
 </style>

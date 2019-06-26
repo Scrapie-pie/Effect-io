@@ -189,46 +189,46 @@ import BtnSort from '@/components/BtnSort'
 
 import { datetimeStoHMS } from '@/modules/datetime'
 export default {
-	components: {
-		BtnSort
-	},
-	filters: {
-		datetimeStoHMS
-	},
-	mixins: [stats, sortFields],
-	props: {},
+    components: {
+        BtnSort
+    },
+    filters: {
+        datetimeStoHMS
+    },
+    mixins: [stats, sortFields],
+    props: {},
 
-	data() {
-		return {
-			filterBranchIds: [],
-			translateX: 0,
-			maxStep: 2,
-			countStep: 0,
-			operatorList: [],
-			commonRow: []
-		}
-	},
-	computed: {
-		employeesParams() {
-			return Object.assign({}, this.params, { type: 'employees' })
-		},
+    data() {
+        return {
+            filterBranchIds: [],
+            translateX: 0,
+            maxStep: 2,
+            countStep: 0,
+            operatorList: [],
+            commonRow: []
+        }
+    },
+    computed: {
+        employeesParams() {
+            return Object.assign({}, this.params, { type: 'employees' })
+        },
 
-		link() {
-			if (this.$route.name === 'statsAll') return 'statsAllBranch'
-			if (this.$route.name === 'statsAllBranch') return 'statsAllOperator'
-			return ''
-		},
-		showRight() {
-			return this.countStep < this.maxStep
-		},
-		showLeft() {
-			return this.countStep !== 0
-		},
-		bodyListFormat() {
-			return this.sortFieldsListGet
-		},
-		sortFieldsListSet() {
-			/*eslint-disable */
+        link() {
+            if (this.$route.name === 'statsAll') return 'statsAllBranch'
+            if (this.$route.name === 'statsAllBranch') return 'statsAllOperator'
+            return ''
+        },
+        showRight() {
+            return this.countStep < this.maxStep
+        },
+        showLeft() {
+            return this.countStep !== 0
+        },
+        bodyListFormat() {
+            return this.sortFieldsListGet
+        },
+        sortFieldsListSet() {
+            /*eslint-disable */
                 if(!this.bodyList.length) return []
                 if(this.bodyList.length) this.commonRow = [this.bodyList[0]];
 

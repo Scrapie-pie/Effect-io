@@ -86,94 +86,94 @@ import ContextMenu from '@/components/ContextMenu'
 import lodash_sortBy from 'lodash/sortBy'
 
 export default {
-	components: {
-		ContextMenu,
-		TheLayoutTable
-	},
-	filters: {
-		phoneAdditional: function(value) {
-			let str = value.phone
-			if (value.additional) str = str + ' (' + value.additional + ')'
-			return str
-		}
-	},
-	data() {
-		return {
-			search: '',
-			sortMas: [item => -item.unread.length, item => item.last_message_time]
-		}
-	},
-	computed: {
-		viewAdmin() {
-			return (
-				this.$store.getters['user/profile'].role_id === 13 ||
-				this.$store.getters['user/profile'].role_id === 5
-			) //либо админ либо владелец
-		},
-		operatorList() {
-			console.log('operatorList', this.$store.getters['operators/all'])
-			return this.$store.getters['operators/all']
-		},
-		operatorListSearch() {
-			let list = this.operatorList
-			list = list.filter(item => {
-				var regexp = new RegExp(this.search, 'ig')
+    components: {
+        ContextMenu,
+        TheLayoutTable
+    },
+    filters: {
+        phoneAdditional: function(value) {
+            let str = value.phone
+            if (value.additional) str = str + ' (' + value.additional + ')'
+            return str
+        }
+    },
+    data() {
+        return {
+            search: '',
+            sortMas: [item => -item.unread.length, item => item.last_message_time]
+        }
+    },
+    computed: {
+        viewAdmin() {
+            return (
+                this.$store.getters['user/profile'].role_id === 13 ||
+                this.$store.getters['user/profile'].role_id === 5
+            ) //либо админ либо владелец
+        },
+        operatorList() {
+            console.log('operatorList', this.$store.getters['operators/all'])
+            return this.$store.getters['operators/all']
+        },
+        operatorListSearch() {
+            let list = this.operatorList
+            list = list.filter(item => {
+                var regexp = new RegExp(this.search, 'ig')
 
-				if (item.fullName.match(regexp) == null) return 0
-				return true
-			})
-			return list
-		},
-		operatorListSort() {
-			return lodash_sortBy(this.operatorListSearch, this.sortMas)
-		}
-	},
-	created() {},
-	methods: {
-		anotherProfile(user_id) {
-			return user_id !== this.$store.getters['user/profile'].user_id
-		},
-		changeActiveOperator(operator) {
-			let active = operator.active ? 0 : 1,
-				data = {
-					mail: operator.mail,
-					first_name: operator.first_name,
-					user_id: operator.id,
-					active: active
-				}
-			this.$http.post('user/update-profile', data).then(({ data }) => {})
-		}
-	}
+                if (item.fullName.match(regexp) == null) return 0
+                return true
+            })
+            return list
+        },
+        operatorListSort() {
+            return lodash_sortBy(this.operatorListSearch, this.sortMas)
+        }
+    },
+    created() {},
+    methods: {
+        anotherProfile(user_id) {
+            return user_id !== this.$store.getters['user/profile'].user_id
+        },
+        changeActiveOperator(operator) {
+            let active = operator.active ? 0 : 1,
+                data = {
+                    mail: operator.mail,
+                    first_name: operator.first_name,
+                    user_id: operator.id,
+                    active: active
+                }
+            this.$http.post('user/update-profile', data).then(({ data }) => {})
+        }
+    }
 }
 </script>
 
 <style lang="scss">
 .page-operators {
-	$transition: $glob-trans;
-	$font-small: $glob-font-size_small;
-	.layout-table__content {
-		padding-bottom: calc-em(50);
-	}
-	&__last-message-wrap {
-		position: relative;
-	}
-	&__tr:hover &__last-message {
-		opacity: 0;
-		visibility: hidden;
-	}
-	&__last-message {
-		@extend %full-abs;
-		top: 50%;
-		bottom: auto;
-		transform: translateY(-50%);
-		transition: $transition;
-	}
+    $transition: $glob-trans;
+    $font-small: $glob-font-size_small;
+    .layout-table__content {
+        padding-bottom: calc-em(50);
+    }
+    &__last-message-wrap {
+        position: relative;
+    }
+    &__tr:hover &__last-message {
+        opacity: 0;
+        visibility: hidden;
+    }
+    &__last-message {
+        @extend %full-abs;
+        top: 50%;
+        bottom: auto;
+        transform: translateY(-50%);
+        transition: $transition;
+    }
 
-	&__base-no-found.no-found {
-		height: auto;
-		flex: 1;
-		margin-top: 20vh;
-		max-width: 100%;
-	}
+    &__base-no-found.no-found {
+        height: auto;
+        flex: 1;
+        margin-top: 20vh;
+        max-width: 100%;
+    }
 }
 </style>

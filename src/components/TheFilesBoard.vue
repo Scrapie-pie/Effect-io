@@ -22,41 +22,41 @@
 import { Picker } from 'emoji-mart-vue'
 
 export default {
-	components: {
-		'smile-picker': Picker
-	},
-	props: {
-		name: {
-			type: String,
-			default: 'smiles',
-			validator: function(value) {
-				return ['smiles', 'gifs'].indexOf(value) !== -1
-			}
-		}
-	},
-	data() {
-		return {}
-	},
-	computed: {},
-	methods: {
-		addSmile(val) {
-			this.$emit('getSmile', val)
-		}
-	}
+    components: {
+        'smile-picker': Picker
+    },
+    props: {
+        name: {
+            type: String,
+            default: 'smiles',
+            validator: function(value) {
+                return ['smiles', 'gifs'].indexOf(value) !== -1
+            }
+        }
+    },
+    data() {
+        return {}
+    },
+    computed: {},
+    methods: {
+        addSmile(val) {
+            this.$emit('getSmile', val)
+        }
+    }
 }
 </script>
 
 <style lang="scss">
 .files-board {
-	.emoji-mart {
-		width: 100% !important;
-	}
-	&__search {
-		width: 275px;
-		margin-bottom: calc-em(20);
-	}
-	&__text-only-scr {
-		@extend %visuallyhidden;
-	}
+    .emoji-mart {
+        width: 100% !important;
+    }
+    &__search {
+        width: 275px;
+        margin-bottom: calc-em(20);
+    }
+    &__text-only-scr {
+        @extend %visuallyhidden;
+    }
 }
 </style>

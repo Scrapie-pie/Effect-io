@@ -7,21 +7,21 @@ const PageSettingsApp = () => import('@/pages/PageSettingsApp')
 const PageSettingsProfile = () => import('@/pages/PageSettingsProfile')
 
 export default [
-	{
-		name: 'settings',
-		path: '/settings',
-		component: PageSettings,
-		children: [
-			{
-				name: 'settingsApp',
-				path: 'app',
-				component: PageSettingsApp
-			},
-			{
-				name: 'settingsProfile',
-				path: 'profile',
-				component: PageSettingsProfile
-			}
-		]
-	}
+    {
+        name: 'settings',
+        path: '/settings',
+        component: PageSettings,
+        children: [
+            {
+                name: 'settingsApp',
+                path: 'app',
+                component: PageSettingsApp
+            },
+            {
+                name: 'settingsProfile',
+                path: 'profile',
+                component: PageSettingsProfile
+            }
+        ]
+    }
 ]

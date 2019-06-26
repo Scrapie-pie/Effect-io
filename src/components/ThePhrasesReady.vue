@@ -87,226 +87,226 @@
 <script>
 import ActionList from '@/components/ActionList'
 export default {
-	components: {
-		ActionList
-	},
-	props: {},
-	data() {
-		return {
-			showPhrasesNew: false,
-			showPhrasesEdit: false,
-			phrasesEditId: null,
-			picked: '',
-			is_common: 1,
-			create: {
-				text: '',
-				category: '',
-				is_common: 1
-			},
+    components: {
+        ActionList
+    },
+    props: {},
+    data() {
+        return {
+            showPhrasesNew: false,
+            showPhrasesEdit: false,
+            phrasesEditId: null,
+            picked: '',
+            is_common: 1,
+            create: {
+                text: '',
+                category: '',
+                is_common: 1
+            },
 
-			newCategory: '',
-			newPhrase: '',
+            newCategory: '',
+            newPhrase: '',
 
-			VisibleToAll: false,
-			categoriesSelectId: ''
-		}
-	},
-	computed: {
-		snippets() {
-			return this.$store.state.phrases.snippets
-		},
-		categories() {
-			return this.$store.state.phrases.categories
-		},
-		phrases() {
-			return this.snippets.filter(
-				item => item.category_id === Number(this.categoriesSelectId)
-			)
-		}
-	},
-	watch: {
-		showPhrasesNew(val) {
-			if (val && !this.showPhrasesEdit) this.create.text = ''
-		},
-		categories: {
-			handler(val) {
-				if (val.length) {
-					console.log(val)
-					this.categoriesSelectId = val[0].id
-				}
-			},
-			immediate: true
-		}
-	},
-	created() {},
-	methods: {
-		cancel() {
-			this.phrasesEditId = null
-			this.showPhrasesNew = false
-			this.showPhrasesEdit = false
-		},
-		itemEditShow(item) {
-			this.phrasesEditId = item.id
-			this.create.text = item.text
-			this.showPhrasesEdit = true
-			this.showPhrasesNew = true
-		},
-		itemEdit() {
-			let id = this.phrasesEditId,
-				text = this.create.text
-			this.$store.dispatch('phrases/snippetUpdate', { id, text })
-		},
-		itemDelete(id) {
-			this.$store.dispatch('phrases/snippetDelete', id)
-		},
-		itemCreate() {
-			this.$store.dispatch('phrases/snippetCreate', this.create)
-		},
+            VisibleToAll: false,
+            categoriesSelectId: ''
+        }
+    },
+    computed: {
+        snippets() {
+            return this.$store.state.phrases.snippets
+        },
+        categories() {
+            return this.$store.state.phrases.categories
+        },
+        phrases() {
+            return this.snippets.filter(
+                item => item.category_id === Number(this.categoriesSelectId)
+            )
+        }
+    },
+    watch: {
+        showPhrasesNew(val) {
+            if (val && !this.showPhrasesEdit) this.create.text = ''
+        },
+        categories: {
+            handler(val) {
+                if (val.length) {
+                    console.log(val)
+                    this.categoriesSelectId = val[0].id
+                }
+            },
+            immediate: true
+        }
+    },
+    created() {},
+    methods: {
+        cancel() {
+            this.phrasesEditId = null
+            this.showPhrasesNew = false
+            this.showPhrasesEdit = false
+        },
+        itemEditShow(item) {
+            this.phrasesEditId = item.id
+            this.create.text = item.text
+            this.showPhrasesEdit = true
+            this.showPhrasesNew = true
+        },
+        itemEdit() {
+            let id = this.phrasesEditId,
+                text = this.create.text
+            this.$store.dispatch('phrases/snippetUpdate', { id, text })
+        },
+        itemDelete(id) {
+            this.$store.dispatch('phrases/snippetDelete', id)
+        },
+        itemCreate() {
+            this.$store.dispatch('phrases/snippetCreate', this.create)
+        },
 
-		submit() {
-			this.$validator.validateAll().then(success => {
-				if (success) {
-					if (this.showPhrasesEdit) this.itemEdit()
-					else this.itemCreate()
-					this.showPhrasesNew = false
-					this.showPhrasesEdit = false
-					;(this.phrasesEditId = null), (this.newCategory = '')
-					this.newPhrase = ''
-				}
-			})
-		}
-	}
+        submit() {
+            this.$validator.validateAll().then(success => {
+                if (success) {
+                    if (this.showPhrasesEdit) this.itemEdit()
+                    else this.itemCreate()
+                    this.showPhrasesNew = false
+                    this.showPhrasesEdit = false
+                    ;(this.phrasesEditId = null), (this.newCategory = '')
+                    this.newPhrase = ''
+                }
+            })
+        }
+    }
 }
 </script>
 
 <style lang="scss">
 .phrases-ready {
-	$color-border: glob-color('info');
-	$color-bg: glob-color('info-lighten');
-	$transition: $glob-trans;
+    $color-border: glob-color('info');
+    $color-bg: glob-color('info-lighten');
+    $transition: $glob-trans;
 
-	$color-text: glob-color('secondary');
-	$color-error: glob-color('error');
+    $color-text: glob-color('secondary');
+    $color-error: glob-color('error');
 
-	$padding: calc-em(8) calc-em(26);
-	max-height: 74vh;
+    $padding: calc-em(8) calc-em(26);
+    max-height: 74vh;
 
-	&__wrap,
-	&__phrases-wrap {
-		min-width: 0;
-	}
+    &__wrap,
+    &__phrases-wrap {
+        min-width: 0;
+    }
 
-	&__scrollbar {
-		max-height: 67.5vh;
-		margin-left: (calc-em(26) * -1);
+    &__scrollbar {
+        max-height: 67.5vh;
+        margin-left: (calc-em(26) * -1);
 
-		&_phrases {
-			margin-left: -(calc-em(15));
-			padding-left: calc-em(15);
-		}
-	}
+        &_phrases {
+            margin-left: -(calc-em(15));
+            padding-left: calc-em(15);
+        }
+    }
 
-	&__add-item {
-		& + & {
-			margin-top: calc-em(25);
-		}
+    &__add-item {
+        & + & {
+            margin-top: calc-em(25);
+        }
 
-		&_select {
-			max-width: 275px;
-		}
-	}
-	&__add-item-button {
-		margin-right: calc-em(20);
-	}
+        &_select {
+            max-width: 275px;
+        }
+    }
+    &__add-item-button {
+        margin-right: calc-em(20);
+    }
 
-	&__title {
-		font-weight: bold;
-	}
+    &__title {
+        font-weight: bold;
+    }
 
-	&__inner {
-		display: flex;
-	}
+    &__inner {
+        display: flex;
+    }
 
-	&__list {
-	}
+    &__list {
+    }
 
-	&__btn-add {
-		position: absolute;
-		right: 0;
-		top: 0;
-		margin: calc-em(13) calc-em(45);
-	}
+    &__btn-add {
+        position: absolute;
+        right: 0;
+        top: 0;
+        margin: calc-em(13) calc-em(45);
+    }
 
-	&__catalog {
-		padding-right: calc-em(15);
-		flex: 0 0 auto;
+    &__catalog {
+        padding-right: calc-em(15);
+        flex: 0 0 auto;
 
-		max-width: 220px;
-		width: 100%;
-		min-width: 0;
+        max-width: 220px;
+        width: 100%;
+        min-width: 0;
 
-		@include media(1600px) {
-			padding-right: 1vw;
-		}
-	}
+        @include media(1600px) {
+            padding-right: 1vw;
+        }
+    }
 
-	&__phrases-button {
-		padding-left: calc-em(35);
-		@include media($width_xl) {
-			padding-left: 0;
-		}
-	}
-	&__phrases-remove {
-		color: $color_error;
-	}
+    &__phrases-button {
+        padding-left: calc-em(35);
+        @include media($width_xl) {
+            padding-left: 0;
+        }
+    }
+    &__phrases-remove {
+        color: $color_error;
+    }
 
-	&__phrases-wrap {
-		width: 100%;
-	}
-	&__phrases {
-		margin-left: (calc-em(10) * -1);
-	}
+    &__phrases-wrap {
+        width: 100%;
+    }
+    &__phrases {
+        margin-left: (calc-em(10) * -1);
+    }
 
-	&__phrases-item {
-		display: flex;
+    &__phrases-item {
+        display: flex;
 
-		align-items: center;
-		padding: $padding;
-		padding-left: calc-em(10);
-		transition: $transition;
-		&:hover {
-			background-color: $color-bg;
-		}
-	}
-	&__phrases-text {
-		white-space: nowrap;
-		overflow: hidden;
-		text-overflow: ellipsis;
-	}
+        align-items: center;
+        padding: $padding;
+        padding-left: calc-em(10);
+        transition: $transition;
+        &:hover {
+            background-color: $color-bg;
+        }
+    }
+    &__phrases-text {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 
-	&__phrases-controls {
-		display: flex;
-		align-items: center;
-		margin-left: auto;
+    &__phrases-controls {
+        display: flex;
+        align-items: center;
+        margin-left: auto;
 
-		@include media($width_xl) {
-			flex-direction: column;
-			align-items: flex-end;
-			padding-left: calc-em(15);
-		}
-	}
+        @include media($width_xl) {
+            flex-direction: column;
+            align-items: flex-end;
+            padding-left: calc-em(15);
+        }
+    }
 
-	&__text-only-scr {
-		@extend %visuallyhidden;
-	}
+    &__text-only-scr {
+        @extend %visuallyhidden;
+    }
 
-	&__label {
-		font-weight: bold;
-		margin-bottom: calc-em(20);
-	}
-	&__name {
-		font-weight: bold;
-		margin-bottom: calc-em(50);
-	}
+    &__label {
+        font-weight: bold;
+        margin-bottom: calc-em(20);
+    }
+    &__name {
+        font-weight: bold;
+        margin-bottom: calc-em(50);
+    }
 }
 </style>

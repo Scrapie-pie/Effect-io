@@ -34,13 +34,17 @@
                     padding="xs",
                     @click.prevent="coBrowser"
                     ) Совместный браузер
-                li.chat-main-header__control(v-if="roomActiveUserActive")
-                    base-btn(
-                        color="error"
-                        padding="xs",
-                        @click.prevent="chatCompletion",
-                        v-wait:disabled='"chatMain"'
-                    ) Завершить диалог
+                li.chat-main-header__control
+                    form
+                        fieldset(:disabled="!roomActiveUserActive")
+
+                            base-btn(
+
+                                color="error"
+                                padding="xs",
+                                @click.prevent="chatCompletion",
+                                v-wait:disabled='"chatMain"'
+                            ) Завершить диалог
                 li.chat-main-header__control()
                     base-btn(
                         theme="default"
@@ -88,223 +92,222 @@ import { viewModeChat, httpParams, removeMessageAndPush } from '@/mixins/mixins'
 import config from '@/config/index'
 
 export default {
-	components: {
-		SelectBranch,
-		TheChatMainHeaderHistory,
-		TheChatMainHeaderActions,
-		SelectOperators
-	},
-	mixins: [viewModeChat, httpParams, removeMessageAndPush],
-	data() {
-		return {
-			membersList: [],
-			showClientHistoryActions: false,
-			showSelectOperators: false,
-			showSelectBranch: false,
-			showMoreChatActions: false,
-			showSelectTags: false,
-			selectOperatorsMode: ''
-			//moreActionsClose:false,
-		}
-	},
-	computed: {
-		visitorPage() {
-			return this.visitor.page
-		},
-		visitor() {
-			return this.$store.state.visitors.itemOpen
-		},
-		targetName() {
-			if (this.viewModeChat !== 'operators') return this.visitor.name
-			else {
-				if (this.$store.state.user.profile.id === this.httpParams.params.id)
-					return 'Здесь Вы можете оставить важные заметки, которые будут видны только Вам. Или поговорить с самим собой'
-				let operator = this.$store.getters['operators/all'].find(
-					item => item.id == this.$route.params.id
-				)
-				if (operator) return operator.fullName
-				return ''
-			}
-		},
-		roomActiveUserActive() {
-			let id = this.$store.state.user.profile.id,
-				ids = this.$store.state.roomActiveUsersActive
+    components: {
+        SelectBranch,
+        TheChatMainHeaderHistory,
+        TheChatMainHeaderActions,
+        SelectOperators
+    },
+    mixins: [viewModeChat, httpParams, removeMessageAndPush],
+    data() {
+        return {
+            membersList: [],
+            showClientHistoryActions: false,
+            showSelectOperators: false,
+            showSelectBranch: false,
+            showMoreChatActions: false,
+            showSelectTags: false,
+            selectOperatorsMode: ''
+            //moreActionsClose:false,
+        }
+    },
+    computed: {
+        visitorPage() {
+            return this.visitor.page
+        },
+        visitor() {
+            return this.$store.state.visitors.itemOpen
+        },
+        targetName() {
+            if (this.viewModeChat !== 'operators') return this.visitor.name
+            else {
+                if (this.$store.state.user.profile.id === this.httpParams.params.id)
+                    return 'Здесь Вы можете оставить важные заметки, которые будут видны только Вам. Или поговорить с самим собой'
+                let operator = this.$store.getters['operators/all'].find(
+                    item => item.id == this.$route.params.id
+                )
+                if (operator) return operator.fullName
+                return ''
+            }
+        },
+        roomActiveUserActive() {
+            let id = this.$store.state.user.profile.id,
+                ids = this.$store.state.roomActiveUsersActive
+            return ids.includes(id)
+        },
+        compMembersList() {
+            let id = this.$store.state.user.profile.id,
+                usersIds = this.$store.state.roomActiveUsersActive
 
-			return ids.includes(id)
-		},
-		compMembersList() {
-			let id = this.$store.state.user.profile.id,
-				usersIds = this.$store.state.roomActiveUsersActive
+            usersIds = usersIds.filter(item => item !== id) //Убираем из списка себя
+            let operators = []
+            usersIds.forEach(itemId => {
+                let find = this.$store.getters['operators/all'].find(item => item.id === itemId)
 
-			usersIds = usersIds.filter(item => item !== id) //Убираем из списка себя
-			let operators = []
-			usersIds.forEach(itemId => {
-				let find = this.$store.getters['operators/all'].find(item => item.id === itemId)
+                if (find) {
+                    let { id, first_name } = find
+                    operators.push({ id, first_name })
+                }
+            })
+            return operators
+        }
+    },
+    created() {
+        this.$root.$on('showBranch', () => {
+            this.showMoreChatActions = false
+            setTimeout(() => {
+                this.showSelectBranch = true
+            }, 500)
+        })
+        this.$root.$on('showTransfer', () => {
+            this.showMoreChatActions = false
+            setTimeout(() => {
+                this.selectOperatorsMode = 'transfer'
+                this.showSelectOperators = true
+                console.log('showTransfer')
+            }, 500)
+        })
+        this.$root.$on('showSelectTag', () => {
+            this.showSelectTags = true
+        })
+    },
+    mounted() {
+        document.querySelector('.js-client-info').addEventListener('click', this.showClientInfo)
+    },
+    beforeDestroy() {
+        document.removeEventListener('click', this.hideClientInfo)
+    },
+    methods: {
+        coBrowser() {
+            const params =
+                '?guestUuid=' +
+                this.httpParams.params.guest_uuid +
+                '&siteId=' +
+                this.httpParams.params.site_id
+            const win = window.open(
+                config.api_server_old.split('/app')[0] + '/cobrowsing' + params,
+                '_blank'
+            )
+            win.focus()
+            this.$http.post('co-browsing/request', this.httpParams.params)
+        },
+        chatCompletion() {
+            let data = this.httpParams.params
+            data.intent = 'farewell'
 
-				if (find) {
-					let { id, first_name } = find
-					operators.push({ id, first_name })
-				}
-			})
-			return operators
-		}
-	},
-	created() {
-		this.$root.$on('showBranch', () => {
-			this.showMoreChatActions = false
-			setTimeout(() => {
-				this.showSelectBranch = true
-			}, 500)
-		})
-		this.$root.$on('showTransfer', () => {
-			this.showMoreChatActions = false
-			setTimeout(() => {
-				this.selectOperatorsMode = 'transfer'
-				this.showSelectOperators = true
-				console.log('showTransfer')
-			}, 500)
-		})
-		this.$root.$on('showSelectTag', () => {
-			this.showSelectTags = true
-		})
-	},
-	mounted() {
-		document.querySelector('.js-client-info').addEventListener('click', this.showClientInfo)
-	},
-	beforeDestroy() {
-		document.removeEventListener('click', this.hideClientInfo)
-	},
-	methods: {
-		coBrowser() {
-			const params =
-				'?guestUuid=' +
-				this.httpParams.params.guest_uuid +
-				'&siteId=' +
-				this.httpParams.params.site_id
-			const win = window.open(
-				config.api_server_old.split('/app')[0] + '/cobrowsing' + params,
-				'_blank'
-			)
-			win.focus()
-			this.$http.post('co-browsing/request', this.httpParams.params)
-		},
-		chatCompletion() {
-			let data = this.httpParams.params
-			data.intent = 'farewell'
-
-			this.$http.post('message/save', data)
-		},
-		removeFromRoom(user_id) {
-			let room_id = this.$store.state.roomActiveId
-			this.$http.post('chat-room-user/remove', { room_id, user_id })
-		},
-		getActions(e) {
-			if (e === 'blockClient') this.showConfirmBlockClient = true
-		},
-		showClientInfo() {
-			document.body.classList.add('is-opened-client-info')
-			document.addEventListener('click', this.hideClientInfo)
-		},
-		hideClientInfo(e) {
-			if (!e.target.matches('.chat-chat__info, .chat-chat__info *,.js-client-info')) {
-				document.body.classList.remove('is-opened-client-info')
-				document.removeEventListener('click', this.hideClientInfo)
-			}
-		}
-	}
+            this.$http.post('message/save', data)
+        },
+        removeFromRoom(user_id) {
+            let room_id = this.$store.state.roomActiveId
+            this.$http.post('chat-room-user/remove', { room_id, user_id })
+        },
+        getActions(e) {
+            if (e === 'blockClient') this.showConfirmBlockClient = true
+        },
+        showClientInfo() {
+            document.body.classList.add('is-opened-client-info')
+            document.addEventListener('click', this.hideClientInfo)
+        },
+        hideClientInfo(e) {
+            if (!e.target.matches('.chat-chat__info, .chat-chat__info *,.js-client-info')) {
+                document.body.classList.remove('is-opened-client-info')
+                document.removeEventListener('click', this.hideClientInfo)
+            }
+        }
+    }
 }
 </script>
 
 <style lang="scss">
 .chat-main-header {
-	position: relative;
-	display: flex;
-	justify-content: space-between;
-	margin-bottom: 2.5em;
-	z-index: 1;
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 2.5em;
+    z-index: 1;
 
-	&__controls {
-		display: flex;
-	}
+    &__controls {
+        display: flex;
+    }
 
-	&__control {
-		padding: 0 calc-em(5);
-		&_more {
-			padding: 0;
-			.icon_more {
-				fill: glob-color('info-dark');
-			}
-		}
-	}
+    &__control {
+        padding: 0 calc-em(5);
+        &_more {
+            padding: 0;
+            .icon_more {
+                fill: glob-color('info-dark');
+            }
+        }
+    }
 
-	&__select-operator {
-		position: absolute;
-		top: 100%;
-		right: 0;
-		left: 0;
-	}
+    &__select-operator {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        left: 0;
+    }
 
-	&__members {
-		font-size: inherit;
-		margin-bottom: 0.5em;
-	}
+    &__members {
+        font-size: inherit;
+        margin-bottom: 0.5em;
+    }
 
-	&__name {
-		position: relative;
+    &__name {
+        position: relative;
 
-		&_open_client-info {
-			@include media($width_md) {
-				border-bottom: 1px dashed;
-			}
-		}
+        &_open_client-info {
+            @include media($width_md) {
+                border-bottom: 1px dashed;
+            }
+        }
 
-		&-tooltip {
-			@include box-decor();
-			position: absolute;
-			top: 100%;
-			left: 50%;
-			z-index: 1;
+        &-tooltip {
+            @include box-decor();
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            z-index: 1;
 
-			margin-top: calc-em(10);
-			padding: calc-em(10);
+            margin-top: calc-em(10);
+            padding: calc-em(10);
 
-			border: 0;
-			opacity: 0;
-			visibility: hidden;
+            border: 0;
+            opacity: 0;
+            visibility: hidden;
 
-			white-space: nowrap;
-			font-weight: 400;
+            white-space: nowrap;
+            font-weight: 400;
 
-			transform: translateX(-50%);
-		}
+            transform: translateX(-50%);
+        }
 
-		&:hover &-tooltip {
-			opacity: 1;
-			visibility: visible;
-		}
-	}
+        &:hover &-tooltip {
+            opacity: 1;
+            visibility: visible;
+        }
+    }
 
-	&__more {
-		position: absolute;
-		right: 0;
-		top: 100%;
-	}
-	&__channel-btn-wrap {
-		display: inline-block;
-	}
-	&__channel-btn-wrap:hover &__client-history-actions {
-		opacity: 1;
-		visibility: visible;
-	}
-	&__client-history-actions {
-		@include box-decor();
-		position: absolute;
-		top: 100%;
-		right: 0;
-		left: 0;
-		margin-top: calc-em(30);
-		opacity: 0;
-		visibility: hidden;
-	}
+    &__more {
+        position: absolute;
+        right: 0;
+        top: 100%;
+    }
+    &__channel-btn-wrap {
+        display: inline-block;
+    }
+    &__channel-btn-wrap:hover &__client-history-actions {
+        opacity: 1;
+        visibility: visible;
+    }
+    &__client-history-actions {
+        @include box-decor();
+        position: absolute;
+        top: 100%;
+        right: 0;
+        left: 0;
+        margin-top: calc-em(30);
+        opacity: 0;
+        visibility: hidden;
+    }
 }
 </style>

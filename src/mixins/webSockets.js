@@ -10,21 +10,21 @@ import lodash_once from 'lodash/once'
 import { httpParams, viewModeChat } from '@/mixins/mixins'
 
 export default {
-	mixins: [httpParams, viewModeChat], //routerPushProcessAllOrItemFirst подключи будет баг
+    mixins: [httpParams, viewModeChat], //routerPushProcessAllOrItemFirst подключи будет баг
 
-	computed: {
-		userId() {
-			return this.$store.state.user.profile.id
-		}
-	},
-	watch: {
-		/*    userId(val){
+    computed: {
+        userId() {
+            return this.$store.state.user.profile.id
+        }
+    },
+    watch: {
+        /*    userId(val){
             if(val) this.webSocketInit()
             else this.$socket.disconnect()
         }*/
-	},
-	methods: {
-		/*      routerPushProcessAllOrItemFirst(){
+    },
+    methods: {
+        /*      routerPushProcessAllOrItemFirst(){
             console.log('routerPushProcess');
             let itemList = this.$store.state.visitors.process;
             if(!itemList.length) this.$router.push({name:'processAll'}); //Todo проверить доделать этот варивант
@@ -34,26 +34,26 @@ export default {
                 this.$router.push({name:'process',params: { guest_uuid,site_id}});
             }
         },*/
-		playSoundFile(nameFile) {
-			let { settings, sounds } = this.$store.state.user.settings
+        playSoundFile(nameFile) {
+            let { settings, sounds } = this.$store.state.user.settings
 
-			let index = settings[nameFile]
-			/*  console.log(sounds[index].file);
+            let index = settings[nameFile]
+            /*  console.log(sounds[index].file);
             console.log(nameFile,config.api_server.split('/app')[0] + sounds[index].file);
             console.log(config.api_server);
             console.log(index,sounds[index].file);*/
-			if (!sounds[index].file) return
+            if (!sounds[index].file) return
 
-			let audio = new Audio(sounds[index].file)
-			audio.volume = 0.5
-			audio.play()
-		},
-		webSocketInit() {
-			console.log('webSocketInit', this.userId)
-			//this.$socket.disconnect();
+            let audio = new Audio(sounds[index].file)
+            audio.volume = 0.5
+            audio.play()
+        },
+        webSocketInit() {
+            console.log('webSocketInit', this.userId)
+            //this.$socket.disconnect();
 
-			return
-			/*eslint-disable */
+            return
+            /*eslint-disable */
 			try {
 				let socket = io(config.api_websocket, {
 					query: {

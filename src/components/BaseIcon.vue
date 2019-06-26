@@ -87,58 +87,58 @@ import n19 from '@/assets/img/icons/avatars/n19.svg'
 import n20 from '@/assets/img/icons/avatars/n20.svg'
 
 export default {
-	props: {
-		name: {
-			required: true
-		}
-	},
-	computed: {
-		src() {
-			//return `#${this.name}`;
+    props: {
+        name: {
+            required: true
+        }
+    },
+    computed: {
+        src() {
+            //return `#${this.name}`;
 
-			return `/icons-sprite.svg#${this.name}`
-		}
-	},
-	created() {}
+            return `/icons-sprite.svg#${this.name}`
+        }
+    },
+    created() {}
 }
 </script>
 
 <style lang="scss">
 .icon {
-	fill: inherit;
-	transition: $glob-trans;
-	width: 20px;
-	height: 20px;
-	display: block;
+    fill: inherit;
+    transition: $glob-trans;
+    width: 20px;
+    height: 20px;
+    display: block;
 
-	&-wrap {
-		display: inline-block;
-		vertical-align: middle;
-	}
+    &-wrap {
+        display: inline-block;
+        vertical-align: middle;
+    }
 
-	&_more {
-		height: 17px;
-		width: 26px;
-	}
+    &_more {
+        height: 17px;
+        width: 26px;
+    }
 
-	&_more-fill {
-		width: 24px;
-		height: 20px;
-	}
+    &_more-fill {
+        width: 24px;
+        height: 20px;
+    }
 
-	&_info {
-		width: calc-em(90);
-		height: calc-em(90);
-	}
-	&_eye {
-		fill: glob-color('disabled');
-	}
-	&_file,
-	&_ball1,
-	&_ball2,
-	&_ball3 {
-		width: 30px;
-		height: 30px;
-	}
+    &_info {
+        width: calc-em(90);
+        height: calc-em(90);
+    }
+    &_eye {
+        fill: glob-color('disabled');
+    }
+    &_file,
+    &_ball1,
+    &_ball2,
+    &_ball3 {
+        width: 30px;
+        height: 30px;
+    }
 }
 </style>

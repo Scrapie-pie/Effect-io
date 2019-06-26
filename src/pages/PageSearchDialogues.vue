@@ -59,62 +59,62 @@ import FilterDropMenu from '@/components/FilterDropMenu'
 
 import { scrollbar, paginator, filterLastDaysAndCalendar } from '@/mixins/mixins'
 export default {
-	components: {
-		TheLayoutTable,
-		FilterDropMenu
-	},
-	filters: {
-		datetimeDMY,
-		datetimeStoHMS,
-		datetimeHMS
-	},
-	mixins: [scrollbar, paginator, filterLastDaysAndCalendar],
-	data() {
-		return {
-			apiMethod: 'chat/get-all',
-			containerFullFillItemListClassName: {
-				scrollBar: 'layout-table__content',
-				item: 'base-table__tr'
-			}
-		}
-	},
-	computed: {
-		paramsComp() {
-			return {
-				with_messages_count: 1,
-				date_from: this.date_from,
-				date_to: this.date_to,
-				time_from: this.time_from,
-				time_to: this.time_to,
-				last_days: this.last_days
-			}
-		}
-	},
-	watch: {
-		paramsComp() {
-			if (
-				this.last_days ||
-				(this.date_from && this.date_to && this.time_from && this.time_to)
-			) {
-				this.resetSearch()
-				this.getItemList()
-			}
-		}
-	},
-	created() {},
-	methods: {
-		startChat(item) {
-			let { guest_uuid, site_id, chat_id } = item
+    components: {
+        TheLayoutTable,
+        FilterDropMenu
+    },
+    filters: {
+        datetimeDMY,
+        datetimeStoHMS,
+        datetimeHMS
+    },
+    mixins: [scrollbar, paginator, filterLastDaysAndCalendar],
+    data() {
+        return {
+            apiMethod: 'chat/get-all',
+            containerFullFillItemListClassName: {
+                scrollBar: 'layout-table__content',
+                item: 'base-table__tr'
+            }
+        }
+    },
+    computed: {
+        paramsComp() {
+            return {
+                with_messages_count: 1,
+                date_from: this.date_from,
+                date_to: this.date_to,
+                time_from: this.time_from,
+                time_to: this.time_to,
+                last_days: this.last_days
+            }
+        }
+    },
+    watch: {
+        paramsComp() {
+            if (
+                this.last_days ||
+                (this.date_from && this.date_to && this.time_from && this.time_to)
+            ) {
+                this.resetSearch()
+                this.getItemList()
+            }
+        }
+    },
+    created() {},
+    methods: {
+        startChat(item) {
+            let { guest_uuid, site_id, chat_id } = item
 
-			dialogPush(this, 'search', item, 'chat_id')
+            dialogPush(this, 'search', item, 'chat_id')
 
-			let routeData = this.$router.resolve({
-				name: 'search',
-				params: { guest_uuid, site_id, chat_id }
-			})
-			window.open(routeData.href, guest_uuid + site_id + chat_id, 'width=1100,height=500')
-		}
-	}
+            let routeData = this.$router.resolve({
+                name: 'search',
+                params: { guest_uuid, site_id, chat_id }
+            })
+            window.open(routeData.href, guest_uuid + site_id + chat_id, 'width=1100,height=500')
+        }
+    }
 }
 </script>
 

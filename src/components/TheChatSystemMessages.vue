@@ -53,21 +53,21 @@
 
 <script>
 export default {
-	props: {
-		itemList: {
-			type: Array,
+    props: {
+        itemList: {
+            type: Array,
 
-			default: () => []
-		}
-	},
-	data() {
-		return {}
-	}
+            default: () => []
+        }
+    },
+    data() {
+        return {}
+    }
 }
 </script>
 
 <style lang="scss">
 .chat-system-messages {
-	text-align: center;
+    text-align: center;
 }
 </style>

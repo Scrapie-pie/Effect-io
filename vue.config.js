@@ -1,39 +1,39 @@
 module.exports = {
-	/*   devServer:{
+    /*   devServer:{
         port:4000
     },*/
-	/* publicPath: process.env.NODE_ENV === 'production'
+    /* publicPath: process.env.NODE_ENV === 'production'
          ? '/dist/'
          : '/',*/
-	devServer: {
-		port: 4000
-	},
-	css: {
-		sourceMap: true,
-		loaderOptions: {
-			sass: {
-				data: '@import "@/scss/settings.scss";'
-			}
-		}
-	},
+    devServer: {
+        port: 4000
+    },
+    css: {
+        sourceMap: true,
+        loaderOptions: {
+            sass: {
+                data: '@import "@/scss/settings.scss";'
+            }
+        }
+    },
 
-	chainWebpack: config => {
-		config.module
-			.rule('svg')
-			.use('file-loader')
-			.loader('svg-sprite-loader')
-			.options({
-				extract: true,
-				spriteFilename: 'icons-sprite.svg',
-				publicPath: '/'
-			})
+    chainWebpack: config => {
+        config.module
+            .rule('svg')
+            .use('file-loader')
+            .loader('svg-sprite-loader')
+            .options({
+                extract: true,
+                spriteFilename: 'icons-sprite.svg',
+                publicPath: '/'
+            })
 
-		config.plugin('svg-sprite-loader-plugin').use(require('svg-sprite-loader/plugin'), [
-			{
-				/* plainSprite: true,*/
-			}
-		])
-	}
+        config.plugin('svg-sprite-loader-plugin').use(require('svg-sprite-loader/plugin'), [
+            {
+                /* plainSprite: true,*/
+            }
+        ])
+    }
 }
 
 /* module.exports = {

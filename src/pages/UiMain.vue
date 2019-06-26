@@ -226,31 +226,31 @@ import TextInfo from '@/components/TextInfo'
 import UploadAvatar from '@/components/UploadAvatar'
 
 export default {
-	components: {
-		TheChatMainHeader,
-		TheChatMainFooter,
-		TheOffer,
-		TheFilesBoard,
-		TheChatMainHeaderHistory,
-		TheChatMainHeaderActions,
-		ThePhrasesReady,
-		SelectOperators,
-		AccountAuth,
-		TextInfo,
-		UploadAvatar
-	}
+    components: {
+        TheChatMainHeader,
+        TheChatMainFooter,
+        TheOffer,
+        TheFilesBoard,
+        TheChatMainHeaderHistory,
+        TheChatMainHeaderActions,
+        ThePhrasesReady,
+        SelectOperators,
+        AccountAuth,
+        TextInfo,
+        UploadAvatar
+    }
 }
 </script>
 
 <style lang="scss">
 .ul-row {
-	@extend %row-flex;
+    @extend %row-flex;
 }
 .ui-list {
-	flex-flow: wrap;
-	&__item {
-		outline: 1px solid black;
-		padding: 15px;
-	}
+    flex-flow: wrap;
+    &__item {
+        outline: 1px solid black;
+        padding: 15px;
+    }
 }
 </style>

@@ -4,10 +4,10 @@
 
 <script>
 export default {
-	name: 'SearchRequest',
-	data() {
-		return {}
-	}
+    name: 'SearchRequest',
+    data() {
+        return {}
+    }
 }
 </script>
 

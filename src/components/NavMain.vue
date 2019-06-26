@@ -26,97 +26,97 @@
 <script>
 import BaseCount from '@/components/BaseCount'
 export default {
-	components: {
-		BaseCount
-	},
-	props: {
-		itemList: {
-			type: Array,
-			default: () => []
-		}
-	},
-	methods: {}
+    components: {
+        BaseCount
+    },
+    props: {
+        itemList: {
+            type: Array,
+            default: () => []
+        }
+    },
+    methods: {}
 }
 </script>
 
 <style lang="scss">
 .nav-main {
-	$self: '.nav-main';
-	$color-border: glob-color('info');
-	$color-bg: glob-color('info-lighten');
-	$color-bg-tooltip: glob-color('light');
-	$border-radius: $glob-border-radius;
-	$color-text: glob-color('secondary');
-	$padding: calc-em(8) calc-em(26);
+    $self: '.nav-main';
+    $color-border: glob-color('info');
+    $color-bg: glob-color('info-lighten');
+    $color-bg-tooltip: glob-color('light');
+    $border-radius: $glob-border-radius;
+    $color-text: glob-color('secondary');
+    $padding: calc-em(8) calc-em(26);
 
-	//width:calc-em(175);
+    //width:calc-em(175);
 
-	&__item {
-	}
-	&__link {
-		position: relative;
-		border-left: 3px solid transparent;
-		color: $color-text;
-		padding: $padding;
-		white-space: nowrap;
-		text-decoration: none;
-		display: block;
-		padding-right: calc-em(20);
+    &__item {
+    }
+    &__link {
+        position: relative;
+        border-left: 3px solid transparent;
+        color: $color-text;
+        padding: $padding;
+        white-space: nowrap;
+        text-decoration: none;
+        display: block;
+        padding-right: calc-em(20);
 
-		@include media($width_lg) {
-		}
+        @include media($width_lg) {
+        }
 
-		&_active {
-			border-color: $color-border;
-			background-color: $color-bg;
-			font-weight: 700;
-		}
-	}
-	&__count {
-		margin-left: 4px;
-	}
+        &_active {
+            border-color: $color-border;
+            background-color: $color-bg;
+            font-weight: 700;
+        }
+    }
+    &__count {
+        margin-left: 4px;
+    }
 
-	&__icon {
-		display: none;
-		.icon {
-			width: 28px;
-			height: 28px;
-		}
-	}
+    &__icon {
+        display: none;
+        .icon {
+            width: 28px;
+            height: 28px;
+        }
+    }
 
-	@include media($width_lg) {
-		&__link {
-			padding-left: calc-em(20);
-			padding-right: calc-em(20);
-			border-color: transparent;
-			text-align: center;
+    @include media($width_lg) {
+        &__link {
+            padding-left: calc-em(20);
+            padding-right: calc-em(20);
+            border-color: transparent;
+            text-align: center;
 
-			.page_hasHover &:hover #{$self}__text {
-				transform: scale(1);
-			}
-		}
+            .page_hasHover &:hover #{$self}__text {
+                transform: scale(1);
+            }
+        }
 
-		&__text {
-			@include box-decor();
-			position: absolute;
-			left: 50%;
-			bottom: 100%;
-			z-index: 10;
-			display: inline-block;
-			padding: 5px;
-			transform: scale(0);
-		}
+        &__text {
+            @include box-decor();
+            position: absolute;
+            left: 50%;
+            bottom: 100%;
+            z-index: 10;
+            display: inline-block;
+            padding: 5px;
+            transform: scale(0);
+        }
 
-		&__icon {
-			display: block;
-		}
+        &__icon {
+            display: block;
+        }
 
-		&__count {
-			position: absolute;
-			right: 1em;
-			bottom: 100%;
-			margin-top: 3px;
-		}
-	}
+        &__count {
+            position: absolute;
+            right: 1em;
+            bottom: 100%;
+            margin-top: 3px;
+        }
+    }
 }
 </style>

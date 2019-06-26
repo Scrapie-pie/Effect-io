@@ -59,96 +59,96 @@ import { stats, sortFields } from '@/mixins/mixins'
 import BtnSort from '@/components/BtnSort'
 
 export default {
-	components: {
-		FilterDropMenu,
-		BtnSort
-	},
-	filters: {
-		branchesBr
-	},
-	mixins: [stats, sortFields],
-	props: {
-		filterBranchId: {
-			type: Number,
-			default: null
-		},
-		filterOperatorIdsOn: {
-			type: Boolean,
-			default: false
-		}
-	},
-	data() {
-		return {
-			filterOperatorIds: []
-		}
-	},
-	computed: {
-		headList() {
-			let list = [
-				['Имя', 'name'],
-				['', ''],
-				['Отдел', null],
-				['Получено<br>диалогов', 'dialogues_requests'],
-				['Принято/<br>пропущено диалогов', 'dialogues_accepted'],
-				['Оценки', 'excellent_ratings']
-			]
+    components: {
+        FilterDropMenu,
+        BtnSort
+    },
+    filters: {
+        branchesBr
+    },
+    mixins: [stats, sortFields],
+    props: {
+        filterBranchId: {
+            type: Number,
+            default: null
+        },
+        filterOperatorIdsOn: {
+            type: Boolean,
+            default: false
+        }
+    },
+    data() {
+        return {
+            filterOperatorIds: []
+        }
+    },
+    computed: {
+        headList() {
+            let list = [
+                ['Имя', 'name'],
+                ['', ''],
+                ['Отдел', null],
+                ['Получено<br>диалогов', 'dialogues_requests'],
+                ['Принято/<br>пропущено диалогов', 'dialogues_accepted'],
+                ['Оценки', 'excellent_ratings']
+            ]
 
-			if (this.btnDetailHide) list.splice(1, 1)
+            if (this.btnDetailHide) list.splice(1, 1)
 
-			if (this.order === 'first_answer_average_speed') {
-				list = []
-			}
+            if (this.order === 'first_answer_average_speed') {
+                list = []
+            }
 
-			if (this.order === 'dialogues_requests' || this.order === 'dialogues_accepted') {
-				list.length = 3
-			}
+            if (this.order === 'dialogues_requests' || this.order === 'dialogues_accepted') {
+                list.length = 3
+            }
 
-			return list
-		},
+            return list
+        },
 
-		bodyListFormat() {
-			return this.sortFieldsListGet
-		},
-		itemListWidthOperators() {
-			return this.bodyList.map(item => {
-				item.operator = this.$store.getters['operators/all'].find(
-					itemSub => itemSub.id === item.user_id
-				)
-				if (item.operator) item.name = item.operator.fullName
-				return item
-			})
-		},
+        bodyListFormat() {
+            return this.sortFieldsListGet
+        },
+        itemListWidthOperators() {
+            return this.bodyList.map(item => {
+                item.operator = this.$store.getters['operators/all'].find(
+                    itemSub => itemSub.id === item.user_id
+                )
+                if (item.operator) item.name = item.operator.fullName
+                return item
+            })
+        },
 
-		sortFieldsListSet() {
-			if (this.filterBranchId)
-				return this.itemListWidthOperators.filter(item =>
-					item.operator.branches_ids.includes(this.filterBranchId)
-				)
-			if (this.filterOperatorIdsOn)
-				return this.itemListWidthOperators.filter(item =>
-					this.filterOperatorIds.includes(item.operator.id)
-				)
-			else return this.itemListWidthOperators
-		}
-	}
+        sortFieldsListSet() {
+            if (this.filterBranchId)
+                return this.itemListWidthOperators.filter(item =>
+                    item.operator.branches_ids.includes(this.filterBranchId)
+                )
+            if (this.filterOperatorIdsOn)
+                return this.itemListWidthOperators.filter(item =>
+                    this.filterOperatorIds.includes(item.operator.id)
+                )
+            else return this.itemListWidthOperators
+        }
+    }
 }
 </script>
 
 <style lang="scss">
 .stats-operators {
-	&__caption {
-		@extend %row-flex;
-		&-item {
-			@extend %row-flex-col;
+    &__caption {
+        @extend %row-flex;
+        &-item {
+            @extend %row-flex-col;
 
-			&.filter-drop-menu {
-				font-weight: 400;
-			}
-		}
-	}
-	td:nth-child(1),
-	td:nth-child(2) {
-		width: 253px;
-	}
+            &.filter-drop-menu {
+                font-weight: 400;
+            }
+        }
+    }
+    td:nth-child(1),
+    td:nth-child(2) {
+        width: 253px;
+    }
 }
 </style>

@@ -33,47 +33,47 @@
 
 <script>
 export default {
-	props: {
-		name: {
-			type: String,
-			default: ''
-		}
-	},
-	computed: {
-		getName() {
-			if (this.$route.name === 'processAll') return this.$route.name
-			else return this.name
-		}
-	}
+    props: {
+        name: {
+            type: String,
+            default: ''
+        }
+    },
+    computed: {
+        getName() {
+            if (this.$route.name === 'processAll') return this.$route.name
+            else return this.name
+        }
+    }
 }
 </script>
 
 <style lang="scss">
 .no-found {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	height: 100%;
-	width: 100%;
-	padding-left: calc-em(15);
-	padding-right: calc-em(15);
-	text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    padding-left: calc-em(15);
+    padding-right: calc-em(15);
+    text-align: center;
 
-	&__content {
-	}
-	&__text {
-		margin-bottom: calc-em(30);
-		line-height: 1.5;
-	}
+    &__content {
+    }
+    &__text {
+        margin-bottom: calc-em(30);
+        line-height: 1.5;
+    }
 
-	&__icon {
-		.icon {
-			height: calc-em(100);
-			width: calc-em(100);
-		}
-		&_team {
-			margin-bottom: calc-em(10);
-		}
-	}
+    &__icon {
+        .icon {
+            height: calc-em(100);
+            width: calc-em(100);
+        }
+        &_team {
+            margin-bottom: calc-em(10);
+        }
+    }
 }
 </style>

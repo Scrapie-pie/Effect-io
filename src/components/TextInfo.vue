@@ -5,6 +5,6 @@
 
 <style lang="scss">
 .text-info {
-	color: glob-color('info-dark');
+    color: glob-color('info-dark');
 }
 </style>

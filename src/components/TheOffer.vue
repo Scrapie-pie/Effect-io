@@ -10,41 +10,45 @@
 import ActionList from '@/components/ActionList'
 import { httpParams } from '@/mixins/mixins'
 export default {
-	components: {
-		ActionList
-	},
-	mixins: [httpParams],
-	data() {
-		return {
-			model: '',
-			list: [
-				{ title: 'Предложить автозвонок', value: 'call', name: 'manual' },
-				{ title: 'Предложить ввести контактные данные', value: 'contacts', name: 'manual' }
-			]
-		}
-	},
-	watch: {
-		model(val) {
-			let data = this.httpParams.params
+    components: {
+        ActionList
+    },
+    mixins: [httpParams],
+    data() {
+        return {
+            model: '',
+            list: [
+                { title: 'Предложить автозвонок', value: 'call', name: 'manual' },
+                {
+                    title: 'Предложить ввести контактные данные',
+                    value: 'contacts',
+                    name: 'manual'
+                }
+            ]
+        }
+    },
+    watch: {
+        model(val) {
+            let data = this.httpParams.params
 
-			this.$root.$emit('globBoxControlClose')
-			if (this.model === 'call') {
-				data.type = this.model
-				this.$http.post('message/save', data)
-			}
-			if (this.model === 'contacts') this.$http.post('guest/contacts-request', data)
-		}
-	}
+            this.$root.$emit('globBoxControlClose')
+            if (this.model === 'call') {
+                data.type = this.model
+                this.$http.post('message/save', data)
+            }
+            if (this.model === 'contacts') this.$http.post('guest/contacts-request', data)
+        }
+    }
 }
 </script>
 
 <style lang="scss">
 .offer-visitor {
-	&__text-only-scr {
-		@extend %visuallyhidden;
-	}
-	&__list {
-		margin-left: (calc-em(25) * -1);
-	}
+    &__text-only-scr {
+        @extend %visuallyhidden;
+    }
+    &__list {
+        margin-left: (calc-em(25) * -1);
+    }
 }
 </style>
