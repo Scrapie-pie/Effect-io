@@ -23,6 +23,7 @@ const getDefaultStateRoom = () => {
         roomActiveUsersActive: [],
         roomActiveUsersInvited: [],
         roomActiveUsersRecipient: [],
+        roomActiveUsersUnprocessed: [],
         roomActiveIsAdmin: false
     }
 }
@@ -109,8 +110,7 @@ export default new Vuex.Store({
                 return users.map(item => item.user_id)
             }
 
-            //console.log('roomActiveUsersActive',getIds('active'));
-            // console.log('roomActiveUsersInvited',getIds('invited'));
+
             if (val.visitor) {
                 state.roomActive.visitor.guest_uuid = val.visitor.guest_uuid
                 state.roomActive.visitor.site_id = val.visitor.site_id
@@ -128,6 +128,9 @@ export default new Vuex.Store({
                 return state.operators.all.find(item => item.id === id)
             })
             state.roomActiveUsersInvited = getIds('invited').map(id => {
+                return state.operators.all.find(item => item.id === id)
+            })
+            state.roomActiveUsersUnprocessed = getIds('unprocessed').map(id => {
                 return state.operators.all.find(item => item.id === id)
             })
         },

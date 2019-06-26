@@ -118,7 +118,10 @@ export default {
 
     computed: {
         ...mapState([
+            'roomActiveUsers',
+            'roomActiveUsersUnprocessed',
             'roomActiveUsersInvited',
+            'roomActiveUsersActive',
             'roomActiveUsersRecipient',
             'roomActiveIsAdmin',
             'roomActive',
@@ -189,6 +192,17 @@ export default {
         }
     },
     watch: {
+        roomActiveId(val){
+            if(val) {
+                console.log(this.$route.name);
+                return
+                if(this.viewModeChat==='search') return
+                if(this.viewModeChat==='all' && this.$store.getters['user/isRole'](['admin', 'owner', 'operatorSenior'])) return
+
+                if (!this.roomActiveUsers.some(user=>user.user_id===this.$store.state.user.profile.id)
+                ) this.$router.push({name:'processAll'})
+            }
+        },
         $route(to, from) {
             console.log('$route TheChatMain.vue')
             this.getRoomUserAll()
@@ -309,11 +323,26 @@ export default {
                 console.log('chat-room-user/all start')
                 this.$http.get('chat-room-user/all', this.httpParams).then(({ data }) => {
                     console.log('chat-room-user/all', data.data)
+
+
+                    if(!this.accessPage(data.data)) return this.$router.push({name:'processAll'})
+
                     data.data.visitor = this.httpParams.params
                     //console.log(this.httpParams);
                     this.$store.commit('roomActive', data.data)
                 })
             }
+        },
+        accessPage(list){
+            if(this.viewModeChat==='search') return true
+            if(this.viewModeChat==='visor' && this.$store.getters['user/isRole'](['admin', 'owner', 'operatorSenior'])) return true
+            if(!list.length) return false
+
+            list = list.filter(item=>['recipient','unprocessed','invited','active'].includes(item.status))
+
+            if (list.some(user=>user.user_id===this.$store.state.user.profile.id)) return true
+            else return false
+
         },
         scrollLoad(e) {
             if (this.scrollLoadAllow(e, 'up')) this.historyMessageLoad()
