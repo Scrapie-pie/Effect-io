@@ -91,7 +91,7 @@ export default {
     },
     beforeRouteLeave(to, from, next) {
         this.messageSubscribeSocket(null, from)
-        this.$store.commit('roomActiveReset')
+        this.$store.commit('roomActive/resetState')
         return next()
     },
 

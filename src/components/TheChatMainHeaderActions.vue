@@ -52,13 +52,13 @@ export default {
         showExit() {
             console.log(
                 'showConfirmExit',
-                this.$store.state.roomActiveUsersActive,
-                this.$store.state.roomActiveUsersActive.length > 1
+                this.$store.state.roomActive.usersActive,
+                this.$store.state.roomActive.usersActive.length > 1
             )
-            return this.$store.state.roomActiveUsersActive.length > 1
+            return this.$store.state.roomActive.usersActive.length > 1
         },
         showConfirmExit() {
-            return this.$store.state.roomActiveUsersActive.length < 1
+            return this.$store.state.roomActive.usersActive.length < 1
         }
     },
     created() {},
@@ -66,7 +66,7 @@ export default {
         exitRoom() {
             this.$http
                 .post('chat-room-user/exit', {
-                    room_id: this.$store.state.roomActiveId
+                    room_id: this.$store.state.roomActive.id
                 })
                 .then(() => {
                     this.removeMessageAndPush()

@@ -6,25 +6,13 @@ import phrases from '@/store/phrases'
 import tags from '@/store/tags'
 import operators from '@/store/operators'
 import visitors from '@/store/visitors'
+import roomActive from '@/store/roomActive'
 
 Vue.use(Vuex)
 
 const getDefaultStateRoom = () => {
     return {
-        roomActiveId: false,
-        roomActive: {
-            visitor: {
-                guest_uuid: '', // использую для функции typingLive
-                site_id: '', // использую для функции typingLive
-                typingLive: ''
-            }
-        },
-        roomActiveUsers: [],
-        roomActiveUsersActive: [],
-        roomActiveUsersInvited: [],
-        roomActiveUsersRecipient: [],
-        roomActiveUsersUnprocessed: [],
-        roomActiveIsAdmin: false
+
     }
 }
 
@@ -62,7 +50,8 @@ export default new Vuex.Store({
         phrases,
         tags,
         operators,
-        visitors
+        visitors,
+        roomActive
     },
     state,
     mutations: {
@@ -94,48 +83,6 @@ export default new Vuex.Store({
 
         loading(state, val) {
             state.loading = val
-        },
-        roomActiveTypingLive(state, { message, guest_uuid, site_id }) {
-            let visitor = state.roomActive.visitor
-            if (visitor.guest_uuid + visitor.site_id === guest_uuid + site_id)
-                state.roomActive.visitor.typingLive = message
-        },
-        roomActive(state, val) {
-            //console.log('roomActive', val);
-
-            function getIds(status) {
-                let users = val.filter(
-                    item => item.status === status && item.room_id === state.roomActiveId
-                )
-                return users.map(item => item.user_id)
-            }
-
-
-            if (val.visitor) {
-                state.roomActive.visitor.guest_uuid = val.visitor.guest_uuid
-                state.roomActive.visitor.site_id = val.visitor.site_id
-            }
-            state.roomActive.visitor.typingLive = '' // очищаем при переходе в другую комнату
-
-            state.roomActiveIsAdmin = val.filter(
-                item => item.isAdmin && item.user_id === state.user.profile.id
-            ).length
-            if (!val.socket) state.roomActiveId = val[0].room_id //это тольк одля запроса, значит открыли чат
-            if (state.roomActiveId !== val[0].room_id) return // если комнаты совпадают, значит диалог открыт, обновляем, если сокет по чужым то игнорим
-            state.roomActiveUsers = val
-            state.roomActiveUsersActive = getIds('active')
-            state.roomActiveUsersRecipient = getIds('recipient').map(id => {
-                return state.operators.all.find(item => item.id === id)
-            })
-            state.roomActiveUsersInvited = getIds('invited').map(id => {
-                return state.operators.all.find(item => item.id === id)
-            })
-            state.roomActiveUsersUnprocessed = getIds('unprocessed').map(id => {
-                return state.operators.all.find(item => item.id === id)
-            })
-        },
-        roomActiveReset(state) {
-            Object.assign(state, getDefaultStateRoom())
         },
         setFilter(state, object) {
             for (let key in object) {

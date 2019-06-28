@@ -102,7 +102,7 @@ export default {
 		'typing-live'(val) {
 			console.log('typing-live', val)
 
-			this.$store.commit('roomActiveTypingLive', val)
+			this.$store.commit('roomActive/typingLive', val)
 		},
 		'new-message'(val) {
 			//переместил сюда, что бы список на странице team обновлялся
@@ -117,7 +117,7 @@ export default {
 				this.$store.commit('visitors/messageHot', { val, set: false })
 			}
 
-			if (val.site_id && val.room_id === this.$store.state.roomActiveId) {
+			if (val.site_id && val.room_id === this.$store.state.roomActive.id) {
 				// если есть val.site_id значит общение в диалогах
 				console.log('// Нужно, что бы чужое сообщение оказалось каждое в своем чате')
 				this.$root.$emit('messageAdd', val) // Нужно, что бы чужое сообщение оказалось каждое в своем чате
@@ -146,7 +146,7 @@ export default {
 					let { guest_uuid, site_id } = this.httpParams.params
 					if (val.from_user_info.guest_uuid + val.site_id === guest_uuid + site_id) {
 						//Если это сообщение посетителя в чате то нужно очистить TypingLive
-						this.$store.commit('roomActiveTypingLive', {
+						this.$store.commit('roomActive/typingLive', {
 							message: '',
 							guest_uuid,
 							site_id
@@ -172,12 +172,12 @@ export default {
 				console.log(
 					val.room_id,
 					this.$store.state.user.profile.common_room_id,
-					this.$store.state.roomActiveId
+					this.$store.state.roomActive.id
 				)
 				if (val.room_id === this.$store.state.user.profile.common_room_id) {
 					this.$store.commit('user/unreadUpdate', ['common', 1])
 					this.playSoundFile('sound_new_common_message')
-					if (this.$store.state.roomActiveId === val.room_id)
+					if (this.$store.state.roomActive.id === val.room_id)
 						this.$root.$emit('messageAdd', val)
 					return
 				}
@@ -249,7 +249,7 @@ export default {
 		'room-users'(val) {
 			console.log('room-users', val)
 			val.socket = true // для того что бы room_id не обновлять
-			this.$store.commit('roomActive', val)
+			this.$store.commit('roomActive/set', val)
 		},
 		unprocessed(val) {
 			console.log('unprocessed', val)
@@ -285,7 +285,7 @@ export default {
 			})
 		},
 		'self-remove'(val) {
-			console.log('self-remove', val, val.room_id, this.$store.state.roomActiveId)
+			console.log('self-remove', val, val.room_id, this.$store.state.roomActive.id)
 
 			//if(val.room_id === this.$store.state.roomActiveId) return
 
@@ -299,7 +299,7 @@ export default {
 			if (this.viewModeChat === 'visitors') this.$router.push({ name: 'messageAll' })
 		},
 		'unprocessed-remove'(val) {
-			console.log('unprocessed-remove', val, val.room_id, this.$store.state.roomActiveId)
+			console.log('unprocessed-remove', val, val.room_id, this.$store.state.roomActive.id)
 			//if(val.room_id === this.$store.state.roomActiveId) return
 
 			this.$store.commit('visitors/processRemoveItem', val)

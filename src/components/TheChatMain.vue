@@ -117,19 +117,19 @@ export default {
     },
 
     computed: {
-        ...mapState([
-            'roomActiveUsers',
-            'roomActiveUsersUnprocessed',
-            'roomActiveUsersInvited',
-            'roomActiveUsersActive',
-            'roomActiveUsersRecipient',
-            'roomActiveIsAdmin',
-            'roomActive',
-            'roomActiveId'
-        ]),
+        ...mapState('roomActive', {
+            roomActiveUsers: 'users',
+            roomActiveUsersUnprocessed: 'usersUnprocessed',
+            roomActiveUsersInvited: 'usersInvited',
+            roomActiveUsersActive: 'usersActive',
+            roomActiveUsersRecipient: 'usersRecipient',
+            roomActiveIsAdmin: 'isAdmin',
+            roomActiveVisitor: 'visitor',
+            roomActiveId:'id'
+        }),
         showVisitorTypingLive() {
             if (['visitors'].includes(this.viewModeChat)) {
-                let { guest_uuid, site_id } = this.roomActive.visitor,
+                let { guest_uuid, site_id } = this.roomActiveVisitor,
                     { params } = this.httpParams
                 //console.log('showVisitorTypingLive',guest_uuid+site_id , params.guest_uuid+ params.site_id,this.visitorTypingLive.length);
 
@@ -141,7 +141,7 @@ export default {
             return null
         },
         compVisitorTypingLive() {
-            let { typingLive } = this.roomActive.visitor
+            let { typingLive } = this.roomActiveVisitor
             if (typingLive) typingLive += '...<br><small>(гость печатает сообщение)</small>'
             return typingLive
         },
@@ -313,7 +313,7 @@ export default {
         getRoomUserAll() {
             if (this.viewModeChat === 'operators') return
             if (this.viewModeChat === 'common') {
-                this.$store.commit('roomActive', [
+                this.$store.commit('roomActive/set', [
                     { room_id: this.$store.state.user.profile.common_room_id }
                 ])
                 return
@@ -329,7 +329,7 @@ export default {
 
                     data.data.visitor = this.httpParams.params
                     //console.log(this.httpParams);
-                    this.$store.commit('roomActive', data.data)
+                    this.$store.commit('roomActive/set', data.data)
                 })
             }
         },

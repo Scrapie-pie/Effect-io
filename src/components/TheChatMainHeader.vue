@@ -12,7 +12,7 @@
                             button(
                                 type="button",
                                 @click="removeFromRoom(item.id)"
-                                v-if="$store.state.roomActiveIsAdmin"
+                                v-if="$store.state.roomActive.isAdmin"
                             ).chat-main-header__name-tooltip Убрать из диалога
 
             .chat-main-header__channel(v-if="viewModeChat!='operators'")
@@ -132,12 +132,12 @@ export default {
         },
         roomActiveUserActive() {
             let id = this.$store.state.user.profile.id,
-                ids = this.$store.state.roomActiveUsersActive
+                ids = this.$store.state.roomActive.usersActive
             return ids.includes(id)
         },
         compMembersList() {
             let id = this.$store.state.user.profile.id,
-                usersIds = this.$store.state.roomActiveUsersActive
+                usersIds = this.$store.state.roomActive.usersActive
 
             usersIds = usersIds.filter(item => item !== id) //Убираем из списка себя
             let operators = []
@@ -198,7 +198,7 @@ export default {
             this.$http.post('message/save', data)
         },
         removeFromRoom(user_id) {
-            let room_id = this.$store.state.roomActiveId
+            let room_id = this.$store.state.roomActive.id
             this.$http.post('chat-room-user/remove', { room_id, user_id })
         },
         getActions(e) {

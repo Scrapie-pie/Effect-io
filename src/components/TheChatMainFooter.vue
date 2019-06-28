@@ -265,7 +265,7 @@ export default {
             } //Todo у оператора
             if (this.viewModeChat === 'visitors') {
                 this.$http.put('message/operator-mark-as-read', {
-                    room_id: this.$store.state.roomActiveId
+                    room_id: this.$store.state.roomActive.id
                 })
                 this.$store.dispatch('setMessageRead', {
                     guest_uuid: this.httpParams.params.guest_uuid,

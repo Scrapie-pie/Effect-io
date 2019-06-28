@@ -118,6 +118,8 @@ export default {
         logout({ commit }) {
             commit('resetState')
             commit('resetState', null, { root: true })
+
+            commit('roomActive/resetState', null, { root: true })
             commit('operators/resetState', null, { root: true })
             commit('visitors/resetState', null, { root: true })
             commit('phrases/resetState', null, { root: true })
