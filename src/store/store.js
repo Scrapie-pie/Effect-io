@@ -54,6 +54,7 @@ export default new Vuex.Store({
         roomActive
     },
     state,
+
     mutations: {
         SOCKET_CONNECT(state, val) {
             console.log('SOCKET_CONNECT', val)
