@@ -45,7 +45,7 @@ export default {
     created() {
         document.body.classList.add('page');
 
-        fanhorsis()
+
 
         this.watchForHover()
 

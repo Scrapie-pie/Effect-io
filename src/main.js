@@ -1,3 +1,10 @@
+//if (process.env.NODE_ENV !== 'development') {
+    const sentry = () => import('@/modules/sentry')
+    sentry()
+    console.log(process.env.NODE_ENV);
+//}
+
+
 import Vue from 'vue'
 import App from './App.vue'
 import '@/validation'
@@ -17,10 +24,6 @@ clicky({
     left: true //default: false - trigger on left click instead of right click
 })
 
-if (process.env.NODE_ENV !== 'development') {
-    const sentry = () => import('@/modules/sentry')
-    sentry()
-}
 
 
 
