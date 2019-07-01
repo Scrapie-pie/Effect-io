@@ -127,7 +127,7 @@ export default {
         }
     },
     created() {
-        fanhorsis_Simon_Roman_kakos()
+
         if (this.isAuth) this.makeActivity()
     },
     mounted() {
