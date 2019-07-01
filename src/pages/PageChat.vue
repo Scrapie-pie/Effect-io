@@ -65,6 +65,7 @@ export default {
 
     computed: {
         show() {
+
             return this.$route.name === 'processAll' || this.$route.name === 'messageAll'
         },
 

@@ -8,3 +8,5 @@ Sentry.init({
     environment: process.env.NODE_ENV
     //debug: process.env.NODE_ENV === 'development' ? true : false
 })
+
+console.log('Sentry on',process.env.NODE_ENV);
