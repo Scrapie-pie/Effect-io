@@ -125,7 +125,7 @@ export default {
             roomActiveUsersRecipient: 'usersRecipient',
             roomActiveIsAdmin: 'isAdmin',
             roomActiveVisitor: 'visitor',
-            roomActiveId:'id'
+            roomActiveId: 'id'
         }),
         showVisitorTypingLive() {
             if (['visitors'].includes(this.viewModeChat)) {
@@ -192,17 +192,25 @@ export default {
         }
     },
     watch: {
-        roomActiveId(val){
-            if(val) {
-                console.log(this.$route.name);
+        /*        roomActiveId(val) {
+            if (val) {
+                console.log(this.$route.name)
                 return
-                if(this.viewModeChat==='search') return
-                if(this.viewModeChat==='all' && this.$store.getters['user/isRole'](['admin', 'owner', 'operatorSenior'])) return
+                if (this.viewModeChat === 'search') return
+                if (
+                    this.viewModeChat === 'all' &&
+                    this.$store.getters['user/isRole'](['admin', 'owner', 'operatorSenior'])
+                )
+                    return
 
-                if (!this.roomActiveUsers.some(user=>user.user_id===this.$store.state.user.profile.id)
-                ) this.$router.push({name:'processAll'})
+                if (
+                    !this.roomActiveUsers.some(
+                        user => user.user_id === this.$store.state.user.profile.id
+                    )
+                )
+                    this.$router.push({ name: 'processAll' })
             }
-        },
+        },*/
         $route(to, from) {
             console.log('$route TheChatMain.vue')
             this.getRoomUserAll()
@@ -324,8 +332,8 @@ export default {
                 this.$http.get('chat-room-user/all', this.httpParams).then(({ data }) => {
                     console.log('chat-room-user/all', data.data)
 
-
-                    if(!this.accessPage(data.data)) return this.$router.push({name:'processAll'})
+                    if (!this.accessPage(data.data))
+                        return this.$router.push({ name: 'processAll' })
 
                     data.data.visitor = this.httpParams.params
                     //console.log(this.httpParams);
@@ -333,16 +341,21 @@ export default {
                 })
             }
         },
-        accessPage(list){
-            if(this.viewModeChat==='search') return true
-            if(this.viewModeChat==='visor' && this.$store.getters['user/isRole'](['admin', 'owner', 'operatorSenior'])) return true
-            if(!list.length) return false
+        accessPage(list) {
+            if (this.viewModeChat === 'search') return true
+            if (
+                this.viewModeChat === 'visor' &&
+                this.$store.getters['user/isRole'](['admin', 'owner', 'operatorSenior'])
+            )
+                return true
+            if (!list.length) return false
 
-            list = list.filter(item=>['recipient','unprocessed','invited','active'].includes(item.status))
+            list = list.filter(item =>
+                ['recipient', 'unprocessed', 'invited', 'active'].includes(item.status)
+            )
 
-            if (list.some(user=>user.user_id===this.$store.state.user.profile.id)) return true
+            if (list.some(user => user.user_id === this.$store.state.user.profile.id)) return true
             else return false
-
         },
         scrollLoad(e) {
             if (this.scrollLoadAllow(e, 'up')) this.historyMessageLoad()

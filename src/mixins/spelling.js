@@ -33,6 +33,5 @@ export default {
                 console.log('spellingShowBox', list)
             }
         }
-    },
-
+    }
 }

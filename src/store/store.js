@@ -11,9 +11,7 @@ import roomActive from '@/store/roomActive'
 Vue.use(Vuex)
 
 const getDefaultStateRoom = () => {
-    return {
-
-    }
+    return {}
 }
 
 const getDefaultState = () => {

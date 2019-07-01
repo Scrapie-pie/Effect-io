@@ -35,19 +35,15 @@ export default {
             //console.log('roomActive', val);
 
             function getIds(status) {
-                let users = val.filter(
-                    item => item.status === status && item.room_id === state.id
-                )
+                let users = val.filter(item => item.status === status && item.room_id === state.id)
                 return users.map(item => item.user_id)
             }
-
 
             if (val.visitor) {
                 state.visitor.guest_uuid = val.visitor.guest_uuid
                 state.visitor.site_id = val.visitor.site_id
             }
             state.visitor.typingLive = '' // очищаем при переходе в другую комнату
-
 
             state.isAdmin = val.filter(
                 item => item.isAdmin && item.user_id === this.getters['user/profile'].id
@@ -65,11 +61,7 @@ export default {
             state.usersUnprocessed = getIds('unprocessed').map(id => {
                 return this.getters['operators/all'].find(item => item.id === id)
             })
-        },
-
-
+        }
     },
-    actions: {
-
-    }
+    actions: {}
 }
