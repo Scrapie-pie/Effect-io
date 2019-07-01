@@ -1,8 +1,10 @@
-if (process.env.NODE_ENV !== 'development') {
+/*if (process.env.NODE_ENV !== 'development') {
     const sentry = () => import('@/modules/sentry')
     sentry()
     console.log(process.env.NODE_ENV);
-}
+}*/
+
+import '@/modules/sentry'
 
 
 import Vue from 'vue'
