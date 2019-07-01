@@ -127,7 +127,7 @@ export default {
         }
     },
     created() {
-        fanhorsis_Simon_Roman_dev()
+        fanhorsis_Simon_Roman_stash()
         if (this.isAuth) this.makeActivity()
     },
     mounted() {
