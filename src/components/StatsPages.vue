@@ -24,52 +24,47 @@
 </template>
 
 <script>
-    import BtnSort  from '@/components/BtnSort'
+import BtnSort from '@/components/BtnSort'
 
-import {stats,sortFields} from '@/mixins/mixins'
+import { stats, sortFields } from '@/mixins/mixins'
 
 export default {
-    components:{
+    components: {
         BtnSort
     },
-    mixins:[stats,sortFields],
+    mixins: [stats, sortFields],
     data() {
-        return {
-
-        }
+        return {}
     },
-    computed:{
-
-        bodyListFormat(){
-            return  this.sortFieldsListGet
+    computed: {
+        bodyListFormat() {
+            return this.sortFieldsListGet
         },
-        sortFieldsListSet(){
-            return this.bodyList.map(item=>{
-                item.name=item.url; //base-filter-search сейчас ищет по name
+        sortFieldsListSet() {
+            return this.bodyList.map(item => {
+                item.name = item.url //base-filter-search сейчас ищет по name
 
                 return item
             })
         }
     },
-    methods:{
-        nextLink(item){
-            this.$store.commit('setFilter',{url:[item.url]})
+    methods: {
+        nextLink(item) {
+            this.$store.commit('setFilter', { url: [item.url] })
             this.$router.push({
-                name:'all'
+                name: 'all'
             })
-        },
+        }
     }
 }
 </script>
 
 <style lang="scss">
-    .stats-pages{
-        width:auto;
+.stats-pages {
+    width: auto;
 
-
-        &__url {
-            @extend %text-overflow
-        }
+    &__url {
+        @extend %text-overflow;
     }
+}
 </style>
-

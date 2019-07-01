@@ -34,14 +34,13 @@
 </template>
 
 <script>
-    import AppCalendar from '@/components/AppCalendar'
-    import ClickOutside from 'vue-click-outside'
-    import branchesBr from '@/modules/branchesBr'
-    import lodash_once from 'lodash/once'
+import AppCalendar from '@/components/AppCalendar'
+import ClickOutside from 'vue-click-outside'
+import branchesBr from '@/modules/branchesBr'
+import lodash_once from 'lodash/once'
 export default {
-    components:{
-        AppCalendar,
-
+    components: {
+        AppCalendar
     },
     directives: {
         ClickOutside
@@ -49,369 +48,348 @@ export default {
     filters: {
         branchesBr
     },
-    props:{
-        name:String,
-        type:{
-            type:String,
-            default:'checkbox'
+    props: {
+        name: {
+            type: String,
+            default: ''
+        },
+        type: {
+            type: String,
+            default: 'checkbox'
         }
     },
 
     data() {
         return {
-            filterSearchResult:[],
+            filterSearchResult: [],
             show: false,
-            modelradio:null,
-            modelcheckbox:[],
-            allChecked:1,
-            last_daysList:[
-                {id:'1',name:"За сутки"},
-                {id:'7',name:"За 7 дней"},
-                {id:'30',name:"За 30 дней"},
-                {id:'-1',name:"Выбрать интервал"},
+            modelradio: null,
+            modelcheckbox: [],
+            allChecked: 1,
+            last_daysList: [
+                { id: '1', name: 'За сутки' },
+                { id: '7', name: 'За 7 дней' },
+                { id: '30', name: 'За 30 дней' },
+                { id: '-1', name: 'Выбрать интервал' }
             ],
-            ballList:[
-                {id:0,name:"Без оценки"},
-                {id:1,name:'С оценкой "плохо"'},
-                {id:2,name:'С оценкой "средне"'},
-                {id:3,name:'С оценкой "хорошо"'},
+            ballList: [
+                { id: 0, name: 'Без оценки' },
+                { id: 1, name: 'С оценкой "плохо"' },
+                { id: 2, name: 'С оценкой "средне"' },
+                { id: 3, name: 'С оценкой "хорошо"' }
             ],
-            statusList:[
-                {id:'active',name:"Текущие (онлайн)"},
-                {id:'auto_finished',name:'Завершенные автоматически'},
-                {id:'manually_finished',name:'Завершенные вручную'},
-                {id:'missed',name:'Пропущенные'},
-                {id:'overdue',name:'Просроченные (более 30 сек.)'},
+            statusList: [
+                { id: 'active', name: 'Текущие (онлайн)' },
+                { id: 'auto_finished', name: 'Завершенные автоматически' },
+                { id: 'manually_finished', name: 'Завершенные вручную' },
+                { id: 'missed', name: 'Пропущенные' },
+                { id: 'overdue', name: 'Просроченные (более 30 сек.)' }
             ],
-            urlListData:[],
-            titleName:{
-                branch:'отделы',
-                url:'страницы',
-                operator:'сотрудники',
-                ball:'оценки',
-                status:'статусы',
-                siteCompany:'каналы',
+            urlListData: [],
+            titleName: {
+                branch: 'отделы',
+                url: 'страницы',
+                operator: 'сотрудники',
+                ball: 'оценки',
+                status: 'статусы',
+                siteCompany: 'каналы'
             },
-            modelPrev:[],
-            startOnce:true,
+            modelPrev: [],
+            startOnce: true
         }
     },
-    computed:{
-        getFilterSelectStore(){
-
-            if(this.name in this.filterSelectStore===false) return false
-            return this.itemList.filter(item=>this.filterSelectStore[this.name].includes(item.id))
+    computed: {
+        getFilterSelectStore() {
+            if (this.name in this.filterSelectStore === false) return false
+            return this.itemList.filter(item => this.filterSelectStore[this.name].includes(item.id))
         },
-        filterSelectStore(){
+        filterSelectStore() {
             return this.$store.state.filterSelect
         },
-        title(){
-            if (this.type==='radio') {
-                if(this.modelradio) return this.modelradio.name
+        title() {
+            if (this.type === 'radio') {
+                if (this.modelradio) return this.modelradio.name
             }
 
-            if (this.name==='calendar') {
-                let strDate =''
-                if(this.modelradio) {
+            if (this.name === 'calendar') {
+                let strDate = ''
+                if (this.modelradio) {
                     strDate = `${this.modelradio.date_from} - ${this.modelradio.date_to}`
                 } else strDate = 'Интервал не выбран'
 
                 return strDate
             }
 
-
-            let preffix ='Все '
-            let title =this.titleName[this.name]
-            if(this.allChecked) return preffix+title
-            else return title+' (' + this.modelcheckbox.length +')'
-
+            let preffix = 'Все '
+            let title = this.titleName[this.name]
+            if (this.allChecked) return preffix + title
+            else return title + ' (' + this.modelcheckbox.length + ')'
         },
-        itemList(){
+        itemList() {
             //console.log(this.name,this[this.name+'List']);
-            return this[this.name+'List']
+            return this[this.name + 'List']
         },
-        calendarList(){
+        calendarList() {
             return []
         },
-        urlList(){
+        urlList() {
             return this.urlListData
         },
-        operatorList(){
-            return this.$store.getters['operators/all'].map(item=>{
-                item.name = item.fullName +' ('+ this.$options.filters.branchesBr(item.branches_names)+')'
+        operatorList() {
+            return this.$store.getters['operators/all'].map(item => {
+                item.name =
+                    item.fullName +
+                    ' (' +
+                    this.$options.filters.branchesBr(item.branches_names) +
+                    ')'
                 return item
             })
         },
-        branchList(){
-            return this.$store.state.user.branchListAll.map(item=>{
-
-                item.name=item.title;
+        branchList() {
+            return this.$store.state.user.branchListAll.map(item => {
+                item.name = item.title
                 return item
             })
         },
-        siteCompanyList(){
-            return this.$store.state.user.siteCompanyList.map(item=>{
-                let chanalName=''
-                item.name=item.url + chanalName;
+        siteCompanyList() {
+            return this.$store.state.user.siteCompanyList.map(item => {
+                let chanalName = ''
+                item.name = item.url + chanalName
                 return item
             })
         },
-        getStart(){
-            if (this.type==='checkbox' && this.name!=='calendar' && this.modelcheckbox.length){
-
+        getStart() {
+            if (this.type === 'checkbox' && this.name !== 'calendar' && this.modelcheckbox.length) {
                 return this.modelcheckbox
             }
-            if( this.type==='radio' && this.modelradio){
+            if (this.type === 'radio' && this.modelradio) {
                 return this.modelradio
             }
+            return null
         }
     },
-    watch:{
-
-        getStart(val){ // отправляем один раз при инициализации
+    watch: {
+        getStart(val) {
+            // отправляем один раз при инициализации
             if (this.startOnce) {
-                    if (this.type==='checkbox' && this.name!=='calendar'){
-
-                        this.$emit('get',val.map(item=>item.id))
-
-                    }
-                    if( this.type==='radio'){
-                        this.$emit('get',val.id)
-                    }
-
-                    this.startOnce=false
-            }
-
-
-
-
-        },
-        show(val){
-            if(this.type==='checkbox' && this.name!=='calendar') {
-
-                if(val===false){
-                    if (this.modelPrev.map(item=>item.id).join() !== this.modelcheckbox.map(item=>item.id).join()){ //если результат не меняли, ничего не отправляем
-
-                        this.$emit('get',this.modelcheckbox.map(item=>item.id))
-
-
-                    }
-
+                if (this.type === 'checkbox' && this.name !== 'calendar') {
+                    this.$emit('get', val.map(item => item.id))
                 }
-                else { // открыл фильтр первый раз изменил результат, закрыл вкладку,ушел ответ, открыл вкладку, ничего не менял, закрыл, все равно ответ ушел - это исправляет ситуацию
-                    this.modelPrev=this.modelcheckbox
+                if (this.type === 'radio') {
+                    this.$emit('get', val.id)
+                }
+
+                this.startOnce = false
+            }
+        },
+        show(val) {
+            if (this.type === 'checkbox' && this.name !== 'calendar') {
+                if (val === false) {
+                    if (
+                        this.modelPrev.map(item => item.id).join() !==
+                        this.modelcheckbox.map(item => item.id).join()
+                    ) {
+                        //если результат не меняли, ничего не отправляем
+
+                        this.$emit('get', this.modelcheckbox.map(item => item.id))
+                    }
+                } else {
+                    // открыл фильтр первый раз изменил результат, закрыл вкладку,ушел ответ, открыл вкладку, ничего не менял, закрыл, все равно ответ ушел - это исправляет ситуацию
+                    this.modelPrev = this.modelcheckbox
                 }
             }
         },
-        itemList:{
-            handler(val,oldval)
-            {
-
-                if(this.type==="checkbox") {
-                    if(this.getFilterSelectStore.length) {
+        itemList: {
+            handler(val, oldval) {
+                if (this.type === 'checkbox') {
+                    if (this.getFilterSelectStore.length) {
                         this.modelcheckbox = this.getFilterSelectStore
-                    }
-                    else if (this.allChecked) { //если нет query п умолчанию выставляем все
+                    } else if (this.allChecked) {
+                        //если нет query п умолчанию выставляем все
                         //console.log(this.name,val);
                         this.modelcheckbox = val
                     }
                 } else {
-
-                    if(this.getFilterSelectStore.length) {
+                    if (this.getFilterSelectStore.length) {
                         this.modelradio = this.getFilterSelectStore[0]
                     } else {
-                        this.modelradio =  val[0]
+                        this.modelradio = val[0]
                     }
                 }
-
             },
             immediate: true
         },
-        modelradio:{
-            handler(val){
-
-                if(this.type==="radio") {
-
+        modelradio: {
+            handler(val) {
+                if (this.type === 'radio') {
                     if (!val) return
-                    this.$emit('get',val.id)
-                    this.$store.commit('setFilter',{[this.name]:[val.id]})
-
+                    this.$emit('get', val.id)
+                    this.$store.commit('setFilter', { [this.name]: [val.id] })
                 }
-                if(this.name==='calendar') {
-
-                    if(val && val.date_from && val.date_to)  {
-                        this.$emit('get',val)
-                        this.$store.commit('setFilter',{[this.name]:[val]})
+                if (this.name === 'calendar') {
+                    if (val && val.date_from && val.date_to) {
+                        this.$emit('get', val)
+                        this.$store.commit('setFilter', {
+                            [this.name]: [val]
+                        })
                     }
 
-                    this.show=false
+                    this.show = false
                 }
             },
             immediate: true
         },
-        modelcheckbox:{
-            handler(val,valOld=[]){
-
+        modelcheckbox: {
+            handler(val, valOld = []) {
                 //if(this.name==='url' && !this.itemList.length) return       console.log('modelcheckbox',val, valOld);
 
-                if (val.length!==this.itemList.length) this.allChecked=false;
+                if (val.length !== this.itemList.length) this.allChecked = false
                 //this.$emit('get',val.map(item=>item.id))
-
 
                 this.modelPrev = valOld
             },
             immediate: true
         }
     },
-    created(){
-
-
-        if(this.name==='url'){
-
-            this.$http.get('site/pages').then(({data})=>{
-
-                data=data.data.map(item=>{
-                    return {id:item,name:item}
+    created() {
+        if (this.name === 'url') {
+            this.$http.get('site/pages').then(({ data }) => {
+                data = data.data.map(item => {
+                    return { id: item, name: item }
                 })
 
-                this.urlListData=[
-                    ...data
-                ];
-
-
+                this.urlListData = [...data]
             })
         }
     },
     mounted() {
-
         this.popupItem = this.$el
-
     },
 
-    methods:{
-
-        controlOpetions(item){
-            let obj =  {
-                type:this.type,
-                name:this.name,
-                value:item,
-                text:item.name
+    methods: {
+        controlOpetions(item) {
+            let obj = {
+                type: this.type,
+                name: this.name,
+                value: item,
+                text: item.name
             }
             return obj
         },
-        allCheckedToggle(){
-
-            this.allChecked=!this.allChecked;
-            if(this.allChecked) {this.modelcheckbox=this.itemList}
-            else this.modelcheckbox=[]
-
+        allCheckedToggle() {
+            this.allChecked = !this.allChecked
+            if (this.allChecked) {
+                this.modelcheckbox = this.itemList
+            } else this.modelcheckbox = []
         },
-        hideParent(item){
-            if(this.type==='radio') {this.show=false}
+        hideParent(item) {
+            if (this.type === 'radio') {
+                this.show = false
+            }
         }
     }
 }
 </script>
 
 <style lang="scss">
+.filter-drop-menu {
+    $el: '.filter-drop-menu';
+    $color_hover: glob-color('info-lighten');
+    $transition: $glob-trans;
 
-    .filter-drop-menu{
-        $el:'.filter-drop-menu';
-        $color_hover:glob-color('info-lighten');
-        $transition:$glob-trans;
+    position: relative;
 
-        position:relative;
-
-        &__title {
-            @extend %h4;
-            display:inline-block;
-            position:relative;
-            width:auto;
-            padding-right:40px;
-            cursor:pointer;
-            margin-bottom:0;
-            &:first-letter{
-                text-transform:uppercase;
-            }
-        }
-        &__arrow {
-            @extend %g-icon-down;
-            position:absolute;
-            right:0;
-            top:50%;
-            transform:translateY(-50%);
-            &_open{
-                @extend %g-icon-down_open
-            }
-        }
-        &__box{
-
-            margin-top:calc-em(10);
-            transform:translateY(25%);
-            @include box-decor();
-            position:absolute;
-            left:0;
-            top:100%;
-            z-index:1;
-            padding:calc-em(15) calc-em(15);
-            opacity:0;
-            visibility:hidden;
-
-            transition:$transition;
-
-            &_open{
-                opacity:1;
-                visibility:visible;
-                transform:translateY(0);
-            }
-        }
-
-
-
-
-        &__text{
-
-        }
-
-
-        &_radio {
-            .base-radio-check{
-
-                &__input:checked + .base-radio-check__text-wrap{
-                    background-color:$color_hover
-                }
-                &__text-wrap{
-                    padding:calc-em(5) calc-em(15);
-                    white-space:nowrap;
-                    transition:$transition;
-                    &:before {display:none}
-                }
-                &__check {display:none}
-                &__text {margin-left:0}
-            }
-            #{$el}__box{padding-left:0;padding-right:0}
-        }
-        &__controls{
-
-            &-scrollbar {
-                margin-right:-1*calc-em(15);
-                padding-right:calc-em(15);
-                max-height:85vh;
-            }
-            &-search {
-                margin-bottom:calc-em(15);
-            }
-
-            &-item {
-                #{$el}_checkbox &:not(&_main) {
-                    margin-left:calc-em(25);
-                }
-
-                &+& {
-                    margin-top:calc-em(5);
-                }
-                white-space:nowrap;
-            }
+    &__title {
+        @extend %h4;
+        display: inline-block;
+        position: relative;
+        width: auto;
+        padding-right: 40px;
+        cursor: pointer;
+        margin-bottom: 0;
+        &:first-letter {
+            text-transform: uppercase;
         }
     }
+    &__arrow {
+        @extend %g-icon-down;
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        &_open {
+            @extend %g-icon-down_open;
+        }
+    }
+    &__box {
+        margin-top: calc-em(10);
+        transform: translateY(25%);
+        @include box-decor();
+        position: absolute;
+        left: 0;
+        top: 100%;
+        z-index: 1;
+        padding: calc-em(15) calc-em(15);
+        opacity: 0;
+        visibility: hidden;
+
+        transition: $transition;
+
+        &_open {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+    }
+
+    &__text {
+    }
+
+    &_radio {
+        .base-radio-check {
+            &__input:checked + .base-radio-check__text-wrap {
+                background-color: $color_hover;
+            }
+            &__text-wrap {
+                padding: calc-em(5) calc-em(15);
+                white-space: nowrap;
+                transition: $transition;
+                &:before {
+                    display: none;
+                }
+            }
+            &__check {
+                display: none;
+            }
+            &__text {
+                margin-left: 0;
+            }
+        }
+        #{$el}__box {
+            padding-left: 0;
+            padding-right: 0;
+        }
+    }
+    &__controls {
+        &-scrollbar {
+            margin-right: -1 * calc-em(15);
+            padding-right: calc-em(15);
+            max-height: 85vh;
+        }
+        &-search {
+            margin-bottom: calc-em(15);
+        }
+
+        &-item {
+            #{$el}_checkbox &:not(&_main) {
+                margin-left: calc-em(25);
+            }
+
+            & + & {
+                margin-top: calc-em(5);
+            }
+            white-space: nowrap;
+        }
+    }
+}
 </style>

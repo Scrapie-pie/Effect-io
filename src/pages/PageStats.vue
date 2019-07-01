@@ -45,83 +45,76 @@
 </template>
 
 <script>
-    import NavAside from '@/components/NavAside';
-    import { hideHeader } from '@/mixins/mixins'
+import NavAside from '@/components/NavAside'
+import { hideHeader } from '@/mixins/mixins'
 
-
-    export default {
-    mixins: [hideHeader],
+export default {
     components: {
-        NavAside,
+        NavAside
     },
+    mixins: [hideHeader],
     data() {
         return {}
     },
-    beforeRouteEnter (to, from, next) {
-        next(vm=>{
-            if(vm.$store.getters['user/isRole'](['admin','owner','operatorSenior'])) {
-                if(vm.$route.name==="stats") vm.$router.push({name:'statsService'})
-
-            }
-            else {
-                vm.$router.push( {
+    beforeRouteEnter(to, from, next) {
+        next(vm => {
+            if (vm.$store.getters['user/isRole'](['admin', 'owner', 'operatorSenior'])) {
+                if (vm.$route.name === 'stats') vm.$router.push({ name: 'statsService' })
+            } else {
+                vm.$router.push({
                     name: 'statsEmployeesDetail',
-                    params:{id:vm.$store.state.user.profile.id}
-                },)
+                    params: { id: vm.$store.state.user.profile.id }
+                })
             }
         })
     },
-    computed:{
-        title(){
-
+    computed: {
+        title() {
             let titleHead = this.$route.meta.title
 
-            if(this.routerName==='statsBranchesDetail' || this.routerName==='statsAllBranch') {
+            if (this.routerName === 'statsBranchesDetail' || this.routerName === 'statsAllBranch') {
+                let branch = this.branchListAll.find(item => item.id === +this.$route.params.id)
 
-                let branch = this.branchListAll.find(item=>item.id===+this.$route.params.id);
-
-
-                if (branch) return titleHead+': '+branch.title
+                if (branch) return titleHead + ': ' + branch.title
             }
-            if(this.routerName==='statsOperatorsDetail'  || this.routerName==='statsAllOperator') {
-                let operator = this.$store.getters['operators/all'].find(item=>item.id===+this.$route.params.id);
+            if (
+                this.routerName === 'statsOperatorsDetail' ||
+                this.routerName === 'statsAllOperator'
+            ) {
+                let operator = this.$store.getters['operators/all'].find(
+                    item => item.id === +this.$route.params.id
+                )
 
-                if(operator) return titleHead+': '+operator.fullName
+                if (operator) return titleHead + ': ' + operator.fullName
             }
 
             return titleHead
         },
-        routerName(){
+        routerName() {
             return this.$route.name
         },
-        branchListAll(){
+        branchListAll() {
             return this.$store.state.user.branchListAll
         }
-    },
-
+    }
 }
 </script>
 
 <style lang="scss">
-    .page-stats{
-
-
-        &__list {
-            display:flex;
-            margin-bottom:calc-em(50);
-        }
-        &__item {
-            margin-left:calc-em(15);
-            margin-right:calc-em(15);
-            margin-bottom:calc-em(10);
-        }
-        &__link {
-            font-size:$glob-font-size_h4;
-            font-weight:bold;
-        }
-
-
-
+.page-stats {
+    &__list {
+        display: flex;
+        margin-bottom: calc-em(50);
+    }
+    &__item {
+        margin-left: calc-em(15);
+        margin-right: calc-em(15);
+        margin-bottom: calc-em(10);
+    }
+    &__link {
+        font-size: $glob-font-size_h4;
+        font-weight: bold;
+    }
 
     /*    transition:$glob-trans;
 
@@ -131,19 +124,18 @@
             transform:translateX(0);
         }*/
 
-        &__title {
-            @extend %h4;
-            margin-bottom:calc-em(40);
-        }
-
-        &__main {
-            flex:1;
-            padding-left:calc-em(15);
-            position:relative;
-            height:100%;
-            display: flex;
-            flex-direction:column;
-
-        }
+    &__title {
+        @extend %h4;
+        margin-bottom: calc-em(40);
     }
+
+    &__main {
+        flex: 1;
+        padding-left: calc-em(15);
+        position: relative;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+}
 </style>

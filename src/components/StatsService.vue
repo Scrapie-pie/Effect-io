@@ -31,39 +31,37 @@
 </template>
 
 <script>
+import StatsOperators from '@/components/StatsOperators'
+import StatsBranches from '@/components/StatsBranches'
+import StatsResult from '@/components/StatsResult'
 
-    import StatsOperators from '@/components/StatsOperators'
-    import StatsBranches from '@/components/StatsBranches'
-    import StatsResult from '@/components/StatsResult'
-
-    import {stats} from '@/mixins/mixins'
+import { stats } from '@/mixins/mixins'
 export default {
-    name: "stats-service",
-    components:{
+    name: 'StatsService',
+    components: {
         StatsOperators,
         StatsBranches,
-        StatsResult,
-
+        StatsResult
     },
-    mixins:[stats],
+    mixins: [stats],
     data() {
         return {
-            best_branches_by_percents:[],
-            best_branches_by_rating:[],
-            best_employees_by_rating:[],
-            best_employees_by_speed:[],
-            company:{}
+            best_branches_by_percents: [],
+            best_branches_by_rating: [],
+            best_employees_by_rating: [],
+            best_employees_by_speed: [],
+            company: {}
         }
     },
-    watch:{
-        bodyList(val){
-            console.log(val);
-            if(val){
-                this.best_branches_by_percents=val.best_branches_by_percents
-                this.best_branches_by_rating=val.best_branches_by_rating
-                this.best_employees_by_rating=val.best_employees_by_rating
-                this.best_employees_by_speed=val.best_employees_by_speed
-                this.company=val.company
+    watch: {
+        bodyList(val) {
+            console.log(val)
+            if (val) {
+                this.best_branches_by_percents = val.best_branches_by_percents
+                this.best_branches_by_rating = val.best_branches_by_rating
+                this.best_employees_by_rating = val.best_employees_by_rating
+                this.best_employees_by_speed = val.best_employees_by_speed
+                this.company = val.company
             }
         }
     }
@@ -71,12 +69,12 @@ export default {
 </script>
 
 <style lang="scss">
-    .stats-service{
-        $color_border:glob-color('border');
-        &__table {
-            border:2px solid $color_border;
-            margin-bottom:calc-em(20);
-            padding:calc-em(15);
-        }
+.stats-service {
+    $color_border: glob-color('border');
+    &__table {
+        border: 2px solid $color_border;
+        margin-bottom: calc-em(20);
+        padding: calc-em(15);
     }
+}
 </style>

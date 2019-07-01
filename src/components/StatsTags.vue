@@ -23,68 +23,39 @@
                     | {{item.chats}}
                 td
                     |{{item.percents}} %
-            tr(v-for="(item, index) in itemList", :key="index")
-                td
-                    | {{item.name}}
-                td
-                    | {{item.chats}}
-                td
-                    |{{item.percents}} %
-            tr(v-for="(item, index) in itemList", :key="index")
-                td
-                    | {{item.name}}
-                td
-                    | {{item.chats}}
-                td
-                    |{{item.percents}} %
-            tr(v-for="(item, index) in itemList", :key="index")
-                td
-                    | {{item.name}}
-                td
-                    | {{item.chats}}
-                td
-                    |{{item.percents}} %
+
 
 
 </template>
 
 <script>
-    import BtnSort  from '@/components/BtnSort'
+import BtnSort from '@/components/BtnSort'
 
-import {stats,sortFields} from '@/mixins/mixins'
+import { stats, sortFields } from '@/mixins/mixins'
 
 export default {
-    components:{
+    components: {
         BtnSort
     },
-    mixins:[stats,sortFields],
+    mixins: [stats, sortFields],
     data() {
-        return {
-
-        }
+        return {}
     },
-    computed:{
-
-        bodyListFormat(){
-            return  this.sortFieldsListGet
+    computed: {
+        bodyListFormat() {
+            return this.sortFieldsListGet
         },
-        sortFieldsListSet(){
+        sortFieldsListSet() {
             return this.bodyList
         }
     },
-    methods:{
-
-    }
+    methods: {}
 }
 </script>
 
 <style lang="scss">
-    .stats-tags{
-        width:auto;
-        height:100%;
-
-
-
-    }
+.stats-tags {
+    width: auto;
+    height: 100%;
+}
 </style>
-

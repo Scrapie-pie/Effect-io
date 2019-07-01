@@ -11,51 +11,51 @@
 </template>
 
 <script>
-    export default {
-        name: "context-menu",
-        data() {
-            return {
-                show: false
+export default {
+    name: 'ContextMenu',
+    data() {
+        return {
+            show: false
+        }
+    },
+    mounted() {
+        document.addEventListener('click', this.close)
+    },
+    updated() {
+        document.addEventListener('click', this.close)
+    },
+    beforeDestroy() {
+        document.removeEventListener('click', this.close)
+    },
+    methods: {
+        close(e) {
+            if (!e.target.matches('.context-menu, .context-menu *')) {
+                this.show = false
+                document.removeEventListener('click', this.close)
             }
         },
-        mounted() {
-            document.addEventListener('click', this.close);
-        },
-        updated() {
-            document.addEventListener('click', this.close);
-        },
-        beforeDestroy() {
-            document.removeEventListener('click', this.close);
-        },
-        methods: {
-            close(e) {
-                if (!e.target.matches('.context-menu, .context-menu *')) {
-                    this.show = false;
-                    document.removeEventListener('click', this.close);
-                }
-            },
-            toggle() {
-                this.show = !this.show;
-            }
+        toggle() {
+            this.show = !this.show
         }
     }
+}
 </script>
 
 <style lang="scss">
-    .context-menu{
-        $font-size:$glob-font-size_h2;
-        position:relative;
-        &__list{
-            @include box-decor();
-            display:inline-block;
-            position:absolute;
-            top:100%;
-            left:0;
-            z-index:1;
-        }
-
-        &__link{ font-size:$font-size;}
+.context-menu {
+    $font-size: $glob-font-size_h2;
+    position: relative;
+    &__list {
+        @include box-decor();
+        display: inline-block;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        z-index: 1;
     }
 
-
+    &__link {
+        font-size: $font-size;
+    }
+}
 </style>

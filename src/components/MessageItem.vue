@@ -30,9 +30,9 @@
 </template>
 
 <script>
-    import inputEmoji from '@/components/inputEmoji'
-    import LoaderMessage from '@/components/LoaderMessage';
-    import {datetimeHMS} from '@/modules/datetime'
+import inputEmoji from '@/components/inputEmoji'
+import LoaderMessage from '@/components/LoaderMessage'
+import { datetimeHMS } from '@/modules/datetime'
 export default {
     components: {
         inputEmoji,
@@ -43,89 +43,96 @@ export default {
     },
     props: {
         roleId: {
-            type:Number,
-
+            default: 0,
+            type: Number
         },
         count: {
-            type:Number,
-            default:0,
+            type: Number,
+            default: 0
         },
 
-        name: String,
-        text: String,
-        time: Number,
+        name: {
+            type: String,
+            default: ''
+        },
+        text: {
+            type: String,
+            default: ''
+        },
+        time: {
+            type: Number,
+            default: 0
+        },
 
-        files:{
-            type:Array,
-            default:function () {
+        files: {
+            type: Array,
+            default: function() {
                 return []
-            },
-
+            }
         },
-        loaderMessage:{
-            type:Number,
-            default:-1
+        loaderMessage: {
+            type: Number,
+            default: -1
         }
     },
     data() {
         return {}
     },
     computed: {
-        messageClass(){
-            if(this.roleId === 8) return 'message-item_visitor'
-            if(this.roleId === 9) return 'message-item_system'
-        },
-
-
-
+        messageClass() {
+            if (this.roleId === 8) return 'message-item_visitor'
+            if (this.roleId === 9) return 'message-item_system'
+            return ''
+        }
     }
 }
 </script>
 
 <style lang="scss">
-    .message-item{
-        $color_operator:glob-color('info');
-        $color_visitor:glob-color('success');
-        $color_text:glob-color('secondary');
-        $color_system:glob-color('main');
-        display:flex;
-        text-align:left;
-        align-items: flex-start;
-        &__time-wrap {
-            margin-right:calc-em(15);
-            display:flex;
+.message-item {
+    $color_operator: glob-color('info');
+    $color_visitor: glob-color('success');
+    $color_text: glob-color('secondary');
+    $color_system: glob-color('main');
+    display: flex;
+    text-align: left;
+    align-items: flex-start;
+    &__time-wrap {
+        margin-right: calc-em(15);
+        display: flex;
 
-            align-items: flex-end;
-        }
-        &__name {
-            font-weight:700;
-            color:$color_operator;
-        }
-        &__text {
-            color:$color_text;
-        }
-
-        &__time {
-            margin-right:calc-em(5);
-        }
-
-        &_visitor &__name {color:$color_visitor}
-        &_system &__text {color:$color_system}
-
-        &__loader-message {
-
-            position:relative;
-        }
-
-        &__files-list{
-
-        }
-        &__files-icon {
-            .icon_file {
-                margin-top:-5px;
-                margin-bottom:-5px;
-            }
-        }
-
+        align-items: flex-end;
     }
+    &__name {
+        font-weight: 700;
+        color: $color_operator;
+    }
+    &__text {
+        color: $color_text;
+    }
+
+    &__time {
+        margin-right: calc-em(5);
+    }
+
+    &_visitor &__name {
+        color: $color_visitor;
+    }
+    &_system &__text {
+        color: $color_system;
+    }
+
+    &__loader-message {
+        position: relative;
+    }
+
+    &__files-list {
+    }
+    &__files-icon {
+        .icon_file {
+            margin-top: -5px;
+            margin-bottom: -5px;
+        }
+    }
+}
 </style>

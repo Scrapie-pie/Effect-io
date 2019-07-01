@@ -14,13 +14,12 @@
 </template>
 
 <script>
- import {httpParams,routerPushProcessAllOrItemFirst } from '@/mixins/mixins'
- import {dialogPush } from '@/modules/modules'
-    import lodash_find from 'lodash/find'
+import { httpParams, routerPushProcessAllOrItemFirst } from '@/mixins/mixins'
+import { dialogPush } from '@/modules/modules'
+import lodash_find from 'lodash/find'
 export default {
-
-    mixins:[httpParams,routerPushProcessAllOrItemFirst],
-  /*  watch:{ //Todo какой то косяк если раскоментирую
+    mixins: [httpParams, routerPushProcessAllOrItemFirst],
+    /*  watch:{ //Todo какой то косяк если раскоментирую
         systemMessage(val){
             console.log(val);
             //if (val) this.$root.$emit('chatSystemMessages',this.systemMessages)
@@ -29,96 +28,111 @@ export default {
     data() {
         return {}
     },
-    computed:{
-        roomId(){
+    computed: {
+        roomId() {
             return this.process.room_id
         },
-        btnTextYes(){
+        btnTextYes() {
             let text
-            if(this.status === 'recipient') text = 'Принять';
-            if(this.status === 'invited') text = 'Присоединиться';
-            if(this.status === 'unprocessed') text = 'Ответить';
+            if (this.status === 'recipient') text = 'Принять'
+            if (this.status === 'invited') text = 'Присоединиться'
+            if (this.status === 'unprocessed') text = 'Ответить'
             return text
         },
-        process(){
-            let {params:{uuid,site_id}} = this.httpParams;
+        process() {
+            let {
+                params: { guest_uuid, site_id }
+            } = this.httpParams
 
-            if (uuid && site_id) return lodash_find(this.$store.state.visitors.process, {uuid, site_id}) || {}
+            if (guest_uuid && site_id)
+                return (
+                    lodash_find(this.$store.state.visitors.process, {
+                        guest_uuid,
+                        site_id
+                    }) || {}
+                )
+
+            return {}
         },
-        status(){
+        status() {
             return this.process.status
         },
-        comment(){
+        comment() {
             return this.process.last_message
         },
-        author(){
+        author() {
             return this.process.last_message_author
         },
-        systemMessage(){
+        systemMessage() {
             return {
-                position:'footer',
-                type:this.status,
-                name:this.author,
-                text:this.comment
+                position: 'footer',
+                type: this.status,
+                name: this.author,
+                text: this.comment
             }
         }
-
     },
 
-    methods:{
-        routerNext(status){
-            let {uuid,site_id} = this.httpParams.params;
-            let processItem = this.$store.state.visitors.process.find(item=>item.uuid+item.site_id===uuid+site_id)
-            processItem.very_hot=0;
+    methods: {
+        routerNext(status) {
+            let { guest_uuid, site_id } = this.httpParams.params
+            let processItem = this.$store.state.visitors.process.find(
+                item => item.guest_uuid + item.site_id === guest_uuid + site_id
+            )
+            processItem.very_hot = 0
 
-            this.$store.commit('visitors/processRemoveItem',{ uuid,site_id});
-            this.$store.commit('user/unreadUpdate',['unprocessed',-1])
+            this.$store.commit('visitors/processRemoveItem', { guest_uuid, site_id })
+            this.$store.commit('user/unreadUpdate', ['unprocessed', -1])
 
-            if(status==="no"){
+            if (status === 'no') {
                 this.routerPushProcessAllOrItemFirst()
             }
 
-            if(status==="yes"){
-
-                dialogPush(this,'self',processItem)
-                this.$router.push({name:'chatId',params: { uuid,site_id}});
+            if (status === 'yes') {
+                dialogPush(this, 'self', processItem)
+                this.$router.push({
+                    name: 'chatId',
+                    params: { guest_uuid, site_id }
+                })
             }
-
-
         },
 
-        processActionNo(){
-            if(this.status) this[this.status+'No']().then(() => this.routerNext('no'));
+        processActionNo() {
+            if (this.status) this[this.status + 'No']().then(() => this.routerNext('no'))
         },
-        processActionYes(){
-            if(this.status) this[this.status]().then(() => this.routerNext('yes'));
+        processActionYes() {
+            if (this.status) this[this.status]().then(() => this.routerNext('yes'))
         },
-        recipient(){
-            return this.$http.put('chat-room-user/transfer-acceptance',this.httpParams.params)
+        recipient() {
+            return this.$http.put('chat-room-user/transfer-acceptance', this.httpParams.params)
         },
-        recipientNo(){
-            return this.$http.put('chat-room-user/transfer-decline',this.httpParams.params)
+        recipientNo() {
+            return this.$http.put('chat-room-user/transfer-decline', this.httpParams.params)
         },
-        unprocessed(){
+        unprocessed() {
             return this.$http.put('chat-room-user/take', this.httpParams.params)
         },
-        unprocessedNo(){
-           return this.$http.post('chat-room-user/decline-guest', this.httpParams.params)
+        unprocessedNo() {
+            return this.$http.post('chat-room-user/decline-guest', this.httpParams.params)
         },
-        invited(){
-           return this.$http.post('chat-room-user/accept-invitation', {room_id:this.roomId})
+        invited() {
+            return this.$http.post('chat-room-user/accept-invitation', {
+                room_id: this.roomId
+            })
         },
-        invitedNo(){
-            return this.$http.post('chat-room-user/decline-invitation', {room_id:this.roomId})
-        },
+        invitedNo() {
+            return this.$http.post('chat-room-user/decline-invitation', {
+                room_id: this.roomId
+            })
+        }
     }
 }
 </script>
 
 <style lang="scss">
-    .process-actions{
-        &__list {
-            @extend %row-flex;
-        }
+.process-actions {
+    &__list {
+        @extend %row-flex;
     }
+}
 </style>

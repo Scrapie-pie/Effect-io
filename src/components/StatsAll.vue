@@ -172,7 +172,7 @@
                     base-btn.stats-table-line__nav-link.stats-table-line__nav-link_left(
                         color="info-lighten", @click="scrollPush('left')",
                         :class="{'active':showLeft}"
-                    ) &#9001
+                    ) &#9001;
                 li.stats-table-line__nav-item
                     base-btn.stats-table-line__nav-link.stats-table-line__nav-link_right(
                         color="info-lighten", @click="scrollPush('right')",
@@ -184,64 +184,58 @@
 </template>
 
 <script>
-    import {sortFields,stats} from '@/mixins/mixins'
-    import BtnSort  from '@/components/BtnSort'
+import { sortFields, stats } from '@/mixins/mixins'
+import BtnSort from '@/components/BtnSort'
 
-    import {datetimeStoHMS} from '@/modules/datetime'
-    export default {
-        components:{
-            BtnSort
+import { datetimeStoHMS } from '@/modules/datetime'
+export default {
+    components: {
+        BtnSort
+    },
+    filters: {
+        datetimeStoHMS
+    },
+    mixins: [stats, sortFields],
+    props: {},
+
+    data() {
+        return {
+            filterBranchIds: [],
+            translateX: 0,
+            maxStep: 2,
+            countStep: 0,
+            operatorList: [],
+            commonRow: []
+        }
+    },
+    computed: {
+        employeesParams() {
+            return Object.assign({}, this.params, { type: 'employees' })
         },
-        mixins:[stats,sortFields],
-        filters:{
-            datetimeStoHMS
+
+        link() {
+            if (this.$route.name === 'statsAll') return 'statsAllBranch'
+            if (this.$route.name === 'statsAllBranch') return 'statsAllOperator'
+            return ''
         },
-        props:{
-
+        showRight() {
+            return this.countStep < this.maxStep
         },
-
-        data() {
-            return {
-
-                filterBranchIds:[],
-                translateX:0,
-                maxStep : 2,
-                countStep:0,
-                operatorList:[],
-                commonRow:[]
-            }
+        showLeft() {
+            return this.countStep !== 0
         },
-        computed:{
-            employeesParams(){
-                return Object.assign({},this.params,{type:'employees'})
-            },
-
-            link(){
-                if(this.$route.name==='statsAll') return 'statsAllBranch'
-                if(this.$route.name==='statsAllBranch') return 'statsAllOperator'
-            },
-            showRight(){
-                return this.countStep < this.maxStep
-            },
-            showLeft(){
-                return this.countStep !== 0
-            },
-            bodyListFormat(){
-                return  this.sortFieldsListGet
-            },
-            sortFieldsListSet(){
+        bodyListFormat() {
+            return this.sortFieldsListGet
+        },
+        sortFieldsListSet() {
+            /*eslint-disable */
                 if(!this.bodyList.length) return []
                 if(this.bodyList.length) this.commonRow = [this.bodyList[0]];
 
                 let list = this.bodyList.slice(1)
                 return list
+				/*eslint-enabled */
             },
-
-        },
-        created(){
-
-
-
 
         },
         watch:{
@@ -260,6 +254,12 @@
                 },
                 immediate: true
             },
+
+        },
+        created(){
+
+
+
 
         },
         methods:{

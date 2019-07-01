@@ -1,5 +1,5 @@
 module.exports = {
- /*   devServer:{
+    /*   devServer:{
         port:4000
     },*/
     /* publicPath: process.env.NODE_ENV === 'production'
@@ -9,7 +9,7 @@ module.exports = {
         port: 4000
     },
     css: {
-        sourceMap: false,
+        sourceMap: true,
         loaderOptions: {
             sass: {
                 data: '@import "@/scss/settings.scss";'
@@ -31,7 +31,6 @@ module.exports = {
         config.plugin('svg-sprite-loader-plugin').use(require('svg-sprite-loader/plugin'), [
             {
                 /* plainSprite: true,*/
-
             }
         ])
     }

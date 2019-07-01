@@ -4,13 +4,14 @@
 
 <script>
 export default {
-    name: "search-request", 
+    name: 'SearchRequest',
     data() {
         return {}
-    },   
+    }
 }
 </script>
 
 <style lang="scss">
-    .search-request{}
+.search-request {
+}
 </style>

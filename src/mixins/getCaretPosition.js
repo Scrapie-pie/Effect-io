@@ -1,24 +1,20 @@
-
 export default {
-    methods:{
-        textWidthTagToText(){
-            let ct = document.getElementById('contenteditable');
+    methods: {
+        textWidthTagToText() {
+            let ct = document.getElementById('contenteditable')
 
-
-            let listText=[]
-            ct.childNodes.forEach((item,index)=>{
-                if(item.nodeName == 'BR'){
+            let listText = []
+            ct.childNodes.forEach((item, index) => {
+                if (item.nodeName == 'BR') {
                     listText[index] = '\n'
-                }
-                else if(item.nodeName == 'IMG'){
+                } else if (item.nodeName == 'IMG') {
                     listText[index] = item.attributes.alt.value
                 } else {
-                    listText[index]=item.textContent
+                    listText[index] = item.textContent
                 }
             })
 
-            listText = listText.join('');
-
+            listText = listText.join('')
 
             return listText
         },
@@ -27,61 +23,57 @@ export default {
                 node,
                 NodeFilter.ELEMENT_NODE,
                 function(node) {
-                    var nodeRange = document.createRange();
-                    nodeRange.selectNodeContents(node);
-                    return nodeRange.compareBoundaryPoints(Range.END_TO_END, range) < 1 ?
-                        NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
+                    var nodeRange = document.createRange()
+                    nodeRange.selectNodeContents(node)
+                    return nodeRange.compareBoundaryPoints(Range.END_TO_END, range) < 1
+                        ? NodeFilter.FILTER_ACCEPT
+                        : NodeFilter.FILTER_REJECT
                 },
                 false
-            );
+            )
 
-            var charCount = 0, lastNodeLength = 0;
+            var charCount = 0,
+                lastNodeLength = 0
 
             if (range.startContainer.nodeType == 3) {
-                charCount += range.startOffset;
+                charCount += range.startOffset
             }
 
             while (treeWalker.nextNode()) {
-                charCount += lastNodeLength;
-                lastNodeLength = 0;
+                charCount += lastNodeLength
+                lastNodeLength = 0
 
-                if(range.startContainer != treeWalker.currentNode) {
-                    if(treeWalker.currentNode instanceof Text) {
-                        lastNodeLength += treeWalker.currentNode.length;
-                    } else if(treeWalker.currentNode instanceof HTMLBRElement ||
-                        treeWalker.currentNode instanceof HTMLImageElement /* ||
-                              treeWalker.currentNode instanceof HTMLDivElement*/)
-                    {
-                        lastNodeLength++;
+                if (range.startContainer != treeWalker.currentNode) {
+                    if (treeWalker.currentNode instanceof Text) {
+                        lastNodeLength += treeWalker.currentNode.length
+                    } else if (
+                        treeWalker.currentNode instanceof HTMLBRElement ||
+                        treeWalker.currentNode instanceof
+                            HTMLImageElement /* ||
+                              treeWalker.currentNode instanceof HTMLDivElement*/
+                    ) {
+                        lastNodeLength++
                     }
                 }
             }
 
-        return charCount + lastNodeLength;
-
+            return charCount + lastNodeLength
         },
         getCaretPosition() {
+            var range = window.getSelection().getRangeAt(0)
 
-            var range = window.getSelection().getRangeAt(0);
+            this.$emit('getText', this.textWidthTagToText())
 
-            this.$emit('getText',this.textWidthTagToText())
-
-            this.$emit('caret',this.getCharacterOffsetWithin_final(range, this.$el))
+            this.$emit('caret', this.getCharacterOffsetWithin_final(range, this.$el))
         }
-
     },
-    mounted(){
-
-        this.$el.addEventListener('keyup', this.getCaretPosition);
+    mounted() {
+        this.$el.addEventListener('keyup', this.getCaretPosition)
         //this.$el.addEventListener('click', this.getCaretPosition);
-        this.$el.addEventListener('mouseup', this.getCaretPosition);
-
+        this.$el.addEventListener('mouseup', this.getCaretPosition)
     },
-    beforeDestroy(){
-        this.$el.removeEventListener('onkeyup', this.getCaretPosition);
-        this.$el.removeEventListener('onmouseup', this.getCaretPosition);
-
-
+    beforeDestroy() {
+        this.$el.removeEventListener('onkeyup', this.getCaretPosition)
+        this.$el.removeEventListener('onmouseup', this.getCaretPosition)
     }
 }
-

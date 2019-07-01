@@ -1,28 +1,24 @@
-
 export default {
-    watch:{
-        '$route'(to,from){
+    watch: {
+        $route(to, from) {
             this.hideHeader(to.name)
-        },
+        }
     },
     created() {
         this.hideHeader(this.$route.name)
-
     },
-    beforeDestroy(){
+    beforeDestroy() {
         document.body.classList.remove('is-hided-header')
     },
-    beforeRouteLeave(to, from, next){
+    beforeRouteLeave(to, from, next) {
         document.body.classList.remove('is-hided-header')
-        setTimeout(()=>{
+        setTimeout(() => {
             return next()
-        },300)
-
+        }, 300)
     },
-    methods:{
-        hideHeader(name){
+    methods: {
+        hideHeader(name) {
             document.body.classList.add('is-hided-header')
         }
-    },
+    }
 }
-
