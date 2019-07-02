@@ -82,7 +82,7 @@ export default {
                 btnGuestRedirect: ['guest/redirect'],
                 guestRedirect: ['guest/redirect'],
                 chatMain: [
-                    'message/save',
+                    'message/send-from-operator',
                     'guest/contacts-request',
                     'co-browsing/request',
                     'guest/blocking',

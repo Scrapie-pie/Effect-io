@@ -341,7 +341,7 @@ export default {
             this.spellingMessage = this.message
 
             this.$http
-                .post('message/save', data)
+                .post('message/send-from-operator', data)
                 .then(responsive => {
                     this.bufferingSend = false
 
