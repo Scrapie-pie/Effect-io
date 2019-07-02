@@ -195,7 +195,7 @@ export default {
             let data = this.httpParams.params
             data.intent = 'farewell'
 
-            this.$http.post('message/save', data)
+            this.$http.post('message/send-from-operator', data)
         },
         removeFromRoom(user_id) {
             let room_id = this.$store.state.roomActive.id

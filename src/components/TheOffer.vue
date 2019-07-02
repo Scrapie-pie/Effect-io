@@ -34,7 +34,7 @@ export default {
             this.$root.$emit('globBoxControlClose')
             if (this.model === 'call') {
                 data.type = this.model
-                this.$http.post('message/save', data)
+                this.$http.post('message/send-from-operator', data)
             }
             if (this.model === 'contacts') this.$http.post('guest/contacts-request', data)
         }
