@@ -127,7 +127,7 @@ export default {
         }
     },
     created() {
-
+        prodTestSentry()
         if (this.isAuth) this.makeActivity()
     },
     mounted() {

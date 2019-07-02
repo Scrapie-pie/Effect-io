@@ -13,7 +13,7 @@ Sentry.init({
 
 })
 
-    console.log('Sentry on',process.env.NODE_ENV);
+    console.log('Sentry on test',process.env.NODE_ENV);
 
 }
 

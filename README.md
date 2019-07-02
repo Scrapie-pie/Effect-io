@@ -50,3 +50,7 @@ npm run build
 cd /srv/api/RBCALL-3439/
 git fetch
 git checkout -b feature/RBCALL-3417
+
+
+cd /var/www/rbcall/data/www/app.newrobocall.ru
+
