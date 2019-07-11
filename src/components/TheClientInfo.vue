@@ -151,12 +151,13 @@ export default {
         this.getInfo()
     },
     mounted() {
+        console.log(this);
         setTimeout(() => {
-            autosize(this.$refs.clientComment.$refs.input)
+            if(this.$refs && this.$refs.clientComment && this.$refs.clientComment.$refs.input) autosize(this.$refs.clientComment.$refs.input)
         }, 500)
     },
     beforeDestroy() {
-        autosize.destroy(this.$refs.clientComment.$refs.input)
+        if(this.$refs && this.$refs.clientComment && this.$refs.clientComment.$refs.input) autosize.destroy(this.$refs.clientComment.$refs.input)
     },
     methods: {
         showTags() {

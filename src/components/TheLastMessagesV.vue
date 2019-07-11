@@ -18,7 +18,7 @@
                         .last-messages__timer(
                             v-if="timerVisible(item)",
                             v-text="timer(item,timerNow,index)"
-                        )
+                            )
 
                         router-link.last-messages__btn(
                             :to="item.rootLinkOptions.link"
