@@ -155,15 +155,15 @@ export default {
                 { text: 'Оценка', field: 'bal' }
             ],
 
-            users_ids: [],
-            sites_ids: [],
-            branches_ids: [],
-            statuses: [],
-            rates: [],
+            users_ids: null,
+            sites_ids: null,
+            branches_ids: null,
+            statuses: null,
+            rates: null,
 
             url: null,
 
-            limit: 11
+            limit: 20
         }
     },
     computed: {
@@ -186,20 +186,12 @@ export default {
     watch: {
         paramsComp() {
             console.log('paramsComp')
-            console.log(
-                this.users_ids.length &&
-                    this.sites_ids.length &&
-                    this.statuses.length &&
-                    this.rates.length &&
-                    this.url !== null &&
-                    (!!this.last_days ||
-                        (this.date_from && this.date_to && this.time_from && this.time_to))
-            )
+
             if (
-                this.users_ids.length &&
-                this.sites_ids.length &&
-                this.statuses.length &&
-                this.rates.length &&
+                this.users_ids &&
+                this.sites_ids &&
+                this.statuses &&
+                this.rates &&
                 this.url !== null &&
                 (!!this.last_days ||
                     (this.date_from && this.date_to && this.time_from && this.time_to))

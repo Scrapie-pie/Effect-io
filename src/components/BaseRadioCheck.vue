@@ -45,12 +45,10 @@ export default {
             default: 'checkbox'
         },
         disabled: {
-
             required: false,
             default: false
         },
         checked: {
-
             required: false,
             default: false
         },

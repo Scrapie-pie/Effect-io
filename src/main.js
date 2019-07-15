@@ -6,7 +6,6 @@
 
 import '@/modules/sentry'
 
-
 import Vue from 'vue'
 import App from './App.vue'
 import '@/validation'
@@ -25,9 +24,6 @@ clicky({
     stop: true, //default: false - stops regular context menu from appearing when clicky is triggered (should only be used together with shift:true or ctrl:true)
     left: true //default: false - trigger on left click instead of right click
 })
-
-
-
 
 //Vue.prototype.$http = axios;
 

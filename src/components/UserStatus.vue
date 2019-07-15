@@ -141,8 +141,6 @@ export default {
     },
     methods: {
         close(e) {
-
-
             if (!e.target.matches('.user-status__status, .user-status__status *')) {
                 this.show = false
                 document.removeEventListener('click', this.close)
@@ -155,7 +153,6 @@ export default {
             this.show = false
         },
         operatorStatusUpdate() {
-
             console.log('operatorStatusUpdate')
             this.$http.put('employee/online-update', {
                 online: this.status
