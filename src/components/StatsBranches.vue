@@ -31,7 +31,7 @@
                         padding="xslr"
                         :router="{name:'statsBranchesDetail',params:{id:item.branch_id}}"
                     ) Детальная статистика
-                td(v-text="item.dialogues_requests")
+                td(v-text="view==='onceChat'?item.dialogues_accepted:item.dialogues_requests")
                 template(v-if="!['dialogues_accepted','dialogues_requests'].includes(order)")
                     template(v-if="!['dialogues_accepted','dialogues_requests'].includes(order)")
 
@@ -63,6 +63,9 @@ export default {
     },
     mixins: [stats, sortFields],
     props: {
+        view:{
+           type:String
+        },
         filterBranchIdsOn: {
             type: Boolean,
             default: false
