@@ -57,7 +57,9 @@ export default {
             }
 
             if (type === 'branches') {
-                ;(obj.caption = 'По отделам'), (obj.filterBranchIdsOn = true)
+                obj.caption = 'По отделам';
+                obj.view='onceChat'
+                obj.filterBranchIdsOn = true
             }
             if (type === 'employees') {
                 ;(obj.caption = 'По сотрудникам'), (obj.filterOperatorIdsOn = true)
