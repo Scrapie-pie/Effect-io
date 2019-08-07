@@ -34,6 +34,7 @@ export default {
 
             this.$http.post('regru/regru/send-ticket-to-crm', data).then(({ data }) => {
                 this.$root.$emit('globBoxControlClose')
+                this.$root.$emit('popup-notice', 'Заявка успешно  отправлена!')
             })
         }
     }
