@@ -49,6 +49,7 @@ import exit from '@/assets/img/icons/chat/exit.svg'
 import bl from '@/assets/img/icons/chat/bl.svg'
 import down from '@/assets/img/icons/chat/down.svg'
 import user from '@/assets/img/icons/chat/user.svg'
+import crm from '@/assets/img/icons/chat/crm.svg'
 
 import noFoundTeam from '@/assets/img/icons/chat/no-found-team.svg'
 import noFoundVisitors from '@/assets/img/icons/chat/no-found-visitors.svg'
