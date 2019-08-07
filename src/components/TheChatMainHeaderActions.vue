@@ -7,19 +7,24 @@
                     template(v-if="viewModeChat!='process'")
                         li.chat-actions__more-item()
                             base-btn(
-                            :icon="{name:'transfer',top:true}"
-                                @click.prevent="showBranch()"
+                            :icon="{name:'transfer',top:true}",
+                                @click.prevent="showBranch"
                             ) Передать в отдел
                         li.chat-actions__more-item()
                             base-btn(
-                                :icon="{name:'transfer',top:true}"
-                                @click.prevent="showTransfer()"
+                                :icon="{name:'transfer',top:true}",
+                                @click.prevent="showTransfer"
                             ) Передать диалог
 
                         li.chat-actions__more-item(v-if="showExit")
                             base-btn(:icon="{name:'exit',top:true}", @click="exitRoomConfirm") Выйти из диалога
+                        li.chat-actions__more-item(v-if="showBtnformORTS")
+                            base-btn(:icon="{name:'crm',top:true}", @click="$root.$emit('formORTS')") Создание заявки в ОТРС
+
                     li.chat-actions__more-item
                         base-btn(:icon="{name:'bl',top:true}", @click="showBlockClient=true") Блокировать клиента
+
+
             fieldset(v-if="showBlockClient" key="keyShowBlockClient")
                 legend.chat-actions__title Вы уверены, что хотите заблокировать данного клиента?
                 ul.chat-actions__buttons
@@ -38,17 +43,23 @@
 </template>
 
 <script>
+
 import { httpParams, viewModeChat, removeMessageAndPush } from '@/mixins/mixins'
 export default {
-    components: {},
+
     mixins: [viewModeChat, httpParams, removeMessageAndPush],
     data() {
         return {
             showBlockClient: false,
-            showExitRoomConfirm: false
+            showExitRoomConfirm: false,
+
+
         }
     },
     computed: {
+        showBtnformORTS(){
+            return this.$store.state.user.siteCompanyList.find(item=>item.id===this.httpParams.params.site_id && item.regruIntegration)
+        },
         showExit() {
             console.log(
                 'showConfirmExit',
@@ -79,9 +90,11 @@ export default {
         showBranch() {
             this.$root.$emit('showBranch')
         },
+
         showTransfer() {
             this.$root.$emit('showTransfer')
         },
+
         blockClient() {
             this.$http.post('guest/blocking', this.httpParams.params).then(() => {
                 this.removeMessageAndPush()
