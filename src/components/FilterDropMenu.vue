@@ -173,7 +173,8 @@ export default {
             // отправляем один раз при инициализации
             if (this.startOnce) {
                 if (this.type === 'checkbox' && this.name !== 'calendar') {
-                    this.$emit('get', val.map(item => item.id))
+                    if(this.allChecked) this.$emit('get', [])
+                    else this.$emit('get', val.map(item => item.id))
                 }
                 if (this.type === 'radio') {
                     this.$emit('get', val.id)
@@ -190,8 +191,9 @@ export default {
                         this.modelcheckbox.map(item => item.id).join()
                     ) {
                         //если результат не меняли, ничего не отправляем
+                        if(this.allChecked) this.$emit('get', [])
+                        else  this.$emit('get', this.modelcheckbox.map(item => item.id))
 
-                        this.$emit('get', this.modelcheckbox.map(item => item.id))
                     }
                 } else {
                     // открыл фильтр первый раз изменил результат, закрыл вкладку,ушел ответ, открыл вкладку, ничего не менял, закрыл, все равно ответ ушел - это исправляет ситуацию
