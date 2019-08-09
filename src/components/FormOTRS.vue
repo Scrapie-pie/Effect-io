@@ -13,7 +13,7 @@
                 type="textarea"
                 name="textarea",
                 placeholder="Комментарий"
-
+                maxLength="2000"
                 v-model="operator_comment"
             )
             base-btn.form-otrs__submit(type="submit") Отправить
