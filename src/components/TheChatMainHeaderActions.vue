@@ -18,7 +18,7 @@
 
                         li.chat-actions__more-item(v-if="showExit")
                             base-btn(:icon="{name:'exit',top:true}", @click="exitRoomConfirm") Выйти из диалога
-                        li.chat-actions__more-item(v-if="showBtnformORTS")
+                        li.chat-actions__more-item(v-if="!showBtnformORTS")
                             base-btn(:icon="{name:'crm',top:true}", @click="$root.$emit('formORTS')") Создание заявки в ОТРС
 
                     li.chat-actions__more-item
