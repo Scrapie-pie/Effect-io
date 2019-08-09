@@ -53,12 +53,10 @@ export default {
             let data = this.httpParams.params
             data.email = this.email
             data.operator_comment = this.operator_comment
-
+            this.$root.$emit('globBoxControlClose')
             this.$http.post('regru/regru/send-ticket-to-crm', data).then(({ data }) => {
-                this.$root.$emit('globBoxControlClose')
-                setTimeout(()=>{
-                    this.$root.$emit('popup-notice', 'Заявка успешно  отправлена!')
-                },1000)
+                this.$root.$emit('popup-notice', 'Заявка успешно  отправлена!')
+
 
             })
         }
