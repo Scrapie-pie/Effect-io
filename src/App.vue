@@ -141,11 +141,10 @@ export default {
 
                     console.log(err.request)*/
 
-                    /*   if(err.request.responseURL.includes('chat-room-user-all')){
-                        console.log(err.request.responseURL);
-                        this.$router.push({name:'team'})
+                       if(err.request.responseURL.includes('regru/regru/get-login-by-uuid')){
+
                         return
-                    }*/
+                    }
 
                     /* if(err.response.status === 403) {
                         this.$router.push({name:'processAll'})

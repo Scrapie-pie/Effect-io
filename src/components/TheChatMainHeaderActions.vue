@@ -74,6 +74,7 @@ export default {
     },
     created() {},
     methods: {
+
         exitRoom() {
             this.$http
                 .post('chat-room-user/exit', {

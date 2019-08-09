@@ -34,8 +34,18 @@ export default {
     computed: {
 
     },
-    created() {},
+    created() {
+        this.getLoginRegRu()
+
+    },
     methods: {
+        getLoginRegRu(){
+            let params = this.httpParams.params
+
+            this.$http.post('regru/regru/get-login-by-uuid', params).then(({ data }) => {
+                this.email = data.login
+            })
+        },
         submit() {
 
             let data = this.httpParams.params
