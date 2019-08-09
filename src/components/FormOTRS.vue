@@ -42,7 +42,7 @@ export default {
         getLoginRegRu(){
             let params = this.httpParams.params
 
-            this.$http.post('regru/regru/get-login-by-uuid', params).then(({ data }) => {
+            this.$http.get('regru/regru/get-login-by-uuid', {params}).then(({ data }) => {
                 this.email = data.login
             })
         },
