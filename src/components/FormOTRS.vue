@@ -2,12 +2,20 @@
     form.form-otrs(@submit.prevent="submit")
         fieldset
             legend.form-otrs__title Создание заявки в ОТРС
-            base-field.form-otrs__input(
+
+            base-field(
                 type="text"
                 name="login",
                 placeholder="Введите логин (e-mail) клиента"
                 v-model="email"
                 )
+            base-field.form-otrs__input(
+                type="textarea"
+                name="textarea",
+                placeholder="Комментарий"
+
+                v-model="operator_comment"
+            )
             base-btn.form-otrs__submit(type="submit") Отправить
             base-btn(color="error", @click="$root.$emit('globBoxControlClose')") Отмена
 </template>
@@ -19,7 +27,8 @@ export default {
 
     data() {
         return {
-            email:''
+            email:'',
+            operator_comment:''
         }
     },
     computed: {
@@ -31,6 +40,7 @@ export default {
 
             let data = this.httpParams.params
             data.email = this.email
+            data.operator_comment = this.operator_comment
 
             this.$http.post('regru/regru/send-ticket-to-crm', data).then(({ data }) => {
                 this.$root.$emit('globBoxControlClose')
@@ -51,6 +61,7 @@ export default {
     text-align:left;
 
     &__input {
+        margin-top:calc-em(15);
         margin-bottom: calc-em(30);
     }
 
