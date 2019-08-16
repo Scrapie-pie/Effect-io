@@ -1,5 +1,6 @@
 <template lang="pug">
-    label(ref="image",:class="{spinner:!loader}").upload-file
+    div(ref="image",:class="{spinner:!loader}").upload-file
+
         input(
             v-bind="getInputOptions",
             ref="input",
