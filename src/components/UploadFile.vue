@@ -61,13 +61,17 @@ export default {
             var vm = this
 
             return Object.assign({}, this.$listeners, {
-                change: function(event) {
+             /*   change: function(event) {
+                    console.log(event);
                     vm.uploadIMG(event, 'fileContainer')
-                }
+                }*/
             })
         }
     },
     mounted() {
+        this.$refs.input.addEventListener("change", (event)=>{
+            this.uploadIMG(event, 'fileContainer')
+        },false)
         this.addEvents({
             fileContainer: this.$refs.image,
             dragDrop: document.querySelector('.js-dragDrop')

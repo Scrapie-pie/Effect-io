@@ -172,7 +172,9 @@ export default {
         },
         uploadFileList(val) {}
     },
-    mounted() {},
+    mounted() {
+        console.log('mounted footer');
+    },
     beforeDestroy() {
         autosize.destroy(this.$refs.chatInput)
     },
