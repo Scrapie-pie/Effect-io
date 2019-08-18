@@ -157,6 +157,9 @@ export default {
             this._vm.$set(state.self[findIndex], 'unread', [])
         },
         itemOpen(state, val) {
+
+            //val.regRuLogin = 'kakos'
+            if(!val.name) val.name='Гость'
             state.itemOpen = val
         },
         itemOpenHistoryActions(state, val) {

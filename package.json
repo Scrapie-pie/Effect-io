@@ -15,7 +15,6 @@
     "@vue/eslint-config-prettier": "^4.0.1",
     "autosize": "^4.0.2",
     "axios": "^0.18.1",
-    "babel-plugin-transform-remove-console": "^6.9.4",
     "emoji-data-css": "^1.0.1",
     "emoji-mart-vue": "^2.6.6",
     "inputmask": "^4.0.8",
@@ -41,6 +40,8 @@
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "^10.0.2",
     "babel-jest": "^24.8.0",
+    "@babel/plugin-proposal-optional-chaining": "^7.2.0",
+    "babel-plugin-transform-remove-console": "^6.9.4",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.2.2",
     "node-sass": "^4.12.0",
@@ -84,7 +85,6 @@
     "last 2 versions",
     "not ie <= 8"
   ],
-
   "jest": {
     "moduleFileExtensions": [
       "js",

@@ -156,6 +156,7 @@ export default {
                         avatarUrl: item.from_user_info.photo,
                         avatarStub: item.from_user_info.photo_stub,
                         name: this.name(item, this.visitorInfo),
+                        regRuLogin: this.regRuLogin(item, this.visitorInfo),
                         text: this.$options.filters.wrapTextUrls(
                             this.$options.filters.messageBreakLine(item.body)
                         ),
@@ -270,8 +271,14 @@ export default {
 
     methods: {
         name(item, visitorInfo) {
+            console.log(item);
             if (item.from_user_info.guest_uuid) return visitorInfo.name
             else return item.from_user_info.name
+        },
+        regRuLogin(item, visitorInfo) {
+
+            if (item.from_user_info.guest_uuid) return visitorInfo.regRuLogin
+            else return null
         },
         emitMessageDelivered(val) {
             let findIndex = this.messageList.findIndex(item => item.id === val.message_id)

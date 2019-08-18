@@ -1,7 +1,7 @@
 <template lang="pug">
     section.popup
         box-controls(v-if="!!noticeText", type="notice", @boxControlClose="noticeText=false")
-            template(slot="text") {{noticeText}}
+            span(slot="text" v-html="noticeText")
             base-btn(@click="noticeText=false") Понятно
         box-controls(v-if="notFind", type="popup", @boxControlClose="notFind=false")
             template(slot="text") Поиск не работает в start версии

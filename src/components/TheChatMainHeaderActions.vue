@@ -31,14 +31,14 @@
                     li.chat-actions__buttons-item
                         base-btn(@click="blockClient") Заблокировать
                     li.chat-actions__buttons-item
-                        base-btn(color="error" @click="showBlockClient=false") Отмена
+                        base-btn(color="error", @click="showBlockClient=false") Отмена
             fieldset(v-if="showExitRoomConfirm" key="keyShowExitRoomConfirm")
                 legend.chat-actions__title Вы единственный сотрудник на данный момент,#[br] вы точно хотите покинуть диалог?
                 ul.chat-actions__buttons
                     li.chat-actions__buttons-item
                         base-btn(@click="exitRoom") Выйти
                     li.chat-actions__buttons-item
-                        base-btn(color="error" @click="showExitRoomConfirm=false") Отмена
+                        base-btn(color="error", @click="showExitRoomConfirm=false") Отмена
 
 </template>
 

@@ -3,6 +3,7 @@
         base-wait(name="clientInfo")
         base-people(
             :name="info.name" ,
+            :regRuLogin="info.regRuLogin"
             :text="clientInfoContacts",
             :bg-text-no-fill="true",
             :avatar-url="info.photo",

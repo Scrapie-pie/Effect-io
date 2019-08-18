@@ -177,7 +177,7 @@ export default {
         setName(item, visitorInfo) {
             if (item.very_hot) return item.name
             if (item.guest_uuid + item.site_id === visitorInfo.guest_uuid + visitorInfo.site_id)
-                return visitorInfo.name
+                return visitorInfo.regRuLogin || visitorInfo.name
             else return item.name
         },
         setLastPageN() {
@@ -201,11 +201,13 @@ export default {
             return item
         },
         itemFormatSetOptions(item) {
+
             item.basePeopleOptions = {
                 avatarUrl: item.photo,
                 avatarStub: item.photo_stub,
                 avatarName: item.avatarName,
                 name: this.setName(item, this.visitorInfo),
+                //regRuLogin:this.visitorInfo.regRuLogin,
                 text: wrapTextUrls(item.last_authorAndMessage),
                 channelName: this.$store.getters.channelName(item.channel_type),
 

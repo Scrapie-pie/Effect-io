@@ -15,7 +15,8 @@
                 )
         .base-people__inner
             .base-people__header
-                strong.base-people__name(v-html="name")
+                base-btn.base-people__name(v-if="regRuLogin" v-html="regRuLogin" theme="link" @click="$root.$emit('formORTS')")
+                strong.base-people__name(v-else v-html="name")
                 time.base-people__time(
                 v-if="time"
                 )
@@ -85,6 +86,7 @@ export default {
         },
         bgTextNoFill: Boolean,
         name: String,
+        regRuLogin: String,
         text: String,
         time: Number,
         avatarWidth: String,
