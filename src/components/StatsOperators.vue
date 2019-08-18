@@ -120,15 +120,26 @@ export default {
         },
 
         sortFieldsListSet() {
-            if (this.filterBranchId)
+            console.log('else return this.itemListWidthOperators',this.filterBranchId,this.filterOperatorIdsOn);
+            if (this.filterBranchId) {
                 return this.itemListWidthOperators.filter(item =>
                     item.operator.branches_ids.includes(this.filterBranchId)
                 )
-            if (this.filterOperatorIdsOn)
-                return this.itemListWidthOperators.filter(item =>
-                    this.filterOperatorIds.includes(item.operator.id)
+            }
+
+            if (this.filterOperatorIdsOn) {
+                return this.itemListWidthOperators.filter(item => {
+                    if (!this.filterOperatorIds.length) return true
+                    return this.filterOperatorIds.includes(item.operator.id)
+                    }
                 )
-            else return this.itemListWidthOperators
+            }
+
+
+        else {
+
+                return this.itemListWidthOperators
+            }
         }
     }
 }
