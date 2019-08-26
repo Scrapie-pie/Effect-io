@@ -159,6 +159,9 @@ export default {
     created() {
 
         this.$root.$on('formORTS', () => {
+            if (this.viewModeChat === 'process') {
+                return;
+            }
             console.log('ей');
             this.showMoreChatActions = false
             setTimeout(() => {
