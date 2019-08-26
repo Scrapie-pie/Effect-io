@@ -60,7 +60,7 @@ export default {
         selectCategories(){
             return  [
                 {title:'Финансовые вопросы',val:'billing'},
-                {title:'ДОмены/SSL/ЛК',val:'support'},
+                {title:'Домены/SSL/ЛК',val:'support'},
                 {title:'ТП Хостинга',val:'hosting'},
                 {title:'Облачные серверы',val:'hosting'},
                 {title:'Dedicated/Colocation',val:'hosting-cloud'},
