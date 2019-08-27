@@ -90,6 +90,10 @@ export default {
             if (!this.containerFullFillItemListClassName.item) return
             //Заполняем свободную область элементами
             setTimeout(() => {
+                if(typeof document.querySelector('.' + this.containerFullFillItemListClassName.item) === 'undefined'
+                    || typeof document.querySelector('.' + this.containerFullFillItemListClassName.scrollBar)) {
+                    return
+                }
                 let itemHeight = document.querySelector(
                         '.' + this.containerFullFillItemListClassName.item
                     ).clientHeight,
