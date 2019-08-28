@@ -138,10 +138,11 @@ export default {
             })
         },
         getSiteCompanyList({ commit }) {
-
-            this._vm.$http.get('site/company-list',{params:{'withIntegrations':1}}).then(({ data }) => {
-                commit('siteCompanyList', data.data)
-            })
+            this._vm.$http
+                .get('site/company-list', { params: { withIntegrations: 1 } })
+                .then(({ data }) => {
+                    commit('siteCompanyList', data.data)
+                })
         }
     },
     getters: {

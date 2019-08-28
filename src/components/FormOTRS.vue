@@ -40,56 +40,52 @@ export default {
 
     data() {
         return {
-            email:'',
-            operator_comment:'',
-            category:''
+            email: '',
+            operator_comment: '',
+            category: ''
+        }
+    },
+    computed: {
+        visitorsEmail() {
+            return this.$store.state.visitors.itemOpen.regRuLogin
+        },
+        selectCategories() {
+            return [
+                { title: 'Финансовые вопросы', val: 'billing' },
+                { title: 'Домены/SSL/ЛК', val: 'support' },
+                { title: 'ТП Хостинга', val: 'hosting' },
+                { title: 'Облачные серверы', val: 'hosting' },
+                { title: 'Dedicated/Colocation', val: 'hosting-cloud' },
+                { title: 'Jelastic', val: 'hosting::jelastic' },
+                { title: 'Reg.Panel', val: 'regpanel' },
+                { title: 'Перенос сайта', val: 'hosting-move' },
+                { title: 'Правовые вопросы', val: 'abuse' },
+                { title: 'Отдел по работе с партнерами', val: 'partner' },
+                { title: 'Конструктор сайтов', val: 'hosting-site-pro' },
+                { title: 'Свидетельства', val: 'Свидетельства' }
+            ]
         }
     },
     watch: {
         visitorsEmail: {
             handler(val) {
-                this.email=val;
+                this.email = val
             },
             immediate: true
         }
     },
-    computed: {
-        visitorsEmail(){
-            return this.$store.state.visitors.itemOpen.regRuLogin
-        },
-        selectCategories(){
-            return  [
-                {title:'Финансовые вопросы',val:'billing'},
-                {title:'Домены/SSL/ЛК',val:'support'},
-                {title:'ТП Хостинга',val:'hosting'},
-                {title:'Облачные серверы',val:'hosting'},
-                {title:'Dedicated/Colocation',val:'hosting-cloud'},
-                {title:'Jelastic',val:'hosting::jelastic'},
-                {title:'Reg.Panel',val:'regpanel'},
-                {title:'Перенос сайта',val:'hosting-move'},
-                {title:'Правовые вопросы',val:'abuse'},
-                {title:'Отдел по работе с партнерами',val:'partner'},
-                {title:'Конструктор сайтов',val:'hosting-site-pro'},
-                {title:'Свидетельства',val:'Свидетельства'},
-            ]
-        }
-    },
     mounted() {
         //this.getLoginRegRu()
-
     },
     methods: {
-
-        getLoginRegRu(){
+        getLoginRegRu() {
             let params = this.httpParams.params
 
-            this.$http.get('regru/regru/get-login-by-uuid', {params}).then(({ data }) => {
-
+            this.$http.get('regru/regru/get-login-by-uuid', { params }).then(({ data }) => {
                 this.email = data.data.login
             })
         },
         submit() {
-
             let data = this.httpParams.params
             data.email = this.email
             data.operator_comment = this.operator_comment
@@ -97,12 +93,10 @@ export default {
             this.$root.$emit('globBoxControlClose')
 
             this.$http.post('regru/regru/send-ticket-to-crm', data).then(({ data }) => {
-                console.log(data.data);
+                console.log(data.data)
                 //this.$root.$emit('popup-notice', 'Заявка успешно  отправлена!')
                 this.$root.$emit('popup-notice', data.data.message)
                 //this.$root.$emit('popup-notice', '<a>kakos</a>')
-
-
             })
         }
     }
@@ -112,35 +106,29 @@ export default {
 <style lang="scss">
 .form-otrs {
     $self: '.form-otrs';
-    width:275px;
-    text-align:left;
+    width: 275px;
+    text-align: left;
 
     &__item {
-        margin-bottom:calc-em(20);
+        margin-bottom: calc-em(20);
 
         .field__select.v-select .vs__dropdown-menu {
-            max-height:200px;
+            max-height: 200px;
             bottom: calc(100% + 3px);
-            top:auto
+            top: auto;
         }
-
-
-
     }
 
-
-
     &__input {
-        margin-top:calc-em(15);
+        margin-top: calc-em(15);
         margin-bottom: calc-em(30);
     }
 
     &__title {
-        @extend %h4
+        @extend %h4;
     }
     &__submit {
-        margin-right:calc-em(15);
+        margin-right: calc-em(15);
     }
-
 }
 </style>

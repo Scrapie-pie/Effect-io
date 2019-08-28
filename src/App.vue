@@ -141,8 +141,7 @@ export default {
 
                     console.log(err.request)*/
 
-                       if(err.request.responseURL.includes('regru/regru/get-login-by-uuid')){
-
+                    if (err.request.responseURL.includes('regru/regru/get-login-by-uuid')) {
                         return
                     }
 

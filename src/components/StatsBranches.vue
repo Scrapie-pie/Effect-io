@@ -63,8 +63,8 @@ export default {
     },
     mixins: [stats, sortFields],
     props: {
-        view:{
-           type:String
+        view: {
+            type: String
         },
         filterBranchIdsOn: {
             type: Boolean,

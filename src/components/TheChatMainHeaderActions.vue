@@ -43,22 +43,20 @@
 </template>
 
 <script>
-
 import { httpParams, viewModeChat, removeMessageAndPush } from '@/mixins/mixins'
 export default {
-
     mixins: [viewModeChat, httpParams, removeMessageAndPush],
     data() {
         return {
             showBlockClient: false,
-            showExitRoomConfirm: false,
-
-
+            showExitRoomConfirm: false
         }
     },
     computed: {
-        showBtnformORTS(){
-            return this.$store.state.user.siteCompanyList.find(item=>item.id===this.httpParams.params.site_id && item.regruIntegration)
+        showBtnformORTS() {
+            return this.$store.state.user.siteCompanyList.find(
+                item => item.id === this.httpParams.params.site_id && item.regruIntegration
+            )
         },
         showExit() {
             console.log(
@@ -74,7 +72,6 @@ export default {
     },
     created() {},
     methods: {
-
         exitRoom() {
             this.$http
                 .post('chat-room-user/exit', {

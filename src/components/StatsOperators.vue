@@ -120,7 +120,11 @@ export default {
         },
 
         sortFieldsListSet() {
-            console.log('else return this.itemListWidthOperators',this.filterBranchId,this.filterOperatorIdsOn);
+            console.log(
+                'else return this.itemListWidthOperators',
+                this.filterBranchId,
+                this.filterOperatorIdsOn
+            )
             if (this.filterBranchId) {
                 return this.itemListWidthOperators.filter(item =>
                     item.operator.branches_ids.includes(this.filterBranchId)
@@ -131,13 +135,8 @@ export default {
                 return this.itemListWidthOperators.filter(item => {
                     if (!this.filterOperatorIds.length) return true
                     return this.filterOperatorIds.includes(item.operator.id)
-                    }
-                )
-            }
-
-
-        else {
-
+                })
+            } else {
                 return this.itemListWidthOperators
             }
         }

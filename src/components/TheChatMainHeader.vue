@@ -111,7 +111,7 @@ export default {
             showMoreChatActions: false,
             showSelectTags: false,
             selectOperatorsMode: '',
-            showFormORTS:false,
+            showFormORTS: false
             //moreActionsClose:false,
         }
     },
@@ -157,12 +157,11 @@ export default {
         }
     },
     created() {
-
         this.$root.$on('formORTS', () => {
             if (this.viewModeChat === 'process') {
-                return;
+                return
             }
-            console.log('ей');
+            console.log('ей')
             this.showMoreChatActions = false
             setTimeout(() => {
                 this.showFormORTS = true

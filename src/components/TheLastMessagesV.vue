@@ -13,17 +13,18 @@
                     li.last-messages__item(
                         v-for="(item, index) in filterSearchResult",
                         :key="item.guest_uuid+item.site_id+item.chat_id",
-                        :class="item.classList"
+                        :class="item.classList",
+                        @click="router($event,item)"
                     )
                         .last-messages__timer(
                             v-if="timerVisible(item)",
                             v-text="timer(item,timerNow,index)"
                             )
 
-                        router-link.last-messages__btn(
+                        //router-link.last-messages__btn(
                             :to="item.rootLinkOptions.link"
                             v-text="item.rootLinkOptions.text"
-                        )
+                            )
                         base-people.last-messages__people(v-bind="item.basePeopleOptions")
 
 
@@ -201,19 +202,18 @@ export default {
             return item
         },
         itemFormatSetOptions(item) {
-
             item.basePeopleOptions = {
                 avatarUrl: item.photo,
                 avatarStub: item.photo_stub,
                 avatarName: item.avatarName,
                 name: this.setName(item, this.visitorInfo),
-                //regRuLogin:this.visitorInfo.regRuLogin,
+                regRuLogin:this.visitorInfo.regRuLogin,
                 text: wrapTextUrls(item.last_authorAndMessage),
                 channelName: this.$store.getters.channelName(item.channel_type),
 
                 bgTextNoFill: true,
                 count: item.unread.length,
-                hidden: true
+                //hidden: true
             }
 
             return item
@@ -303,6 +303,12 @@ export default {
                 this.$store.commit('visitors/process', { list: itemListStore })
             if (this.viewModeChat === 'visitors')
                 this.$store.commit('visitors/self', { list: itemListStore })
+        },
+        router(event,item) {
+            //console.log(event,item);
+
+            this.$router.push(item.rootLinkOptions.link)
+            //console.log(event);
         }
     }
 }
@@ -344,6 +350,7 @@ export default {
         padding-left: calc-em(10);
         padding-top: calc-em(10);
         padding-bottom: calc-em(10);
+        cursor:pointer;
 
         &:hover,
         &_active {
@@ -370,7 +377,7 @@ export default {
     &__people {
         z-index: 2;
         position: relative;
-        pointer-events: none;
+        pointer-events: all;
 
         .base-people__inner {
             flex: 1 0 60%;

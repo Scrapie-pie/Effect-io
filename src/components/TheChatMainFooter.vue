@@ -172,9 +172,7 @@ export default {
         },
         uploadFileList(val) {}
     },
-    mounted() {
-
-    },
+    mounted() {},
     beforeDestroy() {
         autosize.destroy(this.$refs.chatInput)
     },

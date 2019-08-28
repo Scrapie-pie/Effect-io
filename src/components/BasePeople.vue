@@ -71,6 +71,12 @@ export default {
         }
     },
     props: {
+        router:{
+            type: Object,
+            default: function() {
+                return {}
+            }
+        },
         status: {
             type: Number,
             default: null,
