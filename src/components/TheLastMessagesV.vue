@@ -207,7 +207,7 @@ export default {
                 avatarStub: item.photo_stub,
                 avatarName: item.avatarName,
                 name: this.setName(item, this.visitorInfo),
-                regRuLogin:this.visitorInfo.regRuLogin,
+                regRuLogin:item.regRuLogin,
                 text: wrapTextUrls(item.last_authorAndMessage),
                 channelName: this.$store.getters.channelName(item.channel_type),
 
