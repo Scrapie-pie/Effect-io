@@ -13,3 +13,4 @@ export { default as filterLastDaysAndCalendar } from '@/mixins/filterLastDaysAnd
 export { default as getCaretPosition } from '@/mixins/getCaretPosition'
 export { default as sortFields } from '@/mixins/sortFields'
 export { default as spelling } from '@/mixins/spelling'
+export { default as typingLive } from '@/mixins/typingLive'

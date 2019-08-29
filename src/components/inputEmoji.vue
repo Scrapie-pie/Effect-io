@@ -38,7 +38,8 @@ export default {
     watch: {
         text(val) {
             this.$emit('getText', val)
-            console.log('text', val)
+            this.$emit('inputChange', val)
+
             if (this.type === 'text') return
             setTimeout(() => {
                 this.placeCaretAtEnd(this.$el)
@@ -46,6 +47,21 @@ export default {
         }
     },
     methods: {
+        inputChange(e) {
+            let listText = []
+            e.target.childNodes.forEach((item, index) => {
+                if (item.nodeName == 'BR') {
+                    listText[index] = '\n'
+                } else if (item.nodeName == 'IMG') {
+                    listText[index] = item.attributes.alt.value
+                } else {
+                    listText[index] = item.textContent
+                }
+            })
+            listText = listText.join('')
+
+            this.$emit('inputChange', listText)
+        },
         placeCaretAtEnd(el) {
             el.focus()
             if (
@@ -93,20 +109,25 @@ export default {
             return item
         })
 
+        const attributes = {
+            attrs: {
+                class: 'input-emoji',
+                id: 'contenteditable',
+                contenteditable: true,
+                placeholder: 'Enter - отправить сообщение, Shift+Enter - новая строка.'
+            },
+            on: {
+                input: this.inputChange
+            }
+        }
+
         const Tag = this.tag
         if (this.type === 'text') {
             splitStr = splitStr.join('')
             return <Tag class="input-emoji" domPropsInnerHTML={splitStr} />
         } else
             return (
-                <pre
-                    class="input-emoji"
-                    id="contenteditable"
-                    contenteditable="true"
-                    placeholder="Enter - отправить сообщение, Shift+Enter - новая строка."
-                >
-                    {splitStr}
-                </pre>
+                <pre{...attributes}>{splitStr}</pre>
             )
     }
 }
