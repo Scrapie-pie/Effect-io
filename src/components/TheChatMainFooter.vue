@@ -42,8 +42,8 @@
                                 input-emoji(
                                     :text="textWidthSmiles",
                                     @caret="val=>textCaret=val",
-                                    @getText="val=>message=val"
-
+                                    @getText="val=>message=val",
+                                    @inputChange="typingLive"
                                 )
                             textarea.chat-main-footer__input(
                                 placeholder="Enter - отправить сообщение, Shift+Enter - новая строка."
@@ -114,7 +114,7 @@ import lodash_split from 'lodash/split'
 import lodash_cloneDeep from 'lodash/cloneDeep'
 
 import autosize from 'autosize'
-import { viewModeChat, httpParams, spelling } from '@/mixins/mixins'
+import { viewModeChat, httpParams, spelling, typingLive } from '@/mixins/mixins'
 
 export default {
     components: {
@@ -130,7 +130,7 @@ export default {
         inputEmoji,
         TheSpellingForm
     },
-    mixins: [viewModeChat, httpParams, spelling],
+    mixins: [viewModeChat, httpParams, spelling,typingLive],
 
     data() {
         return {
@@ -292,6 +292,7 @@ export default {
         },
 
         send() {
+            this.typingLive('')
             this.message = this.textWidthTagToText()
 
             let data = {},

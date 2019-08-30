@@ -213,7 +213,7 @@ export default {
             }
         },*/
         $route(to, from) {
-            console.log('$route TheChatMain.vue')
+
             this.getRoomUserAll()
             this.historyMessageLoadStart = true
             this.messageRun = true
@@ -244,7 +244,7 @@ export default {
         }
     },
     created() {
-        console.log('created $on messageAd')
+
 
         this.getRoomUserAll()
         this.$root.$on('chatSystemMessages', val => this.systemMessages.push(val))
@@ -283,7 +283,7 @@ export default {
             let findIndex = this.messageList.findIndex(item => item.id === val.message_id)
             console.log('emitMessageDelivered', findIndex, val)
             if (findIndex !== -1) {
-                console.log(this.messageList[findIndex])
+
                 this.$set(this.messageList[findIndex], 'delivery_status', val.delivery_status)
             } else {
                 setTimeout(() => {
