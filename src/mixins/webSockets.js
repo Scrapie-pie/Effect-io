@@ -266,7 +266,7 @@ export default {
 			})
 		},
 		'auto-attach'(val) {
-		    return
+
 			console.log('auto-attach', val)
 
 			if (val.code === this.$store.state.user.profile.code)

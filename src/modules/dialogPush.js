@@ -26,6 +26,11 @@ function dialogPush(vm, dialogName, item, findField) {
         list.push(item)
         vm.$store.commit('visitors/newList', { field: dialogName, val: { list: list } })
     }
+    else {
+        list[findIndex] = item
+        console.log('обновляем');
+        vm.$store.commit('visitors/newList', { field: dialogName, val: { list: list } })
+    }
 }
 
 export default dialogPush
