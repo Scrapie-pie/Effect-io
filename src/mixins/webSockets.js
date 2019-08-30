@@ -105,6 +105,7 @@ export default {
 			this.$store.commit('roomActive/typingLive', val)
 		},
 		'new-message'(val) {
+
 			//переместил сюда, что бы список на странице team обновлялся
 
 			if (['search', 'visor'].includes(this.viewModeChat)) return
@@ -265,6 +266,7 @@ export default {
 			})
 		},
 		'auto-attach'(val) {
+		    return
 			console.log('auto-attach', val)
 
 			if (val.code === this.$store.state.user.profile.code)

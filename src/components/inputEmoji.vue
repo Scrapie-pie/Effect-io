@@ -38,7 +38,7 @@ export default {
     watch: {
         text(val) {
             this.$emit('getText', val)
-            console.log('text', val)
+
             if (this.type === 'text') return
             setTimeout(() => {
                 this.placeCaretAtEnd(this.$el)

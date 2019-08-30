@@ -271,7 +271,7 @@ export default {
 
     methods: {
         name(item, visitorInfo) {
-            console.log(item)
+
             if (item.from_user_info.guest_uuid) return visitorInfo.name
             else return item.from_user_info.name
         },
