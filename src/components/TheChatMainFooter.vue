@@ -292,6 +292,7 @@ export default {
         },
 
         send() {
+            this.typingLive('')
             this.message = this.textWidthTagToText()
 
             let data = {},
