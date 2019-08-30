@@ -141,10 +141,10 @@ export default {
                     last_message_time: val.time,
                     guest_uuid: val.guest_uuid,
                     site_id: val.site_id,
-                    photo: val.from_user_info.photo,
-                    photo_stub: val.from_user_info.photo_stub,
-                    name: val.name,
-                    regRuLogin: val.regRuLogin
+                    photo: val.contact_info.photo,
+                    photo_stub: val.contact_info.photo_stub,
+                    name: val.contact_info.name,
+                    regRuLogin: val.contact_info.regRuLogin
                 }
 
                 state.self.push(selfNew)
