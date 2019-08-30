@@ -48,14 +48,14 @@ function notificationEngine(title, body, link) {
 
 import store from '@/store/store'
 function browserNotificationMessage(val) {
-    console.log('browserNotificationMessage', val)
+
 
     if (
         !document.hidden ||
         !store.state.user.settings.settings.push_notifications ||
         !val.withBrowserNotification
     ) {
-        console.log('Не включать уведомление')
+
         return new Promise(resolve => {
             // для совместимости  с clickFunc
             resolve()
