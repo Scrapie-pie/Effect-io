@@ -46,7 +46,10 @@ export default {
     computed: {
         visitorIds(){
 
-            if(this.paramsIds.guest_uuid && this.paramsIds.site_id) return this.paramsIds
+            if(this.paramsIds.guest_uuid && this.paramsIds.site_id) {
+
+                return this.paramsIds
+            }
             else {
                 let {
                     params
@@ -101,6 +104,7 @@ export default {
     methods: {
         routerNext(status) {
             let { guest_uuid, site_id } = this.visitorIds
+            console.log(this.visitorIds);
             let processItem = this.$store.state.visitors.process.find(
                 item => item.guest_uuid + item.site_id === guest_uuid + site_id
             )
@@ -115,10 +119,13 @@ export default {
 
             if (status === 'yes') {
                 dialogPush(this, 'self', processItem)
-                this.$router.push({
-                    name: 'chatId',
-                    params: { guest_uuid, site_id }
-                })
+
+                    this.$router.push({
+                        name: 'chatId',
+                        params: { guest_uuid, site_id }
+                    })
+
+
             }
         },
 
@@ -129,16 +136,16 @@ export default {
             if (this.status) this[this.status]().then(() => this.routerNext('yes'))
         },
         recipient() {
-            return this.$http.put('chat-room-user/transfer-acceptance', this.httpParams.params)
+            return this.$http.put('chat-room-user/transfer-acceptance', this.visitorIds)
         },
         recipientNo() {
-            return this.$http.put('chat-room-user/transfer-decline', this.httpParams.params)
+            return this.$http.put('chat-room-user/transfer-decline', this.visitorIds)
         },
         unprocessed() {
-            return this.$http.put('chat-room-user/take', this.httpParams.params)
+            return this.$http.put('chat-room-user/take', this.visitorIds)
         },
         unprocessedNo() {
-            return this.$http.post('chat-room-user/decline-guest', this.httpParams.params)
+            return this.$http.post('chat-room-user/decline-guest', this.visitorIds)
         },
         invited() {
             return this.$http.post('chat-room-user/accept-invitation', {

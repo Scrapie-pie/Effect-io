@@ -29,6 +29,7 @@
                         process-actions(:paramsIds="{guest_uuid:item.guest_uuid,site_id:item.site_id}" v-if="viewModeChat=='process'")
 
 
+
 </template>
 
 <script>
