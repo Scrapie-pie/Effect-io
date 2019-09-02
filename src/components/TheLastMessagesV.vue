@@ -26,12 +26,14 @@
                             v-text="item.rootLinkOptions.text"
                             )
                         base-people.last-messages__people(v-bind="item.basePeopleOptions")
+                        process-actions(:paramsIds="{guest_uuid:item.guest_uuid,site_id:item.site_id}" v-if="viewModeChat=='process'")
 
 
 </template>
 
 <script>
 import NavAside from '@/components/NavAside'
+import ProcessActions from '@/components/ProcessActions'
 import lodash_sortBy from 'lodash/sortBy'
 import lodash_difference from 'lodash/difference'
 
@@ -40,7 +42,7 @@ import { wrapTextUrls } from '@/modules/modules'
 import { datetimeStoHMS } from '@/modules/datetime'
 
 export default {
-    components: { NavAside },
+    components: { NavAside,ProcessActions },
     mixins: [viewModeChat, httpParams, scrollbar, paginator],
 
     data() {
@@ -348,6 +350,7 @@ export default {
         position: relative;
         transition: $transition;
         padding-left: calc-em(10);
+        padding-right: calc-em(10);
         padding-top: calc-em(10);
         padding-bottom: calc-em(10);
         cursor:pointer;
@@ -404,6 +407,21 @@ export default {
         top: 0;
         //font-size:$glob-font-size_small;
         padding: calc-em(3) calc-em(10);
+    }
+
+    .process-actions {
+        &__list {
+            justify-content: flex-end;
+        }
+        &__item_no {
+            display:none;
+
+        }
+
+        .btn {
+
+            font-size:inherit;
+        }
     }
 }
 </style>

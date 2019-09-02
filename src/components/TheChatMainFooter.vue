@@ -3,7 +3,7 @@
 
             ///the-chat-system-messages
 
-            TheProcessActions(v-if="compShowProcess")
+            processActions(v-if="compShowProcess")
             fieldset.chat-main-footer__fieldset(v-else)
                 .chat-main-footer__box-control
                     box-controls(v-if="showMention", @boxControlClose="showMention=false")
@@ -104,7 +104,7 @@ import TheFilesBoard from '@/components/TheFilesBoard'
 import TheBoardSmile from '@/components/TheBoardSmile'
 import ThePhrasesReady from '@/components/ThePhrasesReady'
 import ThePhrasesSelect from '@/components/ThePhrasesSelect'
-import TheProcessActions from '@/components/TheProcessActions'
+import ProcessActions from '@/components/ProcessActions'
 import UploadFile from '@/components/UploadFile'
 import UploadFileList from '@/components/UploadFileList'
 import inputEmoji from '@/components/inputEmoji'
@@ -123,7 +123,7 @@ export default {
         TheFilesBoard,
         ThePhrasesReady,
         ThePhrasesSelect,
-        TheProcessActions,
+        ProcessActions,
         UploadFile,
         UploadFileList,
         TheBoardSmile,
