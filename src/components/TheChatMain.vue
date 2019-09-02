@@ -27,7 +27,7 @@
 
 
 
-                                input-emoji.chat-main__messages-sys(tag="p" v-else type="text", :text="item.body | wrapTextUrls")
+                                input-emoji.chat-main__messages-sys(tag="p" v-else type="text", :text="sysText(item)")
                             template(v-else)
                                 message-item(v-bind="item.basePeopleOptions")
 
@@ -74,7 +74,7 @@ import TheChatMainHeader from '@/components/TheChatMainHeader'
 import TheChatMainFooter from '@/components/TheChatMainFooter'
 import MessageItem from '@/components/MessageItem'
 import { wrapTextUrls } from '@/modules/modules'
-import { datetimeDMY } from '@/modules/datetime'
+import { datetimeDMY,datetimeHMS } from '@/modules/datetime'
 import inputEmoji from '@/components/inputEmoji'
 
 import { viewModeChat, httpParams, scrollbar } from '@/mixins/mixins'
@@ -92,7 +92,7 @@ export default {
     },
     filters: {
         wrapTextUrls,
-
+        datetimeHMS,
         messageBreakLine: function(value) {
             return value.replace(/(\r\n|\n|&lt;br&gt;)/g, '<br>') // из виджета &lt;br&gt;
         },
@@ -150,22 +150,33 @@ export default {
             let list = Object.entries(this.messageGroupDays).reverse() //['14.15.2018',[messages]]
             list.forEach(itemParent => {
                 itemParent[1] = itemParent[1].map(item => {
-                    item.basePeopleOptions = {
-                        roleId: item.from_role_id, //message-item component
-                        avatarWidth: 'md',
-                        avatarUrl: item.from_user_info.photo,
-                        avatarStub: item.from_user_info.photo_stub,
-                        name: this.name(item, this.visitorInfo),
-                        regRuLogin: this.regRuLogin(item, this.visitorInfo),
-                        text: this.$options.filters.wrapTextUrls(
-                            this.$options.filters.messageBreakLine(item.body)
-                        ),
-                        time: item.time,
-                        loaderMessage: item.delivery_status,
-                        right:
-                            item.from_user_info.id !== this.$store.state.user.profile.employee_id,
-                        files: item.files || []
+              /*      if(item.from_role_id==9) {
+
+                        item.basePeopleOptions = {
+                            text:this.$options.filters.datetimeHMS(item.time) +': '+ this.$options.filters.wrapTextUrls(this.$options.filters.messageBreakLine(item.body)
+                            ),
+
+                        }
+                        console.log(item.basePeopleOptions.text);
                     }
+                    else {*/
+                        item.basePeopleOptions = {
+                            roleId: item.from_role_id, //message-item component
+                            avatarWidth: 'md',
+                            avatarUrl: item.from_user_info.photo,
+                            avatarStub: item.from_user_info.photo_stub,
+                            name: this.name(item, this.visitorInfo),
+                            regRuLogin: this.regRuLogin(item, this.visitorInfo),
+                            text: this.$options.filters.wrapTextUrls(
+                                this.$options.filters.messageBreakLine(item.body)
+                            ),
+                            time: item.time,
+                            loaderMessage: item.delivery_status,
+                            right:
+                            item.from_user_info.id !== this.$store.state.user.profile.employee_id,
+                            files: item.files || []
+                        }
+                    //}
 
                     return item
                 })
@@ -270,6 +281,9 @@ export default {
     },
 
     methods: {
+        sysText(message) {
+            return this.$options.filters.datetimeHMS(message.time) +': '+ this.$options.filters.wrapTextUrls(this.$options.filters.messageBreakLine(message.body))
+        },
         name(item, visitorInfo) {
 
             if (item.from_user_info.guest_uuid) return visitorInfo.name
