@@ -54,6 +54,7 @@ import crm from '@/assets/img/icons/chat/crm.svg'
 import noFoundTeam from '@/assets/img/icons/chat/no-found-team.svg'
 import noFoundVisitors from '@/assets/img/icons/chat/no-found-visitors.svg'
 import noFoundMessages from '@/assets/img/icons/chat/no-found-messages.svg'
+import noFoundSearch from '@/assets/img/icons/chat/no-found-search.svg'
 
 import account from '@/assets/img/icons/chat/menu/account.svg'
 import common from '@/assets/img/icons/chat/menu/common.svg'

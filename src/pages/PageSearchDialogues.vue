@@ -45,6 +45,7 @@
                     td {{item.time | datetimeStoHMS}}
                     td(v-text="item.name")
                     td(v-text="item.messages_count")
+        base-no-found(v-else name="search")
 
 
 

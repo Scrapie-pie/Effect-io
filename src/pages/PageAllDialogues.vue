@@ -109,7 +109,7 @@
                         td.page-log-dialogues__ball
                             base-icon(:name="'ball'+item.rating")
                             |{{item.rating| ballText}}
-
+            base-no-found(v-else name="search")
 
 
 </template>
