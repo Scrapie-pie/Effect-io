@@ -71,7 +71,8 @@ function browserNotificationMessage(val) {
     if (val.status === 'unprocessed' || val.status === 'invited' || val.status === 'recipient') {
         if (val.status === 'unprocessed') {
             title = 'Не обработанно - ответить'
-            body = val.name + ': ' + val.body
+            let name = val.regRuLogin?val.regRuLogin:val.name
+            body = name + ': ' + val.body
         }
         if (val.status === 'invited') {
             title = 'Не обработанно - присоединиться'
