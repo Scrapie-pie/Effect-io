@@ -24,6 +24,32 @@ export default {
         }*/
     },
     methods: {
+        messageStatusActive(message) {
+            if (message.status === 'active') {
+                this.playSoundFile('sound_new_guest_message')
+
+                this.$store.commit('visitors/selfMessageLastUpdate', message)
+
+                let find = this.$store.state.visitors.self.find(item => {
+                    return item.guest_uuid + item.site_id === message.guest_uuid + message.site_id
+                })
+                console.log('messageStatusActive',find);
+                if(find?.unread.length===1) { //Количество не прочитанных диалогов
+                    this.$store.commit('user/unreadUpdate', ['guest', 1])
+                }
+
+
+
+
+                browserNotificationMessage(message).then(click => {
+                    console.log("browserNotificationMessage click==='toLink'", click)
+                    if (click === 'toLink') {
+                        let { guest_uuid, site_id } = message
+                        this.$router.push({ name: 'chatId', params: { guest_uuid, site_id } })
+                    }
+                })
+            }
+        },
         /*      routerPushProcessAllOrItemFirst(){
             console.log('routerPushProcess');
             let itemList = this.$store.state.visitors.process;
@@ -154,22 +180,8 @@ export default {
 						})
 					}
 				}
+                this.messageStatusActive(val)
 
-				if (val.status === 'active') {
-					this.playSoundFile('sound_new_guest_message')
-
-					this.$store.commit('visitors/selfMessageLastUpdate', val)
-                    //this.$store.state.user.profile.unread
-					//this.$store.commit('user/unreadUpdate', ['guest', 1])
-
-					browserNotificationMessage(val).then(click => {
-						console.log("browserNotificationMessage click==='toLink'", click)
-						if (click === 'toLink') {
-							let { guest_uuid, site_id } = val
-							this.$router.push({ name: 'chatId', params: { guest_uuid, site_id } })
-						}
-					})
-				}
 			} else {
 				console.log(
 					val.room_id,
