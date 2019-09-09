@@ -159,7 +159,8 @@ export default {
 					this.playSoundFile('sound_new_guest_message')
 
 					this.$store.commit('visitors/selfMessageLastUpdate', val)
-					this.$store.commit('user/unreadUpdate', ['guest', 1])
+                    //this.$store.state.user.profile.unread
+					//this.$store.commit('user/unreadUpdate', ['guest', 1])
 
 					browserNotificationMessage(val).then(click => {
 						console.log("browserNotificationMessage click==='toLink'", click)
@@ -276,7 +277,7 @@ export default {
 
 			val.awaiting_answer_time = new Date().getTime() / 1000 - val.awaiting_answer_time
 			dialogPush(this, 'self', val)
-
+            this.$store.commit('user/unreadUpdate', ['guest', 1])
 			//this.$store.commit('user/unreadUpdate',['guest',1]);
 
 			browserNotificationMessage(val).then(click => {
