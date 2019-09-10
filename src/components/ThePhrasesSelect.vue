@@ -1,12 +1,12 @@
 <template lang="pug">
 
         .phrases-select(
-            v-show="!!filterSearchResult.length"
+            v-show="!!filterSearchResult.length && !fullMatch"
         )
 
 
             base-filter-search(
-                v-show="0"
+                v-show="0",
                 :item-list="snippets"
                 fieldName="text" ,
                 @result="(val)=>filterSearchResult=val",
@@ -48,6 +48,9 @@ export default {
         }
     },
     computed: {
+        fullMatch(){
+               return this.filterSearchResult.length===1 && this.filterSearchResult[0].text===this.filterSearch
+        },
         snippets() {
             return this.$store.state.phrases.snippets
         }

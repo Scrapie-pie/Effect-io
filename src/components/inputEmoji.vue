@@ -138,6 +138,7 @@ export default {
 .input-emoji {
     white-space: inherit;
     font-family: inherit;
+    word-break: break-word;
     cursor: text;
     margin: 0;
     img {
