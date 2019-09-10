@@ -18,6 +18,7 @@ export default {
     beforeDestroy() {},
     methods: {
         typingLive(message) {
+            if(this.viewModeChat!=='visitors') return
 
             this.typingLiveMessage = message
             this.typingLiveThrottle()
