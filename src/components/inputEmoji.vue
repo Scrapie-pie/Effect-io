@@ -136,7 +136,8 @@ export default {
 
 <style lang="scss">
 .input-emoji {
-    white-space: inherit;
+    white-space: pre;
+
     font-family: inherit;
     word-break: break-word;
     cursor: text;
