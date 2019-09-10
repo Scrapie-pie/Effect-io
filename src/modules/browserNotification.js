@@ -71,7 +71,7 @@ function browserNotificationMessage(val) {
     if (val.status === 'unprocessed' || val.status === 'invited' || val.status === 'recipient') {
         if (val.status === 'unprocessed') {
             title = 'Не обработанно - ответить'
-            let name = val.regRuLogin?val.regRuLogin:val.name
+            let name = val.contact_info.regRuLogin?val.contact_info.regRuLogin:val.name
             body = name + ': ' + val.body
         }
         if (val.status === 'invited') {
@@ -87,7 +87,15 @@ function browserNotificationMessage(val) {
 
     if (val.site_id) {
         title = 'Мои диалоги'
-        let name = val.from_user_info.name ? val.from_user_info.name : 'Система'
+        let name
+        if(val.from_user_info.name) {
+            name = val.from_user_info.name
+            console.log(val);
+            if(val.contact_info.regRuLogin) name = val.contact_info.regRuLogin
+        } else {
+            name = 'Система'
+        }
+
         body = name + ': ' + val.body
     } else {
         title = 'Команда'
