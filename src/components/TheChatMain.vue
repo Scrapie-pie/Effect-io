@@ -282,7 +282,7 @@ export default {
 
     methods: {
         sysText(message) {
-            return this.$options.filters.datetimeHMS(message.time) +': '+ this.$options.filters.wrapTextUrls(this.$options.filters.messageBreakLine(message.body))
+            return this.$options.filters.datetimeHMS(message.time) +': '+ /*this.$options.filters.wrapTextUrls(*/this.$options.filters.messageBreakLine(message.body)/*)*/
         },
         name(item, visitorInfo) {
 
