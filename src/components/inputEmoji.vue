@@ -136,8 +136,6 @@ export default {
 
 <style lang="scss">
 .input-emoji {
-    white-space: pre;
-
     font-family: inherit;
     word-break: break-word;
     cursor: text;
@@ -145,6 +143,7 @@ export default {
     img {
         vertical-align: middle;
     }
+
     &[contenteditable='true']:empty:before {
         content: attr(placeholder);
         display: block; /* For Firefox */
