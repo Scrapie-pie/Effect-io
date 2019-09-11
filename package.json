@@ -8,7 +8,7 @@
     "prod-build": "vue-cli-service build --moder --mode production ",
     "lint": "vue-cli-service lint --fix",
     "test:unit": "vue-cli-service test:unit",
-    "ws":"vue-cli-service build --target wc --name effect-widget src/App.vue"
+    "ws": "vue-cli-service build --target wc --name effect-widget src/App.vue"
   },
   "dependencies": {
     "@sentry/browser": "^5.4.3",
@@ -32,6 +32,7 @@
     "vuex": "^3.1.1"
   },
   "devDependencies": {
+    "@babel/plugin-proposal-optional-chaining": "^7.2.0",
     "@vue/cli-plugin-babel": "^3.8.0",
     "@vue/cli-plugin-eslint": "^3.8.0",
     "@vue/cli-plugin-unit-jest": "^3.8.0",
@@ -41,7 +42,6 @@
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "^10.0.2",
     "babel-jest": "^24.8.0",
-    "@babel/plugin-proposal-optional-chaining": "^7.2.0",
     "babel-plugin-transform-remove-console": "^6.9.4",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.2.2",
@@ -54,7 +54,8 @@
     "vue-clicky": "^2.0.5",
     "vue-emoji-picker": "^1.0.1",
     "vue-template-compiler": "^2.6.10",
-    "vue-wait": "^1.4.6"
+    "vue-wait": "^1.4.6",
+    "webpack": "^4.39.3"
   },
   "eslintConfig": {
     "root": true,
