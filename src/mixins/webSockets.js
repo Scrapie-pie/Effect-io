@@ -30,13 +30,7 @@ export default {
 
                 this.$store.commit('visitors/selfMessageLastUpdate', message)
 
-                let find = this.$store.state.visitors.self.find(item => {
-                    return item.guest_uuid + item.site_id === message.guest_uuid + message.site_id
-                })
-                console.log('messageStatusActive',find);
-                if(find?.unread.length===1) { //Количество не прочитанных диалогов
-                    this.$store.commit('user/unreadUpdate', ['guest', 1])
-                }
+                this.$store.commit('user/socketUnreadUpdate', ['guest', message])
 
 
 
@@ -289,7 +283,8 @@ export default {
 
 			val.awaiting_answer_time = new Date().getTime() / 1000 - val.awaiting_answer_time
 			dialogPush(this, 'self', val)
-            this.$store.commit('user/unreadUpdate', ['guest', 1])
+            //this.$store.commit('user/socketUnreadUpdate', ['guest', val])
+            //this.$store.commit('user/unreadUpdate', ['guest', 1])
 			//this.$store.commit('user/unreadUpdate',['guest',1]);
 
 			browserNotificationMessage(val).then(click => {

@@ -11,7 +11,7 @@ function dialogPush(vm, dialogName, item, findField) {
         findIndex = list.findIndex(item => findFieldVal === item[findField])
     }
 
-    console.log('findIndex',findIndex);
+
 
     if (findIndex === -1) {
         console.log('findIndex -1');
