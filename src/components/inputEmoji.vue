@@ -126,10 +126,7 @@ export default {
         if (this.type === 'text') {
             splitStr = splitStr.join('')
             return <Tag class="input-emoji" domPropsInnerHTML={splitStr} />
-        } else
-            return (
-                <pre{...attributes}>{splitStr}</pre>
-            )
+        } else return <pre {...attributes}>{splitStr}</pre>
     }
 }
 </script>

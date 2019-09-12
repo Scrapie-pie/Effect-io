@@ -48,8 +48,11 @@ export default {
         }
     },
     computed: {
-        fullMatch(){
-               return this.filterSearchResult.length===1 && this.filterSearchResult[0].text===this.filterSearch
+        fullMatch() {
+            return (
+                this.filterSearchResult.length === 1 &&
+                this.filterSearchResult[0].text === this.filterSearch
+            )
         },
         snippets() {
             return this.$store.state.phrases.snippets

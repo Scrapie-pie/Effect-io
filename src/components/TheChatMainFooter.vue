@@ -130,7 +130,7 @@ export default {
         inputEmoji,
         TheSpellingForm
     },
-    mixins: [viewModeChat, httpParams, spelling,typingLive],
+    mixins: [viewModeChat, httpParams, spelling, typingLive],
 
     data() {
         return {

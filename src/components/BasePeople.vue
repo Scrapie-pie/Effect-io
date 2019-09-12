@@ -71,7 +71,7 @@ export default {
         }
     },
     props: {
-        router:{
+        router: {
             type: Object,
             default: function() {
                 return {}

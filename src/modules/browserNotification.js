@@ -48,14 +48,11 @@ function notificationEngine(title, body, link) {
 
 import store from '@/store/store'
 function browserNotificationMessage(val) {
-
-
     if (
         !document.hidden ||
         !store.state.user.settings.settings.push_notifications ||
         !val.withBrowserNotification
     ) {
-
         return new Promise(resolve => {
             // для совместимости  с clickFunc
             resolve()
@@ -71,7 +68,7 @@ function browserNotificationMessage(val) {
     if (val.status === 'unprocessed' || val.status === 'invited' || val.status === 'recipient') {
         if (val.status === 'unprocessed') {
             title = 'Не обработанно - ответить'
-            let name = val.contact_info.regRuLogin?val.contact_info.regRuLogin:val.name
+            let name = val.contact_info.regRuLogin ? val.contact_info.regRuLogin : val.name
             body = name + ': ' + val.body
         }
         if (val.status === 'invited') {
@@ -88,10 +85,10 @@ function browserNotificationMessage(val) {
     if (val.site_id) {
         title = 'Мои диалоги'
         let name
-        if(val.from_user_info.name) {
+        if (val.from_user_info.name) {
             name = val.from_user_info.name
-            console.log(val);
-            if(val.contact_info.regRuLogin) name = val.contact_info.regRuLogin
+            console.log(val)
+            if (val.contact_info.regRuLogin) name = val.contact_info.regRuLogin
         } else {
             name = 'Система'
         }

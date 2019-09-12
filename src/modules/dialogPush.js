@@ -3,7 +3,7 @@ function dialogPush(vm, dialogName, item, findField) {
     let list = vm.$store.state.visitors[dialogName].slice()
     let findIndex
     if (!findField) {
-        console.log('findField',findField);
+        console.log('findField', findField)
         let { guest_uuid, site_id } = item
         findIndex = list.findIndex(item => guest_uuid + site_id === item.guest_uuid + item.site_id)
     } else {
@@ -11,10 +11,10 @@ function dialogPush(vm, dialogName, item, findField) {
         findIndex = list.findIndex(item => findFieldVal === item[findField])
     }
 
-    console.log('findIndex',findIndex);
+    console.log('findIndex', findIndex)
 
     if (findIndex === -1) {
-        console.log('findIndex -1');
+        console.log('findIndex -1')
         let unread = item.unread ? item.unread : []
         vm.$set(item, 'unread', unread)
 
@@ -25,10 +25,9 @@ function dialogPush(vm, dialogName, item, findField) {
 
         list.push(item)
         vm.$store.commit('visitors/newList', { field: dialogName, val: { list: list } })
-    }
-    else {
+    } else {
         list[findIndex] = item
-        console.log('обновляем');
+        console.log('обновляем')
         vm.$store.commit('visitors/newList', { field: dialogName, val: { list: list } })
     }
 }

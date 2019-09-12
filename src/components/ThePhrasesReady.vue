@@ -140,7 +140,7 @@ export default {
     },
     created() {},
     methods: {
-        selectText(val){
+        selectText(val) {
             this.$emit('resultText', val)
             this.$root.$emit('globBoxControlClose')
         },

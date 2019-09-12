@@ -35,14 +35,12 @@ import inputEmoji from '@/components/inputEmoji'
 import { datetimeHMS } from '@/modules/datetime'
 export default {
     components: {
-        inputEmoji,
-
+        inputEmoji
     },
     filters: {
         datetimeHMS
     },
     props: {
-
         text: {
             type: String,
             default: ''
@@ -50,18 +48,13 @@ export default {
         time: {
             type: Number,
             default: 0
-        },
-
+        }
     },
     data() {
         return {}
     },
-    computed: {
-
-    }
+    computed: {}
 }
 </script>
 
-<style lang="scss">
-
-</style>
+<style lang="scss"></style>

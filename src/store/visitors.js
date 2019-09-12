@@ -36,7 +36,7 @@ export default {
 
         newList(state, { field, val }) {
             this._vm.$set(state, field, val.list)
-            console.log('newList',val.list);
+            console.log('newList', val.list)
 
             if (val.count) this._vm.$set(state, field + 'Count', val.count)
         },
@@ -132,7 +132,6 @@ export default {
                 }
             } else {
                 //Если сообщение пришло, но в списке не было подгружено
-
 
                 let selfNew = {
                     last_message: val.body,
