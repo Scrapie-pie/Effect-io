@@ -92,6 +92,9 @@ export default {
 
         let splitStr = lodash_split(this.text, '')
         splitStr = splitStr.map(item => {
+
+            if(item == '\n' ) item = <br/>
+
             let find = emojisBaseAll.find(itemFind => {
                 return itemFind[1] == item
             })
@@ -106,11 +109,13 @@ export default {
             console.log('item',item);
             if (item.length > 1) {
                 if (this.type == 'text')
-                    item = `<img class="${className}"   src="${src}" alt="${item}"/>`
+                    item = <img class="${className}"   src="${src}" alt="${item}"/>
                 else item = <img class={className} src={src} alt={item} />
             }
             return item
         })
+
+        console.log(splitStr);
 
         const attributes = {
             attrs: {
