@@ -132,7 +132,10 @@ export default {
         },
         itemList() {
             return this.$store.getters['operators/all'].filter(
-                item => item.online === 1 && item.id !== this.$store.state.user.profile.id // Убираем себя из списка
+                item =>
+                    item.online === 1 &&
+                    //item.id !== this.$store.state.user.profile.id && // Убираем себя из списка
+                    !this.$store.state.roomActive.usersActive.includes(item.id) //Убираем операторов если они уже есть в комнате
             )
         }
     },
