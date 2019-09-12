@@ -74,7 +74,7 @@ import TheChatMainHeader from '@/components/TheChatMainHeader'
 import TheChatMainFooter from '@/components/TheChatMainFooter'
 import MessageItem from '@/components/MessageItem'
 import { wrapTextUrls } from '@/modules/modules'
-import { datetimeDMY,datetimeHMS } from '@/modules/datetime'
+import { datetimeDMY, datetimeHMS } from '@/modules/datetime'
 import inputEmoji from '@/components/inputEmoji'
 
 import { viewModeChat, httpParams, scrollbar } from '@/mixins/mixins'
@@ -150,7 +150,7 @@ export default {
             let list = Object.entries(this.messageGroupDays).reverse() //['14.15.2018',[messages]]
             list.forEach(itemParent => {
                 itemParent[1] = itemParent[1].map(item => {
-              /*      if(item.from_role_id==9) {
+                    /*      if(item.from_role_id==9) {
 
                         item.basePeopleOptions = {
                             text:this.$options.filters.datetimeHMS(item.time) +': '+ this.$options.filters.wrapTextUrls(this.$options.filters.messageBreakLine(item.body)
@@ -160,22 +160,22 @@ export default {
                         console.log(item.basePeopleOptions.text);
                     }
                     else {*/
-                        item.basePeopleOptions = {
-                            roleId: item.from_role_id, //message-item component
-                            avatarWidth: 'md',
-                            avatarUrl: item.from_user_info.photo,
-                            avatarStub: item.from_user_info.photo_stub,
-                            name: this.name(item, this.visitorInfo),
-                            regRuLogin: this.regRuLogin(item, this.visitorInfo),
-                            text: this.$options.filters.wrapTextUrls(
-                                this.$options.filters.messageBreakLine(item.body)
-                            ),
-                            time: item.time,
-                            loaderMessage: item.delivery_status,
-                            right:
+                    item.basePeopleOptions = {
+                        roleId: item.from_role_id, //message-item component
+                        avatarWidth: 'md',
+                        avatarUrl: item.from_user_info.photo,
+                        avatarStub: item.from_user_info.photo_stub,
+                        name: this.name(item, this.visitorInfo),
+                        regRuLogin: this.regRuLogin(item, this.visitorInfo),
+                        text: this.$options.filters.wrapTextUrls(
+                            this.$options.filters.messageBreakLine(item.body)
+                        ),
+                        time: item.time,
+                        loaderMessage: item.delivery_status,
+                        right:
                             item.from_user_info.id !== this.$store.state.user.profile.employee_id,
-                            files: item.files || []
-                        }
+                        files: item.files || []
+                    }
                     //}
 
                     return item
@@ -224,7 +224,6 @@ export default {
             }
         },*/
         $route(to, from) {
-
             this.getRoomUserAll()
             this.historyMessageLoadStart = true
             this.messageRun = true
@@ -255,8 +254,6 @@ export default {
         }
     },
     created() {
-
-
         this.getRoomUserAll()
         this.$root.$on('chatSystemMessages', val => this.systemMessages.push(val))
 
@@ -282,10 +279,15 @@ export default {
 
     methods: {
         sysText(message) {
-            return this.$options.filters.datetimeHMS(message.time) +': '+ this.$options.filters.wrapTextUrls(this.$options.filters.messageBreakLine(message.body))
+            return (
+                this.$options.filters.datetimeHMS(message.time) +
+                ': ' +
+                this.$options.filters.wrapTextUrls(
+                    this.$options.filters.messageBreakLine(message.body)
+                )
+            )
         },
         name(item, visitorInfo) {
-
             if (item.from_user_info.guest_uuid) return visitorInfo.name
             else return item.from_user_info.name
         },
@@ -297,7 +299,6 @@ export default {
             let findIndex = this.messageList.findIndex(item => item.id === val.message_id)
             console.log('emitMessageDelivered', findIndex, val)
             if (findIndex !== -1) {
-
                 this.$set(this.messageList[findIndex], 'delivery_status', val.delivery_status)
             } else {
                 setTimeout(() => {

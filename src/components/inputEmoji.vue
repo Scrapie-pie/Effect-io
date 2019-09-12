@@ -37,6 +37,7 @@ export default {
     },
     watch: {
         text(val) {
+            console.log('getText', val)
             this.$emit('getText', val)
 
             this.$emit('inputChange', val)
@@ -102,6 +103,7 @@ export default {
             }
 
             let className = 'gl-16 gl-16-' + find[0]
+            console.log('item',item);
             if (item.length > 1) {
                 if (this.type == 'text')
                     item = `<img class="${className}"   src="${src}" alt="${item}"/>`
@@ -126,16 +128,14 @@ export default {
         if (this.type === 'text') {
             splitStr = splitStr.join('')
             return <Tag class="input-emoji" domPropsInnerHTML={splitStr} />
-        } else
-            return (
-                <pre{...attributes}>{splitStr}</pre>
-            )
+        } else return <pre {...attributes}>{splitStr}</pre>
     }
 }
 </script>
 
 <style lang="scss">
 .input-emoji {
+    white-space: inherit;
     font-family: inherit;
     word-break: break-word;
     cursor: text;

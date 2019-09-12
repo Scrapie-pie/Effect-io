@@ -130,7 +130,7 @@ export default {
         inputEmoji,
         TheSpellingForm
     },
-    mixins: [viewModeChat, httpParams, spelling,typingLive],
+    mixins: [viewModeChat, httpParams, spelling, typingLive],
 
     data() {
         return {
@@ -182,7 +182,7 @@ export default {
     methods: {
         textWidthTagToText() {
             let ct = document.getElementById('contenteditable')
-
+            console.log(ct.innerText);
             let listText = []
             ct.childNodes.forEach((item, index) => {
                 if (item.nodeName == 'BR') {
@@ -193,9 +193,9 @@ export default {
                     listText[index] = item.textContent
                 }
             })
-            console.log(listText)
+
             listText = listText.join('')
-            console.log(listText)
+
             ct.innerText = ''
 
             return listText
@@ -204,21 +204,17 @@ export default {
             this.textWidthSmiles = ''
             let text = this.textWidthTagToText()
             setTimeout(() => {
-                console.log(this.textCaret)
-
                 let textMas = lodash_split(text, '')
                 let textMasFinish = this.textCaret
                 for (let i = 0; i < textMasFinish; i++) {
-                    console.log(textMas[i])
                     if (textMas[i].length > 1) {
                         this.textCaret += 1
-                        console.log(this.textCaret, 'sm')
                     }
                 }
 
                 let str_left = text.substring(0, this.textCaret)
                 let str_right = text.substr(this.textCaret)
-                console.log('str_left, str_right', str_left, str_right)
+
                 this.textWidthSmiles = str_left + emoji + str_right
             }, 1)
         },

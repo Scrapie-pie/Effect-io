@@ -29,31 +29,23 @@ export default {
             //if (val) this.$root.$emit('chatSystemMessages',this.systemMessages)
         }
     },*/
-    props:{
-        paramsIds:{
+    props: {
+        paramsIds: {
             type: Object,
             default: function() {
                 return {}
             }
-        },
-
-
-
+        }
     },
     data() {
         return {}
     },
     computed: {
-        visitorIds(){
-
-            if(this.paramsIds.guest_uuid && this.paramsIds.site_id) {
-
+        visitorIds() {
+            if (this.paramsIds.guest_uuid && this.paramsIds.site_id) {
                 return this.paramsIds
-            }
-            else {
-                let {
-                    params
-                } = this.httpParams
+            } else {
+                let { params } = this.httpParams
                 return params
             }
         },
@@ -68,9 +60,7 @@ export default {
             return text
         },
         process() {
-            let {
-                guest_uuid, site_id
-            } = this.visitorIds
+            let { guest_uuid, site_id } = this.visitorIds
 
             if (guest_uuid && site_id)
                 return (
@@ -104,7 +94,7 @@ export default {
     methods: {
         routerNext(status) {
             let { guest_uuid, site_id } = this.visitorIds
-            console.log(this.visitorIds);
+            console.log(this.visitorIds)
             let processItem = this.$store.state.visitors.process.find(
                 item => item.guest_uuid + item.site_id === guest_uuid + site_id
             )
@@ -120,12 +110,10 @@ export default {
             if (status === 'yes') {
                 dialogPush(this, 'self', processItem)
 
-                    this.$router.push({
-                        name: 'chatId',
-                        params: { guest_uuid, site_id }
-                    })
-
-
+                this.$router.push({
+                    name: 'chatId',
+                    params: { guest_uuid, site_id }
+                })
             }
         },
 

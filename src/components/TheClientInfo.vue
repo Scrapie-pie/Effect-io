@@ -152,7 +152,6 @@ export default {
         this.getInfo()
     },
     mounted() {
-
         setTimeout(() => {
             if (this.$refs && this.$refs.clientComment && this.$refs.clientComment.$refs.input)
                 autosize(this.$refs.clientComment.$refs.input)

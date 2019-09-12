@@ -43,7 +43,7 @@ import { wrapTextUrls } from '@/modules/modules'
 import { datetimeStoHMS } from '@/modules/datetime'
 
 export default {
-    components: { NavAside,ProcessActions },
+    components: { NavAside, ProcessActions },
     mixins: [viewModeChat, httpParams, scrollbar, paginator],
 
     data() {
@@ -210,12 +210,12 @@ export default {
                 avatarStub: item.photo_stub,
                 avatarName: item.avatarName,
                 name: this.setName(item, this.visitorInfo),
-                regRuLogin:item.regRuLogin,
+                regRuLogin: item.regRuLogin,
                 text: wrapTextUrls(item.last_authorAndMessage),
                 channelName: this.$store.getters.channelName(item.channel_type),
 
                 bgTextNoFill: true,
-                count: item.unread.length,
+                count: item.unread.length
                 //hidden: true
             }
 
@@ -307,7 +307,7 @@ export default {
             if (this.viewModeChat === 'visitors')
                 this.$store.commit('visitors/self', { list: itemListStore })
         },
-        router(event,item) {
+        router(event, item) {
             //console.log(event,item);
 
             this.$router.push(item.rootLinkOptions.link)
@@ -354,7 +354,7 @@ export default {
         padding-right: calc-em(10);
         padding-top: calc-em(10);
         padding-bottom: calc-em(10);
-        cursor:pointer;
+        cursor: pointer;
 
         &:hover,
         &_active {
@@ -415,13 +415,11 @@ export default {
             justify-content: flex-end;
         }
         &__item_no {
-            display:none;
-
+            display: none;
         }
 
         .btn {
-
-            font-size:inherit;
+            font-size: inherit;
         }
     }
 }
