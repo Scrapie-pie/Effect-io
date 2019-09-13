@@ -82,9 +82,9 @@ export default {
         append(emoji, emojiName) {
 
 
-            //this.input += `{{smile}}{{${emojiName}}}{{smile}}`
             this.input += emoji
             let result = { input: this.input, list: this.emojiMas }
+
 
             this.$emit('result', { emoji })
             this.$root.$emit('globBoxControlClose')
