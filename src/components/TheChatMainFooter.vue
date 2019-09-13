@@ -113,7 +113,7 @@ import TheSpellingForm from '@/components/TheSpellingForm'
 import lodash_split from 'lodash/split'
 import lodash_cloneDeep from 'lodash/cloneDeep'
 
-import autosize from 'autosize'
+
 import { viewModeChat, httpParams, spelling, typingLive } from '@/mixins/mixins'
 
 export default {
@@ -134,7 +134,7 @@ export default {
 
     data() {
         return {
-            autosizeInit: true,
+
             showMention: false,
             showProcess: false,
             showGifs: false,
@@ -162,10 +162,7 @@ export default {
             this.checkIsProcessPage()
         },
         message(val) {
-            if (val && this.autosizeInit) {
-                autosize(this.$refs.chatInput)
-                this.autosizeInit = false
-            }
+
             if (val && this.showPhrasesSelectAllow) {
                 this.showPhrasesSelect = true
             }
@@ -173,16 +170,14 @@ export default {
         uploadFileList(val) {}
     },
     mounted() {},
-    beforeDestroy() {
-        autosize.destroy(this.$refs.chatInput)
-    },
+
     created() {
         this.checkIsProcessPage()
     },
     methods: {
         textWidthTagToText() {
             let ct = document.getElementById('contenteditable')
-            console.log(ct.innerText)
+
             let listText = []
             ct.childNodes.forEach((item, index) => {
                 if (item.nodeName == 'BR') {
@@ -231,7 +226,7 @@ export default {
             })
         },
         getPhrasesSelectText(val) {
-            autosize.destroy(this.$refs.chatInput)
+
             this.message = val
 
             this.textWidthSmiles = ''
@@ -243,11 +238,7 @@ export default {
                 }, 100)
             }, 1)
 
-            setTimeout(() => {
-                //Todo костыль
-                autosize(this.$refs.chatInput)
-                this.$refs.scrollbarMessage.update()
-            }, 300)
+
         },
         messageRead() {
             if (this.viewModeChat === 'operators') {
@@ -378,8 +369,7 @@ export default {
                     this.message = ''
                     this.spellingIgnoredWords = []
                     this.uploadFileList = []
-                    autosize.destroy(this.$refs.chatInput)
-                    this.autosizeInit = true
+
                     setTimeout(() => {
                         this.$refs.scrollbarMessage.update()
                     }, 200)
