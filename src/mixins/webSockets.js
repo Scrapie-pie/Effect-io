@@ -30,7 +30,9 @@ export default {
 
                 this.$store.commit('visitors/selfMessageLastUpdate', message)
 
-                this.$store.commit('user/socketUnreadUpdate', ['guest', message])
+                this.$store.commit('user/unreadUpdateGuest', message.active_unread_rooms)
+
+
 
 
 
