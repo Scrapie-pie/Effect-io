@@ -57,7 +57,6 @@
     "vue-wait": "^1.4.6",
     "webpack": "^4.39.3"
   },
-
     "gitHooks": {
         "pre-commit": "lint-staged"
     },

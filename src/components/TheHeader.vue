@@ -15,8 +15,6 @@ import UserStatus from '@/components/UserStatus'
 
 import { viewModeChat } from '@/mixins/mixins'
 
-
-
 export default {
     components: {
         NavMain,
@@ -26,6 +24,9 @@ export default {
     data() {
         return {}
     },
+
+
+
     computed: {
         headerShow() {
             return !['search', 'visor'].includes(this.viewModeChat)

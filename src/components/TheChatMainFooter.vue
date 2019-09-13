@@ -182,7 +182,7 @@ export default {
     methods: {
         textWidthTagToText() {
             let ct = document.getElementById('contenteditable')
-            console.log(ct.innerText);
+            console.log(ct.innerText)
             let listText = []
             ct.childNodes.forEach((item, index) => {
                 if (item.nodeName == 'BR') {
