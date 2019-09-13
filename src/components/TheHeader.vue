@@ -15,6 +15,8 @@ import UserStatus from '@/components/UserStatus'
 
 import { viewModeChat } from '@/mixins/mixins'
 
+
+
 export default {
     components: {
         NavMain,
