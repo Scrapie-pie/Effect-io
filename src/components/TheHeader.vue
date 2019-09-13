@@ -25,8 +25,6 @@ export default {
         return {}
     },
 
-
-
     computed: {
         headerShow() {
             return !['search', 'visor'].includes(this.viewModeChat)
