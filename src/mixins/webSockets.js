@@ -24,6 +24,28 @@ export default {
         }*/
     },
     methods: {
+        messageStatusActive(message) {
+            if (message.status === 'active') {
+                this.playSoundFile('sound_new_guest_message')
+
+                this.$store.commit('visitors/selfMessageLastUpdate', message)
+
+                this.$store.commit('user/unreadUpdateGuest', message.active_unread_rooms)
+
+
+
+
+
+
+                browserNotificationMessage(message).then(click => {
+                    console.log("browserNotificationMessage click==='toLink'", click)
+                    if (click === 'toLink') {
+                        let { guest_uuid, site_id } = message
+                        this.$router.push({ name: 'chatId', params: { guest_uuid, site_id } })
+                    }
+                })
+            }
+        },
         /*      routerPushProcessAllOrItemFirst(){
             console.log('routerPushProcess');
             let itemList = this.$store.state.visitors.process;
@@ -154,21 +176,8 @@ export default {
 						})
 					}
 				}
+                this.messageStatusActive(val)
 
-				if (val.status === 'active') {
-					this.playSoundFile('sound_new_guest_message')
-
-					this.$store.commit('visitors/selfMessageLastUpdate', val)
-					this.$store.commit('user/unreadUpdate', ['guest', 1])
-
-					browserNotificationMessage(val).then(click => {
-						console.log("browserNotificationMessage click==='toLink'", click)
-						if (click === 'toLink') {
-							let { guest_uuid, site_id } = val
-							this.$router.push({ name: 'chatId', params: { guest_uuid, site_id } })
-						}
-					})
-				}
 			} else {
 				console.log(
 					val.room_id,
@@ -276,7 +285,8 @@ export default {
 
 			val.awaiting_answer_time = new Date().getTime() / 1000 - val.awaiting_answer_time
 			dialogPush(this, 'self', val)
-
+            //this.$store.commit('user/socketUnreadUpdate', ['guest', val])
+            //this.$store.commit('user/unreadUpdate', ['guest', 1])
 			//this.$store.commit('user/unreadUpdate',['guest',1]);
 
 			browserNotificationMessage(val).then(click => {
