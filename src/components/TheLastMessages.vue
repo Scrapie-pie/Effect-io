@@ -1,6 +1,6 @@
 <template lang="pug">
     nav-aside
-        form.last-messages.last-messages_operator
+        form.last-messages
             .last-messages__search
                 base-filter-search(
                     :item-list="itemListSort",
@@ -163,9 +163,7 @@ export default {
             }
         }
     }
-    &_operator &__people {
-        pointer-events: none;
-    }
+
     &__people {
         z-index: 2;
         position: relative;

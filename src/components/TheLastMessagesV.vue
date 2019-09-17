@@ -1,31 +1,31 @@
 <template lang="pug">
     nav-aside
-        form.last-messages
+        form.last-messages-v
             base-wait(name="lastMessages")
-            .last-messages__search()
+            .last-messages-v__search()
                 base-filter-search(
                     :item-list="itemListSort",
                     @result="(val)=>filterSearchResult=val",
                     @text="(val)=>search=val"
                 )
-            scroll-bar.last-messages__scrollbar(@ps-scroll-down="scrollLoad" ref="scrollbar")
-                ul.last-messages__list
-                    li.last-messages__item(
+            scroll-bar.last-messages-v__scrollbar(@ps-scroll-down="scrollLoad" ref="scrollbar")
+                ul.last-messages-v__list
+                    li.last-messages-v__item(
                         v-for="(item, index) in filterSearchResult",
                         :key="item.guest_uuid+item.site_id+item.chat_id",
                         :class="item.classList",
                         @click="router($event,item)"
                     )
-                        .last-messages__timer(
+                        .last-messages-v__timer(
                             v-if="timerVisible(item)",
                             v-text="timer(item,timerNow,index)"
                             )
 
-                        //router-link.last-messages__btn(
+                        //router-link.last-messages-v__btn(
                             :to="item.rootLinkOptions.link"
                             v-text="item.rootLinkOptions.text"
                             )
-                        base-people.last-messages__people(v-bind="item.basePeopleOptions")
+                        base-people.last-messages-v__people(v-bind="item.basePeopleOptions")
                         process-actions(:paramsIds="{guest_uuid:item.guest_uuid,site_id:item.site_id}" v-if="viewModeChat=='process'")
 
 
@@ -59,8 +59,8 @@ export default {
                 item => -item.last_message_time
             ],
             containerFullFillItemListClassName: {
-                scrollBar: 'last-messages__scrollbar',
-                item: 'last-messages__item'
+                scrollBar: 'last-messages-v__scrollbar',
+                item: 'last-messages-v__item'
             },
 
             pageNBeforeSearch: null,
@@ -198,9 +198,9 @@ export default {
                     item.guest_uuid + item.site_id + item.chat_id === guest_uuid + site_id + chat_id
             }
             item.classList = {}
-            item.classList['last-messages__item_active'] = open
-            item.classList['last-messages__item_hot'] = item.hot
-            item.classList['last-messages__item_very-hot'] = item.very_hot
+            item.classList['last-messages-v__item_active'] = open
+            item.classList['last-messages-v__item_hot'] = item.hot
+            item.classList['last-messages-v__item_very-hot'] = item.very_hot
 
             return item
         },
@@ -318,7 +318,7 @@ export default {
 </script>
 
 <style lang="scss">
-.last-messages {
+.last-messages-v {
     $color_bg-hover: glob-color('border');
     $color_bg-error: glob-color('error');
     $color_bg-info: glob-color('info');
