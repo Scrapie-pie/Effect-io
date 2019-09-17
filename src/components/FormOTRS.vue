@@ -1,7 +1,8 @@
 <template lang="pug">
     form.form-otrs(@submit.prevent="submit")
-        fieldset
+        fieldset.form-otrs__fieldset
             legend.form-otrs__title Создание заявки в ОТРС
+            p(v-text="errText" v-if="errText" class="form-otrs__errText")
             ul.form-otrs__list
                 li.form-otrs__item
                     base-field(
@@ -40,6 +41,7 @@ export default {
 
     data() {
         return {
+            errText:'',
             email: '',
             operator_comment: '',
             category: ''
@@ -91,13 +93,23 @@ export default {
             data.email = this.email
             data.operator_comment = this.operator_comment
             data.category = this.category.val
-            this.$root.$emit('globBoxControlClose')
+
 
             this.$http.post('regru/regru/send-ticket-to-crm', data).then(({ data }) => {
-                console.log(data.data)
+                this.$root.$emit('globBoxControlClose')
+
                 //this.$root.$emit('popup-notice', 'Заявка успешно  отправлена!')
                 this.$root.$emit('popup-notice', data.data.message)
                 //this.$root.$emit('popup-notice', '<a>kakos</a>')
+            }).catch((err)=>{
+
+                //this.$root.$emit('popup-notice', err.response.data.message)
+                this.errText = err.response.data.message
+                setTimeout(()=>{
+                    this.errText=''
+                },3000)
+                //this.$root.$emit('popup-notice', err.response.data.message)
+                //this.$root.$emit('formORTS')
             })
         }
     }
@@ -109,6 +121,17 @@ export default {
     $self: '.form-otrs';
     width: 275px;
     text-align: left;
+
+    &__fieldset {
+        min-width:auto;
+    }
+
+
+    &__errText {
+        color:glob-color('error');
+        word-break: break-word;
+        margin-bottom: calc-em(20);
+    }
 
     &__item {
         margin-bottom: calc-em(20);

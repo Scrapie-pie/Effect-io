@@ -141,8 +141,11 @@ export default {
 
                     console.log(err.request)*/
 
-                    if (err.request.responseURL.includes('regru/regru/get-login-by-uuid')) {
-                        return
+                    if (
+                        err.request.responseURL.includes('regru/regru/get-login-by-uuid'),
+                        err.request.responseURL.includes('regru/regru/send-ticket-to-crm')
+                    ) {
+                        return Promise.reject(err)
                     }
 
                     /* if(err.response.status === 403) {
