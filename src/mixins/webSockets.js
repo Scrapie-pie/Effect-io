@@ -32,11 +32,6 @@ export default {
 
                 this.$store.commit('user/unreadUpdateGuest', message.active_unread_rooms)
 
-
-
-
-
-
                 browserNotificationMessage(message).then(click => {
                     console.log("browserNotificationMessage click==='toLink'", click)
                     if (click === 'toLink') {

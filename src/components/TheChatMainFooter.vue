@@ -113,7 +113,6 @@ import TheSpellingForm from '@/components/TheSpellingForm'
 import lodash_split from 'lodash/split'
 import lodash_cloneDeep from 'lodash/cloneDeep'
 
-
 import { viewModeChat, httpParams, spelling, typingLive } from '@/mixins/mixins'
 
 export default {
@@ -134,7 +133,6 @@ export default {
 
     data() {
         return {
-
             showMention: false,
             showProcess: false,
             showGifs: false,
@@ -162,7 +160,6 @@ export default {
             this.checkIsProcessPage()
         },
         message(val) {
-
             if (val && this.showPhrasesSelectAllow) {
                 this.showPhrasesSelect = true
             }
@@ -226,7 +223,6 @@ export default {
             })
         },
         getPhrasesSelectText(val) {
-
             this.message = val
 
             this.textWidthSmiles = ''
@@ -237,8 +233,6 @@ export default {
                     this.$refs.chatInput.focus()
                 }, 100)
             }, 1)
-
-
         },
         messageRead() {
             if (this.viewModeChat === 'operators') {

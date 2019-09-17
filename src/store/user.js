@@ -5,8 +5,7 @@ const getDefaultState = () => {
         profile: false,
         settings: false,
         branchListAll: [],
-        siteCompanyList: [],
-
+        siteCompanyList: []
     }
 }
 // initial state
@@ -83,16 +82,16 @@ export default {
                 state.profile.unread[val[0]] += val[1]
             }
         },
-        unreadUpdateGuest(state,number){
-            state.profile.unread.guest=number
+        unreadUpdateGuest(state, number) {
+            state.profile.unread.guest = number
         },
-        socketUnreadUpdate(state, [type,ids]) {
-
-           let findIndex = state.socketUnread[type].findIndex(item=>item.guest_uuid+item.site_id===ids.guest_uuid+item.site_id)
-            if(findIndex === -1) {
+        socketUnreadUpdate(state, [type, ids]) {
+            let findIndex = state.socketUnread[type].findIndex(
+                item => item.guest_uuid + item.site_id === ids.guest_uuid + item.site_id
+            )
+            if (findIndex === -1) {
                 state.socketUnread[type].push(ids)
             }
-
         },
         settings(state, val) {
             state.settings = val
@@ -160,7 +159,6 @@ export default {
         }
     },
     getters: {
-
         roles: state => {
             // в JavaScript, когда `false && myString` возвратит `false`, а `true && myString` возвратит `myString`.
             let { id, owner_id, role_id } = state.profile

@@ -37,7 +37,6 @@ export default {
     },
     watch: {
         text(val) {
-
             this.$emit('getText', val)
 
             this.$emit('inputChange', val)
@@ -113,8 +112,6 @@ export default {
             }
             return item
         })
-
-
 
         const attributes = {
             attrs: {
