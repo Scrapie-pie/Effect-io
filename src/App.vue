@@ -150,7 +150,7 @@ export default {
 
 
 
-                     if(err.response.status === 999) { //ошибка выставления тега
+                     if(err.response.status === -67) { //ошибка выставления тега
                          this.$root.$emit('showTagsEmit')
                         return Promise.reject(err);
                     }
