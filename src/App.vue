@@ -148,10 +148,12 @@ export default {
                         return Promise.reject(err)
                     }
 
-                    /* if(err.response.status === 403) {
-                        this.$router.push({name:'processAll'})
+
+
+                     if(err.response.status === 999) { //ошибка выставления тега
+                         this.$root.$emit('showTagsEmit')
                         return Promise.reject(err);
-                    }*/
+                    }
 
                     if (
                         err.response &&
