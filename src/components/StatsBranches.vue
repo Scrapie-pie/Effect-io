@@ -29,7 +29,7 @@
                 td(v-if="!btnDetailHide")
                     base-btn.base-table__show-hover(
                         padding="xslr"
-                        :router="{name:'statsBranchesDetail',params:{id:item.branch_id}}"
+                        :router="{name:'statsAllBranch',params:{id:item.branch_id}}"
                     ) Детальная статистика
                 td(v-text="view==='onceChat'?item.dialogues_accepted:item.dialogues_requests")
                 template(v-if="!['dialogues_accepted','dialogues_requests'].includes(order)")
