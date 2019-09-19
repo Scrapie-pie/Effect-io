@@ -19,11 +19,12 @@
 </template>
 
 <script>
-import { Picker } from 'emoji-mart-vue'
+    const EmojiMartVue = () => import('emoji-mart-vue')
+
 
 export default {
     components: {
-        'smile-picker': Picker
+        'smile-picker': EmojiMartVue.Picker
     },
     props: {
         name: {

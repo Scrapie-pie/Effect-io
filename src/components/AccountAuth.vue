@@ -53,7 +53,7 @@
 </template>
 
 <script>
-import { mapWaitingActions, mapWaitingGetters } from 'vue-wait'
+//import { mapWaitingActions, mapWaitingGetters } from 'vue-wait'
 import { hideHeader } from '@/mixins/mixins'
 export default {
     components: {},
