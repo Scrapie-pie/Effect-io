@@ -148,10 +148,12 @@ export default {
                         return Promise.reject(err)
                     }
 
-                    /* if(err.response.status === 403) {
-                        this.$router.push({name:'processAll'})
+
+
+                    if(err.response.data.error=== -67) { //ошибка выставления тега
+                         this.$root.$emit('showTagsEmit')
                         return Promise.reject(err);
-                    }*/
+                    }
 
                     if (
                         err.response &&
@@ -165,7 +167,7 @@ export default {
                     }
 
                     if (err.response.status === 401 || err.response.status === 429) {
-                        console.log(this.$route.fullPath, err.response.status)
+                        console.log(this.$route.fullPath, err.response)
                         this.$store.dispatch('user/logout').then(() => {
                             this.$router.push({
                                 name: 'auth',
