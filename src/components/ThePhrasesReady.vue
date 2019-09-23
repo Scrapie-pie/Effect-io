@@ -30,7 +30,7 @@
                                     v-for="(item, index) in phrases",
                                     :key="index"
                                 )
-                                    base-btn(theme="text", @click="selectText(item.text)").phrases-ready__phrases-text(v-text="item.text")
+                                    base-btn(theme="text", @click="selectText(item.text)").phrases-ready__phrases-text(v-text="item.text", :title="item.text")
 
                                     ul.phrases-ready__phrases-controls
                                         li.phrases-ready__phrases-button.phrases-ready__phrases-edit

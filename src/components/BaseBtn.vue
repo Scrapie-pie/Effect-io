@@ -28,6 +28,11 @@ import lodash_isEmpty from 'lodash/isEmpty'
 
 export default {
     props: {
+        title: {
+            type: String,
+            required: false,
+            default: ''
+        },
         size: {
             type: String,
             required: false,
@@ -93,6 +98,7 @@ export default {
             return this.disabled || this.wait
         },
         getTitle() {
+            if( this.title) return this.title
             if (!lodash_isEmpty(this.icon)) {
                 if (this.icon.textHidden) return this.icon.textHidden
             }
