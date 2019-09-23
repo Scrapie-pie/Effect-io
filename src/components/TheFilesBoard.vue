@@ -19,8 +19,7 @@
 </template>
 
 <script>
-    const EmojiMartVue = () => import('emoji-mart-vue')
-
+const EmojiMartVue = () => import('emoji-mart-vue')
 
 export default {
     components: {

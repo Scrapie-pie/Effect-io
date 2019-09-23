@@ -142,17 +142,16 @@ export default {
                     console.log(err.request)*/
 
                     if (
-                        err.request.responseURL.includes('regru/regru/get-login-by-uuid'),
-                        err.request.responseURL.includes('regru/regru/send-ticket-to-crm')
+                        (err.request.responseURL.includes('regru/regru/get-login-by-uuid'),
+                        err.request.responseURL.includes('regru/regru/send-ticket-to-crm'))
                     ) {
                         return Promise.reject(err)
                     }
 
-
-
-                    if(err.response.data.error=== -67) { //ошибка выставления тега
-                         this.$root.$emit('showTagsEmit')
-                        return Promise.reject(err);
+                    if (err.response.data.error === -67) {
+                        //ошибка выставления тега
+                        this.$root.$emit('showTagsEmit')
+                        return Promise.reject(err)
                     }
 
                     if (

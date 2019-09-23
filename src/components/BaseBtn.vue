@@ -98,7 +98,7 @@ export default {
             return this.disabled || this.wait
         },
         getTitle() {
-            if( this.title) return this.title
+            if (this.title) return this.title
             if (!lodash_isEmpty(this.icon)) {
                 if (this.icon.textHidden) return this.icon.textHidden
             }

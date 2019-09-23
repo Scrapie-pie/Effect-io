@@ -149,8 +149,8 @@ export default {
         $route: 'getInfo'
     },
     created() {
-        this.getInfo();
-        this.$root.$on('showTagsEmit',this.showTagsEmit)
+        this.getInfo()
+        this.$root.$on('showTagsEmit', this.showTagsEmit)
     },
     mounted() {
         setTimeout(() => {
@@ -159,12 +159,12 @@ export default {
         }, 500)
     },
     beforeDestroy() {
-        this.$root.$off('showTagsEmit',this.showTagsEmit)
+        this.$root.$off('showTagsEmit', this.showTagsEmit)
         if (this.$refs && this.$refs.clientComment && this.$refs.clientComment.$refs.input)
             autosize.destroy(this.$refs.clientComment.$refs.input)
     },
     methods: {
-        showTagsEmit(){
+        showTagsEmit() {
             this.$store.dispatch('tags/get')
             this.showTagsPopup = true
         },

@@ -41,7 +41,7 @@ export default {
 
     data() {
         return {
-            errText:'',
+            errText: '',
             email: '',
             operator_comment: '',
             category: ''
@@ -94,23 +94,24 @@ export default {
             data.operator_comment = this.operator_comment
             data.category = this.category.val
 
+            this.$http
+                .post('regru/regru/send-ticket-to-crm', data)
+                .then(({ data }) => {
+                    this.$root.$emit('globBoxControlClose')
 
-            this.$http.post('regru/regru/send-ticket-to-crm', data).then(({ data }) => {
-                this.$root.$emit('globBoxControlClose')
-
-                //this.$root.$emit('popup-notice', 'Заявка успешно  отправлена!')
-                this.$root.$emit('popup-notice', data.data.message)
-                //this.$root.$emit('popup-notice', '<a>kakos</a>')
-            }).catch((err)=>{
-
-                //this.$root.$emit('popup-notice', err.response.data.message)
-                this.errText = err.response.data.message
-                setTimeout(()=>{
-                    this.errText=''
-                },3000)
-                //this.$root.$emit('popup-notice', err.response.data.message)
-                //this.$root.$emit('formORTS')
-            })
+                    //this.$root.$emit('popup-notice', 'Заявка успешно  отправлена!')
+                    this.$root.$emit('popup-notice', data.data.message)
+                    //this.$root.$emit('popup-notice', '<a>kakos</a>')
+                })
+                .catch(err => {
+                    //this.$root.$emit('popup-notice', err.response.data.message)
+                    this.errText = err.response.data.message
+                    setTimeout(() => {
+                        this.errText = ''
+                    }, 3000)
+                    //this.$root.$emit('popup-notice', err.response.data.message)
+                    //this.$root.$emit('formORTS')
+                })
         }
     }
 }
@@ -123,12 +124,11 @@ export default {
     text-align: left;
 
     &__fieldset {
-        min-width:auto;
+        min-width: auto;
     }
 
-
     &__errText {
-        color:glob-color('error');
+        color: glob-color('error');
         word-break: break-word;
         margin-bottom: calc-em(20);
     }
