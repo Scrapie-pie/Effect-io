@@ -52,6 +52,7 @@ export default {
         this.httpErrors()
 
         this.$store.commit('setFilterlocalStorage')
+
     },
     beforeDestroy() {
         window.removeEventListener('unhandledrejection', this.promiseErrorHandler)
