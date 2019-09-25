@@ -149,11 +149,11 @@ export default {
                         return Promise.reject(err)
                     }
 
-                   /* if (err.response.data.error === -67) { //Todo RBCALL-3733
+                    if (err.response.data.error === -67) {
                         //ошибка выставления тега
                         this.$root.$emit('showTagsEmit')
                         return Promise.reject(err)
-                    }*/
+                    }
 
                     if (
                         err.response &&
