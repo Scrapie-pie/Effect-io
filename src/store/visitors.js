@@ -125,7 +125,10 @@ export default {
                 this._vm.$set(state.self[findIndex], 'last_message_time', val.time)
 
                 //this._vm.$set(state.self[findIndex],'name',val.from_user_info.name)
-                if (!val.selfUuid) {
+                if (
+                    !val.selfUuid &&
+                    val.from_role_id!=9 //не системное
+                ) {
                     let unread = state.self[findIndex].unread
                     unread.push(val.id)
                     this._vm.$set(state.self[findIndex], 'unread', unread)
@@ -133,10 +136,12 @@ export default {
             } else {
                 //Если сообщение пришло, но в списке не было подгружено
 
+                let unreadMas = val.from_role_id!=9?[val.id]:[]
+
                 let selfNew = {
                     last_message: val.body,
                     last_message_author: val.last_message_author,
-                    unread: [val.id],
+                    unread: unreadMas,
                     last_message_time: val.time,
                     guest_uuid: val.guest_uuid,
                     site_id: val.site_id,
