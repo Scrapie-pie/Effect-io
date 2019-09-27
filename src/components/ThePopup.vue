@@ -55,6 +55,7 @@ export default {
         },
         tagsClose(){
             this.showTagsPopup =false;
+
             if(this.tagsActionAfter==='actionAfterChatCompletion') {
                 let data = this.httpParams.params
                 data.intent = 'farewell'
