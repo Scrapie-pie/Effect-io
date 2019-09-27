@@ -138,7 +138,8 @@ export default {
                 name: this.name,
                 type: this.type,
                 placeholder: this.getPlaceholder,
-                value: this.value
+                value: this.value,
+                disabled: this.disabled
             }
             return Object.assign({ maxLength: 64 }, this.$attrs, obj)
         },

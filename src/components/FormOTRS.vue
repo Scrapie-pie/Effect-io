@@ -9,7 +9,8 @@
                         type="text"
                         name="login",
                         placeholder="Введите логин (e-mail) клиента"
-                        v-model="email"
+                        v-model="email",
+                        :disabled="!!visitorsEmail"
                         )
                 li.form-otrs__item
                     base-field(
