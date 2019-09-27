@@ -151,7 +151,7 @@ export default {
 
                     if (err.response.data.error === -67) {
                         //ошибка выставления тега
-                        this.$root.$emit('showTagsEmit')
+                        this.$root.$emit('showTagsEmit','actionAfterChatCompletion')
                         return Promise.reject(err)
                     }
 

@@ -26,8 +26,7 @@
                         )
                     li.client-info__item
                         base-btn(name="setTag", @click="$root.$emit('showTagsEmit')") Поставить тэг
-                        box-controls(type="popup" showTagsPopup v-if="showTagsPopup", @boxControlClose="showTagsPopup=false")
-                            select-tags
+
                     li.client-info__item
 
                         h4.client-info__name(@click="showContacts=!showContacts")
@@ -78,13 +77,13 @@ import TheRedirectClient from '@/components/TheRedirectClient'
 import autosize from 'autosize'
 import { httpParams } from '@/mixins/mixins'
 
-import SelectTags from '@/components/SelectTags'
+
 
 export default {
     components: {
         SocialLinks,
         TheRedirectClient,
-        SelectTags
+
     },
     mixins: [httpParams],
     data() {
@@ -150,7 +149,7 @@ export default {
     },
     created() {
         this.getInfo()
-        this.$root.$on('showTagsEmit', this.showTagsEmit)
+
     },
     mounted() {
         setTimeout(() => {
@@ -159,15 +158,12 @@ export default {
         }, 500)
     },
     beforeDestroy() {
-        this.$root.$off('showTagsEmit', this.showTagsEmit)
+
         if (this.$refs && this.$refs.clientComment && this.$refs.clientComment.$refs.input)
             autosize.destroy(this.$refs.clientComment.$refs.input)
     },
     methods: {
-        showTagsEmit() {
-            this.$store.dispatch('tags/get')
-            this.showTagsPopup = true
-        },
+
 
         getInfo() {
             if (!this.httpParams) return
