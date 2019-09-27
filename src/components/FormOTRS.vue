@@ -100,7 +100,7 @@ export default {
                     this.$root.$emit('globBoxControlClose')
 
                     //this.$root.$emit('popup-notice', 'Заявка успешно  отправлена!')
-                    this.$root.$emit('popup-notice', data.data.message)
+                    //this.$root.$emit('popup-notice', data.data.message)
                     //this.$root.$emit('popup-notice', '<a>kakos</a>')
                 })
                 .catch(err => {
