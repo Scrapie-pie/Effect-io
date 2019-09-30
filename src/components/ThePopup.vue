@@ -8,15 +8,22 @@
             base-btn Посмотреть тарифы
         box-controls(v-if="img",  type="gallery", @boxControlClose="img=false")
             img(:src="img" alt="Увеличенная картинка")
+        box-controls(type="popup"  v-if="showTagsPopup", @boxControlClose="tagsClose")
+            select-tags
 </template>
 
 <script>
 export default {
+    components:{
+        SelectTags:()=>import('@/components/SelectTags')
+    },
     data() {
         return {
             notFind: false,
             img: false,
-            noticeText: false
+            noticeText: false,
+            showTagsPopup:false,
+            tagsActionAfter:true,
         }
     },
     computed: {},
@@ -26,6 +33,12 @@ export default {
         this.$root.$on('popup-notice', text => {
             this.noticeText = text
         })
+
+        this.$root.$on('showTagsEmit', this.showTagsEmit)
+    },
+    beforeDestroy() {
+        this.$root.$off('showTagsEmit', this.showTagsEmit)
+
     },
     methods: {
         show(name) {
@@ -33,6 +46,22 @@ export default {
         },
         showImg(img) {
             this.img = img
+        },
+        showTagsEmit(actionAfter) {
+            this.tagsActionAfter  = actionAfter;
+            this.$store.dispatch('tags/get')
+            this.showTagsPopup = true
+
+        },
+        tagsClose(){
+            this.showTagsPopup =false;
+
+            if(this.tagsActionAfter==='actionAfterChatCompletion') {
+                let data = this.httpParams.params
+                data.intent = 'farewell'
+
+                this.$http.post('message/send-from-operator', data)
+            }
         }
     }
 }
