@@ -13,10 +13,12 @@
 </template>
 
 <script>
+    import {httpParams } from '@/mixins/mixins'
 export default {
     components:{
         SelectTags:()=>import('@/components/SelectTags')
     },
+    mixins:[httpParams],
     data() {
         return {
             notFind: false,
@@ -55,12 +57,16 @@ export default {
         },
         tagsClose(){
             this.showTagsPopup =false;
-
+            console.log(this.tagsActionAfter);
             if(this.tagsActionAfter==='actionAfterChatCompletion') {
                 let data = this.httpParams.params
                 data.intent = 'farewell'
 
-                this.$http.post('message/send-from-operator', data)
+                setTimeout(()=>{
+                    this.$http.post('message/send-from-operator', data)
+                },500)
+
+
             }
         }
     }
