@@ -106,8 +106,8 @@ export default {
             if (['search', 'visor'].includes(this.viewModeChat)) {
                 window.onbeforeunload = false
 
-                return //времено отключил
-                /*eslint-disable */
+                //return //времено отключил
+
 				if (to) {
 					this.$http.post('chat-room-user/supervisor-enter', {
 						site_id: to.params.site_id,
@@ -121,7 +121,7 @@ export default {
 						guest_uuid: from.params.guest_uuid
 					})
 				}
-				/*eslint-enabled */
+
 			}
 		}
 	}
