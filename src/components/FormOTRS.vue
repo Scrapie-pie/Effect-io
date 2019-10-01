@@ -1,5 +1,6 @@
 <template lang="pug">
     form.form-otrs(@submit.prevent="submit")
+        base-wait(name="otrsSend")
         fieldset.form-otrs__fieldset
             legend.form-otrs__title Создание заявки в ОТРС
             p(v-text="errText" v-if="errText" class="form-otrs__errText")
@@ -31,7 +32,7 @@
                     data-vv-as="\"Категория\""
                     )
 
-            base-btn.form-otrs__submit(type="submit") Отправить
+            base-btn.form-otrs__submit(type="submit" v-wait:disabled='"otrsSend"') Отправить
             base-btn(color="error", @click="$root.$emit('globBoxControlClose')") Отмена
 </template>
 

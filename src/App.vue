@@ -60,6 +60,7 @@ export default {
     methods: {
         startEndLoader(url, action) {
             let mapLoaders = {
+                otrsSend:['regru/regru/send-ticket-to-crm'],
                 accountAuth: ['user/login-oi'],
                 pageMain: ['chat/get-all'],
                 chatMainBody: ['message/history'],
@@ -130,6 +131,8 @@ export default {
                     return resp
                 },
                 err => {
+
+
                     console.table(err)
 
                     this.startEndLoader(err.config.url.split(err.config.baseURL)[1], 'end')
