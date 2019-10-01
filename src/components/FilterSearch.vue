@@ -53,7 +53,10 @@ export default {
             if (!this.search) return this.compItemList
 
             return this.compItemList.filter(item => {
-                let regexp = new RegExp(this.search, 'ig')
+                RegExp.quote = function(str) {
+                    return str.replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1");
+                };
+                let regexp = new RegExp(RegExp.quote(this.search), 'ig')
 
                 if (lodash_isEmpty(item[this.fieldName])) return 0 //Todo у оператора fullName
                 if (item[this.fieldName].match(regexp) == null) return 0
