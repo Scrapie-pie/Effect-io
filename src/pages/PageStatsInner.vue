@@ -93,6 +93,7 @@ export default {
     },
     computed: {
         activeComponent() {
+            if (this.routerName === 'statsAllClock') return 'statsAll'
             if (this.routerName === 'statsAllBranch') return 'statsAll'
             if (this.routerName === 'statsAllOperator') return 'statsAll'
             if (this.routerName === 'statsOperatorsDetail') return 'statsResult'
@@ -154,13 +155,14 @@ export default {
             if (this.routerName === 'statsTags') return 'tags'
             if (this.routerName === 'statsPages') return 'pages'
 
+            if (this.routerName === 'statsAllClock') return 'branches'
             if (this.routerName === 'statsAll') return 'branches'
             if (this.routerName === 'statsAllBranch') return 'branch'
             if (this.routerName === 'statsAllOperator') return 'employee'
 
             if (this.routerName === 'statsService') return 'top'
             if (this.routerName === 'statsBranches') return 'branches'
-            if (this.routerName === 'statsAll') return 'branches'
+
             if (this.routerName === 'statsBranchesDetail') return 'branch'
             if (this.routerName === 'statsOperators') return 'employees'
             if (this.routerName === 'statsOperatorsDetail') return 'employee'

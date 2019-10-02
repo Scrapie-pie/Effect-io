@@ -20,6 +20,24 @@ export default [
         },
         children: [
             {
+                name: 'statsAllClock',
+                path: 'all-clock',
+                meta: {
+                    title: 'Раскладка по часам'
+                },
+                component: PageStatsInner,
+                children: [
+                    {
+                        name: 'statsAllBranch',
+                        path: ':id',
+                        component: PageStatsInner,
+                        meta: {
+                            title: 'Статистика по отделу'
+                        }
+                    }
+                ]
+            },
+            {
                 name: 'statsAll',
                 path: 'all',
                 meta: {
