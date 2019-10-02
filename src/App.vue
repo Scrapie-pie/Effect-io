@@ -60,6 +60,7 @@ export default {
     methods: {
         startEndLoader(url, action) {
             let mapLoaders = {
+                otrsSend:['regru/regru/send-ticket-to-crm'],
                 accountAuth: ['user/login-oi'],
                 pageMain: ['chat/get-all'],
                 chatMainBody: ['message/history'],
@@ -95,7 +96,7 @@ export default {
                 if (
                     mapLoaders[key].some(item => {
                         if (item === url) {
-                            //console.log(url,key,action);
+
                         }
 
                         return item === url
@@ -121,26 +122,20 @@ export default {
 
             this.$http.interceptors.response.use(
                 resp => {
-                    /*console.log(resp.config.baseURL);
-                    console.log(resp.config.url);
-                    console.log(resp.config.url.split(resp.config.baseURL)[1]);*/
+
 
                     this.startEndLoader(resp.config.url.split(resp.config.baseURL)[1], 'end')
                     this.startEndLoader(resp.config.url.split('?')[1], 'end')
                     return resp
                 },
                 err => {
+
+
                     console.table(err)
 
                     this.startEndLoader(err.config.url.split(err.config.baseURL)[1], 'end')
                     this.startEndLoader(err.config.url.split('?')[1], 'end')
-                    //this.$wait.end(err.config.url.split('?')[0]);
-                    //this.$store.commit('loading',false)
-                    /*    console.table(err);
-                    console.log(err.config);
-                    console.log(err.response);
 
-                    console.log(err.request)*/
 
                     if (
                         (err.request.responseURL.includes('regru/regru/get-login-by-uuid'),
