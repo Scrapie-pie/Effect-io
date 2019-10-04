@@ -122,6 +122,7 @@ export default {
                 filterList: this.filterSearchResult
             }
 
+            if (this.routerName === 'statsAllClock') obj.byHours = 1
             if (this.routerName === 'statsAllBranch') obj.branch_id = this.branch_id
             if (this.routerName === 'statsAllOperator') obj.user_id = this.user_id
 
