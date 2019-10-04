@@ -113,8 +113,8 @@ export default {
                 let val = this.selectedDay
 
                 if (val) {
-                    let date_from = datetimeDMY(val.start)
-                    let date_to = datetimeDMY(val.start)
+                    let date_from = datetimeDMY(val)
+                    let date_to = datetimeDMY(val)
 
                     return {
                         start: val.start,
