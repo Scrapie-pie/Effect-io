@@ -4,6 +4,7 @@
             thead.stats-table-line__thead
                 tr
                     th
+
                         base-radio-check(
                         v-if="$route.name==='statsAllBranch'"
                         v-model="by_dates" name="by_dates"
@@ -105,6 +106,7 @@
             tbody
                 tr(v-for="(item, index) in commonRow", :key="index")
                     td
+
                         | {{item.name}}
 
 
@@ -132,9 +134,16 @@
                     td {{item.excellent_ratings}}
                     td {{item.badly_ratings}}
                     td {{item.middling_ratings}}
-
-                tr(v-for="(item, index) in itemList", :key="item.id")
+            tbody(v-for="(item, index) in itemList", :key="item.id")
+                tr
+                    td(colspan="15" style="padding:0")
+                tr
                     td
+                        //base-radio-check(:name="item.id") +
+
+                        btn-toggle-plus(:toggle="item.byHoursListToggle", @result="val=>getHours(item,val)")
+                        |&nbsp
+
                         router-link(
                             v-if="item.id"
                             :to="{name:link,params:{id:item.id}}"
@@ -166,6 +175,35 @@
                     td {{item.excellent_ratings}}
                     td {{item.badly_ratings}}
                     td {{item.middling_ratings}}
+                template( v-if="item.byHoursListToggle")
+                    tr(v-for="(item, index) in item.byHoursList")
+                        td {{item.name}}
+
+
+                        td {{item.dialogues_requests}}
+                        td {{item.dialogues_accepted}}
+                        td {{item.dialogues_missed}}
+                        td {{item.missed_average_time | datetimeStoHMS(true)}}
+                        td {{item.first_answer_average_speed | datetimeStoHMS(true)}}
+                        td {{item.first_answers_in_20_40_seconds }} #[br] {{item.first_answers_in_20_40_seconds_percents}}%
+                        td {{item.first_answers_in_40_60_seconds }} #[br] {{item.first_answers_in_40_60_seconds_percents}}%
+                        td {{item.first_answers_in_60_more_seconds }} #[br]{{item.first_answers_in_60_more_seconds_percents}}%
+
+                        td {{item.dialogues_transferred_to_branches}}
+                        td {{item.chats_with_new_guests}}
+                        td {{item.operators_time_in_online  | datetimeStoHMS(true)}}
+                        td {{item.operators_time_in_chats  | datetimeStoHMS(true)}}
+                        td {{item.operators_time_in_1_chat  | datetimeStoHMS(true)}}
+                        td {{item.operators_time_in_2_chats  | datetimeStoHMS(true)}}
+                        td {{item.operators_time_in_3_chats  | datetimeStoHMS(true)}}
+                        td {{item.operators_time_in_4_and_more_chats  | datetimeStoHMS(true)}}
+                        td {{item.average_time_in_chats | datetimeStoHMS(true)}}
+                        td {{item.operators_time_in_break  | datetimeStoHMS(true)}}
+                        td {{item.operator_messages}}
+                        td {{item.guest_messages}}
+                        td {{item.excellent_ratings}}
+                        td {{item.badly_ratings}}
+                        td {{item.middling_ratings}}
         nav.stats-table-line__nav
             ul.stats-table-line__nav-list
                 li.stats-table-line__nav-item
@@ -186,11 +224,13 @@
 <script>
 import { sortFields, stats } from '@/mixins/mixins'
 import BtnSort from '@/components/BtnSort'
+import BtnTogglePlus from '@/components/BtnTogglePlus'
 
 import { datetimeStoHMS } from '@/modules/datetime'
 export default {
     components: {
-        BtnSort
+        BtnSort,
+        BtnTogglePlus
     },
     filters: {
         datetimeStoHMS
@@ -205,15 +245,18 @@ export default {
             maxStep: 2,
             countStep: 0,
             operatorList: [],
-            commonRow: []
+            commonRow: [],
+            byHoursList:{}
         }
     },
     computed: {
+
         employeesParams() {
             return Object.assign({}, this.params, { type: 'employees' })
         },
 
         link() {
+            if (this.$route.name === 'statsAllByHours') return 'statsAllBranch'
             if (this.$route.name === 'statsAll') return 'statsAllBranch'
             if (this.$route.name === 'statsAllBranch') return 'statsAllOperator'
             return ''
@@ -263,6 +306,29 @@ export default {
 
         },
         methods:{
+
+            getHours(row,toggle) {
+
+                let findIndex = this.bodyList.findIndex(findItem=>findItem.id===row.id)
+                this.$set(this.bodyList[findIndex], 'byHoursListToggle', toggle)
+
+
+                if(this.bodyList[findIndex].byHoursRequestFlag) return
+
+                this.$http.get('statistic/get-by-params',{
+                    params:this.byHoursBranchParams(row.id)
+                }).then((response)=>{
+                    this.$set(this.bodyList[findIndex], 'byHoursList', response.data.data)
+                    this.$set(this.bodyList[findIndex], 'byHoursRequestFlag', 1)
+                })
+            },
+            byHoursBranchParams(branchId) {
+                return Object.assign({}, this.params, {
+                    branch_id:branchId,
+
+                    byHours:1
+                })
+            },
             getOperators(){
                 console.log('getOperators');
                         this.$http.get('statistic/get-by-params',{

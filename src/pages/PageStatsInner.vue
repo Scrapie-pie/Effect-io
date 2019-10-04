@@ -10,6 +10,7 @@
         filter-drop-menu(
             v-show="showCalendar"
             name="calendar",
+            :calendarOptions="calendarOptions"
             key="calendar",
             @get="filterCalendar"
             slot="control"
@@ -92,8 +93,14 @@ export default {
         }
     },
     computed: {
+        calendarOptions(){
+            let obj = {}
+            if (this.routerName === 'statsAllByHours') obj.mode='single'
+
+            return obj
+        },
         activeComponent() {
-            if (this.routerName === 'statsAllClock') return 'statsAll'
+            if (this.routerName === 'statsAllByHours') return 'statsAll'
             if (this.routerName === 'statsAllBranch') return 'statsAll'
             if (this.routerName === 'statsAllOperator') return 'statsAll'
             if (this.routerName === 'statsOperatorsDetail') return 'statsResult'
@@ -122,7 +129,7 @@ export default {
                 filterList: this.filterSearchResult
             }
 
-            if (this.routerName === 'statsAllClock') obj.byHours = 1
+            if (this.routerName === 'statsAllByHours') obj.byHours = 1
             if (this.routerName === 'statsAllBranch') obj.branch_id = this.branch_id
             if (this.routerName === 'statsAllOperator') obj.user_id = this.user_id
 
@@ -156,7 +163,7 @@ export default {
             if (this.routerName === 'statsTags') return 'tags'
             if (this.routerName === 'statsPages') return 'pages'
 
-            if (this.routerName === 'statsAllClock') return 'branches'
+            if (this.routerName === 'statsAllByHours') return 'branches'
             if (this.routerName === 'statsAll') return 'branches'
             if (this.routerName === 'statsAllBranch') return 'branch'
             if (this.routerName === 'statsAllOperator') return 'employee'
@@ -198,6 +205,7 @@ export default {
                 this.routerName !== 'statsService' &&
                 this.routerName !== 'statsBranchesDetail' &&
                 this.routerName !== 'statsAll' &&
+                this.routerName !== 'statsAllByHours' &&
                 this.routerName !== 'statsAllBranch' &&
                 this.routerName !== 'statsAllOperator' &&
                 this.routerName !== 'statsOperatorsDetail' &&

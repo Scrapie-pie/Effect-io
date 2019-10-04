@@ -36,7 +36,7 @@
                         ) Одноразовые чаты
                 li.page-stats__item
                     router-link.page-stats__link(
-                    :to='{name:"statsAllClock"}'
+                    :to='{name:"statsAllByHours"}'
                     ) Раскладка по часам
                 li.page-stats__item
                     router-link.page-stats__link(

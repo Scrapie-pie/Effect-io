@@ -7,7 +7,7 @@
 
             .filter-drop-menu__box(:class="{'filter-drop-menu__box_open':show}")
                 template(v-if="name==='calendar'")
-                    app-calendar(@get="val=>modelradio=val")
+                    app-calendar(@get="val=>modelradio=val", :options="calendarOptions")
 
                 template(v-else)
                     .filter-drop-menu__controls
@@ -56,7 +56,12 @@ export default {
         type: {
             type: String,
             default: 'checkbox'
+        },
+        calendarOptions:{
+            type: Object,
+            default:()=>{}
         }
+
     },
 
     data() {
@@ -115,7 +120,10 @@ export default {
                 let strDate = ''
                 if (this.modelradio) {
                     strDate = `${this.modelradio.date_from} - ${this.modelradio.date_to}`
-                } else strDate = 'Интервал не выбран'
+                } else {
+                    if(this.calendarOptions?.mode==='single') strDate = 'Выбрать дату'
+                        else strDate = 'Интервал не выбран'
+                }
 
                 return strDate
             }

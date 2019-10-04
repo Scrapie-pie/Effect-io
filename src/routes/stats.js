@@ -20,10 +20,10 @@ export default [
         },
         children: [
             {
-                name: 'statsAllClock',
-                path: 'all-clock',
+                name: 'statsAllByHours',
+                path: 'allByHours',
                 meta: {
-                    title: 'Раскладка по часам'
+                    title: 'Общая статистика. Раскладка по часам'
                 },
                 component: PageStatsInner,
                 children: [
