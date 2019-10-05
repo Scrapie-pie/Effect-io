@@ -119,7 +119,14 @@ export default {
             if (this.name === 'calendar') {
                 let strDate = ''
                 if (this.modelradio) {
-                    strDate = `${this.modelradio.date_from} - ${this.modelradio.date_to}`
+
+                    if(this.calendarOptions?.mode==='single') {
+                        strDate = `${this.modelradio.date_from} | ${this.modelradio.time_from} - ${this.modelradio.time_to}`
+                    } else {
+                        strDate = `${this.modelradio.date_from} - ${this.modelradio.date_to}`
+                    }
+
+
                 } else {
                     if(this.calendarOptions?.mode==='single') strDate = 'Выбрать дату'
                         else strDate = 'Интервал не выбран'

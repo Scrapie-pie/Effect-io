@@ -141,7 +141,7 @@
                     td
                         //base-radio-check(:name="item.id") +
 
-                        btn-toggle-plus(:toggle="item.byHoursListToggle", @result="val=>getHours(item,val)")
+                        btn-toggle-plus(:toggle="item.byHoursListToggle", @result="val=>byHoursGetList(item,val)")
                         |&nbsp
 
                         router-link(
@@ -256,9 +256,13 @@ export default {
         },
 
         link() {
-            if (this.$route.name === 'statsAllByHours') return 'statsAllBranch'
+
             if (this.$route.name === 'statsAll') return 'statsAllBranch'
             if (this.$route.name === 'statsAllBranch') return 'statsAllOperator'
+
+            if (this.$route.name === 'statsAllByHours') return 'statsAllBranchByHours'
+            if (this.$route.name === 'statsAllBranchByHours') return 'statsAllOperatorByHours'
+
             return ''
         },
         showRight() {
@@ -307,7 +311,7 @@ export default {
         },
         methods:{
 
-            getHours(row,toggle) {
+            byHoursGetList(row,toggle) {
 
                 let findIndex = this.bodyList.findIndex(findItem=>findItem.id===row.id)
                 this.$set(this.bodyList[findIndex], 'byHoursListToggle', toggle)
@@ -322,10 +326,10 @@ export default {
                     this.$set(this.bodyList[findIndex], 'byHoursRequestFlag', 1)
                 })
             },
-            byHoursBranchParams(branchId) {
+            byHoursBranchParams(branchIdOREmployeId) {
                 return Object.assign({}, this.params, {
-                    branch_id:branchId,
-
+                    branch_id:branchIdOREmployeId,
+                    type:this.type,
                     byHours:1
                 })
             },
@@ -344,7 +348,7 @@ export default {
                 let step = Math.abs(window.innerWidth-el.offsetWidth-20)  / this.maxStep *-1
 
 
-                console.log(direction,this.countStep);
+
                 if (direction === 'left' && this.countStep > 0) {
                     this.countStep-=1
                     this.translateX=step *this.countStep;

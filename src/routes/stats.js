@@ -28,7 +28,7 @@ export default [
                 component: PageStatsInner,
                 children: [
                     {
-                        name: 'statsAllBranch',
+                        name: 'statsAllBranchByHours',
                         path: ':id',
                         component: PageStatsInner,
                         meta: {
@@ -36,6 +36,14 @@ export default [
                         }
                     }
                 ]
+            },
+            {
+                name: 'statsAllOperatorByHours',
+                path: 'employeesByHours/:id',
+                meta: {
+                    title: 'Статистика по сотруднику. Раскладка по часам'
+                },
+                component: PageStatsInner
             },
             {
                 name: 'statsAll',

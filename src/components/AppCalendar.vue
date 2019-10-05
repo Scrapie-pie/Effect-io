@@ -108,40 +108,30 @@ export default {
 
         dates() {
 
-
+            let selectedDay = {}
             if(this.mode==='single') {
-                let val = this.selectedDay
-
-                if (val) {
-                    let date_from = datetimeDMY(val)
-                    let date_to = datetimeDMY(val)
-
-                    return {
-                        start: val.start,
-                        end: val.end,
-                        date_from,
-                        date_to,
-                        time_from: this.time_from,
-                        time_to: this.time_to
-                    }
-                }
+                selectedDay.end = this.selectedDay
+                selectedDay.start = this.selectedDay
             }
             else {
-                let val = this.selectedDay
-                let date_from, date_to
-                if (val && val.end && val.start) {
-                    date_from = datetimeDMY(val.start)
-                    date_to = datetimeDMY(val.end)
-                    return {
-                        start: val.start,
-                        end: val.end,
-                        date_from,
-                        date_to,
-                        time_from: this.time_from,
-                        time_to: this.time_to
-                    }
+                selectedDay = this.selectedDay
+            }
+
+
+            let date_from, date_to
+            if (selectedDay && selectedDay.end && selectedDay.start) {
+                date_from = datetimeDMY(selectedDay.start)
+                date_to = datetimeDMY(selectedDay.end)
+                return {
+                    start: selectedDay.start,
+                    end: selectedDay.end,
+                    date_from,
+                    date_to,
+                    time_from: this.time_from,
+                    time_to: this.time_to
                 }
             }
+
 
             return null
         }
@@ -155,12 +145,22 @@ export default {
                 if (!val.length) return
                 if (!this.selectedDayStoreOnce) return
 
-                let { end, start } = val[0]
+                let { end, start,time_from,time_to } = val[0]
 
-                this.selectedDay = {
-                    start: new Date(start),
-                    end: new Date(end)
+                console.log(this.mode);
+                if(this.mode==='single') {
+                    this.selectedDay = new Date(start)
                 }
+                else {
+                    this.selectedDay = {
+                        start: new Date(start),
+                        end: new Date(end)
+                    }
+                }
+
+                this.time_from= time_from
+                this.time_to= time_to
+
                 this.$emit('get', this.dates)
                 this.selectedDayStoreOnce = false
             },
