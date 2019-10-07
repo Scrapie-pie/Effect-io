@@ -33,6 +33,7 @@ export default {
     },
     watch: {
         isAuth(val) {
+            if(process.env.NODE_ENV === 'development') return
             if (val) {
                 window.onbeforeunload = function() {
                     return 'Данные не сохранены. Точно перейти?'
