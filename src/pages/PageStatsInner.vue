@@ -96,15 +96,14 @@ export default {
     computed: {
         showLastDays(){
 
-            if (this.routerName === 'statsAllByHours') return false
+            if (this.routerName === 'statsAllByHours' || this.routerName === 'statsAllBranchByHours') return false
 
             return true
         },
         calendarOptions(){
             let obj = {}
             if (this.routerName === 'statsAllByHours' ||
-                this.routerName === 'statsAllBranchByHours' ||
-                this.routerName === 'statsAllOperatorByHours'
+                this.routerName === 'statsAllBranchByHours'
             ) obj.mode='single'
 
             return obj
@@ -117,7 +116,6 @@ export default {
 
             if (this.routerName === 'statsAllByHours') return 'statsAll'
             if (this.routerName === 'statsAllBranchByHours') return 'statsAll'
-            if (this.routerName === 'statsAllOperatorByHours') return 'statsAll'
 
             if (this.routerName === 'statsOperatorsDetail') return 'statsResult'
             if (this.routerName === 'statsBranchesDetail') return 'statsResult'
@@ -146,12 +144,13 @@ export default {
             }
 
 
+
             if (this.routerName === 'statsAllBranch') obj.branch_id = this.branch_id
             if (this.routerName === 'statsAllOperator') obj.user_id = this.user_id
 
             if (this.routerName === 'statsAllByHours') obj.byHours = 1
             if (this.routerName === 'statsAllBranchByHours') {obj.branch_id = this.branch_id}
-            if (this.routerName === 'statsAllOperatorByHours') {obj.user_id = this.user_id}
+
 
             if (this.routerName === 'statsOperatorsDetail') obj.user_id = this.user_id
             if (this.routerName === 'statsBranchesDetail') obj.branch_id = this.branch_id
@@ -254,10 +253,10 @@ export default {
     watch: {
         routerName: {
             handler(val) {
-                if(val==='statsAllByHours' || val==='statsAllBranchByHours' || val==='statsAllOperatorByHours') {
-
+                if(this.showCalendar) return //Иначе бага, если уже календарь был показан, то при переходе не было запроса
+                if(val==='statsAllByHours' || val==='statsAllBranchByHours') {
                     this.filterLast_days('-1')
-                    this.$store.commit('setFilter', { ['last_days']: ['-1'] })
+                    this.$store.commit('setFilter', { 'last_days': ['-1'] })
                 }
             },
 

@@ -59,7 +59,7 @@ export default {
         },
         calendarOptions:{
             type: Object,
-            default:()=>{}
+            default:()=>{return{}}
         }
 
     },

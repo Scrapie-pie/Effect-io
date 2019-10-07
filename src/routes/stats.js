@@ -38,14 +38,6 @@ export default [
                 ]
             },
             {
-                name: 'statsAllOperatorByHours',
-                path: 'employeesByHours/:id',
-                meta: {
-                    title: 'Статистика по сотруднику. Раскладка по часам'
-                },
-                component: PageStatsInner
-            },
-            {
                 name: 'statsAll',
                 path: 'all',
                 meta: {

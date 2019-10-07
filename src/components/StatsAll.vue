@@ -139,13 +139,13 @@
                     td(colspan="15" style="padding:0")
                 tr
                     td
-                        //base-radio-check(:name="item.id") +
 
-                        btn-toggle-plus(:toggle="item.byHoursListToggle", @result="val=>byHoursGetList(item,val)")
-                        |&nbsp
+                        template(v-if="$route.name=='statsAllByHours' || $route.name=='statsAllBranchByHours'")
+                            btn-toggle-plus(:toggle="item.byHoursListToggle", @result="val=>byHoursGetList(item,val)")
+                            |&nbsp
 
                         router-link(
-                            v-if="item.id"
+                            v-if="item.id && $route.name!='statsAllBranchByHours'"
                             :to="{name:link,params:{id:item.id}}"
                         ) {{item.name}}
                         span(v-else) {{item.name}}
@@ -261,7 +261,7 @@ export default {
             if (this.$route.name === 'statsAllBranch') return 'statsAllOperator'
 
             if (this.$route.name === 'statsAllByHours') return 'statsAllBranchByHours'
-            if (this.$route.name === 'statsAllBranchByHours') return 'statsAllOperatorByHours'
+
 
             return ''
         },
@@ -288,7 +288,7 @@ export default {
         watch:{
             employeesParams:{
                 handler(val){
-                    if(this.$route.name==='statsAllBranch' && val
+                    if((this.$route.name==='statsAllBranch' || this.$route.name==='statsAllBranchByHours') && val
                         && (this.by_dates===0 && this.last_days || (this.date_from && this.date_to))) { //Иначе запрос 2 раза иногда вызывался и создавал дубликат
 
 
@@ -326,10 +326,23 @@ export default {
                     this.$set(this.bodyList[findIndex], 'byHoursRequestFlag', 1)
                 })
             },
-            byHoursBranchParams(branchIdOREmployeId) {
+            byHoursBranchParams(branchIdOrUserId) {
+                let type,fieldNameId
+
+                if(this.$route.name==='statsAllByHours') {
+                    fieldNameId = 'branch_id'
+                    type = 'branch'
+                }
+                if(this.$route.name==='statsAllBranchByHours') {
+                    fieldNameId = 'user_id'
+                    type = 'employee'
+                }
+
+
+
                 return Object.assign({}, this.params, {
-                    branch_id:branchIdOREmployeId,
-                    type:this.type,
+                    [fieldNameId]:branchIdOrUserId,
+                    type:type,
                     byHours:1
                 })
             },
