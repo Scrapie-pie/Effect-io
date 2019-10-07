@@ -289,7 +289,7 @@ export default {
             employeesParams:{
                 handler(val){
                     if((this.$route.name==='statsAllBranch' || this.$route.name==='statsAllBranchByHours') && val
-                        && (this.by_dates===0 && this.last_days || (this.date_from && this.date_to))) { //Иначе запрос 2 раза иногда вызывался и создавал дубликат
+                        && this.by_dates===0 && ( this.last_days || (this.date_from && this.date_to))) { //Иначе запрос 2 раза иногда вызывался и создавал дубликат
 
 
 
