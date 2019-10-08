@@ -109,7 +109,8 @@ export default {
                 //return //времено отключил
 
 				if (to) {
-					this.$http.post('chat-room-user/supervisor-enter', {
+                    console.log('supervisor-enter');
+                    this.$http.post('chat-room-user/supervisor-enter', {
 						site_id: to.params.site_id,
 						guest_uuid: to.params.guest_uuid
 					})
