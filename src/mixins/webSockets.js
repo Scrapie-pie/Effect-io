@@ -125,7 +125,7 @@ export default {
 
 			//переместил сюда, что бы список на странице team обновлялся
 
-			if (['search'].includes(this.viewModeChat)) return //Чтобы на странице поиска не приходили сообщения.
+			if (['search'].includes(this.viewModeChat)) return //Чтобы на странице поиска не приходили сообщения...
 
 			console.log('sockets new-message', val)
 			val.socket = true //Todo Временное решение, на проверку дубликатов, пока Симон не исправит
