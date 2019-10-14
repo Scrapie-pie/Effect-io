@@ -5,7 +5,7 @@ import * as Integrations from '@sentry/integrations'
 
 
 
-if (process.env.NODE_ENV !== 'development') {
+if (process.env.VUE_APP_SENTRY) {
 
     Sentry.init({
         dsn: 'https://6e8272b198fc441fa55ede8d62e7f90e@sentry.io/1489595',
