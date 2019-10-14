@@ -36,6 +36,10 @@
                         ) Одноразовые чаты
                 li.page-stats__item
                     router-link.page-stats__link(
+                    :to='{name:"statsAllByHours"}'
+                    ) Раскладка по часам
+                li.page-stats__item
+                    router-link.page-stats__link(
                     :to='{name:"statsTags"}'
                     ) Статистика по тегам
         section.page-stats__main

@@ -7,7 +7,8 @@
             )
         ul.app-calendar__times(v-if="dates")
             li.app-calendar__time
-                .app-calendar__time-text(v-text="'C '+dates.date_from")
+                .app-calendar__time-text(v-if="mode!=='single'" v-text="'C '+dates.date_from")
+                .app-calendar__time-text(v-else v-text="'C'")
                 base-field.app-calendar__field(
                         type="time"
                         name="time_from",
@@ -17,7 +18,8 @@
 
                     )
             li.app-calendar__time
-                .app-calendar__time-text(v-text="'По '+dates.date_to")
+                .app-calendar__time-text(v-if="mode!=='single'" v-text="'По '+dates.date_to")
+                .app-calendar__time-text(v-else v-text="'По'")
                 base-field.app-calendar__field(
                     type="time"
                     name="time_to",
@@ -46,7 +48,13 @@ export default {
         'v-calendar': Calendar,
         'v-date-picker': DatePicker
     },
+    props:{
+        options:{
+            type: Object,
+            default:()=>{return {}}
+        },
 
+    },
     data() {
         return {
             selectedDay: null,
@@ -56,6 +64,9 @@ export default {
         }
     },
     computed: {
+        mode(){
+            return this.options.mode || 'range'
+        },
         selectedDayStore() {
             if (this.$store.state.filterSelect.last_days[0] == -1)
                 return this.$store.state.filterSelect.calendar
@@ -80,7 +91,7 @@ export default {
                 isDoublePaned: true,
                 isLinked: true,
                 //showLinkedButtons:true,
-                mode: 'range',
+                mode: this.mode,
                 showCaps: true,
                 attributes: [
                     {
@@ -96,20 +107,32 @@ export default {
         },
 
         dates() {
-            let val = this.selectedDay
+
+            let selectedDay = {}
+            if(this.mode==='single') {
+                selectedDay.end = this.selectedDay
+                selectedDay.start = this.selectedDay
+            }
+            else {
+                selectedDay = this.selectedDay
+            }
+
+
             let date_from, date_to
-            if (val && val.end && val.start) {
-                date_from = datetimeDMY(val.start)
-                date_to = datetimeDMY(val.end)
+            if (selectedDay && selectedDay.end && selectedDay.start) {
+                date_from = datetimeDMY(selectedDay.start)
+                date_to = datetimeDMY(selectedDay.end)
                 return {
-                    start: val.start,
-                    end: val.end,
+                    start: selectedDay.start,
+                    end: selectedDay.end,
                     date_from,
                     date_to,
                     time_from: this.time_from,
                     time_to: this.time_to
                 }
             }
+
+
             return null
         }
     },
@@ -122,12 +145,22 @@ export default {
                 if (!val.length) return
                 if (!this.selectedDayStoreOnce) return
 
-                let { end, start } = val[0]
+                let { end, start,time_from,time_to } = val[0]
 
-                this.selectedDay = {
-                    start: new Date(start),
-                    end: new Date(end)
+                console.log(this.mode);
+                if(this.mode==='single') {
+                    this.selectedDay = new Date(start)
                 }
+                else {
+                    this.selectedDay = {
+                        start: new Date(start),
+                        end: new Date(end)
+                    }
+                }
+
+                this.time_from= time_from
+                this.time_to= time_to
+
                 this.$emit('get', this.dates)
                 this.selectedDayStoreOnce = false
             },

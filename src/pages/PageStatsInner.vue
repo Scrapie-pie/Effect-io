@@ -1,6 +1,7 @@
 <template lang="pug">
     the-layout-table.page-stats-inner
         filter-drop-menu(
+            v-if="showLastDays"
             name="last_days",
             key="last_days",
             @get="filterLast_days"
@@ -10,6 +11,7 @@
         filter-drop-menu(
             v-show="showCalendar"
             name="calendar",
+            :calendarOptions="calendarOptions"
             key="calendar",
             @get="filterCalendar"
             slot="control"
@@ -92,9 +94,29 @@ export default {
         }
     },
     computed: {
+        showLastDays(){
+
+            if (this.routerName === 'statsAllByHours' || this.routerName === 'statsAllBranchByHours') return false
+
+            return true
+        },
+        calendarOptions(){
+            let obj = {}
+            if (this.routerName === 'statsAllByHours' ||
+                this.routerName === 'statsAllBranchByHours'
+            ) obj.mode='single'
+
+            return obj
+        },
         activeComponent() {
+
+
             if (this.routerName === 'statsAllBranch') return 'statsAll'
             if (this.routerName === 'statsAllOperator') return 'statsAll'
+
+            if (this.routerName === 'statsAllByHours') return 'statsAll'
+            if (this.routerName === 'statsAllBranchByHours') return 'statsAll'
+
             if (this.routerName === 'statsOperatorsDetail') return 'statsResult'
             if (this.routerName === 'statsBranchesDetail') return 'statsResult'
             return this.routerName
@@ -121,8 +143,14 @@ export default {
                 filterList: this.filterSearchResult
             }
 
+
+
             if (this.routerName === 'statsAllBranch') obj.branch_id = this.branch_id
             if (this.routerName === 'statsAllOperator') obj.user_id = this.user_id
+
+            if (this.routerName === 'statsAllByHours') obj.byHours = 1
+            if (this.routerName === 'statsAllBranchByHours') {obj.branch_id = this.branch_id}
+
 
             if (this.routerName === 'statsOperatorsDetail') obj.user_id = this.user_id
             if (this.routerName === 'statsBranchesDetail') obj.branch_id = this.branch_id
@@ -158,9 +186,13 @@ export default {
             if (this.routerName === 'statsAllBranch') return 'branch'
             if (this.routerName === 'statsAllOperator') return 'employee'
 
+            if (this.routerName === 'statsAllByHours') return 'branches'
+            if (this.routerName === 'statsAllBranchByHours') return 'branch'
+            if (this.routerName === 'statsAllOperatorByHours') return 'employee'
+
             if (this.routerName === 'statsService') return 'top'
             if (this.routerName === 'statsBranches') return 'branches'
-            if (this.routerName === 'statsAll') return 'branches'
+
             if (this.routerName === 'statsBranchesDetail') return 'branch'
             if (this.routerName === 'statsOperators') return 'employees'
             if (this.routerName === 'statsOperatorsDetail') return 'employee'
@@ -197,6 +229,14 @@ export default {
                 this.routerName !== 'statsAll' &&
                 this.routerName !== 'statsAllBranch' &&
                 this.routerName !== 'statsAllOperator' &&
+
+                this.routerName !== 'statsAllByHours' &&
+                this.routerName !== 'statsAllBranchByHours' &&
+                this.routerName !== 'statsAllOperatorByHours' &&
+
+
+
+
                 this.routerName !== 'statsOperatorsDetail' &&
                 this.routerName !== 'statsTags'
             )
@@ -211,6 +251,19 @@ export default {
         }
     },
     watch: {
+        routerName: {
+            handler(val) {
+                if(this.showCalendar) return //Иначе бага, если уже календарь был показан, то при переходе не было запроса
+                if(val==='statsAllByHours' || val==='statsAllBranchByHours') {
+                    this.filterLast_days('-1')
+                    this.$store.commit('setFilter', { 'last_days': ['-1'] })
+                }
+            },
+
+            immediate: true
+        },
+
+
         last_days(val) {
             if (!val) this.showCalendar = true
             else this.showCalendar = false
