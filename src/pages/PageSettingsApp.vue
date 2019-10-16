@@ -173,7 +173,7 @@ export default {
             if (!prev_sound.name) return //Что бы не проигрывалось при заходе на страницу
             if (sound.file) {
                 let audio = new Audio(sound.file)
-                audio.volume = 0.5
+                audio.volume = 0.25
                 audio.play()
             }
         }
