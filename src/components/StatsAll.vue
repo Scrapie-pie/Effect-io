@@ -132,8 +132,9 @@
                     td {{item.operator_messages}}
                     td {{item.guest_messages}}
                     td {{item.excellent_ratings}}
-                    td {{item.badly_ratings}}
                     td {{item.middling_ratings}}
+                    td {{item.badly_ratings}}
+
             tbody(v-for="(item, index) in itemList", :key="item.id")
                 tr
                     td(colspan="15" style="padding:0")
@@ -173,8 +174,9 @@
                     td {{item.operator_messages}}
                     td {{item.guest_messages}}
                     td {{item.excellent_ratings}}
-                    td {{item.badly_ratings}}
                     td {{item.middling_ratings}}
+                    td {{item.badly_ratings}}
+
                 template( v-if="item.byHoursListToggle")
                     tr(v-for="(item, index) in item.byHoursList")
                         td {{item.name}}
@@ -202,8 +204,9 @@
                         td {{item.operator_messages}}
                         td {{item.guest_messages}}
                         td {{item.excellent_ratings}}
-                        td {{item.badly_ratings}}
                         td {{item.middling_ratings}}
+                        td {{item.badly_ratings}}
+
         nav.stats-table-line__nav
             ul.stats-table-line__nav-list
                 li.stats-table-line__nav-item
