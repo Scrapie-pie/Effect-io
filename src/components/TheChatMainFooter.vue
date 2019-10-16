@@ -170,8 +170,11 @@ export default {
 
     created() {
         this.checkIsProcessPage()
+
+
     },
     methods: {
+
         textWidthTagToText() {
             let ct = document.getElementById('contenteditable')
 
@@ -328,10 +331,13 @@ export default {
                     this.bufferingSend = false
 
                     let { id } = responsive.data.data
-
+                    console.log('message/send-from-operator',responsive.data.data);
                     let { first_name: name, photo, employee_id } = this.$store.state.user.profile,
                         time = new Date().getTime() / 1000,
                         message = {
+                            guest_uuid : this.httpParams.params.guest_uuid, //Делаем синхранизацию, если опер открыл в журнале свой диалог и пишет сообщени в другой вкладке {
+                            site_id : this.httpParams.params.site_id, //
+                            room_id : this.$store.state.roomActive.id, //}
                             id,
                             time,
                             body,
@@ -345,6 +351,7 @@ export default {
                         }
 
                     this.$root.$emit('messageAdd', message)
+                    localStorage.setItem('messageAdd',JSON.stringify(message))
 
                     message.from_user_info.id = this.$store.state.user.profile.employee_id
 
