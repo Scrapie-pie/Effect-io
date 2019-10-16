@@ -55,10 +55,10 @@ export default {
             this.showTagsPopup = true
 
         },
-        tagsClose(){
+        tagsClose(tag_id){
             this.showTagsPopup =false;
             console.log(this.tagsActionAfter);
-            if(this.tagsActionAfter==='actionAfterChatCompletion') {
+            if(this.tagsActionAfter==='actionAfterChatCompletion' && tag_id) {
                 let data = this.httpParams.params
                 data.intent = 'farewell'
 
