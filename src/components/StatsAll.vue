@@ -50,7 +50,7 @@
                         .stats-table-line__th-wrap
                             |Обратились <br>  впервые
                             btn-sort(:toggle="sortFieldsComp['chats_with_new_guests']", @result="val=>sortFieldsSetSortField(val,'chats_with_new_guests')")
-                    template(v-if="$route.name!=='statsAll'")
+                    template(v-if="!($route.name=='statsAll' || $route.name=='statsAllByHours')")
                         th
                             .stats-table-line__th-wrap
                                 |Время <br>  онлайн
@@ -122,7 +122,7 @@
 
                     td {{item.dialogues_transferred_to_branches}}
                     td {{item.chats_with_new_guests}}
-                    template(v-if="$route.name!=='statsAll'")
+                    template(v-if="!($route.name=='statsAll' || $route.name=='statsAllByHours')")
                         td {{item.operators_time_in_online  | datetimeStoHMS(true)}}
                         td {{item.operators_time_in_chats  | datetimeStoHMS(true)}}
                         td {{item.operators_time_in_1_chat  | datetimeStoHMS(true)}}
@@ -139,7 +139,7 @@
 
             tbody(v-for="(item, index) in itemList", :key="item.id")
                 tr
-                    td(:colspan="$route.name==='statsAllBranch'?23:16" style="padding:0")
+                    td(:colspan="!($route.name=='statsAll' || $route.name=='statsAllByHours')?24:16" style="padding:0")
                 tr
                     td
 
@@ -165,7 +165,7 @@
 
                     td {{item.dialogues_transferred_to_branches}}
                     td {{item.chats_with_new_guests}}
-                    template(v-if="$route.name!=='statsAll'")
+                    template(v-if="!($route.name=='statsAll' || $route.name=='statsAllByHours')")
                         td {{item.operators_time_in_online  | datetimeStoHMS(true)}}
                         td {{item.operators_time_in_chats  | datetimeStoHMS(true)}}
                         td {{item.operators_time_in_1_chat  | datetimeStoHMS(true)}}
@@ -196,7 +196,7 @@
 
                         td {{item.dialogues_transferred_to_branches}}
                         td {{item.chats_with_new_guests}}
-                        template(v-if="$route.name!=='statsAll'")
+                        template(v-if="!($route.name=='statsAll' || $route.name=='statsAllByHours')")
                             td {{item.operators_time_in_online  | datetimeStoHMS(true)}}
                             td {{item.operators_time_in_chats  | datetimeStoHMS(true)}}
                             td {{item.operators_time_in_1_chat  | datetimeStoHMS(true)}}
