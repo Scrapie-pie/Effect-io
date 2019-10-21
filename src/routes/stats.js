@@ -57,7 +57,7 @@ export default [
             },
             {
                 name: 'statsAllOperator',
-                path: 'employees/:id',
+                path: 'employees/:id/:branch_id',
                 meta: {
                     title: 'Статистика по сотруднику'
                 },

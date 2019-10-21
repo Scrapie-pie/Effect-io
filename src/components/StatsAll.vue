@@ -148,8 +148,8 @@
                             |&nbsp
 
                         router-link(
-                            v-if="item.id && $route.name!='statsAllBranchByHours'"
-                            :to="{name:link,params:{id:item.id}}"
+                            v-if="item.id && $route.name!='statsAllBranchByHours'",
+                            :to="link(item)"
                         ) {{item.name}}
                         span(v-else) {{item.name}}
 
@@ -262,16 +262,7 @@ export default {
             return Object.assign({}, this.params, { type: 'employees' })
         },
 
-        link() {
 
-            if (this.$route.name === 'statsAll') return 'statsAllBranch'
-            if (this.$route.name === 'statsAllBranch') return 'statsAllOperator'
-
-            if (this.$route.name === 'statsAllByHours') return 'statsAllBranchByHours'
-
-
-            return ''
-        },
         showRight() {
             return this.countStep < this.maxStep
         },
@@ -317,7 +308,24 @@ export default {
 
         },
         methods:{
+            link(item) {
+                let  params = {id:item.id}
+                let name = ''
+                if (this.$route.name === 'statsAll') name = 'statsAllBranch'
+                if (this.$route.name === 'statsAllBranch') {
+                    name =  'statsAllOperator'
+                    params.branch_id = this.$route.params.id;
+                }
 
+                if (this.$route.name === 'statsAllByHours') name = 'statsAllBranchByHours'
+
+                let obj = {
+                    name,
+                    params
+                }
+
+                return obj
+            },
             byHoursGetList(row,toggle) {
 
                 let findIndex = this.bodyList.findIndex(findItem=>findItem.id===row.id)

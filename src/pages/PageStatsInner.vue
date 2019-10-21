@@ -146,7 +146,10 @@ export default {
 
 
             if (this.routerName === 'statsAllBranch') obj.branch_id = this.branch_id
-            if (this.routerName === 'statsAllOperator') obj.user_id = this.user_id
+            if (this.routerName === 'statsAllOperator') {
+                obj.user_id = this.user_id
+                obj.branch_id = this.branch_id
+            }
 
             if (this.routerName === 'statsAllByHours') obj.byHours = 1
             if (this.routerName === 'statsAllBranchByHours') {obj.branch_id = this.branch_id}
@@ -173,6 +176,7 @@ export default {
             return Object.assign(main, this.$attrs, obj)
         },
         branch_id() {
+            if(this.routerName === 'statsAllOperator') return +this.$route.params.branch_id
             return +this.$route.params.id
         },
         user_id() {

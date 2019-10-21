@@ -17,7 +17,7 @@
                     th(v-text="item.name+':'").stats-result__td
                     td.stats-result__td
                         |{{bodyListFormat[item.val] | format(item.type)}}
-            table.stats-result__list
+            //table.stats-result__list
                 tr.stats-result__item(v-for="(item, index) in timeList" :key="index")
                     th(v-text="item.name+':'").stats-result__td
                     td.stats-result__td
@@ -181,6 +181,10 @@ export default {
             padding: calc-em(40);
             border-radius: $border-radius;
             margin-top: calc-em(50);
+        }
+        #{$el}__other {
+            justify-content:center;
+            text-align:center;
         }
     }
 }
