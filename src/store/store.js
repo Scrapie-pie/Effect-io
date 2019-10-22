@@ -54,7 +54,23 @@ export default new Vuex.Store({
         roomActive
     },
     state,
+    plugins: [
+        createMutationsSharer({
+            predicate: (mutation, state) => {
 
+                if(mutation.type=='user/unreadUpdate' && mutation.payload.toString()===['unprocessed', -1].toString()) return true
+                const predicate = [
+                    'visitors/processRemoveItem',
+                    //'user/unreadUpdate'
+                ]
+                // Conditionally trigger other plugins subscription event here to
+                // have them called only once (in the tab where the commit happened)
+                // ie. save certain values to localStorage
+                // pluginStateChanged(mutation, state)
+                return predicate.indexOf(mutation.type) >= 0
+            }
+        }),
+    ],
     mutations: {
         SOCKET_CONNECT(state, val) {
             console.log('SOCKET_CONNECT', val)
