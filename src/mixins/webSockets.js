@@ -303,6 +303,7 @@ export default {
 			})
 			this.$store.commit('visitors/selfMessageRemoveItem', val)
 
+
 			if (this.viewModeChat === 'visitors') this.$router.push({ name: 'messageAll' })
 		},
 		'unprocessed-remove'(val) {

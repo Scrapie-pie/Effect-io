@@ -10,6 +10,8 @@ import roomActive from '@/store/roomActive'
 
 Vue.use(Vuex)
 
+import createMutationsSharer from 'vuex-shared-mutations'
+
 const getDefaultStateRoom = () => {
     return {}
 }

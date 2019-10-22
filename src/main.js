@@ -15,6 +15,8 @@ import axios from '@/modules/axios'
 
 import VueWait from 'vue-wait'
 
+
+
 Vue.use(VueWait)
 
 import clicky from 'vue-clicky'
