@@ -51,11 +51,11 @@
                             |Обратились <br>  впервые
                             btn-sort(:toggle="sortFieldsComp['chats_with_new_guests']", @result="val=>sortFieldsSetSortField(val,'chats_with_new_guests')")
                     template(v-if="!($route.name=='statsAll' || $route.name=='statsAllByHours')")
-                        th
+                        th(v-if="hideStatsAllBranchAndByDates")
                             .stats-table-line__th-wrap
                                 |Время <br>  онлайн
                                 btn-sort(:toggle="sortFieldsComp['operators_time_in_online']", @result="val=>sortFieldsSetSortField(val,'operators_time_in_online')")
-                        th
+                        th(v-if="hideStatsAllBranchAndByDates")
                             .stats-table-line__th-wrap
                                 |Время <br>  в диалоге
                                 btn-sort(:toggle="sortFieldsComp['operators_time_in_chats']", @result="val=>sortFieldsSetSortField(val,'operators_time_in_chats')")
@@ -75,11 +75,11 @@
                             .stats-table-line__th-wrap
                                 |4 чата <br> и более
                                 btn-sort(:toggle="sortFieldsComp['operators_time_in_4_and_more_chats']", @result="val=>sortFieldsSetSortField(val,'operators_time_in_4_and_more_chats')")
-                        th
+                        th(v-if="hideStatsAllBranchAndByDates")
                             .stats-table-line__th-wrap
                                 |Среднее <br>  время <br>  в диалоге
                                 btn-sort(:toggle="sortFieldsComp['average_time_in_chats']", @result="val=>sortFieldsSetSortField(val,'average_time_in_chats')")
-                        th
+                        th(v-if="hideStatsAllBranchAndByDates")
                             .stats-table-line__th-wrap
                                 |Время <br>  в перерыве
                                 btn-sort(:toggle="sortFieldsComp['operators_time_in_break']", @result="val=>sortFieldsSetSortField(val,'operators_time_in_break')")
@@ -104,7 +104,7 @@
                             base-icon(name="ball1")
                             btn-sort(:toggle="sortFieldsComp['middling_ratings']", @result="val=>sortFieldsSetSortField(val,'middling_ratings')")
 
-            tbody
+            tbody(v-if="$route.name!=='statsAllBranchByHours'")
                 tr(v-for="(item, index) in commonRow", :key="index")
                     td
 
@@ -123,14 +123,14 @@
                     td {{item.dialogues_transferred_to_branches}}
                     td {{item.chats_with_new_guests}}
                     template(v-if="!($route.name=='statsAll' || $route.name=='statsAllByHours')")
-                        td {{item.operators_time_in_online  | datetimeStoHMS(true)}}
-                        td {{item.operators_time_in_chats  | datetimeStoHMS(true)}}
+                        td(v-if="hideStatsAllBranchAndByDates") {{item.operators_time_in_online  | datetimeStoHMS(true)}}
+                        td(v-if="hideStatsAllBranchAndByDates") {{item.operators_time_in_chats  | datetimeStoHMS(true)}}
                         td {{item.operators_time_in_1_chat  | datetimeStoHMS(true)}}
                         td {{item.operators_time_in_2_chats  | datetimeStoHMS(true)}}
                         td {{item.operators_time_in_3_chats  | datetimeStoHMS(true)}}
                         td {{item.operators_time_in_4_and_more_chats  | datetimeStoHMS(true)}}
-                        td {{item.average_time_in_chats | datetimeStoHMS(true)}}
-                        td {{item.operators_time_in_break  | datetimeStoHMS(true)}}
+                        td(v-if="hideStatsAllBranchAndByDates") {{item.average_time_in_chats | datetimeStoHMS(true)}}
+                        td(v-if="hideStatsAllBranchAndByDates") {{item.operators_time_in_break  | datetimeStoHMS(true)}}
                     td {{item.operator_messages}}
                     td {{item.guest_messages}}
                     td {{item.excellent_ratings}}
@@ -166,14 +166,14 @@
                     td {{item.dialogues_transferred_to_branches}}
                     td {{item.chats_with_new_guests}}
                     template(v-if="!($route.name=='statsAll' || $route.name=='statsAllByHours')")
-                        td {{item.operators_time_in_online  | datetimeStoHMS(true)}}
-                        td {{item.operators_time_in_chats  | datetimeStoHMS(true)}}
+                        td(v-if="hideStatsAllBranchAndByDates") {{item.operators_time_in_online  | datetimeStoHMS(true)}}
+                        td(v-if="hideStatsAllBranchAndByDates") {{item.operators_time_in_chats  | datetimeStoHMS(true)}}
                         td {{item.operators_time_in_1_chat  | datetimeStoHMS(true)}}
                         td {{item.operators_time_in_2_chats  | datetimeStoHMS(true)}}
                         td {{item.operators_time_in_3_chats  | datetimeStoHMS(true)}}
                         td {{item.operators_time_in_4_and_more_chats  | datetimeStoHMS(true)}}
-                        td {{item.average_time_in_chats | datetimeStoHMS(true)}}
-                        td {{item.operators_time_in_break  | datetimeStoHMS(true)}}
+                        td(v-if="hideStatsAllBranchAndByDates") {{item.average_time_in_chats | datetimeStoHMS(true)}}
+                        td(v-if="hideStatsAllBranchAndByDates") {{item.operators_time_in_break  | datetimeStoHMS(true)}}
                     td {{item.operator_messages}}
                     td {{item.guest_messages}}
                     td {{item.excellent_ratings}}
@@ -197,14 +197,14 @@
                         td {{item.dialogues_transferred_to_branches}}
                         td {{item.chats_with_new_guests}}
                         template(v-if="!($route.name=='statsAll' || $route.name=='statsAllByHours')")
-                            td {{item.operators_time_in_online  | datetimeStoHMS(true)}}
-                            td {{item.operators_time_in_chats  | datetimeStoHMS(true)}}
+                            td(v-if="hideStatsAllBranchAndByDates") {{item.operators_time_in_online  | datetimeStoHMS(true)}}
+                            td(v-if="hideStatsAllBranchAndByDates") {{item.operators_time_in_chats  | datetimeStoHMS(true)}}
                             td {{item.operators_time_in_1_chat  | datetimeStoHMS(true)}}
                             td {{item.operators_time_in_2_chats  | datetimeStoHMS(true)}}
                             td {{item.operators_time_in_3_chats  | datetimeStoHMS(true)}}
                             td {{item.operators_time_in_4_and_more_chats  | datetimeStoHMS(true)}}
-                            td {{item.average_time_in_chats | datetimeStoHMS(true)}}
-                            td {{item.operators_time_in_break  | datetimeStoHMS(true)}}
+                            td(v-if="hideStatsAllBranchAndByDates") {{item.average_time_in_chats | datetimeStoHMS(true)}}
+                            td(v-if="hideStatsAllBranchAndByDates") {{item.operators_time_in_break  | datetimeStoHMS(true)}}
                         td {{item.operator_messages}}
                         td {{item.guest_messages}}
                         td {{item.excellent_ratings}}
@@ -257,7 +257,9 @@ export default {
         }
     },
     computed: {
-
+        hideStatsAllBranchAndByDates(){
+            return !(this.$route.name=='statsAllBranch' && this.by_dates)
+        },
         employeesParams() {
             return Object.assign({}, this.params, { type: 'employees' })
         },
