@@ -104,7 +104,7 @@
                             base-icon(name="ball1")
                             btn-sort(:toggle="sortFieldsComp['middling_ratings']", @result="val=>sortFieldsSetSortField(val,'middling_ratings')")
 
-            tbody(v-if="$route.name!=='statsAllBranchByHours'")
+            tbody(v-if="!($route.name=='statsAllBranchByHours' || ($route.name=='statsAllBranch' && !by_dates))")
                 tr(v-for="(item, index) in commonRow", :key="index")
                     td
 
