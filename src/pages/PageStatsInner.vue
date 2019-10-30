@@ -46,6 +46,7 @@
 
         section.page-stats-inner__main.no-mw(v-show="last_days || date_from")
             component(
+                @byDates="val=>by_dates=val"
                 :is="activeComponent",
                 v-bind="payload"
                 v-on="listeners"
@@ -90,7 +91,8 @@ export default {
             branch: {
                 title: 'Все отделы',
                 id: null
-            }
+            },
+            by_dates:0
         }
     },
     computed: {
@@ -204,13 +206,8 @@ export default {
             return ''
         },
         downloadLink() {
-            let dates = `&date_from=${this.date_from}&date_to=${this.date_to}&time_from=${
-                this.time_from
-            }&time_to=${this.time_to}`
-            return `${config.api_server}statistic/get-by-params?user_id=${this.user_id}&branch_id=${
-                this.branch_id
-            }${dates}&last_days=${this.last_days}&type=${this.type}&csv=1&jwt=${
-                this.$http.defaults.headers.common.jwt
+            let dates = `&date_from=${this.date_from}&date_to=${this.date_to}&time_from=${this.time_from}&time_to=${this.time_to}`
+            return `${config.api_server}statistic/get-by-params?user_id=${this.user_id}&branch_id=${this.branch_id}${dates}&last_days=${this.last_days}&by_dates=${this.by_dates}&type=${this.type}&csv=1&jwt=${this.$http.defaults.headers.common.jwt
             }`
         },
         placeholder() {

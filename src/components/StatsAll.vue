@@ -286,6 +286,13 @@ export default {
 
         },
         watch:{
+            by_dates:{
+                handler(val){
+                   this.$emit('byDates',val)
+
+                },
+                immediate: true
+            },
             employeesParams:{
                 handler(val){
                     if((this.$route.name==='statsAllBranch' || this.$route.name==='statsAllBranchByHours') && val
