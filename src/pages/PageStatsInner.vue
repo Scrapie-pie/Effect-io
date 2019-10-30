@@ -50,6 +50,7 @@
                 :is="activeComponent",
                 v-bind="payload"
                 v-on="listeners"
+                :key="activeComponent"
                 )
 
 </template>
@@ -254,6 +255,7 @@ export default {
     watch: {
         routerName: {
             handler(val) {
+                this.by_dates=0 //Поставили галку, перешли на другой макет, нужно обнулить
                 if(this.showCalendar) return //Иначе бага, если уже календарь был показан, то при переходе не было запроса
                 if(val==='statsAllByHours' || val==='statsAllBranchByHours') {
                     this.filterLast_days('-1')

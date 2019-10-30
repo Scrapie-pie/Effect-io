@@ -286,6 +286,9 @@ export default {
 
         },
         watch:{
+            '$route'(){
+                this.by_dates=0
+            },
             by_dates:{
                 handler(val){
                    this.$emit('byDates',val)
@@ -312,7 +315,7 @@ export default {
         },
         created(){
 
-
+            //this.$emit('byDates',this.by_dates)
 
 
         },
