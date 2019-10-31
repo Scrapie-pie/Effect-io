@@ -8,7 +8,7 @@ import * as Integrations from '@sentry/integrations'
 if (process.env.VUE_APP_SENTRY) {
 
     Sentry.init({
-        dsn: 'https://6e8272b198fc441fa55ede8d62e7f90e@sentry.io/1489595',
+        dsn: 'https://8db6bd1700a44f43aeb0bc4d7a09e951@sentry.io/1803533',
         integrations: [new Integrations.Vue({ Vue, attachProps: true,logErrors:true })],
         environment: process.env.NODE_ENV
         //debug: process.env.NODE_ENV === 'development' ? true : false
