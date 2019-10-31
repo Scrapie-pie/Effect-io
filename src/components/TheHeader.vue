@@ -35,6 +35,7 @@ export default {
             return profile.code || '−−−−'
         },
         appList() {
+
             return [
                 /* {text: 'recover', link: {name: 'recover'}},
                      {text: 'Ui', link: {name: 'ui'}},*/
@@ -72,6 +73,7 @@ export default {
             ]
         },
         canalList() {
+
             return [
                 {
                     text: 'Не обработано',
