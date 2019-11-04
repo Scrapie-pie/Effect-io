@@ -117,8 +117,8 @@ export default {
             this._vm.$http.defaults.headers.common['jwt'] = user.jwt
             this._vm.$http.defaults.headers['content-type'] = 'application/json'
 
-            this._vm.$socket.query = `uuid=${user.uuid}&user=employee&owner_id=${user.owner_id}`
-            this._vm.$socket.io.opts.query = `uuid=${user.uuid}&user=employee&owner_id=${user.owner_id}`
+            this._vm.$socket.query = `uuid=${user.uuid}&user=employee&socket_group_id=${user.owner_id}`
+            this._vm.$socket.io.opts.query = `uuid=${user.uuid}&user=employee&socket_group_id=${user.owner_id}`
             this._vm.$socket.open()
 
             commit('profile', user)
