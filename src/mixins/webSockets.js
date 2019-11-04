@@ -98,6 +98,10 @@ export default {
 					return console.log('update-employees', payload)
 				})
 
+				socket.on('employee-online', function(payload) {
+					return console.log('employee-online', payload)
+				})
+
 				socket.on('new-message', function(payload) {
 					return console.log('new-message', payload)
 				})
@@ -330,6 +334,9 @@ export default {
 					this.$router.push({ name: 'processAll' })
 				}
 			}
-		}
+		},
+        'employee-online'(val) {
+		    
+        }
 	}
 }
