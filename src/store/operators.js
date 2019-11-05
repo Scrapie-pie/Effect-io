@@ -13,9 +13,19 @@ export default {
         resetState(state) {
             Object.assign(state, getDefaultState())
         },
+        setOperatorOnline(state,{userId,online}) {
 
+            let findIndex = state.all.findIndex(item => item.id===userId)
+
+            if (findIndex !== -1) {
+                this._vm.$set(state.all[findIndex], 'online', online)
+            }
+
+
+        },
         all(state, val) {
             state.all = val
+
         },
         messageRead(state, userIndex) {
             state.all[userIndex].unread = []

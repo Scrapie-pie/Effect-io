@@ -335,8 +335,12 @@ export default {
 				}
 			}
 		},
-        'employee-online'(val) {
-		    
+        'employee-online'({user_id,online}) {
+
+
+            this.$store.commit('operators/setOperatorOnline', {user_id,online})
+            if(user_id===this.$store.state.user.profile.id) this.$store.commit('user/profileUpdate', {online})
+
         }
 	}
 }
