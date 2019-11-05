@@ -142,7 +142,7 @@ export default {
                     })
                 })
                 .catch(errors => {
-                    this.errorApiText = errors.response.data.message
+                    this.errorApiText = errors.response?.data?.message
                 })
         },
         recoverRequest() {
