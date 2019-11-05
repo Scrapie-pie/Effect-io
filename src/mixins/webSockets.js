@@ -335,9 +335,10 @@ export default {
 				}
 			}
 		},
-        'employee-online'({user_id,online}) {
-
-
+        'employee-online'(val) {
+            console.log('employee-online',val);
+            let {user_id,online} = val
+            console.log('employee-online');
             this.$store.commit('operators/setOperatorOnline', {user_id,online})
             if(user_id===this.$store.state.user.profile.id) this.$store.commit('user/profileUpdate', {online})
 
