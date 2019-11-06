@@ -183,8 +183,8 @@ export default {
             margin-top: calc-em(50);
         }
         #{$el}__other {
-            justify-content:center;
-            text-align:center;
+            justify-content: center;
+            text-align: center;
         }
     }
 }

@@ -108,6 +108,18 @@ export default {
             state.self = val.list.map(commonSelfProcces)
             if (val.count) state.selfCount = val.count
         },
+        saveTextAreaItem(state, {ids, textArea }) {
+            let findIndex
+
+                let { guest_uuid, site_id } = ids
+                findIndex = state.self.findIndex(
+                    item => item.guest_uuid + item.site_id === guest_uuid + site_id
+                )
+                if (findIndex !== -1) {
+                    this._vm.$set(state.self[findIndex], 'textArea', textArea)
+                }
+
+        },
         setSelfLastPageN(state, val) {
             state.selfLastPageN = val
         },
@@ -127,7 +139,7 @@ export default {
                 //this._vm.$set(state.self[findIndex],'name',val.from_user_info.name)
                 if (
                     !val.selfUuid &&
-                    val.from_role_id!=9 //не системное
+                    val.from_role_id != 9 //не системное
                 ) {
                     let unread = state.self[findIndex].unread
                     unread.push(val.id)

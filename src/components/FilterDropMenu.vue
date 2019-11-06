@@ -57,11 +57,12 @@ export default {
             type: String,
             default: 'checkbox'
         },
-        calendarOptions:{
+        calendarOptions: {
             type: Object,
-            default:()=>{return{}}
+            default: () => {
+                return {}
+            }
         }
-
     },
 
     data() {
@@ -119,17 +120,16 @@ export default {
             if (this.name === 'calendar') {
                 let strDate = ''
                 if (this.modelradio) {
-
-                    if(this.calendarOptions?.mode==='single') {
-                        strDate = `${this.modelradio.date_from} | ${this.modelradio.time_from} - ${this.modelradio.time_to}`
+                    if (this.calendarOptions?.mode === 'single') {
+                        strDate = `${this.modelradio.date_from} | ${this.modelradio.time_from} - ${
+                            this.modelradio.time_to
+                        }`
                     } else {
                         strDate = `${this.modelradio.date_from} - ${this.modelradio.date_to}`
                     }
-
-
                 } else {
-                    if(this.calendarOptions?.mode==='single') strDate = 'Выбрать дату'
-                        else strDate = 'Интервал не выбран'
+                    if (this.calendarOptions?.mode === 'single') strDate = 'Выбрать дату'
+                    else strDate = 'Интервал не выбран'
                 }
 
                 return strDate

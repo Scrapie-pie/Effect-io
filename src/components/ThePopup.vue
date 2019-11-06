@@ -13,19 +13,19 @@
 </template>
 
 <script>
-    import {httpParams } from '@/mixins/mixins'
+import { httpParams } from '@/mixins/mixins'
 export default {
-    components:{
-        SelectTags:()=>import('@/components/SelectTags')
+    components: {
+        SelectTags: () => import('@/components/SelectTags')
     },
-    mixins:[httpParams],
+    mixins: [httpParams],
     data() {
         return {
             notFind: false,
             img: false,
             noticeText: false,
-            showTagsPopup:false,
-            tagsActionAfter:true,
+            showTagsPopup: false,
+            tagsActionAfter: true
         }
     },
     computed: {},
@@ -40,7 +40,6 @@ export default {
     },
     beforeDestroy() {
         this.$root.$off('showTagsEmit', this.showTagsEmit)
-
     },
     methods: {
         show(name) {
@@ -50,23 +49,20 @@ export default {
             this.img = img
         },
         showTagsEmit(actionAfter) {
-            this.tagsActionAfter  = actionAfter;
+            this.tagsActionAfter = actionAfter
             this.$store.dispatch('tags/get')
             this.showTagsPopup = true
-
         },
-        tagsClose(tag_id){
-            this.showTagsPopup =false;
-            console.log(this.tagsActionAfter);
-            if(this.tagsActionAfter==='actionAfterChatCompletion' && tag_id) {
+        tagsClose(tag_id) {
+            this.showTagsPopup = false
+            console.log(this.tagsActionAfter)
+            if (this.tagsActionAfter === 'actionAfterChatCompletion' && tag_id) {
                 let data = this.httpParams.params
                 data.intent = 'farewell'
 
-                setTimeout(()=>{
+                setTimeout(() => {
                     this.$http.post('message/send-from-operator', data)
-                },500)
-
-
+                }, 500)
             }
         }
     }

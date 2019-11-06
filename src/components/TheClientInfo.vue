@@ -77,13 +77,10 @@ import TheRedirectClient from '@/components/TheRedirectClient'
 import autosize from 'autosize'
 import { httpParams } from '@/mixins/mixins'
 
-
-
 export default {
     components: {
         SocialLinks,
-        TheRedirectClient,
-
+        TheRedirectClient
     },
     mixins: [httpParams],
     data() {
@@ -149,7 +146,6 @@ export default {
     },
     created() {
         this.getInfo()
-
     },
     mounted() {
         setTimeout(() => {
@@ -158,13 +154,10 @@ export default {
         }, 500)
     },
     beforeDestroy() {
-
         if (this.$refs && this.$refs.clientComment && this.$refs.clientComment.$refs.input)
             autosize.destroy(this.$refs.clientComment.$refs.input)
     },
     methods: {
-
-
         getInfo() {
             if (!this.httpParams) return
             this.$store.dispatch('visitors/getItemOpen', this.httpParams)

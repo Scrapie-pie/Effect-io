@@ -156,14 +156,48 @@ export default {
         }
     },
     watch: {
-        $route(to, from) {
-            this.checkIsProcessPage()
+        $route: {
+            handler(to, from) {
+
+                this.checkIsProcessPage()
+
+                if(this.viewModeChat==='visitors') {
+                    if(from) {
+                        this.$store.commit('visitors/saveTextAreaItem', {
+                            ids: from.params,
+                            textArea: this.message
+                        })
+                        this.getPhrasesSelectText('')
+                        this.getTextAreaVisitors(this.$store.state.visitors.self,to.params)
+                    }
+                    else {
+                        setTimeout(()=>{
+                            this.getTextAreaVisitors(this.$store.state.visitors.self,to.params)
+                        },500)
+                    }
+                }
+
+                if(this.viewModeChat==='operators') {
+                    if(from) {
+                        this.$store.commit('operators/saveTextAreaItem', {
+                            ids: from.params,
+                            textArea: this.message
+                        })
+                        this.getPhrasesSelectText('')
+                        this.getTextAreaOperators(this.$store.state.operators.all,to.params)
+                    }
+                    else {
+                        setTimeout(()=>{
+                            this.getTextAreaOperators(this.$store.state.operators.all,to.params)
+                        },500)
+                    }
+                }
+            },
+            immediate: true
         },
-        message(val) {
 
-            console.log(this.httpParams.params);
-
-            if (val && this.showPhrasesSelectAllow) {
+        message(text) {
+            if (text && this.showPhrasesSelectAllow) {
                 this.showPhrasesSelect = true
             }
         },
@@ -171,13 +205,28 @@ export default {
     },
     mounted() {},
 
-    created() {
-        this.checkIsProcessPage()
-
-
-    },
+    created() {},
     methods: {
-
+        getTextAreaVisitors(list,routerParams) {
+            let { site_id, guest_uuid } = routerParams
+            let find = list.find(
+                item =>
+                    item.site_id + item.guest_uuid === site_id + guest_uuid
+            )
+            if (find?.textArea) {
+                this.getPhrasesSelectText(find.textArea)
+            }
+        },
+        getTextAreaOperators(list,routerParams) {
+            let { id } = routerParams
+            let find = list.find(
+                item =>
+                    item.id === id
+            )
+            if (find?.textArea) {
+                this.getPhrasesSelectText(find.textArea)
+            }
+        },
         textWidthTagToText() {
             let ct = document.getElementById('contenteditable')
 
@@ -229,6 +278,7 @@ export default {
             })
         },
         getPhrasesSelectText(val) {
+            console.log('getPhrasesSelectText',val);
             this.message = val
 
             this.textWidthSmiles = ''
@@ -334,13 +384,13 @@ export default {
                     this.bufferingSend = false
 
                     let { id } = responsive.data.data
-                    console.log('message/send-from-operator',responsive.data.data);
+                    console.log('message/send-from-operator', responsive.data.data)
                     let { first_name: name, photo, employee_id } = this.$store.state.user.profile,
                         time = new Date().getTime() / 1000,
                         message = {
-                            guest_uuid : this.httpParams.params.guest_uuid, //Делаем синхранизацию, если опер открыл в журнале свой диалог и пишет сообщени в другой вкладке {
-                            site_id : this.httpParams.params.site_id, //
-                            room_id : this.$store.state.roomActive.id, //}
+                            guest_uuid: this.httpParams.params.guest_uuid, //Делаем синхранизацию, если опер открыл в журнале свой диалог и пишет сообщени в другой вкладке {
+                            site_id: this.httpParams.params.site_id, //
+                            room_id: this.$store.state.roomActive.id, //}
                             id,
                             time,
                             body,
@@ -354,7 +404,7 @@ export default {
                         }
 
                     this.$root.$emit('messageAdd', message)
-                    localStorage.setItem('messageAdd',JSON.stringify(message))
+                    localStorage.setItem('messageAdd', JSON.stringify(message))
 
                     message.from_user_info.id = this.$store.state.user.profile.employee_id
 

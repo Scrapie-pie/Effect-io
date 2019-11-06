@@ -108,79 +108,78 @@ export default {
 
                 //return //времено отключил
 
-				if (to) {
-                    console.log('supervisor-enter');
+                if (to) {
+                    console.log('supervisor-enter')
                     this.$http.post('chat-room-user/supervisor-enter', {
-						site_id: to.params.site_id,
-						guest_uuid: to.params.guest_uuid
-					})
-				}
+                        site_id: to.params.site_id,
+                        guest_uuid: to.params.guest_uuid
+                    })
+                }
 
-				if (from) {
-					this.$http.post('chat-room-user/supervisor-exit', {
-						site_id: from.params.site_id,
-						guest_uuid: from.params.guest_uuid
-					})
-				}
-
-			}
-		}
-	}
+                if (from) {
+                    this.$http.post('chat-room-user/supervisor-exit', {
+                        site_id: from.params.site_id,
+                        guest_uuid: from.params.guest_uuid
+                    })
+                }
+            }
+        }
+    }
 }
 </script>
 
 <style lang="scss">
 .header-hide .the-header {
-	display: none;
+    display: none;
 }
 .page-chat {
-	$color_bg-app: glob-color('light');
-	$box-shadow: $glob-box-shadow;
-	$transition: $glob-trans;
+    $color_bg-app: glob-color('light');
+    $box-shadow: $glob-box-shadow;
+    $transition: $glob-trans;
 
-	flex-direction: row;
+    flex-direction: row;
 
-	&__main {
-		flex: 1;
-		$pd: calc-em(15);
-		padding-left: $pd;
-		padding-right: $pd;
-		height: 100%;
-		z-index: 2;
-		min-width: 0; //для шаблонов, чтобы работало text-overflow: ellipsis;
-		@include media($width_md) {
-			padding-right: 0;
-			margin-right: -#{$pd};
-		}
-	}
+    &__main {
+        flex: 1;
+        $pd: calc-em(15);
+        padding-left: $pd;
+        padding-right: $pd;
+        height: 100%;
+        z-index: 2;
+        min-width: 0; //для шаблонов, чтобы работало text-overflow: ellipsis;
+        @include media($width_md) {
+            padding-right: 0;
+            margin-right: -#{$pd};
+        }
+    }
 
-	&__info {
-		flex: 0 1 16.32%;
-		max-width: 280px;
-		min-width: 182px;
-		margin-left: auto;
-		background-color: $color_bg-app;
+    &__info {
+        flex: 0 1 16.32%;
+        max-width: 280px;
+        min-width: 182px;
+        margin-left: auto;
+        background-color: $color_bg-app;
 
-		@include media($width_md) {
-			position: fixed;
-			top: 0;
-			bottom: 0;
-			right: 0;
-			padding: calc-em(25) calc-em(10);
-			width: 202px;
-			z-index: 1;
-			box-shadow: $box-shadow;
-			transition: $transition;
-			transform: translateX(110%);
+        @include media($width_md) {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            padding: calc-em(25) calc-em(10);
+            width: 202px;
+            z-index: 1;
+            box-shadow: $box-shadow;
+            transition: $transition;
+            transform: translateX(110%);
 
-			.is-opened-client-info & {
-				transform: translateX(0);
-			}
-		}
+            .is-opened-client-info & {
+                transform: translateX(0);
+            }
+        }
 
-		.client-info {
-			margin-top: -1em;
-		}
-	}
+        .client-info {
+            margin-top: -1em;
+        }
+    }
 }
 </style>

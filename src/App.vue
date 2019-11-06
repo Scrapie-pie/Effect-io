@@ -33,7 +33,7 @@ export default {
     },
     watch: {
         isAuth(val) {
-            if(process.env.NODE_ENV === 'development') return
+            if (process.env.NODE_ENV === 'development') return
             if (val) {
                 window.onbeforeunload = function() {
                     return 'Данные не сохранены. Точно перейти?'
@@ -53,7 +53,6 @@ export default {
         this.httpErrors()
 
         this.$store.commit('setFilterlocalStorage')
-
     },
     beforeDestroy() {
         window.removeEventListener('unhandledrejection', this.promiseErrorHandler)
@@ -61,7 +60,7 @@ export default {
     methods: {
         startEndLoader(url, action) {
             let mapLoaders = {
-                otrsSend:['regru/regru/send-ticket-to-crm'],
+                otrsSend: ['regru/regru/send-ticket-to-crm'],
                 accountAuth: ['user/login-oi'],
                 pageMain: ['chat/get-all'],
                 chatMainBody: ['message/history'],
@@ -97,7 +96,6 @@ export default {
                 if (
                     mapLoaders[key].some(item => {
                         if (item === url) {
-
                         }
 
                         return item === url
@@ -123,20 +121,15 @@ export default {
 
             this.$http.interceptors.response.use(
                 resp => {
-
-
                     this.startEndLoader(resp.config.url.split(resp.config.baseURL)[1], 'end')
                     this.startEndLoader(resp.config.url.split('?')[1], 'end')
                     return resp
                 },
                 err => {
-
-
                     console.table(err)
 
                     this.startEndLoader(err.config.url.split(err.config.baseURL)[1], 'end')
                     this.startEndLoader(err.config.url.split('?')[1], 'end')
-
 
                     if (
                         (err.request.responseURL.includes('regru/regru/get-login-by-uuid'),
@@ -147,7 +140,7 @@ export default {
 
                     if (err.response?.data?.error === -67) {
                         //ошибка выставления тега
-                        this.$root.$emit('showTagsEmit','actionAfterChatCompletion')
+                        this.$root.$emit('showTagsEmit', 'actionAfterChatCompletion')
                         return Promise.reject(err)
                     }
 

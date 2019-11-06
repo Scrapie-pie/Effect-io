@@ -54,8 +54,8 @@ export default {
 
             return this.compItemList.filter(item => {
                 RegExp.quote = function(str) {
-                    return str.replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1");
-                };
+                    return str.replace(/([.?*+^$[\]\\(){}|-])/g, '\\$1')
+                }
                 let regexp = new RegExp(RegExp.quote(this.search), 'ig')
 
                 if (lodash_isEmpty(item[this.fieldName])) return 0 //Todo у оператора fullName
