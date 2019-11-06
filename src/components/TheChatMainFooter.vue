@@ -192,10 +192,6 @@ export default {
                         },500)
                     }
                 }
-
-
-
-
             },
             immediate: true
         },
@@ -217,7 +213,6 @@ export default {
                 item =>
                     item.site_id + item.guest_uuid === site_id + guest_uuid
             )
-
             if (find?.textArea) {
                 this.getPhrasesSelectText(find.textArea)
             }
@@ -228,7 +223,6 @@ export default {
                 item =>
                     item.id === id
             )
-
             if (find?.textArea) {
                 this.getPhrasesSelectText(find.textArea)
             }
