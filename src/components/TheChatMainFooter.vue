@@ -156,14 +156,56 @@ export default {
         }
     },
     watch: {
-        $route(to, from) {
-            this.checkIsProcessPage()
+        '$route':{
+            handler(to, from) {
+
+                setTimeout(()=>{
+                    this.checkIsProcessPage()
+
+                    let {site_id,guest_uuid} = to.params
+
+                    this.getPhrasesSelectText('')
+                    if(this.viewModeChat==='visitors'){
+
+
+                        this.$store.watch(state=>state.visitors.self,(newValue)=>{
+                            console.log(newValue);
+                            if(newValue) {
+                                let find = newValue.find(item=>item.site_id+item.guest_uuid===site_id+guest_uuid)
+                                console.log(find);
+                                if(find?.textArea) {
+
+                                    this.getPhrasesSelectText(find.textArea)
+                                }
+                            }
+                        })
+
+
+
+                    }
+                },500)
+
+
+
+
+            },
+            immediate: true
         },
-        message(val) {
 
-            console.log(this.httpParams.params);
+        message(text) {
 
-            if (val && this.showPhrasesSelectAllow) {
+
+            if(this.viewModeChat==='visitors'){
+
+                console.log(this.httpParams.params);
+                this.$store.commit('visitors/saveTextAreaItem',{
+                    pageName:this.viewModeChat,
+                    ids:this.httpParams.params,
+                    textArea:text
+                })
+            }
+
+            if (text && this.showPhrasesSelectAllow) {
                 this.showPhrasesSelect = true
             }
         },
@@ -172,7 +214,7 @@ export default {
     mounted() {},
 
     created() {
-        this.checkIsProcessPage()
+
 
 
     },

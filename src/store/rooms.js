@@ -14,8 +14,22 @@ export default {
             Object.assign(state, getDefaultState())
         },
 
-        visitors(state, val) {
-            state.visitors = val
+        saveTextAreaRoom(state, {pageName,ids,textArea}) {
+            let findIndex
+            if(pageName==='visitors') {
+                let {guest_uuid,site_id} = ids
+                 findIndex = state.visitors.findIndex(item=>item.guest_uuid+item.site_id===guest_uuid+site_id)
+                 if(findIndex!==-1) {
+                     this._vm.$set(state.visitors, findIndex, {
+                         site_id,guest_uuid,textArea
+                     })
+                 } else {
+                     state.visitors.push({
+
+                     })
+                }
+            }
+
 
         },
 
