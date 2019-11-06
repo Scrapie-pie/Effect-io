@@ -136,6 +136,9 @@ export default {
             } else {
                 //Если сообщение пришло, но в списке не было подгружено
 
+
+                if(val.intent=== "farewell") return //Todo костыль для Симона
+
                 let unreadMas = val.from_role_id!=9?[val.id]:[]
 
                 let selfNew = {
