@@ -15,11 +15,12 @@
                         li.select-operator__item(v-for="(item, index) in filterSearchResult",:key="item.id")
                             .select-operator__checkbox
                                 //input(type="checkbox" name="itemCheck" v-model="itemCheck[item.id]" :value="item.id")
-                                base-radio-check(name="itemCheck" v-model="itemCheck[item.id]" :value="item.id")
-                            base-people(
-                                :bg-text-no-fill="true",
-                                :name="item.title" ,
-                            )
+                                base-radio-check(name="itemCheck" v-model="itemCheck[item.id]" :value="item.id" :id="item.id")
+                            label(:for="item.id")
+                                base-people(
+                                    :bg-text-no-fill="true",
+                                    :name="item.title" ,
+                                )
             .select-operator__footer
                 label.select-operator__label Оставьте комментарий
                 base-field.select-operator__input(

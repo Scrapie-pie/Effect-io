@@ -15,6 +15,7 @@
                         li.select-operator__item.select-operator__item_operator
                             .select-operator__checkbox
                                 base-radio-check(name="mention")
+
                             base-people(
                                 :bg-text-no-fill="true",
                                 :name="'Упомянуть всех сотрудников'" ,
@@ -22,14 +23,15 @@
                             )
                         li.select-operator__item(v-for="(item, index) in filterSearchResult",:key="index")
                             .select-operator__checkbox
-                                base-radio-check(name="mention")
-                            base-people(
-                                :bg-text-no-fill="true",
-                                :avatar-url="item.photo",
-                                :name="item.fullName" ,
-                                :text="item.text" ,
-                                :datetime="item.datetime"
-                            )
+                                base-radio-check(name="mention", :id="item.id")
+                            label(:for="item.id")
+                                base-people(
+                                    :bg-text-no-fill="true",
+                                    :avatar-url="item.photo",
+                                    :name="item.fullName" ,
+                                    :text="item.text" ,
+                                    :datetime="item.datetime"
+                                )
 
 
         fieldset(v-else-if="count")
@@ -45,16 +47,18 @@
                 scroll-bar.select-operator__scrollbar
                     ul.select-operator__list
                         li.select-operator__item(v-for="(item, index) in filterSearchResult",:key="item.id")
-                            .select-operator__checkbox
-                                //input(type="checkbox" name="itemCheck" v-model="itemCheck[item.id]" :value="item.id")
-                                base-radio-check(name="itemCheck" v-model="itemCheck[item.id]" :value="item.id")
-                            base-people(
-                                :bg-text-no-fill="true",
-                                :avatar-url="item.photo",
-                                :name="item.fullName" ,
-                                :text="item.branches_names | branchesBr" ,
-                                :datetime="item.datetime"
-                            )
+
+                                .select-operator__checkbox
+                                    //input(type="checkbox" name="itemCheck" v-model="itemCheck[item.id]" :value="item.id")
+                                    base-radio-check(name="itemCheck" v-model="itemCheck[item.id]" :value="item.id" :id="item.id")
+                                label(:for="item.id")
+                                    base-people(
+                                        :bg-text-no-fill="true",
+                                        :avatar-url="item.photo",
+                                        :name="item.fullName" ,
+                                        :text="item.branches_names | branchesBr" ,
+                                        :datetime="item.datetime"
+                                    )
             .select-operator__footer
                 label.select-operator__label Оставьте комментарий
                 base-field.select-operator__input(
