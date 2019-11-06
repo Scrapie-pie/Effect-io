@@ -53,11 +53,12 @@ export default {
             return this.process.room_id
         },
         btnTextYes() {
-            let text
-            if (this.status === 'recipient') text = 'Принять'
-            if (this.status === 'invited') text = 'Присоединиться'
-            if (this.status === 'unprocessed') text = 'Ответить'
-            return text
+
+            if (this.status === 'recipient') return 'Принять'
+            if (this.status === 'invited') return 'Присоединиться'
+            if (this.status === 'unprocessed') return 'Ответить'
+
+            return this.status
         },
         process() {
             let { guest_uuid, site_id } = this.visitorIds

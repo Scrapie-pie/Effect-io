@@ -160,6 +160,9 @@ export default {
             this.checkIsProcessPage()
         },
         message(val) {
+
+            console.log(this.httpParams.params);
+
             if (val && this.showPhrasesSelectAllow) {
                 this.showPhrasesSelect = true
             }
