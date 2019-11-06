@@ -48,12 +48,13 @@ export default {
         'v-calendar': Calendar,
         'v-date-picker': DatePicker
     },
-    props:{
-        options:{
+    props: {
+        options: {
             type: Object,
-            default:()=>{return {}}
-        },
-
+            default: () => {
+                return {}
+            }
+        }
     },
     data() {
         return {
@@ -64,7 +65,7 @@ export default {
         }
     },
     computed: {
-        mode(){
+        mode() {
             return this.options.mode || 'range'
         },
         selectedDayStore() {
@@ -107,16 +108,13 @@ export default {
         },
 
         dates() {
-
             let selectedDay = {}
-            if(this.mode==='single') {
+            if (this.mode === 'single') {
                 selectedDay.end = this.selectedDay
                 selectedDay.start = this.selectedDay
-            }
-            else {
+            } else {
                 selectedDay = this.selectedDay
             }
-
 
             let date_from, date_to
             if (selectedDay && selectedDay.end && selectedDay.start) {
@@ -132,7 +130,6 @@ export default {
                 }
             }
 
-
             return null
         }
     },
@@ -145,21 +142,20 @@ export default {
                 if (!val.length) return
                 if (!this.selectedDayStoreOnce) return
 
-                let { end, start,time_from,time_to } = val[0]
+                let { end, start, time_from, time_to } = val[0]
 
-                console.log(this.mode);
-                if(this.mode==='single') {
+                console.log(this.mode)
+                if (this.mode === 'single') {
                     this.selectedDay = new Date(start)
-                }
-                else {
+                } else {
                     this.selectedDay = {
                         start: new Date(start),
                         end: new Date(end)
                     }
                 }
 
-                this.time_from= time_from
-                this.time_to= time_to
+                this.time_from = time_from
+                this.time_to = time_to
 
                 this.$emit('get', this.dates)
                 this.selectedDayStoreOnce = false

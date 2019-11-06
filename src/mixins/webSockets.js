@@ -26,14 +26,13 @@ export default {
     methods: {
         messageStatusActive(message) {
             if (message.status === 'active') {
-                if(message.from_role_id!=9) this.playSoundFile('sound_new_guest_message')
+                if (message.from_role_id != 9) this.playSoundFile('sound_new_guest_message')
 
                 this.$store.commit('visitors/selfMessageLastUpdate', message)
 
                 this.$store.commit('user/unreadUpdateGuest', message.active_unread_rooms)
 
                 browserNotificationMessage(message).then(click => {
-
                     if (click === 'toLink') {
                         let { guest_uuid, site_id } = message
                         this.$router.push({ name: 'chatId', params: { guest_uuid, site_id } })

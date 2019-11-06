@@ -49,7 +49,7 @@ export default {
                 let data = this.httpParams.params
                 data.tag_id = val
                 this.setTagChat(data)
-                this.$root.$emit('globBoxControlClose',data.tag_id)
+                this.$root.$emit('globBoxControlClose', data.tag_id)
             }
         }
     },

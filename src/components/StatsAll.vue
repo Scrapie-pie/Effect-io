@@ -253,17 +253,16 @@ export default {
             countStep: 0,
             operatorList: [],
             commonRow: [],
-            byHoursList:{}
+            byHoursList: {}
         }
     },
     computed: {
-        hideStatsAllBranchAndByDates(){
-            return !(this.$route.name=='statsAllBranch' && this.by_dates)
+        hideStatsAllBranchAndByDates() {
+            return !(this.$route.name == 'statsAllBranch' && this.by_dates)
         },
         employeesParams() {
             return Object.assign({}, this.params, { type: 'employees' })
         },
-
 
         showRight() {
             return this.countStep < this.maxStep

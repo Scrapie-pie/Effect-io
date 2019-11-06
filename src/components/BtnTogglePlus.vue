@@ -16,12 +16,12 @@ export default {
         return {}
     },
     computed: {
-        textHidden(){
-            if(!this.toggle) return 'Раскрыть'
+        textHidden() {
+            if (!this.toggle) return 'Раскрыть'
             else return 'Свернуть'
         },
-        textToggle(){
-            if(!this.toggle) return '+'
+        textToggle() {
+            if (!this.toggle) return '+'
             else return '&#8722;'
         },
         sortClass() {
@@ -30,7 +30,6 @@ export default {
         }
     },
     methods: {
-
         sortToggle() {
             this.$emit('result', !this.toggle)
         }
@@ -40,7 +39,7 @@ export default {
 
 <style lang="scss">
 .btn-toggle-plus {
-    font-weight:bold;
+    font-weight: bold;
     width: 18px;
     padding: 0;
 }

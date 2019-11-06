@@ -93,27 +93,30 @@ export default {
                 title: 'Все отделы',
                 id: null
             },
-            by_dates:0
+            by_dates: 0
         }
     },
     computed: {
-        showLastDays(){
-
-            if (this.routerName === 'statsAllByHours' || this.routerName === 'statsAllBranchByHours') return false
+        showLastDays() {
+            if (
+                this.routerName === 'statsAllByHours' ||
+                this.routerName === 'statsAllBranchByHours'
+            )
+                return false
 
             return true
         },
-        calendarOptions(){
+        calendarOptions() {
             let obj = {}
-            if (this.routerName === 'statsAllByHours' ||
+            if (
+                this.routerName === 'statsAllByHours' ||
                 this.routerName === 'statsAllBranchByHours'
-            ) obj.mode='single'
+            )
+                obj.mode = 'single'
 
             return obj
         },
         activeComponent() {
-
-
             if (this.routerName === 'statsAllBranch') return 'statsAll'
             if (this.routerName === 'statsAllOperator') return 'statsAll'
 
@@ -146,8 +149,6 @@ export default {
                 filterList: this.filterSearchResult
             }
 
-
-
             if (this.routerName === 'statsAllBranch') obj.branch_id = this.branch_id
             if (this.routerName === 'statsAllOperator') {
                 obj.user_id = this.user_id
@@ -155,8 +156,9 @@ export default {
             }
 
             if (this.routerName === 'statsAllByHours') obj.byHours = 1
-            if (this.routerName === 'statsAllBranchByHours') {obj.branch_id = this.branch_id}
-
+            if (this.routerName === 'statsAllBranchByHours') {
+                obj.branch_id = this.branch_id
+            }
 
             if (this.routerName === 'statsOperatorsDetail') obj.user_id = this.user_id
             if (this.routerName === 'statsBranchesDetail') obj.branch_id = this.branch_id
@@ -179,7 +181,7 @@ export default {
             return Object.assign(main, this.$attrs, obj)
         },
         branch_id() {
-            if(this.routerName === 'statsAllOperator') return +this.$route.params.branch_id
+            if (this.routerName === 'statsAllOperator') return +this.$route.params.branch_id
             return +this.$route.params.id
         },
         user_id() {
@@ -207,9 +209,14 @@ export default {
             return ''
         },
         downloadLink() {
-            let dates = `&date_from=${this.date_from}&date_to=${this.date_to}&time_from=${this.time_from}&time_to=${this.time_to}`
-            return `${config.api_server}statistic/get-by-params?user_id=${this.user_id}&branch_id=${this.branch_id}${dates}&last_days=${this.last_days}&by_dates=${this.by_dates}&type=${this.type}&csv=1&jwt=${this.$http.defaults.headers.common.jwt
-            }`
+            let dates = `&date_from=${this.date_from}&date_to=${this.date_to}&time_from=${
+                this.time_from
+            }&time_to=${this.time_to}`
+            return `${config.api_server}statistic/get-by-params?user_id=${this.user_id}&branch_id=${
+                this.branch_id
+            }${dates}&last_days=${this.last_days}&by_dates=${this.by_dates}&type=${
+                this.type
+            }&csv=1&jwt=${this.$http.defaults.headers.common.jwt}`
         },
         placeholder() {
             if (this.routerName === 'statsBranches') return 'Поиск по названию'
@@ -231,14 +238,9 @@ export default {
                 this.routerName !== 'statsAll' &&
                 this.routerName !== 'statsAllBranch' &&
                 this.routerName !== 'statsAllOperator' &&
-
                 this.routerName !== 'statsAllByHours' &&
                 this.routerName !== 'statsAllBranchByHours' &&
                 this.routerName !== 'statsAllOperatorByHours' &&
-
-
-
-
                 this.routerName !== 'statsOperatorsDetail' &&
                 this.routerName !== 'statsTags'
             )
@@ -255,17 +257,16 @@ export default {
     watch: {
         routerName: {
             handler(val) {
-                this.by_dates=0 //Поставили галку, перешли на другой макет, нужно обнулить
-                if(this.showCalendar) return //Иначе бага, если уже календарь был показан, то при переходе не было запроса
-                if(val==='statsAllByHours' || val==='statsAllBranchByHours') {
+                this.by_dates = 0 //Поставили галку, перешли на другой макет, нужно обнулить
+                if (this.showCalendar) return //Иначе бага, если уже календарь был показан, то при переходе не было запроса
+                if (val === 'statsAllByHours' || val === 'statsAllBranchByHours') {
                     this.filterLast_days('-1')
-                    this.$store.commit('setFilter', { 'last_days': ['-1'] })
+                    this.$store.commit('setFilter', { last_days: ['-1'] })
                 }
             },
 
             immediate: true
         },
-
 
         last_days(val) {
             if (!val) this.showCalendar = true

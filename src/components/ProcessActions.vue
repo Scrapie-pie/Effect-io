@@ -53,7 +53,6 @@ export default {
             return this.process.room_id
         },
         btnTextYes() {
-
             if (this.status === 'recipient') return 'Принять'
             if (this.status === 'invited') return 'Присоединиться'
             if (this.status === 'unprocessed') return 'Ответить'

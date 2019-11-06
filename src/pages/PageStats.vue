@@ -76,7 +76,11 @@ export default {
         title() {
             let titleHead = this.$route.meta.title
 
-            if (this.routerName === 'statsBranchesDetail' || this.routerName === 'statsAllBranch' || this.routerName === 'statsAllBranchByHours') {
+            if (
+                this.routerName === 'statsBranchesDetail' ||
+                this.routerName === 'statsAllBranch' ||
+                this.routerName === 'statsAllBranchByHours'
+            ) {
                 let branch = this.branchListAll.find(item => item.id === +this.$route.params.id)
 
                 if (branch) return titleHead + ': ' + branch.title

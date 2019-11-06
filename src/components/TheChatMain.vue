@@ -280,28 +280,24 @@ export default {
     },
 
     methods: {
-        syncOperatorMessageVisor(){
+        syncOperatorMessageVisor() {
+            if (!['visitors', 'visor'].includes(this.viewModeChat)) return
 
-            if  (!['visitors','visor'].includes(this.viewModeChat) ) return
+            window.addEventListener('storage', e => {
+                // Делаем синхранизацию, если опер открыл в журнале свой диалог и пишет сообщени в другой вкладке
 
-            window.addEventListener ('storage', (e) => { // Делаем синхранизацию, если опер открыл в журнале свой диалог и пишет сообщени в другой вкладке
-
-
-                if(e.key=='messageAdd') {
+                if (e.key == 'messageAdd') {
                     let message = JSON.parse(e.newValue)
                     //console.log(message);
 
-
-
                     if (
-
-                    message.guest_uuid=== this.httpParams.params.guest_uuid &&
-                    message.site_id === this.httpParams.params.site_id &&
-                    message.room_id === this.$store.state.roomActive.id
+                        message.guest_uuid === this.httpParams.params.guest_uuid &&
+                        message.site_id === this.httpParams.params.site_id &&
+                        message.room_id === this.$store.state.roomActive.id
                     )
                         this.$root.$emit('messageAdd', message)
                 }
-            }) ;
+            })
         },
         sysText(message) {
             return (
@@ -374,9 +370,9 @@ export default {
             }
 
             if (this.httpParams) {
-                console.log('chat-room-user/all start')
+
                 this.$http.get('chat-room-user/all', this.httpParams).then(({ data }) => {
-                    console.log('chat-room-user/all', data.data)
+
 
                     if (!this.accessPage(data.data))
                         return this.$router.push({ name: 'processAll' })

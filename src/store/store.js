@@ -59,10 +59,13 @@ export default new Vuex.Store({
     plugins: [
         createMutationsSharer({
             predicate: (mutation, state) => {
-
-                if(mutation.type=='user/unreadUpdate' && mutation.payload.toString()===['unprocessed', -1].toString()) return true
+                if (
+                    mutation.type == 'user/unreadUpdate' &&
+                    mutation.payload.toString() === ['unprocessed', -1].toString()
+                )
+                    return true
                 const predicate = [
-                    'visitors/processRemoveItem',
+                    'visitors/processRemoveItem'
                     //'user/unreadUpdate'
                 ]
                 // Conditionally trigger other plugins subscription event here to
@@ -71,7 +74,7 @@ export default new Vuex.Store({
                 // pluginStateChanged(mutation, state)
                 return predicate.indexOf(mutation.type) >= 0
             }
-        }),
+        })
     ],
     mutations: {
         SOCKET_CONNECT(state, val) {
