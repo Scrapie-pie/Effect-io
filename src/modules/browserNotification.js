@@ -48,6 +48,12 @@ function notificationEngine(title, body, link) {
 
 import store from '@/store/store'
 function browserNotificationMessage(val) {
+    console.log(document.hidden);
+    console.log(val.withBrowserNotification);
+    console.log(store.state.user.settings.settings.push_notifications);
+
+    if(val.status="unprocessed") val.withBrowserNotification = 1
+
     if (
         !document.hidden ||
         !store.state.user.settings.settings.push_notifications ||
@@ -58,6 +64,8 @@ function browserNotificationMessage(val) {
             resolve()
         })
     }
+
+
 
     let title = '',
         body = '',

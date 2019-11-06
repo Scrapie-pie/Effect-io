@@ -256,12 +256,12 @@ export default {
 			this.$store.commit('user/branchListAll', val)
 		},
 		'room-users'(val) {
-			console.log('room-users', val)
+			//console.log('room-users', val)
 			val.socket = true // для того что бы room_id не обновлять
 			this.$store.commit('roomActive/set', val)
 		},
 		unprocessed(val) {
-			//console.log('unprocessed', val)
+			console.log('unprocessed', val)
 
             if (val.status === 'recipient' || val.status === 'invited' || val.status === 'unprocessed') {
                 this.$store.commit('visitors/processMessageLastUpdate', val)
