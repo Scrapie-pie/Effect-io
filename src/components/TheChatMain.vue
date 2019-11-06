@@ -396,6 +396,8 @@ export default {
                 return true
             if (!list.length) return false
 
+            return true //Todo какая то проблема со статусами? редиректит всех, убрал что бы не бесило пользователя
+
             list = list.filter(item =>
                 ['recipient', 'unprocessed', 'invited', 'active'].includes(item.status)
             )
