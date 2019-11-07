@@ -40,10 +40,12 @@
                                 )
 
                                 input-emoji(
+                                    ref="inputEmoji"
                                     :text="textWidthSmiles",
                                     @caret="val=>textCaret=val",
                                     @getText="val=>message=val",
-                                    @inputChange="typingLive"
+                                    @inputChange="inputEmojiInputChange"
+
                                 )
                             textarea.chat-main-footer__input(
                                 placeholder="Enter - отправить сообщение, Shift+Enter - новая строка."
@@ -203,10 +205,29 @@ export default {
         },
         uploadFileList(val) {}
     },
-    mounted() {},
+    mounted() {
+        this.$refs.inputEmoji.$el.addEventListener("paste", this.listenerClearStylePaste);
 
-    created() {},
+    },
+
+    created() {
+
+    },
+    beforeDestroy(){
+        this.$refs.inputEmoji.$el.removeEventListener("paste", this.listenerClearStylePaste);
+    },
     methods: {
+        listenerClearStylePaste(e){
+                e.preventDefault();
+                let text = e.clipboardData.getData("text/plain");
+                document.execCommand("insertHTML", false, text);
+        },
+        inputEmojiInputChange(text){
+
+            this.typingLive(text)
+
+
+        },
         getTextAreaVisitors(list,routerParams) {
             let { site_id, guest_uuid } = routerParams
             let find = list.find(
