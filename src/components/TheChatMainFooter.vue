@@ -407,14 +407,14 @@ export default {
                 .post('message/send-from-operator', data)
                 .then(responsive => {
                     this.bufferingSend = false
-
+                    console.log(this.httpParams);
                     let { id } = responsive.data.data
                     console.log('message/send-from-operator', responsive.data.data)
                     let { first_name: name, photo, employee_id } = this.$store.state.user.profile,
                         time = new Date().getTime() / 1000,
                         message = {
-                            guest_uuid: this.httpParams.params.guest_uuid, //Делаем синхранизацию, если опер открыл в журнале свой диалог и пишет сообщени в другой вкладке {
-                            site_id: this.httpParams.params.site_id, //
+                            guest_uuid: this?.httpParams?.params.guest_uuid, //Делаем синхранизацию, если опер открыл в журнале свой диалог и пишет сообщени в другой вкладке {  ?. решает баг отправки в общем чате
+                            site_id: this?.httpParams?.params.site_id, //
                             room_id: this.$store.state.roomActive.id, //}
                             id,
                             time,
@@ -427,6 +427,8 @@ export default {
                             },
                             delivery_status: data.delivery_status
                         }
+
+                    console.log(message);
 
                     this.$root.$emit('messageAdd', message)
                     localStorage.setItem('messageAdd', JSON.stringify(message))
@@ -453,7 +455,9 @@ export default {
                         this.$refs.scrollbarMessage.update()
                     }, 200)
                 })
-                .catch(({ response }) => {
+                .catch((error) => {
+                    console.log(error);
+                    let {response} = error
                     if (response.status === 400) {
                         this.getPhrasesSelectText(this.spellingMessage)
 
