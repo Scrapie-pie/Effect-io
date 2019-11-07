@@ -309,6 +309,9 @@ export default {
     &__channel-btn-wrap {
         display: inline-block;
     }
+    &__channel-btn{
+        word-break: break-all;
+    }
     &__channel-btn-wrap:hover &__client-history-actions {
         opacity: 1;
         visibility: visible;
