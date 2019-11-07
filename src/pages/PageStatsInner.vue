@@ -209,13 +209,23 @@ export default {
             return ''
         },
         downloadLink() {
+            let type = this.type
+
+            if(this.routerName==='statsAllBranch') {
+                if(this.by_dates) {
+                  type='branch'
+                } else {
+                  type='employees'
+                }
+            }
+
             let dates = `&date_from=${this.date_from}&date_to=${this.date_to}&time_from=${
                 this.time_from
             }&time_to=${this.time_to}`
             return `${config.api_server}statistic/get-by-params?user_id=${this.user_id}&branch_id=${
                 this.branch_id
             }${dates}&last_days=${this.last_days}&by_dates=${this.by_dates}&type=${
-                this.type
+                type
             }&csv=1&jwt=${this.$http.defaults.headers.common.jwt}`
         },
         placeholder() {
