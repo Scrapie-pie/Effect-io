@@ -48,6 +48,11 @@ export default {
         }
     },
     methods: {
+        blur(e) {
+
+
+            this.$emit('blur', '')
+        },
         inputChange(e) {
             let listText = []
             e.target.childNodes.forEach((item, index) => {
@@ -121,7 +126,8 @@ export default {
                 placeholder: 'Enter - отправить сообщение, Shift+Enter - новая строка.'
             },
             on: {
-                input: this.inputChange
+                input: this.inputChange,
+                blur:this.blur,
             }
         }
 

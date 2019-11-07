@@ -32,7 +32,11 @@ export default {
 
                 this.$store.commit('user/unreadUpdateGuest', message.active_unread_rooms)
 
-                browserNotificationMessage(message).then(click => {
+				console.log(this.$route.name==='chatId')
+
+
+
+                browserNotificationMessage.call(this,message).then(click => {
                     if (click === 'toLink') {
                         let { guest_uuid, site_id } = message
                         this.$router.push({ name: 'chatId', params: { guest_uuid, site_id } })
@@ -194,7 +198,7 @@ export default {
 				this.$store.commit('user/unreadUpdate', ['private', 1])
 
 				this.playSoundFile('sound_new_operator_message')
-				browserNotificationMessage(val).then(click => {
+				browserNotificationMessage.call(this,val).then(click => {
 					if (click === 'toLink') {
 						let find = this.$store.getters['operators/all'].find(
 							item => item.employee_id === val.from_user_info.id
@@ -266,7 +270,7 @@ export default {
                 this.$store.commit('visitors/processMessageLastUpdate', val)
                 this.$store.commit('user/unreadUpdate', ['unprocessed', 1])
                 this.playSoundFile('sound_new_guest')
-                browserNotificationMessage(val).then(click => {
+                browserNotificationMessage.call(this,val).then(click => {
                     if (click === 'toLink') {
                         let { guest_uuid, site_id } = val
                         this.$router.push({ name: 'process', params: { guest_uuid, site_id } })
@@ -292,7 +296,7 @@ export default {
             //this.$store.commit('user/unreadUpdate', ['guest', 1])
 			//this.$store.commit('user/unreadUpdate',['guest',1]);
 
-			browserNotificationMessage(val).then(click => {
+			browserNotificationMessage.call(this,val).then(click => {
 				if (click === 'toLink') {
 					let { guest_uuid, site_id } = val
 					this.$router.push({ name: 'chatId', params: { guest_uuid, site_id } })

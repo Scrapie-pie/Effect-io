@@ -46,17 +46,10 @@ function notificationEngine(title, body, link) {
     }
 }
 
-import store from '@/store/store'
+
 function browserNotificationMessage(val) {
-    console.log(document.hidden)
-    console.log(val.withBrowserNotification)
-    console.log(store.state.user.settings.settings.push_notifications)
-
-    if ((val.status = 'unprocessed')) val.withBrowserNotification = 1
-
     if (
-        !document.hidden ||
-        !store.state.user.settings.settings.push_notifications ||
+        !this.$store.state.user.settings.settings.push_notifications ||
         !val.withBrowserNotification
     ) {
         return new Promise(resolve => {
@@ -64,6 +57,10 @@ function browserNotificationMessage(val) {
             resolve()
         })
     }
+
+
+    if((this.viewModeChat==='visitors' && val.status==='active') && !document.hidden) return new Promise(resolve => resolve())
+    if((this.viewModeChat==='process' && (val.status === 'unprocessed' || val.status === 'invited' || val.status === 'recipient')) && !document.hidden) return new Promise(resolve => resolve())
 
     let title = '',
         body = '',

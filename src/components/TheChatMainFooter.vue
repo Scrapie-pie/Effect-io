@@ -37,6 +37,7 @@
                             div(
                                 @keydown.enter.exact="onEnter",
                                 @click.prevent="messageRead"
+
                                 )
 
                                 input-emoji(
@@ -45,6 +46,7 @@
                                     @caret="val=>textCaret=val",
                                     @getText="val=>message=val",
                                     @inputChange="inputEmojiInputChange"
+                                    @blur="saveTextarea"
 
                                 )
                             textarea.chat-main-footer__input(
@@ -163,37 +165,20 @@ export default {
 
                 this.checkIsProcessPage()
 
-                if(this.viewModeChat==='visitors') {
-                    if(from) {
-                        this.$store.commit('visitors/saveTextAreaItem', {
-                            ids: from.params,
-                            textArea: this.message
-                        })
+
+                setTimeout(()=>{
+                    if(this.viewModeChat==='visitors') {
                         this.getPhrasesSelectText('')
                         this.getTextAreaVisitors(this.$store.state.visitors.self,to.params)
                     }
-                    else {
-                        setTimeout(()=>{
-                            this.getTextAreaVisitors(this.$store.state.visitors.self,to.params)
-                        },500)
-                    }
-                }
-
-                if(this.viewModeChat==='operators') {
-                    if(from) {
-                        this.$store.commit('operators/saveTextAreaItem', {
-                            ids: from.params,
-                            textArea: this.message
-                        })
+                    if(this.viewModeChat==='operators') {
                         this.getPhrasesSelectText('')
                         this.getTextAreaOperators(this.$store.state.operators.all,to.params)
                     }
-                    else {
-                        setTimeout(()=>{
-                            this.getTextAreaOperators(this.$store.state.operators.all,to.params)
-                        },500)
-                    }
-                }
+                },500)
+
+
+
             },
             immediate: true
         },
@@ -206,7 +191,7 @@ export default {
         uploadFileList(val) {}
     },
     mounted() {
-        this.$refs.inputEmoji.$el.addEventListener("paste", this.listenerClearStylePaste);
+        this.$refs.inputEmoji?.$el.addEventListener("paste", this.listenerClearStylePaste);
 
     },
 
@@ -214,9 +199,28 @@ export default {
 
     },
     beforeDestroy(){
-        this.$refs.inputEmoji.$el.removeEventListener("paste", this.listenerClearStylePaste);
+        this.$refs.inputEmoji?.$el.removeEventListener("paste", this.listenerClearStylePaste);
     },
     methods: {
+        saveTextarea(){
+
+
+            if(this.viewModeChat==='visitors') {
+
+                    this.$store.commit('visitors/saveTextAreaItem', {
+                        ids: this.$route.params,
+                        textArea: this.message
+                    })
+            }
+
+            if(this.viewModeChat==='operators') {
+
+                    this.$store.commit('operators/saveTextAreaItem', {
+                        ids: this.$route.params,
+                        textArea: this.message
+                    })
+            }
+        },
         listenerClearStylePaste(e){
                 e.preventDefault();
                 let text = e.clipboardData.getData("text/plain");
