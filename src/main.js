@@ -43,7 +43,7 @@ Vue.use(
         reconnection: true, // (Boolean) whether to reconnect automatically (false)
         reconnectionAttempts: 30, // (Number) number of reconnection attempts before giving up (Infinity),
         reconnectionDelay: 3000,
-        transports: ['polling','websocket'],
+        transports: ['websocket','polling',],
         upgrade: false,
         secure: true,
         query: {
