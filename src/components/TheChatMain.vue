@@ -77,7 +77,7 @@ import { wrapTextUrls } from '@/modules/modules'
 import { datetimeDMY, datetimeHMS } from '@/modules/datetime'
 import inputEmoji from '@/components/inputEmoji'
 
-import { viewModeChat, httpParams, scrollbar } from '@/mixins/mixins'
+import { viewModeChat, httpParams, scrollbar,pollingHistoryMessage } from '@/mixins/mixins'
 
 import lodash_groupBy from 'lodash/groupBy'
 import lodash_find from 'lodash/find'
@@ -103,7 +103,7 @@ export default {
             return
         }
     },
-    mixins: [viewModeChat, httpParams, scrollbar],
+    mixins: [viewModeChat, httpParams, scrollbar,pollingHistoryMessage],
     data() {
         return {
             historyMessageLoadStart: true, //При прокрутке страницы, функция historyMessageLoad выполнялась раньше чем приходил ответ, из за этого лишние индификаторы были
@@ -113,7 +113,7 @@ export default {
             systemMessages: [],
             visitorTypingLive: '',
             chat_id: null,
-            pollingInterval:null
+
         }
     },
 
@@ -276,19 +276,17 @@ export default {
         this.syncOperatorMessageVisor()
 
 
-       /* this.pollingInterval = setInterval(()=>{
 
-            this.historyMessageLoad()
-        },5000)*/
     },
     beforeDestroy() {
         this.$root.$off('messageAdd', this.emitMessageAdd)
         this.$root.$off('messageDelivered', this.emitMessageDelivered)
 
-        //clearTimeout(this.pollingInterval)
+
     },
 
     methods: {
+
         syncOperatorMessageVisor() {
             if (!['visitors', 'visor'].includes(this.viewModeChat)) return
 
@@ -456,7 +454,7 @@ export default {
 
                 //console.log('messages',messages);
 
-                messages = messages.filter(message=>!this.messageList.some(item=>item.id===message.id)) //убираем дубликаты
+                //messages = messages.filter(message=>!this.messageList.some(item=>item.id===message.id)) //убираем дубликаты
 
                 this.messageList.push(...messages)
                 //console.log('this.messageList.push',this.messageList);
