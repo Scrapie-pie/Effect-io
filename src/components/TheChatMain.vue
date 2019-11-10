@@ -276,17 +276,16 @@ export default {
         this.syncOperatorMessageVisor()
 
 
-        this.pollingInterval = setInterval(()=>{
-            this.historyMessageLoad().then(() => {
-                this.scrollbarScrollerPush(this.$refs.scrollbar)
-            })
-        },5000)
+       /* this.pollingInterval = setInterval(()=>{
+
+            this.historyMessageLoad()
+        },5000)*/
     },
     beforeDestroy() {
         this.$root.$off('messageAdd', this.emitMessageAdd)
         this.$root.$off('messageDelivered', this.emitMessageDelivered)
 
-        clearTimeout(this.pollingInterval)
+        //clearTimeout(this.pollingInterval)
     },
 
     methods: {
@@ -415,8 +414,11 @@ export default {
             if (this.scrollLoadAllow(e, 'up')) this.historyMessageLoad()
         },
         historyMessageLoad() {
+            console.log('pollingInterval',this.historyMessageLoadStart,this.messageRun);
             if (!this.messageRun) return
             if (!this.historyMessageLoadStart) return
+
+            console.log();
 
             let params = {
                     last_msg_id: this.messageLastId,
