@@ -112,7 +112,8 @@ export default {
             limit: 20,
             systemMessages: [],
             visitorTypingLive: '',
-            chat_id: null
+            chat_id: null,
+            pollingInterval:null
         }
     },
 
@@ -273,10 +274,19 @@ export default {
         })
 
         this.syncOperatorMessageVisor()
+
+
+        this.pollingInterval = setInterval(()=>{
+            this.historyMessageLoad().then(() => {
+                this.scrollbarScrollerPush(this.$refs.scrollbar)
+            })
+        },5000)
     },
     beforeDestroy() {
         this.$root.$off('messageAdd', this.emitMessageAdd)
         this.$root.$off('messageDelivered', this.emitMessageDelivered)
+
+        clearTimeout(this.pollingInterval)
     },
 
     methods: {
@@ -443,6 +453,9 @@ export default {
                 //console.log('historyMessageLoad');
 
                 //console.log('messages',messages);
+
+                messages = messages.filter(message=>!this.messageList.some(item=>item.id===message.id)) //убираем дубликаты
+
                 this.messageList.push(...messages)
                 //console.log('this.messageList.push',this.messageList);
                 //this.$wait.end('message-history');

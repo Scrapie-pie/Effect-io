@@ -48,7 +48,10 @@ function notificationEngine(title, body, link) {
 
 
 function browserNotificationMessage(val) {
+    console.log('browserNotificationMessage',this.$store.state.user.settings.settings.push_notifications);
+
     if (
+        Notification.permission === 'denied' ||
         !this.$store.state.user.settings.settings.push_notifications ||
         !val.withBrowserNotification
     ) {
@@ -61,6 +64,8 @@ function browserNotificationMessage(val) {
 
     if((this.viewModeChat==='visitors' && val.status==='active') && !document.hidden) return new Promise(resolve => resolve())
     if((this.viewModeChat==='process' && (val.status === 'unprocessed' || val.status === 'invited' || val.status === 'recipient')) && !document.hidden) return new Promise(resolve => resolve())
+
+    console.log(val,this.viewModeChat);
 
     let title = '',
         body = '',
