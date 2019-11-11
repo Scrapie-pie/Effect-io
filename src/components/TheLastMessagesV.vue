@@ -173,10 +173,10 @@ export default {
     methods: {
         timerVisible(item) {
             if (!this.timerNow) return
-            if (item.hot && item.awaiting_answer_time) return true
+            if (item.hot && item.awaiting_answer_timeFormat) return true
         },
         timer(item, timerNow, index) {
-            return datetimeStoHMS(Math.round(timerNow - item.awaiting_answer_time), true)
+            return datetimeStoHMS(Math.round(timerNow - item.awaiting_answer_timeFormat), true)
         },
         setName(item, visitorInfo) {
             if (item.very_hot) return item.name

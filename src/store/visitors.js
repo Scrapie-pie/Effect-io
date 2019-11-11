@@ -21,10 +21,25 @@ const getDefaultState = () => {
 // initial state
 const state = getDefaultState()
 
-function commonSelfProcces(item) {
+
+function commonSelfProcces(store) {
+    return function(item){
+
+        store._vm.$set(
+            item,
+            'awaiting_answer_timeFormat',
+            new Date().getTime() / 1000 - item.awaiting_answer_time
+        )
+        return item
+    }
+}
+
+/*function commonSelfProcces(item) {
+
+    console.log(item);
     item.awaiting_answer_time = new Date().getTime() / 1000 - item.awaiting_answer_time
     return item
-}
+}*/
 
 export default {
     namespaced: true,
@@ -62,7 +77,7 @@ export default {
                     this._vm.$set(state[name][findIndex], 'hot', set)
                     this._vm.$set(
                         state[name][findIndex],
-                        'awaiting_answer_time',
+                        'awaiting_answer_timeFormat',
                         new Date().getTime() / 1000 - awaiting_answer_time
                     )
                 }
@@ -72,7 +87,8 @@ export default {
             main('self')
         },
         process(state, val) {
-            state.process = val.list.map(commonSelfProcces)
+
+            state.process = val.list.map(commonSelfProcces(this))
             if (val.count) state.processCount = val.count
         },
         setProcessLastPageN(state, val) {
@@ -105,7 +121,7 @@ export default {
             state.processCount = 0
         },
         self(state, val) {
-            state.self = val.list.map(commonSelfProcces)
+            state.self = val.list.map(commonSelfProcces(this))
             if (val.count) state.selfCount = val.count
         },
         saveTextAreaItem(state, {ids, textArea }) {

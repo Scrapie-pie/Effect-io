@@ -266,9 +266,12 @@ export default {
 		unprocessed(val) {
 			console.log('unprocessed', val)
 
+
             if (val.status === 'recipient' || val.status === 'invited' || val.status === 'unprocessed') {
                 this.$store.commit('visitors/processMessageLastUpdate', val)
                 this.$store.commit('user/unreadUpdate', ['unprocessed', 1])
+
+                //this.$store.commit('user/unreadUpdateUnprocessed', val.common_count)
                 this.playSoundFile('sound_new_guest')
                 browserNotificationMessage.call(this,val).then(click => {
                     if (click === 'toLink') {
@@ -290,7 +293,7 @@ export default {
 
 			this.playSoundFile('sound_new_guest_message')
 
-			val.awaiting_answer_time = new Date().getTime() / 1000 - val.awaiting_answer_time
+			val.awaiting_answer_timeFormat = new Date().getTime() / 1000 - val.awaiting_answer_time
 			dialogPush(this, 'self', val)
             //this.$store.commit('user/socketUnreadUpdate', ['guest', val])
             //this.$store.commit('user/unreadUpdate', ['guest', 1])
