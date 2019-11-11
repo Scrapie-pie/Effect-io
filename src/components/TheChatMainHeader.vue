@@ -19,6 +19,7 @@
                 .chat-main-header__channel-btn-wrap
                     base-btn(
                         theme="text",
+                        :title="visitorPage"
                     ).btn-arrow.chat-main-header__channel-btn
                         | {{visitorPage}}
                         span.btn-arrow__arrow(:class="{'btn-arrow__arrow':showClientHistoryActions}")
@@ -307,13 +308,16 @@ export default {
         top: 100%;
     }
     &__channel-btn-wrap {
-        display: inline-block;
-        overflow:hidden;
-        white-space:nowrap;
-        text-overflow:ellipsis;
+        display: block;
+        min-width: 0;
+
     }
     &__channel-btn{
         //word-break: break-all;
+        overflow:hidden;
+        white-space:nowrap;
+        text-overflow:ellipsis;
+        width: 100%;
 
     }
     &__channel-btn-wrap:hover &__client-history-actions {
@@ -329,6 +333,11 @@ export default {
         margin-top: calc-em(30);
         opacity: 0;
         visibility: hidden;
+    }
+
+
+    &__text {
+        min-width: 0;
     }
 }
 </style>
