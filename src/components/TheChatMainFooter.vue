@@ -224,7 +224,9 @@ export default {
         listenerClearStylePaste(e){
                 e.preventDefault();
                 let text = e.clipboardData.getData("text/plain");
-                document.execCommand("insertHTML", false, text);
+            console.log(text.replace(/(\r\n|\n|&lt;br&gt;)/g, '<br>'))
+            text = text.replace(/(\r\n|\n|&lt;br&gt;)/g, '<br>')
+            document.execCommand("insertHTML", true, text);
         },
         inputEmojiInputChange(text){
 
