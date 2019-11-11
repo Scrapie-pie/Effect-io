@@ -20,7 +20,7 @@
                     base-btn(
                         theme="text",
                     ).btn-arrow.chat-main-header__channel-btn
-                        | {{visitorPage}}{{visitorPage}}{{visitorPage}}{{visitorPage}}{{visitorPage}}{{visitorPage}}{{visitorPage}}{{visitorPage}}{{visitorPage}}
+                        | {{visitorPage}}
                         span.btn-arrow__arrow(:class="{'btn-arrow__arrow':showClientHistoryActions}")
                     .chat-main-header__client-history-actions()
                         the-chat-main-header-history
