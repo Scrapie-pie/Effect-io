@@ -7,7 +7,7 @@ import tags from '@/store/tags'
 import operators from '@/store/operators'
 import visitors from '@/store/visitors'
 import roomActive from '@/store/roomActive'
-import rooms from '@/store/rooms'
+//import rooms from '@/store/rooms'
 
 Vue.use(Vuex)
 
@@ -53,7 +53,7 @@ export default new Vuex.Store({
         operators,
         visitors,
         roomActive,
-        rooms
+        //rooms
     },
     state,
     plugins: [

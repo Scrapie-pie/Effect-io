@@ -333,7 +333,7 @@ export default {
                 if(stop) return
                 setTimeout(() => {
 
-                    this.emitMessageDelivered(val,true)
+                    this.emitMessageDelivered(val)
                 }, 1000)
             }
         },

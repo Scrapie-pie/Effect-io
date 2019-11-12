@@ -63,7 +63,11 @@ export default {
             return 'Данный комментарий увидит отдел, которому Вы передаете диалог. Это не обязательное поле. Вы можете передать диалог без указания комментария.'
         },
         itemLisFilter() {
-            return this.itemList.filter(item => item.site_id === this.httpParams.params.site_id)
+
+            return this.itemList.filter(item => item.site_id === this.httpParams.params.site_id).filter(branch=>{
+
+                return this.$store.getters['operators/online'].some(operator=>operator.branches_ids.includes(branch.id))
+            })
         },
         itemList() {
             return this.$store.state.user.branchListAll

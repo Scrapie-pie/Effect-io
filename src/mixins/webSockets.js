@@ -347,7 +347,8 @@ export default {
 			if (this.viewModeChat === 'process') this.routerPushProcessAllOrItemFirst()
 		},
 		'update-employees'(val) {
-			this.$store.commit('operators/all', val)
+            console.log('update-employees');
+            this.$store.commit('operators/all', val)
 			let find = val.find(item => item.id === this.$store.state.user.profile.id)
 			if (find) {
 				if (!find.is_common_chat && this.viewModeChat === 'common')
