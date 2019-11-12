@@ -323,14 +323,17 @@ export default {
             if (item.from_user_info.guest_uuid) return visitorInfo.regRuLogin
             else return null
         },
-        emitMessageDelivered(val) {
+        emitMessageDelivered(val,stop) {
+
             let findIndex = this.messageList.findIndex(item => item.id === val.message_id)
             console.log('emitMessageDelivered', findIndex, val)
             if (findIndex !== -1) {
                 this.$set(this.messageList[findIndex], 'delivery_status', val.delivery_status)
             } else {
+                if(stop) return
                 setTimeout(() => {
-                    this.emitMessageDelivered(val)
+
+                    this.emitMessageDelivered(val,true)
                 }, 1000)
             }
         },

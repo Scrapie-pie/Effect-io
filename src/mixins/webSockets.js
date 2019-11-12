@@ -265,8 +265,24 @@ export default {
 		},
 		unprocessed(val) {
 			console.log('unprocessed', val)
+        /*    val = {"status":"unprocessed","room_id":1660,"guest_uuid":"2a04bb13-7130-5bc6-8c29-f419b1f74697","site_id":118,"uuid":"2a04bb13-7130-5bc6-8c29-f419b1f74697","photo":null,"photo_stub":12,"gender":null,"name":"Гость","mail":null,"phone":null,"role_id":8,"created":1573443130,"modified":1573443130,"language":"ru","country_id":"RU","region_id":14,"city_id":30,"ip":"185.6.216.65","timezone":"Europe/Moscow","browser":"Chrome","os":"Windows 10","device":"pc","channel_type":7,"channel_user_id":"2a04bb13-7130-5bc6-8c29-f419b1f74697","regRuLogin":null,"country":"Россия","region":"Воронежская область","city":"Воронеж","referrer":"http://localhost:4001/","key_phrases":"","visits_count":2,"page":"effect-widget (http://mishki.ucoz.net/)","session_start_time":1573471957,"online":1,"channel_link":"mishki.ucoz.net","comment":null,"additional_contact_1":null,"additional_contact_2":null,"additional_contact_3":null,"online_time":"36 мин. 48 сек.","contact_info":{"uuid":"2a04bb13-7130-5bc6-8c29-f419b1f74697","photo":null,"photo_stub":12,"gender":null,"name":"Гость","mail":null,"phone":null,"role_id":8,"created":1573443130,"modified":1573443130,"language":"ru","country_id":"RU","region_id":14,"city_id":30,"ip":"185.6.216.65","timezone":"Europe/Moscow","browser":"Chrome","os":"Windows 10","device":"pc","channel_type":7,"channel_user_id":"2a04bb13-7130-5bc6-8c29-f419b1f74697","regRuLogin":null,"guest_uuid":"2a04bb13-7130-5bc6-8c29-f419b1f74697","site_id":118,"country":"Россия","region":"Воронежская область","city":"Воронеж","referrer":"http://localhost:4001/","key_phrases":"","visits_count":2,"page":"effect-widget (http://mishki.ucoz.net/)","session_start_time":1573471957,"online":1,"channel_link":"mishki.ucoz.net","comment":null,"additional_contact_1":null,"additional_contact_2":null,"additional_contact_3":null,"online_time":"36 мин. 48 сек."},"from_user_info":{"name":"","photo":null},"body":"qwe","last_message_time":1573474165,"from_role_id":8,"withBrowserNotification":118,"common_count":"1","unread":[],"last_message":"Автоматическое сообщение отправлено клиенту: \"Здравствуйте.\"","last_message_author":"Система","hot":true,"awaiting_answer_timeFormat":1573474167.667}
+            val.guest_uuid = Math.random()
+            setInterval(()=>{
+                val.guest_uuid = Math.random()
+                if (val.status === 'recipient' || val.status === 'invited' || val.status === 'unprocessed') {
+                    this.$store.commit('visitors/processMessageLastUpdate', val)
+                    this.$store.commit('user/unreadUpdate', ['unprocessed', 1])
 
-
+                    //this.$store.commit('user/unreadUpdateUnprocessed', val.common_count)
+                    this.playSoundFile('sound_new_guest')
+                    browserNotificationMessage.call(this,val).then(click => {
+                        if (click === 'toLink') {
+                            let { guest_uuid, site_id } = val
+                            this.$router.push({ name: 'process', params: { guest_uuid, site_id } })
+                        }
+                    })
+                }
+            },100)*/
             if (val.status === 'recipient' || val.status === 'invited' || val.status === 'unprocessed') {
                 this.$store.commit('visitors/processMessageLastUpdate', val)
                 this.$store.commit('user/unreadUpdate', ['unprocessed', 1])
