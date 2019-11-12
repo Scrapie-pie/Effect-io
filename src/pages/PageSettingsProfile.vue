@@ -260,15 +260,19 @@ export default {
                 this.branchListSelected = val.filter(item => {
                     return this.model.branches_ids.includes(item.id)
                 })
+                console.log('setBranchListSelected',val,this.model.branches_ids);
             }
         },
         getBranchListAll() {
+
             if (this.$store.state.user.branchListAll.length) {
                 this.setBranchListSelected(this.$store.getters['user/branchListAll'])
+
             } else {
                 this.$store.watch(
                     state => state.user.branchListAll,
                     val => {
+
                         return this.setBranchListSelected(val)
                     }
                 )
@@ -324,6 +328,7 @@ export default {
                     .get('user/get-profile', { params: { user_id: user_id } })
                     .then(({ data }) => {
                         if (data.success) {
+                            console.log(data.data.user);
                             this.model = data.data.user
                             this.adminMode = this.model.role_id === 13
                             this.operatorSeniorMode = this.model.role_id === 14

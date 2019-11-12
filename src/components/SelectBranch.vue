@@ -65,8 +65,11 @@ export default {
         itemLisFilter() {
 
             return this.itemList.filter(item => item.site_id === this.httpParams.params.site_id).filter(branch=>{
-
-                return this.$store.getters['operators/online'].some(operator=>operator.branches_ids.includes(branch.id))
+                console.log(branch.id);
+                return this.$store.getters['operators/online'].some(operator=>{
+                    console.log(operator.branches_ids);
+                   return operator.branches_ids.includes(branch.id)
+                })
             })
         },
         itemList() {

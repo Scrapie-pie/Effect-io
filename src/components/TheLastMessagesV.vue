@@ -156,9 +156,9 @@ export default {
         if (this.viewModeChat === 'process') this.type = 'unprocessed'
         if (this.viewModeChat === 'visitors') this.type = 'self'
         this.setLastPageN()
-        if (!this.itemListStore.length) {
+        //if (!this.itemListStore.length) {
             this.getItemList()
-        }
+        //}
     },
     /*  beforeUpdate(){
 
