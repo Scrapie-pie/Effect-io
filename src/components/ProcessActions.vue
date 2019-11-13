@@ -98,6 +98,7 @@ export default {
             let processItem = this.$store.state.visitors.process.find(
                 item => item.guest_uuid + item.site_id === guest_uuid + site_id
             )
+            console.log(processItem);
             processItem.very_hot = 0
 
             this.$store.commit('visitors/processRemoveItem', { guest_uuid, site_id })

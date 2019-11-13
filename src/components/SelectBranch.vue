@@ -62,11 +62,20 @@ export default {
         placeholder() {
             return 'Данный комментарий увидит отдел, которому Вы передаете диалог. Это не обязательное поле. Вы можете передать диалог без указания комментария.'
         },
+        availableOperators(){
+            return this.$store.getters['operators/online'].filter(
+                item =>
+                    //item.id !== this.$store.state.user.profile.id && // Убираем себя из списка
+                    !this.$store.state.roomActive.usersActive.includes(item.id) //Убираем операторов если они уже есть в комнате
+            )
+        },
         itemLisFilter() {
 
-            return this.itemList.filter(item => item.site_id === this.httpParams.params.site_id).filter(branch=>{
+            return this.itemList
+                .filter(item => item.site_id === this.httpParams.params.site_id)
+                .filter(branch=>{
                 console.log(branch.id);
-                return this.$store.getters['operators/online'].some(operator=>{
+                return this.availableOperators.some(operator=>{
                     console.log(operator.branches_ids);
                    return operator.branches_ids.includes(branch.id)
                 })

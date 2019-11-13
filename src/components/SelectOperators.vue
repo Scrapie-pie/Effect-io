@@ -135,9 +135,8 @@ export default {
             return list
         },
         itemList() {
-            return this.$store.getters['operators/all'].filter(
+            return this.$store.getters['operators/online'].filter(
                 item =>
-                    item.online === 1 &&
                     //item.id !== this.$store.state.user.profile.id && // Убираем себя из списка
                     !this.$store.state.roomActive.usersActive.includes(item.id) //Убираем операторов если они уже есть в комнате
             )
