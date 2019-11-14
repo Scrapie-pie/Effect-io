@@ -257,6 +257,7 @@ export default {
 			}
 		},
 		'message-delivered'(val) {
+		    return //todo вырезать этот метод если все ок будет с полингом
             this.$socket.emit('delivered', val.socket_id);
 			this.$root.$emit('messageDelivered', val)
 		},
