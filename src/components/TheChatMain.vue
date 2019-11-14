@@ -77,7 +77,7 @@ import { wrapTextUrls } from '@/modules/modules'
 import { datetimeDMY, datetimeHMS } from '@/modules/datetime'
 import inputEmoji from '@/components/inputEmoji'
 
-import { viewModeChat, httpParams, scrollbar,pollingHistoryMessage } from '@/mixins/mixins'
+import { viewModeChat, httpParams, scrollbar} from '@/mixins/mixins'
 
 import lodash_groupBy from 'lodash/groupBy'
 import lodash_find from 'lodash/find'
@@ -103,7 +103,7 @@ export default {
             return
         }
     },
-    mixins: [viewModeChat, httpParams, scrollbar,pollingHistoryMessage],
+    mixins: [viewModeChat, httpParams, scrollbar],
     data() {
         return {
             historyMessageLoadStart: true, //При прокрутке страницы, функция historyMessageLoad выполнялась раньше чем приходил ответ, из за этого лишние индификаторы были
