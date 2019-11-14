@@ -120,18 +120,18 @@ export default {
 		},
 
 		'hot-guest'(val) {
-            this.$socket.io.emit('delivered', val.socket_id);
+            this.$socket.emit('delivered', val.socket_id);
 			console.log('hot-guest', val)
 			this.$store.commit('visitors/messageHot', { val, set: true })
 		},
 		'typing-live'(val) {
-            this.$socket.io.emit('delivered', val.socket_id);
+            this.$socket.emit('delivered', val.socket_id);
 			console.log('typing-live', val)
 
 			this.$store.commit('roomActive/typingLive', val)
 		},
 		'new-message'(val) {
-            this.$socket.io.emit('delivered', val.socket_id);
+            this.$socket.emit('delivered', val.socket_id);
 			//переместил сюда, что бы список на странице team обновлялся
 
 			if (['search'].includes(this.viewModeChat)) return //Чтобы на странице поиска не приходили сообщения....
@@ -215,18 +215,18 @@ export default {
 			console.log('socket disconnect')
 		},
 		'guest-new-session'(val) {
-            this.$socket.io.emit('delivered', val.socket_id);
+            this.$socket.emit('delivered', val.socket_id);
 			//console.log('guest-new-session',val);
 			this.playSoundFile('sound_new_guest')
 			this.$root.$emit('guestNewSession', val)
 		},
 		'update-guest-employee'(val) {
-            this.$socket.io.emit('delivered', val.socket_id);
+            this.$socket.emit('delivered', val.socket_id);
 			console.log('update-guest-employee', val)
 			this.$root.$emit('guestUpdate', val)
 		},
 		'guest-update'(val) {
-            this.$socket.io.emit('delivered', val.socket_id);
+            this.$socket.emit('delivered', val.socket_id);
 			//Todo 'guest-update'
 			console.log('guest-update', val)
 
@@ -257,23 +257,23 @@ export default {
 			}
 		},
 		'message-delivered'(val) {
-            this.$socket.io.emit('delivered', val.socket_id);
+            this.$socket.emit('delivered', val.socket_id);
 			this.$root.$emit('messageDelivered', val)
 		},
 		'update-branches'({list,socket_id}) {
-            this.$socket.io.emit('delivered', socket_id);
+            this.$socket.emit('delivered', socket_id);
 			console.log('update-branches', list)
 			this.$store.commit('user/branchListAll', list)
 		},
 		'room-users'(val) {
             console.log('room-users',val);
-            this.$socket.io.emit('delivered', val.socket_id);
+            this.$socket.emit('delivered', val.socket_id);
 			//console.log('room-users', val)
 			val.socket = true // для того что бы room_id не обновлять
 			this.$store.commit('roomActive/set', val.list)
 		},
 		unprocessed(val) {
-            this.$socket.io.emit('delivered', val.socket_id);
+            this.$socket.emit('delivered', val.socket_id);
 			console.log('unprocessed', val)
         /*    val = {"status":"unprocessed","room_id":1660,"guest_uuid":"2a04bb13-7130-5bc6-8c29-f419b1f74697","site_id":118,"uuid":"2a04bb13-7130-5bc6-8c29-f419b1f74697","photo":null,"photo_stub":12,"gender":null,"name":"Гость","mail":null,"phone":null,"role_id":8,"created":1573443130,"modified":1573443130,"language":"ru","country_id":"RU","region_id":14,"city_id":30,"ip":"185.6.216.65","timezone":"Europe/Moscow","browser":"Chrome","os":"Windows 10","device":"pc","channel_type":7,"channel_user_id":"2a04bb13-7130-5bc6-8c29-f419b1f74697","regRuLogin":null,"country":"Россия","region":"Воронежская область","city":"Воронеж","referrer":"http://localhost:4001/","key_phrases":"","visits_count":2,"page":"effect-widget (http://mishki.ucoz.net/)","session_start_time":1573471957,"online":1,"channel_link":"mishki.ucoz.net","comment":null,"additional_contact_1":null,"additional_contact_2":null,"additional_contact_3":null,"online_time":"36 мин. 48 сек.","contact_info":{"uuid":"2a04bb13-7130-5bc6-8c29-f419b1f74697","photo":null,"photo_stub":12,"gender":null,"name":"Гость","mail":null,"phone":null,"role_id":8,"created":1573443130,"modified":1573443130,"language":"ru","country_id":"RU","region_id":14,"city_id":30,"ip":"185.6.216.65","timezone":"Europe/Moscow","browser":"Chrome","os":"Windows 10","device":"pc","channel_type":7,"channel_user_id":"2a04bb13-7130-5bc6-8c29-f419b1f74697","regRuLogin":null,"guest_uuid":"2a04bb13-7130-5bc6-8c29-f419b1f74697","site_id":118,"country":"Россия","region":"Воронежская область","city":"Воронеж","referrer":"http://localhost:4001/","key_phrases":"","visits_count":2,"page":"effect-widget (http://mishki.ucoz.net/)","session_start_time":1573471957,"online":1,"channel_link":"mishki.ucoz.net","comment":null,"additional_contact_1":null,"additional_contact_2":null,"additional_contact_3":null,"online_time":"36 мин. 48 сек."},"from_user_info":{"name":"","photo":null},"body":"qwe","last_message_time":1573474165,"from_role_id":8,"withBrowserNotification":118,"common_count":"1","unread":[],"last_message":"Автоматическое сообщение отправлено клиенту: \"Здравствуйте.\"","last_message_author":"Система","hot":true,"awaiting_answer_timeFormat":1573474167.667}
             val.guest_uuid = Math.random()
@@ -311,7 +311,7 @@ export default {
 
 		},
 		'auto-attach'(val) {
-            this.$socket.io.emit('delivered', val.socket_id);
+            this.$socket.emit('delivered', val.socket_id);
 			console.log('auto-attach', val)
 
 			if (val.code === this.$store.state.user.profile.code)
@@ -333,7 +333,7 @@ export default {
 			})
 		},
 		'self-remove'(val) {
-            this.$socket.io.emit('delivered', val.socket_id);
+            this.$socket.emit('delivered', val.socket_id);
 			console.log('self-remove', val, val.room_id, this.$store.state.roomActive.id)
 
 			//if(val.room_id === this.$store.state.roomActiveId) return
@@ -349,7 +349,7 @@ export default {
 			if (this.viewModeChat === 'visitors') this.$router.push({ name: 'messageAll' })
 		},
 		'unprocessed-remove'(val) {
-            this.$socket.io.emit('delivered', val.socket_id);
+            this.$socket.emit('delivered', val.socket_id);
 			console.log('unprocessed-remove', val, val.room_id, this.$store.state.roomActive.id)
 			//if(val.room_id === this.$store.state.roomActiveId) return
 
@@ -359,7 +359,7 @@ export default {
 			if (this.viewModeChat === 'process') this.routerPushProcessAllOrItemFirst()
 		},
 		'update-employees'({socket_id,list}) {
-            this.$socket.io.emit('delivered', socket_id);
+            this.$socket.emit('delivered', socket_id);
             console.log('update-employees');
             this.$store.commit('operators/all', list)
 			let find = list.find(item => item.id === this.$store.state.user.profile.id)
@@ -378,7 +378,7 @@ export default {
 		},
         'employee-online'(val) {
             console.log(this.$socket);
-            this.$socket.io.emit('delivered', val.socket_id);
+            this.$socket.emit('delivered', val.socket_id);
             console.log('employee-online',val);
             let {user_id,online} = val
             console.log('employee-online');
