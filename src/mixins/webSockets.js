@@ -260,10 +260,10 @@ export default {
             this.$socket.io.emit('delivered', val.socket_id);
 			this.$root.$emit('messageDelivered', val)
 		},
-		'update-branches'(val) {
-            this.$socket.io.emit('delivered', val.socket_id);
-			console.log('update-branches', val)
-			this.$store.commit('user/branchListAll', val)
+		'update-branches'({list,socket_id}) {
+            this.$socket.io.emit('delivered', socket_id);
+			console.log('update-branches', list)
+			this.$store.commit('user/branchListAll', list)
 		},
 		'room-users'(val) {
             console.log('room-users',val);
@@ -358,11 +358,11 @@ export default {
 
 			if (this.viewModeChat === 'process') this.routerPushProcessAllOrItemFirst()
 		},
-		'update-employees'(val) {
-            this.$socket.io.emit('delivered', val.socket_id);
+		'update-employees'({socket_id,list}) {
+            this.$socket.io.emit('delivered', socket_id);
             console.log('update-employees');
-            this.$store.commit('operators/all', val)
-			let find = val.find(item => item.id === this.$store.state.user.profile.id)
+            this.$store.commit('operators/all', list)
+			let find = list.find(item => item.id === this.$store.state.user.profile.id)
 			if (find) {
 				if (!find.is_common_chat && this.viewModeChat === 'common')
 					this.$router.push({ name: 'processAll' })
