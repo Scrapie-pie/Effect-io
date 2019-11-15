@@ -415,7 +415,7 @@ export default {
             if (this.scrollLoadAllow(e, 'up')) this.historyMessageLoad()
         },
         historyMessageLoad() {
-            console.log('pollingInterval',this.historyMessageLoadStart,this.messageRun);
+
             if (!this.messageRun) return
             if (!this.historyMessageLoadStart) return
 

@@ -383,7 +383,7 @@ export default {
                 data = {
                     guest_uuid,
                     site_id,
-                    delivery_status: 0
+                    delivery_status: 1
                 }
 
                 let val = this.httpParams.params
