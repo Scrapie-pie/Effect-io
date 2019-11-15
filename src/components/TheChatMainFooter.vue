@@ -356,7 +356,7 @@ export default {
         },
 
         send() {
-            if(!navigator.onLine) return this.$root.$emit('popup-notice', 'Ошибка интернет соединения')
+            if(!navigator.onLine) return this.$root.$emit('popup-notice', 'Проверьте подключение к сети =(')
             this.typingLive('')
             this.message = this.textWidthTagToText()
 
