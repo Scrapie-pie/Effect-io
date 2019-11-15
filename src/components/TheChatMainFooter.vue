@@ -356,6 +356,7 @@ export default {
         },
 
         send() {
+            if(!navigator.onLine) return this.$root.$emit('popup-notice', 'Ошибка интернет соединения')
             this.typingLive('')
             this.message = this.textWidthTagToText()
 
