@@ -384,8 +384,7 @@ export default {
                 this.$http.get('chat-room-user/all', this.httpParams).then(({ data }) => {
 
 
-                    if (!this.accessPage(data.data))
-                        return this.$router.push({ name: 'processAll' })
+                    if (!this.accessPage(data.data)) return this.$router.push({ name: 'processAll' })
 
                     data.data.visitor = this.httpParams.params
                     //console.log(this.httpParams);
@@ -402,13 +401,24 @@ export default {
                 return true
             if (!list.length) return false
 
-            return true //Todo какая то проблема со статусами? редиректит всех, убрал что бы не бесило пользователя
+            //return true //Todo какая то проблема со статусами? редиректит всех, убрал что бы не бесило пользователя
 
-            list = list.filter(item =>
-                ['recipient', 'unprocessed', 'invited', 'active'].includes(item.status)
-            )
+            let listFilter
+            if(this.viewModeChat === 'process') {
+                listFilter = list.filter(item =>
+                    ['recipient', 'unprocessed', 'invited'].includes(item.status)
+                )
+                console.log(listFilter);
+                if (listFilter.some(user => user.user_id === this.$store.state.user.profile.id)) return true
+            }
 
-            if (list.some(user => user.user_id === this.$store.state.user.profile.id)) return true
+            if(this.viewModeChat === 'visitor') {
+                listFilter = list.filter(item =>
+                    ['active'].includes(item.status)
+                )
+
+                if (listFilter.some(user => user.user_id === this.$store.state.user.profile.id)) return true
+            }
             else return false
         },
         scrollLoad(e) {
