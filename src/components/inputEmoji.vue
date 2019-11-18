@@ -48,6 +48,14 @@ export default {
         }
     },
     methods: {
+        listenerClearStylePaste(e){
+
+            e.preventDefault();
+            let text = e.clipboardData.getData("text/plain");
+            console.log(text.replace(/(\r\n|\n|&lt;br&gt;)/g, '<br>'))
+            text = text.replace(/(\r\n|\n|&lt;br&gt;)/g, '<br>')
+            document.execCommand("insertHTML", true, text);
+        },
         blur(e) {
 
 
@@ -128,6 +136,7 @@ export default {
             on: {
                 input: this.inputChange,
                 blur:this.blur,
+                paste:this.listenerClearStylePaste
             }
         }
 
@@ -136,7 +145,8 @@ export default {
             splitStr = splitStr.join('')
             return <Tag class="input-emoji" domPropsInnerHTML={splitStr} />
         } else return <pre {...attributes}>{splitStr}</pre>
-    }
+    },
+
 }
 </script>
 

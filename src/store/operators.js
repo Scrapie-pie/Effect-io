@@ -98,7 +98,7 @@ export default {
             return state.all
         },
         online: (state, getters, rootState) => {
-            console.log(getters.all.filter(operator => operator.online));
+
             return getters.all.filter(operator => operator.online)
 
         }

@@ -190,16 +190,13 @@ export default {
         },
         uploadFileList(val) {}
     },
-    mounted() {
-        this.$refs.inputEmoji?.$el.addEventListener("paste", this.listenerClearStylePaste);
 
-    },
 
     created() {
 
     },
     beforeDestroy(){
-        this.$refs.inputEmoji?.$el.removeEventListener("paste", this.listenerClearStylePaste);
+       // this.$refs.inputEmoji?.$el.removeEventListener("paste", this.listenerClearStylePaste);
     },
     methods: {
         saveTextarea(){
@@ -221,13 +218,7 @@ export default {
                     })
             }
         },
-        listenerClearStylePaste(e){
-                e.preventDefault();
-                let text = e.clipboardData.getData("text/plain");
-            console.log(text.replace(/(\r\n|\n|&lt;br&gt;)/g, '<br>'))
-            text = text.replace(/(\r\n|\n|&lt;br&gt;)/g, '<br>')
-            document.execCommand("insertHTML", true, text);
-        },
+
         inputEmojiInputChange(text){
 
             this.typingLive(text)
