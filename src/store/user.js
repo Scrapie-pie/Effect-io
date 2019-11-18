@@ -117,9 +117,6 @@ export default {
             this._vm.$http.defaults.headers.common['jwt'] = user.jwt
             this._vm.$http.defaults.headers['content-type'] = 'application/json'
 
-            this._vm.$socket.query = `uuid=${user.uuid}&user=employee&socketGroupId=${
-                user.owner_id
-            }`
             this._vm.$socket.io.uri = user.socket_server
 
             this._vm.$socket.io.opts.query = `uuid=${user.uuid}&user=employee&socketGroupId=${
