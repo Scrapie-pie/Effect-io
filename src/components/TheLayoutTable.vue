@@ -20,6 +20,7 @@
     display: flex;
     flex-direction: column;
     height: 100%;
+    min-height: 0;
 
     &__max-width {
         max-width: 1300px;
@@ -41,6 +42,7 @@
         height: 100%;
         margin-right: -1 * calc-em(15);
         padding-right: calc-em(15);
+        overflow:auto;
     }
 }
 </style>
