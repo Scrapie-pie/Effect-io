@@ -393,6 +393,7 @@ export default {
             }
         },
         accessPage(list) {
+            console.log(this.viewModeChat);
             if (this.viewModeChat === 'search') return true
             if (
                 this.viewModeChat === 'visor' &&
@@ -408,15 +409,16 @@ export default {
                 listFilter = list.filter(item =>
                     ['recipient', 'unprocessed', 'invited'].includes(item.status)
                 )
-                console.log(listFilter);
+
                 if (listFilter.some(user => user.user_id === this.$store.state.user.profile.id)) return true
             }
 
-            if(this.viewModeChat === 'visitor') {
+            if(this.viewModeChat === 'visitors') {
+
                 listFilter = list.filter(item =>
                     ['active'].includes(item.status)
                 )
-
+                console.log(listFilter);
                 if (listFilter.some(user => user.user_id === this.$store.state.user.profile.id)) return true
             }
             else return false
