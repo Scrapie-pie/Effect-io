@@ -120,8 +120,8 @@ export default {
                 })
 
                 setTimeout(() => {
-                    if (this.viewModeChat === 'process' || this.viewModeChat === 'visitors')
-                        this.$router.push({ name: 'processAll' })
+                    if (this.viewModeChat === 'process') this.$router.push({ name: 'processAll' })
+                    if (this.viewModeChat === 'visitors') this.$router.push({ name: 'messageAll' })
                 }, 200)
             }
         }
