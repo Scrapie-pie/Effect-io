@@ -358,23 +358,27 @@ export default {
 
 			if (this.viewModeChat === 'process') this.routerPushProcessAllOrItemFirst()
 		},
-		'update-employees'({socket_id,list}) {
+		'update-employees'({socket_id}) {
             this.$socket.emit('delivered', socket_id);
             console.log('update-employees');
-            this.$store.commit('operators/all', list)
-			let find = list.find(item => item.id === this.$store.state.user.profile.id)
-			if (find) {
-				if (!find.is_common_chat && this.viewModeChat === 'common')
-					this.$router.push({ name: 'processAll' })
+            this.$store.dispatch('operators/getAll').then(()=>{
 
-				this.$store.commit('user/profileUpdate', find)
-				if (
-					!this.$store.getters['user/isRole'](['admin', 'owner', 'operatorSenior']) &&
-					this.$route.path.includes('service')
-				) {
-					this.$router.push({ name: 'processAll' })
-				}
-			}
+                let list = this.$store.getters['operators/all']
+                let find = list.find(item => item.id === this.$store.state.user.profile.id)
+                if (find) {
+                    if (!find.is_common_chat && this.viewModeChat === 'common')
+                        this.$router.push({ name: 'processAll' })
+
+                    this.$store.commit('user/profileUpdate', find)
+                    if (
+                        !this.$store.getters['user/isRole'](['admin', 'owner', 'operatorSenior']) &&
+                        this.$route.path.includes('service')
+                    ) {
+                        this.$router.push({ name: 'processAll' })
+                    }
+                }
+            })
+
 		},
         'employee-online'(val) {
             console.log(this.$socket);

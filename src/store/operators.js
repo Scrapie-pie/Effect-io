@@ -69,7 +69,7 @@ export default {
     },
     actions: {
         getAll({ commit, dispatch }) {
-            this._vm.$http
+            return this._vm.$http
                 .get('employee/company-list', {
                     params: {
                         with_branches_ids: 1,
@@ -78,7 +78,7 @@ export default {
                     }
                 })
                 .then(({ data }) => {
-                    commit('all', data.data)
+                    return commit('all', data.data)
                 })
         }
     },
