@@ -46,10 +46,10 @@
 
         section.page-stats-inner__main.no-mw(v-show="last_days || date_from")
             component(
-                @byDates="val=>by_dates=val"
+                @byDates="val=>by_dates=val",
                 :is="activeComponent",
                 v-bind="payload"
-                v-on="listeners"
+                v-on="listeners",
                 :key="activeComponent"
                 )
 

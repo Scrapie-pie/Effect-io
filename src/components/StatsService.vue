@@ -1,49 +1,33 @@
 <template lang="pug">
     section.stats-service
-        .stats-service__table
-            stats-operators(
-                :btn-detail-hide="true"
-                caption="ТОП сотрудников (по оценкам)",
-                :set-body-list="best_employees_by_rating"
-            )
-        .stats-service__table
-            stats-operators(
-                :btn-detail-hide="true"
-                caption="Самый быстрый сотрудник",
-                :set-body-list="best_employees_by_speed"
-                order="first_answer_average_speed"
-            )
-        .stats-service__table
-            stats-branches(
-                caption="ТОП отделов (по оценкам)",
-                :set-body-list="best_branches_by_rating"
-            )
-        .stats-service__table
-            stats-branches(
-            caption="ТОП отделов (по общей нагрузке)",
-            :set-body-list="best_branches_by_percents"
-
-            )
+        stats-top-operators(v-bind="payloadTopEmployees")
+        stats-top-branches(v-bind="payloadTopBranches")
         stats-result(
-            type="company",
-            :set-body-list="company"
+            v-bind="payloadTopCompany"
             )
 </template>
 
 <script>
-import StatsOperators from '@/components/StatsOperators'
-import StatsBranches from '@/components/StatsBranches'
-import StatsResult from '@/components/StatsResult'
+
+
+
 
 import { stats } from '@/mixins/mixins'
+
+
 export default {
     name: 'StatsService',
     components: {
-        StatsOperators,
-        StatsBranches,
-        StatsResult
+        StatsTopBranches:()=>import('@/components/StatsTopBranches'),
+        StatsTopOperators:()=>import('@/components/StatsTopOperators'),
+        StatsResult:()=>import('@/components/StatsResult'),
+
+
+
     },
-    mixins: [stats],
+    mixins: [
+        stats
+    ],
     data() {
         return {
             best_branches_by_percents: [],
@@ -53,6 +37,7 @@ export default {
             company: {}
         }
     },
+
     watch: {
         bodyList(val) {
             console.log(val)
@@ -64,7 +49,24 @@ export default {
                 this.company = val.company
             }
         }
-    }
+    },
+    computed:{
+        payloadTopBranches(){
+            return Object.assign({},this.$props, {type:'top_branches'})
+        },
+        payloadTopEmployees(){
+            return Object.assign({},this.$props, {type:'top_employees'})
+        },
+        payloadTopCompany(){
+            return Object.assign({},this.$props, {type:'top_company'})
+        }
+    },
+    methods:{
+        get(){
+            console.log('обнулил метод в mixins stats')
+            //
+        }
+    },
 }
 </script>
 

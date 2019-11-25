@@ -1,5 +1,5 @@
 <template lang="pug">
-    section.stats-result(:class="'stats-result_'+type")
+    section.stats-result(:class="'stats-result_'+type" v-if="bodyListFormat")
         .stats-result__dialogs
             table.stats-result__list
                 tr.stats-result__item(v-for="(item, index) in dialogsListLeft" :key="index")
@@ -111,7 +111,7 @@ export default {
                 )
             }
 
-            if (this.type === 'company') {
+            if (this.type === 'top_company') {
                 list = [
                     {
                         name: 'Среднее время нахождения клиента в очереди',
@@ -133,7 +133,8 @@ export default {
             return list
         },
         bodyListFormat() {
-            return this.bodyList
+
+            return this.bodyList.company
         }
     },
     created() {}
@@ -166,7 +167,7 @@ export default {
     #{$el}__dialogs {
         display: flex;
     }
-    &_company {
+    &_top_company {
         #{$el}__list {
             margin-bottom: 0;
             width: 50%;
