@@ -107,7 +107,10 @@ export default {
         status(val, valOld) {
             this.$store.commit('user/profileUpdate', { online: val })
             this.show = false
-            if (val !== 1) {
+
+            console.log('status', val);
+
+            if (val === 0 || val===2) {
                 this.$store.commit('user/unreadUpdate', ['guest', 'clear'])
                 this.$store.commit('user/unreadUpdate', ['unprocessed', 'clear'])
                 this.$store.commit('visitors/newList', {
