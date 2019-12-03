@@ -288,7 +288,7 @@ export default {
     methods: {
 
         syncOperatorMessageVisor() {
-            if (!['visitors', 'visor'].includes(this.viewModeChat)) return
+            if (!['visitors', 'visor','search'].includes(this.viewModeChat)) return
 
             window.addEventListener('storage', e => {
                 // Делаем синхранизацию, если опер открыл в журнале свой диалог и пишет сообщени в другой вкладке
