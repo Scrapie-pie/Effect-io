@@ -120,7 +120,7 @@ export default {
                     name: 'Интересы',
                     text: this.info.browser + ', ' + this.info.os + ', ' + this.info.device
                 },
-                { name: 'ip', text: 'IP' + this.info.ip },
+                { name: 'ip', text: 'IP ' + this.info.ip },
                 {
                     name: 'Интересы',
                     text: `Последнее обращение через: ${this.channelName}`
