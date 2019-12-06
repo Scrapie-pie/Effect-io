@@ -111,10 +111,14 @@ export default {
             if (status === 'yes') {
                 dialogPush(this, 'self', processItem)
 
-                this.$router.push({
-                    name: 'chatId',
-                    params: { guest_uuid, site_id }
-                })
+                setTimeout(()=>{
+                    this.$router.push({
+                        name: 'chatId',
+                        params: { guest_uuid, site_id }
+                    })
+                },1000) //Приходит сокет room-users, обновляется статус комнаты, запускается функция this.accessPage, редиректится в не обработано, ждем примерно секунду, редиректим в диалоги
+
+
             }
         },
 

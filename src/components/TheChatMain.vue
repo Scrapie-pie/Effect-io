@@ -205,6 +205,12 @@ export default {
         }
     },
     watch: {
+        roomActiveUsers:{
+            handler(list){
+                if(!this.accessPage(list)) this.$router.push({ name: 'processAll' })
+            },
+            immediate: false
+        },
         /*        roomActiveId(val) {
             if (val) {
                 console.log(this.$route.name)
