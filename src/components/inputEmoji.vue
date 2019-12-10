@@ -13,6 +13,7 @@ let emojisBaseAll = [
 import '@/scss/vendors/gl-16-emoji.css'
 import lodash_split from 'lodash/split'
 import { getCaretPosition } from '@/mixins/mixins'
+import textWidthTagToText from '@/modules/textWidthTagToText'
 export default {
     mixins: [getCaretPosition],
     props: {
@@ -52,8 +53,12 @@ export default {
 
             e.preventDefault();
             let text = e.clipboardData.getData("text/plain");
+
             console.log(text.replace(/(\r\n|\n|&lt;br&gt;)/g, '<br>'))
             text = text.replace(/(\r\n|\n|&lt;br&gt;)/g, '<br>')
+            text = text.replace(/onerror/g, 'xss_off_onerror')
+
+            console.log(text);
             document.execCommand("insertHTML", true, text);
         },
         blur(e) {
@@ -62,19 +67,8 @@ export default {
             this.$emit('blur', '')
         },
         inputChange(e) {
-            let listText = []
-            e.target.childNodes.forEach((item, index) => {
-                if (item.nodeName == 'BR') {
-                    listText[index] = '\n'
-                } else if (item.nodeName == 'IMG') {
-                    listText[index] = item.attributes.alt.value
-                } else {
-                    listText[index] = item.textContent
-                }
-            })
-            listText = listText.join('')
-
-            this.$emit('inputChange', listText)
+            console.log('inputChange');
+            this.$emit('inputChange', textWidthTagToText(e.target))
         },
         placeCaretAtEnd(el) {
             el.focus()

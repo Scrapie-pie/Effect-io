@@ -117,6 +117,9 @@ import TheSpellingForm from '@/components/TheSpellingForm'
 import lodash_split from 'lodash/split'
 import lodash_cloneDeep from 'lodash/cloneDeep'
 
+import textWidthTagToText from '@/modules/textWidthTagToText'
+
+
 import { viewModeChat, httpParams, spelling, typingLive } from '@/mixins/mixins'
 
 export default {
@@ -247,20 +250,7 @@ export default {
         },
         textWidthTagToText() {
             let ct = document.getElementById('contenteditable')
-
-            let listText = []
-            ct.childNodes.forEach((item, index) => {
-                if (item.nodeName == 'BR') {
-                    listText[index] = '\n'
-                } else if (item.nodeName == 'IMG') {
-                    listText[index] = item.attributes.alt.value
-                } else {
-                    listText[index] = item.textContent
-                }
-            })
-
-            listText = listText.join('')
-
+            let listText = textWidthTagToText(ct)
             ct.innerText = ''
 
             return listText

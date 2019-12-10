@@ -1,22 +1,13 @@
+import textWidthTagToText from '@/modules/textWidthTagToText'
+
 export default {
     methods: {
         textWidthTagToText() {
             let ct = document.getElementById('contenteditable')
 
-            let listText = []
-            ct.childNodes.forEach((item, index) => {
-                if (item.nodeName == 'BR') {
-                    listText[index] = '\n'
-                } else if (item.nodeName == 'IMG') {
-                    listText[index] = item.attributes.alt.value
-                } else {
-                    listText[index] = item.textContent
-                }
-            })
 
-            listText = listText.join('')
 
-            return listText
+            return textWidthTagToText(ct)
         },
         getCharacterOffsetWithin_final(range, node) {
             var treeWalker = document.createTreeWalker(

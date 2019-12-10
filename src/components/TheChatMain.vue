@@ -207,6 +207,7 @@ export default {
     watch: {
         roomActiveUsers:{
             handler(list){
+                console.log('roomActiveUsers',list);
                 if(!this.accessPage(list)) {
 
                     this.$router.push({ name: 'processAll' })
