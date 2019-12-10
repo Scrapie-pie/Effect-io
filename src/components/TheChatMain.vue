@@ -207,7 +207,10 @@ export default {
     watch: {
         roomActiveUsers:{
             handler(list){
-                if(!this.accessPage(list)) this.$router.push({ name: 'processAll' })
+                if(!this.accessPage(list)) {
+                    console.log('редирект');
+                    //this.$router.push({ name: 'processAll' })
+                }
             },
             immediate: false
         },
@@ -390,7 +393,10 @@ export default {
                 this.$http.get('chat-room-user/all', this.httpParams).then(({ data }) => {
 
 
-                    if (!this.accessPage(data.data)) return this.$router.push({ name: 'processAll' })
+                    if (!this.accessPage(data.data)){
+                        return 'редирект '
+                        this.$router.push({ name: 'processAll' })
+                    }
 
                     data.data.visitor = this.httpParams.params
                     //console.log(this.httpParams);
@@ -400,6 +406,9 @@ export default {
         },
         accessPage(list) {
             console.log(this.viewModeChat);
+
+            if (this.viewModeChat === 'common') return true
+
             if (this.viewModeChat === 'search') return true
             if (
                 this.viewModeChat === 'visor' &&
