@@ -72,11 +72,11 @@ export default {
         itemLisFilter() {
 
             return this.itemList
-                .filter(item => item.site_id === this.httpParams.params.site_id)
+                .filter(branch => branch.site_id === this.httpParams.params.site_id)
                 .filter(branch=>{
-                console.log(branch.id);
+
                 return this.availableOperators.some(operator=>{
-                    console.log(operator.branches_ids);
+
                    return operator.branches_ids.includes(branch.id)
                 })
             })

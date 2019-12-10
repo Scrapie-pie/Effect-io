@@ -5,7 +5,7 @@
             legend.select-operator__title Отметьте сотрудников, которых Вы хотите пригласить к данному диалогу
             .select-operator__search-operators
                 base-filter-search(
-                    :item-list="itemList",
+                    :item-list="itemLisFilter",
                     @result="(val)=>filterSearchResult=val",
                     @text="(val)=>search=val",
                     field-name="fullName"
@@ -39,7 +39,7 @@
 
             .select-operator__search-operators
                 base-filter-search(
-                    :item-list="itemList",
+                    :item-list="itemLisFilter",
                     @result="(val)=>filterSearchResult=val",
                     @text="(val)=>search=val",
                     field-name="fullName"
@@ -102,7 +102,7 @@ export default {
     },
     computed: {
         count() {
-            return this.itemList.length
+            return this.itemLisFilter.length
         },
         btnText() {
             if (this.name === 'invite') return 'Пригласить'
@@ -134,13 +134,24 @@ export default {
             }
             return list
         },
-        itemList() {
+        availableOperators(){
             return this.$store.getters['operators/online'].filter(
                 item =>
                     //item.id !== this.$store.state.user.profile.id && // Убираем себя из списка
                     !this.$store.state.roomActive.usersActive.includes(item.id) //Убираем операторов если они уже есть в комнате
             )
-        }
+        },
+        itemLisFilter() {
+            return this.availableOperators.filter(operator=>
+                this.branchListAllFilterIds.some(branch=>operator.branches_ids.includes(branch.id))
+            )
+        },
+        branchListAllFilterIds() {
+            return this.$store.state.user.branchListAll
+                .filter(branch => branch.site_id === this.httpParams.params.site_id)
+
+        },
+
     },
     created() {},
     methods: {
