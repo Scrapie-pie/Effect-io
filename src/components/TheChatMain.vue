@@ -208,8 +208,8 @@ export default {
         roomActiveUsers:{
             handler(list){
                 if(!this.accessPage(list)) {
-                    console.log('редирект');
-                    //this.$router.push({ name: 'processAll' })
+
+                    this.$router.push({ name: 'processAll' })
                 }
             },
             immediate: false
@@ -394,8 +394,8 @@ export default {
 
 
                     if (!this.accessPage(data.data)){
-                        return 'редирект '
-                        this.$router.push({ name: 'processAll' })
+                        return this.$router.push({ name: 'processAll' })
+
                     }
 
                     data.data.visitor = this.httpParams.params

@@ -204,6 +204,7 @@ router.beforeEach((to, from, next) => {
                     })
                 })
                 .catch(error => {
+                    console.log(error)
                     console.log(error.response)
                     console.log('user/logout')
                     store.dispatch('user/logout').then(() => {

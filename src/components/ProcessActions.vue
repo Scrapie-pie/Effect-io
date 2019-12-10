@@ -4,6 +4,7 @@
             li.process-actions__item
 
                 base-btn(
+                    v-if="btnTextYes"
                     color="success-dark"
                     size="lg" ,
                     @click="processActionYes"
