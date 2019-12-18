@@ -205,7 +205,7 @@ export default {
         }
     },
     watch: {
-        roomActiveUsers:{
+    /*    roomActiveUsers:{
             handler(list){
 
 
@@ -219,7 +219,7 @@ export default {
 
             },
             immediate: false
-        },
+        },*/
         /*        roomActiveId(val) {
             if (val) {
                 console.log(this.$route.name)
@@ -399,6 +399,8 @@ export default {
                 this.$http.get('chat-room-user/all', this.httpParams).then(({ data }) => {
 
                     console.log('chat-room-user/all',data);
+
+                    if(!this.accessPage(data.data)) return  this.$router.push({ name: 'processAll' })
 
                     //console.log(this.httpParams);
 
