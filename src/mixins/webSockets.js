@@ -266,7 +266,7 @@ export default {
 			this.$store.commit('user/branchListAll', list)
 		},
 		'room-users'(val) {
-            console.log('room-users',val);
+            console.table('room-users',val.list);
             this.$socket.emit('delivered', val.socket_id);
 			//console.log('room-users', val)
 			val.socket = true // для того что бы room_id не обновлять

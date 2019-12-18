@@ -207,11 +207,16 @@ export default {
     watch: {
         roomActiveUsers:{
             handler(list){
-                console.log('roomActiveUsers',list);
-                if(!this.accessPage(list)) {
 
+
+                if(
+                    list.length &&  //без этого условия бесконечный цикл, был редирект на другую страницу, происходит roomActive/resetState, страбатывает watch roomActiveUsers
+                    !this.accessPage(list)) {
+                    console.log('$router.push({ name: \'processAll\' })');
                     this.$router.push({ name: 'processAll' })
                 }
+
+
             },
             immediate: false
         },
@@ -393,20 +398,17 @@ export default {
 
                 this.$http.get('chat-room-user/all', this.httpParams).then(({ data }) => {
 
+                    console.log('chat-room-user/all',data);
 
-                    if (!this.accessPage(data.data)){
-                        return this.$router.push({ name: 'processAll' })
-
-                    }
+                    //console.log(this.httpParams);
 
                     data.data.visitor = this.httpParams.params
-                    //console.log(this.httpParams);
                     this.$store.commit('roomActive/set', data.data)
                 })
             }
         },
         accessPage(list) {
-            console.log(this.viewModeChat);
+            console.log(this.viewModeChat,list);
 
             if (this.viewModeChat === 'common') return true
 
@@ -425,7 +427,7 @@ export default {
                 listFilter = list.filter(item =>
                     ['recipient', 'unprocessed', 'invited'].includes(item.status)
                 )
-
+                console.log(listFilter);
                 if (listFilter.some(user => user.user_id === this.$store.state.user.profile.id)) return true
             }
 

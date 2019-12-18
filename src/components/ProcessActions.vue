@@ -95,11 +95,11 @@ export default {
     methods: {
         routerNext(status) {
             let { guest_uuid, site_id } = this.visitorIds
-            console.log(this.visitorIds)
+
             let processItem = this.$store.state.visitors.process.find(
                 item => item.guest_uuid + item.site_id === guest_uuid + site_id
             )
-            console.log(processItem);
+
             processItem.very_hot = 0
 
             this.$store.commit('visitors/processRemoveItem', { guest_uuid, site_id })
@@ -112,12 +112,13 @@ export default {
             if (status === 'yes') {
                 dialogPush(this, 'self', processItem)
 
-                setTimeout(()=>{
+                //setTimeout(()=>{
+                    console.log('Router push в мои диалоги')
                     this.$router.push({
                         name: 'chatId',
                         params: { guest_uuid, site_id }
                     })
-                },1000) //Приходит сокет room-users, обновляется статус комнаты, запускается функция this.accessPage, редиректится в не обработано, ждем примерно секунду, редиректим в диалоги
+                //},500) //Приходит сокет room-users, обновляется статус комнаты, запускается функция this.accessPage, редиректится в не обработано, ждем примерно секунду, редиректим в диалоги
 
 
             }
@@ -127,7 +128,10 @@ export default {
             if (this.status) this[this.status + 'No']().then(() => this.routerNext('no'))
         },
         processActionYes() {
-            if (this.status) this[this.status]().then(() => this.routerNext('yes'))
+            if (this.status) this[this.status]().then((r) => {
+                console.table('processActionYes',r)
+                this.routerNext('yes')
+            })
         },
         recipient() {
             return this.$http.put('chat-room-user/transfer-acceptance', this.visitorIds)
@@ -136,6 +140,7 @@ export default {
             return this.$http.put('chat-room-user/transfer-decline', this.visitorIds)
         },
         unprocessed() {
+            console.log('Нажал принять chat-room-user/take');
             return this.$http.put('chat-room-user/take', this.visitorIds)
         },
         unprocessedNo() {
