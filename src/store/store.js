@@ -59,6 +59,9 @@ export default new Vuex.Store({
     plugins: [
         createMutationsSharer({
             predicate: (mutation, state) => {
+
+
+
                 if (
                     mutation.type == 'user/unreadUpdate' &&
                     mutation.payload.toString() === ['unprocessed', -1].toString()

@@ -129,6 +129,11 @@ export default {
                     this.$router.push(val[0].rootLinkOptions.link)
                 }
             }
+            if(!val.length && this.$route.name==='process') {
+                console.log('!val.length && this.$route.name===\'process\'push({name:\'processAll');
+                this.$router.push({name:'processAll'})
+            }
+
         },
         $route(to, from) {
             if (['search', 'visor'].includes(this.viewModeChat)) {
