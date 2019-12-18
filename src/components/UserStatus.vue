@@ -110,23 +110,17 @@ export default {
 
             console.log('status', val);
 
-            if (val === 0 || val===2) {
-                this.$store.commit('user/unreadUpdate', ['guest', 'clear'])
-                this.$store.commit('user/unreadUpdate', ['unprocessed', 'clear'])
-                this.$store.commit('visitors/newList', {
-                    field: 'process',
-                    val: { list: [], count: 0 }
-                })
-                this.$store.commit('visitors/newList', {
-                    field: 'self',
-                    val: { list: [], count: 0 }
-                })
+            if (val === 0 || val===2) { //не всети или перерыв
 
-                setTimeout(() => {
-                    if (this.viewModeChat === 'process') this.$router.push({ name: 'processAll' })
-                    if (this.viewModeChat === 'visitors') this.$router.push({ name: 'messageAll' })
-                }, 200)
+                this.resetVisitors()
+                this.resetProcess()
+
             }
+
+            if (val===3) { //обед
+                this.resetProcess()
+            }
+
         }
     },
     created() {
@@ -143,6 +137,26 @@ export default {
         //document.removeEventListener('click', this.close);
     },
     methods: {
+        resetVisitors() {
+            this.$store.commit('user/unreadUpdate', ['guest', 'clear'])
+            this.$store.commit('visitors/newList', {
+                field: 'self',
+                val: { list: [], count: 0 }
+            })
+            setTimeout(() => {
+                if (this.viewModeChat === 'visitors') this.$router.push({ name: 'messageAll' })
+            }, 200)
+        },
+        resetProcess(){
+            this.$store.commit('user/unreadUpdate', ['unprocessed', 'clear'])
+            this.$store.commit('visitors/newList', {
+                field: 'process',
+                val: { list: [], count: 0 }
+            })
+            setTimeout(() => {
+                if (this.viewModeChat === 'process') this.$router.push({ name: 'processAll' })
+            }, 200)
+        },
         close(e) {
             if (!e.target.matches('.user-status__status, .user-status__status *')) {
                 this.show = false
