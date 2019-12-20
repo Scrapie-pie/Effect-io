@@ -103,6 +103,7 @@ export default {
                 state.process[findIndex].last_message = val.body
                 state.process[findIndex].last_message_author = val.last_message_author
             } else {
+                if(val.isSocketNewMessage) return  //После передачи приходило сообщение "Диалог принят" создавался дублированный диалог, по этому убираю
                 val.unread = []
                 val.last_message = val.body
                 console.log('state.process.push unprocessed')
