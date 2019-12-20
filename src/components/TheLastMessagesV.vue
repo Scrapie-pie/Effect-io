@@ -131,7 +131,10 @@ export default {
             }
             if(!val.length && this.$route.name==='process') {
                 console.log('!val.length && this.$route.name===\'process\'push({name:\'processAll');
-                this.$router.push({name:'processAll'})
+                setTimeout(()=>{
+                    this.$router.push({name:'processAll'})
+                },200) //иначе происходит переход делается запрос, и бэк отдает как будто список есть, начинается зацикливание
+
             }
 
         },
