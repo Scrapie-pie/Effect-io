@@ -16,7 +16,7 @@ import '@/scss/base.scss'
 import TheHeader from '@/components/TheHeader'
 import ThePopup from '@/components/ThePopup'
 
-import { webSockets, routerPushProcessAllOrItemFirst } from '@/mixins/mixins'
+import { webSockets, routerPushProcessAllOrItemFirst,pollingSockets } from '@/mixins/mixins'
 import AppSpinner from './components/BaseWait'
 
 export default {
@@ -25,7 +25,7 @@ export default {
         TheHeader,
         ThePopup
     },
-    mixins: [webSockets, routerPushProcessAllOrItemFirst],
+    mixins: [webSockets, routerPushProcessAllOrItemFirst,pollingSockets],
     computed: {
         isAuth() {
             return this.$store.getters['user/authenticated']

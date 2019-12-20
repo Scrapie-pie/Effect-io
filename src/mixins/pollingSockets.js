@@ -1,4 +1,3 @@
-import { ApiInit } from '@/api/api'
 
 export default {
     data() {
@@ -7,7 +6,8 @@ export default {
         }
     },
     created() {
-        this.$root.$once('emitPollingSockets',this.pollingSockets)
+        this.pollingSockets()
+
     },
     beforeDestroy() {
 
@@ -17,9 +17,13 @@ export default {
     methods: {
         pollingSockets() {
             this.pollingHistoryMessageInterval = setInterval(() => {
-                ApiInit.socketPolling({
-                    socketGroupId: this.$store.state.api.socketGroupId
-                }).then(({ data }) => {
+                this.$http.get('/socket/polling', {
+                    params:{
+                        uuid:this.$store.state.user.profile.uuid,
+                        socketGroupId: this.$store.state.user.profile.owner_id
+                    }
+
+                }).then(({ data:{data} }) => {
                     console.log('pollingSockets', data)
 
                     data.forEach(itemApi => {

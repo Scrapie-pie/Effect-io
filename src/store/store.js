@@ -7,6 +7,7 @@ import tags from '@/store/tags'
 import operators from '@/store/operators'
 import visitors from '@/store/visitors'
 import roomActive from '@/store/roomActive'
+import storeSockets from '@/store/storeSockets'
 //import rooms from '@/store/rooms'
 
 Vue.use(Vuex)
@@ -47,6 +48,7 @@ const state = getDefaultState()
 
 export default new Vuex.Store({
     modules: {
+        storeSockets,
         user,
         phrases,
         tags,
