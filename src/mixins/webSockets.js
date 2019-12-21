@@ -110,8 +110,8 @@ export default {
                 for (let key in this.$store.state.sockets.emitList) {
 
                     socket.on(key, socketValue =>{
-                            this.flag = !this.flag //Todo убрать принятие через раз после теста
-                            if(!this.flag)  return
+                          /*  this.flag = !this.flag //Todo убрать принятие через раз после теста
+                            if(!this.flag)  return*/
                             this.$root.$emit(this.$store.state.sockets.emitList[key], socketValue)
                         }
 

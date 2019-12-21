@@ -32,7 +32,7 @@ export default {
                         )
                         if (!socketStoreItemFind) {
                             let socketEmitName = this.$store.state.sockets.emitList[itemApi.event]
-                            if(itemApi.event==='message') itemApi.payload.isPolling=true //используем в storeChat.js
+                            if(itemApi.event==='new-message') itemApi.payload.isPolling=true //используем в storeChat.js
                             this.$root.$emit(socketEmitName, itemApi.payload)
                         }
                     })

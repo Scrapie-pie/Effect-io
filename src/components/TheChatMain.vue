@@ -356,7 +356,7 @@ export default {
         },
         emitMessageAdd(message) {
             //console.log('this.$root.$on(\'messageAdd\'');
-
+            console.log('message.isPolling',message.isPolling);
             if (message.isPolling) return this.messagePollingAdd(message)
 
             if (message.socket) {
@@ -379,7 +379,9 @@ export default {
 
             let findPrevIndex = 0
 
-            incomingMessages.forEach((item, index) => {
+            console.log('incomingMessages',incomingMessages);
+
+            incomingMessages.reverse().forEach((item, index) => {
                 if (item.id < messagePolling.id) findPrevIndex = index
             })
 
@@ -388,7 +390,8 @@ export default {
 
 
             //let cloneMessage = lodash_cloneDeep(this.messageList)
-            this.messageList.splice(findPrevIndex + 1, 0, messagePolling)
+            incomingMessages.splice(findPrevIndex + 1, 0, messagePolling)
+            this.messageList=incomingMessages.reverse()
             //state.messages = cloneMessage
             //console.log('state.messages.splice',cloneMessage);
             // ищем предыдущее сообщение
