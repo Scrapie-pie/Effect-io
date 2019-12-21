@@ -2,12 +2,15 @@ const getDefaultState = () => {
     return {
         history: [],
         emitList: {
-            message: 'emitSocketGetMessage',
-            'need-update-widget': 'emitSocketNeedUpdateWidget',
-            'contacts-request': 'emitSocketContactsRequest',
-            'rating-request': 'emitSocketRatingRequest',
-            'update-active-chat-id': 'emitSocketUpdateActiveChatId',
-            'guest-redirect': 'emitSocketGuestRedirect'
+            'hot-guest':'emitHotGust',
+            'new-message':'emitNewMessage',
+            'guest-new-session':'emitGuestNewSession',
+            'update-guest-employee':'emitUpdateGuestEmployee',
+            'guest-update':'emitGuestUpdate',
+            'message-delivered':'emitMessageDelivered',
+            'update-branches':'emitUpdateBranches',
+            'room-users':'emitRoomUsers',
+            'unprocessed':'emitUnprocessed',
         }
     }
 }

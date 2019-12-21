@@ -1,4 +1,5 @@
 import config from '@/config/index'
+import io from 'socket.io-client'
 
 import { dialogPush } from '@/modules/modules'
 import browserNotification from '@/modules/browserNotification'
@@ -11,19 +12,34 @@ import { httpParams, viewModeChat } from '@/mixins/mixins'
 
 export default {
     mixins: [httpParams, viewModeChat], //routerPushProcessAllOrItemFirst подключи будет баг
+    data() {
+        return {
 
+            flag:false,
+        }
+    },
     computed: {
-        userId() {
-            return this.$store.state.user.profile.id
+        profile() {
+            return this.$store.state?.user?.profile
         }
     },
     watch: {
+
+        profile: 'webSocketInit'
+
         /*    userId(val){
             if(val) this.webSocketInit()
             else this.$socket.disconnect()
         }*/
     },
     methods: {
+        socketEmitListEvents(OnOrOff) {
+            for (let key in this.$store.state.sockets.emitList) {
+                let method = this.$store.state.sockets.emitList[key]
+                console.log('socketEmitListEvents',this.$store.state.sockets.emitList[key],key);
+                this.$root[OnOrOff](this.$store.state.sockets.emitList[key], this[key])
+            }
+        },
         messageStatusActive(message) {
             if (message.status === 'active') {
                 if (message.from_role_id != 9) this.playSoundFile('sound_new_guest_message')
@@ -68,46 +84,42 @@ export default {
             audio.volume = 0.5
             audio.play()
         },
-        webSocketInit() {
-            console.log('webSocketInit', this.userId)
-            //this.$socket.disconnect();
+        webSocketInit({uuid,owner_id,socket_server}) {
+            if (!uuid) return
+            console.log('webSocketInit', uuid)
 
-            return
-            /*eslint-disable */
+
+
+
 			try {
-				let socket = io(config.api_websocket, {
-					query: {
-						uuid: this.userId
-					}
-				})
+                const socket = io.connect(socket_server, {
+                    autoConnect: true,
+                    reconnection: true,
+                    reconnectionAttempts: 30,
+                    reconnectionDelay: 3000,
+                    transports: ['websocket','polling'],
+                    upgrade: false,
+                    secure: true,
+                    query: {
+                        uuid: uuid,
+                        user: 'employee',
+                        socketGroupId: owner_id
+                    }
+                })
 
-				socket.on('connect', () => {
-					return console.log('connected')
-				})
+                for (let key in this.$store.state.sockets.emitList) {
 
-				socket.on('connect_error', () => {
-					return console.log('connect_error')
-				})
+                    socket.on(key, socketValue =>{
+                            this.flag = !this.flag //Todo убрать принятие через раз после теста
+                            if(!this.flag)  return
+                            this.$root.$emit(this.$store.state.sockets.emitList[key], socketValue)
+                        }
 
-				socket.on('connect_timeout', () => {
-					return console.log('connect_timeout')
-				})
+                    )
+                }
 
-				socket.on('update-branches', function(payload) {
-					return console.log('update-branches', payload)
-				})
 
-				socket.on('update-employees', function(payload) {
-					return console.log('update-employees', payload)
-				})
 
-				socket.on('employee-online', function(payload) {
-					return console.log('employee-online', payload)
-				})
-
-				socket.on('new-message', function(payload) {
-					return console.log('new-message', payload)
-				})
 			} catch (err) {
 				return browserNotification('Сбой на сервере сокетов')
 			}
@@ -258,7 +270,7 @@ export default {
 			val.socket = true // для того что бы room_id не обновлять
 			this.$store.commit('roomActive/set', val.list)
 		},
-		unprocessed(val) {
+		'unprocessed'(val) {
 			this.$socket.emit('delivered', val.socket_id);
 			console.log('unprocessed', val)
 
@@ -398,8 +410,8 @@ export default {
 		'room-users'(val) {
             this['room-users'](val)
 		},
-		unprocessed(val) {
-           this.unprocessed(val)
+		'unprocessed'(val) {
+           this['unprocessed'](val)
 
 
 		},
@@ -420,5 +432,11 @@ export default {
             this['employee-online'](val)
 
         }
-	}
+	},
+    created() {
+        this.socketEmitListEvents('$on')
+    },
+    beforeDestroy() {
+        this.socketEmitListEvents('$off')
+    },
 }
