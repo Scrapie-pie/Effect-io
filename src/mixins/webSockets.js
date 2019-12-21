@@ -131,8 +131,18 @@ export default {
 			//this.$socket.emit('delivered', val.socket_id);
 			console.log('hot-guest', val)
 			this.$store.commit('visitors/messageHot', { val, set: true })
+
+            this.$store.commit('sockets/historyPush', {
+                event: 'hot-guest',
+                socket_id: val.socket_id
+            })
 		},
 		'new-message'(val) {
+
+            this.$store.commit('sockets/historyPush', {
+                event: 'new-message',
+                socket_id: val.socket_id
+            })
 			//this.$socket.emit('delivered', val.socket_id);
 			//переместил сюда, что бы список на странице team обновлялся
 
@@ -213,18 +223,32 @@ export default {
 			}
 		},
 		'guest-new-session'(val) {
-			this.$socket.emit('delivered', val.socket_id);
+			//this.$socket.emit('delivered', val.socket_id);
 			//console.log('guest-new-session',val);
 			this.playSoundFile('sound_new_guest')
 			this.$root.$emit('guestNewSession', val)
+
+            this.$store.commit('sockets/historyPush', {
+                event: 'guest-new-session',
+                socket_id: val.socket_id
+            })
 		},
 		'update-guest-employee'(val) {
-			this.$socket.emit('delivered', val.socket_id);
+			//this.$socket.emit('delivered', val.socket_id);
 			console.log('update-guest-employee', val)
 			this.$root.$emit('guestUpdate', val)
+
+            this.$store.commit('sockets/historyPush', {
+                event: 'update-guest-employee',
+                socket_id: val.socket_id
+            })
 		},
 		'guest-update'(val) {
-			this.$socket.emit('delivered', val.socket_id);
+            this.$store.commit('sockets/historyPush', {
+                event: 'guest-update',
+                socket_id: val.socket_id
+            })
+			//this.$socket.emit('delivered', val.socket_id);
 			//Todo 'guest-update'
 			console.log('guest-update', val)
 
@@ -253,25 +277,47 @@ export default {
 			if (val.guest_uuid + val.site_id === guest_uuid + site_id) {
 				this.$store.commit('visitors/itemOpen', val) //{name,guest_uuid,site_id} = val
 			}
+
+
 		},
 		'message-delivered'(val) {
-			this.$socket.emit('delivered', val.socket_id);
+			//this.$socket.emit('delivered', val.socket_id);
 			this.$root.$emit('messageDelivered', val)
+
+            this.$store.commit('sockets/historyPush', {
+                event: 'message-delivered',
+                socket_id: val.socket_id
+            })
 		},
 		'update-branches'({list,socket_id}) {
-			this.$socket.emit('delivered', socket_id);
+			//this.$socket.emit('delivered', socket_id);
 			console.log('update-branches', list)
 			this.$store.commit('user/branchListAll', list)
+
+            this.$store.commit('sockets/historyPush', {
+                event: 'update-branches',
+                socket_id: socket_id
+            })
 		},
 		'room-users'(val) {
 			console.table('room-users',val.list);
-			this.$socket.emit('delivered', val.socket_id);
+			//this.$socket.emit('delivered', val.socket_id);
 			//console.log('room-users', val)
 			val.socket = true // для того что бы room_id не обновлять
 			this.$store.commit('roomActive/set', val.list)
+
+            this.$store.commit('sockets/historyPush', {
+                event: 'room-users',
+                socket_id: val.socket_id
+            })
 		},
 		'unprocessed'(val) {
-			this.$socket.emit('delivered', val.socket_id);
+            this.$store.commit('sockets/historyPush', {
+                event: 'unprocessed',
+                socket_id: val.socket_id
+            })
+
+            //this.$socket.emit('delivered', val.socket_id);
 			console.log('unprocessed', val)
 
 			if (val.status === 'recipient' || val.status === 'invited' || val.status === 'unprocessed') {
@@ -289,9 +335,14 @@ export default {
 			}
 
 
+
 		},
 		'auto-attach'(val) {
-			this.$socket.emit('delivered', val.socket_id);
+            this.$store.commit('sockets/historyPush', {
+                event: 'auto-attach',
+                socket_id: val.socket_id
+            })
+			//this.$socket.emit('delivered', val.socket_id);
 			console.log('auto-attach', val)
 
 			if (val.code === this.$store.state.user.profile.code)
@@ -311,9 +362,15 @@ export default {
 					this.$router.push({ name: 'chatId', params: { guest_uuid, site_id } })
 				}
 			})
+
+
 		},
 		'self-remove'(val) {
-			this.$socket.emit('delivered', val.socket_id);
+            this.$store.commit('sockets/historyPush', {
+                event: 'self-remove',
+                socket_id: val.socket_id
+            })
+			//this.$socket.emit('delivered', val.socket_id);
 			console.log('self-remove', val, val.room_id, this.$store.state.roomActive.id)
 
 			//if(val.room_id === this.$store.state.roomActiveId) return
@@ -327,9 +384,15 @@ export default {
 
 
 			if (this.viewModeChat === 'visitors') this.$router.push({ name: 'messageAll' })
+
+
 		},
 		'unprocessed-remove'(val) {
-			this.$socket.emit('delivered', val.socket_id);
+            this.$store.commit('sockets/historyPush', {
+                event: 'unprocessed-remove',
+                socket_id: val.socket_id
+            })
+			//this.$socket.emit('delivered', val.socket_id);
 			console.log('unprocessed-remove', val, val.room_id, this.$store.state.roomActive.id)
 			//if(val.room_id === this.$store.state.roomActiveId) return
 
@@ -337,9 +400,15 @@ export default {
 			this.$store.commit('user/unreadUpdate', ['unprocessed', -1])
 
 			if (this.viewModeChat === 'process') this.routerPushProcessAllOrItemFirst()
+
+
 		},
 		'update-employees'({socket_id}) {
-			this.$socket.emit('delivered', socket_id);
+            this.$store.commit('sockets/historyPush', {
+                event: 'update-employees',
+                socket_id: socket_id
+            })
+			//this.$socket.emit('delivered', socket_id);
 			console.log('update-employees');
 			this.$store.dispatch('operators/getAll').then(()=>{
 
@@ -359,15 +428,23 @@ export default {
 				}
 			})
 
+
+
 		},
 		'employee-online'(val) {
+            this.$store.commit('sockets/historyPush', {
+                event: 'employee-online',
+                socket_id: val.socket_id
+            })
 			console.log(this.$socket);
-			this.$socket.emit('delivered', val.socket_id);
+			//this.$socket.emit('delivered', val.socket_id);
 			console.log('employee-online',val);
 			let {user_id,online} = val
 			console.log('employee-online');
 			this.$store.commit('operators/setOperatorOnline', {user_id,online})
 			if(user_id===this.$store.state.user.profile.id) this.$store.commit('user/profileUpdate', {online})
+
+
 
 		}
 	},

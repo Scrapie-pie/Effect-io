@@ -11,6 +11,11 @@ const getDefaultState = () => {
             'update-branches':'emitUpdateBranches',
             'room-users':'emitRoomUsers',
             'unprocessed':'emitUnprocessed',
+            'auto-attach':'emitAutoAttach',
+            'self-remove':'emitSelfRemove',
+            'unprocessed-remove':'emitUnprocessedRemove',
+            'update-employees':'emitUpdateEmployees',
+            'employee-online':'emitEmployeeOnline'
         }
     }
 }

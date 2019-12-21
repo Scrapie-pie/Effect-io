@@ -81,6 +81,7 @@ import { viewModeChat, httpParams, scrollbar} from '@/mixins/mixins'
 
 import lodash_groupBy from 'lodash/groupBy'
 import lodash_find from 'lodash/find'
+import lodash_uniqBy from 'lodash/uniqBy'
 
 export default {
     components: {
@@ -187,7 +188,8 @@ export default {
             return list
         },
         messageGroupDays() {
-            return lodash_groupBy(this.messageList, item => {
+            let filterList = lodash_uniqBy(this.messageList, 'id')
+            return lodash_groupBy(filterList, item => {
                 return datetimeDMY(item.time)
                 //moment(item.time*1000).format('HH:mm')
             })
@@ -352,20 +354,44 @@ export default {
                 }, 1000)
             }
         },
-        emitMessageAdd(val) {
+        emitMessageAdd(message) {
             //console.log('this.$root.$on(\'messageAdd\'');
-            if (val.socket) {
+
+            if (message.isPolling) return this.messagePollingAdd(message)
+
+            if (message.socket) {
                 //Todo Временное решение, на проверку дубликатов, пока Симон не исправит
-                let findIndex = this.messageList.findIndex(item => item.id === val.id)
+                let findIndex = this.messageList.findIndex(item => item.id === message.id)
 
                 if (findIndex === -1) {
-                    console.log('дубликат', findIndex, val.id, this.messageList)
+                    console.log('дубликат', findIndex, message.id, this.messageList)
 
-                    this.messageListUnshift(val)
+                    this.messageListUnshift(message)
                 }
             } else {
-                this.messageListUnshift(val)
+                this.messageListUnshift(message)
             }
+        },
+        messagePollingAdd(messagePolling){
+            //console.log(message)
+            let incomingMessages = this.messageList
+            //.filter(item=>item.from_role_id!='8') //Получаем только входящие сообщения
+
+            let findPrevIndex = 0
+
+            incomingMessages.forEach((item, index) => {
+                if (item.id < messagePolling.id) findPrevIndex = index
+            })
+
+            messagePolling.time = incomingMessages[findPrevIndex].time + 1
+
+
+
+            //let cloneMessage = lodash_cloneDeep(this.messageList)
+            this.messageList.splice(findPrevIndex + 1, 0, messagePolling)
+            //state.messages = cloneMessage
+            //console.log('state.messages.splice',cloneMessage);
+            // ищем предыдущее сообщение
         },
         messageListUnshift(val) {
             this.messageList.unshift(val)
