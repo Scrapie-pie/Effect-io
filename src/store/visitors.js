@@ -111,7 +111,10 @@ export default {
                 state.processCount += 1
             }
         },
-        processRemoveItem(state, { guest_uuid, site_id }) {
+        processRemoveItem(state,val ) {
+            let { guest_uuid, site_id } = val
+            console.log('processRemoveItem',val,this._vm.$root);
+
             let findIndex = state.process.findIndex(
                 item => item.guest_uuid + item.site_id === guest_uuid + site_id
             )
