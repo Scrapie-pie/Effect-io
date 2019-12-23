@@ -218,6 +218,11 @@ export default {
                   type='employees'
                 }
             }
+            if(this.routerName==='statsAllBranchByHours') {
+
+                  type='employees'
+
+            }
 
             let dates = `&date_from=${this.date_from}&date_to=${this.date_to}&time_from=${
                 this.time_from
