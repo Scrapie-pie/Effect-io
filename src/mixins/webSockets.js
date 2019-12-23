@@ -1,4 +1,5 @@
 import config from '@/config/index'
+import io from 'socket.io-client'
 
 import { dialogPush } from '@/modules/modules'
 import browserNotification from '@/modules/browserNotification'
@@ -11,19 +12,34 @@ import { httpParams, viewModeChat } from '@/mixins/mixins'
 
 export default {
     mixins: [httpParams, viewModeChat], //routerPushProcessAllOrItemFirst подключи будет баг
+    data() {
+        return {
 
+            flag:false,
+        }
+    },
     computed: {
-        userId() {
-            return this.$store.state.user.profile.id
+        profile() {
+            return this.$store.state?.user?.profile
         }
     },
     watch: {
+
+        profile: 'webSocketInit'
+
         /*    userId(val){
             if(val) this.webSocketInit()
             else this.$socket.disconnect()
         }*/
     },
     methods: {
+        socketEmitListEvents(OnOrOff) {
+            for (let key in this.$store.state.sockets.emitList) {
+                let method = this.$store.state.sockets.emitList[key]
+                console.log('socketEmitListEvents',this.$store.state.sockets.emitList[key],key);
+                this.$root[OnOrOff](this.$store.state.sockets.emitList[key], this[key])
+            }
+        },
         messageStatusActive(message) {
             if (message.status === 'active') {
                 if (message.from_role_id != 9) this.playSoundFile('sound_new_guest_message')
@@ -68,70 +84,66 @@ export default {
             audio.volume = 0.5
             audio.play()
         },
-        webSocketInit() {
-            console.log('webSocketInit', this.userId)
-            //this.$socket.disconnect();
+        webSocketInit({uuid,owner_id,socket_server}) {
+            if (!uuid) return
+            console.log('webSocketInit', uuid)
 
-            return
-            /*eslint-disable */
+
+
+
 			try {
-				let socket = io(config.api_websocket, {
-					query: {
-						uuid: this.userId
-					}
-				})
+                const socket = io.connect(socket_server, {
+                    autoConnect: true,
+                    reconnection: true,
+                    reconnectionAttempts: 30,
+                    reconnectionDelay: 3000,
+                    transports: ['websocket','polling'],
+                    upgrade: false,
+                    secure: true,
+                    query: {
+                        uuid: uuid,
+                        user: 'employee',
+                        socketGroupId: owner_id
+                    }
+                })
 
-				socket.on('connect', () => {
-					return console.log('connected')
-				})
+                for (let key in this.$store.state.sockets.emitList) {
 
-				socket.on('connect_error', () => {
-					return console.log('connect_error')
-				})
+                    socket.on(key, socketValue =>{
+                          /*  this.flag = !this.flag //Todo убрать принятие через раз после теста
+                            if(!this.flag)  return*/
+                            this.$root.$emit(this.$store.state.sockets.emitList[key], socketValue)
+                        }
 
-				socket.on('connect_timeout', () => {
-					return console.log('connect_timeout')
-				})
+                    )
+                }
 
-				socket.on('update-branches', function(payload) {
-					return console.log('update-branches', payload)
-				})
 
-				socket.on('update-employees', function(payload) {
-					return console.log('update-employees', payload)
-				})
 
-				socket.on('employee-online', function(payload) {
-					return console.log('employee-online', payload)
-				})
-
-				socket.on('new-message', function(payload) {
-					return console.log('new-message', payload)
-				})
 			} catch (err) {
 				return browserNotification('Сбой на сервере сокетов')
 			}
 			/*eslint-enabled */
-		}
-	},
-	sockets: {
-		connect() {
-			console.log('socket connected...')
 		},
+
 
 		'hot-guest'(val) {
-            this.$socket.emit('delivered', val.socket_id);
+			//this.$socket.emit('delivered', val.socket_id);
 			console.log('hot-guest', val)
 			this.$store.commit('visitors/messageHot', { val, set: true })
-		},
-		'typing-live'(val) {
-            this.$socket.emit('delivered', val.socket_id);
-			console.log('typing-live', val)
 
-			this.$store.commit('roomActive/typingLive', val)
+            this.$store.commit('sockets/historyPush', {
+                event: 'hot-guest',
+                socket_id: val.socket_id
+            })
 		},
 		'new-message'(val) {
-            this.$socket.emit('delivered', val.socket_id);
+
+            this.$store.commit('sockets/historyPush', {
+                event: 'new-message',
+                socket_id: val.socket_id
+            })
+			//this.$socket.emit('delivered', val.socket_id);
 			//переместил сюда, что бы список на странице team обновлялся
 
 			//f (['search'].includes(this.viewModeChat)) return //Чтобы на странице поиска не приходили сообщения....
@@ -180,7 +192,7 @@ export default {
 						})
 					}
 				}
-                this.messageStatusActive(val)
+				this.messageStatusActive(val)
 
 			} else {
 				console.log(
@@ -210,23 +222,33 @@ export default {
 				})
 			}
 		},
-
-		disconnect() {
-			console.log('socket disconnect')
-		},
 		'guest-new-session'(val) {
-            this.$socket.emit('delivered', val.socket_id);
+			//this.$socket.emit('delivered', val.socket_id);
 			//console.log('guest-new-session',val);
 			this.playSoundFile('sound_new_guest')
 			this.$root.$emit('guestNewSession', val)
+
+            this.$store.commit('sockets/historyPush', {
+                event: 'guest-new-session',
+                socket_id: val.socket_id
+            })
 		},
 		'update-guest-employee'(val) {
-            this.$socket.emit('delivered', val.socket_id);
+			//this.$socket.emit('delivered', val.socket_id);
 			console.log('update-guest-employee', val)
 			this.$root.$emit('guestUpdate', val)
+
+            this.$store.commit('sockets/historyPush', {
+                event: 'update-guest-employee',
+                socket_id: val.socket_id
+            })
 		},
 		'guest-update'(val) {
-            this.$socket.emit('delivered', val.socket_id);
+            this.$store.commit('sockets/historyPush', {
+                event: 'guest-update',
+                socket_id: val.socket_id
+            })
+			//this.$socket.emit('delivered', val.socket_id);
 			//Todo 'guest-update'
 			console.log('guest-update', val)
 
@@ -255,63 +277,72 @@ export default {
 			if (val.guest_uuid + val.site_id === guest_uuid + site_id) {
 				this.$store.commit('visitors/itemOpen', val) //{name,guest_uuid,site_id} = val
 			}
+
+
 		},
 		'message-delivered'(val) {
-            this.$socket.emit('delivered', val.socket_id);
+			//this.$socket.emit('delivered', val.socket_id);
 			this.$root.$emit('messageDelivered', val)
+
+            this.$store.commit('sockets/historyPush', {
+                event: 'message-delivered',
+                socket_id: val.socket_id
+            })
 		},
 		'update-branches'({list,socket_id}) {
-            this.$socket.emit('delivered', socket_id);
+			//this.$socket.emit('delivered', socket_id);
 			console.log('update-branches', list)
 			this.$store.commit('user/branchListAll', list)
+
+            this.$store.commit('sockets/historyPush', {
+                event: 'update-branches',
+                socket_id: socket_id
+            })
 		},
 		'room-users'(val) {
-            console.table('room-users',val.list);
-            this.$socket.emit('delivered', val.socket_id);
+			console.table('room-users',val.list);
+			//this.$socket.emit('delivered', val.socket_id);
 			//console.log('room-users', val)
 			val.socket = true // для того что бы room_id не обновлять
 			this.$store.commit('roomActive/set', val.list)
+
+            this.$store.commit('sockets/historyPush', {
+                event: 'room-users',
+                socket_id: val.socket_id
+            })
 		},
-		unprocessed(val) {
-            this.$socket.emit('delivered', val.socket_id);
+		'unprocessed'(val) {
+            this.$store.commit('sockets/historyPush', {
+                event: 'unprocessed',
+                socket_id: val.socket_id
+            })
+
+            //this.$socket.emit('delivered', val.socket_id);
 			console.log('unprocessed', val)
-        /*    val = {"status":"unprocessed","room_id":1660,"guest_uuid":"2a04bb13-7130-5bc6-8c29-f419b1f74697","site_id":118,"uuid":"2a04bb13-7130-5bc6-8c29-f419b1f74697","photo":null,"photo_stub":12,"gender":null,"name":"Гость","mail":null,"phone":null,"role_id":8,"created":1573443130,"modified":1573443130,"language":"ru","country_id":"RU","region_id":14,"city_id":30,"ip":"185.6.216.65","timezone":"Europe/Moscow","browser":"Chrome","os":"Windows 10","device":"pc","channel_type":7,"channel_user_id":"2a04bb13-7130-5bc6-8c29-f419b1f74697","regRuLogin":null,"country":"Россия","region":"Воронежская область","city":"Воронеж","referrer":"http://localhost:4001/","key_phrases":"","visits_count":2,"page":"effect-widget (http://mishki.ucoz.net/)","session_start_time":1573471957,"online":1,"channel_link":"mishki.ucoz.net","comment":null,"additional_contact_1":null,"additional_contact_2":null,"additional_contact_3":null,"online_time":"36 мин. 48 сек.","contact_info":{"uuid":"2a04bb13-7130-5bc6-8c29-f419b1f74697","photo":null,"photo_stub":12,"gender":null,"name":"Гость","mail":null,"phone":null,"role_id":8,"created":1573443130,"modified":1573443130,"language":"ru","country_id":"RU","region_id":14,"city_id":30,"ip":"185.6.216.65","timezone":"Europe/Moscow","browser":"Chrome","os":"Windows 10","device":"pc","channel_type":7,"channel_user_id":"2a04bb13-7130-5bc6-8c29-f419b1f74697","regRuLogin":null,"guest_uuid":"2a04bb13-7130-5bc6-8c29-f419b1f74697","site_id":118,"country":"Россия","region":"Воронежская область","city":"Воронеж","referrer":"http://localhost:4001/","key_phrases":"","visits_count":2,"page":"effect-widget (http://mishki.ucoz.net/)","session_start_time":1573471957,"online":1,"channel_link":"mishki.ucoz.net","comment":null,"additional_contact_1":null,"additional_contact_2":null,"additional_contact_3":null,"online_time":"36 мин. 48 сек."},"from_user_info":{"name":"","photo":null},"body":"qwe","last_message_time":1573474165,"from_role_id":8,"withBrowserNotification":118,"common_count":"1","unread":[],"last_message":"Автоматическое сообщение отправлено клиенту: \"Здравствуйте.\"","last_message_author":"Система","hot":true,"awaiting_answer_timeFormat":1573474167.667}
-            val.guest_uuid = Math.random()
-            setInterval(()=>{
-                val.guest_uuid = Math.random()
-                if (val.status === 'recipient' || val.status === 'invited' || val.status === 'unprocessed') {
-                    this.$store.commit('visitors/processMessageLastUpdate', val)
-                    this.$store.commit('user/unreadUpdate', ['unprocessed', 1])
 
-                    //this.$store.commit('user/unreadUpdateUnprocessed', val.common_count)
-                    this.playSoundFile('sound_new_guest')
-                    browserNotificationMessage.call(this,val).then(click => {
-                        if (click === 'toLink') {
-                            let { guest_uuid, site_id } = val
-                            this.$router.push({ name: 'process', params: { guest_uuid, site_id } })
-                        }
-                    })
-                }
-            },100)*/
-            if (val.status === 'recipient' || val.status === 'invited' || val.status === 'unprocessed') {
-                this.$store.commit('visitors/processMessageLastUpdate', val)
-                this.$store.commit('user/unreadUpdate', ['unprocessed', 1])
+			if (val.status === 'recipient' || val.status === 'invited' || val.status === 'unprocessed') {
+				this.$store.commit('visitors/processMessageLastUpdate', val)
+				this.$store.commit('user/unreadUpdate', ['unprocessed', 1])
 
-                //this.$store.commit('user/unreadUpdateUnprocessed', val.common_count)
-                this.playSoundFile('sound_new_guest')
-                browserNotificationMessage.call(this,val).then(click => {
-                    if (click === 'toLink') {
-                        let { guest_uuid, site_id } = val
-                        this.$router.push({ name: 'process', params: { guest_uuid, site_id } })
-                    }
-                })
-            }
+				//this.$store.commit('user/unreadUpdateUnprocessed', val.common_count)
+				this.playSoundFile('sound_new_guest')
+				browserNotificationMessage.call(this,val).then(click => {
+					if (click === 'toLink') {
+						let { guest_uuid, site_id } = val
+						this.$router.push({ name: 'process', params: { guest_uuid, site_id } })
+					}
+				})
+			}
 
 
 
 		},
 		'auto-attach'(val) {
-            this.$socket.emit('delivered', val.socket_id);
+            this.$store.commit('sockets/historyPush', {
+                event: 'auto-attach',
+                socket_id: val.socket_id
+            })
+			//this.$socket.emit('delivered', val.socket_id);
 			console.log('auto-attach', val)
 
 			if (val.code === this.$store.state.user.profile.code)
@@ -321,8 +352,8 @@ export default {
 
 			val.awaiting_answer_timeFormat = new Date().getTime() / 1000 - val.awaiting_answer_time
 			dialogPush(this, 'self', val)
-            //this.$store.commit('user/socketUnreadUpdate', ['guest', val])
-            //this.$store.commit('user/unreadUpdate', ['guest', 1])
+			//this.$store.commit('user/socketUnreadUpdate', ['guest', val])
+			//this.$store.commit('user/unreadUpdate', ['guest', 1])
 			//this.$store.commit('user/unreadUpdate',['guest',1]);
 
 			browserNotificationMessage.call(this,val).then(click => {
@@ -331,9 +362,15 @@ export default {
 					this.$router.push({ name: 'chatId', params: { guest_uuid, site_id } })
 				}
 			})
+
+
 		},
 		'self-remove'(val) {
-            this.$socket.emit('delivered', val.socket_id);
+            this.$store.commit('sockets/historyPush', {
+                event: 'self-remove',
+                socket_id: val.socket_id
+            })
+			//this.$socket.emit('delivered', val.socket_id);
 			console.log('self-remove', val, val.room_id, this.$store.state.roomActive.id)
 
 			//if(val.room_id === this.$store.state.roomActiveId) return
@@ -347,9 +384,15 @@ export default {
 
 
 			if (this.viewModeChat === 'visitors') this.$router.push({ name: 'messageAll' })
+
+
 		},
 		'unprocessed-remove'(val) {
-            this.$socket.emit('delivered', val.socket_id);
+            this.$store.commit('sockets/historyPush', {
+                event: 'unprocessed-remove',
+                socket_id: val.socket_id
+            })
+			//this.$socket.emit('delivered', val.socket_id);
 			console.log('unprocessed-remove', val, val.room_id, this.$store.state.roomActive.id)
 			//if(val.room_id === this.$store.state.roomActiveId) return
 
@@ -357,38 +400,120 @@ export default {
 			this.$store.commit('user/unreadUpdate', ['unprocessed', -1])
 
 			if (this.viewModeChat === 'process') this.routerPushProcessAllOrItemFirst()
+
+
 		},
 		'update-employees'({socket_id}) {
-            this.$socket.emit('delivered', socket_id);
-            console.log('update-employees');
-            this.$store.dispatch('operators/getAll').then(()=>{
-
-                let list = this.$store.getters['operators/all']
-                let find = list.find(item => item.id === this.$store.state.user.profile.id)
-                if (find) {
-                    if (!find.is_common_chat && this.viewModeChat === 'common')
-                        this.$router.push({ name: 'processAll' })
-
-                    this.$store.commit('user/profileUpdate', find)
-                    if (
-                        !this.$store.getters['user/isRole'](['admin', 'owner', 'operatorSenior']) &&
-                        this.$route.path.includes('service')
-                    ) {
-                        this.$router.push({ name: 'processAll' })
-                    }
-                }
+            this.$store.commit('sockets/historyPush', {
+                event: 'update-employees',
+                socket_id: socket_id
             })
+			//this.$socket.emit('delivered', socket_id);
+			console.log('update-employees');
+			this.$store.dispatch('operators/getAll').then(()=>{
+
+				let list = this.$store.getters['operators/all']
+				let find = list.find(item => item.id === this.$store.state.user.profile.id)
+				if (find) {
+					if (!find.is_common_chat && this.viewModeChat === 'common')
+						this.$router.push({ name: 'processAll' })
+
+					this.$store.commit('user/profileUpdate', find)
+					if (
+						!this.$store.getters['user/isRole'](['admin', 'owner', 'operatorSenior']) &&
+						this.$route.path.includes('service')
+					) {
+						this.$router.push({ name: 'processAll' })
+					}
+				}
+			})
+
+
+
+		},
+		'employee-online'(val) {
+            this.$store.commit('sockets/historyPush', {
+                event: 'employee-online',
+                socket_id: val.socket_id
+            })
+			console.log(this.$socket);
+			//this.$socket.emit('delivered', val.socket_id);
+			console.log('employee-online',val);
+			let {user_id,online} = val
+			console.log('employee-online');
+			this.$store.commit('operators/setOperatorOnline', {user_id,online})
+			if(user_id===this.$store.state.user.profile.id) this.$store.commit('user/profileUpdate', {online})
+
+
+
+		}
+	},
+	sockets: {
+		connect() {
+			console.log('socket connected...')
+		},
+
+		'hot-guest'(val) {
+			this['hot-guest'](val)
+		},
+		'typing-live'(val) {
+            //this.$socket.emit('delivered', val.socket_id);
+			console.log('typing-live', val)
+
+			this.$store.commit('roomActive/typingLive', val)
+		},
+		'new-message'(val){
+			this['new-message']	(val)
+		},
+
+		disconnect() {
+			console.log('socket disconnect')
+		},
+		'guest-new-session'(val) {
+			this['guest-new-session'](val)
+		},
+		'update-guest-employee'(val) {
+			this['update-guest-employee'](val)
+		},
+		'guest-update'(val) {
+			this['guest-update'](val)
+		},
+		'message-delivered'(val) {
+            this['message-delivered'](val)
+		},
+		'update-branches'(val) {
+            this['update-branches'](val)
+		},
+		'room-users'(val) {
+            this['room-users'](val)
+		},
+		'unprocessed'(val) {
+           this['unprocessed'](val)
+
+
+		},
+		'auto-attach'(val) {
+           this['auto-attach'](val)
+		},
+		'self-remove'(val) {
+            this['self-remove'](val)
+		},
+		'unprocessed-remove'(val) {
+            this['unprocessed-remove'](val)
+		},
+		'update-employees'(val) {
+            this['update-employees'](val)
 
 		},
         'employee-online'(val) {
-            console.log(this.$socket);
-            this.$socket.emit('delivered', val.socket_id);
-            console.log('employee-online',val);
-            let {user_id,online} = val
-            console.log('employee-online');
-            this.$store.commit('operators/setOperatorOnline', {user_id,online})
-            if(user_id===this.$store.state.user.profile.id) this.$store.commit('user/profileUpdate', {online})
+            this['employee-online'](val)
 
         }
-	}
+	},
+    created() {
+        this.socketEmitListEvents('$on')
+    },
+    beforeDestroy() {
+        this.socketEmitListEvents('$off')
+    },
 }
