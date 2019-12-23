@@ -460,6 +460,11 @@ export default {
                 )
                 console.log(listFilter);
                 if (listFilter.some(user => user.user_id === this.$store.state.user.profile.id)) return true
+
+
+                //Если доступ не получен, нужно удалить из списка если есть, чтобы не в пасть в бесконечный цикл
+                this.$store.commit('visitors/processRemoveItem', this.httpParams.params)
+                this.$store.commit('user/unreadUpdate', ['unprocessed', -1])
             }
 
             if(this.viewModeChat === 'visitors') {
@@ -469,6 +474,13 @@ export default {
                 )
                 console.log(listFilter);
                 if (listFilter.some(user => user.user_id === this.$store.state.user.profile.id)) return true
+
+                this.$store.dispatch('setMessageRead', {
+                    guest_uuid: this.httpParams.params.guest_uuid,
+                    site_id: this.httpParams.params.site_id,
+                    type: 'visitors'
+                })
+                this.$store.commit('visitors/selfMessageRemoveItem', this.httpParams.params)
             }
             else return false
         },

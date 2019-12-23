@@ -99,7 +99,7 @@ export default {
             let processItem = this.$store.state.visitors.process.find(
                 item => item.guest_uuid + item.site_id === guest_uuid + site_id
             )
-
+            console.log(processItem);
             processItem.very_hot = 0
 
             this.$store.commit('visitors/processRemoveItem', { guest_uuid, site_id })
@@ -112,13 +112,13 @@ export default {
             if (status === 'yes') {
                 dialogPush(this, 'self', processItem)
 
-                //setTimeout(()=>{
+                setTimeout(()=>{
                     console.log('Router push в мои диалоги')
                     this.$router.push({
                         name: 'chatId',
                         params: { guest_uuid, site_id }
                     })
-                //},500) //Приходит сокет room-users, обновляется статус комнаты, запускается функция this.accessPage, редиректится в не обработано, ждем примерно секунду, редиректим в диалоги
+                },500) //Приходит сокет room-users, обновляется статус комнаты, запускается функция this.accessPage, редиректится в не обработано, ждем примерно секунду, редиректим в диалоги
 
 
             }

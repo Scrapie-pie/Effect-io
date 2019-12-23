@@ -172,6 +172,7 @@ export default {
 			}
 
 			if (val.status === 'unprocessed') {
+                val.isSocketNewMessage=true;
 				return this.$store.commit('visitors/processMessageLastUpdate', val)
 			}
 
