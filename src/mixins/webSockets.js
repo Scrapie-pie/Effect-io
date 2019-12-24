@@ -36,7 +36,7 @@ export default {
         socketEmitListEvents(OnOrOff) {
             for (let key in this.$store.state.sockets.emitList) {
                 let method = this.$store.state.sockets.emitList[key]
-                console.log('socketEmitListEvents',this.$store.state.sockets.emitList[key],key);
+
                 this.$root[OnOrOff](this.$store.state.sockets.emitList[key], this[key])
             }
         },

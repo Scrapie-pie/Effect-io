@@ -24,7 +24,7 @@ export default {
                     }
 
                 }).then(({ data:{data} }) => {
-                    console.log('pollingSockets', data)
+
 
                     data.forEach(itemApi => {
                         let socketStoreItemFind = this.$store.state.sockets.history.find(
@@ -32,7 +32,9 @@ export default {
                         )
                         if (!socketStoreItemFind) {
                             let socketEmitName = this.$store.state.sockets.emitList[itemApi.event]
+                            itemApi.payload.isPolling = true
                             if(itemApi.event==='new-message') itemApi.payload.isPolling=true //используем в storeChat.js
+
                             this.$root.$emit(socketEmitName, itemApi.payload)
                         }
                     })
