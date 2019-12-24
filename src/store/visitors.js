@@ -41,6 +41,16 @@ function commonSelfProcces(store) {
     return item
 }*/
 
+const processRemoveItem = (state,val )=> {
+    let { guest_uuid, site_id } = val
+    console.log('processRemoveItem',val);
+
+    let findIndex = state.process.findIndex(
+        item => item.guest_uuid + item.site_id === guest_uuid + site_id
+    )
+    if (findIndex !== -1) state.process.splice(findIndex, 1)
+}
+
 export default {
     namespaced: true,
     state,
@@ -111,15 +121,8 @@ export default {
                 state.processCount += 1
             }
         },
-        processRemoveItem(state,val ) {
-            let { guest_uuid, site_id } = val
-            console.log('processRemoveItem',val,this._vm.$root);
+        processRemoveItem(state,val){processRemoveItem(state,val)},
 
-            let findIndex = state.process.findIndex(
-                item => item.guest_uuid + item.site_id === guest_uuid + site_id
-            )
-            if (findIndex !== -1) state.process.splice(findIndex, 1)
-        },
         processRemoveItemAll(state) {
             state.process = []
             state.processCount = 0
