@@ -16,7 +16,7 @@ import '@/scss/base.scss'
 import TheHeader from '@/components/TheHeader'
 import ThePopup from '@/components/ThePopup'
 
-import { webSockets, routerPushProcessAllOrItemFirst,pollingSockets } from '@/mixins/mixins'
+import { webSockets, routerPushProcessAllOrItemFirst,pollingSockets,actionAnotherTab } from '@/mixins/mixins'
 import AppSpinner from './components/BaseWait'
 
 export default {
@@ -25,7 +25,7 @@ export default {
         TheHeader,
         ThePopup
     },
-    mixins: [webSockets, routerPushProcessAllOrItemFirst,pollingSockets],
+    mixins: [webSockets, routerPushProcessAllOrItemFirst,pollingSockets,actionAnotherTab],
     computed: {
         isAuth() {
             return this.$store.getters['user/authenticated']
@@ -58,6 +58,7 @@ export default {
         window.removeEventListener('unhandledrejection', this.promiseErrorHandler)
     },
     methods: {
+
         startEndLoader(url, action) {
             let mapLoaders = {
                 otrsSend: ['regru/regru/send-ticket-to-crm'],

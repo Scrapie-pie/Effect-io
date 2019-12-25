@@ -8,6 +8,10 @@ import operators from '@/store/operators'
 import visitors from '@/store/visitors'
 import roomActive from '@/store/roomActive'
 import sockets from '@/store/storeSockets'
+import {store as actionAnotherTab} from '@/modules/actionAnotherTab.js'
+
+
+console.log(sockets);
 //import rooms from '@/store/rooms'
 
 Vue.use(Vuex)
@@ -38,7 +42,12 @@ const getDefaultState = () => {
                 url: [],
                 calendar: {},
                 last_days: ''
-            }
+            },
+          /*  actionAnotherTab:{
+                mutation:'',
+                payload:{},
+                routerPush:''
+            }*/
         },
         getDefaultStateRoom()
     )
@@ -55,6 +64,7 @@ export default new Vuex.Store({
         operators,
         visitors,
         roomActive,
+        actionAnotherTab,
         //rooms
     },
     state,
@@ -64,13 +74,13 @@ export default new Vuex.Store({
 
 
 
-                if (
+               /* if (
                     mutation.type == 'user/unreadUpdate' &&
                     mutation.payload.toString() === ['unprocessed', -1].toString()
                 )
-                    return true
+                    return true*/
                 const predicate = [
-                    'visitors/processRemoveItem'
+                    'actionAnotherTab/setState'
                     //'user/unreadUpdate'
                 ]
                 // Conditionally trigger other plugins subscription event here to
@@ -82,28 +92,7 @@ export default new Vuex.Store({
         })
     ],
     mutations: {
-        SOCKET_CONNECT(state, val) {
-            console.log('SOCKET_CONNECT', val)
-        },
 
-        SOCKET_ERROR(state, val) {
-            console.log('SOCKET_ERROR', val)
-        },
-        SOCKET_DISCONNECT(state, val) {
-            console.log('SOCKET_DISCONNECT', val)
-        },
-        SOCKET_RECONNECT(state, val) {
-            console.log('SOCKET_RECONNECT', val)
-        },
-        SOCKET_RECONNECT_ERROR(state, val) {
-            console.log('SOCKET_RECONNECT', val)
-        },
-        SOCKET_RECONNECT_ATTEMPT(state, val) {
-            console.log('SOCKET_RECONNECT_ATTEMPT', val)
-        },
-        SOCKET_CONNECT_ERROR(state, val) {
-            console.log('SOCKET_CONNECT_ERROR', val)
-        },
         resetState(state) {
             Object.assign(state, getDefaultState())
         },
@@ -125,6 +114,7 @@ export default new Vuex.Store({
         }
     },
     actions: {
+
         setMessageRead({ state, commit, dispatch }, { id, site_id, guest_uuid, type }) {
             let itemList = [],
                 unreadType // private,guest

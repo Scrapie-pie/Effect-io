@@ -239,7 +239,7 @@ export default {
     display: flex;
     justify-content: space-between;
     margin-bottom: 2.5em;
-    z-index: 1;
+    z-index: 10; //лодеры с сообщений были выше попапа
 
     &__controls {
         display: flex;

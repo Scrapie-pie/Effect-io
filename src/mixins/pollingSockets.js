@@ -28,7 +28,11 @@ export default {
 
                     data.forEach(itemApi => {
                         let socketStoreItemFind = this.$store.state.sockets.history.find(
-                            itemStore => itemStore.socket_id === itemApi.payload.socket_id
+                            itemStore => {
+
+                                return itemStore?.socket_id === itemApi.payload.socket_id
+
+                            }
                         )
                         if (!socketStoreItemFind) {
                             let socketEmitName = this.$store.state.sockets.emitList[itemApi.event]

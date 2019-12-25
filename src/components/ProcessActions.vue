@@ -34,12 +34,16 @@ export default {
         paramsIds: {
             type: Object,
             default: function() {
-                return {}
+                return {
+
+                }
             }
         }
     },
     data() {
-        return {}
+        return {
+            processItem:{}
+        }
     },
     computed: {
         visitorIds() {
@@ -93,24 +97,42 @@ export default {
     },
 
     methods: {
-        routerNext(status) {
+        processItemSave(){
+            //сохраняем перед отправкой запроса.
+            //Бывала такая ситуация. Посылаешь запрос, приходит сокет и удаляет диалог, а скрипт в then уже не может его найти
             let { guest_uuid, site_id } = this.visitorIds
 
-            let processItem = this.$store.state.visitors.process.find(
+            this.processItem = this.$store.state.visitors.process.find(
                 item => item.guest_uuid + item.site_id === guest_uuid + site_id
             )
-            console.log(processItem);
-            processItem.very_hot = 0
 
-            this.$store.commit('visitors/processRemoveItem', { guest_uuid, site_id })
-            this.$store.commit('user/unreadUpdate', ['unprocessed', -1])
+            this.processItem.very_hot = 0
+            console.log(this.processItem);
+        },
+        routerNext(status) {
+
+            let { guest_uuid, site_id } = this.processItem
+
+            let commitProcessRemoveItem = ['visitors/processRemoveItem', { guest_uuid, site_id }]
+            let commitUserUnreadUpdate = ['user/unreadUpdate', ['unprocessed', -1]]
+
+            this.$store.commit(...commitProcessRemoveItem)
+            this.$store.commit(...commitUserUnreadUpdate)
+
+            this.$root.$emit('actionAnotherTab',['mutation',...commitProcessRemoveItem])
+            this.$root.$emit('actionAnotherTab',['mutation',...commitUserUnreadUpdate])
+
+
+
 
             if (status === 'no') {
                 this.routerPushProcessAllOrItemFirst()
             }
 
             if (status === 'yes') {
-                dialogPush(this, 'self', processItem)
+                dialogPush(this, 'self', this.processItem)
+
+                this.$root.$emit('actionAnotherTab',['method','dialogPush',['self', this.processItem]])
 
                 setTimeout(()=>{
                     console.log('Router push в мои диалоги')
@@ -125,9 +147,12 @@ export default {
         },
 
         processActionNo() {
+            this.processItemSave()
             if (this.status) this[this.status + 'No']().then(() => this.routerNext('no'))
         },
         processActionYes() {
+            this.processItemSave()
+
             if (this.status) this[this.status]().then((r) => {
                 console.table('processActionYes',r)
                 this.routerNext('yes')

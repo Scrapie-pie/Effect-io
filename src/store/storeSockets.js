@@ -36,7 +36,10 @@ export default {
         },
         historyClear(state) {
             //console.log('socket historyPush',val);
-            state.history=[]
+            state.history=state.history.slice(
+                state.history.length-20,
+                state.history.length
+            )
             //state.messages.push(state.messagesTemp)
         }
     },
