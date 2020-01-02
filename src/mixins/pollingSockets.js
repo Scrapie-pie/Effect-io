@@ -17,9 +17,10 @@ export default {
     methods: {
         pollingSocketsDestroy(){
             clearTimeout(this.pollingSocketsInterval)
+            console.log('pollingSocketsDestroy');
         },
         pollingSockets() {
-            this.pollingHistoryMessageInterval = setInterval(() => {
+            this.pollingSocketsInterval = setInterval(() => {
                 this.$http.get('/socket/polling', {
                     params:{
                         uuid:this.$store.state.user.profile.uuid,
@@ -52,6 +53,7 @@ export default {
                     },60*1000)
                 })
             }, 1000 * 5)
+            console.log(this.pollingSocketsInterval);
         }
     }
 }
