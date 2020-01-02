@@ -6,15 +6,18 @@ export default {
         }
     },
     created() {
-        this.pollingSockets()
+
 
     },
     beforeDestroy() {
 
-        clearTimeout(this.pollingSocketsInterval)
+
     },
     computed: {},
     methods: {
+        pollingSocketsDestroy(){
+            clearTimeout(this.pollingSocketsInterval)
+        },
         pollingSockets() {
             this.pollingHistoryMessageInterval = setInterval(() => {
                 this.$http.get('/socket/polling', {

@@ -35,10 +35,12 @@ export default {
         isAuth(val) {
             if (process.env.NODE_ENV === 'development') return
             if (val) {
+                this.pollingSockets()
                 window.onbeforeunload = function() {
                     return 'Данные не сохранены. Точно перейти?'
                 }
             } else {
+                this.pollingSocketsDestroy()
                 window.onbeforeunload = false
             }
         }
