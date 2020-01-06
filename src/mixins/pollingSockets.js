@@ -21,7 +21,11 @@ export default {
         },
         pollingSockets() {
             this.pollingSocketsInterval = setInterval(() => {
-                this.$http.get('/socket/polling', {
+                const pollingServ = this.$http.create({
+                    baseURL: 'http://polling.effect.com',
+                    headers: { 'content-type': 'application/json' }
+                })
+                pollingServ.get('/socket/polling', {
                     params:{
                         uuid:this.$store.state.user.profile.uuid,
                         socketGroupId: this.$store.state.user.profile.owner_id
