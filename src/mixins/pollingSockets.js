@@ -22,7 +22,7 @@ export default {
         pollingSockets() {
             this.pollingSocketsInterval = setInterval(() => {
                 const pollingServ = this.$http.create({
-                    baseURL: 'http://polling.effect.com',
+                    baseURL: '//polling.effect.com',
                     headers: { 'content-type': 'application/json' }
                 })
                 pollingServ.get('/socket/polling', {
