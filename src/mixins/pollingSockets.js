@@ -24,7 +24,7 @@ export default {
                 let  pollingServ = this.$http
                 if (process.env.NODE_ENV === 'production') {
                     pollingServ = this.$http.create({
-                        baseURL: 'http://polling.effect.com',
+                        baseURL: '//polling.effect.com',
                         headers: { 'content-type': 'application/json' }
                     })
                 }
