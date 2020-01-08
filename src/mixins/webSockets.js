@@ -323,6 +323,7 @@ export default {
 
 			if (val.status === 'recipient' || val.status === 'invited' || val.status === 'unprocessed') {
 				this.$store.commit('visitors/processMessageLastUpdate', val)
+
 				this.$store.commit('user/unreadUpdate', ['unprocessed', 1])
 
 				//this.$store.commit('user/unreadUpdateUnprocessed', val.common_count)
