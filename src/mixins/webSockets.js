@@ -304,7 +304,7 @@ export default {
 			console.table('room-users',val.list);
 			//this.$socket.emit('delivered', val.socket_id);
 			//console.log('room-users', val)
-			val.socket = true // для того что бы room_id не обновлять
+			val.list.socket = true // для того что бы room_id не обновлять
 			this.$store.commit('roomActive/set', val.list)
 
             this.$store.commit('sockets/historyPush', {
