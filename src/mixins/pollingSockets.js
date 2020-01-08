@@ -46,7 +46,7 @@ export default {
                         itemApi.payload.isPolling = true
                         if(itemApi.event==='new-message') itemApi.payload.isPolling=true //используем в storeChat.js
 
-                        if(itemApi.event==='unprocessed') {//обновляем страницу, сокет не успел дойти, но в ините счетчик уже +1,  в итоге полилинг добавлял уже лишний
+                        if(itemApi.event==='unprocessed' || itemApi.event==='unprocessed-remove') {//обновляем страницу, сокет не успел дойти, но в ините счетчик уже +1,  в итоге полилинг добавлял уже лишний
 
                             let findIndex = this.$store.state.visitors.process.findIndex(//Если диалог уже есть в ините, то не добавляем
                                 processItem=>processItem.site_id+processItem.guest_uuid===itemApi.payload.site_id+itemApi.payload.guest_uuid
@@ -55,15 +55,7 @@ export default {
                             if(findIndex) return
                         }
 
-                      /*  if(itemApi.event==='unprocessed-remove') {//обновляем страницу, сокет не успел дойти, но в ините счетчик уже +1,  в итоге полилинг добавлял уже лишний
 
-                            let findIndex = this.$store.state.visitors.process.findIndex(//Если диалог уже есть в ините, то не добавляем
-                                processItem=>processItem.site_id+processItem.guest_uuid===itemApi.payload.site_id+itemApi.payload.guest_uuid
-                            )
-                            console.log('itemApi.event',itemApi.event,findIndex);
-                            if(findIndex) return
-                        }
-*/
                         this.$root.$emit(socketEmitName, itemApi.payload)
                     }
                 })
