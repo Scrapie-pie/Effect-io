@@ -134,7 +134,7 @@ export default {
             }
             return list
         },
-        availableOperators(){
+        availableOperators() {
             return this.$store.getters['operators/online'].filter(
                 item =>
                     //item.id !== this.$store.state.user.profile.id && // Убираем себя из списка
@@ -142,16 +142,17 @@ export default {
             )
         },
         itemLisFilter() {
-            return this.availableOperators.filter(operator=>
-                this.branchListAllFilterIds.some(branch=>operator.branches_ids.includes(branch.id))
+            return this.availableOperators.filter(operator =>
+                this.branchListAllFilterIds.some(branch =>
+                    operator.branches_ids.includes(branch.id)
+                )
             )
         },
         branchListAllFilterIds() {
-            return this.$store.state.user.branchListAll
-                .filter(branch => branch.site_id === this.httpParams.params.site_id)
-
-        },
-
+            return this.$store.state.user.branchListAll.filter(
+                branch => branch.site_id === this.httpParams.params.site_id
+            )
+        }
     },
     created() {},
     methods: {

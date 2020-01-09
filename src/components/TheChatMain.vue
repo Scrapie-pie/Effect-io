@@ -77,7 +77,7 @@ import { wrapTextUrls } from '@/modules/modules'
 import { datetimeDMY, datetimeHMS } from '@/modules/datetime'
 import inputEmoji from '@/components/inputEmoji'
 
-import { viewModeChat, httpParams, scrollbar} from '@/mixins/mixins'
+import { viewModeChat, httpParams, scrollbar } from '@/mixins/mixins'
 
 import lodash_groupBy from 'lodash/groupBy'
 import lodash_find from 'lodash/find'
@@ -113,8 +113,7 @@ export default {
             limit: 20,
             systemMessages: [],
             visitorTypingLive: '',
-            chat_id: null,
-
+            chat_id: null
         }
     },
 
@@ -207,7 +206,7 @@ export default {
         }
     },
     watch: {
-    /*    roomActiveUsers:{
+        /*    roomActiveUsers:{
             handler(list){
 
 
@@ -291,21 +290,15 @@ export default {
         })
 
         this.syncOperatorMessageVisor()
-
-
-
     },
     beforeDestroy() {
         this.$root.$off('messageAdd', this.emitMessageAdd)
         this.$root.$off('messageDelivered', this.emitMessageDelivered)
-
-
     },
 
     methods: {
-
         syncOperatorMessageVisor() {
-            if (!['visitors', 'visor','search'].includes(this.viewModeChat)) return
+            if (!['visitors', 'visor', 'search'].includes(this.viewModeChat)) return
 
             window.addEventListener('storage', e => {
                 // Делаем синхранизацию, если опер открыл в журнале свой диалог и пишет сообщени в другой вкладке
@@ -340,23 +333,21 @@ export default {
             if (item.from_user_info.guest_uuid) return visitorInfo.regRuLogin
             else return null
         },
-        emitMessageDelivered(val,stop) {
-
+        emitMessageDelivered(val, stop) {
             let findIndex = this.messageList.findIndex(item => item.id === val.message_id)
             console.log('emitMessageDelivered', findIndex, val)
             if (findIndex !== -1) {
                 this.$set(this.messageList[findIndex], 'delivery_status', val.delivery_status)
             } else {
-                if(stop) return
+                if (stop) return
                 setTimeout(() => {
-
                     this.emitMessageDelivered(val)
                 }, 1000)
             }
         },
         emitMessageAdd(message) {
             //console.log('this.$root.$on(\'messageAdd\'');
-            console.log('message.isPolling',message.isPolling);
+            console.log('message.isPolling', message.isPolling)
             if (message.isPolling) return this.messagePollingAdd(message)
 
             if (message.socket) {
@@ -372,14 +363,14 @@ export default {
                 this.messageListUnshift(message)
             }
         },
-        messagePollingAdd(messagePolling){
+        messagePollingAdd(messagePolling) {
             //console.log(message)
             let incomingMessages = this.messageList
             //.filter(item=>item.from_role_id!='8') //Получаем только входящие сообщения
 
             let findPrevIndex = 0
 
-            console.log('incomingMessages',incomingMessages);
+            console.log('incomingMessages', incomingMessages)
 
             incomingMessages.reverse().forEach((item, index) => {
                 if (item.id < messagePolling.id) findPrevIndex = index
@@ -387,11 +378,9 @@ export default {
 
             messagePolling.time = incomingMessages[findPrevIndex].time + 1
 
-
-
             //let cloneMessage = lodash_cloneDeep(this.messageList)
             incomingMessages.splice(findPrevIndex + 1, 0, messagePolling)
-            this.messageList=incomingMessages.reverse()
+            this.messageList = incomingMessages.reverse()
             //state.messages = cloneMessage
             //console.log('state.messages.splice',cloneMessage);
             // ищем предыдущее сообщение
@@ -424,12 +413,9 @@ export default {
             }
 
             if (this.httpParams) {
-
                 this.$http.get('chat-room-user/all', this.httpParams).then(({ data }) => {
-
-
-
-                    if(!this.accessPage(data.data)) return  this.$router.push({ name: 'processAll' })
+                    if (!this.accessPage(data.data))
+                        return this.$router.push({ name: 'processAll' })
 
                     //console.log(this.httpParams);
 
@@ -439,8 +425,6 @@ export default {
             }
         },
         accessPage(list) {
-
-
             if (this.viewModeChat === 'common') return true
 
             if (this.viewModeChat === 'search') return true
@@ -454,27 +438,24 @@ export default {
             //return true //Todo какая то проблема со статусами? редиректит всех, убрал что бы не бесило пользователя
 
             let listFilter
-            if(this.viewModeChat === 'process') {
+            if (this.viewModeChat === 'process') {
                 listFilter = list.filter(item =>
                     ['recipient', 'unprocessed', 'invited'].includes(item.status)
                 )
 
-                if (listFilter.some(user => user.user_id === this.$store.state.user.profile.id)) return true
-
+                if (listFilter.some(user => user.user_id === this.$store.state.user.profile.id))
+                    return true
 
                 //Если доступ не получен, нужно удалить из списка если есть, чтобы не в пасть в бесконечный цикл
 
-
-                this.$root.$emit('processRemoveItem',this.httpParams.params)
+                this.$root.$emit('processRemoveItem', this.httpParams.params)
             }
 
-            if(this.viewModeChat === 'visitors') {
+            if (this.viewModeChat === 'visitors') {
+                listFilter = list.filter(item => ['active'].includes(item.status))
 
-                listFilter = list.filter(item =>
-                    ['active'].includes(item.status)
-                )
-
-                if (listFilter.some(user => user.user_id === this.$store.state.user.profile.id)) return true
+                if (listFilter.some(user => user.user_id === this.$store.state.user.profile.id))
+                    return true
 
                 this.$store.dispatch('setMessageRead', {
                     guest_uuid: this.httpParams.params.guest_uuid,
@@ -482,18 +463,16 @@ export default {
                     type: 'visitors'
                 })
                 this.$store.commit('visitors/selfMessageRemoveItem', this.httpParams.params)
-            }
-            else return false
+            } else return false
         },
         scrollLoad(e) {
             if (this.scrollLoadAllow(e, 'up')) this.historyMessageLoad()
         },
         historyMessageLoad() {
-
             if (!this.messageRun) return
             if (!this.historyMessageLoadStart) return
 
-            console.log();
+            console.log()
 
             let params = {
                     last_msg_id: this.messageLastId,

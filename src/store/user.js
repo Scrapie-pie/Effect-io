@@ -120,8 +120,6 @@ export default {
             this._vm.$http.defaults.headers.common['jwt'] = user.jwt
             this._vm.$http.defaults.headers['content-type'] = 'application/json'
 
-
-
             commit('profile', user)
             dispatch('getSettings')
             dispatch('getBranchListAll')
@@ -139,7 +137,6 @@ export default {
             commit('phrases/resetState', null, { root: true })
             commit('tags/resetState', null, { root: true })
             commit('logout')
-
         },
         getSettings({ commit }) {
             this._vm.$http.get('company/get-settings').then(({ data }) => {

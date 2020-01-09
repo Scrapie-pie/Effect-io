@@ -19,43 +19,30 @@
 <script>
 import StatsOperators from '@/components/StatsOperators'
 
-
 import { stats } from '@/mixins/mixins'
 export default {
-
     components: {
-        StatsOperators,
+        StatsOperators
     },
-    mixins: [
-        stats
-    ],
+    mixins: [stats],
     data() {
         return {
             best_employees_by_rating: [],
-            best_employees_by_speed: [],
+            best_employees_by_speed: []
         }
     },
+    computed: {},
 
     watch: {
         bodyList(val) {
-
             if (val) {
-
                 this.best_employees_by_rating = val.best_employees_by_rating
                 this.best_employees_by_speed = val.best_employees_by_speed
-
             }
         }
     },
-    computed:{
-
-    },
-    methods:{
-
-    },
+    methods: {}
 }
 </script>
 
-<style lang="scss">
-
-</style>
+<style lang="scss"></style>

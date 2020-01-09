@@ -1,31 +1,22 @@
 export default {
     data() {
         return {
-
-            pollingHistoryMessageInterval:null
+            pollingHistoryMessageInterval: null
         }
     },
     created() {
-
-
-
-        this.pollingHistoryMessageInterval = setInterval(()=>{
-
+        this.pollingHistoryMessageInterval = setInterval(() => {
             this.pollingHistoryMessageLoad()
-        },5000)
+        }, 5000)
     },
     beforeDestroy() {
-
-
         clearTimeout(this.pollingHistoryMessageInterval)
     },
     methods: {
-        pollingHistoryMessageLoad(){
-
-
+        pollingHistoryMessageLoad() {
             let params = {
                     //last_msg_id: this.messageLastId,
-                    limit:10
+                    limit: 10
                 },
                 guest_uuid,
                 site_id,
@@ -44,22 +35,20 @@ export default {
                 params.chat_id = chat_id
             }
             return this.$http.get('message/history', { params }).then(({ data }) => {
-
                 let { count, messages, users } = data.data
                 if (!count) return
 
-                messages.reverse().forEach(message=>{
-                    message.socket=true
+                messages.reverse().forEach(message => {
+                    message.socket = true
                     this.emitMessageAdd(message)
                 })
 
-               /* messages = messages.filter(message=>!this.messageList.some(item=>item.id===message.id)) //убираем дубликаты
+                /* messages = messages.filter(message=>!this.messageList.some(item=>item.id===message.id)) //убираем дубликаты
                 console.log(messages);
 
                 this.messageListUnshift(...messages)*/
                 //this.messageList.push(...messages)
-
             })
-        },
+        }
     }
 }

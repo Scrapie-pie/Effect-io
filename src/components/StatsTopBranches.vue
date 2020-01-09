@@ -15,26 +15,17 @@
 </template>
 
 <script>
-
-
-
 import { stats } from '@/mixins/mixins'
 
 export default {
-
     components: {
-        StatsBranches:()=>import('@/components/StatsBranches.vue'),
-
-
+        StatsBranches: () => import('@/components/StatsBranches.vue')
     },
-    mixins: [
-        stats
-    ],
+    mixins: [stats],
     data() {
         return {
             best_branches_by_percents: [],
-            best_branches_by_rating: [],
-
+            best_branches_by_rating: []
         }
     },
 
@@ -44,15 +35,10 @@ export default {
             if (val) {
                 this.best_branches_by_percents = val.best_branches_by_percents
                 this.best_branches_by_rating = val.best_branches_by_rating
-
-
             }
         }
-    },
-
+    }
 }
 </script>
 
-<style lang="scss">
-
-</style>
+<style lang="scss"></style>

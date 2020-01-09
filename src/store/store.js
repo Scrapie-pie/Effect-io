@@ -8,9 +8,7 @@ import operators from '@/store/operators'
 import visitors from '@/store/visitors'
 import roomActive from '@/store/roomActive'
 import sockets from '@/store/storeSockets'
-import {store as actionAnotherTab} from '@/modules/actionAnotherTab.js'
-
-
+import { store as actionAnotherTab } from '@/modules/actionAnotherTab.js'
 
 //import rooms from '@/store/rooms'
 
@@ -42,8 +40,8 @@ const getDefaultState = () => {
                 url: [],
                 calendar: {},
                 last_days: ''
-            },
-          /*  actionAnotherTab:{
+            }
+            /*  actionAnotherTab:{
                 mutation:'',
                 payload:{},
                 routerPush:''
@@ -64,17 +62,14 @@ export default new Vuex.Store({
         operators,
         visitors,
         roomActive,
-        actionAnotherTab,
+        actionAnotherTab
         //rooms
     },
     state,
     plugins: [
         createMutationsSharer({
             predicate: (mutation, state) => {
-
-
-
-               /* if (
+                /* if (
                     mutation.type == 'user/unreadUpdate' &&
                     mutation.payload.toString() === ['unprocessed', -1].toString()
                 )
@@ -92,7 +87,6 @@ export default new Vuex.Store({
         })
     ],
     mutations: {
-
         resetState(state) {
             Object.assign(state, getDefaultState())
         },
@@ -114,7 +108,6 @@ export default new Vuex.Store({
         }
     },
     actions: {
-
         setMessageRead({ state, commit, dispatch }, { id, site_id, guest_uuid, type }) {
             let itemList = [],
                 unreadType // private,guest

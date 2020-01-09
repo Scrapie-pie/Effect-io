@@ -16,7 +16,13 @@ import '@/scss/base.scss'
 import TheHeader from '@/components/TheHeader'
 import ThePopup from '@/components/ThePopup'
 
-import { webSockets, routerPushProcessAllOrItemFirst,pollingSockets,actionAnotherTab,dialogActions } from '@/mixins/mixins'
+import {
+    webSockets,
+    routerPushProcessAllOrItemFirst,
+    pollingSockets,
+    actionAnotherTab,
+    dialogActions
+} from '@/mixins/mixins'
 import AppSpinner from './components/BaseWait'
 
 export default {
@@ -28,7 +34,8 @@ export default {
     mixins: [
         webSockets,
         routerPushProcessAllOrItemFirst,
-        pollingSockets,actionAnotherTab,
+        pollingSockets,
+        actionAnotherTab,
         dialogActions
     ],
     computed: {
@@ -38,7 +45,6 @@ export default {
     },
     watch: {
         isAuth(val) {
-
             if (val) {
                 this.pollingSockets()
 
@@ -67,7 +73,6 @@ export default {
         window.removeEventListener('unhandledrejection', this.promiseErrorHandler)
     },
     methods: {
-
         startEndLoader(url, action) {
             let mapLoaders = {
                 otrsSend: ['regru/regru/send-ticket-to-crm'],
@@ -105,9 +110,6 @@ export default {
             for (let key in mapLoaders) {
                 if (
                     mapLoaders[key].some(item => {
-                        if (item === url) {
-                        }
-
                         return item === url
                     })
                 ) {

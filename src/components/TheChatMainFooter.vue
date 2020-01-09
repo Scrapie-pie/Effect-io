@@ -119,7 +119,6 @@ import lodash_cloneDeep from 'lodash/cloneDeep'
 
 import textWidthTagToText from '@/modules/textWidthTagToText'
 
-
 import { viewModeChat, httpParams, spelling, typingLive } from '@/mixins/mixins'
 
 export default {
@@ -165,23 +164,18 @@ export default {
     watch: {
         $route: {
             handler(to, from) {
-
                 this.checkIsProcessPage()
 
-
-                setTimeout(()=>{
-                    if(this.viewModeChat==='visitors') {
+                setTimeout(() => {
+                    if (this.viewModeChat === 'visitors') {
                         this.getPhrasesSelectText('')
-                        this.getTextAreaVisitors(this.$store.state.visitors.self,to.params)
+                        this.getTextAreaVisitors(this.$store.state.visitors.self, to.params)
                     }
-                    if(this.viewModeChat==='operators') {
+                    if (this.viewModeChat === 'operators') {
                         this.getPhrasesSelectText('')
-                        this.getTextAreaOperators(this.$store.state.operators.all,to.params)
+                        this.getTextAreaOperators(this.$store.state.operators.all, to.params)
                     }
-                },500)
-
-
-
+                }, 500)
             },
             immediate: true
         },
@@ -194,56 +188,40 @@ export default {
         uploadFileList(val) {}
     },
 
-
-    created() {
-
-    },
-    beforeDestroy(){
-       // this.$refs.inputEmoji?.$el.removeEventListener("paste", this.listenerClearStylePaste);
+    created() {},
+    beforeDestroy() {
+        // this.$refs.inputEmoji?.$el.removeEventListener("paste", this.listenerClearStylePaste);
     },
     methods: {
-        saveTextarea(){
-
-
-            if(this.viewModeChat==='visitors') {
-
-                    this.$store.commit('visitors/saveTextAreaItem', {
-                        ids: this.$route.params,
-                        textArea: this.message
-                    })
+        saveTextarea() {
+            if (this.viewModeChat === 'visitors') {
+                this.$store.commit('visitors/saveTextAreaItem', {
+                    ids: this.$route.params,
+                    textArea: this.message
+                })
             }
 
-            if(this.viewModeChat==='operators') {
-
-                    this.$store.commit('operators/saveTextAreaItem', {
-                        ids: this.$route.params,
-                        textArea: this.message
-                    })
+            if (this.viewModeChat === 'operators') {
+                this.$store.commit('operators/saveTextAreaItem', {
+                    ids: this.$route.params,
+                    textArea: this.message
+                })
             }
         },
 
-        inputEmojiInputChange(text){
-
+        inputEmojiInputChange(text) {
             this.typingLive(text)
-
-
         },
-        getTextAreaVisitors(list,routerParams) {
+        getTextAreaVisitors(list, routerParams) {
             let { site_id, guest_uuid } = routerParams
-            let find = list.find(
-                item =>
-                    item.site_id + item.guest_uuid === site_id + guest_uuid
-            )
+            let find = list.find(item => item.site_id + item.guest_uuid === site_id + guest_uuid)
             if (find?.textArea) {
                 this.getPhrasesSelectText(find.textArea)
             }
         },
-        getTextAreaOperators(list,routerParams) {
+        getTextAreaOperators(list, routerParams) {
             let { id } = routerParams
-            let find = list.find(
-                item =>
-                    item.id === id
-            )
+            let find = list.find(item => item.id === id)
             if (find?.textArea) {
                 this.getPhrasesSelectText(find.textArea)
             }
@@ -286,7 +264,6 @@ export default {
             })
         },
         getPhrasesSelectText(val) {
-
             this.message = val
 
             this.textWidthSmiles = ''
@@ -337,7 +314,8 @@ export default {
         },
 
         send() {
-            if(!navigator.onLine) return this.$root.$emit('popup-notice', 'Проверьте подключение к сети =(')
+            if (!navigator.onLine)
+                return this.$root.$emit('popup-notice', 'Проверьте подключение к сети =(')
             this.typingLive('')
             this.message = this.textWidthTagToText()
 
@@ -391,7 +369,7 @@ export default {
                 .post('message/send-from-operator', data)
                 .then(responsive => {
                     this.bufferingSend = false
-                    console.log(this.httpParams);
+                    console.log(this.httpParams)
                     let { id } = responsive.data.data
                     console.log('message/send-from-operator', responsive.data.data)
                     let { first_name: name, photo, employee_id } = this.$store.state.user.profile,
@@ -412,7 +390,7 @@ export default {
                             delivery_status: data.delivery_status
                         }
 
-                    console.log(message);
+                    console.log(message)
 
                     this.$root.$emit('messageAdd', message)
                     localStorage.setItem('messageAdd', JSON.stringify(message))
@@ -439,9 +417,9 @@ export default {
                         this.$refs.scrollbarMessage.update()
                     }, 200)
                 })
-                .catch((error) => {
-                    console.log(error);
-                    let {response} = error
+                .catch(error => {
+                    console.log(error)
+                    let { response } = error
                     if (response.status === 400) {
                         this.getPhrasesSelectText(this.spellingMessage)
 

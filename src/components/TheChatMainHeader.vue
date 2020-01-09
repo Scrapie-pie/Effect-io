@@ -310,15 +310,13 @@ export default {
     &__channel-btn-wrap {
         display: block;
         min-width: 0;
-
     }
-    &__channel-btn{
+    &__channel-btn {
         //word-break: break-all;
-        overflow:hidden;
-        white-space:nowrap;
-        text-overflow:ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
         width: 100%;
-
     }
     &__channel-btn-wrap:hover &__client-history-actions {
         opacity: 1;
@@ -334,7 +332,6 @@ export default {
         opacity: 0;
         visibility: hidden;
     }
-
 
     &__text {
         min-width: 0;

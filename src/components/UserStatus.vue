@@ -108,19 +108,19 @@ export default {
             this.$store.commit('user/profileUpdate', { online: val })
             this.show = false
 
-            console.log('status', val);
+            console.log('status', val)
 
-            if (val === 0 || val===2) { //не всети или перерыв
+            if (val === 0 || val === 2) {
+                //не всети или перерыв
 
                 this.resetVisitors()
                 this.resetProcess()
-
             }
 
-            if (val===3) { //обед
+            if (val === 3) {
+                //обед
                 this.resetProcess()
             }
-
         }
     },
     created() {
@@ -144,16 +144,14 @@ export default {
                 val: { list: [], count: 0 }
             })
             if (this.viewModeChat === 'visitors') this.$router.push({ name: 'messageAll' })
-
         },
-        resetProcess(){
+        resetProcess() {
             this.$store.commit('user/unreadUpdate', ['unprocessed', 'clear'])
             this.$store.commit('visitors/newList', {
                 field: 'process',
                 val: { list: [], count: 0 }
             })
             if (this.viewModeChat === 'process') this.$router.push({ name: 'processAll' })
-
         },
         close(e) {
             if (!e.target.matches('.user-status__status, .user-status__status *')) {

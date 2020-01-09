@@ -14,28 +14,23 @@ export default {
             Object.assign(state, getDefaultState())
         },
         setOperatorOnline(state, { user_id, online }) {
-
             let findIndex = state.all.findIndex(item => item.id === user_id)
 
             if (findIndex !== -1) {
                 this._vm.$set(state.all[findIndex], 'online', online)
             }
-
         },
         all(state, val) {
             state.all = val
         },
-        saveTextAreaItem(state, {ids, textArea }) {
+        saveTextAreaItem(state, { ids, textArea }) {
             let findIndex
 
             let { id } = ids
-            findIndex = state.all.findIndex(
-                item => item.id===id
-            )
+            findIndex = state.all.findIndex(item => item.id === id)
             if (findIndex !== -1) {
                 this._vm.$set(state.all[findIndex], 'textArea', textArea)
             }
-
         },
         messageRead(state, userIndex) {
             state.all[userIndex].unread = []
@@ -98,9 +93,7 @@ export default {
             return state.all
         },
         online: (state, getters, rootState) => {
-
             return getters.all.filter(operator => operator.online)
-
         }
     }
 }

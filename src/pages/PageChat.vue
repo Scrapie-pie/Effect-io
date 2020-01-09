@@ -64,13 +64,18 @@ export default {
     mixins: [viewModeChat],
 
     computed: {
-        processOnlineHide(){
-
-            return !(this.$store.state.user.profile.online===0 || this.$store.state.user.profile.online===2 ||this.$store.state.user.profile.online===3)
+        processOnlineHide() {
+            return !(
+                this.$store.state.user.profile.online === 0 ||
+                this.$store.state.user.profile.online === 2 ||
+                this.$store.state.user.profile.online === 3
+            )
         },
-        selfOnlineHide(){
-
-            return !(this.$store.state.user.profile.online===0 || this.$store.state.user.profile.online===2)
+        selfOnlineHide() {
+            return !(
+                this.$store.state.user.profile.online === 0 ||
+                this.$store.state.user.profile.online === 2
+            )
         },
         show() {
             return this.$route.name === 'processAll' || this.$route.name === 'messageAll'

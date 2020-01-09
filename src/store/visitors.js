@@ -21,10 +21,8 @@ const getDefaultState = () => {
 // initial state
 const state = getDefaultState()
 
-
 function commonSelfProcces(store) {
-    return function(item){
-
+    return function(item) {
         store._vm.$set(
             item,
             'awaiting_answer_timeFormat',
@@ -41,10 +39,8 @@ function commonSelfProcces(store) {
     return item
 }*/
 
-const processRemoveItem = (state,index )=> {
+const processRemoveItem = (state, index) => {
     state.process.splice(index, 1)
-
-
 }
 
 export default {
@@ -93,7 +89,6 @@ export default {
             main('self')
         },
         process(state, val) {
-
             state.process = val.list.map(commonSelfProcces(this))
             if (val.count) state.processCount = val.count
         },
@@ -109,7 +104,7 @@ export default {
                 state.process[findIndex].last_message = val.body
                 state.process[findIndex].last_message_author = val.last_message_author
             } else {
-                if(val.isSocketNewMessage) return  //После передачи приходило сообщение "Диалог принят" создавался дублированный диалог, по этому убираю
+                if (val.isSocketNewMessage) return //После передачи приходило сообщение "Диалог принят" создавался дублированный диалог, по этому убираю
                 val.unread = []
                 val.last_message = val.body
                 console.log('state.process.push unprocessed')
@@ -117,7 +112,9 @@ export default {
                 state.processCount += 1
             }
         },
-        processRemoveItem(state,val){processRemoveItem(state,val)},
+        processRemoveItem(state, val) {
+            processRemoveItem(state, val)
+        },
 
         processRemoveItemAll(state) {
             state.process = []
@@ -127,17 +124,16 @@ export default {
             state.self = val.list.map(commonSelfProcces(this))
             if (val.count) state.selfCount = val.count
         },
-        saveTextAreaItem(state, {ids, textArea }) {
+        saveTextAreaItem(state, { ids, textArea }) {
             let findIndex
 
-                let { guest_uuid, site_id } = ids
-                findIndex = state.self.findIndex(
-                    item => item.guest_uuid + item.site_id === guest_uuid + site_id
-                )
-                if (findIndex !== -1) {
-                    this._vm.$set(state.self[findIndex], 'textArea', textArea)
-                }
-
+            let { guest_uuid, site_id } = ids
+            findIndex = state.self.findIndex(
+                item => item.guest_uuid + item.site_id === guest_uuid + site_id
+            )
+            if (findIndex !== -1) {
+                this._vm.$set(state.self[findIndex], 'textArea', textArea)
+            }
         },
         setSelfLastPageN(state, val) {
             state.selfLastPageN = val
@@ -167,10 +163,9 @@ export default {
             } else {
                 //Если сообщение пришло, но в списке не было подгружено
 
+                if (val.intent === 'farewell') return //Todo костыль для Симона
 
-                if(val.intent=== "farewell") return //Todo костыль для Симона
-
-                let unreadMas = val.from_role_id!=9?[val.id]:[]
+                let unreadMas = val.from_role_id != 9 ? [val.id] : []
 
                 let selfNew = {
                     last_message: val.body,

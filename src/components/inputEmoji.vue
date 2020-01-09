@@ -49,25 +49,22 @@ export default {
         }
     },
     methods: {
-        listenerClearStylePaste(e){
-
-            e.preventDefault();
-            let text = e.clipboardData.getData("text/plain");
+        listenerClearStylePaste(e) {
+            e.preventDefault()
+            let text = e.clipboardData.getData('text/plain')
 
             console.log(text.replace(/(\r\n|\n|&lt;br&gt;)/g, '<br>'))
             text = text.replace(/(\r\n|\n|&lt;br&gt;)/g, '<br>')
             text = text.replace(/onerror/g, 'xss_off_onerror')
 
-            console.log(text);
-            document.execCommand("insertHTML", true, text);
+            console.log(text)
+            document.execCommand('insertHTML', true, text)
         },
         blur(e) {
-
-
             this.$emit('blur', '')
         },
         inputChange(e) {
-            console.log('inputChange');
+            console.log('inputChange')
             this.$emit('inputChange', textWidthTagToText(e.target))
         },
         placeCaretAtEnd(el) {
@@ -129,8 +126,8 @@ export default {
             },
             on: {
                 input: this.inputChange,
-                blur:this.blur,
-                paste:this.listenerClearStylePaste
+                blur: this.blur,
+                paste: this.listenerClearStylePaste
             }
         }
 
@@ -139,8 +136,7 @@ export default {
             splitStr = splitStr.join('')
             return <Tag class="input-emoji" domPropsInnerHTML={splitStr} />
         } else return <pre {...attributes}>{splitStr}</pre>
-    },
-
+    }
 }
 </script>
 

@@ -30,7 +30,6 @@ export default {
             if (list.length) {
                 this.spellingList = list
                 this.spellingShow = true
-
             }
         }
     }

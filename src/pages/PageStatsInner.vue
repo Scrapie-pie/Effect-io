@@ -211,17 +211,15 @@ export default {
         downloadLink() {
             let type = this.type
 
-            if(this.routerName==='statsAllBranch') {
-                if(this.by_dates) {
-                  type='branch'
+            if (this.routerName === 'statsAllBranch') {
+                if (this.by_dates) {
+                    type = 'branch'
                 } else {
-                  type='employees'
+                    type = 'employees'
                 }
             }
-            if(this.routerName==='statsAllBranchByHours') {
-
-                  type='employees'
-
+            if (this.routerName === 'statsAllBranchByHours') {
+                type = 'employees'
             }
 
             let dates = `&date_from=${this.date_from}&date_to=${this.date_to}&time_from=${
@@ -229,9 +227,9 @@ export default {
             }&time_to=${this.time_to}`
             return `${config.api_server}statistic/get-by-params?user_id=${this.user_id}&branch_id=${
                 this.branch_id
-            }${dates}&last_days=${this.last_days}&by_dates=${this.by_dates}&type=${
-                type
-            }&csv=1&jwt=${this.$http.defaults.headers.common.jwt}`
+            }${dates}&last_days=${this.last_days}&by_dates=${
+                this.by_dates
+            }&type=${type}&csv=1&jwt=${this.$http.defaults.headers.common.jwt}`
         },
         placeholder() {
             if (this.routerName === 'statsBranches') return 'Поиск по названию'

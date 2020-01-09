@@ -42,7 +42,7 @@
         height: 100%;
         margin-right: -1 * calc-em(15);
         padding-right: calc-em(15);
-        overflow:auto;
+        overflow: auto;
     }
 }
 </style>

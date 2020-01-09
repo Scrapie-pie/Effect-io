@@ -8,26 +8,16 @@
 </template>
 
 <script>
-
-
-
-
 import { stats } from '@/mixins/mixins'
-
 
 export default {
     name: 'StatsService',
     components: {
-        StatsTopBranches:()=>import('@/components/StatsTopBranches'),
-        StatsTopOperators:()=>import('@/components/StatsTopOperators'),
-        StatsResult:()=>import('@/components/StatsResult'),
-
-
-
+        StatsTopBranches: () => import('@/components/StatsTopBranches'),
+        StatsTopOperators: () => import('@/components/StatsTopOperators'),
+        StatsResult: () => import('@/components/StatsResult')
     },
-    mixins: [
-        stats
-    ],
+    mixins: [stats],
     data() {
         return {
             best_branches_by_percents: [],
@@ -35,6 +25,17 @@ export default {
             best_employees_by_rating: [],
             best_employees_by_speed: [],
             company: {}
+        }
+    },
+    computed: {
+        payloadTopBranches() {
+            return Object.assign({}, this.$props, { type: 'top_branches' })
+        },
+        payloadTopEmployees() {
+            return Object.assign({}, this.$props, { type: 'top_employees' })
+        },
+        payloadTopCompany() {
+            return Object.assign({}, this.$props, { type: 'top_company' })
         }
     },
 
@@ -50,23 +51,12 @@ export default {
             }
         }
     },
-    computed:{
-        payloadTopBranches(){
-            return Object.assign({},this.$props, {type:'top_branches'})
-        },
-        payloadTopEmployees(){
-            return Object.assign({},this.$props, {type:'top_employees'})
-        },
-        payloadTopCompany(){
-            return Object.assign({},this.$props, {type:'top_company'})
-        }
-    },
-    methods:{
-        get(){
+    methods: {
+        get() {
             console.log('обнулил метод в mixins stats')
             //
         }
-    },
+    }
 }
 </script>
 

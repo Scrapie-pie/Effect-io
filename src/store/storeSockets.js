@@ -2,20 +2,21 @@ const getDefaultState = () => {
     return {
         history: [],
         emitList: {
-            'hot-guest':'emitHotGust',
-            'new-message':'emitNewMessage',
-            'guest-new-session':'emitGuestNewSession',
-            'update-guest-employee':'emitUpdateGuestEmployee',
-            'guest-update':'emitGuestUpdate',
-            'message-delivered':'emitMessageDelivered',
-            'update-branches':'emitUpdateBranches',
-            'room-users':'emitRoomUsers',
-            'unprocessed':'emitUnprocessed',
-            'auto-attach':'emitAutoAttach',
-            'self-remove':'emitSelfRemove',
-            'unprocessed-remove':'emitUnprocessedRemove',
-            'update-employees':'emitUpdateEmployees',
-            'employee-online':'emitEmployeeOnline'
+            'typing-live': 'emitTypingLive',
+            'hot-guest': 'emitHotGust',
+            'new-message': 'emitNewMessage',
+            'guest-new-session': 'emitGuestNewSession',
+            'update-guest-employee': 'emitUpdateGuestEmployee',
+            'guest-update': 'emitGuestUpdate',
+            'message-delivered': 'emitMessageDelivered',
+            'update-branches': 'emitUpdateBranches',
+            'room-users': 'emitRoomUsers',
+            unprocessed: 'emitUnprocessed',
+            'auto-attach': 'emitAutoAttach',
+            'self-remove': 'emitSelfRemove',
+            'unprocessed-remove': 'emitUnprocessedRemove',
+            'update-employees': 'emitUpdateEmployees',
+            'employee-online': 'emitEmployeeOnline'
         }
     }
 }
@@ -36,10 +37,7 @@ export default {
         },
         historyClear(state) {
             //console.log('socket historyPush',val);
-            state.history=state.history.slice(
-                state.history.length-20,
-                state.history.length
-            )
+            state.history = state.history.slice(state.history.length - 20, state.history.length)
             //state.messages.push(state.messagesTemp)
         }
     },

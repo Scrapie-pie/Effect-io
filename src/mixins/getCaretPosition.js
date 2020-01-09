@@ -5,8 +5,6 @@ export default {
         textWidthTagToText() {
             let ct = document.getElementById('contenteditable')
 
-
-
             return textWidthTagToText(ct)
         },
         getCharacterOffsetWithin_final(range, node) {

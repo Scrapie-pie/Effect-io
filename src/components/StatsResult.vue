@@ -133,7 +133,6 @@ export default {
             return list
         },
         bodyListFormat() {
-
             return this.bodyList.company
         }
     },

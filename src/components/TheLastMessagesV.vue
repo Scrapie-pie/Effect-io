@@ -129,14 +129,12 @@ export default {
                     this.$router.push(val[0].rootLinkOptions.link)
                 }
             }
-            if(!val.length && this.$route.name==='process') {
-                console.log('!val.length && this.$route.name===\'process\'push({name:\'processAll');
-                setTimeout(()=>{
-                    this.$router.push({name:'processAll'})
-                },200) //иначе происходит переход делается запрос, и бэк отдает как будто список есть, начинается зацикливание
-
+            if (!val.length && this.$route.name === 'process') {
+                console.log("!val.length && this.$route.name==='process'push({name:'processAll")
+                setTimeout(() => {
+                    this.$router.push({ name: 'processAll' })
+                }, 200) //иначе происходит переход делается запрос, и бэк отдает как будто список есть, начинается зацикливание
             }
-
         },
         $route(to, from) {
             if (['search', 'visor'].includes(this.viewModeChat)) {
@@ -166,10 +164,10 @@ export default {
         if (this.viewModeChat === 'visitors') this.type = 'self'
         this.setLastPageN()
         //if (!this.itemListStore.length) {
-            this.getItemList()
+        this.getItemList()
         //}
 
-        this.$root.$on('lastMessageVResetItemList',this.resetItemList)
+        this.$root.$on('lastMessageVResetItemList', this.resetItemList)
     },
     /*  beforeUpdate(){
 
@@ -179,11 +177,12 @@ export default {
             },1000)
         },*/
     beforeDestroy() {
-        this.$root.$off('lastMessageVResetItemList',this.resetItemList)
+        this.$root.$off('lastMessageVResetItemList', this.resetItemList)
         clearInterval(this.timerNowId)
     },
     methods: {
-        resetItemList(){ //Используею в компоненте processActions
+        resetItemList() {
+            //Используею в компоненте processActions
             this.resetSearch()
             this.getItemList()
         },

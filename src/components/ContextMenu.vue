@@ -1,4 +1,3 @@
-
 <template lang="pug">
     .context-menu
         .context-menu__target(@click.prevent="toggle")

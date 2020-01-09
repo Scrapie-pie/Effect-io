@@ -220,7 +220,6 @@ export default {
     watch: {
         profile: {
             handler(val) {
-
                 if (val) {
                     this.getProfileByUserId()
                 }
@@ -260,19 +259,15 @@ export default {
                 this.branchListSelected = val.filter(item => {
                     return this.model.branches_ids.includes(item.id)
                 })
-
             }
         },
         getBranchListAll() {
-
             if (this.$store.state.user.branchListAll.length) {
                 this.setBranchListSelected(this.$store.getters['user/branchListAll'])
-
             } else {
                 this.$store.watch(
                     state => state.user.branchListAll,
                     val => {
-
                         return this.setBranchListSelected(val)
                     }
                 )
@@ -314,7 +309,6 @@ export default {
             }
         },
         getProfileByUserId() {
-
             if (this.isAddOperator) {
                 this.getBranchListAll()
                 return
@@ -328,7 +322,6 @@ export default {
                     .get('user/get-profile', { params: { user_id: user_id } })
                     .then(({ data }) => {
                         if (data.success) {
-
                             this.model = data.data.user
                             this.adminMode = this.model.role_id === 13
                             this.operatorSeniorMode = this.model.role_id === 14
@@ -347,7 +340,6 @@ export default {
             this.phoneUnmaskedValue = val
         },
         getUploadAvatar(event) {
-
             this.model.avatar = event
         },
         createOperator() {
@@ -368,16 +360,12 @@ export default {
                     this.$http
                         .post('user/update-profile', this.model)
                         .then(({ data }) => {
-
                             if (data.data.id === this.profile.id)
                                 this.$store.commit('user/profileUpdate', data.data)
                             browserNotification('Сохранено')
                             this.$router.push({ name: 'team' })
                         })
                         .catch(({ response }) => {
-
-
-
                             if (response.data.errors) {
                                 // добавляет ошибки с бека в валидатор
                                 for (let prop in response.data.errors) {

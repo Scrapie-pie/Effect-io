@@ -34,15 +34,13 @@ export default {
         paramsIds: {
             type: Object,
             default: function() {
-                return {
-
-                }
+                return {}
             }
         }
     },
     data() {
         return {
-            processItem:{}
+            processItem: {}
         }
     },
     computed: {
@@ -97,7 +95,7 @@ export default {
     },
 
     methods: {
-        processItemSave(){
+        processItemSave() {
             //сохраняем перед отправкой запроса.
             //Бывала такая ситуация. Посылаешь запрос, приходит сокет и удаляет диалог, а скрипт в then уже не может его найти
             let { guest_uuid, site_id } = this.visitorIds
@@ -107,20 +105,18 @@ export default {
             )
 
             this.processItem.very_hot = 0
-            console.log(this.processItem);
+            console.log(this.processItem)
         },
         routerNext(status) {
-
             let { guest_uuid, site_id } = this.processItem
 
+            this.$root.$emit('processRemoveItem', { guest_uuid, site_id })
 
-            this.$root.$emit('processRemoveItem',{ guest_uuid, site_id })
-
-            this.$root.$emit('actionAnotherTab',['emit','processRemoveItem',{ guest_uuid, site_id }])
-
-
-
-
+            this.$root.$emit('actionAnotherTab', [
+                'emit',
+                'processRemoveItem',
+                { guest_uuid, site_id }
+            ])
 
             if (status === 'no') {
                 this.routerPushProcessAllOrItemFirst()
@@ -129,17 +125,19 @@ export default {
             if (status === 'yes') {
                 dialogPush(this, 'self', this.processItem)
 
-                this.$root.$emit('actionAnotherTab',['method','dialogPush',['self', this.processItem]])
+                this.$root.$emit('actionAnotherTab', [
+                    'method',
+                    'dialogPush',
+                    ['self', this.processItem]
+                ])
 
-                setTimeout(()=>{
+                setTimeout(() => {
                     console.log('Router push в мои диалоги')
                     this.$router.push({
                         name: 'chatId',
                         params: { guest_uuid, site_id }
                     })
-                },500) //Приходит сокет room-users, обновляется статус комнаты, запускается функция this.accessPage, редиректится в не обработано, ждем примерно секунду, редиректим в диалоги
-
-
+                }, 500) //Приходит сокет room-users, обновляется статус комнаты, запускается функция this.accessPage, редиректится в не обработано, ждем примерно секунду, редиректим в диалоги
             }
         },
 
@@ -150,10 +148,11 @@ export default {
         processActionYes() {
             this.processItemSave()
 
-            if (this.status) this[this.status]().then((r) => {
-                console.table('processActionYes',r)
-                this.routerNext('yes')
-            })
+            if (this.status)
+                this[this.status]().then(r => {
+                    console.table('processActionYes', r)
+                    this.routerNext('yes')
+                })
         },
         recipient() {
             return this.$http.put('chat-room-user/transfer-acceptance', this.visitorIds)
@@ -162,8 +161,8 @@ export default {
             return this.$http.put('chat-room-user/transfer-decline', this.visitorIds)
         },
         unprocessed() {
-            console.log('Нажал принять chat-room-user/take');
-            return this.$http.put('chat-room-user/take', this.visitorIds).catch(()=>{
+            console.log('Нажал принять chat-room-user/take')
+            return this.$http.put('chat-room-user/take', this.visitorIds).catch(() => {
                 this.$root.$emit('lastMessageVResetItemList')
             })
         },
