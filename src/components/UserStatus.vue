@@ -143,9 +143,8 @@ export default {
                 field: 'self',
                 val: { list: [], count: 0 }
             })
-            setTimeout(() => {
-                if (this.viewModeChat === 'visitors') this.$router.push({ name: 'messageAll' })
-            }, 200)
+            if (this.viewModeChat === 'visitors') this.$router.push({ name: 'messageAll' })
+
         },
         resetProcess(){
             this.$store.commit('user/unreadUpdate', ['unprocessed', 'clear'])
@@ -153,9 +152,8 @@ export default {
                 field: 'process',
                 val: { list: [], count: 0 }
             })
-            setTimeout(() => {
-                if (this.viewModeChat === 'process') this.$router.push({ name: 'processAll' })
-            }, 200)
+            if (this.viewModeChat === 'process') this.$router.push({ name: 'processAll' })
+
         },
         close(e) {
             if (!e.target.matches('.user-status__status, .user-status__status *')) {

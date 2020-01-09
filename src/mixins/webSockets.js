@@ -320,9 +320,9 @@ export default {
 			if (val.status === 'recipient' || val.status === 'invited' || val.status === 'unprocessed') {
 				this.$store.commit('visitors/processMessageLastUpdate', val)
 
-				this.$store.commit('user/unreadUpdate', ['unprocessed', 1])
+				//this.$store.commit('user/unreadUpdate', ['unprocessed', 1])
 
-				//this.$store.commit('user/unreadUpdateUnprocessed', val.common_count)
+				this.$store.commit('user/unreadUpdateUnprocessed', val.common_count)
 				this.playSoundFile('sound_new_guest')
 				browserNotificationMessage.call(this,val).then(click => {
 					if (click === 'toLink') {
@@ -394,7 +394,11 @@ export default {
 			console.log('unprocessed-remove', val, val.room_id, this.$store.state.roomActive.id)
 			//if(val.room_id === this.$store.state.roomActiveId) return
 
+
+
 			this.$root.$emit('processRemoveItem',val)
+            console.log('user/unreadUpdateUnprocessed',val.common_count);
+            this.$store.commit('user/unreadUpdateUnprocessed', val.common_count)
 
 			if (this.viewModeChat === 'process') this.routerPushProcessAllOrItemFirst()
 

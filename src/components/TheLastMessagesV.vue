@@ -161,6 +161,7 @@ export default {
             this.timerNow = new Date().getTime() / 1000
         }, 1000)
         if (['search', 'visor'].includes(this.viewModeChat)) return
+
         if (this.viewModeChat === 'process') this.type = 'unprocessed'
         if (this.viewModeChat === 'visitors') this.type = 'self'
         this.setLastPageN()

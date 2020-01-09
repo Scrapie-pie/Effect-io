@@ -82,6 +82,9 @@ export default {
                 state.profile.unread[val[0]] += val[1]
             }
         },
+        unreadUpdateUnprocessed(state, number) {
+            state.profile.unread.unprocessed = number
+        },
         unreadUpdateGuest(state, number) {
             state.profile.unread.guest = number
         },

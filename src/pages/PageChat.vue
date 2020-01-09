@@ -15,7 +15,7 @@
 
         template(v-if="viewModeChat === 'visitors'")
             base-no-found(v-show="messageNo" :name="$route.name")
-            section(v-show="!messageNo").page__view.page-chat
+            section(v-show="!messageNo" v-if="selfOnlineHide").page__view.page-chat
                 the-last-messages-v
                 template(v-if="!show")
                     section.page-chat__main
@@ -25,7 +25,7 @@
 
         template(v-if="viewModeChat === 'process'")
             base-no-found(v-show="processNo" :name="$route.name")
-            section(v-show="!processNo").page__view.page-chat
+            section(v-show="!processNo" v-if="processOnlineHide").page__view.page-chat
                 the-last-messages-v
 
                 template(v-if="!show")
@@ -64,6 +64,14 @@ export default {
     mixins: [viewModeChat],
 
     computed: {
+        processOnlineHide(){
+
+            return !(this.$store.state.user.profile.online===0 || this.$store.state.user.profile.online===2 ||this.$store.state.user.profile.online===3)
+        },
+        selfOnlineHide(){
+
+            return !(this.$store.state.user.profile.online===0 || this.$store.state.user.profile.online===2)
+        },
         show() {
             return this.$route.name === 'processAll' || this.$route.name === 'messageAll'
         },
