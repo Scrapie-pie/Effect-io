@@ -16,7 +16,8 @@ export default {
     computed: {},
     methods: {
         pollingSocketsInit(){
-            let  pollingServ = this.$http
+            let  pollingServ = this.$http;
+
             if (process.env.NODE_ENV === 'production') {
                 pollingServ = this.$http.create({
                     baseURL: '//polling.effect.com',
