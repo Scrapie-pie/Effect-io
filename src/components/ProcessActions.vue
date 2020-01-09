@@ -113,14 +113,11 @@ export default {
 
             let { guest_uuid, site_id } = this.processItem
 
-            let commitProcessRemoveItem = ['visitors/processRemoveItem', { guest_uuid, site_id }]
-            let commitUserUnreadUpdate = ['user/unreadUpdate', ['unprocessed', -1]]
 
-            this.$store.commit(...commitProcessRemoveItem)
-            this.$store.commit(...commitUserUnreadUpdate)
+            this.$root.$emit('processRemoveItem',{ guest_uuid, site_id })
 
-            this.$root.$emit('actionAnotherTab',['mutation',...commitProcessRemoveItem])
-            this.$root.$emit('actionAnotherTab',['mutation',...commitUserUnreadUpdate])
+            this.$root.$emit('actionAnotherTab',['emit','processRemoveItem',{ guest_uuid, site_id }])
+
 
 
 

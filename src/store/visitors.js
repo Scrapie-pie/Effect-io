@@ -41,14 +41,10 @@ function commonSelfProcces(store) {
     return item
 }*/
 
-const processRemoveItem = (state,val )=> {
-    let { guest_uuid, site_id } = val
-    console.log('processRemoveItem',val);
+const processRemoveItem = (state,index )=> {
+    state.process.splice(index, 1)
 
-    let findIndex = state.process.findIndex(
-        item => item.guest_uuid + item.site_id === guest_uuid + site_id
-    )
-    if (findIndex !== -1) state.process.splice(findIndex, 1)
+
 }
 
 export default {

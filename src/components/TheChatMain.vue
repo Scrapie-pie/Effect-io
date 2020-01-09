@@ -427,7 +427,7 @@ export default {
 
                 this.$http.get('chat-room-user/all', this.httpParams).then(({ data }) => {
 
-                    console.log('chat-room-user/all',data);
+
 
                     if(!this.accessPage(data.data)) return  this.$router.push({ name: 'processAll' })
 
@@ -439,7 +439,7 @@ export default {
             }
         },
         accessPage(list) {
-            console.log(this.viewModeChat,list);
+
 
             if (this.viewModeChat === 'common') return true
 
@@ -458,13 +458,14 @@ export default {
                 listFilter = list.filter(item =>
                     ['recipient', 'unprocessed', 'invited'].includes(item.status)
                 )
-                console.log(listFilter);
+
                 if (listFilter.some(user => user.user_id === this.$store.state.user.profile.id)) return true
 
 
                 //Если доступ не получен, нужно удалить из списка если есть, чтобы не в пасть в бесконечный цикл
-                this.$store.commit('visitors/processRemoveItem', this.httpParams.params)
-                this.$store.commit('user/unreadUpdate', ['unprocessed', -1])
+
+
+                this.$root.$emit('processRemoveItem',this.httpParams.params)
             }
 
             if(this.viewModeChat === 'visitors') {
@@ -472,7 +473,7 @@ export default {
                 listFilter = list.filter(item =>
                     ['active'].includes(item.status)
                 )
-                console.log(listFilter);
+
                 if (listFilter.some(user => user.user_id === this.$store.state.user.profile.id)) return true
 
                 this.$store.dispatch('setMessageRead', {

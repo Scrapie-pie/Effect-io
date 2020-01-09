@@ -220,7 +220,7 @@ export default {
     watch: {
         profile: {
             handler(val) {
-                console.log('watch profile', val)
+
                 if (val) {
                     this.getProfileByUserId()
                 }
@@ -260,7 +260,7 @@ export default {
                 this.branchListSelected = val.filter(item => {
                     return this.model.branches_ids.includes(item.id)
                 })
-                console.log('setBranchListSelected',val,this.model.branches_ids);
+
             }
         },
         getBranchListAll() {
@@ -314,7 +314,7 @@ export default {
             }
         },
         getProfileByUserId() {
-            console.log('getProfileByUserId')
+
             if (this.isAddOperator) {
                 this.getBranchListAll()
                 return
@@ -328,7 +328,7 @@ export default {
                     .get('user/get-profile', { params: { user_id: user_id } })
                     .then(({ data }) => {
                         if (data.success) {
-                            console.log(data.data.user);
+
                             this.model = data.data.user
                             this.adminMode = this.model.role_id === 13
                             this.operatorSeniorMode = this.model.role_id === 14
@@ -347,7 +347,7 @@ export default {
             this.phoneUnmaskedValue = val
         },
         getUploadAvatar(event) {
-            console.log(event)
+
             this.model.avatar = event
         },
         createOperator() {
@@ -368,15 +368,15 @@ export default {
                     this.$http
                         .post('user/update-profile', this.model)
                         .then(({ data }) => {
-                            console.log()
+
                             if (data.data.id === this.profile.id)
                                 this.$store.commit('user/profileUpdate', data.data)
                             browserNotification('Сохранено')
                             this.$router.push({ name: 'team' })
                         })
                         .catch(({ response }) => {
-                            console.log('errors')
-                            console.log(response.data)
+
+
 
                             if (response.data.errors) {
                                 // добавляет ошибки с бека в валидатор

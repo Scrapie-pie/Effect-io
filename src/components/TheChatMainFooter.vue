@@ -286,7 +286,7 @@ export default {
             })
         },
         getPhrasesSelectText(val) {
-            console.log('getPhrasesSelectText',val);
+
             this.message = val
 
             this.textWidthSmiles = ''

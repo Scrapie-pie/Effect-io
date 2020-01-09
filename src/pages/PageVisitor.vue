@@ -94,11 +94,11 @@ export default {
     created() {
         this.channel = this.channelList[0]
         this.$root.$on('guestNewSession', val => {
-            console.log('guestNewSession', val)
+
             this.itemList.unshift(val)
         })
         this.$root.$on('guestUpdate', val => {
-            console.log('guestUpdate')
+
             let findIndex = this.itemList.findIndex(
                 item => item.guest_uuid + item.site_id === val.guest_uuid + val.site_id
             )

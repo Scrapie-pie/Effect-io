@@ -69,7 +69,7 @@ export default {
 
         settings: {
             handler(val) {
-                console.log(val)
+
 
                 if (val) this.is_tag_required_in_chat = val.settings.is_tag_required_in_chat
             },

@@ -43,6 +43,8 @@ export default {
                     )
                     if (!socketStoreItemFind) {
                         let socketEmitName = this.$store.state.sockets.emitList[itemApi.event]
+
+
                         itemApi.payload.isPolling = true
                         if(itemApi.event==='new-message') itemApi.payload.isPolling=true //используем в storeChat.js
 
@@ -55,7 +57,7 @@ export default {
                             if(findIndex) return
                         }
 
-
+                        console.log(socketEmitName,itemApi.payload);
                         this.$root.$emit(socketEmitName, itemApi.payload)
                     }
                 })
@@ -68,13 +70,13 @@ export default {
         },
         pollingSocketsDestroy(){
             clearTimeout(this.pollingSocketsInterval)
-            console.log('pollingSocketsDestroy');
+
         },
         pollingSockets() {
 
             this.pollingSocketsInit()
             this.pollingSocketsInterval = setInterval(this.pollingSocketsInit, 1000 * 5)
-            console.log(this.pollingSocketsInterval);
+
         }
     }
 }

@@ -136,7 +136,7 @@ export default {
             commit('phrases/resetState', null, { root: true })
             commit('tags/resetState', null, { root: true })
             commit('logout')
-            console.log('logout resolve')
+
         },
         getSettings({ commit }) {
             this._vm.$http.get('company/get-settings').then(({ data }) => {

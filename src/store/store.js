@@ -11,7 +11,7 @@ import sockets from '@/store/storeSockets'
 import {store as actionAnotherTab} from '@/modules/actionAnotherTab.js'
 
 
-console.log(sockets);
+
 //import rooms from '@/store/rooms'
 
 Vue.use(Vuex)

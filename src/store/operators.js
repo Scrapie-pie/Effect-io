@@ -14,13 +14,13 @@ export default {
             Object.assign(state, getDefaultState())
         },
         setOperatorOnline(state, { user_id, online }) {
-            console.log(user_id, online)
+
             let findIndex = state.all.findIndex(item => item.id === user_id)
-            console.log(findIndex)
+
             if (findIndex !== -1) {
                 this._vm.$set(state.all[findIndex], 'online', online)
             }
-            console.log(state.all[findIndex])
+
         },
         all(state, val) {
             state.all = val

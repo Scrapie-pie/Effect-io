@@ -16,7 +16,7 @@ import '@/scss/base.scss'
 import TheHeader from '@/components/TheHeader'
 import ThePopup from '@/components/ThePopup'
 
-import { webSockets, routerPushProcessAllOrItemFirst,pollingSockets,actionAnotherTab } from '@/mixins/mixins'
+import { webSockets, routerPushProcessAllOrItemFirst,pollingSockets,actionAnotherTab,dialogActions } from '@/mixins/mixins'
 import AppSpinner from './components/BaseWait'
 
 export default {
@@ -25,7 +25,12 @@ export default {
         TheHeader,
         ThePopup
     },
-    mixins: [webSockets, routerPushProcessAllOrItemFirst,pollingSockets,actionAnotherTab],
+    mixins: [
+        webSockets,
+        routerPushProcessAllOrItemFirst,
+        pollingSockets,actionAnotherTab,
+        dialogActions
+    ],
     computed: {
         isAuth() {
             return this.$store.getters['user/authenticated']
@@ -36,7 +41,7 @@ export default {
 
             if (val) {
                 this.pollingSockets()
-                console.log('isAuth');
+
                 if (process.env.NODE_ENV === 'development') return
                 window.onbeforeunload = function() {
                     return 'Данные не сохранены. Точно перейти?'

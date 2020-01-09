@@ -22,6 +22,13 @@ const mixins = {
                     this.$store.commit('actionAnotherTab/resetState')
                 }
 
+                if(type==='emit') {
+                    console.log('actionAnotherTab.emit start',method);
+                    this.$root.$emit(method,payload)
+                    console.log('actionAnotherTab.emit end',method);
+                    this.$store.commit('actionAnotherTab/resetState')
+                }
+
 
             },
             deep:true

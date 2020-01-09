@@ -111,7 +111,7 @@ export default {
             ) //либо админ либо владелец
         },
         operatorList() {
-            console.log('operatorList', this.$store.getters['operators/all'])
+
             return this.$store.getters['operators/all']
         },
         operatorListSearch() {
