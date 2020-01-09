@@ -2,7 +2,7 @@
 export default {
     data() {
         return {
-            pollingSocketsInterval: null
+            pollingSocketsGo: false
         }
     },
     created() {
@@ -16,6 +16,7 @@ export default {
     computed: {},
     methods: {
         pollingSocketsInit(){
+            if(!this.pollingSocketsGo) return
             let  pollingServ = this.$http;
 
             if (process.env.NODE_ENV === 'production') {
@@ -64,19 +65,23 @@ export default {
                 })
 
 
+
+            }).finally(()=>{
                 setTimeout(()=>{
-                    this.$store.commit('sockets/historyClear')
-                },60*1000)
+                    this.pollingSocketsInit()
+                },5*1000)
             })
         },
         pollingSocketsDestroy(){
-            clearTimeout(this.pollingSocketsInterval)
+            this.pollingSocketsGo=false
 
         },
         pollingSockets() {
-
+            this.pollingSocketsGo=true
             this.pollingSocketsInit()
-            this.pollingSocketsInterval = setInterval(this.pollingSocketsInit, 1000 * 5)
+            setTimeout(()=>{
+                this.$store.commit('sockets/historyClear')
+            },60*1000)
 
         }
     }
