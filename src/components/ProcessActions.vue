@@ -163,7 +163,9 @@ export default {
         },
         unprocessed() {
             console.log('Нажал принять chat-room-user/take');
-            return this.$http.put('chat-room-user/take', this.visitorIds)
+            return this.$http.put('chat-room-user/take', this.visitorIds).catch(()=>{
+                this.$root.$emit('lastMessageVResetItemList')
+            })
         },
         unprocessedNo() {
             return this.$http.post('chat-room-user/decline-guest', this.visitorIds)

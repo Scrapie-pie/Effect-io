@@ -168,6 +168,8 @@ export default {
         //if (!this.itemListStore.length) {
             this.getItemList()
         //}
+
+        this.$root.$on('lastMessageVResetItemList',this.resetItemList)
     },
     /*  beforeUpdate(){
 
@@ -177,9 +179,14 @@ export default {
             },1000)
         },*/
     beforeDestroy() {
+        this.$root.$off('lastMessageVResetItemList',this.resetItemList)
         clearInterval(this.timerNowId)
     },
     methods: {
+        resetItemList(){ //Используею в компоненте processActions
+            this.resetSearch()
+            this.getItemList()
+        },
         timerVisible(item) {
             if (!this.timerNow) return
             if (item.hot && item.awaiting_answer_timeFormat) return true
