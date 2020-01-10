@@ -115,17 +115,28 @@ export default {
     },
     actions: {
         getLogin({ commit, dispatch }, user) {
-            if (!user.jwt) return
-            localStorage.setItem('jwt', user.jwt)
-            this._vm.$http.defaults.headers.common['jwt'] = user.jwt
-            this._vm.$http.defaults.headers['content-type'] = 'application/json'
+            return new Promise((resolve,reject) => {
 
-            commit('profile', user)
-            dispatch('getSettings')
-            dispatch('getBranchListAll')
-            dispatch('getSiteCompanyList')
-            dispatch('operators/getAll', null, { root: true })
-            dispatch('phrases/getItemList', null, { root: true })
+                if (!user?.jwt) {
+
+                    return reject('Нет jwt');
+                }
+                localStorage.setItem('jwt', user.jwt)
+                this._vm.$http.defaults.headers.common['jwt'] = user.jwt
+                this._vm.$http.defaults.headers['content-type'] = 'application/json'
+
+                commit('profile', user)
+                dispatch('getSettings')
+                dispatch('getBranchListAll')
+                dispatch('getSiteCompanyList')
+                dispatch('operators/getAll', null, { root: true })
+                dispatch('phrases/getItemList', null, { root: true })
+                resolve();
+            })
+
+
+
+
         },
         logout({ commit }) {
             commit('resetState')

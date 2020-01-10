@@ -354,7 +354,12 @@ export default {
             })
             this.$store.commit('visitors/selfMessageRemoveItem', val)
 
-            if (this.viewModeChat === 'visitors') this.$router.push({ name: 'messageAll' })
+
+            let isAllowRedirect = this.httpParams.params.site_id+this.httpParams.params.guest_uuid===val.site_id + val.guest_uuid
+            console.log( 'self-remove isAllowRedirect', isAllowRedirect,this.httpParams.params.site_id+this.httpParams.params.guest_uuid,val.site_id + val.guest_uuid);
+            if (this.viewModeChat === 'visitors' && isAllowRedirect) {
+                this.$router.push({ name: 'messageAll' })
+            }
         },
         'unprocessed-remove'(val) {
             this.$store.commit('sockets/historyPush', {

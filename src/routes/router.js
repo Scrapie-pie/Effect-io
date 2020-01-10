@@ -201,6 +201,15 @@ router.beforeEach((to, from, next) => {
                             if (pathTarget) return next(pathTarget)
                             else return next()
                         }
+                    }).catch((err)=>{
+                        alert(err)
+                        store.dispatch('user/logout').then(() => {
+                            console.log('user/logout then')
+                            return next({
+                                name: 'auth',
+                                query: { return: to.fullPath }
+                            })
+                        })
                     })
                 })
                 .catch(error => {
