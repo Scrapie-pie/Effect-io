@@ -426,6 +426,11 @@ export default {
                         console.log('spellingSuggestions', response.data.spellingSuggestions)
                         this.spellingShowBox(response.data.spellingSuggestions)
                     }
+                    else {
+                        this.message = ''
+                        this.spellingIgnoredWords = []
+                        this.uploadFileList = []
+                    }
                     this.bufferingSend = false
                 })
         },
