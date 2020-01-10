@@ -49,15 +49,37 @@ export default {
         }
     },
     methods: {
+        listenerCopy(e){
+
+
+            let listText = []
+            e.currentTarget.childNodes.forEach((item, index) => {
+
+                if (item.nodeName == 'BR') {
+                    listText[index] = '\n'
+                } else if (item.nodeName == 'A') {
+                    listText[index] = item.attributes?.href?.value
+                } else {
+                    listText[index] = item.textContent
+                }
+            })
+
+            e.clipboardData.setData('text/plain', listText.join(''));
+            e.preventDefault();
+
+
+
+
+        },
         listenerClearStylePaste(e) {
             e.preventDefault()
             let text = e.clipboardData.getData('text/plain')
 
-            console.log(text.replace(/(\r\n|\n|&lt;br&gt;)/g, '<br>'))
+
             text = text.replace(/(\r\n|\n|&lt;br&gt;)/g, '<br>')
             text = text.replace(/onerror/g, 'xss_off_onerror')
 
-            console.log(text)
+
             document.execCommand('insertHTML', true, text)
         },
         blur(e) {
@@ -117,25 +139,39 @@ export default {
             return item
         })
 
-        const attributes = {
-            attrs: {
-                class: 'input-emoji',
-                id: 'contenteditable',
-                contenteditable: true,
-                placeholder: 'Enter - отправить сообщение, Shift+Enter - новая строка.'
-            },
-            on: {
-                input: this.inputChange,
-                blur: this.blur,
-                paste: this.listenerClearStylePaste
-            }
-        }
+
 
         const Tag = this.tag
         if (this.type === 'text') {
+            const attributes = {
+                attrs: {
+                    class: 'input-emoji',
+
+                },
+                on: {
+
+                    copy: this.listenerCopy
+                }
+            }
             splitStr = splitStr.join('')
-            return <Tag class="input-emoji" domPropsInnerHTML={splitStr} />
-        } else return <pre {...attributes}>{splitStr}</pre>
+            return <Tag {...attributes}  domPropsInnerHTML={splitStr} />
+        } else {
+            const attributes = {
+                attrs: {
+                    class: 'input-emoji',
+                    id: 'contenteditable',
+                    contenteditable: true,
+                    placeholder: 'Enter - отправить сообщение, Shift+Enter - новая строка.'
+                },
+                on: {
+                    input: this.inputChange,
+                    blur: this.blur,
+                    paste: this.listenerClearStylePaste,
+                    oncopy: this.listenerCopy
+                }
+            }
+            return <pre {...attributes}>{splitStr}</pre>
+        }
     }
 }
 </script>
