@@ -62,9 +62,10 @@ export default {
                     })
                 })
                 .finally(() => {
+                    let interval = config.polling_interval_ms ? config.polling_interval_ms:5000
                     setTimeout(() => {
                         this.pollingSocketsInit()
-                    }, config.polling_interval_ms)
+                    }, interval)
                 })
         },
         pollingSocketsDestroy() {
