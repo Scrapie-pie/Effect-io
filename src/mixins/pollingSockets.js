@@ -1,3 +1,4 @@
+import config from '@/config/index'
 export default {
     data() {
         return {
@@ -12,9 +13,9 @@ export default {
             if (!this.pollingSocketsGo) return
             let pollingServ = this.$http
 
-            if (process.env.NODE_ENV === 'production') {
+            if (config.polling_server) {
                 pollingServ = this.$http.create({
-                    baseURL: '//polling.effect.com',
+                    baseURL: config.polling_server,
                     headers: { 'content-type': 'application/json' }
                 })
             }
@@ -63,7 +64,7 @@ export default {
                 .finally(() => {
                     setTimeout(() => {
                         this.pollingSocketsInit()
-                    }, 5 * 1000)
+                    }, config.polling_interval_ms)
                 })
         },
         pollingSocketsDestroy() {
