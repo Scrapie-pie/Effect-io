@@ -412,6 +412,7 @@ export default {
                     this.message = ''
                     this.spellingIgnoredWords = []
                     this.uploadFileList = []
+                    this.saveTextarea()
 
                     setTimeout(() => {
                         this.$refs.scrollbarMessage.update()
@@ -429,7 +430,8 @@ export default {
                     else {
                         this.message = ''
                         this.spellingIgnoredWords = []
-                        this.uploadFileList = []
+                        this.uploadFileList = [];
+                        this.saveTextarea()
                     }
                     this.bufferingSend = false
                 })
