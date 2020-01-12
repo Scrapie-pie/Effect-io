@@ -6,7 +6,7 @@
 
 import '@/modules/sentry'
 
-sentryTest()
+
 
 import Vue from 'vue'
 import App from './App.vue'
