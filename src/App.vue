@@ -59,7 +59,7 @@ export default {
         }
     },
     created() {
-        sentryTest()
+
         document.body.classList.add('page')
 
         this.watchForHover()
