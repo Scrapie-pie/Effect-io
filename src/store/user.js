@@ -1,5 +1,7 @@
 import lodash_union from 'lodash/union'
 
+import {captureException} from '@sentry/browser'
+
 const getDefaultState = () => {
     return {
         profile: false,
@@ -116,10 +118,16 @@ export default {
     actions: {
         getLogin({ commit, dispatch }, user) {
             return new Promise((resolve,reject) => {
+                //user=null
 
-                if (!user?.jwt) {
+                if (!user) {
 
-                    return reject('Нет jwt');
+                    throw captureException({frontMessage:'пустой ответ',backResponse:user})
+
+
+                }
+                if(!user.jwt) {
+                    throw captureException({frontMessage:'Нет jwt',backResponse:user});
                 }
                 localStorage.setItem('jwt', user.jwt)
                 this._vm.$http.defaults.headers.common['jwt'] = user.jwt

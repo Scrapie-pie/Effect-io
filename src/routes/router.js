@@ -194,22 +194,13 @@ router.beforeEach((to, from, next) => {
                     }
                 )
                 .then(({ data }) => {
-                    store.dispatch('user/getLogin', data.data.user).then(() => {
+                    return store.dispatch('user/getLogin', data.data.user).then(() => {
                         if (to.query.return) return next(to.query.return)
                         // отправляем по ранее сохраненному маршруту
                         else {
                             if (pathTarget) return next(pathTarget)
                             else return next()
                         }
-                    }).catch((err)=>{
-                        alert(err)
-                        store.dispatch('user/logout').then(() => {
-                            console.log('user/logout then')
-                            return next({
-                                name: 'auth',
-                                query: { return: to.fullPath }
-                            })
-                        })
                     })
                 })
                 .catch(error => {

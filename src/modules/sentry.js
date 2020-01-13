@@ -3,6 +3,8 @@ import * as Sentry from '@sentry/browser'
 import * as Integrations from '@sentry/integrations'
 //'staging' || process.env.NODE_ENV
 
+
+
 if (process.env.VUE_APP_SENTRY) {
     Sentry.init({
         dsn: 'https://982fb7eca3a34dbb85ebbe1b37ad7b6a@sentry.effect.com/3',

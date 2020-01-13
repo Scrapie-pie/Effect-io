@@ -133,19 +133,18 @@ export default {
                     headers: { 'content-type': 'application/json' }
                 })
                 .then(({ data }) => {
-                    this.$store.dispatch('user/getLogin', data.data.user).then((login) => {
+                    return this.$store.dispatch('user/getLogin', data.data.user).then((login) => {
                         console.log('login',login);
                         if (this.$route.query.return) this.$router.push(this.$route.query.return)
                         else
                             this.$router.push({
                                 name: 'processAll'
                             })
-                    }).catch((err)=>{
-                        this.$root.$emit('popup-notice', err)
                     })
                 })
-                .catch(errors => {
-                    this.errorApiText = errors.response?.data?.message
+                .catch(err => {
+                    console.log(err);
+                    this.errorApiText = err.response?.data?.message
                 })
         },
         recoverRequest() {
