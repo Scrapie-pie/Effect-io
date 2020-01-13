@@ -193,6 +193,7 @@ export default {
         // this.$refs.inputEmoji?.$el.removeEventListener("paste", this.listenerClearStylePaste);
     },
     methods: {
+
         saveTextarea() {
             if (this.viewModeChat === 'visitors') {
                 this.$store.commit('visitors/saveTextAreaItem', {
@@ -447,6 +448,7 @@ export default {
 
 <style lang="scss">
 .chat-main-footer {
+
     $color_border: glob-color('border');
     $color_bg-send: glob-color('info-lighten');
     $color_success: glob-color('success');

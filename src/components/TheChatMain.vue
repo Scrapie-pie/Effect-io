@@ -603,6 +603,14 @@ export default {
             margin-top: calc-em(15);
         }
 
+
+        a:not([href^="mailto:"]):not([href^="tel:"]) {
+            display:inline-block;
+            max-width:166px;
+            @extend %text-truncate;
+            vertical-align: middle;
+        }
+
         .base-people {
             align-items: flex-start;
         }
