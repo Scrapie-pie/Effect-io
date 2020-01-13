@@ -150,7 +150,7 @@ export default {
                 },
                 on: {
 
-                    copy: this.listenerCopy
+                    //copy: this.listenerCopy
                 }
             }
             splitStr = splitStr.join('')
