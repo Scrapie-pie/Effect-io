@@ -1,5 +1,5 @@
 <template lang="pug">
-        form.chat-main-footer.js-dragDrop
+        form.chat-main-footer.js-dragDrop(@click.prevent="textareaFocus()")
 
             ///the-chat-system-messages
 
@@ -193,6 +193,9 @@ export default {
         // this.$refs.inputEmoji?.$el.removeEventListener("paste", this.listenerClearStylePaste);
     },
     methods: {
+        textareaFocus(){
+            console.log(this.$refs.inputEmoji.$el.focus());
+        },
         saveTextarea() {
             if (this.viewModeChat === 'visitors') {
                 this.$store.commit('visitors/saveTextAreaItem', {
@@ -447,6 +450,7 @@ export default {
 
 <style lang="scss">
 .chat-main-footer {
+    cursor:text;
     $color_border: glob-color('border');
     $color_bg-send: glob-color('info-lighten');
     $color_success: glob-color('success');
