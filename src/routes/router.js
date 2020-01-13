@@ -21,6 +21,8 @@ import stats from '@/routes/stats'
 
 import Ui from '@/routes/ui'
 
+import {captureException} from '@sentry/browser'
+
 let helpers = process.env.NODE_ENV !== 'production' ? [...Ui] : []
 
 const BaseNoFound = () => import('@/components/BaseNoFound')
@@ -204,6 +206,8 @@ router.beforeEach((to, from, next) => {
                     })
                 })
                 .catch(error => {
+
+                    captureException(error)
                     console.log(error)
                     console.log(error.response)
                     console.log('user/logout')
