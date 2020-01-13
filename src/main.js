@@ -4,7 +4,9 @@
     console.log(process.env.NODE_ENV);
 }*/
 
-//import '@/modules/sentry'
+import '@/modules/sentry'
+
+
 
 import Vue from 'vue'
 import App from './App.vue'

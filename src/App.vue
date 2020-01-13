@@ -59,6 +59,7 @@ export default {
         }
     },
     created() {
+
         document.body.classList.add('page')
 
         this.watchForHover()
