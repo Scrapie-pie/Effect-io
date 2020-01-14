@@ -41,6 +41,7 @@
                                 )
 
                                 input-emoji(
+
                                     ref="inputEmoji"
                                     :text="textWidthSmiles",
                                     @caret="val=>textCaret=val",
@@ -58,6 +59,7 @@
 
                                 )
                             upload-file-list(
+                                v-if="uploadFileList.length"
                                 :item-list="uploadFileList",
                                 @itemRemove="(index)=>uploadFileList.splice(index, 1)"
                             )
@@ -272,7 +274,7 @@ export default {
             setTimeout(() => {
                 this.textWidthSmiles = val
                 setTimeout(() => {
-                    this.$refs.chatInput.focus()
+                    this.$refs?.chatInput?.focus()
                 }, 100)
             }, 1)
         },
@@ -460,7 +462,8 @@ export default {
     position: relative;
     border: 1px dashed transparent;
     border-top: 1px solid $color_border;
-    padding-top: calc-em(20);
+    $pt:calc-em(20);
+
 
     &.drag-over {
         &::after {
@@ -500,6 +503,11 @@ export default {
         height: 0;
         width: 0;
         @extend %visuallyhidden;
+    }
+
+    .input-emoji {
+        padding-top:$pt;
+
     }
 
     &__buttons {
