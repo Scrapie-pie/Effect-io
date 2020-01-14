@@ -9,7 +9,12 @@ import settings from '@/routes/settings'
 
 import lodash_once from 'lodash/once'
 
-import {captureMessage} from '@sentry/browser'
+import {captureMessage,configureScope,addBreadcrumb} from '@sentry/browser'
+
+configureScope(function (scope) {
+    scope.setTag("socket",'event');
+})
+
 import { httpParams, viewModeChat } from '@/mixins/mixins'
 
 export default {
@@ -102,37 +107,48 @@ export default {
                 let sentryMessage = {
                     uuid,owner_id
                 }
+
+
                 socket.on('connect',()=>{
-                    console.log('socket connect');
-                    captureMessage({...sentryMessage,event:'connect'})
+
+                    captureMessage('socket connect')
+
+
                 })
                 socket.on('connect_error',error=>{
                     console.log('socket connect_error',error);
-                    captureMessage({...sentryMessage,event:'connect_error',error})
+                    captureMessage('socket connect_error')
                 })
                 socket.on('connect_timeout', (timeout) => {
-                    captureMessage({...sentryMessage,event:'connect_timeout',timeout})
+                    console.log('connect_timeout',timeout);
+                    captureMessage('socket connect_timeout')
                 });
                 socket.on('error', (error) => {
-                    captureMessage({...sentryMessage,event:'error',error})
+                    console.log(error);
+                    captureMessage('socket error')
                 });
                 socket.on('disconnect', (reason) => {
-                    captureMessage({...sentryMessage,event:'disconnect',reason})
+                    console.log(reason);
+                    captureMessage('socket  disconnect')
                 });
                 socket.on('reconnect', (attemptNumber) => {
-                    captureMessage({...sentryMessage,event:'reconnect',attemptNumber})
+                    console.log(attemptNumber);
+                    captureMessage('socket reconnect')
                 });
                 socket.on('reconnect_attempt', (attemptNumber) => {
-                    captureMessage({...sentryMessage,event:'reconnect_attempt',attemptNumber})
+                    console.log(attemptNumber);
+                    captureMessage('socket reconnect_attempt')
                 });
                 socket.on('reconnecting', (attemptNumber) => {
-                    captureMessage({...sentryMessage,event:'reconnecting',attemptNumber})
+                    console.log(attemptNumber);
+                    captureMessage('socket reconnecting')
                 });
                 socket.on('reconnect_error', (error) => {
-                    captureMessage({...sentryMessage,event:'reconnect_error',error})
+                    console.log(error);
+                    captureMessage('socket reconnect_error')
                 });
                 socket.on('reconnect_failed', () => {
-                    captureMessage({...sentryMessage,event:'reconnect_failed'})
+                    captureMessage('reconnect_failed')
                 });
 
 

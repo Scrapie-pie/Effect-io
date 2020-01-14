@@ -21,7 +21,7 @@ import stats from '@/routes/stats'
 
 import Ui from '@/routes/ui'
 
-import {captureException} from '@sentry/browser'
+import {captureException,withScope} from '@sentry/browser'
 
 let helpers = process.env.NODE_ENV !== 'production' ? [...Ui] : []
 

@@ -1,6 +1,6 @@
 import lodash_union from 'lodash/union'
 
-import {captureException} from '@sentry/browser'
+import {captureException,configureScope} from '@sentry/browser'
 
 const getDefaultState = () => {
     return {
@@ -138,6 +138,18 @@ export default {
 
 
                 commit('profile', user)
+
+                configureScope(function(scope) {
+
+
+                    //scope.setTag("my-tag", "my value");
+                    scope.setUser({
+                        id: user.id,
+                        email: user.mail,
+                        name: user.mail
+                    });
+                });
+
                 dispatch('getSettings')
                 dispatch('getBranchListAll')
                 dispatch('getSiteCompanyList')
