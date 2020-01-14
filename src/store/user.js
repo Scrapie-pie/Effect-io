@@ -117,9 +117,10 @@ export default {
     },
     actions: {
         getLogin({ commit, dispatch }, user) {
+
             return new Promise((resolve,reject) => {
                 //user=null
-
+                console.log('getLogin',user);
                 if (!user) {
 
                     throw captureException({frontMessage:'пустой ответ',backResponse:user})
@@ -129,9 +130,12 @@ export default {
                 if(!user.jwt) {
                     throw captureException({frontMessage:'Нет jwt',backResponse:user});
                 }
+
+                console.log('дошел');
                 localStorage.setItem('jwt', user.jwt)
                 this._vm.$http.defaults.headers.common['jwt'] = user.jwt
                 this._vm.$http.defaults.headers['content-type'] = 'application/json'
+
 
                 commit('profile', user)
                 dispatch('getSettings')
