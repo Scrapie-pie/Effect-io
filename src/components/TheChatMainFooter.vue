@@ -1,5 +1,5 @@
 <template lang="pug">
-        form.chat-main-footer.js-dragDrop
+        form.chat-main-footer.js-dragDrop(@click="messageRead")
 
             ///the-chat-system-messages
 
@@ -213,6 +213,7 @@ export default {
         },
 
         inputEmojiInputChange(text) {
+
             this.typingLive(text)
         },
         getTextAreaVisitors(list, routerParams) {
@@ -313,10 +314,11 @@ export default {
             e.returnValue = false
             this.input = e.target.value
             this.send()
-            this.messageRead()
+
         },
 
         send() {
+
             if (!navigator.onLine)
                 return this.$root.$emit('popup-notice', 'Проверьте подключение к сети =(')
             this.typingLive('')
@@ -463,6 +465,11 @@ export default {
     border: 1px dashed transparent;
     border-top: 1px solid $color_border;
     $pt:calc-em(20);
+
+
+    .process-actions {
+        padding-top:$pt;
+    }
 
 
     &.drag-over {
