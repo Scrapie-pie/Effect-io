@@ -172,7 +172,9 @@ export default {
 
                     captureException({frontMessage:'Отправляю все ошибки',backResponse:err})
 
-                    if (err?.response?.status === 401 || err?.response?.status === 429) {
+                    if (err?.response?.status === 401 && !localStorage.getItem('jwt')) {
+
+                        captureException({frontMessage:'user/logout',backResponse:err})
                         console.log(this.$route.fullPath, err.response)
                         this.$store.dispatch('user/logout').then(() => {
                             this.$router.push({

@@ -72,6 +72,7 @@ export default {
             this.pollingSocketsGo = false
         },
         pollingSockets() {
+
             this.pollingSocketsGo = true
             this.pollingSocketsInit()
             setTimeout(() => {

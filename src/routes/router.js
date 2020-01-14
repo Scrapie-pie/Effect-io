@@ -211,13 +211,13 @@ router.beforeEach((to, from, next) => {
                     console.log(error)
                     console.log(error.response)
                     console.log('user/logout')
-                    store.dispatch('user/logout').then(() => {
+                /*    store.dispatch('user/logout').then(() => {
                         console.log('user/logout then')
                         return next({
                             name: 'auth',
                             query: { return: to.fullPath }
                         })
-                    })
+                    })*/
                 })
         } else {
             if (pathElseNoJwt) return next(pathElseNoJwt)
