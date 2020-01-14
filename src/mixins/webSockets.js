@@ -8,6 +8,8 @@ import { browserNotificationMessage } from '@/modules/browserNotification'
 import settings from '@/routes/settings'
 
 import lodash_once from 'lodash/once'
+
+import {captureMessage} from '@sentry/browser'
 import { httpParams, viewModeChat } from '@/mixins/mixins'
 
 export default {
@@ -96,6 +98,43 @@ export default {
                         socketGroupId: owner_id
                     }
                 })
+
+                let sentryMessage = {
+                    uuid,owner_id
+                }
+                socket.on('connect',()=>{
+                    console.log('socket connect');
+                    captureMessage({...sentryMessage,event:'connect'})
+                })
+                socket.on('connect_error',error=>{
+                    console.log('socket connect_error',error);
+                    captureMessage({...sentryMessage,event:'connect_error',error})
+                })
+                socket.on('connect_timeout', (timeout) => {
+                    captureMessage({...sentryMessage,event:'connect_timeout',timeout})
+                });
+                socket.on('error', (error) => {
+                    captureMessage({...sentryMessage,event:'error',error})
+                });
+                socket.on('disconnect', (reason) => {
+                    captureMessage({...sentryMessage,event:'disconnect',reason})
+                });
+                socket.on('reconnect', (attemptNumber) => {
+                    captureMessage({...sentryMessage,event:'reconnect',attemptNumber})
+                });
+                socket.on('reconnect_attempt', (attemptNumber) => {
+                    captureMessage({...sentryMessage,event:'reconnect_attempt',attemptNumber})
+                });
+                socket.on('reconnecting', (attemptNumber) => {
+                    captureMessage({...sentryMessage,event:'reconnecting',attemptNumber})
+                });
+                socket.on('reconnect_error', (error) => {
+                    captureMessage({...sentryMessage,event:'reconnect_error',error})
+                });
+                socket.on('reconnect_failed', () => {
+                    captureMessage({...sentryMessage,event:'reconnect_failed'})
+                });
+
 
                 for (let key in this.$store.state.sockets.emitList) {
                     socket.on(key, socketValue => {

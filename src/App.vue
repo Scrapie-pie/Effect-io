@@ -16,6 +16,8 @@ import '@/scss/base.scss'
 import TheHeader from '@/components/TheHeader'
 import ThePopup from '@/components/ThePopup'
 
+import {captureException} from '@sentry/browser'
+
 import {
     webSockets,
     routerPushProcessAllOrItemFirst,
@@ -158,9 +160,7 @@ export default {
                     }
 
                     if (
-                        err.response &&
-                        err.response.data &&
-                        err.response.data.message &&
+                        err?.response?.data?.message &&
                         this.$route.name !== 'auth'
                     ) {
                         this.$root.$emit('globBoxControlClose')
@@ -168,7 +168,9 @@ export default {
                         console.log('error №', err.response.status)
                     }
 
-                    if (err.response.status === 401 || err.response.status === 429) {
+                    captureException({frontMessage:'Отправляю все ошибки',backResponse:err})
+
+                    if (err?.response?.status === 401 || err?.response?.status === 429) {
                         console.log(this.$route.fullPath, err.response)
                         this.$store.dispatch('user/logout').then(() => {
                             this.$router.push({

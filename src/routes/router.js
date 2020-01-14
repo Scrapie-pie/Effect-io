@@ -207,7 +207,7 @@ router.beforeEach((to, from, next) => {
                 })
                 .catch(error => {
 
-                    captureException(error)
+                    captureException({frontMessage:'router before',backResponse:error})
                     console.log(error)
                     console.log(error.response)
                     console.log('user/logout')
