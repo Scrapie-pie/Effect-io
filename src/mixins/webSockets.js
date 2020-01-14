@@ -445,6 +445,8 @@ export default {
                 socket_id: val.socket_id
             })
 
+
+
             //this.$socket.emit('delivered', val.socket_id);
 
             let { user_id, online } = val

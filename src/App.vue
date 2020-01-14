@@ -50,17 +50,19 @@ export default {
             if (val) {
                 this.pollingSockets()
 
-                if (process.env.NODE_ENV === 'development') return
+               /* if (process.env.NODE_ENV === 'development') return
                 window.onbeforeunload = function() {
                     return 'Данные не сохранены. Точно перейти?'
-                }
+                }*/
             } else {
                 this.pollingSocketsDestroy()
-                window.onbeforeunload = false
+                //window.onbeforeunload = false
             }
         }
     },
     created() {
+
+
 
         document.body.classList.add('page')
 
