@@ -413,9 +413,14 @@ export default {
             }
 
             if (this.httpParams) {
+                let viewModeChat = this.viewModeChat //пользователь мог не дожидаться запроса и на момент ответа viewModeChat содержала другой роут проходил редирект обратно
                 this.$http.get('chat-room-user/all', this.httpParams).then(({ data }) => {
-                    if (!this.accessPage(data.data))
+
+                    if (!this.accessPage(data.data,viewModeChat)) {
+
                         return this.$router.push({ name: 'processAll' })
+                    }
+
 
                     //console.log(this.httpParams);
 
@@ -424,12 +429,15 @@ export default {
                 })
             }
         },
-        accessPage(list) {
-            if (this.viewModeChat === 'common') return true
+        accessPage(
+            list,
+            viewModeChat
+        ) {
+            if (viewModeChat === 'common') return true
 
-            if (this.viewModeChat === 'search') return true
+            if (viewModeChat === 'search') return true
             if (
-                this.viewModeChat === 'visor' &&
+                viewModeChat === 'visor' &&
                 this.$store.getters['user/isRole'](['admin', 'owner', 'operatorSenior'])
             )
                 return true
@@ -438,7 +446,7 @@ export default {
             //return true //Todo какая то проблема со статусами? редиректит всех, убрал что бы не бесило пользователя
 
             let listFilter
-            if (this.viewModeChat === 'process') {
+            if (viewModeChat === 'process') {
                 listFilter = list.filter(item =>
                     ['recipient', 'unprocessed', 'invited'].includes(item.status)
                 )
@@ -451,7 +459,7 @@ export default {
                 this.$root.$emit('processRemoveItem', this.httpParams.params)
             }
 
-            if (this.viewModeChat === 'visitors') {
+            if (viewModeChat === 'visitors') {
                 listFilter = list.filter(item => ['active'].includes(item.status))
 
                 if (listFilter.some(user => user.user_id === this.$store.state.user.profile.id))
