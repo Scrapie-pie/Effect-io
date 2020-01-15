@@ -1,6 +1,9 @@
 import lodash_union from 'lodash/union'
 
-import {captureException,configureScope} from '@sentry/browser'
+
+import {captureException,configureScope,withScope} from '@sentry/browser'
+
+
 
 const getDefaultState = () => {
     return {
@@ -119,16 +122,24 @@ export default {
         getLogin({ commit, dispatch }, user) {
 
             return new Promise((resolve,reject) => {
-                //user=null
+
                 console.log('getLogin',user);
                 if (!user) {
+                    withScope(function (scope) {
+                        scope.setTag("getLogin",'empty');
+                        throw captureException({frontMessage:'пустой ответ',backResponse:user})
+                    })
 
-                    throw captureException({frontMessage:'пустой ответ',backResponse:user})
+
 
 
                 }
                 if(!user.jwt) {
-                    throw captureException({frontMessage:'Нет jwt',backResponse:user});
+                    withScope(function (scope) {
+                        scope.setTag("getLogin",'jwt');
+                        throw captureException({frontMessage:'Нет jwt',backResponse:user});
+                    })
+
                 }
 
                 console.log('дошел');

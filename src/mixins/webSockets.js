@@ -11,9 +11,7 @@ import lodash_once from 'lodash/once'
 
 import {captureMessage,configureScope,addBreadcrumb} from '@sentry/browser'
 
-configureScope(function (scope) {
-    scope.setTag("socket",'event');
-})
+
 
 import { httpParams, viewModeChat } from '@/mixins/mixins'
 
@@ -108,6 +106,10 @@ export default {
                     uuid,owner_id
                 }
 
+
+                configureScope(function (scope) {
+                    scope.setTag("socket",'events');
+                })
 
                 socket.on('connect',()=>{
 
