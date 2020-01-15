@@ -174,6 +174,8 @@ export default {
 
         },
         logout({ commit }) {
+
+            commit('logout')
             commit('resetState')
             commit('resetState', null, { root: true })
 
@@ -182,7 +184,6 @@ export default {
             commit('visitors/resetState', null, { root: true })
             commit('phrases/resetState', null, { root: true })
             commit('tags/resetState', null, { root: true })
-            commit('logout')
         },
         getSettings({ commit }) {
             this._vm.$http.get('company/get-settings').then(({ data }) => {

@@ -1,6 +1,8 @@
 <template lang="pug">
 
-    article.page-chat
+    article.page-chat(
+        v-if="isAuth"
+        )
         template(v-if="viewModeChat === 'common'")
             section.page__view.page-chat
                 section.page-chat__main
@@ -64,6 +66,9 @@ export default {
     mixins: [viewModeChat],
 
     computed: {
+        isAuth(){
+            return this.$store.getters['user/authenticated']     //что бы не было запроа при logout
+        },
         processOnlineHide() {
             return !(
                 this.$store.state.user.profile.online === 0 ||
