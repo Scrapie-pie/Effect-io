@@ -27,6 +27,10 @@ let helpers = process.env.NODE_ENV !== 'production' ? [...Ui] : []
 
 const BaseNoFound = () => import('@/components/BaseNoFound')
 
+function timeout(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 const router = new Router({
     mode: 'history',
     base: process.env.BASE_URL,
@@ -149,7 +153,8 @@ const router = new Router({
 
 export default router
 
-router.beforeEach((to, from, next) => {
+router.beforeEach (async(to, from, next)  => {
+    await timeout(300); //https://github.com/aws-amplify/amplify-js/issues/3985
     const not_auth_routes = ['auth', 'recover', 'exit'],
         authenticated = store.getters['user/authenticated']
 
