@@ -71,16 +71,27 @@ export default {
 
 
         },
-        listenerClearStylePaste(e) {
-            e.preventDefault()
-            let text = e.clipboardData.getData('text/plain')
+        listenerClearStylePaste(event) {
 
 
-            text = text.replace(/(\r\n|\n|&lt;br&gt;)/g, '<br>')
-            text = text.replace(/onerror/g, 'xss_off_onerror')
+            let paste = (event.clipboardData || window.clipboardData).getData('text/plain')
 
 
-            document.execCommand('insertHTML', true, text)
+
+            paste = paste.replace(/(\r\n|\n|&lt;br&gt;)/g, '<br>')
+            paste = paste.replace(/onerror/g, 'xss_off_onerror')
+
+
+           /* const selection = window.getSelection();
+            if (!selection.rangeCount) return false;
+            selection.deleteFromDocument();
+            selection.getRangeAt(0).insertNode(document.createTextNode(paste));*/
+
+            event.preventDefault();
+
+            //console.log(text);
+
+            document.execCommand('inserthtml', false, paste)
         },
         blur(e) {
             this.$emit('blur', '')
@@ -167,7 +178,7 @@ export default {
                     input: this.inputChange,
                     blur: this.blur,
                     paste: this.listenerClearStylePaste,
-                    oncopy: this.listenerCopy
+                    //oncopy: this.listenerCopy
                 }
             }
             return <pre {...attributes}>{splitStr}</pre>
