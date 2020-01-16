@@ -103,9 +103,10 @@ export default {
             this.processItem = this.$store.state.visitors.process.find(
                 item => item.guest_uuid + item.site_id === guest_uuid + site_id
             )
+            console.log(this.processItem)
 
             this.processItem.very_hot = 0
-            console.log(this.processItem)
+
         },
         routerNext(status) {
             let { guest_uuid, site_id } = this.processItem

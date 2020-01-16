@@ -170,7 +170,12 @@ export default {
                         console.log('error №', err.response.status)
                     }
 
-                    captureException({frontMessage:'Отправляю все ошибки',backResponse:err})
+                    captureException({frontMessage:'Отправляю все ошибки',backResponse:{
+                            config:err.config,
+                            response:err.response,
+                            message:err.message
+
+                        }})
 
                     if (err?.response?.status === 401 && !localStorage.getItem('jwt')) {
 
