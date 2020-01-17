@@ -63,6 +63,10 @@ export default {
     created() {
 
 
+      /*  setTimeout(()=>{
+            this.$root.$emit('emitEmployeeOnline',{online:0,user_id:this.$store.state.user.profile.id})
+        },1000)*/
+
 
         document.body.classList.add('page')
 
@@ -177,7 +181,7 @@ export default {
 
                         }})
 
-                    if (err?.response?.status === 401 && !localStorage.getItem('jwt')) {
+                  /*  if (err?.response?.status === 401 && !localStorage.getItem('jwt')) {
 
                         captureException({frontMessage:'user/logout',backResponse:err})
                         console.log(this.$route.fullPath, err.response)
@@ -189,7 +193,7 @@ export default {
                                 }
                             })
                         })
-                    }
+                    }*/
                     return Promise.reject(err)
                 }
             )

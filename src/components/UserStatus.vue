@@ -104,6 +104,7 @@ export default {
                 //console.log('profile',val);
                 this.status = val.online
             },
+            immediate: true,
             deep: true
         },
         status(val, valOld) {
