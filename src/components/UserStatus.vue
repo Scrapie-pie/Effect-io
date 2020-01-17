@@ -172,7 +172,7 @@ export default {
             let online = this.status
             withScope(function (scope) {
                 scope.setTag("employee-online",'сам переключил');
-                throw captureMessage('employee-online '+online)
+                captureMessage('employee-online '+online)
             })
             this.$http.put('employee/online-update', {
                 online

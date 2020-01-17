@@ -477,7 +477,7 @@ export default {
                 this.$store.commit('user/profileUpdate', { online })
                 withScope(function (scope) {
                     scope.setTag("employee-online",'socket');
-                    throw captureMessage('employee-online '+online)
+                    captureMessage('employee-online '+online)
                 })
             }
 
