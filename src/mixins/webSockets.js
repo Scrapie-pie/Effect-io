@@ -9,11 +9,12 @@ import settings from '@/routes/settings'
 
 import lodash_once from 'lodash/once'
 
-import {captureMessage,configureScope,addBreadcrumb} from '@sentry/browser'
+import {captureMessage,configureScope,withScope} from '@sentry/browser'
 
 
 
 import { httpParams, viewModeChat } from '@/mixins/mixins'
+import {captureException} from "@sentry/browser/dist/index";
 
 export default {
     mixins: [httpParams, viewModeChat], //routerPushProcessAllOrItemFirst подключи будет баг
@@ -458,6 +459,8 @@ export default {
             })
         },
         'employee-online'(val) {
+
+
             this.$store.commit('sockets/historyPush', {
                 event: 'employee-online',
                 socket_id: val.socket_id
@@ -470,8 +473,14 @@ export default {
             let { user_id, online } = val
 
             this.$store.commit('operators/setOperatorOnline', { user_id, online })
-            if (user_id === this.$store.state.user.profile.id)
+            if (user_id === this.$store.state.user.profile.id) {
                 this.$store.commit('user/profileUpdate', { online })
+                withScope(function (scope) {
+                    scope.setTag("employee-online",'socket');
+                    throw captureMessage('employee-online '+online)
+                })
+            }
+
         },
         'typing-live'(val) {
             this.$store.commit('roomActive/typingLive', val)

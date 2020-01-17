@@ -1,6 +1,6 @@
 <template lang="pug">
     #app.page__app
-        the-header.page__header.page__padding
+        the-header.page__header.page__padding(v-if="isAuth")
         main.page__main
             base-wait(name="pageMain")
             transition(name="fade" mode="out-in")
