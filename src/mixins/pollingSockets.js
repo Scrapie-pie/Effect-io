@@ -24,7 +24,8 @@ export default {
                 .get('/socket/polling', {
                     params: {
                         uuid: this.$store.state.user.profile.uuid,
-                        socketGroupId: this.$store.state.user.profile.owner_id
+                        socketGroupId: this.$store.state.user.profile.owner_id,
+                        type: 'employee'
                     }
                 })
                 .then(({ data: { data } }) => {
