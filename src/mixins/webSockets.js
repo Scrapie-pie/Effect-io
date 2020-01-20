@@ -342,6 +342,11 @@ export default {
             })
         },
         unprocessed(val) {
+
+            if(val.toUuid!==this.$store.state.user.profile.uuid) {
+                 return captureMessage('Не совпадает, toUuid='+val.toUuid)
+            }
+
             this.$store.commit('sockets/historyPush', {
                 event: 'unprocessed',
                 socket_id: val.socket_id

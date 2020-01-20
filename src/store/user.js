@@ -155,6 +155,7 @@ export default {
 
                     //scope.setTag("my-tag", "my value");
                     scope.setUser({
+                        uuid:user.uuid,
                         id: user.id,
                         email: user.mail,
                         name: user.mail
