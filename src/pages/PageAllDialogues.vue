@@ -74,6 +74,7 @@
                 @get="filterBall"
                 slot="control"
                 )
+            //base-field(name="url" slot="control"  key="url", placeholder="Страницы", @input="val=>url=[val]", :value="url")
             filter-drop-menu(
                 name="url",
                 key="url",
@@ -201,7 +202,10 @@ export default {
             }
         }
     },
-    created() {},
+    created() {
+
+
+    },
     beforeRouteEnter(to, from, next) {
         next(vm => {
             if (

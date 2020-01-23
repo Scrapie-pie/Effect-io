@@ -4,12 +4,18 @@ import { scrollbar } from '@/mixins/mixins'
 
 export default {
     mixins:[scrollbar],
+    props:{
+        search:{
+            type:String,
+            default:''
+        }
+    },
     data() {
         return {
 
 
             getItemListStart: true,
-            search: '',
+
             limit: 20,
             pageN: 1,
             bodyListCount: 0,
@@ -30,7 +36,7 @@ export default {
         },
         params_paginator() {
             return {
-                search: this.search,
+                search:this.search,
                 offset: this.getOffset,
                 limit: this.limit
             }
@@ -44,7 +50,8 @@ export default {
     },
     watch: {
         search: 'debounceSearch',
-        requestData(val) {
+        params(val) {
+            this.resetSearch()
             this.getItemList()
         }
     },
@@ -65,6 +72,7 @@ export default {
             this.getItemList()
         },
         scrollLoad(e) {
+
             //console.log('scrollLoad',e);
             if (this.scrollLoadAllow(e)) this.getItemList()
         },
@@ -78,7 +86,7 @@ export default {
 
         },
         getItemList() {
-            console.log('getItemList');
+
             if (this.last_days || (this.date_from && this.date_to)) {
 
 
@@ -87,7 +95,10 @@ export default {
 
                 if (this.showItemLength < this.bodyListCount || this.bodyListCount === 0) {
                     this.$http.get(this.apiMethod, this.requestData).then(({ data }) => {
+
                         this.getItemListStart = true
+
+
                         if (data.data.count) {
                             this.bodyList.push(...data.data.list)
                             this.bodyListCount = data.data.count

@@ -1,5 +1,11 @@
 <template lang="pug">
-    form.filter-drop-menu(v-click-outside="val=>show=false", @submit.prevent="", :class="`filter-drop-menu_${type}`")
+    base-field(
+        v-if="name=='url'"
+        name="url"
+        placeholder="Страницы"
+        v-model="url"
+        )
+    form.filter-drop-menu(v-else v-click-outside="val=>show=false", @submit.prevent="", :class="`filter-drop-menu_${type}`")
         fieldset.filter-drop-menu__fieldset
             legend.filter-drop-menu__title(@click="show=!show")
                 |{{title}}
@@ -38,6 +44,7 @@ import AppCalendar from '@/components/AppCalendar'
 import ClickOutside from 'vue-click-outside'
 import branchesBr from '@/modules/branchesBr'
 import lodash_once from 'lodash/once'
+import lodash_debounce from 'lodash/debounce'
 export default {
     components: {
         AppCalendar
@@ -67,6 +74,7 @@ export default {
 
     data() {
         return {
+            url:null,
             filterSearchResult: [],
             show: false,
             modelradio: null,
@@ -184,6 +192,13 @@ export default {
         }
     },
     watch: {
+        url: lodash_debounce(function(val, oldVal) {
+            this.$emit('get', [val])
+            this.$store.commit('setFilter', {
+                url: [val]
+            })
+        }, 500),
+
         getStart(val) {
             // отправляем один раз при инициализации
             if (this.startOnce) {
@@ -269,13 +284,15 @@ export default {
     },
     created() {
         if (this.name === 'url') {
-            this.$http.get('site/pages').then(({ data }) => {
+            this.url = this.filterSelectStore[this.name][0]
+
+           /* this.$http.get('site/pages').then(({ data }) => {
                 data = data.data.map(item => {
                     return { id: item, name: item }
                 })
 
                 this.urlListData = [...data]
-            })
+            })*/
         }
     },
     mounted() {

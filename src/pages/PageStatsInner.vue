@@ -164,6 +164,7 @@ export default {
             if (this.routerName === 'statsBranchesDetail') obj.branch_id = this.branch_id
 
             if (this.routerName === 'statsOperators') obj.filterBranchId = this.branch.id
+            if (this.routerName === 'statsPages') obj.search = this.search
             if (
                 this.routerName === 'statsBranches' ||
                 this.routerName === 'statsPages' ||
