@@ -26,13 +26,13 @@
 <script>
 import BtnSort from '@/components/BtnSort'
 
-import { stats, sortFields } from '@/mixins/mixins'
+import { stats, sortFields,paginatorStats } from '@/mixins/mixins'
 
 export default {
     components: {
         BtnSort
     },
-    mixins: [stats, sortFields],
+    mixins: [stats, sortFields,paginatorStats],
     data() {
         return {}
     },

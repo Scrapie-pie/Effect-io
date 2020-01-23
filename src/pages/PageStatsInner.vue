@@ -1,5 +1,5 @@
 <template lang="pug">
-    the-layout-table.page-stats-inner
+    the-layout-table.page-stats-inner(@scrolldown="e=>$root.$emit('statsScrollDown',e)")
         filter-drop-menu(
             v-if="showLastDays"
             name="last_days",
@@ -267,6 +267,8 @@ export default {
             return list
         }
     },
+
+
     watch: {
         routerName: {
             handler(val) {

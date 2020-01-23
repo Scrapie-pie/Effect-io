@@ -9,6 +9,7 @@ export {
 export { default as removeMessageAndPush } from '@/mixins/removeMessageAndPush'
 export { default as stats } from '@/mixins/stats'
 export { default as paginator } from '@/mixins/paginator'
+export { default as paginatorStats } from '@/mixins/paginatorStats'
 export { default as filterLastDaysAndCalendar } from '@/mixins/filterLastDaysAndCalendar'
 export { default as getCaretPosition } from '@/mixins/getCaretPosition'
 export { default as sortFields } from '@/mixins/sortFields'

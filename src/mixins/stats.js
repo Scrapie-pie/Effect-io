@@ -35,10 +35,10 @@ export default {
             type: String,
             default: null
         },
-        limit: {
+   /*     limit: {
             type: Number,
             default: null
-        },
+        },*/
         order: {
             type: String,
             default: null
@@ -126,7 +126,7 @@ export default {
                 time_from: this.time_from,
                 time_to: this.time_to,
 
-                limit: this.limit,
+                //limit: this.limit,
                 order: this.order,
                 user_id: this.user_id,
                 branch_id: this.branch_id,
@@ -144,6 +144,7 @@ export default {
     },
 
     methods: {
+
         get() {
             if (this.last_days || (this.date_from && this.date_to)) {
                 this.$http.get('statistic/get-by-params', this.requestData).then(response => {
