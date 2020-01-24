@@ -50,7 +50,7 @@ export default {
     },
     methods: {
         nextLink(item) {
-            this.$store.commit('setFilter', { url: [item.url] })
+            this.$store.commit('setFilter', { url: item.url })
             this.$router.push({
                 name: 'all'
             })

@@ -194,17 +194,11 @@ export default {
     },
     watch: {
         url: lodash_debounce(function(val, oldVal) {
-            let Arr = []
 
-            if(lodash_isArray(val)) {
-                Arr = val
-            } else {
-                if(val) Arr.push(val)
-            }
 
-            this.$emit('get', Arr)
+            this.$emit('get', val)
             this.$store.commit('setFilter', {
-                url: Arr
+                url: val
             })
 
 

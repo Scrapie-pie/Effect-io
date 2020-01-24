@@ -24,7 +24,7 @@ const getDefaultFilterSelect = () => {
 
     return {
         filterSelect: {
-            url: [],
+            url: '',
             calendar: {},
             last_days: ''
         }
