@@ -2,7 +2,7 @@
     base-field(
         v-if="name=='url'"
         name="url"
-        placeholder="Страницы"
+        placeholder="http://..."
         v-model="url"
         )
     form.filter-drop-menu(v-else v-click-outside="val=>show=false", @submit.prevent="", :class="`filter-drop-menu_${type}`")
@@ -284,8 +284,8 @@ export default {
     },
     created() {
         if (this.name === 'url') {
-            this.url = this.filterSelectStore[this.name][0]
-
+            if(this.filterSelectStore[this.name][0]) this.url = this.filterSelectStore[this.name][0]
+            else this.url = null
            /* this.$http.get('site/pages').then(({ data }) => {
                 data = data.data.map(item => {
                     return { id: item, name: item }
