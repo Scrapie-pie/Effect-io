@@ -45,6 +45,7 @@ import ClickOutside from 'vue-click-outside'
 import branchesBr from '@/modules/branchesBr'
 import lodash_once from 'lodash/once'
 import lodash_debounce from 'lodash/debounce'
+import lodash_isArray from 'lodash/isArray'
 export default {
     components: {
         AppCalendar
@@ -194,14 +195,22 @@ export default {
     watch: {
         url: lodash_debounce(function(val, oldVal) {
             let Arr = []
-            if(val) {
-                Arr[0]=val
+
+            if(lodash_isArray(val)) {
+                Arr = val
+            } else {
+                if(val) Arr.push(val)
             }
 
             this.$emit('get', Arr)
             this.$store.commit('setFilter', {
                 url: Arr
             })
+
+
+
+
+
         }, 500),
 
         getStart(val) {
@@ -289,8 +298,7 @@ export default {
     },
     created() {
         if (this.name === 'url') {
-            if(this.filterSelectStore[this.name][0]) this.url = this.filterSelectStore[this.name][0]
-            else this.url = null
+            this.url = this.filterSelectStore[this.name]
            /* this.$http.get('site/pages').then(({ data }) => {
                 data = data.data.map(item => {
                     return { id: item, name: item }

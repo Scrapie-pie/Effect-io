@@ -20,6 +20,17 @@ const getDefaultStateRoom = () => {
     return {}
 }
 
+const getDefaultFilterSelect = () => {
+
+    return {
+        filterSelect: {
+            url: [],
+            calendar: {},
+            last_days: ''
+        }
+    }
+}
+
 const getDefaultState = () => {
     return Object.assign(
         {
@@ -36,17 +47,14 @@ const getDefaultState = () => {
                 { id: 13, name: 'WhatsApp' },
                 { id: 4, name: 'Slack' }
             ],
-            filterSelect: {
-                url: [],
-                calendar: {},
-                last_days: ''
-            }
+
             /*  actionAnotherTab:{
                 mutation:'',
                 payload:{},
                 routerPush:''
             }*/
         },
+        getDefaultFilterSelect(),
         getDefaultStateRoom()
     )
 }
@@ -88,6 +96,8 @@ export default new Vuex.Store({
     ],
     mutations: {
         resetState(state) {
+            localStorage.removeItem('filterSelect')
+
             Object.assign(state, getDefaultState())
         },
 
