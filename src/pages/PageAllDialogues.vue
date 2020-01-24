@@ -193,7 +193,7 @@ export default {
                 this.sites_ids &&
                 this.statuses &&
                 this.rates &&
-
+                this.url !== null &&
                 (!!this.last_days ||
                     (this.date_from && this.date_to && this.time_from && this.time_to))
             ) {
