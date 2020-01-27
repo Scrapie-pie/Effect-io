@@ -2,9 +2,9 @@
     base-table.stats-pages
         thead
             tr
-                th URL #[btn-sort(title="Сортировка по топу" :toggle="isOrderType", @result="val=>isOrderType=val")]
+                th URL
                 th
-                th Получено диалогов
+                th Получено диалогов #[btn-sort( :toggle="isOrderType", @result="val=>isOrderType=val")]
                 th
                     |Процент от общего количества обращений (%)
                     //|#[btn-sort(:toggle="sortFieldsComp['sortPercentLarger']", @result="val=>sortFieldsSetSortField(val,'sortPercentLarger')")]
