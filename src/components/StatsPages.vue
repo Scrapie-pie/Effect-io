@@ -2,11 +2,12 @@
     base-table.stats-pages
         thead
             tr
-                th URL
+                th URL #[btn-sort(title="Сортировка по топу" :toggle="isOrderType", @result="val=>isOrderType=val")]
                 th
                 th Получено диалогов
                 th
-                    |Процент от общего количества обращений (%) #[btn-sort(:toggle="sortFieldsComp['sortPercentLarger']", @result="val=>sortFieldsSetSortField(val,'sortPercentLarger')")]
+                    |Процент от общего количества обращений (%)
+                    //|#[btn-sort(:toggle="sortFieldsComp['sortPercentLarger']", @result="val=>sortFieldsSetSortField(val,'sortPercentLarger')")]
 
         tbody
             tr(v-for="(item, index) in itemList" :key="item.url")
@@ -34,9 +35,19 @@ export default {
     },
     mixins: [stats, sortFields,paginatorStats],
     data() {
-        return {}
+        return {
+            isOrderType:false,
+        }
     },
     computed: {
+        orderType(){
+            return this.isOrderType?'asc':'desc'
+        },
+        paramsComp(){
+            return {
+                order_type:this.orderType
+            }
+        },
         bodyListFormat() {
             return this.sortFieldsListGet
         },

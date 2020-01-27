@@ -41,9 +41,12 @@ export default {
                 limit: this.limit
             }
         },
+        paramsComp(){
+            return {}
+        },
 
         requestData() {
-            let params = Object.assign(this.params_paginator, this.params)
+            let params = Object.assign(this.params_paginator, this.params,this.paramsComp)
             //console.log('requestData',params);
             return { params }
         }
@@ -51,6 +54,10 @@ export default {
     watch: {
         search: 'debounceSearch',
         params(val) {
+            this.resetSearch()
+            this.getItemList()
+        },
+        paramsComp(val) {
             this.resetSearch()
             this.getItemList()
         }
