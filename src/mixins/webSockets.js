@@ -71,7 +71,10 @@ export default {
             }
         },*/
         playSoundFile(nameFile) {
-            let { settings, sounds } = this.$store.state.user.settings
+            let { settings=false, sounds } = this.$store.state.user.settings
+
+            console.log(settings);
+            if(!settings) return
 
             let index = settings[nameFile]
             /*  console.log(sounds[index].file);
@@ -82,6 +85,9 @@ export default {
 
             let audio = new Audio(sounds[index].file)
             audio.volume = 0.5
+            audio.muted = false
+
+            console.log(sounds[index].file);
             audio.play()
         },
         webSocketInit({ uuid, owner_id, socket_server }) {
