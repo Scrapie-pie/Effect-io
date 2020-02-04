@@ -137,6 +137,21 @@ window.showError = function(error) {
     console.log(error.config)
 }
 
+import VueYandexMetrika from 'vue-yandex-metrika'
+
+Vue.use(VueYandexMetrika, {
+    id: 57350245,
+    router: router,
+    env: process.env.NODE_ENV,
+    options:{
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true,
+        webvisor:true,
+        ecommerce:"dataLayer"
+    }
+})
+
 new Vue({
     wait: new VueWait({
         useVuex: true, // You must pass this option `true` to use Vuex
