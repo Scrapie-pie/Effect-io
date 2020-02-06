@@ -49,7 +49,7 @@ export default {
             return charCount + lastNodeLength
         },
         getCaretPosition() {
-            var range = window.getSelection().getRangeAt(0)
+            var range = window.getSelection()?.getRangeAt(0)
 
             this.$emit('getText', this.textWidthTagToText())
 

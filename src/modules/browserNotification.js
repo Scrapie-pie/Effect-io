@@ -47,14 +47,11 @@ function notificationEngine(title, body, link) {
 }
 
 function browserNotificationMessage(val) {
-    console.log(
-        'browserNotificationMessage',
-        this.$store.state.user.settings.settings.push_notifications
-    )
+
 
     if (
         Notification.permission === 'denied' ||
-        !this.$store.state.user.settings.settings.push_notifications ||
+        !this.$store.state.user.settings?.settings?.push_notifications ||
         !val.withBrowserNotification
     ) {
         return new Promise(resolve => {

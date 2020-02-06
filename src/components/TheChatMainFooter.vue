@@ -420,7 +420,7 @@ export default {
                     this.saveTextarea()
 
                     setTimeout(() => {
-                        this.$refs.scrollbarMessage.update()
+                        this.$refs.scrollbarMessage?.update()
                     }, 200)
                 })
                 .catch(error => {
