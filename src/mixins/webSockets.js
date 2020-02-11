@@ -336,7 +336,7 @@ export default {
             })
         },
         'room-users'(val) {
-            console.table('room-users', val.list)
+
             //this.$socket.emit('delivered', val.socket_id);
             //console.log('room-users', val)
             val.list.socket = true // для того что бы room_id не обновлять

@@ -197,7 +197,7 @@ export default {
             if (this.routerName === 'statsAllOperator') return 'employee'
 
             if (this.routerName === 'statsAllByHours') return 'branches'
-            if (this.routerName === 'statsAllBranchByHours') return 'branch'
+            if (this.routerName === 'statsAllBranchByHours') return 'employees'
             if (this.routerName === 'statsAllOperatorByHours') return 'employee'
 
             if (this.routerName === 'statsService') return 'top'
@@ -219,9 +219,7 @@ export default {
                     type = 'employees'
                 }
             }
-            if (this.routerName === 'statsAllBranchByHours') {
-                type = 'employees'
-            }
+
 
             let dates = `&date_from=${this.date_from}&date_to=${this.date_to}&time_from=${
                 this.time_from

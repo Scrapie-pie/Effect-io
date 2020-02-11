@@ -89,7 +89,8 @@ export default {
         return {
             csv: 0,
             bodyList: [],
-            by_dates: 0
+            by_dates: 0,
+
         }
     },
     watch: {
@@ -104,6 +105,7 @@ export default {
             }
         },
         params(val) {
+
             this.get()
         }
     },
@@ -119,6 +121,15 @@ export default {
             return { params: this.params }
         },
         params() {
+
+            let by_dates = this.by_dates;
+            let type = this.type;
+
+           /* if (this.$route.name === 'statsAllBranch' && this.by_dates) {
+                type = 'branch'
+            }*/
+
+
             return {
                 last_days: this.last_days,
                 date_from: this.date_from,
@@ -133,9 +144,9 @@ export default {
 
                 is_one_time_chat: this.is_one_time_chat,
 
-                type: this.type,
+                type,
                 csv: this.csv,
-                by_dates: this.by_dates
+                by_dates
             }
         }
     },
@@ -146,10 +157,64 @@ export default {
     methods: {
 
         get() {
+
+
             if (this.last_days || (this.date_from && this.date_to)) {
-                this.$http.get('statistic/get-by-params', this.requestData).then(response => {
-                    this.bodyList = response.data.data
-                })
+
+                this.bodyList = []
+
+                if(this.$route.name==='statsAllOperator' && this.by_dates===0) {
+
+                    let isWaitFinish = false
+
+                    this.$http.get('statistic/get-by-params', this.requestData).then(response =>{
+
+                        this.$set(this.bodyList, 0, response.data.data[0])
+
+                            if(!isWaitFinish) this.$wait.start('pageStats')
+
+                    })
+
+
+                    this.$http.get('statistic/get-by-params?',{
+                        params:Object.assign({}, this.params, { by_dates:1 })
+                    }).then((response)=>{
+                        this.bodyList.splice(1,0,...response.data.data)
+
+                        isWaitFinish = true
+                        this.$wait.end('pageStats')
+                    })
+
+                    return
+                }
+
+                if(this.$route.name==='statsAllBranch' && this.by_dates===0) {
+
+                    let isWaitFinish = false
+
+                    this.$http.get('statistic/get-by-params', this.requestData).then(response =>{
+                        this.$set(this.bodyList, 0, response.data.data[0]);
+                        if(!isWaitFinish) this.$wait.start('pageStats')
+                    })
+
+                    this.$wait.start('pageStats2')
+                    this.$http.get('statistic/get-by-params',{
+                        params:Object.assign({}, this.params, { type: 'employees',by_dates:1 })
+                    }).then((response)=>{
+
+                        this.bodyList.splice(1,0,...response.data.data)
+
+                        isWaitFinish = true
+                        this.$wait.end('pageStats')
+                    })
+
+                    return
+                }
+
+
+                this.$http.get('statistic/get-by-params', this.requestData).then(response =>this.bodyList = response.data.data)
+
+
             }
         }
     }

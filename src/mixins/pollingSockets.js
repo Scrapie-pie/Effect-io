@@ -30,7 +30,7 @@ export default {
                 })
                 .then(({ data: { data } }) => {
 
-                    console.log(data);
+
                     data.forEach(itemApi => {
                         let socketStoreItemFind = this.$store.state.sockets.history.find(
                             itemStore => {
