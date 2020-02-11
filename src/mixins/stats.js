@@ -197,7 +197,7 @@ export default {
                         if(!isWaitFinish) this.$wait.start('pageStats')
                     })
 
-                    this.$wait.start('pageStats2')
+
                     this.$http.get('statistic/get-by-params',{
                         params:Object.assign({}, this.params, { type: 'employees',by_dates:1 })
                     }).then((response)=>{

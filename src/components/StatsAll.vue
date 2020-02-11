@@ -273,6 +273,7 @@ export default {
             return this.sortFieldsListGet
         },
         sortFieldsListSet() {
+            if(this.$route.name==='statsAllBranchByHours') return this.bodyList
             /*eslint-disable */
             console.log('sortFieldsListSet',this.bodyList.length);
             if(!this.bodyList.length) return []

@@ -210,25 +210,44 @@ export default {
             return ''
         },
         downloadLink() {
-            let type = this.type
 
-            if (this.routerName === 'statsAllBranch') {
-                if (this.by_dates) {
-                    type = 'branch'
-                } else {
-                    type = 'employees'
-                }
+            let href = {
+                csv:1,
+                jwt:this.$http.defaults.headers.common.jwt,
+
+            }
+
+            let newParams = {
+                type : this.type,
+                by_dates:this.by_dates
             }
 
 
-            let dates = `&date_from=${this.date_from}&date_to=${this.date_to}&time_from=${
-                this.time_from
-            }&time_to=${this.time_to}`
-            return `${config.api_server}statistic/get-by-params?user_id=${this.user_id}&branch_id=${
-                this.branch_id
-            }${dates}&last_days=${this.last_days}&by_dates=${
-                this.by_dates
-            }&type=${type}&csv=1&jwt=${this.$http.defaults.headers.common.jwt}`
+
+            if (this.routerName === 'statsAllBranch') {
+                if (this.by_dates) {
+                    newParams.type = 'branch'
+                } else {
+                    newParams.type = 'employees'
+                }
+            }
+            if(this.$route.name==='statsAllOperator' && this.by_dates===0) {
+                newParams.by_dates = 1
+            }
+
+            href = Object.assign(href, this.payload,newParams)
+
+            console.log(href);
+
+            href = Object.keys(href).map(function(k) {
+                return encodeURIComponent(k) + '=' + encodeURIComponent(href[k])
+            }).join('&')
+
+
+
+
+
+            return `${config.api_server}statistic/get-by-params?${href}`
         },
         placeholder() {
             if (this.routerName === 'statsBranches') return 'Поиск по названию'
