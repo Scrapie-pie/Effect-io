@@ -76,7 +76,7 @@ export default {
             this.pollingSocketsGo = false
         },
         pollingSockets() {
-
+            if(!config.polling_server) return
             this.pollingSocketsGo = true
             this.pollingSocketsInit()
             setTimeout(() => {
