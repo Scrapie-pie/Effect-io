@@ -237,7 +237,7 @@ export default {
 
             href = Object.assign(href, this.payload,newParams)
 
-            console.log(href);
+            console.log(newParams,href);
 
             href = Object.keys(href).map(function(k) {
                 return encodeURIComponent(k) + '=' + encodeURIComponent(href[k])
@@ -257,7 +257,7 @@ export default {
         },
         btnDownloadShow() {
             return (
-                (this.routerName !== 'statsOnceChat' && this.last_days !== '') ||
+                (this.last_days !== '') ||
                 (this.date_from !== '' && this.date_to !== '')
             )
         },
