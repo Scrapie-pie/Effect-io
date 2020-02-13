@@ -92,11 +92,15 @@ export default {
         }
     },
     watch: {
+
         paramsComp() {
+
             if (
+
                 this.last_days ||
                 (this.date_from && this.date_to && this.time_from && this.time_to)
             ) {
+                console.log('paramsComp');
                 this.resetSearch()
                 this.getItemList()
             }
@@ -104,6 +108,24 @@ export default {
     },
     created() {},
     methods: {
+        getItemList() {
+            if(!this.search) return //Из за этой строчки пришлось продублировать всю функцию из paginator
+            if (!this.getItemListStart) return
+            this.getItemListStart = false
+
+            if (this.showItemLength < this.itemListCount || this.itemListCount === 0) {
+                this.$http.get(this.apiMethod, this.requestData).then(({ data }) => {
+                    this.getItemListStart = true
+                    if (data.data.count) {
+                        this.itemList.push(...data.data.list)
+                        this.itemListCount = data.data.count
+                        this.getItemListUnique()
+                        this.pageN += 1
+                        this.containerFullFillItemList()
+                    }
+                })
+            }
+        },
         startChat(item) {
             let { guest_uuid, site_id, chat_id } = item
 
