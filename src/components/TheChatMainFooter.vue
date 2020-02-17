@@ -28,6 +28,7 @@
                 .chat-main-footer__contols
                     .chat-main-footer__textarea-wrap
                         the-phrases-select(
+                            @show="val=>showThePhrasesSelect=val"
                             v-if="viewModeChat==='visitors'",
                             :filter-search="message" ,
                             @resultText="getPhrasesSelectText"
@@ -151,8 +152,8 @@ export default {
             textWidthSmiles: '',
             textCaret: null,
 
-            showPhrasesSelect: false,
-            showPhrasesSelectAllow: true,
+            showThePhrasesSelect: false,
+
             message: '',
             uploadFileList: [],
             bufferingSend: false
@@ -182,11 +183,7 @@ export default {
             immediate: true
         },
 
-        message(text) {
-            if (text && this.showPhrasesSelectAllow) {
-                this.showPhrasesSelect = true
-            }
-        },
+
         uploadFileList(val) {}
     },
 
@@ -309,9 +306,14 @@ export default {
         },
         onEnter: function(e) {
             //if(this.bufferingSend) return
+
+
+
+
             e.stopPropagation()
             e.preventDefault()
             e.returnValue = false
+            if(this.showThePhrasesSelect) return
             this.input = e.target.value
             this.send()
 

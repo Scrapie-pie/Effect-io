@@ -2,14 +2,17 @@
     ul.action-list
         li.action-list__item(
             v-for="(item, index) in itemList",
-            :key="item.id+item[nameFieldText]"
+            :key="item.id+item[nameFieldText]",
+
         )
             label.action-list__button
                 input(
+                    :class="{highlight:index===highlightIndex}"
+                    ref="input",
                     type="radio",
                     :name="name",
                     :value="nameFieldValue | setValue(item)",
-                    :checked="value | getChecked(item.id)"
+                    :checked="getChecked(item)"
                     v-on="inputListeners"
                 ).action-list__input
                 span.action-list__text(:title="nameFieldText | setValue(item) |setTitle(title)")
@@ -19,9 +22,7 @@
 <script>
 export default {
     filters: {
-        getChecked: function(value, id) {
-            return value === id
-        },
+
         setTitle: function(text, title) {
             if (!title) return ''
             return text
@@ -58,7 +59,9 @@ export default {
         }
     },
     data() {
-        return {}
+        return {
+            highlightIndex:-1,
+        }
     },
     computed: {
         inputListeners: function() {
@@ -79,8 +82,75 @@ export default {
             )
         }
     },
-    mounted() {},
-    methods: {}
+    mounted() {
+        document.getElementById('contenteditable').addEventListener("keyup",this.keyUp)
+        document.getElementById('contenteditable').addEventListener("keydown",this.keyDown)
+    },
+    beforeDestroy() {
+        document.getElementById('contenteditable').removeEventListener("keyup",this.keyUp)
+        document.getElementById('contenteditable').removeEventListener("keydown",this.keyDown)
+    },
+    methods: {
+        getChecked(item) {
+            return this.value === item[this.nameFieldValue]
+        },
+        keyDown(e){
+            if(e.key==='ArrowUp' || e.key==='ArrowDown') {
+                e.stopPropagation();
+                e.stopImmediatePropagation();
+                e.preventDefault();
+                console.log(e.key);
+                return false
+
+            }
+
+        },
+        keyUp(e){
+
+
+
+
+            if(e.key==='ArrowUp') {
+
+                if(this.highlightIndex<=0) {
+                    this.highlightIndex = this.itemList.length-1
+                }
+                else {
+                    this.highlightIndex = this.highlightIndex-1;
+
+
+                }
+                //this.$refs.input[this.highlightIndex].click()
+
+                //this.$emit('input', this.itemList[this.highlightIndex][this.nameFieldValue])
+
+            }
+            if(e.key==='ArrowDown') {
+
+                if(this.highlightIndex===-1 || this.highlightIndex>=this.itemList.length-1) this.highlightIndex = 0
+
+                else {
+                    this.highlightIndex = this.highlightIndex+1;
+
+                    //this.value = this.itemList[this.highlightIndex][this.nameFieldValue]
+                }
+                //this.$refs.input[this.highlightIndex].click()
+
+                //this.$emit('input', this.itemList[this.highlightIndex][this.nameFieldValue])
+
+            }
+            if(e.key==='Enter') {
+
+
+
+                this.$emit('input', this.itemList[this.highlightIndex][this.nameFieldValue])
+
+            }
+
+
+
+        }
+    }
 }
 </script>
 
@@ -96,11 +166,19 @@ export default {
     &__input {
         @extend %visuallyhidden;
 
-        &:checked ~ #{$self}__text {
+
+
+        &.highlight ~ #{$self}__text, &:checked ~ #{$self}__text {
             border-color: $color-border;
             background-color: $color-bg;
             font-weight: 700;
         }
+    }
+
+    &__item {
+     /*   &.highlight {
+            font-weight:bold;
+        }*/
     }
 
     &__button {

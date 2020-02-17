@@ -1,7 +1,7 @@
 <template lang="pug">
 
         .phrases-select(
-            v-show="!!filterSearchResult.length && !fullMatch"
+            v-show="show"
         )
 
 
@@ -23,7 +23,8 @@
                     name="snippets"
                     name-field-text="text"
                     name-field-value="text"
-                    v-model="text"
+                    v-model="text",
+
                 )
 
 </template>
@@ -47,7 +48,26 @@ export default {
             text: ''
         }
     },
+    watch: {
+        show(val){
+            this.$emit('show',val)
+        },
+        text(val) {
+
+            if (val) {
+                this.$emit('resultText', val)
+                setTimeout(() => {
+                    this.filterSearchResult = []
+                    this.text = ''
+                }, 50)
+            } else this.$root.$emit('globBoxControlClose')
+        },
+
+    },
     computed: {
+        show(){
+            return !!this.filterSearchResult.length && !this.fullMatch
+        },
         fullMatch() {
             return (
                 this.filterSearchResult.length === 1 &&
@@ -58,18 +78,14 @@ export default {
             return this.$store.state.phrases.snippets
         }
     },
-    watch: {
-        text(val) {
-            console.log(val)
-            if (val) {
-                this.$emit('resultText', val)
-                setTimeout(() => {
-                    this.filterSearchResult = []
-                    this.text = ''
-                }, 50)
-            } else this.$root.$emit('globBoxControlClose')
-        }
+    mounted(){
+
+    },
+    methods:{
+
+
     }
+
 }
 </script>
 
