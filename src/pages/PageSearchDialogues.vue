@@ -129,7 +129,7 @@ export default {
         startChat(item) {
             let { guest_uuid, site_id, chat_id } = item
 
-            dialogPush(this, 'search', item, 'chat_id')
+            //dialogPush(this, 'search', item, 'chat_id')
 
             let routeData = this.$router.resolve({
                 name: 'search',

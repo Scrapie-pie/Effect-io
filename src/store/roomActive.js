@@ -1,5 +1,6 @@
 const getDefaultState = () => {
     return {
+        chatId:null,
         id: false,
 
         visitor: {
@@ -30,6 +31,9 @@ export default {
             let visitor = state.visitor
             if (visitor.guest_uuid + visitor.site_id === guest_uuid + site_id)
                 state.visitor.typingLive = message
+        },
+        setChatId(state,val){
+            state.chatId = val
         },
         set(state, val) {
             //console.log('roomActive', val);

@@ -511,7 +511,8 @@ export default {
                 let { count, messages, users } = data.data
                 if (!count) return
 
-                this.chat_id = messages[0].chat_id
+                this.chat_id = messages[0].chat_id;
+                this.$store.commit('roomActive/setChatId', this.chat_id)
 
                 this.messageRun = count
                 //console.log('historyMessageLoad');
