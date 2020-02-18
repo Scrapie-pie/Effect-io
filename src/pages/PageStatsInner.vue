@@ -234,6 +234,9 @@ export default {
             if(this.$route.name==='statsAllOperator' && this.by_dates===0) {
                 newParams.by_dates = 1
             }
+            if(this.$route.name==='statsOnceChat') {
+                newParams.type = 'top'
+            }
 
             href = Object.assign(href, this.payload,newParams)
 
