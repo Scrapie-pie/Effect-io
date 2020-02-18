@@ -236,6 +236,8 @@ export default {
             }
             if(this.$route.name==='statsOnceChat') {
                 newParams.type = 'top'
+                newParams.is_one_time_chat=1
+
             }
 
             href = Object.assign(href, this.payload,newParams)
