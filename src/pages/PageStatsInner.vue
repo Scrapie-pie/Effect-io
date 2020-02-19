@@ -197,7 +197,7 @@ export default {
             if (this.routerName === 'statsAllOperator') return 'employee'
 
             if (this.routerName === 'statsAllByHours') return 'branches'
-            if (this.routerName === 'statsAllBranchByHours') return 'branch'
+            if (this.routerName === 'statsAllBranchByHours') return 'employees'
             if (this.routerName === 'statsAllOperatorByHours') return 'employee'
 
             if (this.routerName === 'statsService') return 'top'
@@ -210,27 +210,49 @@ export default {
             return ''
         },
         downloadLink() {
-            let type = this.type
+
+            let href = {
+                csv:1,
+                jwt:this.$http.defaults.headers.common.jwt,
+
+            }
+
+            let newParams = {
+                type : this.type,
+                by_dates:this.by_dates
+            }
+
+
 
             if (this.routerName === 'statsAllBranch') {
                 if (this.by_dates) {
-                    type = 'branch'
+                    newParams.type = 'branch'
                 } else {
-                    type = 'employees'
+                    newParams.type = 'employees'
                 }
             }
-            if (this.routerName === 'statsAllBranchByHours') {
-                type = 'employees'
+            if(this.$route.name==='statsAllOperator' && this.by_dates===0) {
+                newParams.by_dates = 1
+            }
+            if(this.$route.name==='statsOnceChat') {
+                newParams.type = 'top'
+                newParams.is_one_time_chat=1
+
             }
 
-            let dates = `&date_from=${this.date_from}&date_to=${this.date_to}&time_from=${
-                this.time_from
-            }&time_to=${this.time_to}`
-            return `${config.api_server}statistic/get-by-params?user_id=${this.user_id}&branch_id=${
-                this.branch_id
-            }${dates}&last_days=${this.last_days}&by_dates=${
-                this.by_dates
-            }&type=${type}&csv=1&jwt=${this.$http.defaults.headers.common.jwt}`
+            href = Object.assign(href, this.payload,newParams)
+
+            console.log(newParams,href);
+
+            href = Object.keys(href).map(function(k) {
+                return encodeURIComponent(k) + '=' + encodeURIComponent(href[k])
+            }).join('&')
+
+
+
+
+
+            return `${config.api_server}statistic/get-by-params?${href}`
         },
         placeholder() {
             if (this.routerName === 'statsBranches') return 'Поиск по названию'
@@ -240,7 +262,7 @@ export default {
         },
         btnDownloadShow() {
             return (
-                (this.routerName !== 'statsOnceChat' && this.last_days !== '') ||
+                (this.last_days !== '') ||
                 (this.date_from !== '' && this.date_to !== '')
             )
         },

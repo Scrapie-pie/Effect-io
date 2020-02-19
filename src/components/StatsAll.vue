@@ -104,7 +104,7 @@
                             base-icon(name="ball1")
                             btn-sort(:toggle="sortFieldsComp['middling_ratings']", @result="val=>sortFieldsSetSortField(val,'middling_ratings')")
 
-            tbody(v-if="!($route.name=='statsAllBranchByHours' || ($route.name=='statsAllBranch' && !by_dates))")
+            tbody(v-if="$route.name=='statsAllByHours' || $route.name=='statsAll' || $route.name=='statsAllBranch' || $route.name=='statsAllOperator'").commn
                 tr(v-for="(item, index) in commonRow", :key="index")
                     td
 
@@ -253,16 +253,15 @@ export default {
             countStep: 0,
             operatorList: [],
             commonRow: [],
-            byHoursList: {}
+            byHoursList: {},
+
         }
     },
     computed: {
         hideStatsAllBranchAndByDates() {
             return !(this.$route.name == 'statsAllBranch' && this.by_dates)
         },
-        employeesParams() {
-            return Object.assign({}, this.params, { type: 'employees' })
-        },
+
 
         showRight() {
             return this.countStep < this.maxStep
@@ -274,8 +273,10 @@ export default {
             return this.sortFieldsListGet
         },
         sortFieldsListSet() {
+            if(this.$route.name==='statsAllBranchByHours') return this.bodyList
             /*eslint-disable */
-                if(!this.bodyList.length) return []
+            console.log('sortFieldsListSet',this.bodyList.length);
+            if(!this.bodyList.length) return []
                 if(this.bodyList.length) this.commonRow = [this.bodyList[0]];
 
                 let list = this.bodyList.slice(1)
@@ -285,6 +286,7 @@ export default {
 
         },
         watch:{
+
             '$route'(){
                 this.by_dates=0
             },
@@ -295,8 +297,9 @@ export default {
                 },
                 immediate: true
             },
-            employeesParams:{
+        /*    employeesParams:{
                 handler(val){
+                    console.log('employeesParams',val , this.$route.name);
                     if((this.$route.name==='statsAllBranch' || this.$route.name==='statsAllBranchByHours') && val
                         && this.by_dates===0 && ( this.last_days || (this.date_from && this.date_to))) { //Иначе запрос 2 раза иногда вызывался и создавал дубликат
 
@@ -309,7 +312,7 @@ export default {
 
                 },
                 immediate: true
-            },
+            },*/
 
         },
         created(){
@@ -372,16 +375,7 @@ export default {
                     byHours:1
                 })
             },
-            getOperators(){
-                console.log('getOperators');
-                        this.$http.get('statistic/get-by-params',{
-                            params:this.employeesParams
-                        }).then((response)=>{
-                            this.bodyList = [...this.bodyList,...response.data.data]
-                            //document.getElementById('layoutTableContent').update()
-                        })
 
-            },
             scrollPush(direction) {
                 let el = this.$refs.scrollPushEl.$el;
                 let step = Math.abs(window.innerWidth-el.offsetWidth-20)  / this.maxStep *-1
