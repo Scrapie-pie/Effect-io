@@ -19,15 +19,17 @@
 
             form(@change="guestUpdateByOperator")
                 ul.client-info__list
-                    li.client-info__item.client-info__controls(v-if="integrationRegru")
-                        base-btn(type="a", :href="`https://desktop.reg.ru/card2/user/${info.regRuId}/`" , :icon="{name:'regruDesctop',left:true}",) Открыть десктоп
-                        base-btn(type="a", :href="`https://manager.reg.ru/manager/user_details?user_id=${info.regRuId}`" , :icon="{name:'regruManager',left:true}",) Открыть менеджер
-                    li.client-info__item.client-info__controls
-                        base-btn(v-if="integrationRegru", :icon="{name:'regruOtrs',left:true}", @click="$root.$emit('formORTS')") Создать заявку в ОТРС
-                        base-btn( :icon="{name:'transferBranch',left:true}", @click="$root.$emit('showBranch')") Передать диалог в отдел
 
-                    li.client-info__item.client-info__controls
-                        base-btn(name="setTag", @click="$root.$emit('showTagsEmit')", :icon="{name:'tag',left:true}") Поставить тэг диалогу
+                    li.client-info__item.client-info__controls(v-if="info.regRuId")
+                        base-btn( type="a", :href="`https://desktop.reg.ru/card2/user/${info.regRuId}/`" target="_blank" , :icon="{name:'regruDesctop',left:true}",) Открыть десктоп
+                        base-btn( type="a", :href="`https://manager.reg.ru/manager/user_details?user_id=${info.regRuId}`" target="_blank" , :icon="{name:'regruManager',left:true}",) Открыть менеджер
+                    template(v-if="viewModeChat!='process'")
+                        li.client-info__item.client-info__controls
+                            base-btn(v-if="integrationRegru", :icon="{name:'regruOtrs',left:true}", @click="$root.$emit('formORTS')") Создать заявку в ОТРС
+                            base-btn(:icon="{name:'transferBranch',left:true}", @click="$root.$emit('showBranch')") Передать диалог в отдел
+
+                        li.client-info__item.client-info__controls
+                            base-btn(name="setTag", @click="$root.$emit('showTagsEmit')", :icon="{name:'tag',left:true}") Поставить тэг диалогу
 
 
                     li.client-info__item
@@ -99,14 +101,14 @@
 import SocialLinks from '@/components/SocialLinks'
 import TheRedirectClient from '@/components/TheRedirectClient'
 import autosize from 'autosize'
-import { httpParams } from '@/mixins/mixins'
+import { httpParams,viewModeChat } from '@/mixins/mixins'
 
 export default {
     components: {
         SocialLinks,
         TheRedirectClient
     },
-    mixins: [httpParams],
+    mixins: [httpParams,viewModeChat],
     data() {
         return {
             guest_uuid: null,
