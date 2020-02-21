@@ -20,6 +20,9 @@
             v-else
             :class="classObject",
         )
+            template(v-if="icon")
+                base-icon(v-if="icon.name" ,:name="icon.name")
+                span.btn__text-hidden(v-if="icon.textHidden" v-text="icon.textHidden")
             slot
 </template>
 
@@ -140,6 +143,7 @@ export default {
             }
 
             if (!lodash_isEmpty(this.icon)) {
+                if (this.icon.left) obj['btn_icon-left'] = true
                 if (this.icon.top) obj['btn_icon-top'] = true
                 if (this.icon.box) obj['btn_icon-box'] = true
                 else obj['btn_icon-no-box'] = true
@@ -326,6 +330,13 @@ export default {
             width: 45px;
             height: 45px;
             margin-bottom: 0.5em;
+        }
+    }
+    &_icon-left {
+
+
+        .icon {
+            margin-right:.5em;
         }
     }
 

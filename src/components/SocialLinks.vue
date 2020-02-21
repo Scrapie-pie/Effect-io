@@ -1,6 +1,6 @@
 <template lang="pug">
     ul.social-links
-        li.social-links__item: a.social-links(:href="link" target="blank"): base-icon.social-links__icon(:name="name")
+        li.social-links__item: a.social-links(:href="'//'+link" target="blank"): base-icon.social-links__icon(:name="name")
         //li.social-links__item: a.social-links(:href="link" target="blank"): base-icon.social-links__icon(name="tg")
             li.social-links__item: a.social-links(:href="link" target="blank"): base-icon.social-links__icon(name="fbme")
             li.social-links__item: a.social-links(:href="link" target="blank"): base-icon.social-links__icon(name="chat")

@@ -5,7 +5,7 @@
                 legend.chat-actions__text-only-scr Выберите одно из действий
                 ul.chat-actions__list
                     template(v-if="viewModeChat!='process'")
-                        li.chat-actions__more-item()
+                        //li.chat-actions__more-item()
                             base-btn(
                             :icon="{name:'transfer',top:true}",
                                 @click.prevent="showBranch"
@@ -18,8 +18,7 @@
 
                         li.chat-actions__more-item(v-if="showExit")
                             base-btn(:icon="{name:'exit',top:true}", @click="exitRoomConfirm") Выйти из диалога
-                        li.chat-actions__more-item(v-if="showBtnformORTS")
-                            base-btn(:icon="{name:'crm',top:true}", @click="$root.$emit('formORTS')") Создание заявки в ОТРС
+
 
                     li.chat-actions__more-item
                         base-btn(:icon="{name:'bl',top:true}", @click="showBlockClient=true") Блокировать клиента
@@ -53,11 +52,7 @@ export default {
         }
     },
     computed: {
-        showBtnformORTS() {
-            return this.$store.state.user.siteCompanyList.find(
-                item => item.id === this.httpParams.params.site_id && item.regruIntegration
-            )
-        },
+
         showExit() {
             console.log(
                 'showConfirmExit',

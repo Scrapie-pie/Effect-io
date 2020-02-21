@@ -185,7 +185,7 @@ export default {
             right: 0;
             padding: calc-em(25) calc-em(10);
             width: 202px;
-            z-index: 1;
+            z-index: 2;
             box-shadow: $box-shadow;
             transition: $transition;
             transform: translateX(110%);

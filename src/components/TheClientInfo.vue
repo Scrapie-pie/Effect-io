@@ -3,29 +3,35 @@
         base-wait(name="clientInfo")
         base-people(
             :name="info.name" ,
-            :regRuLogin="info.regRuLogin"
+            :regRuLogin="info.regRuLogin",
             :text="clientInfoContacts",
             :bg-text-no-fill="true",
             :avatar-url="info.photo",
             :avatar-stub="info.photo_stub"
         )
         .client-info__social-links
-            social-links(:link="info.channel_link" :name="channelName")
+            social-links(:link="info.channel_link", :name="channelName" )
         .client-info__scrollbar
+
+
+
+
+
             form(@change="guestUpdateByOperator")
                 ul.client-info__list
-                    li.client-info__item.client-info__item_textarea
+                    li.client-info__item.client-info__controls(v-if="integrationRegru")
+                        base-btn(type="a", :href="`https://desktop.reg.ru/card2/user/${info.regRuId}/`" , :icon="{name:'regruDesctop',left:true}",) Открыть десктоп
+                        base-btn(type="a", :href="`https://manager.reg.ru/manager/user_details?user_id=${info.regRuId}`" , :icon="{name:'regruManager',left:true}",) Открыть менеджер
+                    li.client-info__item.client-info__controls
+                        base-btn(v-if="integrationRegru", :icon="{name:'regruOtrs',left:true}", @click="$root.$emit('formORTS')") Создать заявку в ОТРС
+                        base-btn( :icon="{name:'transferBranch',left:true}", @click="$root.$emit('showBranch')") Передать диалог в отдел
 
-                        base-field(
-                            v-model="info.comment"
-                            theme="soft"
-                            ref="clientComment"
-                            type="textarea"
-                            placeholder="Вы можете оставить комментарий к этому диалогу" maxlength="500"
-                            name="comment"
-                        )
+                    li.client-info__item.client-info__controls
+                        base-btn(name="setTag", @click="$root.$emit('showTagsEmit')", :icon="{name:'tag',left:true}") Поставить тэг диалогу
+
+
                     li.client-info__item
-                        base-btn(name="setTag", @click="$root.$emit('showTagsEmit')") Поставить тэг
+                        the-redirect-client
 
                     li.client-info__item
 
@@ -57,17 +63,35 @@
                                             placeholder="E-mail, тел или другой контакт"
                                         )
                     li.client-info__item
-                        ul.client-info__sub
-                            li.client-info__sub-item(v-for="(item, index) in infoList",:key="index")
-                                | {{item.text}}
-                    li.client-info__item(@click="showAudienceSegments=!showAudienceSegments" v-if="0")
-                        h4.client-info__name Аудиторные сегменты
-                            span.client-info__arrow(:class="{'client-info__arrow_open':showAudienceSegments}")
+
+                        h4.client-info__name(@click="showInfoMore=!showInfoMore")
+                            | Дополнительная информация
+                            span.client-info__arrow(:class="{'client-info__arrow_open':showInfoMore}")
                         transition(name="fade")
-                            ul.client-info__sub(v-show="showAudienceSegments")
-                                li.client-info__sub-item(v-for="(item, index) in audienceSegments",:key="index")
-                                    | {{item.name}} : {{item.text}}
-            TheRedirectClient
+                            form(v-show="showInfoMore")
+                                li.client-info__item.client-info__item_textarea
+
+                                    base-field(
+                                        v-model="info.comment"
+                                        theme="soft"
+                                        ref="clientComment"
+                                        type="textarea"
+                                        placeholder="Вы можете оставить комментарий к этому диалогу" maxlength="500"
+                                        name="comment"
+                                    )
+                                li.client-info__item
+                                    ul.client-info__sub
+                                        li.client-info__sub-item(v-for="(item, index) in infoList",:key="index")
+                                            | {{item.text}}
+                                li.client-info__item(@click="showAudienceSegments=!showAudienceSegments" v-if="0")
+                                    h4.client-info__name Аудиторные сегменты
+                                        span.client-info__arrow(:class="{'client-info__arrow_open':showAudienceSegments}")
+                                    transition(name="fade")
+                                        ul.client-info__sub(v-show="showAudienceSegments")
+                                            li.client-info__sub-item(v-for="(item, index) in audienceSegments",:key="index")
+                                                | {{item.name}} : {{item.text}}
+
+
 
 </template>
 
@@ -88,12 +112,18 @@ export default {
             guest_uuid: null,
             site_id: null,
             showContacts: false,
+            showInfoMore: false,
             showAudienceSegments: false,
             showTagsPopup: false,
             clientInfo: {}
         }
     },
     computed: {
+        integrationRegru() {
+            return this.$store.state.user.siteCompanyList.find(
+                item => item.id === this.httpParams.params.site_id && item.regruIntegration
+            )
+        },
         info() {
             return this.$store.state.visitors.itemOpen
         },
@@ -182,12 +212,24 @@ export default {
 .client-info {
     max-height: 90vh;
 
+
+    &__controls {
+        border-top:1px solid glob-color(border);
+        padding-top: calc-em(20);
+
+        .icon {
+            width:15px;
+            height:auto;
+            max-height:20px;
+        }
+    }
+
     &__scrollbar {
         height: 100%;
     }
 
     &__item {
-        margin-bottom: calc-em(30);
+        margin-bottom: calc-em(20);
 
         &_textarea {
             .field__input {
