@@ -26,10 +26,10 @@ export default {
         logout() {
             console.log('user logout')
             this._vm.$socket.disconnect()
-            this._vm.$http.put('employee/online-update', {
+            /*this._vm.$http.put('employee/online-update', {
                 online: 0
-            })
-            //this._vm.$http.put('logout')
+            })*/
+            this._vm.$http.put('user/logout')
             localStorage.removeItem('jwt')
 
             delete this._vm.$http.defaults.headers.common['jwt']
