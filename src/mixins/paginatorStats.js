@@ -15,7 +15,7 @@ export default {
 
 
             getItemListStart: true,
-            isFinishData:false,
+            isNoFinishData:false,
             limit: 20,
             pageN: 1,
             bodyListCount: 0,
@@ -84,7 +84,8 @@ export default {
             if (this.scrollLoadAllow(e)) this.getItemList()
         },
         resetSearch() {
-            this.isFinishData=false,
+            console.log('resetSearch');
+            this.isNoFinishData=true
             this.pageN = 1
             this.bodyListCount = 0
             this.bodyList = []
@@ -100,15 +101,16 @@ export default {
 
                 if (!this.getItemListStart) return
                 this.getItemListStart = false
-
-                if (!this.isFinishData) {
+                console.log(this.isNoFinishData);
+                if (this.isNoFinishData) {
+                    console.log(this.isNoFinishData);
                     this.$http.get(this.apiMethod, this.requestData).then(({ data }) => {
 
                         this.getItemListStart = true
 
                         console.log(data);
 
-                        if(data.data.list.length < this.limit) this.isFinishData=true
+
 
                         //if (data.data.count) {
                             this.bodyList.push(...data.data.list)
@@ -117,6 +119,9 @@ export default {
                             this.pageN += 1
 
                         //}
+
+                        if(data.data.list.length===0 ||data.data.list.length < this.limit)  this.isNoFinishData=false
+                        //console.log(this.isNoFinishData);
                     })
                 }
             }
