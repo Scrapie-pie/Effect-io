@@ -15,7 +15,7 @@ export default {
 
 
             getItemListStart: true,
-            isNoFinishData:false,
+            isNoFinishData:true,
             limit: 20,
             pageN: 1,
             bodyListCount: 0,
@@ -51,12 +51,14 @@ export default {
             return { params }
         }
     },
+
     watch: {
         search: 'debounceSearch',
         params(val) {
             this.resetSearch()
             this.getItemList()
         },
+
         paramsComp(val) {
             this.resetSearch()
             this.getItemList()
