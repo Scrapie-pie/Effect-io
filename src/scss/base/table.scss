@@ -18,6 +18,7 @@ tbody, tfoot, thead, tr, th, td{ vertical-align:inherit; }
 
   table-layout:fixed;
   vertical-align:middle;
+    position:relative;
 
   &__caption {
     @extend %h3;
@@ -30,6 +31,7 @@ tbody, tfoot, thead, tr, th, td{ vertical-align:inherit; }
     transition-property:border,background-color;
     padding-left:calc-em(5);
     padding-right:calc-em(5);
+      background-color:glob-color(light);
 
     @include media($width_md,1) {
       padding-left:calc-em(15);
@@ -42,12 +44,16 @@ tbody, tfoot, thead, tr, th, td{ vertical-align:inherit; }
     padding-top:calc-em(10);
     padding-bottom:calc-em(10);
     border-bottom:1px solid $color_border;
+
     &:first-child{
       border-left:3px solid transparent;
     }
 
   }
   &__th {
+     /* position:sticky;
+      top:0;
+      z-index:1;*/
     @extend %td;
     font-weight:700;
     padding-bottom:calc-em(50);

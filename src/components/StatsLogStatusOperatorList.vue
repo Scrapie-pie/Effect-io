@@ -20,8 +20,8 @@
                     ) {{item.name}}
                 td(v-if="item.operator" v-html="$options.filters.branchesBr(item.operator.branches_names)")
                 td {{item.ip}}
-                td {{item.time | datetimeDMY}} {{item.time | datetimeHMS}}
-                td {{item.online | getStatusText}}
+                td {{item.time}}
+                td {{item.status}}
 
 
 
@@ -30,7 +30,7 @@
 <script>
     import FilterDropMenu from '@/components/FilterDropMenu'
     import {branchesBr} from '@/modules/modules'
-    import {datetimeDMY,datetimeHMS} from '@/modules/datetime'
+
 import { stats, paginatorStats } from '@/mixins/mixins'
 
 export default {
@@ -38,26 +38,8 @@ export default {
         FilterDropMenu
     },
     filters: {
-        branchesBr,datetimeDMY,datetimeHMS,
-        getStatusText(numb) {
-            return numb
-            let text;
-            switch (numb) {
-                case 1:
-                    text = 'В сети'
-                    break
-                case 2:
-                    text = 'Перерыв'
-                    break
-                case 3:
-                    text = 'Обед'
-                    break
-                default:
-                    text = 'Не в сети'
-                    break
-            }
-            return text
-        }
+        branchesBr
+
     },
     mixins: [stats,
         paginatorStats

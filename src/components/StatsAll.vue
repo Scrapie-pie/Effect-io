@@ -397,7 +397,7 @@ export default {
 
 <style lang="scss">
     .stats-table-line{
-        overflow:hidden;
+
         &__table {
             table-layout: auto;
             transition:$glob-trans;

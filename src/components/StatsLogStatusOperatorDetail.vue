@@ -14,8 +14,8 @@
         tbody
             tr(v-for="(item, index) in itemList" :key="item.id")
                 td {{item.ip}}
-                td {{item.time | datetimeDMY}} {{item.time | datetimeHMS}}
-                td {{item.online | getStatusText}}
+                td {{item.time
+                td {{item.status}}
 
 
 
@@ -24,35 +24,14 @@
 <script>
 
 
-    import {datetimeDMY,datetimeHMS} from '@/modules/datetime'
+
 import { stats, paginatorStats } from '@/mixins/mixins'
 
 export default {
     components: {
 
     },
-    filters: {
-        datetimeDMY,datetimeHMS,
-        getStatusText(numb) {
-            return numb
-            let text;
-            switch (numb) {
-                case 1:
-                    text = 'В сети'
-                    break
-                case 2:
-                    text = 'Перерыв'
-                    break
-                case 3:
-                    text = 'Обед'
-                    break
-                default:
-                    text = 'Не в сети'
-                    break
-            }
-            return text
-        }
-    },
+
     mixins: [stats,
         paginatorStats
     ],
