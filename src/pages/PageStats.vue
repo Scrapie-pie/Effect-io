@@ -42,6 +42,10 @@
                     router-link.page-stats__link(
                     :to='{name:"statsTags"}'
                     ) Статистика по тегам
+                li.page-stats__item
+                    router-link.page-stats__link(
+                    :to='{name:"statsLogStatusOperatorList"}'
+                    ) Лог статусов
         section.page-stats__main
             base-wait(name="pageStats")
             h1.page-stats__title(v-text="title")

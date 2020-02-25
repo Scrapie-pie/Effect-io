@@ -15,7 +15,7 @@ export default {
 
 
             getItemListStart: true,
-
+            isFinishData:false,
             limit: 20,
             pageN: 1,
             bodyListCount: 0,
@@ -84,6 +84,7 @@ export default {
             if (this.scrollLoadAllow(e)) this.getItemList()
         },
         resetSearch() {
+            this.isFinishData=false,
             this.pageN = 1
             this.bodyListCount = 0
             this.bodyList = []
@@ -100,19 +101,22 @@ export default {
                 if (!this.getItemListStart) return
                 this.getItemListStart = false
 
-                if (this.showItemLength < this.bodyListCount || this.bodyListCount === 0) {
+                if (!this.isFinishData) {
                     this.$http.get(this.apiMethod, this.requestData).then(({ data }) => {
 
                         this.getItemListStart = true
 
+                        console.log(data);
 
-                        if (data.data.count) {
+                        if(data.data.list.length < this.limit) this.isFinishData=true
+
+                        //if (data.data.count) {
                             this.bodyList.push(...data.data.list)
-                            this.bodyListCount = data.data.count
+                            //this.bodyListCount = data.data.count
 
                             this.pageN += 1
 
-                        }
+                        //}
                     })
                 }
             }

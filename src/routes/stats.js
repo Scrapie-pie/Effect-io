@@ -117,6 +117,22 @@ export default [
                 component: PageStatsInner
             },
             {
+                name: 'statsLogStatusOperatorList',
+                path: 'statuses',
+                meta: {
+                    title: 'Лог статусов'
+                },
+                component: PageStatsInner
+            },
+            {
+                name: 'statsLogStatusOperatorDetail',
+                path: 'statuses/:id/',
+                meta: {
+                    title: 'Лог статусов'
+                },
+                component: PageStatsInner
+            },
+            {
                 name: 'statsOnceChat',
                 path: 'onceChat',
                 meta: {

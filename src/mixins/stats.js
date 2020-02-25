@@ -71,6 +71,10 @@ export default {
             type: Number,
             default: null
         },
+        users_ids: {
+            type: Array,
+            default: ()=>[]
+        },
 
         btnDetailHide: {
             type: Boolean,
@@ -140,6 +144,7 @@ export default {
                 //limit: this.limit,
                 order: this.order,
                 user_id: this.user_id,
+                users_ids: this.users_ids,
                 branch_id: this.branch_id,
 
                 is_one_time_chat: this.is_one_time_chat,

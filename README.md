@@ -52,5 +52,11 @@ git fetch
 git checkout -b feature/RBCALL-3417
 
 
-cd /var/www/rbcall/data/www/app.newrobocall.ru
+cd /var/www/rbcall/data/www/api.newrobocall.ru
+git fetch
+git checkout feature/RBCALL-3954
+git checkout develop
+
+
+
 
