@@ -14,7 +14,7 @@
         tbody
             tr(v-for="(item, index) in itemList" :key="item.id")
                 td {{item.ip}}
-                td {{item.time
+                td {{item.time}}
                 td {{item.status}}
 
 
