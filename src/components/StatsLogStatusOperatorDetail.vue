@@ -54,7 +54,7 @@ export default {
         }
     },
     mixins: [stats,
-        //paginatorStats
+        paginatorStats
     ],
     data() {
         return {
