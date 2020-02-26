@@ -21,7 +21,7 @@
                 ul.client-info__list
 
                     li.client-info__item.client-info__controls(v-if="info.regRuId")
-                        base-btn( type="a", :href="`https://desktop.reg.ru/card2/user/${info.regRuId}/`" target="_blank" , :icon="{name:'regruDesctop',left:true}",) Открыть десктоп
+                        base-btn( type="a", :href="`https://desktop.reg.ru/card/user/${info.regRuId}/`" target="_blank" , :icon="{name:'regruDesctop',left:true}",) Открыть десктоп
                         base-btn( type="a", :href="`https://manager.reg.ru/manager/user_details?user_id=${info.regRuId}`" target="_blank" , :icon="{name:'regruManager',left:true}",) Открыть менеджер
                     template(v-if="viewModeChat!='process'")
                         li.client-info__item.client-info__controls
