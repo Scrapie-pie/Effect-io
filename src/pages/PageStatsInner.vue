@@ -106,8 +106,11 @@
                     id: null
                 },
                 by_dates: 0,
-                users_ids: null,
+                users_ids: [],
             }
+        },
+        beforeDestroy(){
+            this.$root.$off('statsScrollDown')
         },
         computed: {
             showLastDays() {
@@ -196,7 +199,7 @@
                     time_to: this.time_to,
                     last_days: this.last_days
                 }
-                console.log(Object.assign(main, this.$attrs, obj));
+
                 return Object.assign(main, this.$attrs, obj)
             },
             branch_id() {
@@ -261,7 +264,7 @@
 
                 href = Object.assign(href, this.payload,newParams)
 
-                console.log(newParams,href);
+
 
                 href = Object.keys(href).map(function(k) {
                     return encodeURIComponent(k) + '=' + encodeURIComponent(href[k])
