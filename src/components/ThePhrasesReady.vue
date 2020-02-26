@@ -12,14 +12,14 @@
                 .phrases-ready__inner
                     fieldset.phrases-ready__catalog.phrases-ready__fieldset
                         legend.phrases-ready__name Категория
-                        scroll-bar.phrases-ready__scrollbar
-                            action-list.phrases-ready__list(
-                                :item-list="categories"
-                                name="categories"
-                                name-field-text="title"
-                                name-field-value="id"
-                                v-model="categoriesSelectId"
-                            )
+
+                        action-list.phrases-ready__scrollbar(
+                            :item-list="categories"
+                            name="categories"
+                            name-field-text="title"
+                            name-field-value="id"
+                            v-model="categoriesSelectId"
+                        )
 
                     fieldset.phrases-ready__phrases-wrap.phrases-ready__fieldset
 

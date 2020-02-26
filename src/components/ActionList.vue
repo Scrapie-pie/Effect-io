@@ -1,9 +1,10 @@
 <template lang="pug">
-    ul.action-list
-        li.action-list__item(
+    scroll-bar.action-list(ref="scrollbar")
+
+        .action-list__item(
             v-for="(item, index) in itemList",
             :key="item.id+item[nameFieldText]",
-
+            ref="item",
         )
             label.action-list__button
                 input(
@@ -20,6 +21,8 @@
 </template>
 
 <script>
+
+
 export default {
     filters: {
 
@@ -32,6 +35,7 @@ export default {
             return item[nameField]
         }
     },
+
     inheritAttrs: false,
     props: {
         itemList: {
@@ -82,6 +86,32 @@ export default {
             )
         }
     },
+    watch:{
+        highlightIndex(val,oldVal){
+                let target = this.$refs.item[this.highlightIndex];
+                let intersectionObserverOptions = {
+                    root: this.$el,
+                    rootMargin:'0px',
+                    threshold: 1.0
+                }
+            let onIntersection = (entries)=>{
+                entries.forEach(entry => {
+                    if (!entry.isIntersecting) {
+                        console.log(target);
+                        window.target = target;
+
+                        this.$refs.scrollbar.$el.scrollTop = target.offsetTop
+                        this.$refs.scrollbar.update()
+
+                    }
+                    observer.unobserve(entry.target);
+                });
+            }
+                let observer = new IntersectionObserver(onIntersection, intersectionObserverOptions);
+                observer.observe(target);
+
+        }
+    },
     mounted() {
         document.getElementById('contenteditable').addEventListener("keyup",this.keyUp)
         document.getElementById('contenteditable').addEventListener("keydown",this.keyDown)
@@ -91,6 +121,10 @@ export default {
         document.getElementById('contenteditable').removeEventListener("keydown",this.keyDown)
     },
     methods: {
+        visibleElement(){
+            // this is the target which is observed
+
+        },
         getChecked(item) {
             return this.value === item[this.nameFieldValue]
         },
@@ -99,7 +133,6 @@ export default {
                 e.stopPropagation();
                 e.stopImmediatePropagation();
                 e.preventDefault();
-                console.log(e.key);
                 return false
 
             }
@@ -162,6 +195,12 @@ export default {
     $transition: $glob-trans;
     $color-text: glob-color('secondary');
     $padding: calc-em(8) calc-em(25);
+
+    overflow:auto;
+
+    .ps__scrollbar-y-rail {
+        z-index: 1;
+    }
 
     &__input {
         @extend %visuallyhidden;

@@ -9,18 +9,18 @@
                     @result="(val)=>filterSearchResult=val",
                     field-name="tag"
                 )
-                scroll-bar.select-tags__controls-scrollbar
-                    action-list(
-                        :title="true"
-                        text-line="2"
-                        key="tags-list",
 
-                        :item-list="filterSearchResult"
-                        name="tags"
-                        name-field-text="tag"
-                        name-field-value="id"
-                        v-model="model"
-                    )
+                action-list.select-tags__controls-scrollbar(
+                    :title="true"
+                    text-line="2"
+                    key="tags-list",
+
+                    :item-list="filterSearchResult"
+                    name="tags"
+                    name-field-text="tag"
+                    name-field-value="id"
+                    v-model="model"
+                )
 
 </template>
 

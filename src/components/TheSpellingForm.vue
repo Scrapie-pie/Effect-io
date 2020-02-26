@@ -7,14 +7,14 @@
             .the-spelling-form__inner
                 fieldset.the-spelling-form__fieldset
                     legend.the-spelling-form__name Варианты
-                    scroll-bar.the-spelling-form__scrollbar
-                        action-list.the-spelling-form__list(
-                            :item-list="suggestions"
-                            name="suggestions"
-                            name-field-text="title"
-                            name-field-value="id"
-                            v-model="selectWordId"
-                        )
+
+                    action-list.the-spelling-form__scrollbar(
+                        :item-list="suggestions"
+                        name="suggestions"
+                        name-field-text="title"
+                        name-field-value="id"
+                        v-model="selectWordId"
+                    )
                 fieldset.the-spelling-form__fieldset
                     legend.the-spelling-form__name Возможные действия
                     ul.the-spelling-form__phrases

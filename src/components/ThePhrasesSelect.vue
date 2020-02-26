@@ -13,19 +13,19 @@
                 :external-search="filterSearch",
                 :startAll="false"
             )
-            scroll-bar.phrases-select__scroll-bar
-                action-list(
-                    :title="true"
-                    text-line="2"
-                    key="action-list"
-                    v-if="!!filterSearchResult.length",
-                    :item-list="filterSearchResult"
-                    name="snippets"
-                    name-field-text="text"
-                    name-field-value="text"
-                    v-model="text",
 
-                )
+            action-list.phrases-select__scroll-bar(
+                :title="true"
+                text-line="2"
+                key="action-list"
+                v-if="!!filterSearchResult.length",
+                :item-list="filterSearchResult"
+                name="snippets"
+                name-field-text="text"
+                name-field-value="text"
+                v-model="text",
+
+            )
 
 </template>
 
@@ -141,8 +141,6 @@ export default {
     &__scroll-bar {
         max-height: 12em;
     }
-    .ps__scrollbar-y-rail {
-        z-index: 1;
-    }
+
 }
 </style>
