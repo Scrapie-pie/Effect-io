@@ -181,7 +181,7 @@ export default {
 
                         }})
 
-                  /*  if (err?.response?.status === 401 && !localStorage.getItem('jwt')) {
+                    if (err?.response?.status === 401) {
 
                         captureException({frontMessage:'user/logout',backResponse:err})
                         console.log(this.$route.fullPath, err.response)
@@ -193,7 +193,7 @@ export default {
                                 }
                             })
                         })
-                    }*/
+                    }
                     return Promise.reject(err)
                 }
             )
