@@ -152,6 +152,9 @@ Vue.use(VueYandexMetrika, {
     }
 })
 
+
+
+
 new Vue({
     wait: new VueWait({
         useVuex: true, // You must pass this option `true` to use Vuex

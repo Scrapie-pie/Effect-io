@@ -120,11 +120,11 @@ export default {
 
                 socket.on('connect',()=>{
 
-                    captureMessage('socket connect')
+                    //captureMessage('socket connect')
 
 
                 })
-                socket.on('connect_error',error=>{
+               /* socket.on('connect_error',error=>{
                     console.log('socket connect_error',error);
                     captureMessage('socket connect_error')
                 })
@@ -158,14 +158,16 @@ export default {
                 });
                 socket.on('reconnect_failed', () => {
                     captureMessage('reconnect_failed')
-                });
+                });*/
 
-
+                console.log(this.$store.state.sockets.emitList);
                 for (let key in this.$store.state.sockets.emitList) {
                     socket.on(key, socketValue => {
                         /*  this.flag = !this.flag //Todo убрать принятие через раз после теста
                             if(!this.flag)  return*/
                         this.$root.$emit(this.$store.state.sockets.emitList[key], socketValue)
+
+                        //window[key]=this.$root.$emit(this.$store.state.sockets.emitList[key], socketValue)
                     })
                 }
             } catch (err) {
@@ -174,6 +176,30 @@ export default {
             /*eslint-enabled */
         },
 
+        'logout'(val) {
+            //this.$socket.emit('delivered', val.socket_id);
+
+            const jwt = localStorage.getItem('jwt')
+            if(jwt && jwt.includes(val.access_token_part)) {
+
+            } else {
+                this.$store.dispatch('user/logout').then(() => {
+                    this.$router.push({
+                        name: 'auth',
+                        query: {
+                            return: this.$route.fullPath
+                        }
+                    })
+                })
+            }
+
+
+
+            this.$store.commit('sockets/historyPush', {
+                event: 'logout',
+                socket_id: val.socket_id
+            })
+        },
         'hot-guest'(val) {
             //this.$socket.emit('delivered', val.socket_id);
 

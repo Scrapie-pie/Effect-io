@@ -16,7 +16,8 @@ const getDefaultState = () => {
             'self-remove': 'emitSelfRemove',
             'unprocessed-remove': 'emitUnprocessedRemove',
             'update-employees': 'emitUpdateEmployees',
-            'employee-online': 'emitEmployeeOnline'
+            'employee-online': 'emitEmployeeOnline',
+            'logout':'emitLogout'
         }
     }
 }
