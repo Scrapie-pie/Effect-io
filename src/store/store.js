@@ -21,7 +21,6 @@ const getDefaultStateRoom = () => {
 }
 
 const getDefaultFilterSelect = () => {
-
     return {
         filterSelect: {
             url: '',
@@ -46,7 +45,7 @@ const getDefaultState = () => {
                 { id: 6, name: 'Viber' },
                 { id: 13, name: 'WhatsApp' },
                 { id: 4, name: 'Slack' }
-            ],
+            ]
 
             /*  actionAnotherTab:{
                 mutation:'',

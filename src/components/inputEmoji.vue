@@ -49,12 +49,9 @@ export default {
         }
     },
     methods: {
-        listenerCopy(e){
-
-
+        listenerCopy(e) {
             let listText = []
             e.currentTarget.childNodes.forEach((item, index) => {
-
                 if (item.nodeName == 'BR') {
                     listText[index] = '\n'
                 } else if (item.nodeName == 'A') {
@@ -64,30 +61,21 @@ export default {
                 }
             })
 
-            e.clipboardData.setData('text/plain', listText.join(''));
-            e.preventDefault();
-
-
-
-
+            e.clipboardData.setData('text/plain', listText.join(''))
+            e.preventDefault()
         },
         listenerClearStylePaste(event) {
-
-
             let paste = (event.clipboardData || window.clipboardData).getData('text/plain')
-
-
 
             paste = paste.replace(/(\r\n|\n|&lt;br&gt;)/g, '<br>')
             paste = paste.replace(/onerror/g, 'xss_off_onerror')
 
-
-           /* const selection = window.getSelection();
+            /* const selection = window.getSelection();
             if (!selection.rangeCount) return false;
             selection.deleteFromDocument();
             selection.getRangeAt(0).insertNode(document.createTextNode(paste));*/
 
-            event.preventDefault();
+            event.preventDefault()
 
             //console.log(text);
 
@@ -150,22 +138,18 @@ export default {
             return item
         })
 
-
-
         const Tag = this.tag
         if (this.type === 'text') {
             const attributes = {
                 attrs: {
-                    class: 'input-emoji',
-
+                    class: 'input-emoji'
                 },
                 on: {
-
                     //copy: this.listenerCopy
                 }
             }
             splitStr = splitStr.join('')
-            return <Tag {...attributes}  domPropsInnerHTML={splitStr} />
+            return <Tag {...attributes} domPropsInnerHTML={splitStr} />
         } else {
             const attributes = {
                 attrs: {
@@ -177,7 +161,7 @@ export default {
                 on: {
                     input: this.inputChange,
                     blur: this.blur,
-                    paste: this.listenerClearStylePaste,
+                    paste: this.listenerClearStylePaste
                     //oncopy: this.listenerCopy
                 }
             }

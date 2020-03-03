@@ -1,9 +1,6 @@
 import lodash_union from 'lodash/union'
 
-
-import {captureException,configureScope,withScope} from '@sentry/browser'
-
-
+import { captureException, configureScope, withScope } from '@sentry/browser'
 
 const getDefaultState = () => {
     return {
@@ -23,14 +20,14 @@ export default {
         resetState(state) {
             Object.assign(state, getDefaultState())
         },
-        logout(state,event) {
+        logout(state, event) {
             console.log('user logout')
             this._vm.$socket.disconnect()
             /*this._vm.$http.put('employee/online-update', {
                 online: 0
             })*/
             //this._vm.$http.put('user/logout')
-            if(event==='exit') this._vm.$http.put('user/logout')
+            if (event === 'exit') this._vm.$http.put('user/logout')
             localStorage.removeItem('jwt')
 
             delete this._vm.$http.defaults.headers.common['jwt']
@@ -121,63 +118,48 @@ export default {
     },
     actions: {
         getLogin({ commit, dispatch }, user) {
-
-            return new Promise((resolve,reject) => {
-
-                console.log('getLogin',user);
+            return new Promise((resolve, reject) => {
+                console.log('getLogin', user)
                 if (!user) {
-                    withScope(function (scope) {
-                        scope.setTag("getLogin",'empty');
-                        throw captureException({frontMessage:'пустой ответ',backResponse:user})
+                    withScope(function(scope) {
+                        scope.setTag('getLogin', 'empty')
+                        throw captureException({ frontMessage: 'пустой ответ', backResponse: user })
                     })
-
-
-
-
                 }
-                if(!user.jwt) {
-                    withScope(function (scope) {
-                        scope.setTag("getLogin",'jwt');
-                        throw captureException({frontMessage:'Нет jwt',backResponse:user});
+                if (!user.jwt) {
+                    withScope(function(scope) {
+                        scope.setTag('getLogin', 'jwt')
+                        throw captureException({ frontMessage: 'Нет jwt', backResponse: user })
                     })
-
                 }
 
-                console.log('дошел');
+                console.log('дошел')
                 localStorage.setItem('jwt', user.jwt)
                 this._vm.$http.defaults.headers.common['jwt'] = user.jwt
                 this._vm.$http.defaults.headers['content-type'] = 'application/json'
 
-
                 commit('profile', user)
 
                 configureScope(function(scope) {
-
-
                     //scope.setTag("my-tag", "my value");
                     scope.setUser({
-                        uuid:user.uuid,
+                        uuid: user.uuid,
                         id: user.id,
                         email: user.mail,
                         name: user.mail
-                    });
-                });
+                    })
+                })
 
                 dispatch('getSettings')
                 dispatch('getBranchListAll')
                 dispatch('getSiteCompanyList')
                 dispatch('operators/getAll', null, { root: true })
                 dispatch('phrases/getItemList', null, { root: true })
-                resolve();
+                resolve()
             })
-
-
-
-
         },
-        logout({ commit },event) {
-
-            commit('logout',event)
+        logout({ commit }, event) {
+            commit('logout', event)
             commit('resetState')
             commit('resetState', null, { root: true })
 

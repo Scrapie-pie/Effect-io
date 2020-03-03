@@ -16,7 +16,7 @@ import '@/scss/base.scss'
 import TheHeader from '@/components/TheHeader'
 import ThePopup from '@/components/ThePopup'
 
-import {captureException} from '@sentry/browser'
+import { captureException } from '@sentry/browser'
 
 import {
     webSockets,
@@ -50,7 +50,7 @@ export default {
             if (val) {
                 this.pollingSockets()
 
-               /* if (process.env.NODE_ENV === 'development') return
+                /* if (process.env.NODE_ENV === 'development') return
                 window.onbeforeunload = function() {
                     return 'Данные не сохранены. Точно перейти?'
                 }*/
@@ -61,12 +61,9 @@ export default {
         }
     },
     created() {
-
-
-      /*  setTimeout(()=>{
+        /*  setTimeout(()=>{
             this.$root.$emit('emitEmployeeOnline',{online:0,user_id:this.$store.state.user.profile.id})
         },1000)*/
-
 
         document.body.classList.add('page')
 
@@ -165,25 +162,23 @@ export default {
                         return Promise.reject(err)
                     }
 
-                    if (
-                        err?.response?.data?.message &&
-                        this.$route.name !== 'auth'
-                    ) {
+                    if (err?.response?.data?.message && this.$route.name !== 'auth') {
                         this.$root.$emit('globBoxControlClose')
                         this.$root.$emit('popup-notice', err.response.data.message)
                         console.log('error №', err.response.status)
                     }
 
-                    captureException({frontMessage:'Отправляю все ошибки',backResponse:{
-                            config:err.config,
-                            response:err.response,
-                            message:err.message
-
-                        }})
+                    captureException({
+                        frontMessage: 'Отправляю все ошибки',
+                        backResponse: {
+                            config: err.config,
+                            response: err.response,
+                            message: err.message
+                        }
+                    })
 
                     if (err?.response?.status === 401) {
-
-                        captureException({frontMessage:'user/logout',backResponse:err})
+                        captureException({ frontMessage: 'user/logout', backResponse: err })
                         console.log(this.$route.fullPath, err.response)
                         this.$store.dispatch('user/logout').then(() => {
                             this.$router.push({

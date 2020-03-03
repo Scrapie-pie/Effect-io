@@ -29,8 +29,6 @@ export default {
                     }
                 })
                 .then(({ data: { data } }) => {
-
-
                     data.forEach(itemApi => {
                         let socketStoreItemFind = this.$store.state.sockets.history.find(
                             itemStore => {
@@ -49,7 +47,7 @@ export default {
                                 itemApi.event === 'unprocessed-remove'
                             ) {
                                 //обновляем страницу, сокет не успел дойти, но в ините счетчик уже +1,  в итоге полилинг добавлял уже лишний
-                                console.log(itemApi.event);
+                                console.log(itemApi.event)
                                 let findIndex = this.$store.state.visitors.process.findIndex(
                                     //Если диалог уже есть в ините, то не добавляем
                                     processItem =>
@@ -57,7 +55,7 @@ export default {
                                         itemApi.payload.site_id + itemApi.payload.guest_uuid
                                 )
                                 console.log('itemApi.event', itemApi.event, findIndex)
-                                if (findIndex!=-1) return
+                                if (findIndex != -1) return
                             }
 
                             //console.log(socketEmitName, itemApi.payload)
@@ -66,7 +64,7 @@ export default {
                     })
                 })
                 .finally(() => {
-                    let interval = config.polling_interval_ms ? config.polling_interval_ms:5000
+                    let interval = config.polling_interval_ms ? config.polling_interval_ms : 5000
                     setTimeout(() => {
                         this.pollingSocketsInit()
                     }, interval)
@@ -76,7 +74,7 @@ export default {
             this.pollingSocketsGo = false
         },
         pollingSockets() {
-            if(!config.polling_server) return
+            if (!config.polling_server) return
             this.pollingSocketsGo = true
             this.pollingSocketsInit()
             setTimeout(() => {

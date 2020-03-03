@@ -333,10 +333,8 @@ export default {
         }
     }
     &_icon-left {
-
-
         .icon {
-            margin-right:.5em;
+            margin-right: 0.5em;
         }
     }
 

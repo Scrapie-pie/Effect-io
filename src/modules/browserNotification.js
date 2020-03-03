@@ -47,8 +47,6 @@ function notificationEngine(title, body, link) {
 }
 
 function browserNotificationMessage(val) {
-
-
     if (
         Notification.permission === 'denied' ||
         !this.$store.state.user.settings?.settings?.push_notifications ||

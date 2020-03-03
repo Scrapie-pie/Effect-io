@@ -28,8 +28,8 @@
 </template>
 
 <script>
-    import FilterDropMenu from '@/components/FilterDropMenu'
-    import {branchesBr} from '@/modules/modules'
+import FilterDropMenu from '@/components/FilterDropMenu'
+import { branchesBr } from '@/modules/modules'
 
 import { stats, paginatorStats } from '@/mixins/mixins'
 
@@ -39,38 +39,29 @@ export default {
     },
     filters: {
         branchesBr
-
     },
-    mixins: [stats,
-        paginatorStats
-    ],
+    mixins: [stats, paginatorStats],
 
     data() {
-        return {
-
-        }
+        return {}
     },
     computed: {
-
         bodyListFormat() {
-            return  this.bodyList.map(item => {
+            return this.bodyList.map(item => {
                 item.operator = this.$store.getters['operators/all'].find(
                     itemSub => itemSub.id === item.user_id
                 )
                 if (item.operator) item.name = item.operator.fullName
                 return item
             })
-        },
-
+        }
     },
-    methods: {
-
-    }
+    methods: {}
 }
 </script>
 
 <style lang="scss">
 .stats-log-status-operator-list {
-    width:auto;
+    width: auto;
 }
 </style>

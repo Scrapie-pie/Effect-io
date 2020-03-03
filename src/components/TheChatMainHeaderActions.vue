@@ -52,7 +52,6 @@ export default {
         }
     },
     computed: {
-
         showExit() {
             console.log(
                 'showConfirmExit',

@@ -36,7 +36,7 @@ import file from '@/assets/img/icons/file.svg'
 import vk from '@/assets/img/icons/social/vk.svg'
 import tg from '@/assets/img/icons/social/tg.svg'
 import fbme from '@/assets/img/icons/social/fbme.svg'
-import widget from '@/assets/img/icons/social/widget.svg';
+import widget from '@/assets/img/icons/social/widget.svg'
 
 import ball1 from '@/assets/img/icons/balls/ball1.svg'
 import ball2 from '@/assets/img/icons/balls/ball2.svg'
@@ -150,9 +150,5 @@ export default {
         width: 30px;
         height: 30px;
     }
-
-
-
-
 }
 </style>

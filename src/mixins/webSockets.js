@@ -9,12 +9,10 @@ import settings from '@/routes/settings'
 
 import lodash_once from 'lodash/once'
 
-import {captureMessage,configureScope,withScope} from '@sentry/browser'
-
-
+import { captureMessage, configureScope, withScope } from '@sentry/browser'
 
 import { httpParams, viewModeChat } from '@/mixins/mixins'
-import {captureException} from "@sentry/browser/dist/index";
+import { captureException } from '@sentry/browser/dist/index'
 
 export default {
     mixins: [httpParams, viewModeChat], //routerPushProcessAllOrItemFirst подключи будет баг
@@ -71,10 +69,10 @@ export default {
             }
         },*/
         playSoundFile(nameFile) {
-            let { settings=false, sounds } = this.$store.state.user.settings
+            let { settings = false, sounds } = this.$store.state.user.settings
 
-            console.log(settings);
-            if(!settings) return
+            console.log(settings)
+            if (!settings) return
 
             let index = settings[nameFile]
             /*  console.log(sounds[index].file);
@@ -87,7 +85,7 @@ export default {
             audio.volume = 0.5
             audio.muted = false
 
-            console.log(sounds[index].file);
+            console.log(sounds[index].file)
             audio.play()
         },
         webSocketInit({ uuid, owner_id, socket_server }) {
@@ -110,21 +108,18 @@ export default {
                 })
 
                 let sentryMessage = {
-                    uuid,owner_id
+                    uuid,
+                    owner_id
                 }
 
-
-                configureScope(function (scope) {
-                    scope.setTag("socket",'events');
+                configureScope(function(scope) {
+                    scope.setTag('socket', 'events')
                 })
 
-                socket.on('connect',()=>{
-
+                socket.on('connect', () => {
                     //captureMessage('socket connect')
-
-
                 })
-               /* socket.on('connect_error',error=>{
+                /* socket.on('connect_error',error=>{
                     console.log('socket connect_error',error);
                     captureMessage('socket connect_error')
                 })
@@ -160,7 +155,7 @@ export default {
                     captureMessage('reconnect_failed')
                 });*/
 
-                console.log(this.$store.state.sockets.emitList);
+                console.log(this.$store.state.sockets.emitList)
                 for (let key in this.$store.state.sockets.emitList) {
                     socket.on(key, socketValue => {
                         /*  this.flag = !this.flag //Todo убрать принятие через раз после теста
@@ -176,12 +171,11 @@ export default {
             /*eslint-enabled */
         },
 
-        'logout'(val) {
+        logout(val) {
             //this.$socket.emit('delivered', val.socket_id);
 
             const jwt = localStorage.getItem('jwt')
-            if(jwt && jwt.includes(val.access_token_part)) {
-
+            if (jwt && jwt.includes(val.access_token_part)) {
             } else {
                 this.$store.dispatch('user/logout').then(() => {
                     this.$router.push({
@@ -192,8 +186,6 @@ export default {
                     })
                 })
             }
-
-
 
             this.$store.commit('sockets/historyPush', {
                 event: 'logout',
@@ -362,7 +354,6 @@ export default {
             })
         },
         'room-users'(val) {
-
             //this.$socket.emit('delivered', val.socket_id);
             //console.log('room-users', val)
             val.list.socket = true // для того что бы room_id не обновлять
@@ -374,9 +365,8 @@ export default {
             })
         },
         unprocessed(val) {
-
-            if(val.toUuid!==this.$store.state.user.profile.uuid) {
-                 return captureMessage('Не совпадает, toUuid='+val.toUuid)
+            if (val.toUuid !== this.$store.state.user.profile.uuid) {
+                return captureMessage('Не совпадает, toUuid=' + val.toUuid)
             }
 
             this.$store.commit('sockets/historyPush', {
@@ -449,8 +439,9 @@ export default {
             })
             this.$store.commit('visitors/selfMessageRemoveItem', val)
 
-
-            let isAllowRedirect = this.httpParams.params.site_id+this.httpParams.params.guest_uuid===val.site_id + val.guest_uuid
+            let isAllowRedirect =
+                this.httpParams.params.site_id + this.httpParams.params.guest_uuid ===
+                val.site_id + val.guest_uuid
 
             if (this.viewModeChat === 'visitors' && isAllowRedirect) {
                 this.$router.push({ name: 'messageAll' })
@@ -496,31 +487,23 @@ export default {
             })
         },
         'employee-online'(val) {
-
-
             this.$store.commit('sockets/historyPush', {
                 event: 'employee-online',
                 socket_id: val.socket_id
             })
 
-
-
             //this.$socket.emit('delivered', val.socket_id);
 
             let { user_id, online } = val
 
-
-
             this.$store.commit('operators/setOperatorOnline', { user_id, online })
             if (user_id === this.$store.state.user.profile.id) {
-
                 this.$store.commit('user/profileUpdate', { online })
-                withScope(function (scope) {
-                    scope.setTag("employee-online",'socket');
-                    captureMessage('employee-online '+online)
+                withScope(function(scope) {
+                    scope.setTag('employee-online', 'socket')
+                    captureMessage('employee-online ' + online)
                 })
             }
-
         },
         'typing-live'(val) {
             this.$store.commit('roomActive/typingLive', val)

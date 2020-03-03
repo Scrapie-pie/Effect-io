@@ -6,8 +6,6 @@
 
 import '@/modules/sentry'
 
-
-
 import Vue from 'vue'
 import App from './App.vue'
 import '@/validation'
@@ -143,17 +141,14 @@ Vue.use(VueYandexMetrika, {
     id: 57350245,
     router: router,
     env: process.env.NODE_ENV,
-    options:{
-        clickmap:true,
-        trackLinks:true,
-        accurateTrackBounce:true,
-        webvisor:true,
-        ecommerce:"dataLayer"
+    options: {
+        clickmap: true,
+        trackLinks: true,
+        accurateTrackBounce: true,
+        webvisor: true,
+        ecommerce: 'dataLayer'
     }
 })
-
-
-
 
 new Vue({
     wait: new VueWait({

@@ -106,7 +106,6 @@ export default {
             console.log(this.processItem)
 
             this.processItem.very_hot = 0
-
         },
         routerNext(status) {
             let { guest_uuid, site_id } = this.processItem

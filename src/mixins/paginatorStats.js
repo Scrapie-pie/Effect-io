@@ -5,25 +5,22 @@ import lodash_cloneDeep from 'lodash/cloneDeep'
 import { scrollbar } from '@/mixins/mixins'
 
 export default {
-    mixins:[scrollbar],
-    props:{
-        search:{
-            type:String,
-            default:''
+    mixins: [scrollbar],
+    props: {
+        search: {
+            type: String,
+            default: ''
         }
     },
     data() {
         return {
-
-            requestDataPrev:{},
+            requestDataPrev: {},
             getItemListStart: true,
-            isNoFinishData:true,
+            isNoFinishData: true,
             limit: 20,
             pageN: 1,
             bodyListCount: 0,
-            apiMethod:'statistic/get-by-params'
-
-
+            apiMethod: 'statistic/get-by-params'
         }
     },
     computed: {
@@ -38,11 +35,10 @@ export default {
         },
         params_paginator() {
             return {
-                search:this.search,
-
+                search: this.search
             }
         },
-        paramsComp(){
+        paramsComp() {
             return {}
         },
 
@@ -62,26 +58,26 @@ export default {
     },
 
     watch: {
-        $route(){
-            console.log('$route');
+        $route() {
+            console.log('$route')
         },
         search: 'debounceSearch',
         params(val) {
-            console.log('params',val);
+            console.log('params', val)
             this.resetSearch()
             this.getItemList()
         },
 
         paramsComp(val) {
-            console.log('paramsComp');
+            console.log('paramsComp')
             this.resetSearch()
             this.getItemList()
         }
     },
-    created(){
-        this.$root.$on('statsScrollDown',this.scrollLoad)
+    created() {
+        this.$root.$on('statsScrollDown', this.scrollLoad)
         this.getItemList()
-        console.log('created getItemList');
+        console.log('created getItemList')
     },
 
     methods: {
@@ -94,72 +90,52 @@ export default {
             this.getItemList()
         },
         scrollLoad(e) {
-            console.log('scrollLoad');
+            console.log('scrollLoad')
             //console.log('scrollLoad',e);
             if (this.scrollLoadAllow(e)) this.getItemList()
         },
         resetSearch() {
-            console.log('resetSearch');
-            this.isNoFinishData=true
+            console.log('resetSearch')
+            this.isNoFinishData = true
             this.pageN = 1
             this.bodyListCount = 0
             this.bodyList = []
             this.getItemListStart = true
         },
-        get() {//чистим метод из stats.js
-
+        get() {
+            //чистим метод из stats.js
         },
         getItemList() {
-
-
             if (this.last_days || (this.date_from && this.date_to)) {
-
-
                 if (!this.getItemListStart) return
                 this.getItemListStart = false
 
-
                 //if(lodash_isEqual(this.requestData,this.requestDataPrev)) return //created>this.getItemList() следом срабатывал watch>params
-                console.log(this.requestData, this.requestDataPrev);
+                console.log(this.requestData, this.requestDataPrev)
 
                 if (this.isNoFinishData) {
-
-
-
-                    console.log('start');
-                    this.requestDataPrev=lodash_cloneDeep(this.requestData)
+                    console.log('start')
+                    this.requestDataPrev = lodash_cloneDeep(this.requestData)
                     this.$http.get(this.apiMethod, this.requestData).then(({ data }) => {
-                        console.log('finish');
+                        console.log('finish')
                         this.getItemListStart = true
 
-
-
-
-
                         //if (data.data.count) {
-                            this.bodyList.push(...data.data.list)
-                            //this.bodyListCount = data.data.count
+                        this.bodyList.push(...data.data.list)
+                        //this.bodyListCount = data.data.count
 
-
-                        console.log(this.requestDataPrev);
-
-
+                        console.log(this.requestDataPrev)
 
                         //}
 
-                        if(data.data.list.length===0 || data.data.list.length < this.limit)  {
-                                this.isNoFinishData=false;
+                        if (data.data.list.length === 0 || data.data.list.length < this.limit) {
+                            this.isNoFinishData = false
                         } else {
                             this.pageN += 1
                         }
-
                     })
                 }
             }
-
-
-
-        },
-
+        }
     }
 }

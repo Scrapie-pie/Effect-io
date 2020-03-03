@@ -101,14 +101,14 @@
 import SocialLinks from '@/components/SocialLinks'
 import TheRedirectClient from '@/components/TheRedirectClient'
 import autosize from 'autosize'
-import { httpParams,viewModeChat } from '@/mixins/mixins'
+import { httpParams, viewModeChat } from '@/mixins/mixins'
 
 export default {
     components: {
         SocialLinks,
         TheRedirectClient
     },
-    mixins: [httpParams,viewModeChat],
+    mixins: [httpParams, viewModeChat],
     data() {
         return {
             guest_uuid: null,
@@ -133,9 +133,7 @@ export default {
             return [
                 {
                     name: 'Пол',
-                    text: `На сайте ${this.info.online_time}, заходил ${
-                        this.info.visits_count
-                    } раз(а)`
+                    text: `На сайте ${this.info.online_time}, заходил ${this.info.visits_count} раз(а)`
                 },
                 {
                     name: 'Восраст',
@@ -214,15 +212,14 @@ export default {
 .client-info {
     max-height: 90vh;
 
-
     &__controls {
-        border-top:1px solid glob-color(border);
+        border-top: 1px solid glob-color(border);
         padding-top: calc-em(20);
 
         .icon {
-            width:15px;
-            height:auto;
-            max-height:20px;
+            width: 15px;
+            height: auto;
+            max-height: 20px;
         }
     }
 

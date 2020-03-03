@@ -92,15 +92,12 @@ export default {
         }
     },
     watch: {
-
         paramsComp() {
-
             if (
-
                 this.last_days ||
                 (this.date_from && this.date_to && this.time_from && this.time_to)
             ) {
-                console.log('paramsComp');
+                console.log('paramsComp')
                 this.resetSearch()
                 this.getItemList()
             }
@@ -109,7 +106,7 @@ export default {
     created() {},
     methods: {
         getItemList() {
-            if(!this.search) return //Из за этой строчки пришлось продублировать всю функцию из paginator
+            if (!this.search) return //Из за этой строчки пришлось продублировать всю функцию из paginator
             if (!this.getItemListStart) return
             this.getItemListStart = false
 

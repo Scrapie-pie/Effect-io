@@ -34,7 +34,7 @@
 <script>
 import ClickOutside from 'vue-click-outside'
 
-import {captureMessage,withScope} from '@sentry/browser'
+import { captureMessage, withScope } from '@sentry/browser'
 
 import { viewModeChat } from '@/mixins/mixins'
 export default {
@@ -171,9 +171,9 @@ export default {
         operatorStatusUpdate() {
             console.log('operatorStatusUpdate')
             let online = this.status
-            withScope(function (scope) {
-                scope.setTag("employee-online",'сам переключил');
-                captureMessage('employee-online '+online)
+            withScope(function(scope) {
+                scope.setTag('employee-online', 'сам переключил')
+                captureMessage('employee-online ' + online)
             })
             this.$http.put('employee/online-update', {
                 online

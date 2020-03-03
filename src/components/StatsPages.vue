@@ -27,25 +27,25 @@
 <script>
 import BtnSort from '@/components/BtnSort'
 
-import { stats, sortFields,paginatorStats } from '@/mixins/mixins'
+import { stats, sortFields, paginatorStats } from '@/mixins/mixins'
 
 export default {
     components: {
         BtnSort
     },
-    mixins: [stats, sortFields,paginatorStats],
+    mixins: [stats, sortFields, paginatorStats],
     data() {
         return {
-            isOrderType:false,
+            isOrderType: false
         }
     },
     computed: {
-        orderType(){
-            return this.isOrderType?'asc':'desc'
+        orderType() {
+            return this.isOrderType ? 'asc' : 'desc'
         },
-        paramsComp(){
+        paramsComp() {
             return {
-                order_type:this.orderType
+                order_type: this.orderType
             }
         },
         bodyListFormat() {

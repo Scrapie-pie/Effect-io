@@ -21,14 +21,14 @@ import stats from '@/routes/stats'
 
 import Ui from '@/routes/ui'
 
-import {captureException,withScope} from '@sentry/browser'
+import { captureException, withScope } from '@sentry/browser'
 
 let helpers = process.env.NODE_ENV !== 'production' ? [...Ui] : []
 
 const BaseNoFound = () => import('@/components/BaseNoFound')
 
 function timeout(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
+    return new Promise(resolve => setTimeout(resolve, ms))
 }
 
 const router = new Router({
@@ -153,8 +153,8 @@ const router = new Router({
 
 export default router
 
-router.beforeEach (async(to, from, next)  => {
-    await timeout(300); //https://github.com/aws-amplify/amplify-js/issues/3985
+router.beforeEach(async (to, from, next) => {
+    await timeout(300) //https://github.com/aws-amplify/amplify-js/issues/3985
     const not_auth_routes = ['auth', 'recover', 'exit'],
         authenticated = store.getters['user/authenticated']
 
@@ -162,9 +162,9 @@ router.beforeEach (async(to, from, next)  => {
         // пропускаем на гостевые маршруты
 
         if (to.name === 'exit') {
-            console.log('логаут по кнопке');
+            console.log('логаут по кнопке')
 
-            store.dispatch('user/logout','exit').then(() => {
+            store.dispatch('user/logout', 'exit').then(() => {
                 console.log('then')
                 return next({ name: 'auth' })
             })
@@ -212,10 +212,10 @@ router.beforeEach (async(to, from, next)  => {
                     })
                 })
                 .catch(error => {
-               /*     console.log(jwt);
+                    /*     console.log(jwt);
                     axios.defaults.headers.common['jwt'] = jwt  //Не получили из метода, вставляем старый
                     axios.defaults.headers['content-type'] = 'application/json'*/
-                    captureException({frontMessage:'router before',backResponse:error})
+                    captureException({ frontMessage: 'router before', backResponse: error })
                     console.log(error)
                     console.log(error.response)
 

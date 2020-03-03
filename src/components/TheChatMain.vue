@@ -415,12 +415,9 @@ export default {
             if (this.httpParams) {
                 let viewModeChat = this.viewModeChat //пользователь мог не дожидаться запроса и на момент ответа viewModeChat содержала другой роут проходил редирект обратно
                 this.$http.get('chat-room-user/all', this.httpParams).then(({ data }) => {
-
-                    if (!this.accessPage(data.data,viewModeChat)) {
-
+                    if (!this.accessPage(data.data, viewModeChat)) {
                         return this.$router.push({ name: 'processAll' })
                     }
-
 
                     //console.log(this.httpParams);
 
@@ -429,10 +426,7 @@ export default {
                 })
             }
         },
-        accessPage(
-            list,
-            viewModeChat
-        ) {
+        accessPage(list, viewModeChat) {
             if (viewModeChat === 'common') return true
 
             if (viewModeChat === 'search') return true
@@ -511,7 +505,7 @@ export default {
                 let { count, messages, users } = data.data
                 if (!count) return
 
-                this.chat_id = messages[0].chat_id;
+                this.chat_id = messages[0].chat_id
                 this.$store.commit('roomActive/setChatId', this.chat_id)
 
                 this.messageRun = count
@@ -612,10 +606,9 @@ export default {
             margin-top: calc-em(15);
         }
 
-
-        a:not([href^="mailto:"]):not([href^="tel:"]) {
-            display:inline-block;
-            max-width:166px;
+        a:not([href^='mailto:']):not([href^='tel:']) {
+            display: inline-block;
+            max-width: 166px;
             @extend %text-truncate;
             vertical-align: middle;
         }

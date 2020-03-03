@@ -53,7 +53,6 @@ export default {
     watch: {
         $route(to, from) {
             setTimeout(() => {
-
                 this.scrollbarScrollerPush(this.$refs.layoutTableContent, 0)
             }, 1000)
         }

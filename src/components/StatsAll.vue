@@ -253,15 +253,13 @@ export default {
             countStep: 0,
             operatorList: [],
             commonRow: [],
-            byHoursList: {},
-
+            byHoursList: {}
         }
     },
     computed: {
         hideStatsAllBranchAndByDates() {
             return !(this.$route.name == 'statsAllBranch' && this.by_dates)
         },
-
 
         showRight() {
             return this.countStep < this.maxStep
@@ -273,7 +271,7 @@ export default {
             return this.sortFieldsListGet
         },
         sortFieldsListSet() {
-            if(this.$route.name==='statsAllBranchByHours') return this.bodyList
+            if (this.$route.name === 'statsAllBranchByHours') return this.bodyList
             /*eslint-disable */
             console.log('sortFieldsListSet',this.bodyList.length);
             if(!this.bodyList.length) return []

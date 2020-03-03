@@ -48,24 +48,8 @@ export default {
             text: ''
         }
     },
-    watch: {
-        show(val){
-            this.$emit('show',val)
-        },
-        text(val) {
-
-            if (val) {
-                this.$emit('resultText', val)
-                setTimeout(() => {
-                    this.filterSearchResult = []
-                    this.text = ''
-                }, 50)
-            } else this.$root.$emit('globBoxControlClose')
-        },
-
-    },
     computed: {
-        show(){
+        show() {
             return !!this.filterSearchResult.length && !this.fullMatch
         },
         fullMatch() {
@@ -78,14 +62,22 @@ export default {
             return this.$store.state.phrases.snippets
         }
     },
-    mounted(){
-
+    watch: {
+        show(val) {
+            this.$emit('show', val)
+        },
+        text(val) {
+            if (val) {
+                this.$emit('resultText', val)
+                setTimeout(() => {
+                    this.filterSearchResult = []
+                    this.text = ''
+                }, 50)
+            } else this.$root.$emit('globBoxControlClose')
+        }
     },
-    methods:{
-
-
-    }
-
+    mounted() {},
+    methods: {}
 }
 </script>
 
@@ -141,6 +133,5 @@ export default {
     &__scroll-bar {
         max-height: 12em;
     }
-
 }
 </style>

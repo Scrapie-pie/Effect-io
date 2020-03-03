@@ -183,7 +183,6 @@ export default {
             immediate: true
         },
 
-
         uploadFileList(val) {}
     },
 
@@ -192,7 +191,6 @@ export default {
         // this.$refs.inputEmoji?.$el.removeEventListener("paste", this.listenerClearStylePaste);
     },
     methods: {
-
         saveTextarea() {
             if (this.viewModeChat === 'visitors') {
                 this.$store.commit('visitors/saveTextAreaItem', {
@@ -210,7 +208,6 @@ export default {
         },
 
         inputEmojiInputChange(text) {
-
             this.typingLive(text)
         },
         getTextAreaVisitors(list, routerParams) {
@@ -307,20 +304,15 @@ export default {
         onEnter: function(e) {
             //if(this.bufferingSend) return
 
-
-
-
             e.stopPropagation()
             e.preventDefault()
             e.returnValue = false
-            if(this.showThePhrasesSelect) return
+            if (this.showThePhrasesSelect) return
             this.input = e.target.value
             this.send()
-
         },
 
         send() {
-
             if (!navigator.onLine)
                 return this.$root.$emit('popup-notice', 'Проверьте подключение к сети =(')
             this.typingLive('')
@@ -433,11 +425,10 @@ export default {
 
                         console.log('spellingSuggestions', response.data.spellingSuggestions)
                         this.spellingShowBox(response.data.spellingSuggestions)
-                    }
-                    else {
+                    } else {
                         this.message = ''
                         this.spellingIgnoredWords = []
-                        this.uploadFileList = [];
+                        this.uploadFileList = []
                         this.saveTextarea()
                     }
                     this.bufferingSend = false
@@ -454,7 +445,6 @@ export default {
 
 <style lang="scss">
 .chat-main-footer {
-
     $color_border: glob-color('border');
     $color_bg-send: glob-color('info-lighten');
     $color_success: glob-color('success');
@@ -466,13 +456,11 @@ export default {
     position: relative;
     border: 1px dashed transparent;
     border-top: 1px solid $color_border;
-    $pt:calc-em(20);
-
+    $pt: calc-em(20);
 
     .process-actions {
-        padding-top:$pt;
+        padding-top: $pt;
     }
-
 
     &.drag-over {
         &::after {
@@ -515,8 +503,7 @@ export default {
     }
 
     .input-emoji {
-        padding-top:$pt;
-
+        padding-top: $pt;
     }
 
     &__buttons {

@@ -96,7 +96,7 @@ import SelectBranch from '@/components/SelectBranch'
 import FormOTRS from '@/components/FormOTRS'
 import { viewModeChat, httpParams, removeMessageAndPush } from '@/mixins/mixins'
 import config from '@/config/index'
-import LinkShare from "@/components/LinkShare";
+import LinkShare from '@/components/LinkShare'
 
 export default {
     components: {
@@ -198,7 +198,6 @@ export default {
         document.removeEventListener('click', this.hideClientInfo)
     },
     methods: {
-
         coBrowser() {
             const params =
                 '?guestUuid=' +

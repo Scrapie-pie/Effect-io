@@ -75,7 +75,7 @@ export default {
 
     data() {
         return {
-            url:null,
+            url: null,
             filterSearchResult: [],
             show: false,
             modelradio: null,
@@ -130,9 +130,7 @@ export default {
                 let strDate = ''
                 if (this.modelradio) {
                     if (this.calendarOptions?.mode === 'single') {
-                        strDate = `${this.modelradio.date_from} | ${this.modelradio.time_from} - ${
-                            this.modelradio.time_to
-                        }`
+                        strDate = `${this.modelradio.date_from} | ${this.modelradio.time_from} - ${this.modelradio.time_to}`
                     } else {
                         strDate = `${this.modelradio.date_from} - ${this.modelradio.date_to}`
                     }
@@ -194,17 +192,10 @@ export default {
     },
     watch: {
         url: lodash_debounce(function(val, oldVal) {
-
-
             this.$emit('get', val)
             this.$store.commit('setFilter', {
                 url: val
             })
-
-
-
-
-
         }, 500),
 
         getStart(val) {
@@ -212,7 +203,11 @@ export default {
             if (this.startOnce) {
                 if (this.type === 'checkbox' && this.name !== 'calendar') {
                     if (this.allChecked) this.$emit('get', [])
-                    else this.$emit('get', val.map(item => item.id))
+                    else
+                        this.$emit(
+                            'get',
+                            val.map(item => item.id)
+                        )
                 }
                 if (this.type === 'radio') {
                     this.$emit('get', val.id)
@@ -230,7 +225,11 @@ export default {
                     ) {
                         //если результат не меняли, ничего не отправляем
                         if (this.allChecked) this.$emit('get', [])
-                        else this.$emit('get', this.modelcheckbox.map(item => item.id))
+                        else
+                            this.$emit(
+                                'get',
+                                this.modelcheckbox.map(item => item.id)
+                            )
                     }
                 } else {
                     // открыл фильтр первый раз изменил результат, закрыл вкладку,ушел ответ, открыл вкладку, ничего не менял, закрыл, все равно ответ ушел - это исправляет ситуацию
@@ -293,7 +292,7 @@ export default {
     created() {
         if (this.name === 'url') {
             this.url = this.filterSelectStore[this.name]
-           /* this.$http.get('site/pages').then(({ data }) => {
+            /* this.$http.get('site/pages').then(({ data }) => {
                 data = data.data.map(item => {
                     return { id: item, name: item }
                 })

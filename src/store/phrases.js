@@ -36,14 +36,7 @@ export default {
         }
     },
     actions: {
-        snippetCreate(
-            { commit },
-            {
-                text,
-                category: { title, id },
-                is_common
-            }
-        ) {
+        snippetCreate({ commit }, { text, category: { title, id }, is_common }) {
             let category = title
             this._vm.$http
                 .post('snippet/create-snippet', { text, category, is_common })

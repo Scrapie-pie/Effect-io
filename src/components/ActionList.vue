@@ -21,11 +21,8 @@
 </template>
 
 <script>
-
-
 export default {
     filters: {
-
         setTitle: function(text, title) {
             if (!title) return ''
             return text
@@ -64,7 +61,7 @@ export default {
     },
     data() {
         return {
-            highlightIndex:-1,
+            highlightIndex: -1
         }
     },
     computed: {
@@ -86,102 +83,79 @@ export default {
             )
         }
     },
-    watch:{
-        highlightIndex(val,oldVal){
-                let target = this.$refs.item[this.highlightIndex];
-                let intersectionObserverOptions = {
-                    root: this.$el,
-                    rootMargin:'0px',
-                    threshold: 1.0
-                }
-            let onIntersection = (entries)=>{
+    watch: {
+        highlightIndex(val, oldVal) {
+            let target = this.$refs.item[this.highlightIndex]
+            let intersectionObserverOptions = {
+                root: this.$el,
+                rootMargin: '0px',
+                threshold: 1.0
+            }
+            let onIntersection = entries => {
                 entries.forEach(entry => {
                     if (!entry.isIntersecting) {
-                        console.log(target);
-                        window.target = target;
+                        console.log(target)
+                        window.target = target
 
                         this.$refs.scrollbar.$el.scrollTop = target.offsetTop
                         this.$refs.scrollbar.update()
-
                     }
-                    observer.unobserve(entry.target);
-                });
+                    observer.unobserve(entry.target)
+                })
             }
-                let observer = new IntersectionObserver(onIntersection, intersectionObserverOptions);
-                observer.observe(target);
-
+            let observer = new IntersectionObserver(onIntersection, intersectionObserverOptions)
+            observer.observe(target)
         }
     },
     mounted() {
-        document.getElementById('contenteditable').addEventListener("keyup",this.keyUp)
-        document.getElementById('contenteditable').addEventListener("keydown",this.keyDown)
+        document.getElementById('contenteditable').addEventListener('keyup', this.keyUp)
+        document.getElementById('contenteditable').addEventListener('keydown', this.keyDown)
     },
     beforeDestroy() {
-        document.getElementById('contenteditable').removeEventListener("keyup",this.keyUp)
-        document.getElementById('contenteditable').removeEventListener("keydown",this.keyDown)
+        document.getElementById('contenteditable').removeEventListener('keyup', this.keyUp)
+        document.getElementById('contenteditable').removeEventListener('keydown', this.keyDown)
     },
     methods: {
-        visibleElement(){
+        visibleElement() {
             // this is the target which is observed
-
         },
         getChecked(item) {
             return this.value === item[this.nameFieldValue]
         },
-        keyDown(e){
-            if(e.key==='ArrowUp' || e.key==='ArrowDown') {
-                e.stopPropagation();
-                e.stopImmediatePropagation();
-                e.preventDefault();
+        keyDown(e) {
+            if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+                e.stopPropagation()
+                e.stopImmediatePropagation()
+                e.preventDefault()
                 return false
-
             }
-
         },
-        keyUp(e){
-
-
-
-
-            if(e.key==='ArrowUp') {
-
-                if(this.highlightIndex<=0) {
-                    this.highlightIndex = this.itemList.length-1
-                }
-                else {
-                    this.highlightIndex = this.highlightIndex-1;
-
-
+        keyUp(e) {
+            if (e.key === 'ArrowUp') {
+                if (this.highlightIndex <= 0) {
+                    this.highlightIndex = this.itemList.length - 1
+                } else {
+                    this.highlightIndex = this.highlightIndex - 1
                 }
                 //this.$refs.input[this.highlightIndex].click()
 
                 //this.$emit('input', this.itemList[this.highlightIndex][this.nameFieldValue])
-
             }
-            if(e.key==='ArrowDown') {
-
-                if(this.highlightIndex===-1 || this.highlightIndex>=this.itemList.length-1) this.highlightIndex = 0
-
+            if (e.key === 'ArrowDown') {
+                if (this.highlightIndex === -1 || this.highlightIndex >= this.itemList.length - 1)
+                    this.highlightIndex = 0
                 else {
-                    this.highlightIndex = this.highlightIndex+1;
+                    this.highlightIndex = this.highlightIndex + 1
 
                     //this.value = this.itemList[this.highlightIndex][this.nameFieldValue]
                 }
                 //this.$refs.input[this.highlightIndex].click()
 
                 //this.$emit('input', this.itemList[this.highlightIndex][this.nameFieldValue])
-
             }
-            if(e.key==='Enter') {
-
-
-
+            if (e.key === 'Enter') {
                 this.$emit('input', this.itemList[this.highlightIndex][this.nameFieldValue])
-
             }
-
-
-
         }
     }
 }
@@ -196,7 +170,7 @@ export default {
     $color-text: glob-color('secondary');
     $padding: calc-em(8) calc-em(25);
 
-    overflow:auto;
+    overflow: auto;
 
     .ps__scrollbar-y-rail {
         z-index: 1;
@@ -205,9 +179,8 @@ export default {
     &__input {
         @extend %visuallyhidden;
 
-
-
-        &.highlight ~ #{$self}__text, &:checked ~ #{$self}__text {
+        &.highlight ~ #{$self}__text,
+        &:checked ~ #{$self}__text {
             border-color: $color-border;
             background-color: $color-bg;
             font-weight: 700;
@@ -215,7 +188,7 @@ export default {
     }
 
     &__item {
-     /*   &.highlight {
+        /*   &.highlight {
             font-weight:bold;
         }*/
     }

@@ -22,37 +22,23 @@
 </template>
 
 <script>
-
-
-
 import { stats, paginatorStats } from '@/mixins/mixins'
 
 export default {
-    components: {
+    components: {},
 
-    },
-
-    mixins: [stats,
-        paginatorStats
-    ],
+    mixins: [stats, paginatorStats],
     data() {
-        return {
-
-        }
+        return {}
     },
-    computed: {
-
-
-    },
-    methods: {
-
-    }
+    computed: {},
+    methods: {}
 }
 </script>
 
 <style lang="scss">
 .stats-log-status-operator-list {
-    max-width:500px;
-    width:auto;
+    max-width: 500px;
+    width: auto;
 }
 </style>

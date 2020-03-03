@@ -202,10 +202,7 @@ export default {
             }
         }
     },
-    created() {
-
-
-    },
+    created() {},
     beforeRouteEnter(to, from, next) {
         next(vm => {
             if (

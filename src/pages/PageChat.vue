@@ -66,8 +66,8 @@ export default {
     mixins: [viewModeChat],
 
     computed: {
-        isAuth(){
-            return this.$store.getters['user/authenticated']     //что бы не было запроа при logout
+        isAuth() {
+            return this.$store.getters['user/authenticated'] //что бы не было запроа при logout
         },
         processOnlineHide() {
             return !(

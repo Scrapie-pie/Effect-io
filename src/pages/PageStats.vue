@@ -97,11 +97,10 @@ export default {
                 let operator = this.$store.getters['operators/all'].find(
                     item => item.id === +this.$route.params.id
                 )
-                console.log(operator.branches_names);
-                if (operator)  titleHead = titleHead + ': ' + operator.fullName
-                if (this.routerName === 'statsLogStatusOperatorDetail' && operator) titleHead = titleHead + ', ' + operator.branches_names.join(', ')
-
-
+                console.log(operator.branches_names)
+                if (operator) titleHead = titleHead + ': ' + operator.fullName
+                if (this.routerName === 'statsLogStatusOperatorDetail' && operator)
+                    titleHead = titleHead + ', ' + operator.branches_names.join(', ')
             }
 
             return titleHead
