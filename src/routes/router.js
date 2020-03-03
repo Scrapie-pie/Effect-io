@@ -164,7 +164,7 @@ router.beforeEach (async(to, from, next)  => {
         if (to.name === 'exit') {
             console.log('логаут по кнопке');
 
-            store.dispatch('user/logout').then(() => {
+            store.dispatch('user/logout','exit').then(() => {
                 console.log('then')
                 return next({ name: 'auth' })
             })
@@ -212,20 +212,20 @@ router.beforeEach (async(to, from, next)  => {
                     })
                 })
                 .catch(error => {
-                    console.log(jwt);
+               /*     console.log(jwt);
                     axios.defaults.headers.common['jwt'] = jwt  //Не получили из метода, вставляем старый
-                    axios.defaults.headers['content-type'] = 'application/json'
+                    axios.defaults.headers['content-type'] = 'application/json'*/
                     captureException({frontMessage:'router before',backResponse:error})
                     console.log(error)
                     console.log(error.response)
 
-                /*    store.dispatch('user/logout').then(() => {
+                    store.dispatch('user/logout').then(() => {
                         console.log('user/logout then')
                         return next({
                             name: 'auth',
                             query: { return: to.fullPath }
                         })
-                    })*/
+                    })
                 })
         } else {
             if (pathElseNoJwt) return next(pathElseNoJwt)
