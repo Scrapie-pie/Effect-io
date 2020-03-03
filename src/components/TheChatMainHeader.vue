@@ -2,10 +2,12 @@
     header.chat-main-header
         .chat-main-header__text
             h1.chat-main-header__members
+
                 span.chat-main-header__name.chat-main-header__name_open_client-info.js-client-info(
                     v-text="targetName"
                 )
                 template(v-if="viewModeChat!='operators'")
+
                     template(v-for="(item, index) in compMembersList")
                         span.chat-main-header__name
                             | , {{item.first_name}}
@@ -14,6 +16,7 @@
                                 @click="removeFromRoom(item.id)"
                                 v-if="$store.state.roomActive.isAdmin"
                             ).chat-main-header__name-tooltip Убрать из диалога
+                    link-share
 
             .chat-main-header__channel(v-if="viewModeChat!='operators'")
                 .chat-main-header__channel-btn-wrap
@@ -93,9 +96,11 @@ import SelectBranch from '@/components/SelectBranch'
 import FormOTRS from '@/components/FormOTRS'
 import { viewModeChat, httpParams, removeMessageAndPush } from '@/mixins/mixins'
 import config from '@/config/index'
+import LinkShare from "@/components/LinkShare";
 
 export default {
     components: {
+        LinkShare,
         SelectBranch,
         TheChatMainHeaderHistory,
         TheChatMainHeaderActions,
@@ -193,6 +198,7 @@ export default {
         document.removeEventListener('click', this.hideClientInfo)
     },
     methods: {
+
         coBrowser() {
             const params =
                 '?guestUuid=' +

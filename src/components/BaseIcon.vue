@@ -43,6 +43,7 @@ import ball2 from '@/assets/img/icons/balls/ball2.svg'
 import ball3 from '@/assets/img/icons/balls/ball3.svg'
 
 import phrases from '@/assets/img/icons/chat/phrases.svg'
+import linkShare from '@/assets/img/icons/chat/linkShare.svg'
 import more from '@/assets/img/icons/chat/more.svg'
 import moreFill from '@/assets/img/icons/chat/more-fill.svg'
 import files from '@/assets/img/icons/chat/files.svg'
