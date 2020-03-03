@@ -91,13 +91,17 @@ export default {
             }
             if (
                 this.routerName === 'statsOperatorsDetail' ||
-                this.routerName === 'statsAllOperator'
+                this.routerName === 'statsAllOperator' ||
+                this.routerName === 'statsLogStatusOperatorDetail'
             ) {
                 let operator = this.$store.getters['operators/all'].find(
                     item => item.id === +this.$route.params.id
                 )
+                console.log(operator.branches_names);
+                if (operator)  titleHead = titleHead + ': ' + operator.fullName
+                if (this.routerName === 'statsLogStatusOperatorDetail' && operator) titleHead = titleHead + ', ' + operator.branches_names.join(', ')
 
-                if (operator) return titleHead + ': ' + operator.fullName
+
             }
 
             return titleHead
