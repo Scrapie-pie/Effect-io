@@ -335,7 +335,7 @@ export default {
         },
         emitMessageDelivered(val, stop) {
             let findIndex = this.messageList.findIndex(item => item.id === val.message_id)
-            console.log('emitMessageDelivered', findIndex, val)
+            console.log('emitMessageDelivered', findIndex)
             if (findIndex !== -1) {
                 this.$set(this.messageList[findIndex], 'delivery_status', val.delivery_status)
             } else {

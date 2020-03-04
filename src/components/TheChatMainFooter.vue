@@ -191,18 +191,25 @@ export default {
         // this.$refs.inputEmoji?.$el.removeEventListener("paste", this.listenerClearStylePaste);
     },
     methods: {
-        saveTextarea() {
-            if (this.viewModeChat === 'visitors') {
+        saveTextarea(
+            {
+                httpParamsRequestBefore={params:this.$route.params},
+                viewModeChat=this.viewModeChat,
+                message=this.message
+            }) {
+
+            console.log(httpParamsRequestBefore,this.message);
+            if (viewModeChat === 'visitors') {
                 this.$store.commit('visitors/saveTextAreaItem', {
-                    ids: this.$route.params,
-                    textArea: this.message
+                    ids: httpParamsRequestBefore.params,
+                    textArea: message
                 })
             }
 
-            if (this.viewModeChat === 'operators') {
+            if (viewModeChat === 'operators') {
                 this.$store.commit('operators/saveTextAreaItem', {
-                    ids: this.$route.params,
-                    textArea: this.message
+                    ids: httpParamsRequestBefore.params,
+                    textArea: message
                 })
             }
         },
@@ -311,7 +318,16 @@ export default {
             this.input = e.target.value
             this.send()
         },
-
+        messageReset({httpParamsRequestBefore,viewModeChat,message}){
+            this.message = message
+            this.spellingIgnoredWords = []
+            this.uploadFileList = []
+            this.saveTextarea({
+                httpParamsRequestBefore,
+                viewModeChat,
+                message
+            })
+        },
         send() {
             if (!navigator.onLine)
                 return this.$root.$emit('popup-notice', 'Проверьте подключение к сети =(')
@@ -364,18 +380,20 @@ export default {
             data.spelling_ignored_words = this.spellingIgnoredWords
             this.spellingMessage = this.message
 
+            let httpParamsRequestBefore = this?.httpParams //Пользователь мог не дожидаться запроса и переходить в другой чат, под конец запроса переменная была уже с другим значением
+            let viewModeChatRequestBefore = this.viewModeChat;
             this.$http
                 .post('message/send-from-operator', data)
-                .then(responsive => {
+                .then(response => {
                     this.bufferingSend = false
                     console.log(this.httpParams)
-                    let { id } = responsive.data.data
-                    console.log('message/send-from-operator', responsive.data.data)
+                    let { id } = response.data.data
+                    console.log('message/send-from-operator', response.data.data)
                     let { first_name: name, photo, employee_id } = this.$store.state.user.profile,
                         time = new Date().getTime() / 1000,
                         message = {
-                            guest_uuid: this?.httpParams?.params.guest_uuid, //Делаем синхранизацию, если опер открыл в журнале свой диалог и пишет сообщени в другой вкладке {  ?. решает баг отправки в общем чате
-                            site_id: this?.httpParams?.params.site_id, //
+                            guest_uuid: httpParamsRequestBefore?.params.guest_uuid, //Делаем синхранизацию, если опер открыл в журнале свой диалог и пишет сообщени в другой вкладке {  ?. решает баг отправки в общем чате
+                            site_id: httpParamsRequestBefore?.params.site_id, //
                             room_id: this.$store.state.roomActive.id, //}
                             id,
                             time,
@@ -389,29 +407,52 @@ export default {
                             delivery_status: data.delivery_status
                         }
 
-                    console.log(message)
 
-                    this.$root.$emit('messageAdd', message)
+
+                    if(this.viewModeChat === 'visitors' || this.viewModeChat === 'operators') { //Был баг. На медленном инете, пользователь отправлял сообщение, не дожидаясь ответа переходил в другой чат, сообщение прилетало тудв
+                        if (
+                        this.viewModeChat === 'visitors'
+                        ) {
+                            if(message.guest_uuid === this.httpParams.params.guest_uuid && message.site_id === this.httpParams.params.site_id){
+                                this.$root.$emit('messageAdd', message)
+                            }
+                        }
+                        if (this.viewModeChat === 'operators') {
+                            if(message.from_user_info.employee_id === this.httpParams.params.id){
+                                this.$root.$emit('messageAdd', message)
+                            }
+                        }
+                    }
+
+
+
+
+
                     localStorage.setItem('messageAdd', JSON.stringify(message))
 
                     message.from_user_info.id = this.$store.state.user.profile.employee_id
 
-                    if (this.viewModeChat === 'operators') {
-                        message.selfId = this.httpParams.params.id
+                    if (viewModeChatRequestBefore === 'operators') {
+                        message.selfId = httpParamsRequestBefore.params.id
                         this.$store.commit('operators/messageLastUpdate', message)
                     } //Todo у оператора}
 
-                    if (this.viewModeChat === 'visitors') {
-                        message.selfUuid = this.httpParams.params.guest_uuid
+                    if (viewModeChatRequestBefore === 'visitors') {
+                        message.selfUuid = httpParamsRequestBefore.params.guest_uuid
                         message.last_message_author = 'Вы'
                         this.$store.commit('visitors/selfMessageLastUpdate', message)
                     }
                 })
                 .then(() => {
-                    this.message = ''
-                    this.spellingIgnoredWords = []
-                    this.uploadFileList = []
-                    this.saveTextarea()
+
+                    this.messageReset(
+                        {
+                            message:'',
+                            viewModeChat:viewModeChatRequestBefore,
+                            httpParamsRequestBefore,
+
+                        }
+                    )
 
                     setTimeout(() => {
                         this.$refs.scrollbarMessage?.update()
@@ -426,10 +467,13 @@ export default {
                         console.log('spellingSuggestions', response.data.spellingSuggestions)
                         this.spellingShowBox(response.data.spellingSuggestions)
                     } else {
-                        this.message = ''
-                        this.spellingIgnoredWords = []
-                        this.uploadFileList = []
-                        this.saveTextarea()
+                        this.messageReset(
+                            {
+                                message:'',
+                                viewModeChat:viewModeChatRequestBefore,
+                                httpParamsRequestBefore,
+                            }
+                        )
                     }
                     this.bufferingSend = false
                 })
