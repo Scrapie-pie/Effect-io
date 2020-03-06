@@ -8,6 +8,7 @@ axios.defaults.headers.common['Content-Type'] = 'application/json'
 
 axios.interceptors.request.use(
     function(config) {
+
         const oldUrls = []
 
         if (oldUrls.indexOf(config.url) != -1) {
@@ -28,6 +29,19 @@ axios.interceptors.request.use(
     },
     function(error) {
         // Do something with request error
+        return Promise.reject(error)
+    }
+)
+
+axios.interceptors.response.use(
+    function(resp) {
+        console.log(resp,'axios.interceptors.response.use');
+        const jwt = resp.headers.jwt
+        console.log(jwt);
+        if(jwt) localStorage.setItem('jwt', jwt)
+        return resp
+    },
+    function(error) {
         return Promise.reject(error)
     }
 )
