@@ -16,6 +16,7 @@
     "@vue/eslint-config-prettier": "^4.0.1",
     "autosize": "^4.0.2",
     "axios": "^0.18.1",
+    "axios-auth-refresh": "^2.2.3",
     "emoji-data-css": "^1.0.1",
     "emoji-mart-vue": "^2.6.6",
     "inputmask": "^4.0.8",

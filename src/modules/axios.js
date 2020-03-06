@@ -1,14 +1,35 @@
 import Vue from 'vue'
 import axios from 'axios'
+import createAuthRefreshInterceptor from 'axios-auth-refresh';
 import globalConfig from '@/config/index'
+
+const refreshAuthLogic = failedRequest => {
+
+    console.log('refreshAuthLogic');
+    //console.log(failedRequest);
+
+        if(localStorage.getItem('jwt') && failedRequest.config.headers.jwt !== localStorage.getItem('jwt')) {
+            failedRequest.response.config.headers['jwt'] = localStorage.getItem('jwt')
+        }
+
+
+    return Promise.resolve();
+};
+
+
+createAuthRefreshInterceptor(axios, refreshAuthLogic);
 
 // Настройки http-запросов
 axios.defaults.baseURL = globalConfig.api_server
 axios.defaults.headers.common['Content-Type'] = 'application/json'
 
+
+
+
+
 axios.interceptors.request.use(
     function(config) {
-
+        //console.log('axios.interceptors.request.use',config);
         const oldUrls = []
 
         if (oldUrls.indexOf(config.url) != -1) {
@@ -35,15 +56,32 @@ axios.interceptors.request.use(
 
 axios.interceptors.response.use(
     function(resp) {
-        console.log(resp,'axios.interceptors.response.use');
+        //console.log(resp,'axios.interceptors.response.use');
         const jwt = resp.headers.jwt
-        console.log(jwt);
-        if(jwt) localStorage.setItem('jwt', jwt)
+        //console.log(jwt);
+        if(jwt) {
+            console.log(jwt);
+            localStorage.setItem('jwt', jwt)
+        }
         return resp
     },
-    function(error) {
-        return Promise.reject(error)
-    }
+   /* function(err) {
+        if(err?.response?.status === 401) {
+            if(localStorage.getItem('jwt') && err.config.headers.jwt !== localStorage.getItem('jwt')) {
+                console.log(err)
+                console.table(err)
+
+                err.config.headers.jwt = localStorage.getItem('jwt')
+                axios.request(err.config)
+            }
+
+          /!*  return refreshToken(store).then(_ => {
+                error.config.headers['Authorization'] = 'Bearer ' + store.state.auth.token;
+                error.config.baseURL = undefined;
+                return Axios.request(error.config);
+            });*!/
+        } else return Promise.reject(err)
+    }*/
 )
 
 export default axios
