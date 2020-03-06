@@ -72,7 +72,8 @@ export default {
         routerName: {
             handler(val,oldval) {
                 console.log('routerName',val,oldval);
-                this.resetSearch()
+
+
             },
 
             immediate: true
