@@ -82,7 +82,7 @@ export default {
         startEndLoader(url, action) {
             let mapLoaders = {
                 otrsSend: ['regru/regru/send-ticket-to-crm'],
-                accountAuth: ['user/login-oi'],
+                accountAuth: ['auth/login-oi'],
                 pageMain: ['chat/get-all'],
                 chatMainBody: ['message/history'],
                 lastMessages: ['guest/list', 'employee/company-list'],

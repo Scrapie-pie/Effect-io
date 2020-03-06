@@ -129,7 +129,7 @@ export default {
 
                 }*/
             this.$http
-                .post('user/login-oi', data, {
+                .post('auth/login-oi', data, {
                     headers: { 'content-type': 'application/json' }
                 })
                 .then(({ data }) => {
