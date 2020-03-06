@@ -97,6 +97,13 @@ export default {
         StatsTags
     },
     mixins: [filterLastDaysAndCalendar],
+    beforeRouteLeave (to, from, next) {
+
+        this.$root.$emit('statsBeforeRouteLeave',{to, from})
+        return next()
+        // вызывается перед переходом от пути, соответствующего текущему компоненту;
+        // имеет доступ к контексту экземпляра компонента `this`.
+    },
     data() {
         return {
             filterSearchResult: [],
@@ -338,6 +345,9 @@ export default {
             console.log('filterOperator', val)
             this.users_ids = val
         }
+    },
+    beforeCreate(){
+        this.$root.$off(`statsBeforeRouteLeave`)
     }
 }
 </script>

@@ -70,8 +70,8 @@ export default {
             immediate: true
         },
         routerName: {
-            handler(val) {
-                console.log('routerName');
+            handler(val,oldval) {
+                console.log('routerName',val,oldval);
                 this.resetSearch()
             },
 
@@ -92,14 +92,17 @@ export default {
     },
     created() {
         this.$root.$on(`statsScrollDown${this.routerName}`, this.scrollLoad)
+        this.$root.$on(`statsBeforeRouteLeave`, this.statsBeforeRouteLeave)
         this.getItemList()
         console.log('created getItemList')
     },
-    beforeDestroy() {
-        this.$root.$off(`statsScrollDown${this.routerName}`,this.scrollLoad)
-    },
+
 
     methods: {
+        statsBeforeRouteLeave({to,from}){
+            console.log('statsScrollDown',from.name);
+            this.$root.$off(`statsScrollDown${from.name}`)
+        },
         debounceSearch: lodash_debounce(function(val, oldVal) {
             this.debounceSearchMethods(val, oldVal)
         }, 500),
@@ -164,5 +167,6 @@ export default {
                 }
             }
         }
-    }
+    },
+
 }
