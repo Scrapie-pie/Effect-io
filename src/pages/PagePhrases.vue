@@ -1,17 +1,25 @@
 <template lang="pug">
-    section.page-phrases
+    article.page-phrases
+
         the-phrases-ready
+
 </template>
 
 <script>
 import ThePhrasesReady from '@/components/ThePhrasesReady'
+import TheLayoutTable from "@/components/TheLayoutTable";
+import FilterDropMenu from "@/components/FilterDropMenu";
 export default {
     name: 'PagePhrases',
     components: {
+        FilterDropMenu,
+        TheLayoutTable,
         ThePhrasesReady
     },
     data() {
-        return {}
+        return {
+
+        }
     }
 }
 </script>
