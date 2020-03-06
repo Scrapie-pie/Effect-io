@@ -130,6 +130,7 @@ export default {
                 }*/
             this.$http
                 .post('auth/login-oi', data, {
+                    skipAuthRefresh: true,
                     headers: { 'content-type': 'application/json' }
                 })
                 .then(({ data }) => {
