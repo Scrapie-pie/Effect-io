@@ -1,5 +1,5 @@
 <template lang="pug">
-    the-layout-table.page-stats-inner(@scrolldown="e=>$root.$emit('statsScrollDown',e)")
+    the-layout-table.page-stats-inner(@scrolldown="scrollDown")
         filter-drop-menu(
         v-if="showLastDays"
         name="last_days",
@@ -328,10 +328,12 @@ export default {
             else this.showCalendar = false
         }
     },
-    beforeDestroy() {
-        this.$root.$off('statsScrollDown')
-    },
+
     methods: {
+        scrollDown(e){
+
+            this.$root.$emit(`statsScrollDown${this.routerName}`,e)
+        },
         filterOperator(val) {
             console.log('filterOperator', val)
             this.users_ids = val
