@@ -1,5 +1,5 @@
 <template lang="pug">
-    the-layout-table.page-stats-inner(@scrolldown="e=>$root.$emit('statsScrollDown',e)")
+    the-layout-table.page-stats-inner(@scrolldown="scrollDown")
         filter-drop-menu(
         v-if="showLastDays"
         name="last_days",
@@ -97,6 +97,13 @@ export default {
         StatsTags
     },
     mixins: [filterLastDaysAndCalendar],
+    beforeRouteLeave (to, from, next) {
+
+        this.$root.$emit('statsBeforeRouteLeave',{to, from})
+        return next()
+        // вызывается перед переходом от пути, соответствующего текущему компоненту;
+        // имеет доступ к контексту экземпляра компонента `this`.
+    },
     data() {
         return {
             filterSearchResult: [],
@@ -328,14 +335,19 @@ export default {
             else this.showCalendar = false
         }
     },
-    beforeDestroy() {
-        this.$root.$off('statsScrollDown')
-    },
+
     methods: {
+        scrollDown(e){
+
+            this.$root.$emit(`statsScrollDown${this.routerName}`,e)
+        },
         filterOperator(val) {
             console.log('filterOperator', val)
             this.users_ids = val
         }
+    },
+    beforeCreate(){
+        this.$root.$off(`statsBeforeRouteLeave`)
     }
 }
 </script>

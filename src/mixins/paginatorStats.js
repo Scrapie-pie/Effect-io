@@ -24,6 +24,9 @@ export default {
         }
     },
     computed: {
+        routerName(){
+            return this.$route.name
+        },
         showItemLength() {
             return this.bodyList.length
         },
@@ -31,6 +34,7 @@ export default {
             return this.bodyListCount / this.limit
         },
         getOffset() {
+            console.log('getOffset',this.limit,this.pageN-1)
             return this.limit * (this.pageN - 1)
         },
         params_paginator() {
@@ -43,7 +47,7 @@ export default {
         },
 
         requestData() {
-            let params = Object.assign(
+            let params = Object.assign({},
                 this.params_paginator,
                 {
                     offset: this.getOffset,
@@ -52,14 +56,27 @@ export default {
                 this.params,
                 this.paramsComp
             )
-            //console.log('requestData',params);
+            ;
             return { params }
         }
     },
 
     watch: {
-        $route() {
-            console.log('$route')
+        pageN: {
+            handler(val) {
+                console.log('pageN watch', val);
+            },
+
+            immediate: true
+        },
+        routerName: {
+            handler(val,oldval) {
+                console.log('routerName',val,oldval);
+
+
+            },
+
+            immediate: true
         },
         search: 'debounceSearch',
         params(val) {
@@ -75,12 +92,18 @@ export default {
         }
     },
     created() {
-        this.$root.$on('statsScrollDown', this.scrollLoad)
+        this.$root.$on(`statsScrollDown${this.routerName}`, this.scrollLoad)
+        this.$root.$on(`statsBeforeRouteLeave`, this.statsBeforeRouteLeave)
         this.getItemList()
         console.log('created getItemList')
     },
 
+
     methods: {
+        statsBeforeRouteLeave({to,from}){
+            console.log('statsScrollDown',from.name);
+            this.$root.$off(`statsScrollDown${from.name}`)
+        },
         debounceSearch: lodash_debounce(function(val, oldVal) {
             this.debounceSearchMethods(val, oldVal)
         }, 500),
@@ -90,8 +113,9 @@ export default {
             this.getItemList()
         },
         scrollLoad(e) {
-            console.log('scrollLoad')
+            console.log('scrollLoad',this.routerName,this.pageN)
             //console.log('scrollLoad',e);
+
             if (this.scrollLoadAllow(e)) this.getItemList()
         },
         resetSearch() {
@@ -106,36 +130,44 @@ export default {
             //чистим метод из stats.js
         },
         getItemList() {
+
             if (this.last_days || (this.date_from && this.date_to)) {
                 if (!this.getItemListStart) return
                 this.getItemListStart = false
 
-                //if(lodash_isEqual(this.requestData,this.requestDataPrev)) return //created>this.getItemList() следом срабатывал watch>params
-                console.log(this.requestData, this.requestDataPrev)
+                if(lodash_isEqual(this.requestData,this.requestDataPrev)) return //created>this.getItemList() следом срабатывал watch>params
+
 
                 if (this.isNoFinishData) {
                     console.log('start')
                     this.requestDataPrev = lodash_cloneDeep(this.requestData)
+                    console.log('this.pageN a',this.pageN);
                     this.$http.get(this.apiMethod, this.requestData).then(({ data }) => {
                         console.log('finish')
                         this.getItemListStart = true
 
+
+                        //console.log('this',this);
                         //if (data.data.count) {
                         this.bodyList.push(...data.data.list)
                         //this.bodyListCount = data.data.count
 
-                        console.log(this.requestDataPrev)
+
 
                         //}
 
                         if (data.data.list.length === 0 || data.data.list.length < this.limit) {
                             this.isNoFinishData = false
                         } else {
+
+
                             this.pageN += 1
+
                         }
                     })
                 }
             }
         }
-    }
+    },
+
 }
