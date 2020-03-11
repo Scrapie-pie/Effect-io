@@ -7,17 +7,30 @@ const refreshAuthLogic = failedRequest => {
 
     console.log('refreshAuthLogic');
     //console.log(failedRequest);
+    let jwt = localStorage.getItem('jwt')
+        if(jwt) {
+            failedRequest.response.config.headers['jwt'] = jwt
 
-        if(localStorage.getItem('jwt') && failedRequest.config.headers.jwt !== localStorage.getItem('jwt')) {
-            failedRequest.response.config.headers['jwt'] = localStorage.getItem('jwt')
+            console.log('debug request',failedRequest.config.url,jwt);
+
+         /*   let jwtHystory = window.jwtHystoryfailedRequest
+            if(!jwtHystory) {
+                jwtHystory = []
+            }
+
+            jwtHystory.push({jwt,urlRequest:failedRequest.config.url})
+            window.jwtHystoryfailedRequest = jwtHystory*/
+
         }
+
+
 
 
     return Promise.resolve();
 };
 
 
-createAuthRefreshInterceptor(axios, refreshAuthLogic);
+createAuthRefreshInterceptor(axios, refreshAuthLogic,{});
 
 // Настройки http-запросов
 axios.defaults.baseURL = globalConfig.api_server
@@ -35,6 +48,11 @@ axios.interceptors.request.use(
         if (oldUrls.indexOf(config.url) != -1) {
             config.baseURL = globalConfig.api_server_old
             config.url = 'app.php?' + config.url
+        }
+
+        if(localStorage.getItem('jwt')) {
+            config.headers['jwt'] = localStorage.getItem('jwt')
+
         }
 
         // if(config.url == 'login' ) {
@@ -60,8 +78,17 @@ axios.interceptors.response.use(
         const jwt = resp.headers.jwt
         //console.log(jwt);
         if(jwt) {
-            console.log(jwt);
+            console.log();
+            console.log('debug response',resp.config.url,jwt);
             localStorage.setItem('jwt', jwt)
+         /*   let jwtHystory = window.jwtHystory
+            if(!jwtHystory) {
+                jwtHystory = []
+            }
+
+            jwtHystory.push({jwt,urlResponse:resp.config.url})
+            window.jwtHystory = jwtHystory*/
+
         }
         return resp
     },

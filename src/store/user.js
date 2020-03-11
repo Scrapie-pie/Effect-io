@@ -135,7 +135,7 @@ export default {
 
                 console.log('дошел')
                 localStorage.setItem('jwt', user.jwt)
-                this._vm.$http.defaults.headers.common['jwt'] = user.jwt
+                //this._vm.$http.defaults.headers.common['jwt'] = user.jwt
                 this._vm.$http.defaults.headers['content-type'] = 'application/json'
 
                 commit('profile', user)
