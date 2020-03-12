@@ -32,6 +32,7 @@ import edit from '@/assets/img/icons/edit.svg'
 import info from '@/assets/img/icons/info.svg'
 import warning from '@/assets/img/icons/warning.svg'
 import file from '@/assets/img/icons/file.svg'
+import chevronDown from '@/assets/img/icons/chevronDown.svg'
 
 import vk from '@/assets/img/icons/social/vk.svg'
 import tg from '@/assets/img/icons/social/tg.svg'
