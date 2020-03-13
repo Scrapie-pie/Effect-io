@@ -1,44 +1,34 @@
 import Vue from 'vue'
 import axios from 'axios'
-import createAuthRefreshInterceptor from 'axios-auth-refresh';
+import createAuthRefreshInterceptor from 'axios-auth-refresh'
 import globalConfig from '@/config/index'
 
 const refreshAuthLogic = failedRequest => {
-
-    console.log('refreshAuthLogic');
+    console.log('refreshAuthLogic')
     //console.log(failedRequest);
     let jwt = localStorage.getItem('jwt')
-        if(jwt) {
-            failedRequest.response.config.headers['jwt'] = jwt
+    if (jwt) {
+        failedRequest.response.config.headers['jwt'] = jwt
 
-            console.log('debug request',failedRequest.config.url,jwt);
+        console.log('debug request', failedRequest.config.url, jwt)
 
-         /*   let jwtHystory = window.jwtHystoryfailedRequest
+        /*   let jwtHystory = window.jwtHystoryfailedRequest
             if(!jwtHystory) {
                 jwtHystory = []
             }
 
             jwtHystory.push({jwt,urlRequest:failedRequest.config.url})
             window.jwtHystoryfailedRequest = jwtHystory*/
+    }
 
-        }
+    return Promise.resolve()
+}
 
-
-
-
-    return Promise.resolve();
-};
-
-
-createAuthRefreshInterceptor(axios, refreshAuthLogic,{});
+createAuthRefreshInterceptor(axios, refreshAuthLogic, {})
 
 // Настройки http-запросов
 axios.defaults.baseURL = globalConfig.api_server
 axios.defaults.headers.common['Content-Type'] = 'application/json'
-
-
-
-
 
 axios.interceptors.request.use(
     function(config) {
@@ -50,9 +40,8 @@ axios.interceptors.request.use(
             config.url = 'app.php?' + config.url
         }
 
-        if(localStorage.getItem('jwt')) {
+        if (localStorage.getItem('jwt')) {
             config.headers['jwt'] = localStorage.getItem('jwt')
-
         }
 
         // if(config.url == 'login' ) {
@@ -73,42 +62,37 @@ axios.interceptors.request.use(
 )
 
 axios.interceptors.response.use(
-    function(resp) {
-        //console.log(resp,'axios.interceptors.response.use');
+    resp => {
         const jwt = resp.headers.jwt
         //console.log(jwt);
-        if(jwt) {
-            console.log();
-            console.log('debug response',resp.config.url,jwt);
+        if (jwt) {
+            console.log()
+            console.log('debug response', resp.config.url, jwt)
             localStorage.setItem('jwt', jwt)
-         /*   let jwtHystory = window.jwtHystory
-            if(!jwtHystory) {
-                jwtHystory = []
-            }
+            /*   let jwtHystory = window.jwtHystory
+           if(!jwtHystory) {
+               jwtHystory = []
+           }
 
-            jwtHystory.push({jwt,urlResponse:resp.config.url})
-            window.jwtHystory = jwtHystory*/
-
+           jwtHystory.push({jwt,urlResponse:resp.config.url})
+           window.jwtHystory = jwtHystory*/
         }
         return resp
     },
-   /* function(err) {
-        if(err?.response?.status === 401) {
-            if(localStorage.getItem('jwt') && err.config.headers.jwt !== localStorage.getItem('jwt')) {
-                console.log(err)
-                console.table(err)
-
-                err.config.headers.jwt = localStorage.getItem('jwt')
-                axios.request(err.config)
+    error => {
+      /*  if (error.config && error.response && error.response.status === 401) {
+            let jwt = localStorage.getItem('jwt')
+            if (jwt !==error.config.headers['jwt']) {
+                window.axiosErr= error
+                error.config.headers['jwt'] = jwt
+                    return axios.request(error.config)
             }
 
-          /!*  return refreshToken(store).then(_ => {
-                error.config.headers['Authorization'] = 'Bearer ' + store.state.auth.token;
-                error.config.baseURL = undefined;
-                return Axios.request(error.config);
-            });*!/
-        } else return Promise.reject(err)
-    }*/
+        }*/
+
+        return Promise.reject(error)
+    }
 )
+
 
 export default axios
