@@ -114,6 +114,8 @@ export default {
     beforeDestroy() {
         document.getElementById('contenteditable').removeEventListener('keyup', this.keyUp)
         document.getElementById('contenteditable').removeEventListener('keydown', this.keyDown)
+
+        console.log('beforeDestroy');
     },
     methods: {
         visibleElement() {
@@ -153,7 +155,8 @@ export default {
 
                 //this.$emit('input', this.itemList[this.highlightIndex][this.nameFieldValue])
             }
-            if (e.key === 'Enter') {
+            if (e.key === 'Enter' && this.highlightIndex!==-1) {
+
                 this.$emit('input', this.itemList[this.highlightIndex][this.nameFieldValue])
             }
         }
