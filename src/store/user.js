@@ -29,8 +29,8 @@ export default {
             })*/
             //this._vm.$http.put('user/logout')
 
-            if (event === 'exit') this._vm.$http.put('auth/logout')
-            localStorage.removeItem('jwt')
+            if (event === 'exit') this._vm.$http.put('auth/logout').finally(()=>localStorage.removeItem('jwt'))
+            else localStorage.removeItem('jwt')
 
             delete this._vm.$http.defaults.headers.common['jwt']
             delete this._vm.$http.defaults.headers['content-type']
