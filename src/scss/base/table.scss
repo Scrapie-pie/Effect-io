@@ -51,9 +51,9 @@ tbody, tfoot, thead, tr, th, td{ vertical-align:inherit; }
 
   }
   &__th {
-     /* position:sticky;
+      position:sticky;
       top:0;
-      z-index:1;*/
+      z-index:1;
     @extend %td;
     font-weight:700;
     padding-bottom:calc-em(50);
