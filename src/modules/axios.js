@@ -10,7 +10,7 @@ const refreshAuthLogic = failedRequest => {
     if (jwt) {
         failedRequest.response.config.headers['jwt'] = jwt
 
-        console.log('debug request', failedRequest.config.url, jwt)
+
 
         /*   let jwtHystory = window.jwtHystoryfailedRequest
             if(!jwtHystory) {
@@ -66,8 +66,7 @@ axios.interceptors.response.use(
         const jwt = resp.headers.jwt
         //console.log(jwt);
         if (jwt) {
-            console.log()
-            console.log('debug response', resp.config.url, jwt)
+
             localStorage.setItem('jwt', jwt)
             /*   let jwtHystory = window.jwtHystory
            if(!jwtHystory) {
