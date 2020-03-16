@@ -169,6 +169,9 @@ export default {
             handler(to, from) {
                 this.checkIsProcessPage()
 
+
+
+
                 setTimeout(() => {
                     if (this.viewModeChat === 'visitors') {
                         this.getPhrasesSelectText('')
@@ -178,7 +181,10 @@ export default {
                         this.getPhrasesSelectText('')
                         this.getTextAreaOperators(this.$store.state.operators.all, to.params)
                     }
-                }, 500)
+                }, 300)
+                setTimeout(()=>{
+                    console.log(this.$refs.inputEmoji.$el.focus());
+                },500)
             },
             immediate: true
         },

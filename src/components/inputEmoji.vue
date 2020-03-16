@@ -48,6 +48,9 @@ export default {
             }, 100)
         }
     },
+    mounted(){
+
+    },
     methods: {
         listenerCopy(e) {
             let listText = []
