@@ -21,12 +21,14 @@ export default {
             Object.assign(state, getDefaultState())
         },
         logout(state, event) {
+
             console.log('user logout')
             this._vm.$socket.disconnect()
             /*this._vm.$http.put('employee/online-update', {
                 online: 0
             })*/
             //this._vm.$http.put('user/logout')
+
             if (event === 'exit') this._vm.$http.put('auth/logout')
             localStorage.removeItem('jwt')
 
