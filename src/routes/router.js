@@ -195,9 +195,12 @@ router.beforeEach(async (to, from, next) => {
         if (jwt) {
             axios
                 .post(
-                    'user/login-oi',
-                    { jwt },
+                    'auth/login-oi',
                     {
+                        jwt
+                    },
+                    {
+                        skipAuthRefresh: true,
                         headers: { 'content-type': 'application/json' }
                     }
                 )
