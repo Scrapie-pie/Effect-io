@@ -21,9 +21,15 @@ export default {
             state.snippets.push(val)
         },
         setSnippetText(state, { id, text }) {
+            let findIndex = state.categories.findIndex(item => item.id === id)
+            if (findIndex !== -1) {
+                state.categories[findIndex].text = text
+            }
+        },
+        setСategoriesItem(state, { id, title }) {
             let findIndex = state.snippets.findIndex(item => item.id === id)
             if (findIndex !== -1) {
-                state.snippets[findIndex].text = text
+                state.snippets[findIndex].title = title
             }
         },
         setSnippetDelete(state, id) {
@@ -56,13 +62,23 @@ export default {
                 commit('setSnippetText', { id, text })
             })
         },
+        categoriesUpdate({ commit }, { id, title }) {
+            this._vm.$http.put('snippet/update-category', { id, title }).then(() => {
+                commit('setСategoriesItem', { id, title })
+            })
+        },
         snippetDelete({ commit }, id) {
             this._vm.$http.delete('snippet/delete-snippet', { params: { id } }).then(() => {
                 commit('setSnippetDelete', id)
             })
         },
+        categoriesDelete({ commit,dispatch }, id) {
+            this._vm.$http.delete('snippet/delete-category', { params: { id } }).then(() => {
+                dispatch('getItemList')
+            })
+        },
         getItemList({ commit }) {
-            this._vm.$http.get('snippet/read-snippet').then(({ data }) => {
+            this._vm.$http.get('snippet/read',{params:{type:'edit'}}).then(({ data }) => {
                 commit('setPhraseList', data.data)
             })
         }

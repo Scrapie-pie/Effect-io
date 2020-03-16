@@ -135,7 +135,7 @@ export default {
 
         apiCategoryEdit() {
 
-            this.$store.dispatch('phrases/categoryUpdate', this.modelCategoryEdit)
+            this.$store.dispatch('phrases/categoriesUpdate', this.modelCategoryEdit)
         },
         snippetEdit() {
 
