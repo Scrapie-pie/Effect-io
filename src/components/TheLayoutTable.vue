@@ -31,6 +31,8 @@
         align-items: center;
         margin-bottom: calc-em(35);
         flex-flow: wrap;
+        position:relative;
+        z-index:2;
     }
 
     &__control {
