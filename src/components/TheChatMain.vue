@@ -121,7 +121,7 @@ export default {
             systemMessages: [],
             visitorTypingLive: '',
             chat_id: null,
-            scrollDownButtonShow:false
+            scrollDownButtonShow: false
         }
     },
 
@@ -305,9 +305,9 @@ export default {
     },
 
     methods: {
-        chatDown(){
+        chatDown() {
             this.scrollbarScrollerPush(this.$refs.scrollbar)
-            this.scrollDownButtonShow=false
+            this.scrollDownButtonShow = false
         },
         syncOperatorMessageVisor() {
             if (!['visitors', 'visor', 'search'].includes(this.viewModeChat)) return
@@ -398,19 +398,21 @@ export default {
             // ищем предыдущее сообщение
         },
         messageListUnshift(message) {
-            console.log(message);
+            console.log(message)
             let isScrollPush = false
-            if(Math.ceil(this.$refs.scrollbar.$el.scrollTop) ===this.scrollerPxToPercent(this.$refs.scrollbar.$el, 100)) isScrollPush=true
-            if(!message.socket) isScrollPush=true
+            if (
+                Math.ceil(this.$refs.scrollbar.$el.scrollTop) ===
+                this.scrollerPxToPercent(this.$refs.scrollbar.$el, 100)
+            )
+                isScrollPush = true
+            if (!message.socket) isScrollPush = true
             this.messageList.unshift(message)
             setTimeout(() => {
-
-                if(isScrollPush) {
-                    this.scrollbarScrollerPush(this.$refs.scrollbar);
-                    this.scrollDownButtonShow=false
-                }
-                else {
-                    this.scrollDownButtonShow=true
+                if (isScrollPush) {
+                    this.scrollbarScrollerPush(this.$refs.scrollbar)
+                    this.scrollDownButtonShow = false
+                } else {
+                    this.scrollDownButtonShow = true
                 }
             }, 50)
         },
@@ -527,7 +529,8 @@ export default {
 
             return this.$http.get('message/history', { params }).then(({ data }) => {
                 //console.log('message/history',JSON.stringify(currentRoute.params) , JSON.stringify(this.$route.params));
-                if(JSON.stringify(currentRoute.params)!==JSON.stringify(this.$route.params)) return console.log('Нет подмешиванию')
+                if (JSON.stringify(currentRoute.params) !== JSON.stringify(this.$route.params))
+                    return console.log('Нет подмешиванию')
                 this.historyMessageLoadStart = true
                 let { count, messages, users } = data.data
                 if (!count) return
@@ -666,23 +669,23 @@ export default {
     &__messages-sys {
         text-align: center;
     }
-    &__footer{
-        position:relative;
+    &__footer {
+        position: relative;
     }
     &__scroll-down-button {
-        fill:glob-color(light);
-        border-radius:50%;
-        padding:5px;
+        fill: glob-color(light);
+        border-radius: 50%;
+        padding: 5px;
     }
     &__scroll-down-button-wrap {
         position: absolute;
         right: 0;
         bottom: 100%;
-        transform:translateY(50%);
-        z-index:999;
-        margin-right:1em;
+        transform: translateY(50%);
+        z-index: 999;
+        margin-right: 1em;
 
-        display:inline-block;
+        display: inline-block;
     }
 }
 </style>

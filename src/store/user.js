@@ -20,21 +20,7 @@ export default {
         resetState(state) {
             Object.assign(state, getDefaultState())
         },
-        logout(state, event) {
-
-            console.log('user logout')
-            this._vm.$socket.disconnect()
-            /*this._vm.$http.put('employee/online-update', {
-                online: 0
-            })*/
-            //this._vm.$http.put('user/logout')
-
-            if (event === 'exit') this._vm.$http.put('auth/logout').finally(()=>localStorage.removeItem('jwt'))
-            else localStorage.removeItem('jwt')
-
-            delete this._vm.$http.defaults.headers.common['jwt']
-            delete this._vm.$http.defaults.headers['content-type']
-        },
+        logout(state, event) {},
         profileUpdate(
             state,
             {
@@ -161,7 +147,11 @@ export default {
             })
         },
         logout({ commit }, event) {
-            commit('logout', event)
+            localStorage.removeItem('jwt')
+
+            delete this._vm.$http.defaults.headers.common['jwt']
+            delete this._vm.$http.defaults.headers['content-type']
+
             commit('resetState')
             commit('resetState', null, { root: true })
 

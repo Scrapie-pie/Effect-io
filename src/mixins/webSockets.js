@@ -219,12 +219,15 @@ export default {
                 this.$store.commit('visitors/messageHot', { val, set: false })
             }
 
-            if (val.site_id && this.httpParams.params.guest_uuid===val.guest_uuid && this.httpParams.params.site_id===val.site_id) {
+            if (
+                val.site_id &&
+                this.httpParams.params.guest_uuid === val.guest_uuid &&
+                this.httpParams.params.site_id === val.site_id
+            ) {
                 // если есть val.site_id значит общение в диалогах
-                console.log('// Нужно, что бы чужое сообщение оказалось каждое в своем чате',val)
+                console.log('// Нужно, что бы чужое сообщение оказалось каждое в своем чате', val)
 
                 this.$root.$emit('messageAdd', val) // Нужно, что бы чужое сообщение оказалось каждое в своем чате
-
             }
 
             if (

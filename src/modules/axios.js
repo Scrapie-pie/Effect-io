@@ -10,8 +10,6 @@ const refreshAuthLogic = failedRequest => {
     if (jwt) {
         failedRequest.response.config.headers['jwt'] = jwt
 
-
-
         /*   let jwtHystory = window.jwtHystoryfailedRequest
             if(!jwtHystory) {
                 jwtHystory = []
@@ -66,7 +64,6 @@ axios.interceptors.response.use(
         const jwt = resp.headers.jwt
         //console.log(jwt);
         if (jwt) {
-
             localStorage.setItem('jwt', jwt)
             /*   let jwtHystory = window.jwtHystory
            if(!jwtHystory) {
@@ -79,7 +76,7 @@ axios.interceptors.response.use(
         return resp
     },
     error => {
-      /*  if (error.config && error.response && error.response.status === 401) {
+        /*  if (error.config && error.response && error.response.status === 401) {
             let jwt = localStorage.getItem('jwt')
             if (jwt !==error.config.headers['jwt']) {
                 window.axiosErr= error
@@ -92,6 +89,5 @@ axios.interceptors.response.use(
         return Promise.reject(error)
     }
 )
-
 
 export default axios
