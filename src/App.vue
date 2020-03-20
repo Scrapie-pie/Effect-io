@@ -139,6 +139,8 @@ export default {
 
             this.$http.interceptors.response.use(
                 resp => {
+
+                    this.startEndLoader(resp.config.url, 'end')
                     this.startEndLoader(resp.config.url.split(resp.config.baseURL)[1], 'end')
                     this.startEndLoader(resp.config.url.split('?')[1], 'end')
                     return resp
