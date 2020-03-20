@@ -57,6 +57,14 @@ git fetch
 git checkout feature/RBCALL-3954
 git checkout develop
 
+git fetch
+git checkout feature/RBCALL-XXXX
+npm run build
+
+
+git chekout develop
+npm run build
+
 
 
 

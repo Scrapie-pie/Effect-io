@@ -527,7 +527,7 @@ export default {
 
             return this.$http.get('message/history', { params }).then(({ data }) => {
                 //console.log('message/history',JSON.stringify(currentRoute.params) , JSON.stringify(this.$route.params));
-                if(JSON.stringify(currentRoute.params)!==JSON.stringify(this.$route.params)) return;
+                if(JSON.stringify(currentRoute.params)!==JSON.stringify(this.$route.params)) return console.log('Нет подмешиванию')
                 this.historyMessageLoadStart = true
                 let { count, messages, users } = data.data
                 if (!count) return
