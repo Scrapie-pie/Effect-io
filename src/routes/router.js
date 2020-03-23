@@ -164,9 +164,11 @@ router.beforeEach(async (to, from, next) => {
         if (to.name === 'exit') {
             console.log('логаут по кнопке')
 
-            store.dispatch('user/logout', 'exit').then(() => {
-                console.log('then')
-                return next({ name: 'auth' })
+            axios.put('auth/logout').finally(() => {
+                store.dispatch('user/logout').then(() => {
+                    console.log('then')
+                    return next({ name: 'auth' })
+                })
             })
         }
 

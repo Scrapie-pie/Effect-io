@@ -169,9 +169,6 @@ export default {
             handler(to, from) {
                 this.checkIsProcessPage()
 
-
-
-
                 setTimeout(() => {
                     if (this.viewModeChat === 'visitors') {
                         this.getPhrasesSelectText('')
@@ -182,9 +179,9 @@ export default {
                         this.getTextAreaOperators(this.$store.state.operators.all, to.params)
                     }
                 }, 300)
-                setTimeout(()=>{
-                    console.log(this.$refs.inputEmoji.$el.focus());
-                },500)
+                setTimeout(() => {
+                    console.log(this.$refs.inputEmoji.$el.focus())
+                }, 500)
             },
             immediate: true
         },
@@ -197,14 +194,12 @@ export default {
         // this.$refs.inputEmoji?.$el.removeEventListener("paste", this.listenerClearStylePaste);
     },
     methods: {
-        saveTextarea(
-            {
-                httpParamsRequestBefore={params:this.$route.params},
-                viewModeChat=this.viewModeChat,
-                message=this.message
-            }) {
-
-            console.log(httpParamsRequestBefore,this.message);
+        saveTextarea({
+            httpParamsRequestBefore = { params: this.$route.params },
+            viewModeChat = this.viewModeChat,
+            message = this.message
+        }) {
+            console.log(httpParamsRequestBefore, this.message)
             if (viewModeChat === 'visitors') {
                 this.$store.commit('visitors/saveTextAreaItem', {
                     ids: httpParamsRequestBefore.params,
@@ -324,7 +319,7 @@ export default {
             this.input = e.target.value
             this.send()
         },
-        messageReset({httpParamsRequestBefore,viewModeChat,message}){
+        messageReset({ httpParamsRequestBefore, viewModeChat, message }) {
             this.message = message
             this.spellingIgnoredWords = []
             this.uploadFileList = []
@@ -387,7 +382,7 @@ export default {
             this.spellingMessage = this.message
 
             let httpParamsRequestBefore = this?.httpParams //Пользователь мог не дожидаться запроса и переходить в другой чат, под конец запроса переменная была уже с другим значением
-            let viewModeChatRequestBefore = this.viewModeChat;
+            let viewModeChatRequestBefore = this.viewModeChat
             this.$http
                 .post('message/send-from-operator', data)
                 .then(response => {
@@ -413,26 +408,22 @@ export default {
                             delivery_status: data.delivery_status
                         }
 
-
-
-                    if(this.viewModeChat === 'visitors' || this.viewModeChat === 'operators') { //Был баг. На медленном инете, пользователь отправлял сообщение, не дожидаясь ответа переходил в другой чат, сообщение прилетало тудв
-                        if (
-                        this.viewModeChat === 'visitors'
-                        ) {
-                            if(message.guest_uuid === this.httpParams.params.guest_uuid && message.site_id === this.httpParams.params.site_id){
+                    if (this.viewModeChat === 'visitors' || this.viewModeChat === 'operators') {
+                        //Был баг. На медленном инете, пользователь отправлял сообщение, не дожидаясь ответа переходил в другой чат, сообщение прилетало тудв
+                        if (this.viewModeChat === 'visitors') {
+                            if (
+                                message.guest_uuid === this.httpParams.params.guest_uuid &&
+                                message.site_id === this.httpParams.params.site_id
+                            ) {
                                 this.$root.$emit('messageAdd', message)
                             }
                         }
                         if (this.viewModeChat === 'operators') {
-                            if(message.from_user_info.employee_id === this.httpParams.params.id){
+                            if (message.from_user_info.employee_id === this.httpParams.params.id) {
                                 this.$root.$emit('messageAdd', message)
                             }
                         }
                     }
-
-
-
-
 
                     localStorage.setItem('messageAdd', JSON.stringify(message))
 
@@ -450,15 +441,11 @@ export default {
                     }
                 })
                 .then(() => {
-
-                    this.messageReset(
-                        {
-                            message:'',
-                            viewModeChat:viewModeChatRequestBefore,
-                            httpParamsRequestBefore,
-
-                        }
-                    )
+                    this.messageReset({
+                        message: '',
+                        viewModeChat: viewModeChatRequestBefore,
+                        httpParamsRequestBefore
+                    })
 
                     setTimeout(() => {
                         this.$refs.scrollbarMessage?.update()
@@ -473,13 +460,11 @@ export default {
                         console.log('spellingSuggestions', response.data.spellingSuggestions)
                         this.spellingShowBox(response.data.spellingSuggestions)
                     } else {
-                        this.messageReset(
-                            {
-                                message:'',
-                                viewModeChat:viewModeChatRequestBefore,
-                                httpParamsRequestBefore,
-                            }
-                        )
+                        this.messageReset({
+                            message: '',
+                            viewModeChat: viewModeChatRequestBefore,
+                            httpParamsRequestBefore
+                        })
                     }
                     this.bufferingSend = false
                 })

@@ -97,9 +97,8 @@ export default {
         StatsTags
     },
     mixins: [filterLastDaysAndCalendar],
-    beforeRouteLeave (to, from, next) {
-
-        this.$root.$emit('statsBeforeRouteLeave',{to, from})
+    beforeRouteLeave(to, from, next) {
+        this.$root.$emit('statsBeforeRouteLeave', { to, from })
         return next()
         // вызывается перед переходом от пути, соответствующего текущему компоненту;
         // имеет доступ к контексту экземпляра компонента `this`.
@@ -335,19 +334,18 @@ export default {
             else this.showCalendar = false
         }
     },
+    beforeCreate() {
+        this.$root.$off(`statsBeforeRouteLeave`)
+    },
 
     methods: {
-        scrollDown(e){
-
-            this.$root.$emit(`statsScrollDown${this.routerName}`,e)
+        scrollDown(e) {
+            this.$root.$emit(`statsScrollDown${this.routerName}`, e)
         },
         filterOperator(val) {
             console.log('filterOperator', val)
             this.users_ids = val
         }
-    },
-    beforeCreate(){
-        this.$root.$off(`statsBeforeRouteLeave`)
     }
 }
 </script>
