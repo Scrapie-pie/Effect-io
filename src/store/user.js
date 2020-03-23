@@ -195,7 +195,13 @@ export default {
             return list.some(item => getters.roles.includes(item))
         },
         branchListAll: state => {
-            return state.branchListAll
+
+            return state.branchListAll.map(item => {
+
+                let siteName = state.siteCompanyList.find(site=>site.id===item.site_id)?.url
+                item.title = item.title + ' ('+siteName+')'
+                return item
+            })
         },
         settings: state => {
             return state.settings

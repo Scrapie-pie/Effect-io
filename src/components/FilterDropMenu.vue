@@ -57,6 +57,10 @@ export default {
         branchesBr
     },
     props: {
+        allOutput: {
+            type: Boolean,
+            default: false
+        },
         name: {
             type: String,
             default: ''
@@ -69,6 +73,12 @@ export default {
             type: Object,
             default: () => {
                 return {}
+            }
+        },
+        filterShowIds: {
+            type: Array,
+            default: () => {
+                return []
             }
         }
     },
@@ -149,7 +159,13 @@ export default {
         },
         itemList() {
             //console.log(this.name,this[this.name+'List']);
-            return this[this.name + 'List']
+            if(!this.filterShowIds.length) {
+                return this[this.name + 'List']
+            }
+            else {
+
+                return this[this.name + 'List']?.filter(item=>this.filterShowIds.includes(item.id))
+            }
         },
         calendarList() {
             return []
@@ -168,7 +184,8 @@ export default {
             })
         },
         branchList() {
-            return this.$store.state.user.branchListAll.map(item => {
+
+            return this.$store.getters['user/branchListAll'].map(item => {
                 item.name = item.title
                 return item
             })
@@ -202,7 +219,7 @@ export default {
             // отправляем один раз при инициализации
             if (this.startOnce) {
                 if (this.type === 'checkbox' && this.name !== 'calendar') {
-                    if (this.allChecked) this.$emit('get', [])
+                    if (this.allChecked && !this.allOutput) this.$emit('get', [])
                     else
                         this.$emit(
                             'get',
@@ -224,7 +241,7 @@ export default {
                         this.modelcheckbox.map(item => item.id).join()
                     ) {
                         //если результат не меняли, ничего не отправляем
-                        if (this.allChecked) this.$emit('get', [])
+                        if (this.allChecked  && !this.allOutput) this.$emit('get', [])
                         else
                             this.$emit(
                                 'get',
@@ -282,7 +299,7 @@ export default {
                 //if(this.name==='url' && !this.itemList.length) return       console.log('modelcheckbox',val, valOld);
 
                 if (val.length !== this.itemList.length) this.allChecked = false
-                //this.$emit('get',val.map(item=>item.id))
+                if(!this.show) this.$emit('get',val.map(item=>item.id))
 
                 this.modelPrev = valOld
             },

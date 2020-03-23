@@ -17,7 +17,9 @@
                 template(v-else-if="phrasesEdit")
                     li.phrases-ready-edit__add-item.phrases-ready-edit__add-item_select(v-if="!showPhrasesEdit")
                         label.phrases-ready-edit__label(for="newCategory") Выберите категорию или придумайте свою
+                        base-field(type="text" value="Свои шаблоны" v-if="!create.is_common" disabled)
                         base-field(
+                            v-else
                             type="select",
                             :selectOptions="{label:'title',options:categories,taggable:true}"
                             name="newCategory"
@@ -49,12 +51,22 @@
                                 name="is_common"
                             ) Данный шаблон будет виден только мне
                         li.phrases-ready-edit__add-item(v-if="create.is_common")
-                            | Добавить шаблон только для выбранных отделов
+                            p Выбрать сайт к которому относится шаблон
+                            filter-drop-menu(
+                            name="siteCompany",
+                            type="radio",
+                            @get="filterChannel"
+
+                            )
+
+                        li.phrases-ready-edit__add-item(v-if="create.is_common")
+                            p Добавить шаблон только для выбранных отделов:
 
                             filter-drop-menu(
-
+                            :filter-show-ids="filterChannelIds"
                             name="branch",
-                            @get="(val)=>filterBranchIds=val"
+                            @get="(val)=>create.branches_ids=val"
+                            all-output
                             )
                 li.phrases-ready-edit__add-item
                     base-btn.phrases-ready-edit__add-item-button(v-text="(!showPhrasesEdit)?'Добавить шаблон':'Сохранить'" type="submit")
@@ -83,11 +95,13 @@ export default {
     },
     data() {
         return {
-            is_common: 1,
+            filterChannelIds:[],
             create: {
                 text: '',
                 category: '',
-                is_common: 1
+                is_common: 1,
+                branches_ids:[],
+                site_id:null
             },
             newCategory: '',
             newPhrase: '',
@@ -101,7 +115,8 @@ export default {
             return this.$store.state.phrases.snippets
         },
         categories() {
-            return this.$store.state.phrases.categories
+
+            return this.$store.state.phrases.categories.filter(item=>item.is_common)
         },
 
         showPhrasesEdit() {
@@ -110,7 +125,10 @@ export default {
 
     },
     watch: {
-
+       /* 'create.is_common'(val){
+            console.log(val);
+            if(!val) this.create.category = this.categories[0]
+        },*/
         categoriesEdit: {
             handler(object) {
                 this.modelCategoryEdit= object
@@ -119,7 +137,8 @@ export default {
         },
         phrasesEdit: {
             handler(object) {
-                this.create = object
+                Object.assign(this.create,object)
+
             },
             immediate: true
         },
@@ -128,6 +147,10 @@ export default {
     },
     created() {},
     methods: {
+        filterChannel(id){
+            this.create.site_id = id
+            this.filterChannelIds = this.$store.getters['user/branchListAll'].filter(item => id===item.site_id).map(item=>item.id)
+        },
 
         cancel() {
             this.$emit('cancel')
@@ -142,7 +165,9 @@ export default {
             this.$store.dispatch('phrases/snippetUpdate', this.create)
         },
         snippetCreate() {
-            this.create.is_common = this.is_common;
+            console.log('snippetCreate');
+            //this.create.is_common = this.is_common;
+            console.log(this.create);
             this.$store.dispatch('phrases/snippetCreate', this.create)
         },
 

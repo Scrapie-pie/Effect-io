@@ -4,7 +4,13 @@
         transition(name="fade" mode="out-in")
             fieldset.phrases-ready__wrap(v-if="phrasesEdit===null && categoriesEdit===null", key="phrasesEdit")
                 .phrases-ready__filter
-                    filter-drop-menu(name="branch",@get="(val)=>filterBranchIds=val")
+                    filter-drop-menu(
+                    name="siteCompany",
+
+                    @get="filterChannel"
+                    all-output
+                    )
+                    filter-drop-menu(name="branch",@get="(val)=>filterBranchIds=val", :filter-show-ids="filterChannelIds" all-output)
                     base-filter-search(:item-list="snippetsFilterBranch", @result="(val)=>filterSearchResult=val", field-name="text")
                 legend.phrases-ready__text-only-scr Готовый список фраз
                 .phrases-ready__btn-add
@@ -67,7 +73,7 @@ export default {
         return {
             filterSearchResult:[],
             filterBranchIds: [],
-
+            filterChannelIds:[],
 
             phrasesEdit: null,
             categoriesEdit: null,
@@ -109,6 +115,10 @@ export default {
     },
     created() {},
     methods: {
+        filterChannel(ids){
+
+            this.filterChannelIds = this.$store.getters['user/branchListAll'].filter(item => ids.includes(item.site_id)).map(item=>item.id)
+        },
         categoriesSelect(id) {
             this.categoriesSelectId=id;
         },
@@ -264,7 +274,7 @@ export default {
 
     &__filter {
         display:grid;
-        grid-template-columns:max-content max-content;
+        grid-template-columns:repeat(3,max-content);
         align-items:center;
         grid-gap:$space;
         margin-bottom: calc-em(35);

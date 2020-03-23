@@ -1,3 +1,5 @@
+import lodash_isObject from 'lodash/isObject'
+
 const getDefaultState = () => {
     return {
         snippets: [],
@@ -42,16 +44,25 @@ export default {
         }
     },
     actions: {
-        snippetCreate({ commit }, { text, category: { title, id }, is_common }) {
-            let category = title
+        snippetCreate({ commit }, { text, category, is_common,site_id,branches_ids }) {
+            let id;
+
+            if(lodash_isObject(category)){
+                id = category.id
+                category = category.title
+            }
+
             this._vm.$http
-                .post('snippet/create-snippet', { text, category, is_common })
+                .post('snippet/create-snippet', { text,category,  is_common,site_id,branches_ids })
                 .then(({ data }) => {
+                    console.log(data);
                     if (!id) {
+
                         //значит новая категория, обновим список
                         commit('categoryAdd', {
                             id: data.data.category_id,
-                            title
+                            title:category,
+                            is_common
                         })
                     }
                     commit('snippetAdd', data.data)
@@ -78,7 +89,7 @@ export default {
             })
         },
         getItemList({ commit }) {
-            this._vm.$http.get('snippet/read',{params:{type:'edit'}}).then(({ data }) => {
+            this._vm.$http.get('snippet/read-snippet',{params:{type:'edit'}}).then(({ data }) => {
                 commit('setPhraseList', data.data)
             })
         }

@@ -110,7 +110,7 @@ export default {
         itemListWidthBranchName() {
             return this.bodyList.map(item => {
                 item.branchName = ''
-                let branch = this.$store.state.user.branchListAll.find(
+                let branch = this.$store.getters['user/branchListAll'].find(
                     itemSub => itemSub.id === item.branch_id
                 )
                 if (branch) {

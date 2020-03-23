@@ -196,7 +196,7 @@ export default {
 
     computed: {
         compBranchListAll() {
-            return this.$store.state.user.branchListAll
+            return this.$store.getters['user/branchListAll']
         },
         branches_ids() {
             return this.model.branches_ids
@@ -262,7 +262,7 @@ export default {
             }
         },
         getBranchListAll() {
-            if (this.$store.state.user.branchListAll.length) {
+            if (this.$store.getters['user/branchListAll'].length) {
                 this.setBranchListSelected(this.$store.getters['user/branchListAll'])
             } else {
                 this.$store.watch(

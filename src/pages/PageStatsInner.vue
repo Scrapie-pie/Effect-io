@@ -309,7 +309,7 @@ export default {
             return this.$route.name
         },
         branchListAll() {
-            let list = this.$store.state.user.branchListAll.slice()
+            let list = this.$store.getters['user/branchListAll'].slice()
             list.push({ title: 'Все отделы' })
             return list
         }
