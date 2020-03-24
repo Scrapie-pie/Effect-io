@@ -17,7 +17,8 @@ export default {
             Object.assign(state, getDefaultState())
         },
         categoryAdd(state, val) {
-            state.categories.push(val)
+            let findIndex = state.categories.findIndex(item=>item.id===val.id)
+            if(findIndex==-1) state.categories.push(val)
         },
         snippetAdd(state, val) {
             state.snippets.push(val)
@@ -52,17 +53,26 @@ export default {
                 category = category.title
             }
 
+            if(!is_common) {
+                category=null;
+                site_id=null
+                branches_ids=null
+            }
+
             this._vm.$http
                 .post('snippet/create-snippet', { text,category,  is_common,site_id,branches_ids })
                 .then(({ data }) => {
                     console.log(data);
                     if (!id) {
 
+                        if(!is_common) category='Свои шаблоны'
+
                         //значит новая категория, обновим список
                         commit('categoryAdd', {
                             id: data.data.category_id,
                             title:category,
-                            is_common
+                            is_common,
+                            site_id
                         })
                     }
                     commit('snippetAdd', data.data)
@@ -93,5 +103,21 @@ export default {
                 commit('setPhraseList', data.data)
             })
         }
+    },
+    getters: {
+
+        categories: (state, getters,rootState,rootGetters)  => {
+            console.log(rootState.user.siteCompanyList);
+            if(rootState.user.siteCompanyList.length>1) return state.categories.map(item=>{
+                if(!item.site_id) item.titleAndUrl = item.title
+                else item.titleAndUrl = item.title+' (' + rootState.user.siteCompanyList?.find(site=>site.id===item.site_id)?.url+')'
+                return item
+            })
+            return state.categories.map(item=>{
+                item.titleAndUrl = item.title
+                return item
+            })
+        },
+
     }
 }

@@ -21,7 +21,7 @@
                         base-field(
                             v-else
                             type="select",
-                            :selectOptions="{label:'title',options:categories,taggable:true}"
+                            :selectOptions="{label:'titleAndUrl',options:categories,taggable:true}"
                             name="newCategory"
                             v-model="create.category",
                             id="newCategory"
@@ -116,7 +116,7 @@ export default {
         },
         categories() {
 
-            return this.$store.state.phrases.categories.filter(item=>item.is_common)
+            return this.$store.getters['phrases/categories'].filter(item=>item.is_common)
         },
 
         showPhrasesEdit() {

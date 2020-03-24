@@ -1,6 +1,7 @@
 <template lang="pug">
     the-layout-table.page-stats-inner(@scrolldown="scrollDown")
         filter-drop-menu(
+        is-save-result-page
         v-if="showLastDays"
         name="last_days",
         key="last_days",
@@ -9,6 +10,7 @@
         type="radio"
         )
         filter-drop-menu(
+        is-save-result-page
         v-show="showCalendar"
         name="calendar",
         :calendarOptions="calendarOptions"

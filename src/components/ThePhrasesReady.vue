@@ -10,7 +10,7 @@
                     @get="filterChannel"
                     all-output
                     )
-                    filter-drop-menu(name="branch",@get="(val)=>filterBranchIds=val", :filter-show-ids="filterChannelIds" all-output)
+                    filter-drop-menu(name="branch",@get="(val)=>filterBranchIds=val", :filter-show-ids="filterBranchShowIds" all-output)
                     base-filter-search(:item-list="snippetsFilterBranch", @result="(val)=>filterSearchResult=val", field-name="text")
                 legend.phrases-ready__text-only-scr Готовый список фраз
                 .phrases-ready__btn-add
@@ -28,7 +28,7 @@
                             :key="index",
                             :class="{active:item.id===categoriesSelectId}"
                             )
-                                base-btn(theme="text", @click="categoriesSelect(item.id)").phrases-ready__phrases-text(v-text="item.title", :title="item.title")
+                                base-btn(theme="text", @click="categoriesSelect(item.id)").phrases-ready__phrases-text(v-text="item.titleAndUrl", :title="item.titleAndUrl")
 
                                 ul.phrases-ready__phrases-controls
                                     li.phrases-ready__phrases-button.phrases-ready__phrases-edit
@@ -73,6 +73,7 @@ export default {
         return {
             filterSearchResult:[],
             filterBranchIds: [],
+            filterBranchShowIds: [],
             filterChannelIds:[],
 
             phrasesEdit: null,
@@ -82,11 +83,13 @@ export default {
     },
     computed: {
         snippetsFilterBranch() {
-            if (this.filterBranchIds.length)
-                return this.snippetsStore.filter(item =>
-                    this.filterBranchIds.includes(item.id)
-                )
-            else return this.snippetsStore
+
+            return this.snippetsStore.filter(item => {
+                if(!item.is_common) return true
+                 return item.branches_ids.some(id=>this.filterBranchIds.includes(id))
+
+            })
+
         },
         snippets() {
             return this.filterSearchResult.filter(
@@ -97,7 +100,10 @@ export default {
             return this.$store.state.phrases.snippets
         },
         categories() {
-            return this.$store.state.phrases.categories
+            return this.$store.getters['phrases/categories'].filter(item=>{
+                if(!item.is_common) return true
+                return this.filterChannelIds.includes(item.site_id)
+            })
         },
 
     },
@@ -116,10 +122,15 @@ export default {
     created() {},
     methods: {
         filterChannel(ids){
+            this.filterChannelIds = ids
+            this.filterBranchShowIds = this.$store.getters['user/branchListAll'].filter(item => ids.includes(item.site_id)).map(item=> {
 
-            this.filterChannelIds = this.$store.getters['user/branchListAll'].filter(item => ids.includes(item.site_id)).map(item=>item.id)
+                return item.id
+            })
+
         },
         categoriesSelect(id) {
+
             this.categoriesSelectId=id;
         },
         selectText(val) {
