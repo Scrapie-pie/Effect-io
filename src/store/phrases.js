@@ -17,6 +17,7 @@ export default {
             Object.assign(state, getDefaultState())
         },
         categoryAdd(state, val) {
+            console.log(val);
             let findIndex = state.categories.findIndex(item=>item.id===val.id)
             if(findIndex==-1) state.categories.push(val)
         },
@@ -24,9 +25,9 @@ export default {
             state.snippets.push(val)
         },
         setSnippetText(state, { id, text }) {
-            let findIndex = state.categories.findIndex(item => item.id === id)
+            let findIndex = state.snippets.findIndex(item => item.id === id)
             if (findIndex !== -1) {
-                state.categories[findIndex].text = text
+                state.snippets[findIndex].text = text
             }
         },
         setСategoriesItem(state, { id, title }) {
@@ -63,7 +64,8 @@ export default {
                 .post('snippet/create-snippet', { text,category,  is_common,site_id,branches_ids })
                 .then(({ data }) => {
                     console.log(data);
-                    if (!id) {
+                    console.log(id);
+
 
                         if(!is_common) category='Свои шаблоны'
 
@@ -74,7 +76,7 @@ export default {
                             is_common,
                             site_id
                         })
-                    }
+
                     commit('snippetAdd', data.data)
                 })
         },
