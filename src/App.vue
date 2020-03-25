@@ -146,8 +146,8 @@ export default {
                     return resp
                 },
                 err => {
-                    console.table(err)
 
+                    this.startEndLoader(err.config.url, 'end')
                     this.startEndLoader(err.config.url.split(err.config.baseURL)[1], 'end')
                     this.startEndLoader(err.config.url.split('?')[1], 'end')
 
@@ -167,7 +167,7 @@ export default {
                     if (err?.response?.data?.message && this.$route.name !== 'auth') {
                         this.$root.$emit('globBoxControlClose')
                         this.$root.$emit('popup-notice', err.response.data.message)
-                        console.log('error №', err.response.status)
+
                     }
 
                     captureException({
