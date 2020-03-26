@@ -180,8 +180,9 @@ export default {
                     }
                 }, 300)
                 setTimeout(() => {
-                    console.log(this.$refs.inputEmoji.$el.focus())
-                }, 500)
+
+                    this.$refs.inputEmoji.$el.focus()
+                }, 750)
             },
             immediate: true
         },
