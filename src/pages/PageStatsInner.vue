@@ -241,7 +241,7 @@ export default {
         downloadLink() {
             let href = {
                 csv: 1,
-                jwt: this.$http.defaults.headers.common.jwt
+                jwt: localStorage.getItem('jwt')
             }
 
             let newParams = {
