@@ -180,7 +180,6 @@ export default {
                     }
                 }, 300)
                 setTimeout(() => {
-
                     this.$refs.inputEmoji.$el.focus()
                 }, 750)
             },

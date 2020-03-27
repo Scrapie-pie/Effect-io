@@ -107,7 +107,6 @@ export default {
     actions: {
         getLogin({ commit, dispatch }, user) {
             return new Promise((resolve, reject) => {
-                console.log('getLogin', user)
                 if (!user) {
                     withScope(function(scope) {
                         scope.setTag('getLogin', 'empty')
@@ -121,7 +120,6 @@ export default {
                     })
                 }
 
-                console.log('дошел')
                 localStorage.setItem('jwt', user.jwt)
                 //this._vm.$http.defaults.headers.common['jwt'] = user.jwt
                 this._vm.$http.defaults.headers['content-type'] = 'application/json'

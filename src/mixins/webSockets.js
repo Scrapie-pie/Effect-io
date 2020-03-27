@@ -71,7 +71,6 @@ export default {
         playSoundFile(nameFile) {
             let { settings = false, sounds } = this.$store.state.user.settings
 
-            console.log(settings)
             if (!settings) return
 
             let index = settings[nameFile]
@@ -85,7 +84,6 @@ export default {
             audio.volume = 0.5
             audio.muted = false
 
-            console.log(sounds[index].file)
             audio.play()
         },
         webSocketInit({ uuid, owner_id, socket_server }) {
@@ -155,7 +153,6 @@ export default {
                     captureMessage('reconnect_failed')
                 });*/
 
-                console.log(this.$store.state.sockets.emitList)
                 for (let key in this.$store.state.sockets.emitList) {
                     socket.on(key, socketValue => {
                         /*  this.flag = !this.flag //Todo убрать принятие через раз после теста
@@ -221,8 +218,8 @@ export default {
 
             if (
                 val.site_id &&
-                this.httpParams.params.guest_uuid === val.guest_uuid &&
-                this.httpParams.params.site_id === val.site_id
+                this.httpParams.params?.guest_uuid === val.guest_uuid &&
+                this.httpParams.params?.site_id === val.site_id
             ) {
                 // если есть val.site_id значит общение в диалогах
                 console.log('// Нужно, что бы чужое сообщение оказалось каждое в своем чате', val)
@@ -285,8 +282,6 @@ export default {
             }
         },
         'guest-new-session'(val) {
-            //this.$socket.emit('delivered', val.socket_id);
-            //console.log('guest-new-session',val);
             this.playSoundFile('sound_new_guest')
             this.$root.$emit('guestNewSession', val)
 
@@ -359,8 +354,6 @@ export default {
             })
         },
         'room-users'(val) {
-            //this.$socket.emit('delivered', val.socket_id);
-            //console.log('room-users', val)
             val.list.socket = true // для того что бы room_id не обновлять
             this.$store.commit('roomActive/set', val.list)
 

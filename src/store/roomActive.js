@@ -36,8 +36,6 @@ export default {
             state.chatId = val
         },
         set(state, val) {
-            //console.log('roomActive', val);
-
             function getIds(status) {
                 let users = val.filter(item => item.status === status && item.room_id === state.id)
                 return users.map(item => item.user_id)

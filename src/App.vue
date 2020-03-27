@@ -139,14 +139,12 @@ export default {
 
             this.$http.interceptors.response.use(
                 resp => {
-
                     this.startEndLoader(resp.config.url, 'end')
                     this.startEndLoader(resp.config.url.split(resp.config.baseURL)[1], 'end')
                     this.startEndLoader(resp.config.url.split('?')[1], 'end')
                     return resp
                 },
                 err => {
-
                     this.startEndLoader(err.config.url, 'end')
                     this.startEndLoader(err.config.url.split(err.config.baseURL)[1], 'end')
                     this.startEndLoader(err.config.url.split('?')[1], 'end')
@@ -167,7 +165,6 @@ export default {
                     if (err?.response?.data?.message && this.$route.name !== 'auth') {
                         this.$root.$emit('globBoxControlClose')
                         this.$root.$emit('popup-notice', err.response.data.message)
-
                     }
 
                     captureException({
@@ -181,7 +178,7 @@ export default {
 
                     if (err?.response?.status === 401) {
                         captureException({ frontMessage: 'user/logout', backResponse: err })
-                        console.log(this.$route.fullPath, err.response)
+
                         this.$store.dispatch('user/logout').then(() => {
                             this.$router.push({
                                 name: 'auth',

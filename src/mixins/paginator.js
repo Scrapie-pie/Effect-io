@@ -40,7 +40,7 @@ export default {
         },
         requestData() {
             let params = Object.assign(this.params, this.paramsComp)
-            //console.log('requestData',params);
+
             return { params }
         }
     },
@@ -52,12 +52,10 @@ export default {
             this.debounceSearchMethods(val, oldVal)
         }, 500),
         debounceSearchMethods(val, oldVal) {
-            //console.log('debounceSearchMethods');
             this.resetSearch()
             this.getItemList()
         },
         scrollLoad(e) {
-            //console.log('scrollLoad',e);
             if (this.scrollLoadAllow(e)) this.getItemList()
         },
         resetSearch() {

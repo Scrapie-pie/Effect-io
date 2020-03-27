@@ -29,7 +29,6 @@ export default {
             }
         },
         filterCalendar(val) {
-            console.log('filterCalendar', val)
             this.last_days = ''
             this.date_from = val.date_from
             this.date_to = val.date_to

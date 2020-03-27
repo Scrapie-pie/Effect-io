@@ -32,14 +32,10 @@ export default {
             Object.assign(state, getDefaultState())
         },
         historyPush(state, val) {
-            //console.log('socket historyPush',val);
             state.history.push(val)
-            //state.messages.push(state.messagesTemp)
         },
         historyClear(state) {
-            //console.log('socket historyPush',val);
             state.history = state.history.slice(state.history.length - 20, state.history.length)
-            //state.messages.push(state.messagesTemp)
         }
     },
     actions: {},

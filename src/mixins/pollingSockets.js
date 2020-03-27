@@ -47,18 +47,17 @@ export default {
                                 itemApi.event === 'unprocessed-remove'
                             ) {
                                 //обновляем страницу, сокет не успел дойти, но в ините счетчик уже +1,  в итоге полилинг добавлял уже лишний
-                                console.log(itemApi.event)
+
                                 let findIndex = this.$store.state.visitors.process.findIndex(
                                     //Если диалог уже есть в ините, то не добавляем
                                     processItem =>
                                         processItem.site_id + processItem.guest_uuid ===
                                         itemApi.payload.site_id + itemApi.payload.guest_uuid
                                 )
-                                console.log('itemApi.event', itemApi.event, findIndex)
+
                                 if (findIndex != -1) return
                             }
 
-                            //console.log(socketEmitName, itemApi.payload)
                             this.$root.$emit(socketEmitName, itemApi.payload)
                         }
                     })

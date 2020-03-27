@@ -16,13 +16,12 @@ function notificationEngine(title, body, link) {
         // Если права есть, отправим уведомление
 
         return new Promise(resolve => {
-            console.log('sendNotification', title, options)
             var notification = new Notification(title, options)
 
             function clickFunc() {
                 window.focus()
                 this.close()
-                console.log('resolve', link)
+
                 resolve(link)
             }
             notification.onclick = clickFunc
@@ -66,8 +65,6 @@ function browserNotificationMessage(val) {
         !document.hidden
     )
         return new Promise(resolve => resolve())
-
-    console.log(val, this.viewModeChat)
 
     let title = '',
         body = '',

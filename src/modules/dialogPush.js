@@ -1,17 +1,13 @@
 function dialogPush(vm, dialogName, item, findField) {
-    console.log(item)
     let list = vm.$store.state.visitors[dialogName].slice()
     let findIndex
     if (!findField) {
-        console.log('findField', findField)
         let { guest_uuid, site_id } = item
         findIndex = list.findIndex(item => guest_uuid + site_id === item.guest_uuid + item.site_id)
     } else {
         let findFieldVal = item[findField]
         findIndex = list.findIndex(item => findFieldVal === item[findField])
     }
-
-    console.log('findIndex', findIndex)
 
     if (findIndex === -1) {
         console.log('findIndex -1')

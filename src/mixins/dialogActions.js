@@ -7,7 +7,6 @@ export default {
     },
     methods: {
         unprocessedRemove(item) {
-            console.log(item)
             let { guest_uuid, site_id } = item
             let findIndex = this.$store.state.visitors.process.findIndex(processItem => {
                 console.log(processItem.site_id + processItem.guest_uuid, guest_uuid, site_id)

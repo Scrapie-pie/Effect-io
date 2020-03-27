@@ -86,7 +86,6 @@ export default {
     },
     watch: {
         channel() {
-            console.log('channel')
             this.resetSearch()
             this.getItemList()
         }

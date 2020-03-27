@@ -39,7 +39,6 @@ export default {
     },
     methods: {
         sortFieldsToggleName(index) {
-            console.log(this.sortFieldsComp)
             return this.sortFieldsComp[Object.keys(this.sortFieldsComp)[index]]
         },
         sortFieldsSetName(sortFieldsList) {
@@ -54,12 +53,9 @@ export default {
                 this.sortFieldsSort = this.sortFieldsDefault
                 this.sortFieldsCurrentSort.field = Object.keys(sortFieldsList[0])[0]
                 this.sortFieldsCurrentSort.val = true
-                console.log(this.sortFieldsCurrentSort)
             }
         },
         sortFieldsSetSortField(val, index) {
-            console.log(val, index)
-
             this.sortFieldsSort = Object.assign({}, this.sortFieldsDefault)
             this.$set(this.sortFieldsSort, index, val)
             this.sortFieldsCurrentSort.field = index

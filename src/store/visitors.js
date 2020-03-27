@@ -53,7 +53,6 @@ export default {
 
         newList(state, { field, val }) {
             this._vm.$set(state, field, val.list)
-            console.log('newList', val.list)
 
             if (val.count) this._vm.$set(state, field + 'Count', val.count)
         },
@@ -101,7 +100,7 @@ export default {
                 if (val.isSocketNewMessage) return //После передачи приходило сообщение "Диалог принят" создавался дублированный диалог, по этому убираю
                 val.unread = []
                 val.last_message = val.body
-                console.log('state.process.push unprocessed')
+
                 state.process.push(val)
                 state.processCount += 1
             }

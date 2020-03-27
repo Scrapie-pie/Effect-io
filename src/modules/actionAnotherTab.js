@@ -6,26 +6,21 @@ const mixins = {
     watch: {
         '$store.state.actionAnotherTab': {
             handler({ type, method, payload }) {
-                console.log(type, method, payload)
-
                 if (type === 'mutation') {
-                    console.log('actionAnotherTab.mutation start', method, payload)
                     this.$store.commit(method, payload)
-                    console.log('actionAnotherTab.mutation end', method)
+
                     this.$store.commit('actionAnotherTab/resetState')
                 }
 
                 if (type === 'method') {
-                    console.log('actionAnotherTab.method start', method)
                     this[methodRoot + method](payload)
-                    console.log('actionAnotherTab.method end', method)
+
                     this.$store.commit('actionAnotherTab/resetState')
                 }
 
                 if (type === 'emit') {
-                    console.log('actionAnotherTab.emit start', method)
                     this.$root.$emit(method, payload)
-                    console.log('actionAnotherTab.emit end', method)
+
                     this.$store.commit('actionAnotherTab/resetState')
                 }
             },

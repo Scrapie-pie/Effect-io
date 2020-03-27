@@ -186,8 +186,6 @@ export default {
     },
     watch: {
         paramsComp() {
-            console.log('paramsComp')
-
             if (
                 this.users_ids &&
                 this.sites_ids &&
@@ -226,23 +224,18 @@ export default {
         },
 
         filterBall(val) {
-            console.log('filterBall', val)
             this.rates = val
         },
         filterChannel(val) {
             this.sites_ids = val
-            console.log('filterChannel', val)
         },
         filterStatus(val) {
-            console.log('filterStatus', val)
             this.statuses = val
         },
         filterOperator(val) {
-            console.log('filterOperator', val)
             this.users_ids = val
         },
         filterUrl(val) {
-            console.log('filterUrl', val)
             this.url = val
         }
     }

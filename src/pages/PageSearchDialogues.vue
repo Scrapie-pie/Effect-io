@@ -97,7 +97,6 @@ export default {
                 this.last_days ||
                 (this.date_from && this.date_to && this.time_from && this.time_to)
             ) {
-                console.log('paramsComp')
                 this.resetSearch()
                 this.getItemList()
             }

@@ -162,11 +162,8 @@ router.beforeEach(async (to, from, next) => {
         // пропускаем на гостевые маршруты
 
         if (to.name === 'exit') {
-            console.log('логаут по кнопке')
-
             axios.put('auth/logout').finally(() => {
                 store.dispatch('user/logout').then(() => {
-                    console.log('then')
                     return next({ name: 'auth' })
                 })
             })
@@ -225,7 +222,6 @@ router.beforeEach(async (to, from, next) => {
                     console.log(error.response)
 
                     store.dispatch('user/logout').then(() => {
-                        console.log('user/logout then')
                         return next({
                             name: 'auth',
                             query: { return: to.fullPath }

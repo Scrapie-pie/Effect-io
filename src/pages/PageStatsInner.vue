@@ -343,7 +343,6 @@ export default {
             this.$root.$emit(`statsScrollDown${this.routerName}`, e)
         },
         filterOperator(val) {
-            console.log('filterOperator', val)
             this.users_ids = val
         }
     }
