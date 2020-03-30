@@ -2,24 +2,46 @@
     form.phrases-ready(@submit.prevent="submit")
         base-wait(name="phrasesReady")
         transition(name="fade" mode="out-in")
-            fieldset.phrases-ready__wrap(v-if="!showPhrasesNew" key="showPhrasesNew")
-                legend.phrases-ready__text-only-scr Готовый список фраз
-                .phrases-ready__btn-add
-                    base-btn(
-                        @click="showPhrasesNew=true"
+            fieldset.phrases-ready__wrap(v-if="phrasesEdit===null && categoriesEdit===null", key="phrasesEdit")
+                .phrases-ready__filter
+                    .phrases-ready__filter-item(v-if="isViewAdmin")
+                        filter-drop-menu(
+
+                        name="siteCompany",
+
+                        @get="filterChannel"
+                        all-output
+                        )
+                    .phrases-ready__filter-item(v-if="isViewAdmin")
+                        filter-drop-menu( name="branch",@get="(val)=>filterBranchIds=val", :filter-show-ids="filterBranchShowIds" all-output)
+                    .phrases-ready__filter-item
+                        base-filter-search(:item-list="snippetsFilterBranch", @result="(val)=>filterSearchResult=val", field-name="text")
+                    .phrases-ready__filter-item.phrases-ready__btn-add
+
+                        base-btn(
+                        @click="phrasesEdit={}"
                         v-text="'Добавить свой шаблон'"
-                    )
+                        )
+                legend.phrases-ready__text-only-scr Готовый список фраз
+
                 .phrases-ready__inner
                     fieldset.phrases-ready__catalog.phrases-ready__fieldset
                         legend.phrases-ready__name Категория
 
-                        action-list.phrases-ready__scrollbar(
-                            :item-list="categories"
-                            name="categories"
-                            name-field-text="title"
-                            name-field-value="id"
-                            v-model="categoriesSelectId"
-                        )
+                        ul.phrases-ready__phrases
+                            li.phrases-ready__phrases-item(
+                            v-for="(item, index) in categories",
+                            :key="index",
+                            :class="{active:item.id===categoriesSelectId}"
+                            )
+                                base-btn(theme="text", @click="categoriesSelect(item.id)").phrases-ready__phrases-text(v-text="item.titleAndUrl", :title="item.titleAndUrl")
+
+                                ul.phrases-ready__phrases-controls(v-if="isViewAdmin")
+                                    li.phrases-ready__phrases-button.phrases-ready__phrases-edit
+                                        base-btn(theme="link" v-text="'Редактировать'", @click="categoriesEditShow(item)")
+                                    li.phrases-ready__phrases-button.phrases-ready__phrases-remove
+                                        base-btn(theme="link" v-text="'Удалить'", @click="categoriesDelete(item.id)")
+                        //base-btn( v-text="'Добавить категорию'" @click="itemEditShow(item)")
 
                     fieldset.phrases-ready__phrases-wrap.phrases-ready__fieldset
 
@@ -27,158 +49,128 @@
                         scroll-bar.phrases-ready__scrollbar.phrases-ready__scrollbar_phrases
                             ul.phrases-ready__phrases
                                 li.phrases-ready__phrases-item(
-                                    v-for="(item, index) in phrases",
+                                    v-for="(item, index) in snippets",
                                     :key="index"
                                 )
                                     base-btn(theme="text", @click="selectText(item.text)").phrases-ready__phrases-text(v-text="item.text", :title="item.text")
 
                                     ul.phrases-ready__phrases-controls
                                         li.phrases-ready__phrases-button.phrases-ready__phrases-edit
-                                            base-btn(theme="link" v-text="'Редактировать'" @click="itemEditShow(item)")
+                                            base-btn(theme="link" v-text="'Редактировать'", @click="phrasesEditShow(item)")
                                         li.phrases-ready__phrases-button.phrases-ready__phrases-remove
-                                            base-btn(theme="link" v-text="'Удалить'" @click="itemDelete(item.id)")
+                                            base-btn(theme="link" v-text="'Удалить'", @click="phrasesDelete(item.id)")
+            phrases-ready-edit(v-else @cancel="cancel", :phrases-edit="phrasesEdit", :categories-edit="categoriesEdit")
 
-            fieldset(v-else)
-                legend.phrases-ready__text-only-scr Добавление новой фразы
-                ul.phrases-ready__add
-                    li.phrases-ready__add-item.phrases-ready__add-item_select(v-if="!showPhrasesEdit")
-                        label.phrases-ready__label(for="newCategory") Выберите категорию или придумайте свою
-                        base-field(
-                            type="select",
-                            :selectOptions="{label:'title',options:categories,taggable:true}"
-                            name="newCategory"
-                            v-model="create.category",
-                            id="newCategory"
-                            v-validate="'required'"
-                            data-vv-as="\"Категория\""
-                        )
 
-                    li.phrases-ready__add-item
-                        label.phrases-ready__label(for="newPhrase" v-text="(!showPhrasesEdit)?'Введите фразу':'Редактировать фразу'")
-                        base-field(
-                            id="newPhrase",
-                            type="textarea",
-                            name="newPhrase"
-                            v-model="create.text",
-                            maxLength="2000"
-                            v-validate="'required'"
-                            :data-vv-as="(!showPhrasesEdit)?'\"Введите фразу\"':'\"Редактировать фразу\"'"
-
-                        )
-                    li.phrases-ready__add-item(v-if="!showPhrasesEdit")
-                        base-radio-check(
-                            type="radio"
-                            v-model="create.is_common",
-                            :value="1"
-                            name="is_common"
-                        ) Все сотрудники будут видеть данный шаблон!
-                    li.phrases-ready__add-item(v-if="!showPhrasesEdit")
-                        base-radio-check(
-                            type="radio" ,
-                            :value="0",
-                            v-model="create.is_common",
-                            name="is_common"
-                        ) Данный шаблон будет виден только мне
-                    li.phrases-ready__add-item
-                        base-btn.phrases-ready__add-item-button(v-text="(!showPhrasesEdit)?'Добавить шаблон':'Сохранить'" type="submit")
-                        base-btn(v-text="'Отмена'" color="error", @click="cancel")
 </template>
 
 <script>
 import ActionList from '@/components/ActionList'
+import FilterDropMenu from "@/components/FilterDropMenu";
+import PhrasesReadyEdit from "@/components/PhrasesReadyEdit";
 export default {
     components: {
+        PhrasesReadyEdit,
+        FilterDropMenu,
         ActionList
     },
     props: {},
     data() {
         return {
-            showPhrasesNew: false,
-            showPhrasesEdit: false,
-            phrasesEditId: null,
-            picked: '',
-            is_common: 1,
-            create: {
-                text: '',
-                category: '',
-                is_common: 1
-            },
+            filterSearchResult:[],
+            filterBranchIds: [],
+            filterBranchShowIds: [],
+            filterChannelIds:[],
 
-            newCategory: '',
-            newPhrase: '',
-
-            VisibleToAll: false,
+            phrasesEdit: null,
+            categoriesEdit: null,
             categoriesSelectId: ''
         }
     },
     computed: {
+        isViewAdmin(){
+            return this.$store.getters['user/isRole'](['admin', 'owner', 'operatorSenior'])
+        },
+        snippetsFilterBranch() {
+
+            return this.snippetsStore.filter(item => {
+                if(!item.is_common) return true
+                 return item.branches_ids.some(id=>this.filterBranchIds.includes(id))
+
+            })
+
+        },
         snippets() {
+            return this.filterSearchResult.filter(
+                item => item.category_id === Number(this.categoriesSelectId)
+            )
+        },
+        snippetsStore() {
             return this.$store.state.phrases.snippets
         },
         categories() {
-            return this.$store.state.phrases.categories
+            return this.$store.getters['phrases/categories'].filter(item=>{
+                if(!item.is_common) return true
+                return this.filterChannelIds.includes(item.site_id)
+            })
         },
-        phrases() {
-            return this.snippets.filter(
-                item => item.category_id === Number(this.categoriesSelectId)
-            )
-        }
+
     },
     watch: {
-        showPhrasesNew(val) {
-            if (val && !this.showPhrasesEdit) this.create.text = ''
-        },
+
         categories: {
             handler(val) {
                 if (val.length) {
-                    console.log(val)
+
                     this.categoriesSelectId = val[0].id
                 }
             },
             immediate: true
         }
     },
-    created() {},
+    created() {
+
+    },
     methods: {
+        filterChannel(ids){
+            this.filterChannelIds = ids
+            this.filterBranchShowIds = this.$store.getters['user/branchListAll'].filter(item => ids.includes(item.site_id)).map(item=> {
+
+                return item.id
+            })
+
+        },
+        categoriesSelect(id) {
+
+            this.categoriesSelectId=id;
+        },
         selectText(val) {
             this.$emit('resultText', val)
             this.$root.$emit('globBoxControlClose')
         },
         cancel() {
-            this.phrasesEditId = null
-            this.showPhrasesNew = false
-            this.showPhrasesEdit = false
+            this.phrasesEdit= null;
+            this.categoriesEdit= null;
         },
-        itemEditShow(item) {
-            this.phrasesEditId = item.id
-            this.create.text = item.text
-            this.showPhrasesEdit = true
-            this.showPhrasesNew = true
+        phrasesEditShow(item) {
+            this.phrasesEdit= item
+
         },
-        itemEdit() {
-            let id = this.phrasesEditId,
-                text = this.create.text
-            this.$store.dispatch('phrases/snippetUpdate', { id, text })
-        },
-        itemDelete(id) {
-            this.$store.dispatch('phrases/snippetDelete', id)
-        },
-        itemCreate() {
-            this.$store.dispatch('phrases/snippetCreate', this.create)
+        categoriesEditShow(item) {
+            this.categoriesEdit= item
+
         },
 
-        submit() {
-            this.$validator.validateAll().then(success => {
-                if (success) {
-                    if (this.showPhrasesEdit) this.itemEdit()
-                    else this.itemCreate()
-                    this.showPhrasesNew = false
-                    this.showPhrasesEdit = false
-                    ;(this.phrasesEditId = null), (this.newCategory = '')
-                    this.newPhrase = ''
-                }
-            })
-        }
+        categoriesDelete(id) {
+            this.$store.dispatch('phrases/categoriesDelete', id)
+        },
+
+        phrasesDelete(id) {
+            this.$store.dispatch('phrases/snippetDelete', id)
+        },
+
+
+
     }
 }
 </script>
@@ -191,6 +183,8 @@ export default {
 
     $color-text: glob-color('secondary');
     $color-error: glob-color('error');
+
+    $space:$glob-space;
 
     $padding: calc-em(8) calc-em(26);
     max-height: 74vh;
@@ -210,48 +204,31 @@ export default {
         }
     }
 
-    &__add-item {
-        & + & {
-            margin-top: calc-em(25);
-        }
 
-        &_select {
-            max-width: 275px;
-        }
-    }
-    &__add-item-button {
-        margin-right: calc-em(20);
-    }
 
-    &__title {
-        font-weight: bold;
-    }
 
     &__inner {
-        display: flex;
+        display:grid;
+        grid-template-columns:min-content 1fr;
+        grid-gap:calc-em(15);
     }
 
     &__list {
     }
 
     &__btn-add {
-        position: absolute;
-        right: 0;
-        top: 0;
-        margin: calc-em(13) calc-em(45);
+        margin-left:auto;
     }
 
     &__catalog {
-        padding-right: calc-em(15);
+
         flex: 0 0 auto;
 
-        max-width: 220px;
+
         width: 100%;
         min-width: 0;
 
-        @include media(1600px) {
-            padding-right: 1vw;
-        }
+
     }
 
     &__phrases-button {
@@ -278,7 +255,7 @@ export default {
         padding: $padding;
         padding-left: calc-em(10);
         transition: $transition;
-        &:hover {
+        &.active,&:hover {
             background-color: $color-bg;
         }
     }
@@ -311,6 +288,27 @@ export default {
     &__name {
         font-weight: bold;
         margin-bottom: calc-em(50);
+    }
+
+
+    &__filter {
+        display:flex;
+        align-items:center;
+        flex-wrap:wrap;
+
+
+        @extend %row-flex;
+
+        &-item {
+            @extend %row-flex-col;
+            margin-bottom: calc-em(35);
+        }
+
+    }
+
+    &__catalog-inner {
+        display:grid;
+        grid-template-columns:min-content min-content;
     }
 }
 </style>

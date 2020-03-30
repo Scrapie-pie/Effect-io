@@ -108,14 +108,12 @@ export default {
         }
     },
     mounted() {
-        document.getElementById('contenteditable').addEventListener('keyup', this.keyUp)
-        document.getElementById('contenteditable').addEventListener('keydown', this.keyDown)
+        document.getElementById('contenteditable')?.addEventListener('keyup', this.keyUp)
+        document.getElementById('contenteditable')?.addEventListener('keydown', this.keyDown)
     },
     beforeDestroy() {
-        document.getElementById('contenteditable').removeEventListener('keyup', this.keyUp)
-        document.getElementById('contenteditable').removeEventListener('keydown', this.keyDown)
-
-        console.log('beforeDestroy')
+        document.getElementById('contenteditable')?.removeEventListener('keyup', this.keyUp)
+        document.getElementById('contenteditable')?.removeEventListener('keydown', this.keyDown)
     },
     methods: {
         visibleElement() {

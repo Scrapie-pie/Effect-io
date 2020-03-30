@@ -79,7 +79,7 @@ export default {
                 })
         },
         itemList() {
-            return this.$store.state.user.branchListAll
+            return this.$store.getters['user/branchListAll']
         },
         itemListIds() {
             let list = []

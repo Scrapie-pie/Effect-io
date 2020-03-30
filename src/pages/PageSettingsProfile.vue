@@ -75,7 +75,7 @@
                     base-field.settings-list__control(
                         v-model="branchListSelected"
                         type="select",
-                        :selectOptions="{value:branchListSelected, label:'title',options:compBranchListRemaining}"
+                        :selectOptions="{value:branchListSelected, label:'titleAndSite',options:compBranchListRemaining}"
                         name="voice"
                         multiple,
                     )
@@ -196,7 +196,7 @@ export default {
 
     computed: {
         compBranchListAll() {
-            return this.$store.state.user.branchListAll
+            return this.$store.getters['user/branchListAll']
         },
         branches_ids() {
             return this.model.branches_ids
@@ -262,7 +262,7 @@ export default {
             }
         },
         getBranchListAll() {
-            if (this.$store.state.user.branchListAll.length) {
+            if (this.$store.getters['user/branchListAll'].length) {
                 this.setBranchListSelected(this.$store.getters['user/branchListAll'])
             } else {
                 this.$store.watch(

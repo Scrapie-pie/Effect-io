@@ -149,7 +149,7 @@ export default {
             )
         },
         branchListAllFilterIds() {
-            return this.$store.state.user.branchListAll.filter(
+            return this.$store.getters['user/branchListAll'].filter(
                 branch => branch.site_id === this.httpParams.params.site_id
             )
         }

@@ -57,6 +57,14 @@ export default {
         branchesBr
     },
     props: {
+        isSaveResultPage: {
+            type: Boolean,
+            default: false
+        },
+        allOutput: {
+            type: Boolean,
+            default: false
+        },
         name: {
             type: String,
             default: ''
@@ -69,6 +77,12 @@ export default {
             type: Object,
             default: () => {
                 return {}
+            }
+        },
+        filterShowIds: {
+            type: Array,
+            default: () => {
+                return []
             }
         }
     },
@@ -149,7 +163,13 @@ export default {
         },
         itemList() {
             //console.log(this.name,this[this.name+'List']);
-            return this[this.name + 'List']
+            if(!this.filterShowIds.length) {
+                return this[this.name + 'List']
+            }
+            else {
+
+                return this[this.name + 'List']?.filter(item=>this.filterShowIds.includes(item.id))
+            }
         },
         calendarList() {
             return []
@@ -168,8 +188,9 @@ export default {
             })
         },
         branchList() {
-            return this.$store.state.user.branchListAll.map(item => {
-                item.name = item.title
+
+            return this.$store.getters['user/branchListAll'].map(item => {
+                item.name = item.titleAndSite
                 return item
             })
         },
@@ -202,7 +223,7 @@ export default {
             // отправляем один раз при инициализации
             if (this.startOnce) {
                 if (this.type === 'checkbox' && this.name !== 'calendar') {
-                    if (this.allChecked) this.$emit('get', [])
+                    if (this.allChecked && !this.allOutput) this.$emit('get', [])
                     else
                         this.$emit(
                             'get',
@@ -224,12 +245,14 @@ export default {
                         this.modelcheckbox.map(item => item.id).join()
                     ) {
                         //если результат не меняли, ничего не отправляем
-                        if (this.allChecked) this.$emit('get', [])
-                        else
+                        if (this.allChecked  && !this.allOutput) this.$emit('get', [])
+                        else {
                             this.$emit(
                                 'get',
                                 this.modelcheckbox.map(item => item.id)
                             )
+                        }
+
                     }
                 } else {
                     // открыл фильтр первый раз изменил результат, закрыл вкладку,ушел ответ, открыл вкладку, ничего не менял, закрыл, все равно ответ ушел - это исправляет ситуацию
@@ -248,7 +271,7 @@ export default {
                         this.modelcheckbox = val
                     }
                 } else {
-                    if (this.getFilterSelectStore.length) {
+                    if (this.getFilterSelectStore.length && this.isSaveResultPage) {
                         this.modelradio = this.getFilterSelectStore[0]
                     } else {
                         this.modelradio = val[0]
@@ -262,7 +285,7 @@ export default {
                 if (this.type === 'radio') {
                     if (!val) return
                     this.$emit('get', val.id)
-                    this.$store.commit('setFilter', { [this.name]: [val.id] })
+                    if(this.isSaveResultPage) this.$store.commit('setFilter', { [this.name]: [val.id] })
                 }
                 if (this.name === 'calendar') {
                     if (val && val.date_from && val.date_to) {
@@ -282,7 +305,13 @@ export default {
                 //if(this.name==='url' && !this.itemList.length) return       console.log('modelcheckbox',val, valOld);
 
                 if (val.length !== this.itemList.length) this.allChecked = false
-                //this.$emit('get',val.map(item=>item.id))
+                if(!this.show) {
+                    this.$emit('get',val.map(item=>item.id))
+                    //this.$store.commit('setFilter', { [this.name]: val.map(item=>item.id) })
+                }
+
+
+
 
                 this.modelPrev = valOld
             },
@@ -374,6 +403,7 @@ export default {
 
         transition: $transition;
 
+
         &_open {
             opacity: 1;
             visibility: visible;
@@ -413,7 +443,7 @@ export default {
         &-scrollbar {
             margin-right: -1 * calc-em(15);
             padding-right: calc-em(15);
-            max-height: 85vh;
+            max-height: 35vh;
         }
         &-search {
             margin-bottom: calc-em(15);
