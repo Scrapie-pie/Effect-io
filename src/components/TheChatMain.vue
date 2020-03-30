@@ -249,6 +249,7 @@ export default {
             }
         },*/
         $route(to, from) {
+            this.getPhrasesUse()
             this.getRoomUserAll()
             this.historyMessageLoadStart = true
             this.messageRun = true
@@ -298,6 +299,11 @@ export default {
         })
 
         this.syncOperatorMessageVisor()
+
+        this.getPhrasesUse()
+
+
+
     },
     beforeDestroy() {
         this.$root.$off('messageAdd', this.emitMessageAdd)
@@ -305,6 +311,12 @@ export default {
     },
 
     methods: {
+        getPhrasesUse(){
+            let site_id = this.httpParams?.params?.site_id
+             if(site_id) {
+                this.$store.dispatch('phrases/getItemListUse',{site_id})
+       }
+        },
         chatDown() {
             this.scrollbarScrollerPush(this.$refs.scrollbar)
             this.scrollDownButtonShow = false

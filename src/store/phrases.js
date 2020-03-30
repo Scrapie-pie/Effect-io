@@ -3,7 +3,11 @@ import lodash_isObject from 'lodash/isObject'
 const getDefaultState = () => {
     return {
         snippets: [],
-        categories: []
+        categories: [],
+        use:{
+            snippets: [],
+            categories: [],
+        }
     }
 }
 // initial state
@@ -43,6 +47,10 @@ export default {
         setPhraseList(state, { snippets, categories }) {
             state.snippets = snippets
             state.categories = categories
+        },
+        setPhraseListUse(state, { snippets, categories }) {
+            state.use.snippets = snippets
+            state.use.categories = categories
         }
     },
     actions: {
@@ -100,9 +108,27 @@ export default {
                 dispatch('getItemList')
             })
         },
-        getItemList({ commit }) {
-            this._vm.$http.get('snippet/read-snippet',{params:{type:'edit'}}).then(({ data }) => {
+        getItemList({ commit,rootGetters }) {
+            let params = {
+
+            }
+            //if(rootGetters['user/isRole'](['admin', 'owner', 'operatorSenior'])) {
+                params.type='edit'
+            //}
+            this._vm.$http.get('snippet/read-snippet',{params}).then(({ data }) => {
                 commit('setPhraseList', data.data)
+            })
+        },
+        getItemListUse({ commit,rootGetters },{site_id}) {
+            let params = {
+                type:'use',
+                site_id
+            }
+
+
+
+            this._vm.$http.get('snippet/read-snippet',{params}).then(({ data }) => {
+                commit('setPhraseListUse', data.data)
             })
         }
     },

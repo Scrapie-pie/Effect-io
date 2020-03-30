@@ -75,7 +75,7 @@
                     base-field.settings-list__control(
                         v-model="branchListSelected"
                         type="select",
-                        :selectOptions="{value:branchListSelected, label:'title',options:compBranchListRemaining}"
+                        :selectOptions="{value:branchListSelected, label:'titleAndSite',options:compBranchListRemaining}"
                         name="voice"
                         multiple,
                     )

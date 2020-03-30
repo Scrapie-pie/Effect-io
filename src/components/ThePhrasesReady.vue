@@ -4,20 +4,26 @@
         transition(name="fade" mode="out-in")
             fieldset.phrases-ready__wrap(v-if="phrasesEdit===null && categoriesEdit===null", key="phrasesEdit")
                 .phrases-ready__filter
-                    filter-drop-menu(
-                    name="siteCompany",
+                    .phrases-ready__filter-item(v-if="isViewAdmin")
+                        filter-drop-menu(
 
-                    @get="filterChannel"
-                    all-output
-                    )
-                    filter-drop-menu(name="branch",@get="(val)=>filterBranchIds=val", :filter-show-ids="filterBranchShowIds" all-output)
-                    base-filter-search(:item-list="snippetsFilterBranch", @result="(val)=>filterSearchResult=val", field-name="text")
-                legend.phrases-ready__text-only-scr Готовый список фраз
-                .phrases-ready__btn-add
-                    base-btn(
+                        name="siteCompany",
+
+                        @get="filterChannel"
+                        all-output
+                        )
+                    .phrases-ready__filter-item(v-if="isViewAdmin")
+                        filter-drop-menu( name="branch",@get="(val)=>filterBranchIds=val", :filter-show-ids="filterBranchShowIds" all-output)
+                    .phrases-ready__filter-item
+                        base-filter-search(:item-list="snippetsFilterBranch", @result="(val)=>filterSearchResult=val", field-name="text")
+                    .phrases-ready__filter-item.phrases-ready__btn-add
+
+                        base-btn(
                         @click="phrasesEdit={}"
                         v-text="'Добавить свой шаблон'"
-                    )
+                        )
+                legend.phrases-ready__text-only-scr Готовый список фраз
+
                 .phrases-ready__inner
                     fieldset.phrases-ready__catalog.phrases-ready__fieldset
                         legend.phrases-ready__name Категория
@@ -30,7 +36,7 @@
                             )
                                 base-btn(theme="text", @click="categoriesSelect(item.id)").phrases-ready__phrases-text(v-text="item.titleAndUrl", :title="item.titleAndUrl")
 
-                                ul.phrases-ready__phrases-controls
+                                ul.phrases-ready__phrases-controls(v-if="isViewAdmin")
                                     li.phrases-ready__phrases-button.phrases-ready__phrases-edit
                                         base-btn(theme="link" v-text="'Редактировать'", @click="categoriesEditShow(item)")
                                     li.phrases-ready__phrases-button.phrases-ready__phrases-remove
@@ -82,6 +88,9 @@ export default {
         }
     },
     computed: {
+        isViewAdmin(){
+            return this.$store.getters['user/isRole'](['admin', 'owner', 'operatorSenior'])
+        },
         snippetsFilterBranch() {
 
             return this.snippetsStore.filter(item => {
@@ -119,7 +128,9 @@ export default {
             immediate: true
         }
     },
-    created() {},
+    created() {
+
+    },
     methods: {
         filterChannel(ids){
             this.filterChannelIds = ids
@@ -206,10 +217,7 @@ export default {
     }
 
     &__btn-add {
-        position: absolute;
-        right: 0;
-        top: 0;
-        margin: calc-em(13) calc-em(45);
+        margin-left:auto;
     }
 
     &__catalog {
@@ -284,11 +292,17 @@ export default {
 
 
     &__filter {
-        display:grid;
-        grid-template-columns:repeat(3,max-content);
+        display:flex;
         align-items:center;
-        grid-gap:$space;
-        margin-bottom: calc-em(35);
+        flex-wrap:wrap;
+
+
+        @extend %row-flex;
+
+        &-item {
+            @extend %row-flex-col;
+            margin-bottom: calc-em(35);
+        }
 
     }
 

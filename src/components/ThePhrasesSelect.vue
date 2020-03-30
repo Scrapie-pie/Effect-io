@@ -59,7 +59,7 @@ export default {
             )
         },
         snippets() {
-            return this.$store.state.phrases.snippets
+            return this.$store.state.phrases.use.snippets
         }
     },
     watch: {

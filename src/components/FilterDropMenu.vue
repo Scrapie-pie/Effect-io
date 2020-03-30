@@ -403,6 +403,7 @@ export default {
 
         transition: $transition;
 
+
         &_open {
             opacity: 1;
             visibility: visible;
@@ -442,7 +443,7 @@ export default {
         &-scrollbar {
             margin-right: -1 * calc-em(15);
             padding-right: calc-em(15);
-            max-height: 85vh;
+            max-height: 35vh;
         }
         &-search {
             margin-bottom: calc-em(15);

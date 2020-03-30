@@ -16,8 +16,10 @@
 
                 template(v-else-if="phrasesEdit")
                     li.phrases-ready-edit__add-item.phrases-ready-edit__add-item_select(v-if="!showPhrasesEdit")
-                        label.phrases-ready-edit__label(for="newCategory") Выберите категорию или придумайте свою
-                        base-field(type="text" value="Свои шаблоны" v-if="!create.is_common" disabled)
+
+                        label.phrases-ready-edit__label(for="newCategory" v-if="!create.is_common") Категория
+                        label.phrases-ready-edit__label(for="newCategory" v-else) Выберите категорию или придумайте свою
+                        base-field(type="text" value="Свои шаблоны" v-if="!create.is_common" disabled name="newCategory")
                         base-field(
                             v-else
                             type="select",
@@ -42,7 +44,7 @@
 
                         )
 
-                    template(v-if="!showPhrasesEdit")
+                    template(v-if="!showPhrasesEdit && isViewAdmin")
                         li.phrases-ready-edit__add-item
                             base-radio-check(
                                 :false-value="1",
@@ -110,7 +112,9 @@ export default {
         }
     },
     computed: {
-
+        isViewAdmin(){
+            return this.$store.getters['user/isRole'](['admin', 'owner', 'operatorSenior'])
+        },
         snippets() {
             return this.$store.state.phrases.snippets
         },
@@ -138,6 +142,16 @@ export default {
         phrasesEdit: {
             handler(object) {
                 Object.assign(this.create,object)
+
+            },
+            immediate: true
+        },
+        isViewAdmin: {
+            handler(val) {
+                console.log('isViewAdmin', val);
+                if(!val) {
+                   this.create.is_common = 0
+                }
 
             },
             immediate: true
