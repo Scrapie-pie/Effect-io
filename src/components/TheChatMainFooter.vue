@@ -180,7 +180,7 @@ export default {
                     }
                 }, 300)
                 setTimeout(() => {
-                    this.$refs.inputEmoji.$el.focus()
+                    this.$refs?.inputEmoji?.$el.focus()
                 }, 750)
             },
             immediate: true
@@ -424,6 +424,7 @@ export default {
                             }
                         }
                     }
+                    if(this.viewModeChat==='common') this.$root.$emit('messageAdd', message)
 
                     localStorage.setItem('messageAdd', JSON.stringify(message))
 
