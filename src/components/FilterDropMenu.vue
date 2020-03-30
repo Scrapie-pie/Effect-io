@@ -163,12 +163,12 @@ export default {
         },
         itemList() {
             //console.log(this.name,this[this.name+'List']);
-            if(!this.filterShowIds.length) {
+            if (!this.filterShowIds.length) {
                 return this[this.name + 'List']
-            }
-            else {
-
-                return this[this.name + 'List']?.filter(item=>this.filterShowIds.includes(item.id))
+            } else {
+                return this[this.name + 'List']?.filter(item =>
+                    this.filterShowIds.includes(item.id)
+                )
             }
         },
         calendarList() {
@@ -188,7 +188,6 @@ export default {
             })
         },
         branchList() {
-
             return this.$store.getters['user/branchListAll'].map(item => {
                 item.name = item.titleAndSite
                 return item
@@ -245,14 +244,13 @@ export default {
                         this.modelcheckbox.map(item => item.id).join()
                     ) {
                         //если результат не меняли, ничего не отправляем
-                        if (this.allChecked  && !this.allOutput) this.$emit('get', [])
+                        if (this.allChecked && !this.allOutput) this.$emit('get', [])
                         else {
                             this.$emit(
                                 'get',
                                 this.modelcheckbox.map(item => item.id)
                             )
                         }
-
                     }
                 } else {
                     // открыл фильтр первый раз изменил результат, закрыл вкладку,ушел ответ, открыл вкладку, ничего не менял, закрыл, все равно ответ ушел - это исправляет ситуацию
@@ -285,7 +283,8 @@ export default {
                 if (this.type === 'radio') {
                     if (!val) return
                     this.$emit('get', val.id)
-                    if(this.isSaveResultPage) this.$store.commit('setFilter', { [this.name]: [val.id] })
+                    if (this.isSaveResultPage)
+                        this.$store.commit('setFilter', { [this.name]: [val.id] })
                 }
                 if (this.name === 'calendar') {
                     if (val && val.date_from && val.date_to) {
@@ -305,13 +304,13 @@ export default {
                 //if(this.name==='url' && !this.itemList.length) return       console.log('modelcheckbox',val, valOld);
 
                 if (val.length !== this.itemList.length) this.allChecked = false
-                if(!this.show) {
-                    this.$emit('get',val.map(item=>item.id))
+                if (!this.show) {
+                    this.$emit(
+                        'get',
+                        val.map(item => item.id)
+                    )
                     //this.$store.commit('setFilter', { [this.name]: val.map(item=>item.id) })
                 }
-
-
-
 
                 this.modelPrev = valOld
             },
@@ -402,7 +401,6 @@ export default {
         visibility: hidden;
 
         transition: $transition;
-
 
         &_open {
             opacity: 1;

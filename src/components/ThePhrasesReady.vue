@@ -66,8 +66,8 @@
 
 <script>
 import ActionList from '@/components/ActionList'
-import FilterDropMenu from "@/components/FilterDropMenu";
-import PhrasesReadyEdit from "@/components/PhrasesReadyEdit";
+import FilterDropMenu from '@/components/FilterDropMenu'
+import PhrasesReadyEdit from '@/components/PhrasesReadyEdit'
 export default {
     components: {
         PhrasesReadyEdit,
@@ -77,10 +77,10 @@ export default {
     props: {},
     data() {
         return {
-            filterSearchResult:[],
+            filterSearchResult: [],
             filterBranchIds: [],
             filterBranchShowIds: [],
-            filterChannelIds:[],
+            filterChannelIds: [],
 
             phrasesEdit: null,
             categoriesEdit: null,
@@ -88,17 +88,14 @@ export default {
         }
     },
     computed: {
-        isViewAdmin(){
+        isViewAdmin() {
             return this.$store.getters['user/isRole'](['admin', 'owner', 'operatorSenior'])
         },
         snippetsFilterBranch() {
-
             return this.snippetsStore.filter(item => {
-                if(!item.is_common) return true
-                 return item.branches_ids.some(id=>this.filterBranchIds.includes(id))
-
+                if (!item.is_common) return true
+                return item.branches_ids.some(id => this.filterBranchIds.includes(id))
             })
-
         },
         snippets() {
             return this.filterSearchResult.filter(
@@ -109,56 +106,48 @@ export default {
             return this.$store.state.phrases.snippets
         },
         categories() {
-            return this.$store.getters['phrases/categories'].filter(item=>{
-                if(!item.is_common) return true
+            return this.$store.getters['phrases/categories'].filter(item => {
+                if (!item.is_common) return true
                 return this.filterChannelIds.includes(item.site_id)
             })
-        },
-
+        }
     },
     watch: {
-
         categories: {
             handler(val) {
                 if (val.length) {
-
                     this.categoriesSelectId = val[0].id
                 }
             },
             immediate: true
         }
     },
-    created() {
-
-    },
+    created() {},
     methods: {
-        filterChannel(ids){
+        filterChannel(ids) {
             this.filterChannelIds = ids
-            this.filterBranchShowIds = this.$store.getters['user/branchListAll'].filter(item => ids.includes(item.site_id)).map(item=> {
-
-                return item.id
-            })
-
+            this.filterBranchShowIds = this.$store.getters['user/branchListAll']
+                .filter(item => ids.includes(item.site_id))
+                .map(item => {
+                    return item.id
+                })
         },
         categoriesSelect(id) {
-
-            this.categoriesSelectId=id;
+            this.categoriesSelectId = id
         },
         selectText(val) {
             this.$emit('resultText', val)
             this.$root.$emit('globBoxControlClose')
         },
         cancel() {
-            this.phrasesEdit= null;
-            this.categoriesEdit= null;
+            this.phrasesEdit = null
+            this.categoriesEdit = null
         },
         phrasesEditShow(item) {
-            this.phrasesEdit= item
-
+            this.phrasesEdit = item
         },
         categoriesEditShow(item) {
-            this.categoriesEdit= item
-
+            this.categoriesEdit = item
         },
 
         categoriesDelete(id) {
@@ -167,10 +156,7 @@ export default {
 
         phrasesDelete(id) {
             this.$store.dispatch('phrases/snippetDelete', id)
-        },
-
-
-
+        }
     }
 }
 </script>
@@ -184,7 +170,7 @@ export default {
     $color-text: glob-color('secondary');
     $color-error: glob-color('error');
 
-    $space:$glob-space;
+    $space: $glob-space;
 
     $padding: calc-em(8) calc-em(26);
     max-height: 74vh;
@@ -204,31 +190,24 @@ export default {
         }
     }
 
-
-
-
     &__inner {
-        display:grid;
-        grid-template-columns:min-content 1fr;
-        grid-gap:calc-em(15);
+        display: grid;
+        grid-template-columns: min-content 1fr;
+        grid-gap: calc-em(15);
     }
 
     &__list {
     }
 
     &__btn-add {
-        margin-left:auto;
+        margin-left: auto;
     }
 
     &__catalog {
-
         flex: 0 0 auto;
-
 
         width: 100%;
         min-width: 0;
-
-
     }
 
     &__phrases-button {
@@ -255,7 +234,8 @@ export default {
         padding: $padding;
         padding-left: calc-em(10);
         transition: $transition;
-        &.active,&:hover {
+        &.active,
+        &:hover {
             background-color: $color-bg;
         }
     }
@@ -290,12 +270,10 @@ export default {
         margin-bottom: calc-em(50);
     }
 
-
     &__filter {
-        display:flex;
-        align-items:center;
-        flex-wrap:wrap;
-
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
 
         @extend %row-flex;
 
@@ -303,12 +281,11 @@ export default {
             @extend %row-flex-col;
             margin-bottom: calc-em(35);
         }
-
     }
 
     &__catalog-inner {
-        display:grid;
-        grid-template-columns:min-content min-content;
+        display: grid;
+        grid-template-columns: min-content min-content;
     }
 }
 </style>

@@ -77,93 +77,86 @@
 </template>
 
 <script>
-
-import FilterDropMenu from "@/components/FilterDropMenu";
+import FilterDropMenu from '@/components/FilterDropMenu'
 
 export default {
     components: {
         FilterDropMenu
-
     },
     props: {
-        phrasesEdit:{
-            type:Object,
-            default:()=>{},
+        phrasesEdit: {
+            type: Object,
+            default: () => {}
         },
-        categoriesEdit:{
-            type:Object,
-            default:()=>{},
+        categoriesEdit: {
+            type: Object,
+            default: () => {}
         }
     },
     data() {
         return {
-            filterChannelIds:[],
+            filterChannelIds: [],
             create: {
                 text: '',
                 category: '',
                 is_common: 1,
-                branches_ids:[],
-                site_id:null
+                branches_ids: [],
+                site_id: null
             },
             newCategory: '',
             newPhrase: '',
-            modelCategoryEdit:{}
-
+            modelCategoryEdit: {}
         }
     },
     computed: {
-        isViewAdmin(){
+        isViewAdmin() {
             return this.$store.getters['user/isRole'](['admin', 'owner', 'operatorSenior'])
         },
         snippets() {
             return this.$store.state.phrases.snippets
         },
         categories() {
-
-            return this.$store.getters['phrases/categories'].filter(item=>item.is_common)
+            return this.$store.getters['phrases/categories'].filter(item => item.is_common)
         },
 
         showPhrasesEdit() {
             return this.phrasesEdit?.id
         }
-
     },
     watch: {
-       /* 'create.is_common'(val){
+        /* 'create.is_common'(val){
             console.log(val);
             if(!val) this.create.category = this.categories[0]
         },*/
         categoriesEdit: {
             handler(object) {
-                this.modelCategoryEdit= object
+                this.modelCategoryEdit = object
             },
             immediate: true
         },
         phrasesEdit: {
             handler(object) {
-                Object.assign(this.create,object)
-
+                Object.assign(this.create, object)
             },
             immediate: true
         },
         isViewAdmin: {
             handler(val) {
-                console.log('isViewAdmin', val);
-                if(!val) {
-                   this.create.is_common = 0
+                console.log('isViewAdmin', val)
+                if (!val) {
+                    this.create.is_common = 0
                 }
-
             },
             immediate: true
-        },
-
-
+        }
     },
     created() {},
     methods: {
-        filterChannel(id){
+        filterChannel(id) {
             this.create.site_id = id
-            this.filterChannelIds = this.$store.getters['user/branchListAll'].filter(item => id===item.site_id).map(item=>item.id)
+            this.filterChannelIds = this.$store.getters['user/branchListAll']
+                .filter(item => id === item.site_id)
+                .map(item => item.id)
         },
 
         cancel() {
@@ -171,24 +164,22 @@ export default {
         },
 
         apiCategoryEdit() {
-
             this.$store.dispatch('phrases/categoriesUpdate', this.modelCategoryEdit)
         },
         snippetEdit() {
-
             this.$store.dispatch('phrases/snippetUpdate', this.create)
         },
         snippetCreate() {
-            console.log('snippetCreate');
+            console.log('snippetCreate')
             //this.create.is_common = this.is_common;
-            console.log(this.create);
+            console.log(this.create)
             this.$store.dispatch('phrases/snippetCreate', this.create)
         },
 
         submit() {
             this.$validator.validateAll().then(success => {
                 if (success) {
-                    if(this.categoriesEdit) {
+                    if (this.categoriesEdit) {
                         this.apiCategoryEdit()
                         return this.$emit('cancel')
                     }
@@ -221,13 +212,5 @@ export default {
     &__add-item-button {
         margin-right: calc-em(20);
     }
-
-
-
-
-
-
-
-
 }
 </style>

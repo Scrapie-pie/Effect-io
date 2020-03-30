@@ -301,9 +301,6 @@ export default {
         this.syncOperatorMessageVisor()
 
         this.getPhrasesUse()
-
-
-
     },
     beforeDestroy() {
         this.$root.$off('messageAdd', this.emitMessageAdd)
@@ -311,11 +308,11 @@ export default {
     },
 
     methods: {
-        getPhrasesUse(){
+        getPhrasesUse() {
             let site_id = this.httpParams?.params?.site_id
-             if(site_id) {
-                this.$store.dispatch('phrases/getItemListUse',{site_id})
-       }
+            if (site_id) {
+                this.$store.dispatch('phrases/getItemListUse', { site_id })
+            }
         },
         chatDown() {
             this.scrollbarScrollerPush(this.$refs.scrollbar)
@@ -450,25 +447,28 @@ export default {
             }
 
             if (this.httpParams) {
-                console.log('getRoomUserAll');
+                console.log('getRoomUserAll')
                 let viewModeChat = this.viewModeChat //пользователь мог не дожидаться запроса и на момент ответа viewModeChat содержала другой роут проходил редирект обратно
-                this.$http.get('chat-room-user/all', this.httpParams).then(({ data }) => {
-                    console.log(data);
-                    if (!this.accessPage(data.data, viewModeChat)) {
-                        return this.$router.push({ name: 'processAll' })
-                    }
+                this.$http
+                    .get('chat-room-user/all', this.httpParams)
+                    .then(({ data }) => {
+                        console.log(data)
+                        if (!this.accessPage(data.data, viewModeChat)) {
+                            return this.$router.push({ name: 'processAll' })
+                        }
 
-                    //console.log(this.httpParams);
+                        //console.log(this.httpParams);
 
-                    data.data.visitor = this.httpParams.params
-                    this.$store.commit('roomActive/set', data.data)
-                }).catch(()=>{
-                    this.$router.push({ name: 'processAll' })
-                })
+                        data.data.visitor = this.httpParams.params
+                        this.$store.commit('roomActive/set', data.data)
+                    })
+                    .catch(() => {
+                        this.$router.push({ name: 'processAll' })
+                    })
             }
         },
         accessPage(list, viewModeChat) {
-            console.log('accessPage');
+            console.log('accessPage')
             if (viewModeChat === 'common') return true
 
             if (viewModeChat === 'search') return true
@@ -497,7 +497,7 @@ export default {
 
             if (viewModeChat === 'visitors') {
                 listFilter = list.filter(item => ['active'].includes(item.status))
-                console.log(listFilter,this.$store.state.user.profile.id);
+                console.log(listFilter, this.$store.state.user.profile.id)
                 if (listFilter.some(user => user.user_id === this.$store.state.user.profile.id))
                     return true
 

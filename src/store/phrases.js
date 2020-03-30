@@ -4,9 +4,9 @@ const getDefaultState = () => {
     return {
         snippets: [],
         categories: [],
-        use:{
+        use: {
             snippets: [],
-            categories: [],
+            categories: []
         }
     }
 }
@@ -21,9 +21,9 @@ export default {
             Object.assign(state, getDefaultState())
         },
         categoryAdd(state, val) {
-            console.log(val);
-            let findIndex = state.categories.findIndex(item=>item.id===val.id)
-            if(findIndex==-1) state.categories.push(val)
+            console.log(val)
+            let findIndex = state.categories.findIndex(item => item.id === val.id)
+            if (findIndex == -1) state.categories.push(val)
         },
         snippetAdd(state, val) {
             state.snippets.push(val)
@@ -54,36 +54,41 @@ export default {
         }
     },
     actions: {
-        snippetCreate({ commit }, { text, category, is_common,site_id,branches_ids }) {
-            let id;
+        snippetCreate({ commit }, { text, category, is_common, site_id, branches_ids }) {
+            let id
 
-            if(lodash_isObject(category)){
+            if (lodash_isObject(category)) {
                 id = category.id
                 category = category.title
             }
 
-            if(!is_common) {
-                category=null;
-                site_id=null
-                branches_ids=null
+            if (!is_common) {
+                category = null
+                site_id = null
+                branches_ids = null
             }
 
             this._vm.$http
-                .post('snippet/create-snippet', { text,category,  is_common,site_id,branches_ids })
+                .post('snippet/create-snippet', {
+                    text,
+                    category,
+                    is_common,
+                    site_id,
+                    branches_ids
+                })
                 .then(({ data }) => {
-                    console.log(data);
-                    console.log(id);
+                    console.log(data)
+                    console.log(id)
 
+                    if (!is_common) category = 'Свои шаблоны'
 
-                        if(!is_common) category='Свои шаблоны'
-
-                        //значит новая категория, обновим список
-                        commit('categoryAdd', {
-                            id: data.data.category_id,
-                            title:category,
-                            is_common,
-                            site_id
-                        })
+                    //значит новая категория, обновим список
+                    commit('categoryAdd', {
+                        id: data.data.category_id,
+                        title: category,
+                        is_common,
+                        site_id
+                    })
 
                     commit('snippetAdd', data.data)
                 })
@@ -103,49 +108,50 @@ export default {
                 commit('setSnippetDelete', id)
             })
         },
-        categoriesDelete({ commit,dispatch }, id) {
+        categoriesDelete({ commit, dispatch }, id) {
             this._vm.$http.delete('snippet/delete-category', { params: { id } }).then(() => {
                 dispatch('getItemList')
             })
         },
-        getItemList({ commit,rootGetters }) {
-            let params = {
-
-            }
+        getItemList({ commit, rootGetters }) {
+            let params = {}
             //if(rootGetters['user/isRole'](['admin', 'owner', 'operatorSenior'])) {
-                params.type='edit'
+            params.type = 'edit'
             //}
-            this._vm.$http.get('snippet/read-snippet',{params}).then(({ data }) => {
+            this._vm.$http.get('snippet/read-snippet', { params }).then(({ data }) => {
                 commit('setPhraseList', data.data)
             })
         },
-        getItemListUse({ commit,rootGetters },{site_id}) {
+        getItemListUse({ commit, rootGetters }, { site_id }) {
             let params = {
-                type:'use',
+                type: 'use',
                 site_id
             }
 
-
-
-            this._vm.$http.get('snippet/read-snippet',{params}).then(({ data }) => {
+            this._vm.$http.get('snippet/read-snippet', { params }).then(({ data }) => {
                 commit('setPhraseListUse', data.data)
             })
         }
     },
     getters: {
-
-        categories: (state, getters,rootState,rootGetters)  => {
-            console.log(rootState.user.siteCompanyList);
-            if(rootState.user.siteCompanyList.length>1) return state.categories.map(item=>{
-                if(!item.site_id) item.titleAndUrl = item.title
-                else item.titleAndUrl = item.title+' (' + rootState.user.siteCompanyList?.find(site=>site.id===item.site_id)?.url+')'
-                return item
-            })
-            return state.categories.map(item=>{
+        categories: (state, getters, rootState, rootGetters) => {
+            console.log(rootState.user.siteCompanyList)
+            if (rootState.user.siteCompanyList.length > 1)
+                return state.categories.map(item => {
+                    if (!item.site_id) item.titleAndUrl = item.title
+                    else
+                        item.titleAndUrl =
+                            item.title +
+                            ' (' +
+                            rootState.user.siteCompanyList?.find(site => site.id === item.site_id)
+                                ?.url +
+                            ')'
+                    return item
+                })
+            return state.categories.map(item => {
                 item.titleAndUrl = item.title
                 return item
             })
-        },
-
+        }
     }
 }
