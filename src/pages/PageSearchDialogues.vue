@@ -2,9 +2,10 @@
 
     the-layout-table.page-log-dialogues(@scrolldown="scrollLoad")
 
-        filter-drop-menu(name="last_days", key="last_days", @get="filterLast_days" slot="control" type="radio")
+        filter-drop-menu(name="last_days", key="last_days", @get="filterLast_days" slot="control" type="radio" is-save-result-page)
 
         filter-drop-menu(
+        is-save-result-page
         v-show="showCalendar"
         name="calendar",
         key="calendar",

@@ -75,15 +75,15 @@ export default {
                     console.log(id);
 
 
-                    if(!is_common) category='Свои шаблоны'
+                        if(!is_common) category='Свои шаблоны'
 
-                    //значит новая категория, обновим список
-                    commit('categoryAdd', {
-                        id: data.data.category_id,
-                        title:category,
-                        is_common,
-                        site_id
-                    })
+                        //значит новая категория, обновим список
+                        commit('categoryAdd', {
+                            id: data.data.category_id,
+                            title:category,
+                            is_common,
+                            site_id
+                        })
 
                     commit('snippetAdd', data.data)
                 })
@@ -113,7 +113,7 @@ export default {
 
             }
             //if(rootGetters['user/isRole'](['admin', 'owner', 'operatorSenior'])) {
-            params.type='edit'
+                params.type='edit'
             //}
             this._vm.$http.get('snippet/read-snippet',{params}).then(({ data }) => {
                 commit('setPhraseList', data.data)

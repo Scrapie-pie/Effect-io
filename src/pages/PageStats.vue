@@ -109,7 +109,7 @@ export default {
             return this.$route.name
         },
         branchListAll() {
-            return this.$store.state.user.branchListAll
+            return this.$store.getters['user/branchListAll']
         }
     }
 }
