@@ -9,7 +9,7 @@
                     box-controls(v-if="showMention", @boxControlClose="showMention=false")
                         select-operators(name="mention")
                     box-controls(v-if="showPhrases", @boxControlClose="showPhrases=false")
-                        the-phrases-ready(@resultText="getPhrasesSelectText")
+                        the-phrases-ready(@resultText="getPhrasesSelectText" is-absolute)
                     box-controls(v-if="showSmiles", @boxControlClose="showSmiles=false")
                         //the-files-board(name="smiles", @getSmile="setMessageSmile")
                         the-board-smile(@getSmile="setMessageSmile", @result="setTextWidthSmiles")

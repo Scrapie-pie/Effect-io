@@ -1,8 +1,8 @@
 <template lang="pug">
-    form.phrases-ready(@submit.prevent="submit")
+    form.phrases-ready(@submit.prevent="submit", :class="{'phrases-ready_is-absolute':isAbsolute}")
         base-wait(name="phrasesReady")
         transition(name="fade" mode="out-in")
-            fieldset.phrases-ready__wrap(v-if="phrasesEdit===null && categoriesEdit===null", key="phrasesEdit")
+            .phrases-ready__wrap(v-if="phrasesEdit===null && categoriesEdit===null", key="phrasesEdit")
                 .phrases-ready__filter
                     .phrases-ready__filter-item(v-if="isViewAdmin")
                         filter-drop-menu(
@@ -22,28 +22,28 @@
                         @click="phrasesEdit={}"
                         v-text="'Добавить свой шаблон'"
                         )
-                legend.phrases-ready__text-only-scr Готовый список фраз
+                .phrases-ready__text-only-scr Готовый список фраз
 
                 .phrases-ready__inner
-                    fieldset.phrases-ready__catalog.phrases-ready__fieldset
+                    .phrases-ready__catalog.phrases-ready__fieldset
                         legend.phrases-ready__name Категория
+                        scroll-bar.phrases-ready__phrases-scroll-bar
+                            ul.phrases-ready__phrases
+                                li.phrases-ready__phrases-item(
+                                v-for="(item, index) in categories",
+                                :key="index",
+                                :class="{active:item.id===categoriesSelectId}"
+                                )
+                                    base-btn(theme="text", @click="categoriesSelect(item.id)").phrases-ready__phrases-text(v-text="item.titleAndUrl", :title="item.titleAndUrl")
 
-                        ul.phrases-ready__phrases
-                            li.phrases-ready__phrases-item(
-                            v-for="(item, index) in categories",
-                            :key="index",
-                            :class="{active:item.id===categoriesSelectId}"
-                            )
-                                base-btn(theme="text", @click="categoriesSelect(item.id)").phrases-ready__phrases-text(v-text="item.titleAndUrl", :title="item.titleAndUrl")
-
-                                ul.phrases-ready__phrases-controls(v-if="isViewAdmin")
-                                    li.phrases-ready__phrases-button.phrases-ready__phrases-edit
-                                        base-btn(theme="link" v-text="'Редактировать'", @click="categoriesEditShow(item)")
-                                    li.phrases-ready__phrases-button.phrases-ready__phrases-remove
-                                        base-btn(theme="link" v-text="'Удалить'", @click="categoriesDelete(item.id)")
+                                    ul.phrases-ready__phrases-controls(v-if="isViewAdmin")
+                                        li.phrases-ready__phrases-button.phrases-ready__phrases-edit
+                                            base-btn(theme="link" v-text="'Редактировать'", @click="categoriesEditShow(item)")
+                                        li.phrases-ready__phrases-button.phrases-ready__phrases-remove
+                                            base-btn(theme="link" v-text="'Удалить'", @click="categoriesDelete(item.id)")
                         //base-btn( v-text="'Добавить категорию'" @click="itemEditShow(item)")
 
-                    fieldset.phrases-ready__phrases-wrap.phrases-ready__fieldset
+                    .phrases-ready__phrases-wrap.phrases-ready__fieldset
 
                         legend.phrases-ready__name Фраза
                         scroll-bar.phrases-ready__scrollbar.phrases-ready__scrollbar_phrases
@@ -74,7 +74,12 @@ export default {
         FilterDropMenu,
         ActionList
     },
-    props: {},
+    props: {
+        isAbsolute:{
+            type:Boolean,
+            default:false
+        }
+    },
     data() {
         return {
             filterSearchResult: [],
@@ -173,7 +178,19 @@ export default {
     $space: $glob-space;
 
     $padding: calc-em(8) calc-em(26);
-    max-height: 74vh;
+
+
+    &_is-absolute {
+        max-height:70vh;
+    }
+
+    &,&__wrap {
+        display:flex;
+        flex-direction:column;
+        height:100%;
+        min-height: 0;
+        min-width:0;
+    }
 
     &__wrap,
     &__phrases-wrap {
@@ -193,7 +210,14 @@ export default {
     &__inner {
         display: grid;
         grid-template-columns: min-content 1fr;
+        grid-template-rows: 100%;
         grid-gap: calc-em(15);
+        min-height: 0;
+        min-width: 0;
+    }
+
+    &__fieldset {
+        overflow: hidden;
     }
 
     &__list {
@@ -224,7 +248,13 @@ export default {
         width: 100%;
     }
     &__phrases {
-        margin-left: (calc-em(10) * -1);
+
+
+        &-scroll-bar {
+
+            height:100%;
+            overflow:auto;
+        }
     }
 
     &__phrases-item {
