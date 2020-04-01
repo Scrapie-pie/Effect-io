@@ -32,7 +32,8 @@
                             @show="val=>showThePhrasesSelect=val"
                             v-if="viewModeChat==='visitors'",
                             :filter-search="message" ,
-                            @resultText="getPhrasesSelectText"
+                            @resultText="getPhrasesSelectText",
+                            @close="thePhrasesSelectClose"
                         ).chat-main-footer__phrases-select
 
                         scroll-bar.chat-main-footer__scrollbar(ref="scrollbarMessage")
@@ -310,7 +311,11 @@ export default {
                 this.$store.commit('user/unreadUpdate', ['common', 'clear'])
             }
         },
+        thePhrasesSelectClose(){
+            this.send()
+        },
         onEnter: function(e) {
+            console.log(e);
             //if(this.bufferingSend) return
 
             e.stopPropagation()
