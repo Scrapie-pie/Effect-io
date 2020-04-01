@@ -52,7 +52,7 @@
                                     v-for="(item, index) in snippets",
                                     :key="index"
                                 )
-                                    base-btn(theme="text", @click="selectText(item.text)").phrases-ready__phrases-text(v-text="item.text", :title="item.text")
+                                    base-btn(theme="text", @click="selectText(item)").phrases-ready__phrases-text(v-text="item.text", :title="item.text")
 
                                     ul.phrases-ready__phrases-controls
                                         li.phrases-ready__phrases-button.phrases-ready__phrases-edit
@@ -141,7 +141,9 @@ export default {
             this.categoriesSelectId = id
         },
         selectText(val) {
-            this.$emit('resultText', val)
+
+            this.$store.commit('phrases/setSelectSnippetId',val.id)
+            this.$emit('resultText', val.text)
             this.$root.$emit('globBoxControlClose')
         },
         cancel() {
@@ -214,6 +216,11 @@ export default {
         grid-gap: calc-em(15);
         min-height: 0;
         min-width: 0;
+
+        @include media($width_md) {
+            grid-template-columns: 1fr 1fr;
+
+        }
     }
 
     &__fieldset {
@@ -268,6 +275,11 @@ export default {
         &:hover {
             background-color: $color-bg;
         }
+        @include media($width_md) {
+            flex-wrap:wrap;
+            align-items: inherit;
+
+        }
     }
     &__phrases-text {
         white-space: nowrap;
@@ -284,6 +296,12 @@ export default {
             flex-direction: column;
             align-items: flex-end;
             padding-left: calc-em(15);
+        }
+        @include media($width_md) {
+            width:100%;
+            align-items: inherit;
+            padding-left: 0;
+            margin-left:0;
         }
     }
 

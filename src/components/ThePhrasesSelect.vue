@@ -22,7 +22,7 @@
                 :item-list="filterSearchResult"
                 name="snippets"
                 name-field-text="text"
-                name-field-value="text"
+                name-field-value="id"
                 v-model="text",
 
             )
@@ -66,9 +66,12 @@ export default {
         show(val) {
             this.$emit('show', val)
         },
-        text(val) {
-            if (val) {
-                this.$emit('resultText', val)
+        text(snippet_id) {
+            if (snippet_id) {
+
+                let {text} = this.filterSearchResult.find(item=>item.id===+snippet_id)
+                this.$store.commit('phrases/setSelectSnippetId',+snippet_id)
+                this.$emit('resultText', text)
                 setTimeout(() => {
                     this.filterSearchResult = []
                     this.text = ''

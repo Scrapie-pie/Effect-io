@@ -8,8 +8,7 @@
                 .chat-main-footer__box-control
                     box-controls(v-if="showMention", @boxControlClose="showMention=false")
                         select-operators(name="mention")
-                    box-controls(v-if="showPhrases", @boxControlClose="showPhrases=false")
-                        the-phrases-ready(@resultText="getPhrasesSelectText" is-absolute)
+
                     box-controls(v-if="showSmiles", @boxControlClose="showSmiles=false")
                         //the-files-board(name="smiles", @getSmile="setMessageSmile")
                         the-board-smile(@getSmile="setMessageSmile", @result="setTextWidthSmiles")
@@ -24,7 +23,9 @@
                             @ignoredWords="val=>spellingIgnoredWords.push(...val)",
                             @resultMessage="(val)=>spellingResultMessage=val"
                         )
-
+                .chat-main-footer__box-control-fixed
+                    box-controls(v-if="showPhrases", @boxControlClose="showPhrases=false")
+                        the-phrases-ready(@resultText="getPhrasesSelectText" is-absolute)
                 .chat-main-footer__contols
                     .chat-main-footer__textarea-wrap
                         the-phrases-select(
@@ -381,6 +382,15 @@ export default {
             data.spelling_ignored_words = this.spellingIgnoredWords
             this.spellingMessage = this.message
 
+
+            if(this.$store.state.phrases.selectSnippetId) {
+                data.snippet_id = this.$store.state.phrases.selectSnippetId;
+                this.$store.commit('phrases/setSelectSnippetId',null)
+            }
+
+
+
+
             let httpParamsRequestBefore = this?.httpParams //Пользователь мог не дожидаться запроса и переходить в другой чат, под конец запроса переменная была уже с другим значением
             let viewModeChatRequestBefore = this.viewModeChat
             this.$http
@@ -564,10 +574,21 @@ export default {
 
     &__box-control {
         position: relative;
-        z-index: 9;
+        z-index: 9999;
         .box-controls__box {
             @extend %full-abs;
             top: auto;
+        }
+    }
+    &__box-control-fixed {
+        position: relative;
+        z-index: 9999;
+        .box-controls__box {
+            @extend %full-abs;
+            position:fixed;
+            max-width:80%;
+            max-height:80%;
+            margin:auto;
         }
     }
 
@@ -576,5 +597,7 @@ export default {
             max-width: 550px;
         }
     }
+
+
 }
 </style>

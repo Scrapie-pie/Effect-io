@@ -7,7 +7,8 @@ const getDefaultState = () => {
         use: {
             snippets: [],
             categories: []
-        }
+        },
+        selectSnippetId:null,
     }
 }
 // initial state
@@ -24,6 +25,9 @@ export default {
             console.log(val)
             let findIndex = state.categories.findIndex(item => item.id === val.id)
             if (findIndex == -1) state.categories.push(val)
+        },
+        setSelectSnippetId(state, id) {
+            state.selectSnippetId=id
         },
         snippetAdd(state, val) {
             state.snippets.push(val)
