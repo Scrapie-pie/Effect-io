@@ -2,6 +2,32 @@
     form.phrases-ready-edit-edit(@submit.prevent="submit")
         fieldset
             ul.phrases-ready-edit__add
+                template(v-if="!showPhrasesEdit && isViewAdmin")
+                    li.phrases-ready-edit__add-item
+                        base-radio-check(
+                        :false-value="1",
+                        :true-value="0",
+                        v-model="create.is_common",
+                        name="is_common"
+                        ) Данный шаблон будет виден только мне
+                    li.phrases-ready-edit__add-item(v-if="create.is_common")
+                        p Выбрать сайт к которому относится шаблон
+                        filter-drop-menu(
+                        name="siteCompany",
+                        type="radio",
+                        @get="filterChannel"
+
+                        )
+
+                    li.phrases-ready-edit__add-item(v-if="create.is_common")
+                        p Добавить шаблон только для выбранных отделов:
+
+                        filter-drop-menu(
+                        :filter-show-ids="filterChannelIds"
+                        name="branch",
+                        @get="(val)=>create.branches_ids=val"
+                        all-output
+                        )
                 template(v-if="categoriesEdit")
                     li.phrases-ready-edit__add-item
                         label.phrases-ready-edit__label(for="categoriesEdit") Редактировать категорию
@@ -44,32 +70,7 @@
 
                         )
 
-                    template(v-if="!showPhrasesEdit && isViewAdmin")
-                        li.phrases-ready-edit__add-item
-                            base-radio-check(
-                                :false-value="1",
-                                :true-value="0",
-                                v-model="create.is_common",
-                                name="is_common"
-                            ) Данный шаблон будет виден только мне
-                        li.phrases-ready-edit__add-item(v-if="create.is_common")
-                            p Выбрать сайт к которому относится шаблон
-                            filter-drop-menu(
-                            name="siteCompany",
-                            type="radio",
-                            @get="filterChannel"
 
-                            )
-
-                        li.phrases-ready-edit__add-item(v-if="create.is_common")
-                            p Добавить шаблон только для выбранных отделов:
-
-                            filter-drop-menu(
-                            :filter-show-ids="filterChannelIds"
-                            name="branch",
-                            @get="(val)=>create.branches_ids=val"
-                            all-output
-                            )
                 li.phrases-ready-edit__add-item
                     base-btn.phrases-ready-edit__add-item-button(v-text="(!showPhrasesEdit)?'Добавить шаблон':'Сохранить'" type="submit")
                     base-btn(v-text="'Отмена'" color="error", @click="cancel")
@@ -96,6 +97,7 @@ export default {
     data() {
         return {
             filterChannelIds: [],
+            filterChannelIdSelect:null,
             create: {
                 text: '',
                 category: '',
@@ -116,7 +118,7 @@ export default {
             return this.$store.state.phrases.snippets
         },
         categories() {
-            return this.$store.getters['phrases/categories'].filter(item => item.is_common)
+            return this.$store.getters['phrases/categories'].filter(item => item.is_common).filter(item=>item.site_id===this.filterChannelIdSelect)
         },
 
         showPhrasesEdit() {
@@ -154,6 +156,7 @@ export default {
     methods: {
         filterChannel(id) {
             this.create.site_id = id
+            this.filterChannelIdSelect = id
             this.filterChannelIds = this.$store.getters['user/branchListAll']
                 .filter(item => id === item.site_id)
                 .map(item => item.id)
