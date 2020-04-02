@@ -65,6 +65,10 @@ export default {
             type: Boolean,
             default: false
         },
+        immediateOutput: {
+            type: Boolean,
+            default: false
+        },
         name: {
             type: String,
             default: ''
@@ -304,11 +308,12 @@ export default {
                 //if(this.name==='url' && !this.itemList.length) return       console.log('modelcheckbox',val, valOld);
 
                 if (val.length !== this.itemList.length) this.allChecked = false
-                if (!this.show) {
-                    this.$emit(
-                        'get',
-                        val.map(item => item.id)
-                    )
+                if (!this.show && this.immediateOutput) {
+                    console.log('this.filterShowIds',this.filterShowIds);
+                     this.$emit(
+                         'get',
+                         val.map(item => item.id)
+                     )
                     //this.$store.commit('setFilter', { [this.name]: val.map(item=>item.id) })
                 }
 

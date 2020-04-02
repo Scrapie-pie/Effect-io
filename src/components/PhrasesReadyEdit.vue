@@ -16,7 +16,7 @@
                         name="siteCompany",
                         type="radio",
                         @get="filterChannel"
-
+                        immediate-output
                         )
 
                     li.phrases-ready-edit__add-item(v-if="create.is_common")
@@ -27,6 +27,7 @@
                         name="branch",
                         @get="(val)=>create.branches_ids=val"
                         all-output
+                        immediate-output
                         )
                 template(v-if="categoriesEdit")
                     li.phrases-ready-edit__add-item

@@ -11,9 +11,10 @@
 
                         @get="filterChannel"
                         all-output
+                        immediate-output
                         )
                     .phrases-ready__filter-item(v-if="isViewAdmin")
-                        filter-drop-menu( name="branch",@get="(val)=>filterBranchIds=val", :filter-show-ids="filterBranchShowIds" all-output)
+                        filter-drop-menu( name="branch",@get="(val)=>filterBranchIds=val", :filter-show-ids="filterBranchShowIds" all-output immediate-output)
                     .phrases-ready__filter-item
                         base-filter-search(:item-list="snippetsFilterBranch", @result="(val)=>filterSearchResult=val", field-name="text")
                     .phrases-ready__filter-item.phrases-ready__btn-add
