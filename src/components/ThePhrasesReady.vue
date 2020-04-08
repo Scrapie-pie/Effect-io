@@ -226,6 +226,8 @@ export default {
 
     &__fieldset {
         overflow: hidden;
+        display:flex;
+        flex-direction:column;
     }
 
     &__list {

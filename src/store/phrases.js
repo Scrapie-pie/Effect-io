@@ -63,7 +63,7 @@ export default {
 
             if (lodash_isObject(category)) {
                 id = category.id
-                category = category.title
+                category = category.titleAndUrl
             }
 
             if (!is_common) {
