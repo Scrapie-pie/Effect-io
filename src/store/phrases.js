@@ -139,9 +139,9 @@ export default {
     },
     getters: {
         categories: (state, getters, rootState, rootGetters) => {
-            console.log(rootState.user.siteCompanyList)
+            let categories = state.categories
             if (rootState.user.siteCompanyList.length > 1)
-                return state.categories.map(item => {
+                return categories.map(item => {
                     if (!item.site_id) item.titleAndUrl = item.title
                     else
                         item.titleAndUrl =
@@ -152,7 +152,27 @@ export default {
                             ')'
                     return item
                 })
-            return state.categories.map(item => {
+            return categories.map(item => {
+                item.titleAndUrl = item.title
+                return item
+            })
+        },
+        categoriesUse: (state, getters, rootState, rootGetters) => {
+            let categories = state.use.categories
+
+            if (rootState.user.siteCompanyList.length > 1)
+                return categories.map(item => {
+                    if (!item.site_id) item.titleAndUrl = item.title
+                    else
+                        item.titleAndUrl =
+                            item.title +
+                            ' (' +
+                            rootState.user.siteCompanyList?.find(site => site.id === item.site_id)
+                                ?.url +
+                            ')'
+                    return item
+                })
+            return categories.map(item => {
                 item.titleAndUrl = item.title
                 return item
             })

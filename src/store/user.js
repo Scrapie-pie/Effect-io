@@ -195,7 +195,7 @@ export default {
         branchListAll: state => {
             return state.branchListAll.map(item => {
                 let siteName = state.siteCompanyList.find(site => site.id === item.site_id)?.url
-                item.titleAndSite = item.title + ' (' + siteName + ')' + '(' +item.site_id+')'
+                item.titleAndSite = item.title + ' (' + siteName + ')'
                 return item
             })
         },

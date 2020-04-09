@@ -4,7 +4,7 @@
         transition(name="fade" mode="out-in")
             .phrases-ready__wrap(v-if="phrasesEdit===null && categoriesEdit===null", key="phrasesEdit")
                 .phrases-ready__filter
-                    .phrases-ready__filter-item(v-if="isViewAdmin")
+                    .phrases-ready__filter-item
                         filter-drop-menu(
 
                         name="siteCompany",
@@ -13,7 +13,7 @@
                         all-output
                         immediate-output
                         )
-                    .phrases-ready__filter-item(v-if="isViewAdmin")
+                    .phrases-ready__filter-item
                         filter-drop-menu( name="branch",@get="(val)=>filterBranchIds=val", :filter-show-ids="filterBranchShowIds" all-output immediate-output)
                     .phrases-ready__filter-item
                         base-filter-search(:item-list="snippetsFilterBranch", @result="(val)=>filterSearchResult=val", field-name="text")
@@ -55,7 +55,7 @@
                                 )
                                     base-btn(theme="text", @click="selectText(item)").phrases-ready__phrases-text(v-text="item.text", :title="item.text")
 
-                                    ul.phrases-ready__phrases-controls
+                                    ul.phrases-ready__phrases-controls(v-if="isViewAdmin || !item.is_common")
                                         li.phrases-ready__phrases-button.phrases-ready__phrases-edit
                                             base-btn(theme="link" v-text="'Редактировать'", @click="phrasesEditShow(item)")
                                         li.phrases-ready__phrases-button.phrases-ready__phrases-remove
@@ -109,10 +109,14 @@ export default {
             )
         },
         snippetsStore() {
+            if(this.$route.params.site_id) return this.$store.state.phrases.use.snippets
             return this.$store.state.phrases.snippets
         },
         categories() {
-            return this.$store.getters['phrases/categories'].filter(item => {
+            let list = this.$store.getters['phrases/categories']
+            if(this.$route.params.site_id) return list = this.$store.getters['phrases/categoriesUse']
+
+            return list.filter(item => {
                 if (!item.is_common) return true
                 return this.filterChannelIds.includes(item.site_id)
             })
