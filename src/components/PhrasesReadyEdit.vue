@@ -2,8 +2,8 @@
     form.phrases-ready-edit-edit(@submit.prevent="submit")
         fieldset
             ul.phrases-ready-edit__add
-                template(v-if="!showPhrasesEdit && isViewAdmin")
-                    li.phrases-ready-edit__add-item
+                template(v-if="isViewAdmin")
+                    li.phrases-ready-edit__add-item(v-if="!showCategoryEdit && !showPhrasesEdit")
                         base-radio-check(
                         :false-value="1",
                         :true-value="0",
@@ -14,7 +14,7 @@
                         p Выбрать сайт к которому относится шаблон
                         filter-drop-menu(
                         name="siteCompany",
-                        type="radio",
+                        all-output
                         @get="filterChannel"
                         immediate-output
                         )
@@ -73,7 +73,7 @@
 
 
                 li.phrases-ready-edit__add-item
-                    base-btn.phrases-ready-edit__add-item-button(v-text="(!showPhrasesEdit)?'Добавить шаблон':'Сохранить'" type="submit")
+                    base-btn.phrases-ready-edit__add-item-button(v-text="textSubmit" type="submit")
                     base-btn(v-text="'Отмена'" color="error", @click="cancel")
 
 </template>
@@ -124,6 +124,15 @@ export default {
 
         showPhrasesEdit() {
             return this.phrasesEdit?.id
+        },
+        showCategoryEdit() {
+            return this.modelCategoryEdit?.id
+        },
+        textSubmit() {
+            let text = 'Добавить шаблон'
+            if(this.showPhrasesEdit) text = 'Сохранить шаблон'
+            if(this.showCategoryEdit) text = 'Сохранить категории'
+            return text
         }
     },
     watch: {
@@ -145,9 +154,12 @@ export default {
         },
         isViewAdmin: {
             handler(val) {
-                console.log('isViewAdmin', val)
+
                 if (!val) {
+                    console.log('isViewAdmin', val)
                     this.create.is_common = 0
+                } else {
+                    this.create.is_common = 1
                 }
             },
             immediate: true

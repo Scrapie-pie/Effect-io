@@ -2,7 +2,7 @@
     form.phrases-ready(@submit.prevent="submit", :class="{'phrases-ready_is-absolute':isAbsolute}")
         base-wait(name="phrasesReady")
         transition(name="fade" mode="out-in")
-            .phrases-ready__wrap(v-if="phrasesEdit===null && categoriesEdit===null", key="phrasesEdit")
+            .phrases-ready__wrap(v-if="showComponent===null", key="phrasesEdit")
                 .phrases-ready__filter
                     .phrases-ready__filter-item
                         filter-drop-menu(
@@ -14,13 +14,13 @@
                         immediate-output
                         )
                     .phrases-ready__filter-item
-                        filter-drop-menu( name="branch",@get="(val)=>filterBranchIds=val", :filter-show-ids="filterBranchShowIds" all-output immediate-output)
+                        filter-drop-menu( name="branch", @get="(val)=>filterBranchIds=val", :filter-show-ids="filterBranchShowIds" all-output immediate-output)
                     .phrases-ready__filter-item
                         base-filter-search(:item-list="snippetsFilterBranch", @result="(val)=>filterSearchResult=val", field-name="text")
                     .phrases-ready__filter-item.phrases-ready__btn-add
 
                         base-btn(
-                        @click="phrasesEdit={}"
+                        @click="showComponent='phrasesAdd'"
                         v-text="'Добавить свой шаблон'"
                         )
                 .phrases-ready__text-only-scr Готовый список фраз
@@ -60,8 +60,10 @@
                                             base-btn(theme="link" v-text="'Редактировать'", @click="phrasesEditShow(item)")
                                         li.phrases-ready__phrases-button.phrases-ready__phrases-remove
                                             base-btn(theme="link" v-text="'Удалить'", @click="phrasesDelete(item.id)")
-            phrases-ready-edit(v-else @cancel="cancel", :phrases-edit="phrasesEdit", :categories-edit="categoriesEdit")
-
+            //phrases-ready-edit(v-else @cancel="cancel", :phrases-edit="phrasesEdit", :categories-edit="categoriesEdit")
+            phrases-ready-add(v-if="showComponent==='phrasesAdd'", @cancel="cancel")
+            phrases-ready-phrases-edit(v-if="showComponent==='phrasesEdit'", @cancel="cancel", :phrases-edit="phrasesEdit",)
+            phrases-ready-category-edit(v-if="showComponent==='categoryEdit'", @cancel="cancel", :categories-edit="categoriesEdit")
 
 </template>
 
@@ -69,8 +71,14 @@
 import ActionList from '@/components/ActionList'
 import FilterDropMenu from '@/components/FilterDropMenu'
 import PhrasesReadyEdit from '@/components/PhrasesReadyEdit'
+import PhrasesReadyAdd from '@/components/PhrasesReadyAdd'
+import PhrasesReadyPhrasesEdit from "@/components/PhrasesReadyPhrasesEdit";
+import PhrasesReadyCategoryEdit from "@/components/PhrasesReadyCategoryEdit";
 export default {
     components: {
+        PhrasesReadyCategoryEdit,
+        PhrasesReadyPhrasesEdit,
+        PhrasesReadyAdd,
         PhrasesReadyEdit,
         FilterDropMenu,
         ActionList
@@ -83,6 +91,7 @@ export default {
     },
     data() {
         return {
+            showComponent:null,
             filterSearchResult: [],
             filterBranchIds: [],
             filterBranchShowIds: [],
@@ -114,11 +123,12 @@ export default {
         },
         categories() {
             let list = this.$store.getters['phrases/categories']
+            return list
             if(this.$route.params.site_id) return list = this.$store.getters['phrases/categoriesUse']
 
             return list.filter(item => {
                 if (!item.is_common) return true
-                return this.filterChannelIds.includes(item.site_id)
+                return item.branches_ids.some(id => this.filterBranchIds.includes(id))
             })
         }
     },
@@ -152,13 +162,14 @@ export default {
             this.$root.$emit('globBoxControlClose')
         },
         cancel() {
-            this.phrasesEdit = null
-            this.categoriesEdit = null
+            this.showComponent= null
         },
         phrasesEditShow(item) {
+            this.showComponent='phrasesEdit'
             this.phrasesEdit = item
         },
         categoriesEditShow(item) {
+            this.showComponent='categoryEdit'
             this.categoriesEdit = item
         },
 

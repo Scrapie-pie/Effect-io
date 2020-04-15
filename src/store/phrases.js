@@ -58,17 +58,16 @@ export default {
         }
     },
     actions: {
-        snippetCreate({ commit }, { text, category, is_common, site_id, branches_ids }) {
-            let id
+        snippetCreate({ commit,dispatch }, { text, category, is_common,  branches_ids }) {
 
             if (lodash_isObject(category)) {
-                id = category.id
-                category = category.titleAndUrl
+                category = category.title
             }
 
+
             if (!is_common) {
-                category = null
-                site_id = null
+
+
                 branches_ids = null
             }
 
@@ -77,39 +76,26 @@ export default {
                     text,
                     category,
                     is_common,
-                    site_id,
+
                     branches_ids
                 })
                 .then(({ data }) => {
-                    console.log(data)
-                    console.log(id)
-
-                    if (!is_common) category = 'Свои шаблоны'
-
-                    //значит новая категория, обновим список
-                    commit('categoryAdd', {
-                        id: data.data.category_id,
-                        title: category,
-                        is_common,
-                        site_id
-                    })
-
-                    commit('snippetAdd', data.data)
+                    dispatch('getItemList')
                 })
         },
-        snippetUpdate({ commit }, { id, text }) {
-            this._vm.$http.put('snippet/update-snippet', { id, text }).then(() => {
-                commit('setSnippetText', { id, text })
+        snippetUpdate({ commit,dispatch }, { id, text,category}) {
+            this._vm.$http.put('snippet/update-snippet', { id, text,category_id:category.id }).then(() => {
+                dispatch('getItemList')
             })
         },
-        categoriesUpdate({ commit }, { id, title }) {
-            this._vm.$http.put('snippet/update-category', { id, title }).then(() => {
-                commit('setСategoriesItem', { id, title })
+        categoriesUpdate({ commit,dispatch }, {title,id,branches_ids}) {
+            return this._vm.$http.put('snippet/update-category', {title,id,branches_ids}).then(() => {
+                dispatch('getItemList')
             })
         },
-        snippetDelete({ commit }, id) {
+        snippetDelete({ commit,dispatch }, id) {
             this._vm.$http.delete('snippet/delete-snippet', { params: { id } }).then(() => {
-                commit('setSnippetDelete', id)
+                dispatch('getItemList')
             })
         },
         categoriesDelete({ commit, dispatch }, id) {

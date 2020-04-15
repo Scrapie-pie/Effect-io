@@ -88,6 +88,10 @@ export default {
             default: () => {
                 return []
             }
+        },
+        setValue:{
+
+            default: null
         }
     },
 
@@ -271,12 +275,15 @@ export default {
                         //если нет query п умолчанию выставляем все
                         //console.log(this.name,val);
                         this.modelcheckbox = val
+                        if(this.setValue) this.modelcheckbox = this.setValue
+
                     }
                 } else {
                     if (this.getFilterSelectStore.length && this.isSaveResultPage) {
                         this.modelradio = this.getFilterSelectStore[0]
                     } else {
                         this.modelradio = val[0]
+                        if(this.setValue) this.modelradio = this.setValue
                     }
                 }
             },
