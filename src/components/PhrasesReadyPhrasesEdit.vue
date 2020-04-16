@@ -29,7 +29,7 @@
                     base-field(
 
                         type="select",
-                        :selectOptions="{label:'title',options:categories,taggable:true,value:create.category}"
+                        :selectOptions="{label:'title',options:categories,value:create.category}"
                         name="newCategory"
                         v-model="create.category",
                         id="newCategory"
@@ -100,9 +100,14 @@ export default {
             if(this.$route.params.site_id) return list = this.$store.getters['phrases/categoriesUse']
 
             return list.filter(item => {
-                if(this.create.is_common === 0) return this.create.is_common === item.is_common
+                if(this.create.is_common===0) return this.create.is_common === item.is_common
+                console.log(item.branches_ids,this.filterBranchIds);
 
-                return lodash_isEqual(lodash_sortBy(item.branches_ids), lodash_sortBy(this.filterBranchIds))
+                return this.filterBranchIds.every(id=>{
+                    return item.branches_ids.includes(id)
+                })
+
+
             })
         }
     },

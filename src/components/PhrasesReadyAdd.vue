@@ -114,9 +114,13 @@
 
                 return list.filter(item => {
                     if(this.create.is_common===0) return this.create.is_common === item.is_common
+                    console.log(item.branches_ids,this.filterBranchIds);
+
+                    return this.filterBranchIds.every(id=>{
+                        return item.branches_ids.includes(id)
+                    })
 
 
-                    return lodash_isEqual(lodash_sortBy(item.branches_ids), lodash_sortBy(this.filterBranchIds))
                 })
             }
 
