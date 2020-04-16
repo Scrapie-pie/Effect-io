@@ -125,6 +125,7 @@ export default {
         getItemListUse({ commit, rootGetters }, { site_id }) {
             let params = {
                 type: 'use',
+                sort_by_use:1,
                 site_id
             }
 
