@@ -89,7 +89,7 @@ export default {
                 return []
             }
         },
-        setValue:{
+        setValueIds:{
 
             default: null
         }
@@ -275,7 +275,10 @@ export default {
                         //если нет query п умолчанию выставляем все
                         //console.log(this.name,val);
                         this.modelcheckbox = val
-                        if(this.setValue) this.modelcheckbox = this.setValue
+                        if(this.setValueIds) {
+
+                            this.modelcheckbox = this.itemList.filter(item=>this.setValueIds.includes(item.id))
+                        }
 
                     }
                 } else {
@@ -283,7 +286,9 @@ export default {
                         this.modelradio = this.getFilterSelectStore[0]
                     } else {
                         this.modelradio = val[0]
-                        if(this.setValue) this.modelradio = this.setValue
+                        if(this.setValueIds) {
+                            this.modelradio = this.itemList.find(item=>this.setValueIds===item.id)
+                        }
                     }
                 }
             },

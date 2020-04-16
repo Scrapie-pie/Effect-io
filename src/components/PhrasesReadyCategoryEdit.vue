@@ -9,6 +9,7 @@
                     all-output
                     @get="filterChannel"
                     immediate-output
+                    :set-value-ids="setFilterChannelIdsValue"
                     )
 
                 li.phrases-ready-edit__add-item(v-if="modelCategoryEdit.is_common")
@@ -17,7 +18,8 @@
                     filter-drop-menu(
                     :filter-show-ids="filterBranchShowIds"
                     name="branch",
-                    @get="(val)=>modelCategoryEdit.branches_ids=val"
+                    @get="(val)=>modelCategoryEdit.branches_ids=val",
+                    :set-value-ids="setFilterBranchIdsValue",
                     all-output
                     immediate-output
                     )
@@ -61,6 +63,9 @@
                 filterBranchIds: [],
                 filterBranchShowIds: [],
 
+                setFilterChannelIdsValue:[],
+                setFilterBranchIdsValue:[],
+
 
 
                 modelCategoryEdit: {
@@ -75,6 +80,13 @@
         watch: {
             categoriesEdit: {
                 handler(object) {
+
+                    let branchListFilter = this.$store.getters['user/branchListAll']
+                        .filter(item=>object.branches_ids.includes(item.id))
+
+                    this.setFilterBranchIdsValue = branchListFilter.map(item=>item.id)
+
+                    this.setFilterChannelIdsValue =  branchListFilter.map(item=>item.site_id)
 
                     this.modelCategoryEdit = object
 

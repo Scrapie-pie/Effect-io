@@ -5,16 +5,24 @@
                 li.phrases-ready-edit__add-item(v-if="create.is_common")
                     p Выбрать сайт к которому относится шаблон
                     filter-drop-menu(
-                    name="siteCompany",
-                    all-output
-                    @get="filterChannel"
-                    immediate-output
+                        name="siteCompany",
+                        all-output
+                        @get="filterChannel"
+                        immediate-output
+                        :set-value-ids="setFilterChannelIdsValue"
                     )
 
                 li.phrases-ready-edit__add-item(v-if="create.is_common")
                     p Добавить шаблон только для выбранных отделов:
 
-                    filter-drop-menu(name="branch", @get="setFilterBranchIds", :filter-show-ids="filterBranchShowIds" all-output immediate-output)
+                    filter-drop-menu(
+                        name="branch",
+                        @get="setFilterBranchIds",
+                        :set-value-ids="setFilterBranchIdsValue",
+                        :filter-show-ids="filterBranchShowIds"
+                        all-output
+                        immediate-output
+                    )
                 li.phrases-ready-edit__add-item.phrases-ready-edit__add-item_select
 
                     label.phrases-ready-edit__label(for="newCategory") Категория
@@ -68,7 +76,9 @@ export default {
             filterSearchResult: [],
             filterBranchIds: [],
             filterBranchShowIds: [],
-            filterChannelIdSelect:null,
+
+            setFilterChannelIdsValue:[],
+            setFilterBranchIdsValue:[],
             create: {
                 category:'',
                 text: '',
@@ -87,7 +97,7 @@ export default {
             if(this.$route.params.site_id) return list = this.$store.getters['phrases/categoriesUse']
 
             return list.filter(item => {
-                if(this.create.is_common===0) return this.create.is_common === item.is_common
+                if(this.create.is_common === 0) return this.create.is_common === item.is_common
 
                 return item.branches_ids.some(id => this.filterBranchIds.includes(id))
             })
@@ -98,9 +108,24 @@ export default {
             handler(object) {
                 let list = this.$store.getters['phrases/categories']
                 if(this.$route.params.site_id) return list = this.$store.getters['phrases/categoriesUse']
-                let find = list.find(item=>item.id===object.category_id)
-                object.category = find
-                this.create.is_common = find.is_common
+                let findCategory = list.find(item=>item.id===object.category_id)
+
+                object.category = findCategory
+
+                this.create.is_common = findCategory.is_common
+
+
+
+                let branchListFilter = this.$store.getters['user/branchListAll']
+                    .filter(item=>findCategory.branches_ids.includes(item.id))
+
+                this.setFilterBranchIdsValue = branchListFilter.map(item=>item.id)
+
+                this.setFilterChannelIdsValue =  branchListFilter.map(item=>item.site_id)
+
+
+
+
                 Object.assign(this.create, object)
             },
             immediate: true

@@ -74,7 +74,7 @@
                 filterSearchResult: [],
                 filterBranchIds: [],
                 filterBranchShowIds: [],
-                filterChannelIdSelect:null,
+
                 create: {
                     text: '',
                     category: '',

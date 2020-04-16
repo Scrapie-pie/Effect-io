@@ -37,7 +37,7 @@
                                 )
                                     base-btn(theme="text", @click="categoriesSelect(item.id)").phrases-ready__phrases-text(v-text="item.titleAndUrl", :title="item.titleAndUrl")
 
-                                    ul.phrases-ready__phrases-controls(v-if="isViewAdmin")
+                                    ul.phrases-ready__phrases-controls(v-if="isViewAdmin || !item.is_common")
                                         li.phrases-ready__phrases-button.phrases-ready__phrases-edit
                                             base-btn(theme="link" v-text="'Редактировать'", @click="categoriesEditShow(item)")
                                         li.phrases-ready__phrases-button.phrases-ready__phrases-remove
@@ -60,7 +60,7 @@
                                             base-btn(theme="link" v-text="'Редактировать'", @click="phrasesEditShow(item)")
                                         li.phrases-ready__phrases-button.phrases-ready__phrases-remove
                                             base-btn(theme="link" v-text="'Удалить'", @click="phrasesDelete(item.id)")
-            //phrases-ready-edit(v-else @cancel="cancel", :phrases-edit="phrasesEdit", :categories-edit="categoriesEdit")
+
             phrases-ready-add(v-if="showComponent==='phrasesAdd'", @cancel="cancel")
             phrases-ready-phrases-edit(v-if="showComponent==='phrasesEdit'", @cancel="cancel", :phrases-edit="phrasesEdit",)
             phrases-ready-category-edit(v-if="showComponent==='categoryEdit'", @cancel="cancel", :categories-edit="categoriesEdit")
@@ -70,7 +70,7 @@
 <script>
 import ActionList from '@/components/ActionList'
 import FilterDropMenu from '@/components/FilterDropMenu'
-import PhrasesReadyEdit from '@/components/PhrasesReadyEdit'
+
 import PhrasesReadyAdd from '@/components/PhrasesReadyAdd'
 import PhrasesReadyPhrasesEdit from "@/components/PhrasesReadyPhrasesEdit";
 import PhrasesReadyCategoryEdit from "@/components/PhrasesReadyCategoryEdit";
@@ -79,7 +79,6 @@ export default {
         PhrasesReadyCategoryEdit,
         PhrasesReadyPhrasesEdit,
         PhrasesReadyAdd,
-        PhrasesReadyEdit,
         FilterDropMenu,
         ActionList
     },
@@ -123,7 +122,7 @@ export default {
         },
         categories() {
             let list = this.$store.getters['phrases/categories']
-            return list
+
             if(this.$route.params.site_id) return list = this.$store.getters['phrases/categoriesUse']
 
             return list.filter(item => {
