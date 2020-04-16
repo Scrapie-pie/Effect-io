@@ -33,7 +33,7 @@
                         label.phrases-ready-edit__label(for="newCategory") Выберите категорию или придумайте свою
                         base-field(
                         type="select",
-                        :selectOptions="{label:'title',options:categories,taggable:true,value:create.category}"
+                        :selectOptions="{label:'titleBranchSite',options:categories,taggable:true,value:create.category}"
                         name="newCategory"
                         v-model="create.category",
                         id="newCategory"
@@ -64,6 +64,9 @@
 <script>
     import FilterDropMenu from '@/components/FilterDropMenu'
 
+     import lodash_isEqual from 'lodash/isEqual'
+     import lodash_sortBy from 'lodash/sortBy'
+
     export default {
         components: {
             FilterDropMenu
@@ -81,6 +84,7 @@
                     is_common: 1,
                     branches_ids: [],
 
+
                 },
 
 
@@ -95,10 +99,24 @@
                 let list = this.$store.getters['phrases/categories']
                 if(this.$route.params.site_id) return list = this.$store.getters['phrases/categoriesUse']
 
+                list = list.map(category=>{
+
+                    category.titleBranchSite = category.title
+                    return category
+           /*         category.titleBranchSite = category.title+':'+ this.$store.getters['user/branchListAll']
+                        .filter(branch => category.branches_ids.includes(branch.id))
+                        .map(branch=>branch.titleAndSite)
+                        .join(', ')
+*/
+                    return category
+
+                })
+
                 return list.filter(item => {
                     if(this.create.is_common===0) return this.create.is_common === item.is_common
 
-                    return item.branches_ids.some(id => this.filterBranchIds.includes(id))
+
+                    return lodash_isEqual(lodash_sortBy(item.branches_ids), lodash_sortBy(this.filterBranchIds))
                 })
             }
 

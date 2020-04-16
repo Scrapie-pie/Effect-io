@@ -60,8 +60,16 @@ export default {
     actions: {
         snippetCreate({ commit,dispatch }, { text, category, is_common,  branches_ids }) {
 
+            let obj = {}
+
+
             if (lodash_isObject(category)) {
-                category = category.title
+                if(category.id) obj.category_id = category.id
+                else {
+                    obj.category = category.titleBranchSite
+                }
+            } else {
+                obj.category = category
             }
 
 
@@ -71,10 +79,12 @@ export default {
                 branches_ids = null
             }
 
+
+
             this._vm.$http
                 .post('snippet/create-snippet', {
                     text,
-                    category,
+                    ...obj,
                     is_common,
 
                     branches_ids

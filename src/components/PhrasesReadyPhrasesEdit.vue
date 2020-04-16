@@ -60,6 +60,9 @@
 <script>
 import FilterDropMenu from '@/components/FilterDropMenu'
 
+import lodash_isEqual from 'lodash/isEqual'
+import lodash_sortBy from 'lodash/sortBy'
+
 export default {
     components: {
         FilterDropMenu
@@ -99,7 +102,7 @@ export default {
             return list.filter(item => {
                 if(this.create.is_common === 0) return this.create.is_common === item.is_common
 
-                return item.branches_ids.some(id => this.filterBranchIds.includes(id))
+                return lodash_isEqual(lodash_sortBy(item.branches_ids), lodash_sortBy(this.filterBranchIds))
             })
         }
     },
