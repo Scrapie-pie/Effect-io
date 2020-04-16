@@ -97,7 +97,7 @@
 
             categories() {
                 let list = this.$store.getters['phrases/categories']
-                if(this.$route.params.site_id) return list = this.$store.getters['phrases/categoriesUse']
+                if(this.$route.params.site_id)  list = this.$store.getters['phrases/categoriesUse']
 
                 list = list.map(category=>{
 
@@ -111,6 +111,7 @@
                     return category
 
                 })
+                if(this.$route.params.site_id) return
 
                 return list.filter(item => {
                     if(this.create.is_common===0) return this.create.is_common === item.is_common

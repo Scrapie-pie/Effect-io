@@ -164,8 +164,10 @@ export default {
             this.showComponent= null
         },
         phrasesEditShow(item) {
+            console.log('phrasesEditShow(item)');
             this.showComponent='phrasesEdit'
             this.phrasesEdit = item
+
         },
         categoriesEditShow(item) {
             this.showComponent='categoryEdit'

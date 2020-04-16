@@ -60,8 +60,7 @@
 <script>
 import FilterDropMenu from '@/components/FilterDropMenu'
 
-import lodash_isEqual from 'lodash/isEqual'
-import lodash_sortBy from 'lodash/sortBy'
+
 
 export default {
     components: {
@@ -70,7 +69,7 @@ export default {
     props: {
         phrasesEdit: {
             type: Object,
-            default: () => {}
+            default: () => ({})
         },
     },
     data() {
@@ -115,14 +114,14 @@ export default {
         phrasesEdit: {
             handler(object) {
                 let list = this.$store.getters['phrases/categories']
-                if(this.$route.params.site_id) return list = this.$store.getters['phrases/categoriesUse']
+                if(this.$route.params.site_id)  list = this.$store.getters['phrases/categoriesUse']
                 let findCategory = list.find(item=>item.id===object.category_id)
 
                 object.category = findCategory
 
                 this.create.is_common = findCategory.is_common
 
-
+                console.log(findCategory.branches_ids);
 
                 let branchListFilter = this.$store.getters['user/branchListAll']
                     .filter(item=>findCategory.branches_ids.includes(item.id))
@@ -132,14 +131,16 @@ export default {
                 this.setFilterChannelIdsValue =  branchListFilter.map(item=>item.site_id)
 
 
-
+                console.log('phrasesEdit watch');
 
                 Object.assign(this.create, object)
             },
             immediate: true
         },
     },
-    created() {},
+    created() {
+
+    },
     methods: {
         setFilterBranchIds(ids){
             this.filterBranchIds = ids
