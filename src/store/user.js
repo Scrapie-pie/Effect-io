@@ -140,7 +140,7 @@ export default {
                 dispatch('getBranchListAll')
                 dispatch('getSiteCompanyList')
                 dispatch('operators/getAll', null, { root: true })
-                dispatch('phrases/getItemList', null, { root: true })
+
                 resolve()
             })
         },

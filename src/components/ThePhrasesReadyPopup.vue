@@ -2,24 +2,10 @@
     form.phrases-ready(@submit.prevent="submit", :class="{'phrases-ready_is-absolute':isAbsolute}")
         base-wait(name="phrasesReady")
         transition(name="fade" mode="out-in")
-            .phrases-ready__wrap(v-if="showComponent===null", key="phrasesEdit")
+            .phrases-ready__wrap
                 .phrases-ready__filter
                     .phrases-ready__filter-item
-                        filter-drop-menu(
-                        name="siteCompany",
-                        @get="filterChannel"
-                        all-output
-                        immediate-output
-                        )
-                    .phrases-ready__filter-item
-                        filter-drop-menu( name="branch", @get="(val)=>filterBranchIds=val", :filter-show-ids="filterBranchShowIds" all-output immediate-output)
-                    .phrases-ready__filter-item
-                        base-filter-search(:item-list="snippetsFilterBranch", @result="(val)=>filterSearchResult=val", field-name="text")
-                    .phrases-ready__filter-item.phrases-ready__btn-add
-                        base-btn(
-                        @click="showComponent='phrasesAdd'"
-                        v-text="'Добавить свой шаблон'"
-                        )
+                        base-filter-search(:item-list="snippetsStore", @result="(val)=>filterSearchResult=val", field-name="text")
                 .phrases-ready__text-only-scr Готовый список фраз
                 .phrases-ready__inner
                     .phrases-ready__catalog.phrases-ready__fieldset
@@ -32,14 +18,7 @@
                                 :class="{active:item.id===categoriesSelectId}"
                                 )
                                     base-btn(theme="text", @click="categoriesSelect(item.id)").phrases-ready__phrases-text(v-text="item.titleAndUrl", :title="item.titleAndUrl")
-                                    ul.phrases-ready__phrases-controls(v-if="isViewAdmin || !item.is_common")
-                                        li.phrases-ready__phrases-button.phrases-ready__phrases-edit
-                                            base-btn(theme="link" v-text="'Редактировать'", @click="categoriesEditShow(item)")
-                                        li.phrases-ready__phrases-button.phrases-ready__phrases-remove
-                                            base-btn(theme="link" v-text="'Удалить'", @click="categoriesDelete(item.id)")
-                        //base-btn( v-text="'Добавить категорию'" @click="itemEditShow(item)")
                     .phrases-ready__phrases-wrap.phrases-ready__fieldset
-
                         legend.phrases-ready__name Фраза
                         scroll-bar.phrases-ready__scrollbar.phrases-ready__scrollbar_phrases
                             ul.phrases-ready__phrases
@@ -48,31 +27,14 @@
                                     :key="index"
                                 )
                                     base-btn(theme="text", @click="selectText(item)").phrases-ready__phrases-text(v-text="item.text", :title="item.text")
-
-                                    ul.phrases-ready__phrases-controls(v-if="isViewAdmin || !item.is_common")
-                                        li.phrases-ready__phrases-button.phrases-ready__phrases-edit
-                                            base-btn(theme="link" v-text="'Редактировать'", @click="phrasesEditShow(item)")
-                                        li.phrases-ready__phrases-button.phrases-ready__phrases-remove
-                                            base-btn(theme="link" v-text="'Удалить'", @click="phrasesDelete(item.id)")
-
-            phrases-ready-add(v-if="showComponent==='phrasesAdd'", @cancel="cancel")
-            phrases-ready-phrases-edit(v-if="showComponent==='phrasesEdit'", @cancel="cancel", :phrases-edit="phrasesEdit",)
-            phrases-ready-category-edit(v-if="showComponent==='categoryEdit'", @cancel="cancel", :categories-edit="categoriesEdit")
-
 </template>
 
 <script>
 import ActionList from '@/components/ActionList'
 import FilterDropMenu from '@/components/FilterDropMenu'
 
-import PhrasesReadyAdd from '@/components/PhrasesReadyAdd'
-import PhrasesReadyPhrasesEdit from "@/components/PhrasesReadyPhrasesEdit";
-import PhrasesReadyCategoryEdit from "@/components/PhrasesReadyCategoryEdit";
 export default {
     components: {
-        PhrasesReadyCategoryEdit,
-        PhrasesReadyPhrasesEdit,
-        PhrasesReadyAdd,
         FilterDropMenu,
         ActionList
     },
@@ -84,27 +46,11 @@ export default {
     },
     data() {
         return {
-            showComponent:null,
-            filterSearchResult: [],
-            filterBranchIds: [],
-            filterBranchShowIds: [],
-            filterChannelIds: [],
-
-            phrasesEdit: null,
-            categoriesEdit: null,
+            filterSearchResult:[],
             categoriesSelectId: ''
         }
     },
     computed: {
-        isViewAdmin() {
-            return this.$store.getters['user/isRole'](['admin', 'owner', 'operatorSenior'])
-        },
-        snippetsFilterBranch() {
-            return this.snippetsStore.filter(item => {
-                if (!item.is_common) return true
-                return item.branches_ids.some(id => this.filterBranchIds.includes(id))
-            })
-        },
         snippets() {
             return this.filterSearchResult.filter(
                 item => item.category_id === Number(this.categoriesSelectId)
@@ -112,17 +58,11 @@ export default {
         },
         snippetsStore() {
             if(this.$route.params.site_id) return this.$store.state.phrases.use.snippets
-            return this.$store.state.phrases.snippets
+            return []
         },
         categories() {
-            let list = this.$store.getters['phrases/categories']
-
-            if(this.$route.params.site_id) return list = this.$store.getters['phrases/categoriesUse']
-
-            return list.filter(item => {
-                if (!item.is_common) return true
-                return item.branches_ids.some(id => this.filterBranchIds.includes(id))
-            })
+            let list = this.$store.getters['phrases/categoriesUse']
+            return list
         }
     },
     watch: {
@@ -135,18 +75,9 @@ export default {
             immediate: true
         }
     },
-    created() {
-        this.$store.dispatch('phrases/getItemList')
-    },
+    created() {},
     methods: {
-        filterChannel(ids) {
-            this.filterChannelIds = ids
-            this.filterBranchShowIds = this.$store.getters['user/branchListAll']
-                .filter(item => ids.includes(item.site_id))
-                .map(item => {
-                    return item.id
-                })
-        },
+
         categoriesSelect(id) {
             this.categoriesSelectId = id
         },
@@ -156,27 +87,10 @@ export default {
             this.$emit('resultText', val.text)
             this.$root.$emit('globBoxControlClose')
         },
-        cancel() {
-            this.showComponent= null
-        },
-        phrasesEditShow(item) {
 
-            this.showComponent='phrasesEdit'
-            this.phrasesEdit = item
 
-        },
-        categoriesEditShow(item) {
-            this.showComponent='categoryEdit'
-            this.categoriesEdit = item
-        },
 
-        categoriesDelete(id) {
-            this.$store.dispatch('phrases/categoriesDelete', id)
-        },
 
-        phrasesDelete(id) {
-            this.$store.dispatch('phrases/snippetDelete', id)
-        }
     }
 }
 </script>
@@ -245,9 +159,7 @@ export default {
     &__list {
     }
 
-    &__btn-add {
-        margin-left: auto;
-    }
+
 
     &__catalog {
         flex: 0 0 auto;

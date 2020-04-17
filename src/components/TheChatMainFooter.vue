@@ -25,7 +25,7 @@
                         )
                 .chat-main-footer__box-control-fixed
                     box-controls(v-if="showPhrases", @boxControlClose="thePhrasesReadyClose")
-                        the-phrases-ready(@resultText="getPhrasesSelectText" is-absolute)
+                        the-phrases-ready-popup(@resultText="getPhrasesSelectText" is-absolute)
                 .chat-main-footer__contols
                     .chat-main-footer__textarea-wrap
                         the-phrases-select(
@@ -40,18 +40,14 @@
                             div(
                                 @keydown.enter.exact="onEnter",
                                 @click.prevent="messageRead"
-
                                 )
-
                                 input-emoji(
-
                                     ref="inputEmoji"
                                     :text="textWidthSmiles",
                                     @caret="val=>textCaret=val",
                                     @getText="val=>message=val",
                                     @inputChange="inputEmojiInputChange"
                                     @blur="saveTextarea"
-
                                 )
                             textarea.chat-main-footer__input(
                                 placeholder="Enter - отправить сообщение, Shift+Enter - новая строка."
@@ -59,7 +55,6 @@
                                 v-model="message",
                                 @keydown.enter.exact="onEnter",
                                 @click.prevent="messageRead"
-
                                 )
                             upload-file-list(
                                 v-if="uploadFileList.length"
@@ -111,7 +106,8 @@ import SelectOperators from '@/components/SelectOperators'
 import TheOffer from '@/components/TheOffer'
 import TheFilesBoard from '@/components/TheFilesBoard'
 import TheBoardSmile from '@/components/TheBoardSmile'
-import ThePhrasesReady from '@/components/ThePhrasesReady'
+
+import ThePhrasesReadyPopup from '@/components/ThePhrasesReadyPopup'
 import ThePhrasesSelect from '@/components/ThePhrasesSelect'
 import ProcessActions from '@/components/ProcessActions'
 import UploadFile from '@/components/UploadFile'
@@ -131,7 +127,7 @@ export default {
         SelectOperators,
         TheOffer,
         TheFilesBoard,
-        ThePhrasesReady,
+        ThePhrasesReadyPopup,
         ThePhrasesSelect,
         ProcessActions,
         UploadFile,
@@ -139,6 +135,7 @@ export default {
         TheBoardSmile,
         inputEmoji,
         TheSpellingForm
+
     },
     mixins: [viewModeChat, httpParams, spelling, typingLive],
 
@@ -313,10 +310,7 @@ export default {
         },
         thePhrasesReadyClose(val){
             this.showPhrases=false
-            let site_id = this.httpParams?.params?.site_id
-            if (site_id) {
-                this.$store.dispatch('phrases/getItemListUse', { site_id })
-            }
+
 
         },
         thePhrasesSelectClose(){
