@@ -117,11 +117,12 @@ export default {
         categories() {
             let list = this.$store.getters['phrases/categories']
 
-            if(this.$route.params.site_id) return list = this.$store.getters['phrases/categoriesUse']
 
             return list.filter(item => {
                 if (!item.is_common) return true
-                return item.branches_ids.some(id => this.filterBranchIds.includes(id))
+                return this.filterBranchIds.every(id=>{
+                    return item.branches_ids.includes(id)
+                })
             })
         }
     },
