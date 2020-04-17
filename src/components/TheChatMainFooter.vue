@@ -557,7 +557,7 @@ export default {
 
     .input-emoji {
         padding-top: $pt;
-        min-height:6em;
+        min-height:4em;
     }
 
     &__buttons {
