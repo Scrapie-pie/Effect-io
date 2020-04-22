@@ -117,7 +117,7 @@ export default {
             historyMessageLoadStart: true, //При прокрутке страницы, функция historyMessageLoad выполнялась раньше чем приходил ответ, из за этого лишние индификаторы были
             messageRun: true, //Если история закончилась, что бы больше не отправлял запросы
             messageList: [],
-            limit: 20,
+            limit: 30,
             systemMessages: [],
             visitorTypingLive: '',
             chat_id: null,
@@ -510,62 +510,83 @@ export default {
             } else return false
         },
         scrollLoad(e) {
-            if (this.scrollLoadAllow(e, 'up')) this.historyMessageLoad()
+
+            if (this.scrollLoadAllow(e, 'up')) {
+                const scroller = e.target
+                let
+                    scrollHeight = scroller.scrollHeight - height,
+                    scrollTop = scroller.scrollTop;
+
+                this.historyMessageLoad().then(()=>{
+                    scroller.scrollTop=scroller.scrollHeight - scroller.clientHeight-scrollHeight+scrollTop //После загрузки двигаем полосу прокрутки на предыдущее место
+                })
+            }
         },
         historyMessageLoad() {
-            if (!this.messageRun) return
-            if (!this.historyMessageLoadStart) return
 
-            console.log()
+            return new Promise((resolve, reject) => {
 
-            let params = {
-                    last_msg_id: this.messageLastId,
-                    limit: this.limit
-                },
-                guest_uuid,
-                site_id,
-                users_ids = []
 
-            if (this.viewModeChat === 'visitors' || this.viewModeChat === 'process') {
-                let { guest_uuid, site_id } = this.httpParams.params
-                ;(params.guest_uuid = guest_uuid), (params.site_id = site_id)
-            } else if (this.viewModeChat === 'operators') {
-                params.users_ids = [this.$route.params.id, this.$store.state.user.profile.id]
-            } else if (this.viewModeChat === 'common') {
-                params.room_id = this.$store.state.user.profile.common_room_id
-            } else if (['search', 'visor'].includes(this.viewModeChat)) {
-                let { guest_uuid, site_id, chat_id } = this.httpParams.params
-                ;(params.guest_uuid = guest_uuid), (params.site_id = site_id)
-                params.chat_id = chat_id
-            }
+                if (!this.messageRun) return
+                if (!this.historyMessageLoadStart) return
 
-            this.historyMessageLoadStart = false
-            this.messageRun = false
+                console.log()
 
-            let currentRoute = this.$route
+                let params = {
+                        last_msg_id: this.messageLastId,
+                        limit: this.limit
+                    },
+                    guest_uuid,
+                    site_id,
+                    users_ids = []
 
-            return this.$http.get('message/history', { params }).then(({ data }) => {
-                //console.log('message/history',JSON.stringify(currentRoute.params) , JSON.stringify(this.$route.params));
-                if (JSON.stringify(currentRoute.params) !== JSON.stringify(this.$route.params))
-                    return console.log('Нет подмешиванию')
-                this.historyMessageLoadStart = true
-                let { count, messages, users } = data.data
-                if (!count) return
+                if (this.viewModeChat === 'visitors' || this.viewModeChat === 'process') {
+                    let { guest_uuid, site_id } = this.httpParams.params
+                    ;(params.guest_uuid = guest_uuid), (params.site_id = site_id)
+                } else if (this.viewModeChat === 'operators') {
+                    params.users_ids = [this.$route.params.id, this.$store.state.user.profile.id]
+                } else if (this.viewModeChat === 'common') {
+                    params.room_id = this.$store.state.user.profile.common_room_id
+                } else if (['search', 'visor'].includes(this.viewModeChat)) {
+                    let { guest_uuid, site_id, chat_id } = this.httpParams.params
+                    ;(params.guest_uuid = guest_uuid), (params.site_id = site_id)
+                    params.chat_id = chat_id
+                }
 
-                this.chat_id = messages[0].chat_id
-                this.$store.commit('roomActive/setChatId', this.chat_id)
+                this.historyMessageLoadStart = false
+                this.messageRun = false
 
-                this.messageRun = count
-                //console.log('historyMessageLoad');
+                let currentRoute = this.$route
 
-                //console.log('messages',messages);
+                this.$http.get('message/history', { params }).then(({ data }) => {
+                    //console.log('message/history',JSON.stringify(currentRoute.params) , JSON.stringify(this.$route.params));
+                    if (JSON.stringify(currentRoute.params) !== JSON.stringify(this.$route.params))
+                        return console.log('Нет подмешиванию')
+                    this.historyMessageLoadStart = true
+                    let { count, messages, users } = data.data
+                    if (!count) return
 
-                //messages = messages.filter(message=>!this.messageList.some(item=>item.id===message.id)) //убираем дубликаты
+                    this.chat_id = messages[0].chat_id
+                    this.$store.commit('roomActive/setChatId', this.chat_id)
 
-                this.messageList.push(...messages)
-                //console.log('this.messageList.push',this.messageList);
-                //this.$wait.end('message-history');
+                    this.messageRun = count
+                    //console.log('historyMessageLoad');
+
+                    //console.log('messages',messages);
+
+                    //messages = messages.filter(message=>!this.messageList.some(item=>item.id===message.id)) //убираем дубликаты
+
+                    this.messageList.push(...messages)
+                    //console.log('this.messageList.push',this.messageList);
+                    //this.$wait.end('message-history');
+
+                    resolve()
+                })
+
+
             })
+
+
         }
     }
 }
