@@ -246,6 +246,11 @@ export default {
     margin-bottom: 2.5em;
     z-index: 10; //лодеры с сообщений были выше попапа
 
+
+    @include media($width_xs) {
+        display:none;
+    }
+
     &__controls {
         display: flex;
     }

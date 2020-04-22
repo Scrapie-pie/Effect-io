@@ -1,5 +1,5 @@
 <template lang="pug">
-    nav-aside
+    nav-aside.the-last-messages
         form.last-messages
             .last-messages__search
                 base-filter-search(

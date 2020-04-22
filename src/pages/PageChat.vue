@@ -18,8 +18,9 @@
         template(v-if="viewModeChat === 'visitors'")
             base-no-found(v-show="messageNo" :name="$route.name")
             section(v-show="!messageNo" v-if="selfOnlineHide").page__view.page-chat
-                the-last-messages-v
-                template(v-if="!show")
+                transition(name="the-header-mobile-transition")
+                    the-last-messages-v(v-show="!$store.state.mobile.showChat")
+                section(v-if="!show").page__view.page-chat
                     section.page-chat__main
                             the-chat-main
                     aside.page-chat__info
@@ -28,9 +29,11 @@
         template(v-if="viewModeChat === 'process'")
             base-no-found(v-show="processNo" :name="$route.name")
             section(v-show="!processNo" v-if="processOnlineHide").page__view.page-chat
-                the-last-messages-v
 
-                template(v-if="!show")
+                transition(name="the-header-mobile-transition")
+                    the-last-messages-v(v-show="!$store.state.mobile.showChat")
+
+                section(v-if="!show").page__view.page-chat
 
                     section.page-chat__main
                         the-chat-main
@@ -110,6 +113,7 @@ export default {
     beforeRouteLeave(to, from, next) {
         this.messageSubscribeSocket(null, from)
         this.$store.commit('roomActive/resetState')
+        this.$store.commit('mobile/setShowChat',false)
         return next()
     },
 
@@ -149,12 +153,24 @@ export default {
 .header-hide .the-header {
     display: none;
 }
+
+@include media($width_xs) {
+    //&__main {display:none}
+
+    .is-page-mobile-show-chat .page-chat__main {
+        display:block;
+    }
+   /* .is-page-mobile-show-chat .nav-aside {
+        display:none;
+    }*/
+}
 .page-chat {
     $color_bg-app: glob-color('light');
     $box-shadow: $glob-box-shadow;
     $transition: $glob-trans;
 
     flex-direction: row;
+    position:relative;
 
     &__main {
         flex: 1;
@@ -164,9 +180,19 @@ export default {
         height: 100%;
         z-index: 2;
         min-width: 0; //для шаблонов, чтобы работало text-overflow: ellipsis;
+
+
         @include media($width_md) {
             padding-right: 0;
             margin-right: -#{$pd};
+        }
+        @include media($width_xs) {
+            padding-left: $pd;
+            padding-right: $pd;
+            margin-right: 0;
+
+
+            display:none;
         }
     }
 
@@ -198,5 +224,42 @@ export default {
             margin-top: -1em;
         }
     }
+
+
+
+    .the-header-mobile-transition-enter-active,
+    .the-header-mobile-transition-leave-active {
+        transition: $glob-trans;
+
+    }
+
+    .the-header-mobile-transition-enter,
+    .the-header-mobile-transition-leave-to {
+        position:absolute;
+        @extend %full-abs;
+
+
+    }
+
+    .the-header-mobile-transition-enter,.the-header-mobile-transition-leave-to {
+
+        transform:translateX(-100%);
+        //transform:scale(0);
+        //filter:blur(10px);
+
+
+    }
+
+    .the-last-messages {
+        @include media($width_xs,1) {
+            display:block!important; //Игнориуруем если было выключено на мобиле
+        }
+    }
+
+
+
+
+
+
 }
 </style>

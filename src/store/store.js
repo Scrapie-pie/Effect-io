@@ -8,6 +8,7 @@ import operators from '@/store/operators'
 import visitors from '@/store/visitors'
 import roomActive from '@/store/roomActive'
 import sockets from '@/store/storeSockets'
+import mobile from '@/store/storeMobile'
 import { store as actionAnotherTab } from '@/modules/actionAnotherTab.js'
 
 //import rooms from '@/store/rooms'
@@ -45,7 +46,8 @@ const getDefaultState = () => {
                 { id: 6, name: 'Viber' },
                 { id: 13, name: 'WhatsApp' },
                 { id: 4, name: 'Slack' }
-            ]
+            ],
+
 
             /*  actionAnotherTab:{
                 mutation:'',
@@ -62,6 +64,7 @@ const state = getDefaultState()
 
 export default new Vuex.Store({
     modules: {
+        mobile,
         sockets,
         user,
         phrases,

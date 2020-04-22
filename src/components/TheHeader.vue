@@ -169,5 +169,32 @@ export default {
     .icon_phrases {
         fill: #009efd;
     }
+
+
+
+    @include media($width_xs) {
+        .nav-main {
+
+            &__list {
+                display:flex;
+                flex-direction:row;
+            }
+            &__item{
+                display:none;
+            }
+            &__item_processAll,&__item_messageAll, &__item_exit{
+                display:block;
+            }
+        }
+        &__user-status {
+            display:none;
+        }
+        &__nav-app {
+            margin-top:0;
+            margin-left:auto;
+        }
+
+    }
+
 }
 </style>

@@ -438,7 +438,7 @@ export default {
             this.$store.commit('visitors/selfMessageRemoveItem', val)
 
             let isAllowRedirect =
-                this.httpParams.params.site_id + this.httpParams.params.guest_uuid ===
+                this.httpParams?.params.site_id + this.httpParams?.params.guest_uuid ===
                 val.site_id + val.guest_uuid
 
             if (this.viewModeChat === 'visitors' && isAllowRedirect) {

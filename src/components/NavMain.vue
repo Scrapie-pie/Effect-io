@@ -118,5 +118,11 @@ export default {
             margin-top: 3px;
         }
     }
+    @include media($width_xs) {
+       &__text {
+           display:none;
+       }
+    }
+
 }
 </style>

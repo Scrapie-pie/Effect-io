@@ -43,8 +43,17 @@ export default {
     margin: ($sz * -1) 0;
     margin-left: -($sz / 2);
 
+
+
     @include media($width_lg) {
         width: 190px;
+    }
+
+    @include media($width_xs) {
+        width: 100%;
+        margin-left:0;
+
+
     }
 
     &__link {
@@ -57,5 +66,7 @@ export default {
             background-color: $color_bg_active;
         }
     }
+
+
 }
 </style>

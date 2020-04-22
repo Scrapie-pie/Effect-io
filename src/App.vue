@@ -1,5 +1,6 @@
 <template lang="pug">
-    #app.page__app
+    #app.page__app(:class="{'is-page-mobile-show-chat':$store.state.mobile.showChat}")
+        the-header-mobile(v-if="isAuth")
         the-header.page__header.page__padding(v-if="isAuth")
         main.page__main
             base-wait(name="pageMain")
@@ -14,6 +15,7 @@
 import '@/scss/base.scss'
 
 import TheHeader from '@/components/TheHeader'
+import TheHeaderMobile from '@/components/TheHeaderMobile'
 import ThePopup from '@/components/ThePopup'
 
 import { captureException } from '@sentry/browser'
@@ -29,6 +31,7 @@ import AppSpinner from './components/BaseWait'
 
 export default {
     components: {
+        TheHeaderMobile,
         AppSpinner,
         TheHeader,
         ThePopup
@@ -249,7 +252,7 @@ export default {
     line-height: 1.2;
     font-weight: 400;
     font-family: $font-family_main;
-    min-width: 685px;
+    //min-width: 685px;
 
     &__app {
         height: 100%;
@@ -302,11 +305,35 @@ export default {
         padding-left: $indent-main;
         padding-right: $indent-main;
         height: 100%;
+
+        @include media($width_xs) {
+            padding-left: 0;
+            padding-right: 0;
+        }
     }
 
     &__padding {
         padding-top: calc-em(30);
         padding-bottom: calc-em(30);
+    }
+
+
+    @include media($width_xs) {
+        &__app {
+            flex-direction:column;
+        }
+        &__view {
+            min-height:auto;
+        }
+        &__header {
+            width:100%;
+            order:1;
+            display:flex;
+            flex-direction: row;
+            align-items:center;
+            padding-top:0;
+            padding-bottom:0;
+        }
     }
 }
 </style>
