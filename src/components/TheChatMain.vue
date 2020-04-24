@@ -121,7 +121,8 @@ export default {
             systemMessages: [],
             visitorTypingLive: '',
             chat_id: null,
-            scrollDownButtonShow: false
+            scrollDownButtonShow: false,
+            scrollTopBeforeAddContent:0,
         }
     },
 
@@ -515,11 +516,11 @@ export default {
                 const scroller = e.target
                 let
                     height = scroller.clientHeight,
-                    scrollHeight = scroller.scrollHeight - height,
-                    scrollTop = scroller.scrollTop;
+                    scrollHeight = scroller.scrollHeight - height;
+
 
                 this.historyMessageLoad().then(()=>{
-                    scroller.scrollTop=scroller.scrollHeight - scroller.clientHeight-scrollHeight+scrollTop //После загрузки двигаем полосу прокрутки на предыдущее место
+                    scroller.scrollTop=scroller.scrollHeight - scroller.clientHeight-scrollHeight+this.scrollTopBeforeAddContent //После загрузки двигаем полосу прокрутки на предыдущее место
                 })
             }
         },
@@ -578,6 +579,7 @@ export default {
                     //messages = messages.filter(message=>!this.messageList.some(item=>item.id===message.id)) //убираем дубликаты
 
                     this.messageList.push(...messages)
+                    this.scrollTopBeforeAddContent = this.$refs.scrollbar.$el.scrollTop
                     //console.log('this.messageList.push',this.messageList);
                     //this.$wait.end('message-history');
 
