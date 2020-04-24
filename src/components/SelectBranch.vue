@@ -27,7 +27,7 @@
                     type="textarea"
                     name="comment",
                     :placeholder="placeholder"
-                    max-length="5000"
+                    maxLength="5000"
                     v-model="comment"
                 )
                 base-btn(type="submit" v-text="btnText")
