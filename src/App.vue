@@ -333,6 +333,16 @@ export default {
             align-items:center;
             padding-top:0;
             padding-bottom:0;
+
+            transition:$glob-trans;
+
+            .is-page-mobile-show-chat & {
+                margin-bottom:-50px;
+            }
+        }
+
+        &__main {
+            height:80vh;
         }
     }
 }

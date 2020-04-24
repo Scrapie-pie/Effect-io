@@ -70,7 +70,14 @@ export default {
     $color_hover: glob-color('info-lighten');
     $transition: $glob-trans;
     position: relative;
-    width: 415px;
+
+
+    @include media($width_xs,1) {
+        width: 415px;
+    }
+
+
+
     &__box {
         min-width: 0;
     }

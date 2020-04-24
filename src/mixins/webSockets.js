@@ -218,8 +218,8 @@ export default {
 
             if (
                 val.site_id &&
-                this?.httpParams.params?.guest_uuid === val.guest_uuid &&
-                this?.httpParams.params?.site_id === val.site_id
+                this?.httpParams?.params?.guest_uuid === val.guest_uuid &&
+                this?.httpParams?.params?.site_id === val.site_id
             ) {
                 // если есть val.site_id значит общение в диалогах
                 console.log('// Нужно, что бы чужое сообщение оказалось каждое в своем чате', val)

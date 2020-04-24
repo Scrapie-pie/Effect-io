@@ -84,28 +84,23 @@
                         @boxControlClose="showSelectBranch=false"
                     )
                         select-branch
-        box-controls(type="popup" v-if="showFormORTS", @boxControlClose="showFormORTS=false")
-            form-o-t-r-s
+
 </template>
 
 <script>
-import TheChatMainHeaderHistory from '@/components/TheChatMainHeaderHistory'
-import TheChatMainHeaderActions from '@/components/TheChatMainHeaderActions'
-import SelectOperators from '@/components/SelectOperators'
-import SelectBranch from '@/components/SelectBranch'
-import FormOTRS from '@/components/FormOTRS'
+
 import { viewModeChat, httpParams, removeMessageAndPush } from '@/mixins/mixins'
 import config from '@/config/index'
-import LinkShare from '@/components/LinkShare'
+
 
 export default {
     components: {
-        LinkShare,
-        SelectBranch,
-        TheChatMainHeaderHistory,
-        TheChatMainHeaderActions,
-        SelectOperators,
-        FormOTRS
+        LinkShare:()=>import('@/components/LinkShare'),
+        SelectBranch:()=>import('@/components/SelectBranch'),
+        TheChatMainHeaderHistory:()=>import('@/components/TheChatMainHeaderHistory'),
+        TheChatMainHeaderActions:()=>import('@/components/TheChatMainHeaderActions'),
+        SelectOperators:()=>import('@/components/SelectOperators'),
+
     },
     mixins: [viewModeChat, httpParams, removeMessageAndPush],
     data() {
@@ -113,11 +108,11 @@ export default {
             membersList: [],
             showClientHistoryActions: false,
             showSelectOperators: false,
-            showSelectBranch: false,
+
             showMoreChatActions: false,
             showSelectTags: false,
             selectOperatorsMode: '',
-            showFormORTS: false
+            showSelectBranch:false,
             //moreActionsClose:false,
         }
     },
@@ -163,16 +158,7 @@ export default {
         }
     },
     created() {
-        this.$root.$on('formORTS', () => {
-            if (this.viewModeChat === 'process') {
-                return
-            }
-            console.log('ей')
-            this.showMoreChatActions = false
-            setTimeout(() => {
-                this.showFormORTS = true
-            }, 500)
-        })
+
         this.$root.$on('showBranch', () => {
             this.showMoreChatActions = false
             setTimeout(() => {

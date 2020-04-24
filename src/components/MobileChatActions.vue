@@ -7,38 +7,53 @@
             title="Закрыть"
         ).mobile-chat-actions__close
         scroll-bar.mobile-chat-actions__scroll-bar
-            ul.mobile-chat-actions__list
-                li.mobile-chat-actions__item
-                    base-btn(theme="text") Поставить тэг
-                li.mobile-chat-actions__item
-                    base-btn(theme="text") Заявка в ОТРС
-                li.mobile-chat-actions__item
-                    base-btn(theme="text") Передать в отдел
-                li.mobile-chat-actions__item
-                    base-btn(theme="text") Десктоп
-                li.mobile-chat-actions__item
-                    base-btn(theme="text") Менеджер
-                li.mobile-chat-actions__item
-                    base-btn(theme="text") Завершить диалог
+            .mobile-chat-actions__list
+                    client-info-actions(is-mobile @close="$emit('close')")
+                    base-btn(
+                    v-if="roomActiveUserActive"
+                    color="error"
+                    padding="xs",
+                    @click.prevent="chatCompletion",
+                    v-wait:disabled='"chatMain"'
+                    ) Завершить диалог
 
 </template>
 
 <script>
+import { httpParams } from '@/mixins/mixins'
 
 export default {
+    components: {ClientInfoActions:()=>import("@/components/ClientInfoActions")},
     name: "mobile-chat-actions",
     directives: {
 
     },
+
     data() {
         return {
 
         }
     },
+    mixins: [httpParams, ],
     methods: {
         outside(){
             this.$emit('close')
-        }
+        },
+        chatCompletion() {
+            let data = this.httpParams.params
+            data.intent = 'farewell'
+
+            this.$http.post('message/send-from-operator', data).finally(()=>{
+                this.$emit('close')
+            })
+        },
+    },
+    computed:{
+        roomActiveUserActive() {
+            let id = this.$store.state.user.profile.id,
+                ids = this.$store.state.roomActive.usersActive
+            return ids.includes(id)
+        },
     },
     mounted() {
         this.popupItem = this.$el
@@ -52,9 +67,13 @@ export default {
         @extend %full-abs;
         z-index:9999;
 
-        &__item {
-            padding:1em;
-            font-size:1.5em;
+        &__list {
+            padding:3em 2em;
+        }
+
+        .btn {
+            margin:1em 0;
+
         }
         &__scroll-bar {
             height:100%;

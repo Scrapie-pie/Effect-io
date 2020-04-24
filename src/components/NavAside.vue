@@ -51,7 +51,8 @@ export default {
 
     @include media($width_xs) {
         width: 100%;
-        margin-left:0;
+        margin:0;
+        padding:10px 0 0;
 
 
     }

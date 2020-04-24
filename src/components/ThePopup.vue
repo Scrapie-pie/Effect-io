@@ -10,13 +10,23 @@
             img(:src="img" alt="Увеличенная картинка")
         box-controls(type="popup"  v-if="showTagsPopup", @boxControlClose="tagsClose")
             select-tags
+        box-controls(
+            type="popup"
+            v-if="showSelectBranch",
+            @boxControlClose="showSelectBranch=false"
+            )
+            select-branch
+        box-controls(type="popup" v-if="showFormORTS", @boxControlClose="showFormORTS=false")
+            form-o-t-r-s
 </template>
 
 <script>
 import { httpParams } from '@/mixins/mixins'
 export default {
     components: {
-        SelectTags: () => import('@/components/SelectTags')
+        SelectTags: () => import('@/components/SelectTags'),
+        SelectBranch: () => import('@/components/SelectBranch'),
+        FormOTRS:()=>import('@/components/FormOTRS')
     },
     mixins: [httpParams],
     data() {
@@ -25,7 +35,9 @@ export default {
             img: false,
             noticeText: false,
             showTagsPopup: false,
-            tagsActionAfter: true
+            tagsActionAfter: true,
+            showSelectBranch: false,
+            showFormORTS: false
         }
     },
     computed: {},
@@ -37,8 +49,24 @@ export default {
         })
 
         this.$root.$on('showTagsEmit', this.showTagsEmit)
+
+        this.$root.$on('showBranchPopup', () => {
+            this.showSelectBranch = true
+        })
+
+        this.$root.$on('formORTS', () => {
+            if (this.viewModeChat === 'process') {
+                return
+            }
+
+            setTimeout(() => {
+                this.showFormORTS = true
+            }, 500)
+        })
     },
     beforeDestroy() {
+        this.$root.$off('showBranchPopup')
+        this.$root.$off('formORTS')
         this.$root.$off('showTagsEmit', this.showTagsEmit)
     },
     methods: {

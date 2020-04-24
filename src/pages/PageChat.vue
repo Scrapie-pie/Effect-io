@@ -172,6 +172,12 @@ export default {
     flex-direction: row;
     position:relative;
 
+
+    @include media($width_xs) {
+        padding-top:0;
+        padding-bottom:0
+    }
+
     &__main {
         flex: 1;
         $pd: calc-em(15);
@@ -193,6 +199,7 @@ export default {
 
 
             display:none;
+            padding-bottom:1em;
         }
     }
 
@@ -225,30 +232,32 @@ export default {
         }
     }
 
+    @include media($width_xs) {
+        .the-header-mobile-transition-enter-active,
+        .the-header-mobile-transition-leave-active {
+            transition: $glob-trans;
+
+        }
+
+        .the-header-mobile-transition-enter,
+        .the-header-mobile-transition-leave-to {
+            position:absolute;
+            left:0;right:0;top:0;bottom:0;
+            opacity:0;
+
+        }
+
+        .the-header-mobile-transition-enter,.the-header-mobile-transition-leave-to {
+
+            transform:translateX(-100%);
+            //transform:scale(0);
+            //filter:blur(10px);
 
 
-    .the-header-mobile-transition-enter-active,
-    .the-header-mobile-transition-leave-active {
-        transition: $glob-trans;
-
+        }
     }
 
-    .the-header-mobile-transition-enter,
-    .the-header-mobile-transition-leave-to {
-        position:absolute;
-        @extend %full-abs;
 
-
-    }
-
-    .the-header-mobile-transition-enter,.the-header-mobile-transition-leave-to {
-
-        transform:translateX(-100%);
-        //transform:scale(0);
-        //filter:blur(10px);
-
-
-    }
 
     .the-last-messages {
         @include media($width_xs,1) {

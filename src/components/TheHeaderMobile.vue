@@ -51,7 +51,7 @@ export default {
             return this.$store.state.mobile.showChat
         },
         nameSection(){
-            return this.$route.name == 'processAll' && 'Не обработано' || this.viewModeChat==='visitors' && 'Мои диалоги'
+            return this.viewModeChat == 'process' && 'Не обработано' || this.viewModeChat==='visitors' && 'Мои диалоги'
         },
 
         info() {
@@ -125,6 +125,7 @@ export default {
         }
         .the-header-mobile-transition-left-enter,.the-header-mobile-transition-left-leave-to {
             transform:translateX(-100%);
+
         }
 
 
