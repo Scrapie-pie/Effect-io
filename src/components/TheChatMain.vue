@@ -514,6 +514,7 @@ export default {
             if (this.scrollLoadAllow(e, 'up')) {
                 const scroller = e.target
                 let
+                    height = scroller.clientHeight,
                     scrollHeight = scroller.scrollHeight - height,
                     scrollTop = scroller.scrollTop;
 
