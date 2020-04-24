@@ -18,7 +18,7 @@
                         type="textarea"
                         name="textarea",
                         placeholder="Комментарий"
-                        maxLength="2000"
+                        maxLength="5000"
                         v-model="operator_comment"
                     )
                 li.form-otrs__item

@@ -78,7 +78,7 @@
                                         theme="soft"
                                         ref="clientComment"
                                         type="textarea"
-                                        placeholder="Вы можете оставить комментарий к этому диалогу" maxlength="500"
+                                        placeholder="Вы можете оставить комментарий к этому диалогу" maxlength="5000"
                                         name="comment"
                                     )
                                 li.client-info__item

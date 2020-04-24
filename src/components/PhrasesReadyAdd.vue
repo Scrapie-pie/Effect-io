@@ -48,7 +48,7 @@
                         type="textarea",
                         name="newPhrase"
                         v-model="create.text",
-                        maxLength="2000"
+                        maxLength="5000"
                         v-validate="'required'",
                         data-vv-as="Введите фразу"
 
