@@ -420,6 +420,7 @@ export default {
                             files,
                             from_user_info: {
                                 id: employee_id,
+
                                 name,
                                 photo
                             },
@@ -440,7 +441,7 @@ export default {
                         }
 
                         if (this.viewModeChat === 'operators') {
-                            if (message.from_user_info.employee_id === this.httpParams.params.id) {
+                            if (httpParamsRequestBefore.params.id === this.httpParams.params.id) {
                                 this.$root.$emit('messageAdd', message)
                             }
                         }
