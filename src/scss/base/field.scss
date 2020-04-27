@@ -16,7 +16,11 @@
 
   text-align:left;
   position:relative;
-  min-width:180px;
+
+
+    @include media($width_xs,1) {
+        min-width:180px;
+    }
 
   &_theme_soft{
     #{$self}__input{

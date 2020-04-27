@@ -16,11 +16,18 @@
                     @click.prevent="chatCompletion",
                     v-wait:disabled='"chatMain"'
                     ) Завершить диалог
+                    base-btn(
+                    @click="blockClient"
+                    color="error"
+                    padding="xs",
+                    ) Заблокировать
+
+                    base-btn(:icon="{name:'exit',top:true}", @click="exitRoomConfirm" v-if="showExit") Выйти из диалога
 
 </template>
 
 <script>
-import { httpParams } from '@/mixins/mixins'
+import { httpParams,removeMessageAndPush } from '@/mixins/mixins'
 
 export default {
     components: {ClientInfoActions:()=>import("@/components/ClientInfoActions")},
@@ -31,11 +38,21 @@ export default {
 
     data() {
         return {
-
+            showBlockClient: false,
+            showExitRoomConfirm: false
         }
     },
-    mixins: [httpParams, ],
+    mixins: [httpParams,removeMessageAndPush ],
     methods: {
+        exitRoomConfirm() {
+            if (this.showConfirmExit) this.showExitRoomConfirm = true
+            else this.exitRoom()
+        },
+        blockClient() {
+            this.$http.post('guest/blocking', this.httpParams.params).then(() => {
+                this.removeMessageAndPush()
+            })
+        },
         outside(){
             this.$emit('close')
         },
@@ -49,6 +66,17 @@ export default {
         },
     },
     computed:{
+        showExit() {
+            console.log(
+                'showConfirmExit',
+                this.$store.state.roomActive.usersActive,
+                this.$store.state.roomActive.usersActive.length > 1
+            )
+            return this.$store.state.roomActive.usersActive.length > 1
+        },
+        showConfirmExit() {
+            return this.$store.state.roomActive.usersActive.length < 1
+        },
         roomActiveUserActive() {
             let id = this.$store.state.user.profile.id,
                 ids = this.$store.state.roomActive.usersActive

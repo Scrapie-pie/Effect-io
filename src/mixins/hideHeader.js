@@ -18,6 +18,7 @@ export default {
     },
     methods: {
         hideHeader(name) {
+
             document.body.classList.add('is-hided-header')
         }
     }

@@ -71,10 +71,9 @@ export default {
     $transition: $glob-trans;
     position: relative;
 
+    width:100%;
+    max-width: 415px;
 
-    @include media($width_xs,1) {
-        width: 415px;
-    }
 
 
 

@@ -197,7 +197,12 @@ export default {
 
 
     &_is-absolute {
-        max-height:70vh;
+        @include media($width_xs,1) {
+            max-height:70vh;
+
+
+        }
+
     }
 
     &,&__wrap {
@@ -233,6 +238,12 @@ export default {
 
         @include media($width_md) {
             grid-template-columns: 1fr 1fr;
+
+        }
+
+        @include media($width_xs) {
+            grid-template-columns: 1fr;
+            grid-template-rows: 1fr 1fr;
 
         }
     }
@@ -328,10 +339,14 @@ export default {
     &__label {
         font-weight: bold;
         margin-bottom: calc-em(20);
+
     }
     &__name {
         font-weight: bold;
         margin-bottom: calc-em(50);
+        @include media($width_xs){
+            margin-bottom:calc-em(20);
+        }
     }
 
     &__filter {

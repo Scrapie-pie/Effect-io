@@ -7,7 +7,9 @@
                     .the-header-mobile__main-name-section(v-text="nameSection")
             transition(name="the-header-mobile-transition")
                 div(v-if="showChat").the-header-mobile__chat-control
-                    base-btn(:icon="{name:'arrowLeft',box:false}", @click="$store.commit('mobile/setShowChat',false)")
+                    div.the-header-mobile__chat-control-arrow-wrap
+                        base-btn(:icon="{name:'arrowLeft',box:false}", @click="$store.commit('mobile/setShowChat',false)")
+                        count-all
                     base-people(
                         :name="info.name" ,
                         :regRuLogin="info.regRuLogin",
@@ -28,9 +30,13 @@
 
 
 import { viewModeChat } from '@/mixins/mixins'
+import BaseCount from "@/components/BaseCount";
+import CountAll from "@/components/CountAll";
 
 export default {
     components: {
+        CountAll,
+        BaseCount,
         MobileChatActions:()=>import('@/components/MobileChatActions')
 
     },
@@ -96,6 +102,16 @@ export default {
             display:grid;
             grid-template-columns:50px 1fr 50px;
             grid-gap:10px;
+
+            &-arrow-wrap {
+                position:relative;
+                display:flex;
+                align-items:center;
+                justify-content:center;
+                .count-all {
+
+                }
+            }
         }
 
         .the-header-mobile-transition-left-enter-active,
