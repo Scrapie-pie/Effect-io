@@ -8,7 +8,7 @@
 
 
 
-        scroll-bar.chat-main__body(ref="scrollbar", @ps-y-reach-end="scrollDownButtonShow=false", @ps-scroll-up="scrollLoad", :class="{'chat-main__body_simple':['search','visor'].includes(viewModeChat)}")
+        scroll-bar.chat-main__body(ref="scrollbar", @ps-y-reach-end="CMSPA_scrollDownButtonShow=false", @ps-scroll-up="scrollLoad", :class="{'chat-main__body_simple':['search','visor'].includes(viewModeChat)}")
 
             ul.chat-main__list()
                 li.chat-main__item
@@ -66,8 +66,8 @@
             .chat-main__scroll-down-button-wrap
                 base-btn.chat-main__scroll-down-button(
                     color="info"
-                    v-if="scrollDownButtonShow"
-                    @click="chatDown",
+                    v-if="CMSPA_scrollDownButtonShow"
+                    @click="CMSPA_chatDown",
                     :icon="{box:true,name:'chevronDown',textHidden:'Прокрутить вниз'}"
                     )
             the-chat-main-footer
@@ -84,7 +84,7 @@ import { wrapTextUrls } from '@/modules/modules'
 import { datetimeDMY, datetimeHMS } from '@/modules/datetime'
 import inputEmoji from '@/components/inputEmoji'
 
-import { viewModeChat, httpParams, scrollbar } from '@/mixins/mixins'
+import { viewModeChat, httpParams, scrollbar,chatMainScrollPushArrow } from '@/mixins/mixins'
 
 import lodash_groupBy from 'lodash/groupBy'
 import lodash_find from 'lodash/find'
@@ -111,7 +111,7 @@ export default {
             return
         }
     },
-    mixins: [viewModeChat, httpParams, scrollbar],
+    mixins: [viewModeChat, httpParams, scrollbar,chatMainScrollPushArrow],
     data() {
         return {
             historyMessageLoadStart: true, //При прокрутке страницы, функция historyMessageLoad выполнялась раньше чем приходил ответ, из за этого лишние индификаторы были
@@ -121,7 +121,7 @@ export default {
             systemMessages: [],
             visitorTypingLive: '',
             chat_id: null,
-            scrollDownButtonShow: false,
+
             scrollTopBeforeAddContent:0,
         }
     },
@@ -273,10 +273,8 @@ export default {
             if (!val.length === !oldVal.length) {
                 return
             } else {
-                console.log('visitorTypingLive', !val.length === !oldVal.length)
-                setTimeout(() => {
-                    this.scrollbarScrollerPush(this.$refs.scrollbar)
-                }, 50)
+                this.CMSPA_scrollbarScrollerPush()
+
             }
         }
     },
@@ -315,10 +313,7 @@ export default {
                 this.$store.dispatch('phrases/getItemListUse', { site_id })
             }
         },
-        chatDown() {
-            this.scrollbarScrollerPush(this.$refs.scrollbar)
-            this.scrollDownButtonShow = false
-        },
+
         syncOperatorMessageVisor() {
             if (!['visitors', 'visor', 'search'].includes(this.viewModeChat)) return
 
@@ -408,23 +403,18 @@ export default {
             // ищем предыдущее сообщение
         },
         messageListUnshift(message) {
-            console.log(message)
-            let isScrollPush = false
-            if (
-                Math.ceil(this.$refs.scrollbar.$el.scrollTop) ===
-                this.scrollerPxToPercent(this.$refs.scrollbar.$el, 100)
-            )
-                isScrollPush = true
-            if (!message.socket) isScrollPush = true
+
             this.messageList.unshift(message)
-            setTimeout(() => {
-                if (isScrollPush) {
-                    this.scrollbarScrollerPush(this.$refs.scrollbar)
-                    this.scrollDownButtonShow = false
-                } else {
-                    this.scrollDownButtonShow = true
-                }
-            }, 50)
+            if (!message.socket) {
+
+                this.CMSPA_scrollbarScrollerPush(true)
+            }
+            else {
+
+                this.CMSPA_scrollbarScrollerPush()
+            }
+
+
         },
         transferCancel(to_id) {
             let data = this.httpParams.params

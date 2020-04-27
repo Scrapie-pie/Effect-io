@@ -17,3 +17,4 @@ export { default as pollingHistoryMessage } from '@/mixins/pollingHistoryMessage
 export { default as pollingSockets } from '@/mixins/pollingSockets'
 export { default as dialogActions } from '@/mixins/dialogActions'
 export { mixins as actionAnotherTab } from '@/modules/actionAnotherTab.js'
+export { default as chatMainScrollPushArrow } from '@/mixins/chatMainScrollPushArrow.js'
