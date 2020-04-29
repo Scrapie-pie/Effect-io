@@ -31,7 +31,7 @@ export default {
     },
     methods:{
         showBranch(){
-            if(!this.isMobile) this.$root.$emit('showBranch')
+            if(!this.isMobile) this.$root.$emit('showBranchPopup')
             else {
                 this.$emit('close')
                 this.$root.$emit('showBranchPopup')
@@ -51,7 +51,7 @@ export default {
     computed:{
         integrationRegru() {
             return this.$store.state.user.siteCompanyList.find(
-                item => item.id === this.httpParams.params.site_id && item.regruIntegration
+                item => item.id === this?.httpParams?.params.site_id && item.regruIntegration
             )
         },
         info() {

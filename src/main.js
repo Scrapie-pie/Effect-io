@@ -6,6 +6,8 @@
 
 import '@/modules/sentry'
 
+
+
 import Vue from 'vue'
 import App from './App.vue'
 import '@/validation'
@@ -16,6 +18,9 @@ import axios from '@/modules/axios'
 import VueWait from 'vue-wait'
 
 Vue.use(VueWait)
+
+import VueResizeObserver from "vue-resize-observer";
+Vue.use(VueResizeObserver);
 
 import clicky from 'vue-clicky'
 clicky({

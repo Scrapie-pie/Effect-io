@@ -8,21 +8,25 @@
         ).mobile-chat-actions__close
         scroll-bar.mobile-chat-actions__scroll-bar
             .mobile-chat-actions__list
-                    client-info-actions(is-mobile @close="$emit('close')")
-                    base-btn(
-                    v-if="roomActiveUserActive"
-                    color="error"
-                    padding="xs",
-                    @click.prevent="chatCompletion",
-                    v-wait:disabled='"chatMain"'
-                    ) Завершить диалог
-                    base-btn(
-                    @click="blockClient"
-                    color="error"
-                    padding="xs",
-                    ) Заблокировать
+                client-info-actions(is-mobile @close="$emit('close')")
+                base-btn(
+                theme="default"
+                padding="xs",
+                @click.prevent="invite()"
+                ) + Пригласить
+                br
+                base-btn(
+                v-if="roomActiveUserActive"
+                color="error"
+                padding="xs",
+                @click.prevent="chatCompletion",
+                v-wait:disabled='"chatMain"'
+                ) Завершить диалог
+                br
+                base-btn(:icon="{name:'bl',left:true}",  @click="blockClient") Заблокировать
 
-                    base-btn(:icon="{name:'exit',top:true}", @click="exitRoomConfirm" v-if="showExit") Выйти из диалога
+                br
+                base-btn(:icon="{name:'exit',left:true}", @click="exitRoomConfirm" v-if="showExit") Выйти из диалога
 
 </template>
 
@@ -38,13 +42,29 @@ export default {
 
     data() {
         return {
+            selectOperatorsMode: '',
+            showSelectOperators: false,
             showBlockClient: false,
             showExitRoomConfirm: false
         }
     },
     mixins: [httpParams,removeMessageAndPush ],
     methods: {
+        invite(){
+            this.$emit('close')
+            this.$root.$emit('showSelectOperatorInvitePopup')
+        },
+        exitRoom() {
+            this.$http
+                .post('chat-room-user/exit', {
+                    room_id: this.$store.state.roomActive.id
+                })
+                .then(() => {
+                    this.removeMessageAndPush()
+                })
+        },
         exitRoomConfirm() {
+            this.$emit('close')
             if (this.showConfirmExit) this.showExitRoomConfirm = true
             else this.exitRoom()
         },
@@ -119,6 +139,10 @@ export default {
             left:0;
             padding:1em;
             fill:glob-color(light);
+        }
+
+        &__item {
+            margin-bottom:calc-em(20);
         }
 
     }

@@ -3,7 +3,8 @@
         .the-header-mobile__wrap
             transition(name="the-header-mobile-transition-left")
                 .the-header-mobile__main(v-if="!showChat")
-                    .the-header-mobile__main-status В сети
+                    user-status(is-mobile v-if="$store.getters['resize/xs']")
+                    //.the-header-mobile__main-status В сети
                     .the-header-mobile__main-name-section(v-text="nameSection")
             transition(name="the-header-mobile-transition")
                 div(v-if="showChat").the-header-mobile__chat-control
@@ -30,13 +31,15 @@
 
 
 import { viewModeChat } from '@/mixins/mixins'
-import BaseCount from "@/components/BaseCount";
-import CountAll from "@/components/CountAll";
+import UserStatus from "@/components/UserStatus";
+
 
 export default {
     components: {
-        CountAll,
-        BaseCount,
+
+        UserStatus,
+        BaseCount:()=>import("@/components/BaseCount"),
+        CountAll:()=>import("@/components/CountAll"),
         MobileChatActions:()=>import('@/components/MobileChatActions')
 
     },
@@ -54,7 +57,8 @@ export default {
     },
     computed:{
         showChat(){
-            return this.$store.state.mobile.showChat
+
+            return this.$store.getters['mobile/showChat']
         },
         nameSection(){
             return this.viewModeChat == 'process' && 'Не обработано' || this.viewModeChat==='visitors' && 'Мои диалоги'
@@ -88,7 +92,7 @@ export default {
             height:100%;
             justify-content:space-between;
             &-name-section {
-                @extend %h1;
+                @extend %h2;
                 margin-bottom:0;
             }
         }

@@ -188,6 +188,9 @@ export default {
 .select-operator {
     $self: '.select-operator';
 
+
+    text-align:left;
+
     &__title {
         /*padding-top:2.5em;*/
         margin-bottom: 2em;

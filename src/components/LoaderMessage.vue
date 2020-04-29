@@ -2,7 +2,7 @@
     transition
         span(v-if="status==0", :class="loaderMessageClass" title="Доставляется")
         base-icon(v-if="status==1", name="check"  :class="loaderMessageClass" title="Доставлено")
-        base-icon(v-if="status==2", name="prohibition"  :class="loaderMessageClass" title="Не доставлено")
+        base-icon(v-if="status==2  || status==3", name="prohibition"  :class="loaderMessageClass" title="Не доставлено")
 </template>
 
 <script>
@@ -13,7 +13,7 @@ export default {
             type: Number,
             default: -1,
             validator: function(value) {
-                return [-1, 0, 1, 2].indexOf(value) !== -1
+                return [-1, 0, 1, 2,3].indexOf(value) !== -1
             }
         }
     },
@@ -52,7 +52,7 @@ export default {
             transform: translateY(-3px);
         }
     }
-    &_2 {
+    &_2,&_3 {
         .icon {
             width: 12px;
             height: 14px;

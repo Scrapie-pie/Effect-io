@@ -247,11 +247,11 @@ export default {
 
     & &__box {
 
-            @include media($width_xs) {
+           /* @include media($width_xs) {
                 left:0;right:0;top:0;bottom:0;width:100%;height:100%;
                 transform:none;
 
-            }
+            }*/
 
     }
 

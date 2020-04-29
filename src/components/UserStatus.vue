@@ -1,11 +1,12 @@
 <template lang="pug">
     form.user-status(@change="operatorStatusUpdate")
         .user-status__avatar-wrap
-            base-wait(name="userStatus")
-            //|я {{profile.first_name}}
-            base-avatar.user-status__avatar(:url="profile.photo")
+            template(v-if="!isMobile")
+                base-wait(name="userStatus")
+                //|я {{profile.first_name}}
+                base-avatar.user-status__avatar(:url="profile.photo")
 
-            .user-status__indicator(:class="`user-status__indicator_${statusCurrent.name}`")
+                .user-status__indicator(:class="`user-status__indicator_${statusCurrent.name}`")
             ul.user-status__list(:class="{'user-status__list_open':show}" v-click-outside="val=>show=false")
                 li.user-status__item
                     label.user-status__text.user-status__text_online(@click="show=false")
@@ -41,15 +42,20 @@ export default {
     directives: {
         ClickOutside
     },
-    /*  props:{
-            status:{
+      props:{
+            isMobile:{
+                type:Boolean,
+                default:false,
+
+            },
+     /*       status:{
                 type:Number,
                 default:0,
                 validator: function (value) {
                     return [0, 1].indexOf(value) !== -1
                 }
-            }
-          },*/
+            }*/
+          },
     mixins: [viewModeChat],
     data() {
         return {
@@ -296,19 +302,19 @@ export default {
     &__list {
         @include box-decor();
         position: absolute;
-        left: 50%;
+        left: 0;
         top: 100%;
         z-index: 1;
         padding: calc-em(13) 0;
         opacity: 0;
         visibility: hidden;
-        transform: translate(-50%, 3em);
+        transform: translate(0, 3em);
         transition: $transition;
 
         &_open {
             opacity: 1;
             visibility: visible;
-            transform: translate(-50%, 0);
+            transform: translate(0, 0);
         }
     }
     &__input {

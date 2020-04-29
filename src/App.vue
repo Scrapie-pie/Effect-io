@@ -1,5 +1,5 @@
 <template lang="pug">
-    #app.page__app(:class="{'is-page-mobile-show-chat':$store.state.mobile.showChat}")
+    #app.page__app(:class="{'is-page-mobile-show-chat':$store.state.mobile.showChat}" v-resize="onResize")
         the-header-mobile(v-if="isAuth")
         the-header.page__header.page__padding(v-if="isAuth")
         main.page__main
@@ -236,6 +236,10 @@ export default {
                 event.reason,
                 ')'
             )
+        },
+        onResize({ width, height }){
+            console.log(width, height);
+            this.$store.commit('resize/setWindowSize',{width, height})
         }
     }
 }
@@ -253,6 +257,8 @@ export default {
     font-weight: 400;
     font-family: $font-family_main;
     //min-width: 685px;
+
+
 
     &__app {
         height: 100%;

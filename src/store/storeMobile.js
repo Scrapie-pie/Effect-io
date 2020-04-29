@@ -1,6 +1,6 @@
 const getDefaultState = () => {
     return {
-        showChat: [],
+        showChat: false,
 
     }
 }
@@ -22,6 +22,8 @@ export default {
 
     },
     getters: {
-
+        showChat: (state, getters, rootState) => {
+            return state.showChat
+        }
     }
 }

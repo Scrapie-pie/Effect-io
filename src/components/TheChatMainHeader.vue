@@ -53,19 +53,10 @@
                     base-btn(
                         theme="default"
                         padding="xs",
-                        @click.prevent="showSelectOperators=true;selectOperatorsMode='invite'"
+                        @click.prevent="$root.$emit('showSelectOperatorInvitePopup')"
                     ) + Пригласить
-                    .chat-main-header__select-operator
-                        box-controls(
-                            v-if="showSelectOperators",
-                            @boxControlClose="showSelectOperators=false"
-                            )
-                            select-operators(:name="selectOperatorsMode")
-                        box-controls(
-                            v-if="showSelectTags",
-                            @boxControlClose="showSelectTags=false"
-                        )
-                            select-tags(:name="selectOperatorsMode")
+
+
 
             li.chat-main-header__control.chat-main-header__control_more
                 base-btn(
@@ -74,16 +65,11 @@
                 ).chat-main-header__more-btn
                 .chat-main-header__more
                     box-controls(
-                        v-if="showMoreChatActions"
+                        v-if="showMoreChatActions",
                         @boxControlClose="showMoreChatActions=false"
                     )
                         the-chat-main-header-actions()
-                .chat-main-header__select-operator
-                    box-controls(
-                        v-if="showSelectBranch"
-                        @boxControlClose="showSelectBranch=false"
-                    )
-                        select-branch
+
 
 </template>
 
@@ -96,10 +82,9 @@ import config from '@/config/index'
 export default {
     components: {
         LinkShare:()=>import('@/components/LinkShare'),
-        SelectBranch:()=>import('@/components/SelectBranch'),
         TheChatMainHeaderHistory:()=>import('@/components/TheChatMainHeaderHistory'),
         TheChatMainHeaderActions:()=>import('@/components/TheChatMainHeaderActions'),
-        SelectOperators:()=>import('@/components/SelectOperators'),
+
 
     },
     mixins: [viewModeChat, httpParams, removeMessageAndPush],
@@ -107,11 +92,11 @@ export default {
         return {
             membersList: [],
             showClientHistoryActions: false,
-            showSelectOperators: false,
+
 
             showMoreChatActions: false,
-            showSelectTags: false,
-            selectOperatorsMode: '',
+
+
             showSelectBranch:false,
             //moreActionsClose:false,
         }
@@ -159,23 +144,14 @@ export default {
     },
     created() {
 
-        this.$root.$on('showBranch', () => {
-            this.showMoreChatActions = false
-            setTimeout(() => {
-                this.showSelectBranch = true
-            }, 500)
-        })
+
         this.$root.$on('showTransfer', () => {
             this.showMoreChatActions = false
             setTimeout(() => {
-                this.selectOperatorsMode = 'transfer'
-                this.showSelectOperators = true
-                console.log('showTransfer')
+                this.$root.$emit('showSelectOperatorTransferPopup')
             }, 500)
         })
-        this.$root.$on('showSelectTag', () => {
-            this.showSelectTags = true
-        })
+
     },
     mounted() {
         document.querySelector('.js-client-info').addEventListener('click', this.showClientInfo)
@@ -184,6 +160,7 @@ export default {
         document.removeEventListener('click', this.hideClientInfo)
     },
     methods: {
+
         coBrowser() {
             const params =
                 '?guestUuid=' +
