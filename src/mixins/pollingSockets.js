@@ -10,12 +10,13 @@ export default {
     computed: {},
     methods: {
         pollingSocketsInit() {
+
             if (!this.pollingSocketsGo) return
             let pollingServ = this.$http
 
-            if (config.polling_server) {
+            if (process.env.VUE_APP_POLLING_SERVER) {
                 pollingServ = this.$http.create({
-                    baseURL: config.polling_server,
+                    baseURL: process.env.VUE_APP_POLLING_SERVER,
                     headers: { 'content-type': 'application/json' }
                 })
             }
@@ -63,17 +64,17 @@ export default {
                     })
                 })
                 .finally(() => {
-                    let interval = config.polling_interval_ms ? config.polling_interval_ms : 5000
+                    let interval = process.env.VUE_APP_POLLING_INTERVAL_MS ? process.env.VUE_APP_POLLING_INTERVAL_MS : 5000
                     setTimeout(() => {
                         this.pollingSocketsInit()
-                    }, interval)
+                    }, +interval)
                 })
         },
         pollingSocketsDestroy() {
             this.pollingSocketsGo = false
         },
         pollingSockets() {
-            if (!config.polling_server) return
+            if (!process.env.VUE_APP_POLLING_SERVER) return
             this.pollingSocketsGo = true
             this.pollingSocketsInit()
             setTimeout(() => {

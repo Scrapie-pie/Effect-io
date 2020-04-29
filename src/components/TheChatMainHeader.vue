@@ -205,7 +205,7 @@ export default {
                 '&siteId=' +
                 this.httpParams.params.site_id
             const win = window.open(
-                config.api_server_old.split('/app')[0] + '/cobrowsing' + params,
+                'https://newrobocall.ru/' + 'cobrowsing' + params,
                 '_blank'
             )
             win.focus()

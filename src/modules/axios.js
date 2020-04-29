@@ -25,7 +25,7 @@ const refreshAuthLogic = failedRequest => {
 createAuthRefreshInterceptor(axios, refreshAuthLogic, {})
 
 // Настройки http-запросов
-axios.defaults.baseURL = globalConfig.api_server
+axios.defaults.baseURL = process.env.VUE_APP_API_SERVER
 axios.defaults.headers.common['Content-Type'] = 'application/json'
 
 axios.interceptors.request.use(
@@ -33,23 +33,13 @@ axios.interceptors.request.use(
         //console.log('axios.interceptors.request.use',config);
         const oldUrls = []
 
-        if (oldUrls.indexOf(config.url) != -1) {
-            config.baseURL = globalConfig.api_server_old
-            config.url = 'app.php?' + config.url
-        }
+
 
         if (localStorage.getItem('jwt')) {
             config.headers['jwt'] = localStorage.getItem('jwt')
         }
 
-        // if(config.url == 'login' ) {
-        //     config.baseURL = globalConfig.api_server_old
-        //     config.url='app.php?'+config.url
-        // }
 
-        // else if (config.url!=='screen.html') {
-        //     //config.url='app.php?'+config.url
-        // }
 
         return config
     },

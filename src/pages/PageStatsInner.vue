@@ -274,7 +274,7 @@ export default {
                 })
                 .join('&')
 
-            return `${config.api_server}statistic/get-by-params?${href}`
+            return `${process.env.VUE_APP_API_SERVER}statistic/get-by-params?${href}`
         },
         placeholder() {
             if (this.routerName === 'statsBranches') return 'Поиск по названию'
