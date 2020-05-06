@@ -26,6 +26,7 @@
                         | Обед
         form.user-status__status
             button(type="button").user-status__current-status(@click.prevent="toggle")
+                .user-status__indicator(:class="`user-status__indicator_${statusCurrent.name}`" v-if="isMobile")
                 | {{statusCurrent.textShort}}
                 span.user-status__arrow(:class="{'user-status__arrow_open':show}")
 
@@ -42,21 +43,20 @@ export default {
     directives: {
         ClickOutside
     },
-      props:{
-            isMobile:{
-                type:Boolean,
-                default:false,
-
-            },
-     /*       status:{
+    mixins: [viewModeChat],
+    props: {
+        isMobile: {
+            type: Boolean,
+            default: false
+        }
+        /*       status:{
                 type:Number,
                 default:0,
                 validator: function (value) {
                     return [0, 1].indexOf(value) !== -1
                 }
             }*/
-          },
-    mixins: [viewModeChat],
+    },
     data() {
         return {
             show: false,
@@ -268,6 +268,14 @@ export default {
         border-radius: $border-radius;
         border: 1px solid $color_border;
         background: none;
+
+        display: inline-flex;
+        align-items: center;
+
+        #{$el}__indicator {
+            position: relative;
+            margin-right: calc-em(5);
+        }
 
         @include media($width_lg) {
             font-size: 0.9em;

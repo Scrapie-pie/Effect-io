@@ -148,15 +148,11 @@ export default {
             align-items: center;
             justify-content: center;
             text-align: center;
-
-
         }
         #{$self}_notice & {
             height: 300px;
             width: 300px;
         }
-
-
     }
 
     &_gallery {
@@ -246,14 +242,11 @@ export default {
     }
 
     & &__box {
-
-           /* @include media($width_xs) {
+        /* @include media($width_xs) {
                 left:0;right:0;top:0;bottom:0;width:100%;height:100%;
                 transform:none;
 
             }*/
-
     }
-
 }
 </style>

@@ -60,8 +60,6 @@
 <script>
 import FilterDropMenu from '@/components/FilterDropMenu'
 
-
-
 export default {
     components: {
         FilterDropMenu
@@ -70,7 +68,7 @@ export default {
         phrasesEdit: {
             type: Object,
             default: () => ({})
-        },
+        }
     },
     data() {
         return {
@@ -79,34 +77,30 @@ export default {
             filterBranchIds: [],
             filterBranchShowIds: [],
 
-            setFilterChannelIdsValue:[],
-            setFilterBranchIdsValue:[],
+            setFilterChannelIdsValue: [],
+            setFilterBranchIdsValue: [],
             create: {
-                category:'',
+                category: '',
                 text: '',
                 id: '',
                 category_id: 1,
-                is_common:null
-
-            },
-
-
+                is_common: null
+            }
         }
     },
     computed: {
         categories() {
             let list = this.$store.getters['phrases/categories']
-            if(this.$route.params.site_id) return list = this.$store.getters['phrases/categoriesUse']
+            if (this.$route.params.site_id)
+                return (list = this.$store.getters['phrases/categoriesUse'])
 
             return list.filter(item => {
-                if(this.create.is_common===0) return this.create.is_common === item.is_common
-                console.log(item.branches_ids,this.filterBranchIds);
+                if (this.create.is_common === 0) return this.create.is_common === item.is_common
+                console.log(item.branches_ids, this.filterBranchIds)
 
-                return this.filterBranchIds.every(id=>{
+                return this.filterBranchIds.every(id => {
                     return item.branches_ids.includes(id)
                 })
-
-
             })
         }
     },
@@ -114,38 +108,35 @@ export default {
         phrasesEdit: {
             handler(object) {
                 let list = this.$store.getters['phrases/categories']
-                if(this.$route.params.site_id)  list = this.$store.getters['phrases/categoriesUse']
-                let findCategory = list.find(item=>item.id===object.category_id)
+                if (this.$route.params.site_id) list = this.$store.getters['phrases/categoriesUse']
+                let findCategory = list.find(item => item.id === object.category_id)
 
                 object.category = findCategory
 
                 this.create.is_common = findCategory.is_common
 
-                console.log(findCategory.branches_ids);
+                console.log(findCategory.branches_ids)
 
-                let branchListFilter = this.$store.getters['user/branchListAll']
-                    .filter(item=>findCategory.branches_ids.includes(item.id))
+                let branchListFilter = this.$store.getters['user/branchListAll'].filter(item =>
+                    findCategory.branches_ids.includes(item.id)
+                )
 
-                this.setFilterBranchIdsValue = branchListFilter.map(item=>item.id)
+                this.setFilterBranchIdsValue = branchListFilter.map(item => item.id)
 
-                this.setFilterChannelIdsValue =  branchListFilter.map(item=>item.site_id)
+                this.setFilterChannelIdsValue = branchListFilter.map(item => item.site_id)
 
-
-                console.log('phrasesEdit watch');
+                console.log('phrasesEdit watch')
 
                 Object.assign(this.create, object)
             },
             immediate: true
-        },
+        }
     },
-    created() {
-
-    },
+    created() {},
     methods: {
-        setFilterBranchIds(ids){
+        setFilterBranchIds(ids) {
             this.filterBranchIds = ids
             this.create.branches_ids = ids
-
         },
         filterChannel(ids) {
             this.filterChannelIds = ids
@@ -158,9 +149,7 @@ export default {
         cancel() {
             this.$emit('cancel')
         },
-        snippetEdit() {
-
-        },
+        snippetEdit() {},
         submit() {
             this.$validator.validateAll().then(success => {
                 if (success) {

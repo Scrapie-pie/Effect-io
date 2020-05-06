@@ -3,26 +3,31 @@
 </template>
 
 <script>
-import BaseCount from "@/components/BaseCount";
+import BaseCount from '@/components/BaseCount'
 
 export default {
-    components: {BaseCount},
-    name: "count-all",
+    name: 'CountAll',
+    components: { BaseCount },
     data() {
         return {}
     },
-    computed:{
+    computed: {
         unread() {
             return this.$store.state.user.profile.unread || {}
         },
         unreadAll() {
-            return this.unread.common + this.unread.guest + this.unread.unprocessed + this.unread.private
-        },
-
+            return (
+                this.unread.common +
+                this.unread.guest +
+                this.unread.unprocessed +
+                this.unread.private
+            )
+        }
     }
 }
 </script>
 
 <style lang="scss">
-    .count-all{}
+.count-all {
+}
 </style>

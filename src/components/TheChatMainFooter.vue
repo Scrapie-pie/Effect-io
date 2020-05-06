@@ -135,7 +135,6 @@ export default {
         TheBoardSmile,
         inputEmoji,
         TheSpellingForm
-
     },
     mixins: [viewModeChat, httpParams, spelling, typingLive],
 
@@ -308,16 +307,14 @@ export default {
                 this.$store.commit('user/unreadUpdate', ['common', 'clear'])
             }
         },
-        thePhrasesReadyClose(val){
-            this.showPhrases=false
-
-
+        thePhrasesReadyClose(val) {
+            this.showPhrases = false
         },
-        thePhrasesSelectClose(){
+        thePhrasesSelectClose() {
             this.send()
         },
         onEnter: function(e) {
-            console.log(e);
+            console.log(e)
             //if(this.bufferingSend) return
 
             e.stopPropagation()
@@ -389,14 +386,10 @@ export default {
             data.spelling_ignored_words = this.spellingIgnoredWords
             this.spellingMessage = this.message
 
-
-            if(this.$store.state.phrases.selectSnippetId) {
-                data.snippet_id = this.$store.state.phrases.selectSnippetId;
-                this.$store.commit('phrases/setSelectSnippetId',null)
+            if (this.$store.state.phrases.selectSnippetId) {
+                data.snippet_id = this.$store.state.phrases.selectSnippetId
+                this.$store.commit('phrases/setSelectSnippetId', null)
             }
-
-
-
 
             let httpParamsRequestBefore = this?.httpParams //Пользователь мог не дожидаться запроса и переходить в другой чат, под конец запроса переменная была уже с другим значением
             let viewModeChatRequestBefore = this.viewModeChat
@@ -441,7 +434,7 @@ export default {
                             }
                         }
                     }
-                    if(this.viewModeChat==='common') this.$root.$emit('messageAdd', message)
+                    if (this.viewModeChat === 'common') this.$root.$emit('messageAdd', message)
 
                     localStorage.setItem('messageAdd', JSON.stringify(message))
 
@@ -513,6 +506,15 @@ export default {
 
     .process-actions {
         padding-top: $pt;
+
+        &__item {
+            @include media($width_xs) {
+                width: 100%;
+                .btn {
+                    width: 100%;
+                }
+            }
+        }
     }
 
     &.drag-over {
@@ -557,7 +559,7 @@ export default {
 
     .input-emoji {
         padding-top: $pt;
-        min-height:4em;
+        min-height: 4em;
     }
 
     &__buttons {
@@ -593,21 +595,21 @@ export default {
         z-index: 9999;
         .box-controls__box {
             @extend %full-abs;
-            position:fixed;
-            max-width:80%;
-            max-height:80%;
-            margin:auto;
-
-
-
+            position: fixed;
+            max-width: 80%;
+            max-height: 80%;
+            margin: auto;
         }
 
         .box-controls .box-controls__box {
             @include media($width_xs) {
-                width:100%;height:100%;
-                left:0;right:0;top:0;bottom:0;
-                transform:none;
-
+                width: 100%;
+                height: 100%;
+                left: 0;
+                right: 0;
+                top: 0;
+                bottom: 0;
+                transform: none;
             }
         }
     }
@@ -617,7 +619,5 @@ export default {
             max-width: 550px;
         }
     }
-
-
 }
 </style>

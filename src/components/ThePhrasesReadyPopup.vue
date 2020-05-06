@@ -39,14 +39,14 @@ export default {
         ActionList
     },
     props: {
-        isAbsolute:{
-            type:Boolean,
-            default:false
+        isAbsolute: {
+            type: Boolean,
+            default: false
         }
     },
     data() {
         return {
-            filterSearchResult:[],
+            filterSearchResult: [],
             categoriesSelectId: ''
         }
     },
@@ -57,7 +57,7 @@ export default {
             )
         },
         snippetsStore() {
-            if(this.$route.params.site_id) return this.$store.state.phrases.use.snippets
+            if (this.$route.params.site_id) return this.$store.state.phrases.use.snippets
             return []
         },
         categories() {
@@ -77,20 +77,14 @@ export default {
     },
     created() {},
     methods: {
-
         categoriesSelect(id) {
             this.categoriesSelectId = id
         },
         selectText(val) {
-
-            this.$store.commit('phrases/setSelectSnippetId',val.id)
+            this.$store.commit('phrases/setSelectSnippetId', val.id)
             this.$emit('resultText', val.text)
             this.$root.$emit('globBoxControlClose')
-        },
-
-
-
-
+        }
     }
 }
 </script>
@@ -108,24 +102,19 @@ export default {
 
     $padding: calc-em(8) calc-em(26);
 
-
-
-        &_is-absolute {
-            @include media($width_xs,1) {
-                max-height:70vh;
-
-
-            }
-
+    &_is-absolute {
+        @include media($width_xs, 1) {
+            max-height: 70vh;
         }
+    }
 
-
-    &,&__wrap {
-        display:flex;
-        flex-direction:column;
-        height:100%;
+    &,
+    &__wrap {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
         min-height: 0;
-        min-width:0;
+        min-width: 0;
     }
 
     &__wrap,
@@ -153,25 +142,21 @@ export default {
 
         @include media($width_md) {
             grid-template-columns: 1fr 1fr;
-
         }
         @include media($width_xs) {
             grid-template-columns: 1fr;
             grid-template-rows: 1fr 1fr;
-
         }
     }
 
     &__fieldset {
         overflow: hidden;
-        display:flex;
-        flex-direction:column;
+        display: flex;
+        flex-direction: column;
     }
 
     &__list {
     }
-
-
 
     &__catalog {
         flex: 0 0 auto;
@@ -194,12 +179,9 @@ export default {
         width: 100%;
     }
     &__phrases {
-
-
         &-scroll-bar {
-
-            height:100%;
-            overflow:auto;
+            height: 100%;
+            overflow: auto;
         }
     }
 
@@ -215,9 +197,8 @@ export default {
             background-color: $color-bg;
         }
         @include media($width_md) {
-            flex-wrap:wrap;
+            flex-wrap: wrap;
             align-items: inherit;
-
         }
     }
     &__phrases-text {
@@ -237,10 +218,10 @@ export default {
             padding-left: calc-em(15);
         }
         @include media($width_md) {
-            width:100%;
+            width: 100%;
             align-items: inherit;
             padding-left: 0;
-            margin-left:0;
+            margin-left: 0;
         }
     }
 

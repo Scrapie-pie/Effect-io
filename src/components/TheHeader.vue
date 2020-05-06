@@ -10,15 +10,12 @@
 </template>
 
 <script>
-
-
-
 import { viewModeChat } from '@/mixins/mixins'
 
 export default {
     components: {
-        NavMain:()=> import('@/components/NavMain'),
-        UserStatus:()=> import('@/components/UserStatus')
+        NavMain: () => import('@/components/NavMain'),
+        UserStatus: () => import('@/components/UserStatus')
     },
     mixins: [viewModeChat],
     data() {
@@ -170,31 +167,28 @@ export default {
         fill: #009efd;
     }
 
-
-
     @include media($width_xs) {
         .nav-main {
-
             &__list {
-                display:flex;
-                flex-direction:row;
+                display: flex;
+                flex-direction: row;
             }
-            &__item{
-                display:none;
+            &__item {
+                display: none;
             }
-            &__item_processAll,&__item_messageAll, &__item_exit{
-                display:block;
+            &__item_processAll,
+            &__item_messageAll,
+            &__item_exit {
+                display: block;
             }
         }
         &__user-status {
-            display:none;
+            display: none;
         }
         &__nav-app {
-            margin-top:0;
-            margin-left:auto;
+            margin-top: 0;
+            margin-left: auto;
         }
-
     }
-
 }
 </style>

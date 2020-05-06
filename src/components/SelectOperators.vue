@@ -188,8 +188,7 @@ export default {
 .select-operator {
     $self: '.select-operator';
 
-
-    text-align:left;
+    text-align: left;
 
     &__title {
         /*padding-top:2.5em;*/
@@ -201,8 +200,6 @@ export default {
     }
 
     &__scrollbar {
-
-
         max-height: calc(80vh - 20em);
 
         &_mention {

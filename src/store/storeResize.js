@@ -1,12 +1,9 @@
-
-
 const getDefaultState = () => {
     return {
         window: {
-            width:window.innerWidth,
-            height:window.innerHeight,
-        },
-
+            width: window.innerWidth,
+            height: window.innerHeight
+        }
     }
 }
 // initial state
@@ -19,17 +16,15 @@ export default {
         resetState(state) {
             Object.assign(state, getDefaultState())
         },
-        setWindowSize(state,{width,height}){
-            state.window.width = width;
-            state.window.height = height;
+        setWindowSize(state, { width, height }) {
+            state.window.width = width
+            state.window.height = height
         }
-
     },
 
     getters: {
         xs: (state, getters, rootState, rootGetters) => {
-            return state.window.width<=767
-        },
-
+            return state.window.width <= 767
+        }
     }
 }

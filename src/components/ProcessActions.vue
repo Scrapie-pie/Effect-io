@@ -138,7 +138,7 @@ export default {
                         name: 'chatId',
                         params: { guest_uuid, site_id }
                     })
-                    this.$store.commit('mobile/setShowChat',true)
+                    this.$store.commit('mobile/setShowChat', true)
                 }, 500) //Приходит сокет room-users, обновляется статус комнаты, запускается функция this.accessPage, редиректится в не обработано, ждем примерно секунду, редиректим в диалоги
             }
         },

@@ -237,9 +237,9 @@ export default {
                 ')'
             )
         },
-        onResize({ width, height }){
-            console.log(width, height);
-            this.$store.commit('resize/setWindowSize',{width, height})
+        onResize({ width, height }) {
+            console.log(width, height)
+            this.$store.commit('resize/setWindowSize', { width, height })
         }
     }
 }
@@ -257,8 +257,6 @@ export default {
     font-weight: 400;
     font-family: $font-family_main;
     //min-width: 685px;
-
-
 
     &__app {
         height: 100%;
@@ -323,32 +321,31 @@ export default {
         padding-bottom: calc-em(30);
     }
 
-
     @include media($width_xs) {
         &__app {
-            flex-direction:column;
+            flex-direction: column;
         }
         &__view {
-            min-height:auto;
+            min-height: auto;
         }
         &__header {
-            width:100%;
-            order:1;
-            display:flex;
+            width: 100%;
+            order: 1;
+            display: flex;
             flex-direction: row;
-            align-items:center;
-            padding-top:0;
-            padding-bottom:0;
+            align-items: center;
+            padding-top: 0;
+            padding-bottom: 0;
 
-            transition:$glob-trans;
+            transition: $glob-trans;
 
             .is-page-mobile-show-chat & {
-                margin-bottom:-50px;
+                margin-bottom: -50px;
             }
         }
 
         &__main {
-            height:80vh;
+            height: 80vh;
         }
     }
 }

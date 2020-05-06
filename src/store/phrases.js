@@ -8,7 +8,7 @@ const getDefaultState = () => {
             snippets: [],
             categories: []
         },
-        selectSnippetId:null,
+        selectSnippetId: null
     }
 }
 // initial state
@@ -27,7 +27,7 @@ export default {
             if (findIndex == -1) state.categories.push(val)
         },
         setSelectSnippetId(state, id) {
-            state.selectSnippetId=id
+            state.selectSnippetId = id
         },
         snippetAdd(state, val) {
             state.snippets.push(val)
@@ -58,13 +58,11 @@ export default {
         }
     },
     actions: {
-        snippetCreate({ commit,dispatch }, { text, category, is_common,  branches_ids }) {
-
+        snippetCreate({ commit, dispatch }, { text, category, is_common, branches_ids }) {
             let obj = {}
 
-
             if (lodash_isObject(category)) {
-                if(category.id) obj.category_id = category.id
+                if (category.id) obj.category_id = category.id
                 else {
                     obj.category = category.titleBranchSite
                 }
@@ -72,14 +70,9 @@ export default {
                 obj.category = category
             }
 
-
             if (!is_common) {
-
-
                 branches_ids = null
             }
-
-
 
             this._vm.$http
                 .post('snippet/create-snippet', {
@@ -93,17 +86,21 @@ export default {
                     dispatch('getItemList')
                 })
         },
-        snippetUpdate({ commit,dispatch }, { id, text,category}) {
-            this._vm.$http.put('snippet/update-snippet', { id, text,category_id:category.id }).then(() => {
-                dispatch('getItemList')
-            })
+        snippetUpdate({ commit, dispatch }, { id, text, category }) {
+            this._vm.$http
+                .put('snippet/update-snippet', { id, text, category_id: category.id })
+                .then(() => {
+                    dispatch('getItemList')
+                })
         },
-        categoriesUpdate({ commit,dispatch }, {title,id,branches_ids}) {
-            return this._vm.$http.put('snippet/update-category', {title,id,branches_ids}).then(() => {
-                dispatch('getItemList')
-            })
+        categoriesUpdate({ commit, dispatch }, { title, id, branches_ids }) {
+            return this._vm.$http
+                .put('snippet/update-category', { title, id, branches_ids })
+                .then(() => {
+                    dispatch('getItemList')
+                })
         },
-        snippetDelete({ commit,dispatch }, id) {
+        snippetDelete({ commit, dispatch }, id) {
             this._vm.$http.delete('snippet/delete-snippet', { params: { id } }).then(() => {
                 dispatch('getItemList')
             })
@@ -125,7 +122,7 @@ export default {
         getItemListUse({ commit, rootGetters }, { site_id }) {
             let params = {
                 type: 'use',
-                sort_by_use:1,
+                sort_by_use: 1,
                 site_id
             }
 

@@ -119,8 +119,6 @@ export default {
     }
 
     &__scrollbar {
-
-
         max-height: calc(80vh - 20em);
 
         &_mention {

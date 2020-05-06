@@ -76,7 +76,6 @@ export default {
             else this.exitRoom()
         },
 
-
         showTransfer() {
             this.$root.$emit('showTransfer')
         },

@@ -62,141 +62,123 @@
 </template>
 
 <script>
-    import FilterDropMenu from '@/components/FilterDropMenu'
+import FilterDropMenu from '@/components/FilterDropMenu'
 
-     import lodash_isEqual from 'lodash/isEqual'
-     import lodash_sortBy from 'lodash/sortBy'
+import lodash_isEqual from 'lodash/isEqual'
+import lodash_sortBy from 'lodash/sortBy'
 
-    export default {
-        components: {
-            FilterDropMenu
-        },
-        data() {
-            return {
-                filterChannelIds: [],
-                filterSearchResult: [],
-                filterBranchIds: [],
-                filterBranchShowIds: [],
+export default {
+    components: {
+        FilterDropMenu
+    },
+    data() {
+        return {
+            filterChannelIds: [],
+            filterSearchResult: [],
+            filterBranchIds: [],
+            filterBranchShowIds: [],
 
-                create: {
-                    text: '',
-                    category: '',
-                    is_common: 1,
-                    branches_ids: [],
-
-
-                },
-
-
+            create: {
+                text: '',
+                category: '',
+                is_common: 1,
+                branches_ids: []
             }
+        }
+    },
+    computed: {
+        isViewAdmin() {
+            return this.$store.getters['user/isRole'](['admin', 'owner', 'operatorSenior'])
         },
-        computed: {
-            isViewAdmin() {
-                return this.$store.getters['user/isRole'](['admin', 'owner', 'operatorSenior'])
-            },
 
-            categories() {
-                let list = this.$store.getters['phrases/categories']
-                if(this.$route.params.site_id)  list = this.$store.getters['phrases/categoriesUse']
+        categories() {
+            let list = this.$store.getters['phrases/categories']
+            if (this.$route.params.site_id) list = this.$store.getters['phrases/categoriesUse']
 
-                list = list.map(category=>{
-
-                    category.titleBranchSite = category.title
-                    return category
-           /*         category.titleBranchSite = category.title+':'+ this.$store.getters['user/branchListAll']
+            list = list.map(category => {
+                category.titleBranchSite = category.title
+                return category
+                /*         category.titleBranchSite = category.title+':'+ this.$store.getters['user/branchListAll']
                         .filter(branch => category.branches_ids.includes(branch.id))
                         .map(branch=>branch.titleAndSite)
                         .join(', ')
 */
-                    return category
+                return category
+            })
+            if (this.$route.params.site_id) return
 
+            return list.filter(item => {
+                if (this.create.is_common === 0) return this.create.is_common === item.is_common
+
+                return this.filterBranchIds.every(id => {
+                    return item.branches_ids.includes(id)
                 })
-                if(this.$route.params.site_id) return
-
-                return list.filter(item => {
-                    if(this.create.is_common===0) return this.create.is_common === item.is_common
-
-
-                    return this.filterBranchIds.every(id=>{
-                        return item.branches_ids.includes(id)
-                    })
-
-
-                })
-            }
-
-
+            })
+        }
+    },
+    watch: {
+        isViewAdmin: {
+            handler(val) {
+                if (!val) {
+                    console.log('isViewAdmin', val)
+                    this.create.is_common = 0
+                } else {
+                    this.create.is_common = 1
+                }
+            },
+            immediate: true
+        }
+    },
+    created() {},
+    methods: {
+        setFilterBranchIds(ids) {
+            this.filterBranchIds = ids
+            this.create.branches_ids = ids
         },
-        watch: {
-
-
-            isViewAdmin: {
-                handler(val) {
-
-                    if (!val) {
-                        console.log('isViewAdmin', val)
-                        this.create.is_common = 0
-                    } else {
-                        this.create.is_common = 1
-                    }
-                },
-                immediate: true
-            }
-        },
-        created() {},
-        methods: {
-            setFilterBranchIds(ids){
-                this.filterBranchIds = ids
-                this.create.branches_ids = ids
-
-            },
-            filterChannel(ids) {
-                this.filterChannelIds = ids
-                this.filterBranchShowIds = this.$store.getters['user/branchListAll']
-                    .filter(item => ids.includes(item.site_id))
-                    .map(item => {
-                        return item.id
-                    })
-            },
-
-            cancel() {
-                this.$emit('cancel')
-            },
-
-
-
-
-            submit() {
-                this.$validator.validateAll().then(success => {
-                    if (success) {
-                        console.log(this.create);
-                        this.$store.dispatch('phrases/snippetCreate', this.create)
-                        this.$emit('cancel')
-                    }
+        filterChannel(ids) {
+            this.filterChannelIds = ids
+            this.filterBranchShowIds = this.$store.getters['user/branchListAll']
+                .filter(item => ids.includes(item.site_id))
+                .map(item => {
+                    return item.id
                 })
-            }
+        },
+
+        cancel() {
+            this.$emit('cancel')
+        },
+
+        submit() {
+            this.$validator.validateAll().then(success => {
+                if (success) {
+                    console.log(this.create)
+                    this.$store.dispatch('phrases/snippetCreate', this.create)
+                    this.$emit('cancel')
+                }
+            })
         }
     }
+}
 </script>
 
 <style lang="scss">
-    .phrases-ready-edit {
-        &__label {
-            font-weight: bold;
-            margin-bottom: calc-em(20);
+.phrases-ready-edit {
+    &__label {
+        font-weight: bold;
+        margin-bottom: calc-em(20);
+    }
+
+    &__add-item {
+        & + & {
+            margin-top: calc-em(25);
         }
 
-        &__add-item {
-            & + & {
-                margin-top: calc-em(25);
-            }
-
-            &_select {
-                max-width: 275px;
-            }
-        }
-        &__add-item-button {
-            margin-right: calc-em(20);
+        &_select {
+            max-width: 275px;
         }
     }
+    &__add-item-button {
+        margin-right: calc-em(20);
+    }
+}
 </style>

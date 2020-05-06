@@ -13,7 +13,7 @@ export default {
             type: Number,
             default: -1,
             validator: function(value) {
-                return [-1, 0, 1, 2,3].indexOf(value) !== -1
+                return [-1, 0, 1, 2, 3].indexOf(value) !== -1
             }
         }
     },
@@ -52,7 +52,8 @@ export default {
             transform: translateY(-3px);
         }
     }
-    &_2,&_3 {
+    &_2,
+    &_3 {
         .icon {
             width: 12px;
             height: 14px;

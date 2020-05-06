@@ -121,10 +121,8 @@ export default {
     $self: '.form-otrs';
 
     width: 245px;
-    @include media($width_xs,1) {
-
+    @include media($width_xs, 1) {
     }
-
 
     text-align: left;
 

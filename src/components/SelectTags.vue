@@ -71,11 +71,8 @@ export default {
     $transition: $glob-trans;
     position: relative;
 
-    width:100%;
+    width: 100%;
     max-width: 415px;
-
-
-
 
     &__box {
         min-width: 0;

@@ -31,14 +31,13 @@
 </template>
 
 <script>
-import { httpParams,removeMessageAndPush } from '@/mixins/mixins'
+import { httpParams, removeMessageAndPush } from '@/mixins/mixins'
 
 export default {
-    components: {ClientInfoActions:()=>import("@/components/ClientInfoActions")},
-    name: "mobile-chat-actions",
-    directives: {
-
-    },
+    name: 'MobileChatActions',
+    components: { ClientInfoActions: () => import('@/components/ClientInfoActions') },
+    directives: {},
+    mixins: [httpParams, removeMessageAndPush],
 
     data() {
         return {
@@ -48,9 +47,30 @@ export default {
             showExitRoomConfirm: false
         }
     },
-    mixins: [httpParams,removeMessageAndPush ],
+    computed: {
+        showExit() {
+            console.log(
+                'showConfirmExit',
+                this.$store.state.roomActive.usersActive,
+                this.$store.state.roomActive.usersActive.length > 1
+            )
+            return this.$store.state.roomActive.usersActive.length > 1
+        },
+        showConfirmExit() {
+            return this.$store.state.roomActive.usersActive.length < 1
+        },
+        roomActiveUserActive() {
+            let id = this.$store.state.user.profile.id,
+                ids = this.$store.state.roomActive.usersActive
+            return ids.includes(id)
+        }
+    },
+    mounted() {
+        this.popupItem = this.$el
+        //document.addEventListener('click', this.close);
+    },
     methods: {
-        invite(){
+        invite() {
             this.$emit('close')
             this.$root.$emit('showSelectOperatorInvitePopup')
         },
@@ -73,77 +93,53 @@ export default {
                 this.removeMessageAndPush()
             })
         },
-        outside(){
+        outside() {
             this.$emit('close')
         },
         chatCompletion() {
             let data = this.httpParams.params
             data.intent = 'farewell'
 
-            this.$http.post('message/send-from-operator', data).finally(()=>{
+            this.$http.post('message/send-from-operator', data).finally(() => {
                 this.$emit('close')
             })
-        },
-    },
-    computed:{
-        showExit() {
-            console.log(
-                'showConfirmExit',
-                this.$store.state.roomActive.usersActive,
-                this.$store.state.roomActive.usersActive.length > 1
-            )
-            return this.$store.state.roomActive.usersActive.length > 1
-        },
-        showConfirmExit() {
-            return this.$store.state.roomActive.usersActive.length < 1
-        },
-        roomActiveUserActive() {
-            let id = this.$store.state.user.profile.id,
-                ids = this.$store.state.roomActive.usersActive
-            return ids.includes(id)
-        },
-    },
-    mounted() {
-        this.popupItem = this.$el
-        //document.addEventListener('click', this.close);
-    },
+        }
+    }
 }
 </script>
 
 <style lang="scss">
-    .mobile-chat-actions{
-        @extend %full-abs;
-        z-index:9999;
+.mobile-chat-actions {
+    @extend %full-abs;
+    z-index: 9999;
 
-        &__list {
-            padding:3em 2em;
-        }
-
-        .btn {
-            margin:1em 0;
-
-        }
-        &__scroll-bar {
-            height:100%;
-            background:glob-color(light);
-            margin-left:3.5em;
-        }
-
-        &__close-wrap {
-            @extend %full-abs;
-            background-color: rgba(0, 0, 0, 0.5);
-        }
-        & &__close {
-            position:absolute;
-            top:0;
-            left:0;
-            padding:1em;
-            fill:glob-color(light);
-        }
-
-        &__item {
-            margin-bottom:calc-em(20);
-        }
-
+    &__list {
+        padding: 3em 2em;
     }
+
+    .btn {
+        margin: 1em 0;
+    }
+    &__scroll-bar {
+        height: 100%;
+        background: glob-color(light);
+        margin-left: 3.5em;
+    }
+
+    &__close-wrap {
+        @extend %full-abs;
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+    & &__close {
+        position: absolute;
+        top: 0;
+        left: 0;
+        padding: 1em;
+        fill: glob-color(light);
+    }
+
+    &__item {
+        margin-bottom: calc-em(20);
+    }
+}
 </style>

@@ -68,10 +68,9 @@ export default {
             this.$emit('show', val)
         },
         text(snippet_id) {
-            console.log(snippet_id);
+            console.log(snippet_id)
             if (snippet_id) {
-
-                let {text} = this.filterSearchResult.find(item => item.id === +snippet_id)
+                let { text } = this.filterSearchResult.find(item => item.id === +snippet_id)
                 this.$store.commit('phrases/setSelectSnippetId', +snippet_id)
                 this.$emit('resultText', text)
                 setTimeout(() => {

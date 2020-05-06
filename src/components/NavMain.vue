@@ -119,10 +119,9 @@ export default {
         }
     }
     @include media($width_xs) {
-       &__text {
-           display:none;
-       }
+        &__text {
+            display: none;
+        }
     }
-
 }
 </style>

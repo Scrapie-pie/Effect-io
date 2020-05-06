@@ -324,7 +324,7 @@ export default {
         },
         router(event, item) {
             //console.log(event,item);
-            this.$store.commit('mobile/setShowChat',true)
+            this.$store.commit('mobile/setShowChat', true)
 
             this.$router.push(item.rootLinkOptions.link)
             //console.log(event);

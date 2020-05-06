@@ -113,7 +113,7 @@ export default {
     beforeRouteLeave(to, from, next) {
         this.messageSubscribeSocket(null, from)
         this.$store.commit('roomActive/resetState')
-        this.$store.commit('mobile/setShowChat',false)
+        this.$store.commit('mobile/setShowChat', false)
         return next()
     },
 
@@ -158,9 +158,9 @@ export default {
     //&__main {display:none}
 
     .is-page-mobile-show-chat .page-chat__main {
-        display:block;
+        display: block;
     }
-   /* .is-page-mobile-show-chat .nav-aside {
+    /* .is-page-mobile-show-chat .nav-aside {
         display:none;
     }*/
 }
@@ -170,12 +170,11 @@ export default {
     $transition: $glob-trans;
 
     flex-direction: row;
-    position:relative;
-
+    position: relative;
 
     @include media($width_xs) {
-        padding-top:0;
-        padding-bottom:0
+        padding-top: 0;
+        padding-bottom: 0;
     }
 
     &__main {
@@ -187,7 +186,6 @@ export default {
         z-index: 2;
         min-width: 0; //для шаблонов, чтобы работало text-overflow: ellipsis;
 
-
         @include media($width_md) {
             padding-right: 0;
             margin-right: -#{$pd};
@@ -197,9 +195,8 @@ export default {
             padding-right: $pd;
             margin-right: 0;
 
-
-            display:none;
-            padding-bottom:1em;
+            display: none;
+            padding-bottom: 1em;
         }
     }
 
@@ -236,39 +233,30 @@ export default {
         .the-header-mobile-transition-enter-active,
         .the-header-mobile-transition-leave-active {
             transition: $glob-trans;
-
         }
 
         .the-header-mobile-transition-enter,
         .the-header-mobile-transition-leave-to {
-            position:absolute;
-            left:0;right:0;top:0;bottom:0;
-            opacity:0;
-
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            opacity: 0;
         }
 
-        .the-header-mobile-transition-enter,.the-header-mobile-transition-leave-to {
-
-            transform:translateX(-100%);
+        .the-header-mobile-transition-enter,
+        .the-header-mobile-transition-leave-to {
+            transform: translateX(-100%);
             //transform:scale(0);
             //filter:blur(10px);
-
-
         }
     }
-
-
 
     .the-last-messages {
-        @include media($width_xs,1) {
-            display:block!important; //Игнориуруем если было выключено на мобиле
+        @include media($width_xs, 1) {
+            display: block !important; //Игнориуруем если было выключено на мобиле
         }
     }
-
-
-
-
-
-
 }
 </style>

@@ -41,7 +41,7 @@ export default {
         SelectOperators: () => import('@/components/SelectOperators'),
         SelectTags: () => import('@/components/SelectTags'),
         SelectBranch: () => import('@/components/SelectBranch'),
-        FormOTRS:()=>import('@/components/FormOTRS')
+        FormOTRS: () => import('@/components/FormOTRS')
     },
     mixins: [httpParams],
     data() {
@@ -54,7 +54,7 @@ export default {
             showSelectBranch: false,
             showFormORTS: false,
             showSelectOperatorsInvite: false,
-            showSelectOperatorsTransfer: false,
+            showSelectOperatorsTransfer: false
         }
     },
     computed: {},
@@ -128,10 +128,13 @@ export default {
     position: relative;
     z-index: 2; //иначе при открывание видно как слои местами меняются
 
-
-    &__select-branch,&__select-operator,&__select-tags {
+    &__select-branch,
+    &__select-operator,
+    &__select-tags {
         @include media($width_xs) {
-            .box-controls__box {width:100%}
+            .box-controls__box {
+                width: 100%;
+            }
         }
     }
 }

@@ -74,18 +74,14 @@
 </template>
 
 <script>
-
 import { viewModeChat, httpParams, removeMessageAndPush } from '@/mixins/mixins'
 import config from '@/config/index'
 
-
 export default {
     components: {
-        LinkShare:()=>import('@/components/LinkShare'),
-        TheChatMainHeaderHistory:()=>import('@/components/TheChatMainHeaderHistory'),
-        TheChatMainHeaderActions:()=>import('@/components/TheChatMainHeaderActions'),
-
-
+        LinkShare: () => import('@/components/LinkShare'),
+        TheChatMainHeaderHistory: () => import('@/components/TheChatMainHeaderHistory'),
+        TheChatMainHeaderActions: () => import('@/components/TheChatMainHeaderActions')
     },
     mixins: [viewModeChat, httpParams, removeMessageAndPush],
     data() {
@@ -93,11 +89,9 @@ export default {
             membersList: [],
             showClientHistoryActions: false,
 
-
             showMoreChatActions: false,
 
-
-            showSelectBranch:false,
+            showSelectBranch: false
             //moreActionsClose:false,
         }
     },
@@ -143,15 +137,12 @@ export default {
         }
     },
     created() {
-
-
         this.$root.$on('showTransfer', () => {
             this.showMoreChatActions = false
             setTimeout(() => {
                 this.$root.$emit('showSelectOperatorTransferPopup')
             }, 500)
         })
-
     },
     mounted() {
         document.querySelector('.js-client-info').addEventListener('click', this.showClientInfo)
@@ -160,7 +151,6 @@ export default {
         document.removeEventListener('click', this.hideClientInfo)
     },
     methods: {
-
         coBrowser() {
             const params =
                 '?guestUuid=' +
@@ -209,9 +199,8 @@ export default {
     margin-bottom: 2.5em;
     z-index: 10; //лодеры с сообщений были выше попапа
 
-
     @include media($width_xs) {
-        display:none;
+        display: none;
     }
 
     &__controls {

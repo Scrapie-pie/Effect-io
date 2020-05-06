@@ -3,6 +3,7 @@
         .the-header-mobile__wrap
             transition(name="the-header-mobile-transition-left")
                 .the-header-mobile__main(v-if="!showChat")
+
                     user-status(is-mobile v-if="$store.getters['resize/xs']")
                     //.the-header-mobile__main-status В сети
                     .the-header-mobile__main-name-section(v-text="nameSection")
@@ -26,129 +27,119 @@
 </template>
 
 <script>
-
-
-
-
 import { viewModeChat } from '@/mixins/mixins'
-import UserStatus from "@/components/UserStatus";
-
+import UserStatus from '@/components/UserStatus'
 
 export default {
+    name: 'TheHeaderMobile',
     components: {
-
         UserStatus,
-        BaseCount:()=>import("@/components/BaseCount"),
-        CountAll:()=>import("@/components/CountAll"),
-        MobileChatActions:()=>import('@/components/MobileChatActions')
-
+        BaseCount: () => import('@/components/BaseCount'),
+        CountAll: () => import('@/components/CountAll'),
+        MobileChatActions: () => import('@/components/MobileChatActions')
     },
-    name: "the-header-mobile",
-    mixins:[viewModeChat],
+    mixins: [viewModeChat],
     data() {
         return {
-            boxActionsMenuToggle:false,
-            showChatControls:false,
+            boxActionsMenuToggle: false,
+            showChatControls: false
         }
     },
-
-    methods:{
-
-    },
-    computed:{
-        showChat(){
-
+    computed: {
+        showChat() {
             return this.$store.getters['mobile/showChat']
         },
-        nameSection(){
-            return this.viewModeChat == 'process' && 'Не обработано' || this.viewModeChat==='visitors' && 'Мои диалоги'
+        nameSection() {
+            return (
+                (this.viewModeChat == 'process' && 'Не обработано') ||
+                (this.viewModeChat === 'visitors' && 'Мои диалоги')
+            )
         },
 
         info() {
             return this.$store.state.visitors.itemOpen
-        },
-    }
+        }
+    },
+
+    methods: {}
 }
 </script>
 
 <style lang="scss">
-    .the-header-mobile{
-
-
-
-        &__wrap {
-            position:relative;
-            border-bottom:1px solid glob-color(border);
-            padding:.5em;
-            height:65px;
-        }
-
-
-
-
-        &__main {
-            display:flex;
-            align-items:center;
-            height:100%;
-            justify-content:space-between;
-            &-name-section {
-                @extend %h2;
-                margin-bottom:0;
-            }
-        }
-
-
-        @include media($width_xs) {
-            display:block;
-        }
-
-        &__chat-control {
-            display:grid;
-            grid-template-columns:50px 1fr 50px;
-            grid-gap:10px;
-
-            &-arrow-wrap {
-                position:relative;
-                display:flex;
-                align-items:center;
-                justify-content:center;
-                .count-all {
-
-                }
-            }
-        }
-
-        .the-header-mobile-transition-left-enter-active,
-        .the-header-mobile-transition-left-leave-active,
-        .the-header-mobile-transition-enter-active,
-        .the-header-mobile-transition-leave-active {
-            transition: $glob-trans;
-
-        }
-        .the-header-mobile-transition-left-enter,
-        .the-header-mobile-transition-left-leave-to,
-        .the-header-mobile-transition-enter,
-        .the-header-mobile-transition-leave-to {
-            position:absolute;
-            @extend %full-abs;
-            opacity: 0;
-
-        }
-
-        .the-header-mobile-transition-enter,.the-header-mobile-transition-leave-to {
-
-            transform:translateX(100%);
-            //transform:scale(0);
-            //filter:blur(10px);
-
-
-        }
-        .the-header-mobile-transition-left-enter,.the-header-mobile-transition-left-leave-to {
-            transform:translateX(-100%);
-
-        }
-
-
-
+.the-header-mobile {
+    .is-opened-box-controls &__wrap {
+        z-index: 0;
     }
+
+    &__wrap {
+        position: relative;
+        border-bottom: 1px solid glob-color(border);
+        padding: 0.5em;
+        height: 65px;
+        z-index: 400;
+    }
+
+    .user-status {
+        &__avatar-wrap {
+            display: block;
+            margin-bottom: 0;
+        }
+    }
+
+    &__main {
+        display: flex;
+        align-items: center;
+        height: 100%;
+        justify-content: space-between;
+        &-name-section {
+            @extend %h2;
+            margin-bottom: 0;
+        }
+    }
+
+    @include media($width_xs) {
+        display: block;
+    }
+
+    &__chat-control {
+        display: grid;
+        grid-template-columns: 50px 1fr 50px;
+        grid-gap: 10px;
+
+        &-arrow-wrap {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            .count-all {
+            }
+        }
+    }
+
+    .the-header-mobile-transition-left-enter-active,
+    .the-header-mobile-transition-left-leave-active,
+    .the-header-mobile-transition-enter-active,
+    .the-header-mobile-transition-leave-active {
+        transition: $glob-trans;
+    }
+    .the-header-mobile-transition-left-enter,
+    .the-header-mobile-transition-left-leave-to,
+    .the-header-mobile-transition-enter,
+    .the-header-mobile-transition-leave-to {
+        position: absolute;
+        @extend %full-abs;
+        opacity: 0;
+    }
+
+    .the-header-mobile-transition-enter,
+    .the-header-mobile-transition-leave-to {
+        transform: translateX(100%);
+        //transform:scale(0);
+        //filter:blur(10px);
+    }
+    .the-header-mobile-transition-left-enter,
+    .the-header-mobile-transition-left-leave-to {
+        transform: translateX(-100%);
+    }
+}
 </style>

@@ -93,7 +93,7 @@ import SocialLinks from '@/components/SocialLinks'
 import TheRedirectClient from '@/components/TheRedirectClient'
 import autosize from 'autosize'
 import { httpParams, viewModeChat } from '@/mixins/mixins'
-import ClientInfoActions from "@/components/ClientInfoActions";
+import ClientInfoActions from '@/components/ClientInfoActions'
 
 export default {
     components: {
@@ -114,7 +114,6 @@ export default {
         }
     },
     computed: {
-
         info() {
             return this.$store.state.visitors.itemOpen
         },
@@ -204,8 +203,6 @@ export default {
     &__item_ {
         border-top: 1px solid glob-color(border);
         padding-top: calc-em(20);
-
-
     }
 
     &__scrollbar {
@@ -215,7 +212,9 @@ export default {
     &__item {
         margin-bottom: calc-em(20);
 
-        &_client-info-actions {margin-bottom:0}
+        &_client-info-actions {
+            margin-bottom: 0;
+        }
 
         &_textarea {
             .field__input {
