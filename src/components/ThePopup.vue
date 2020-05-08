@@ -8,15 +8,40 @@
             base-btn Посмотреть тарифы
         box-controls(v-if="img",  type="gallery", @boxControlClose="img=false")
             img(:src="img" alt="Увеличенная картинка")
-        box-controls(type="popup"  v-if="showTagsPopup", @boxControlClose="tagsClose")
+        box-controls.popup__select-tags(type="popup"  v-if="showTagsPopup", @boxControlClose="tagsClose")
             select-tags
+        box-controls.popup__select-branch(
+            type="popup"
+            v-if="showSelectBranch",
+            @boxControlClose="showSelectBranch=false"
+            )
+            select-branch
+        box-controls(type="popup" v-if="showFormORTS", @boxControlClose="showFormORTS=false")
+            form-o-t-r-s
+        box-controls.popup__select-operator(
+            type="popup"
+            v-if="showSelectOperatorsInvite",
+            @boxControlClose="showSelectOperatorsInvite=false"
+        )
+            select-operators(name="invite")
+        box-controls.popup__select-operator(
+            type="popup"
+            v-if="showSelectOperatorsTransfer",
+            @boxControlClose="showSelectOperatorsTransfer=false"
+        )
+            select-operators(name="transfer")
+
 </template>
 
 <script>
 import { httpParams } from '@/mixins/mixins'
+
 export default {
     components: {
-        SelectTags: () => import('@/components/SelectTags')
+        SelectOperators: () => import('@/components/SelectOperators'),
+        SelectTags: () => import('@/components/SelectTags'),
+        SelectBranch: () => import('@/components/SelectBranch'),
+        FormOTRS: () => import('@/components/FormOTRS')
     },
     mixins: [httpParams],
     data() {
@@ -25,7 +50,11 @@ export default {
             img: false,
             noticeText: false,
             showTagsPopup: false,
-            tagsActionAfter: true
+            tagsActionAfter: true,
+            showSelectBranch: false,
+            showFormORTS: false,
+            showSelectOperatorsInvite: false,
+            showSelectOperatorsTransfer: false
         }
     },
     computed: {},
@@ -37,9 +66,34 @@ export default {
         })
 
         this.$root.$on('showTagsEmit', this.showTagsEmit)
+
+        this.$root.$on('showSelectOperatorInvitePopup', () => {
+            this.showSelectOperatorsInvite = true
+        })
+        this.$root.$on('showSelectOperatorTransferPopup', () => {
+            this.showSelectOperatorsTransfer = true
+        })
+
+        this.$root.$on('showBranchPopup', () => {
+            this.showSelectBranch = true
+        })
+
+        this.$root.$on('formORTS', () => {
+            if (this.viewModeChat === 'process') {
+                return
+            }
+
+            setTimeout(() => {
+                this.showFormORTS = true
+            }, 500)
+        })
     },
     beforeDestroy() {
+        this.$root.$off('showBranchPopup')
+        this.$root.$off('formORTS')
         this.$root.$off('showTagsEmit', this.showTagsEmit)
+
+        this.$root.$off('showSelectOperatorInvitePopup')
     },
     methods: {
         show(name) {
@@ -73,5 +127,15 @@ export default {
 .popup {
     position: relative;
     z-index: 2; //иначе при открывание видно как слои местами меняются
+
+    &__select-branch,
+    &__select-operator,
+    &__select-tags {
+        @include media($width_xs) {
+            .box-controls__box {
+                width: 100%;
+            }
+        }
+    }
 }
 </style>

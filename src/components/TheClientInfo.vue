@@ -20,17 +20,8 @@
             form(@change="guestUpdateByOperator")
                 ul.client-info__list
 
-                    li.client-info__item.client-info__controls(v-if="info.regRuId")
-                        base-btn( type="a", :href="`https://desktop.reg.ru/card/user/${info.regRuId}/`" target="_blank" , :icon="{name:'regruDesctop',left:true}",) Открыть десктоп
-                        base-btn( type="a", :href="`https://manager.reg.ru/manager/user_details?user_id=${info.regRuId}`" target="_blank" , :icon="{name:'regruManager',left:true}",) Открыть менеджер
-                    template(v-if="viewModeChat!='process'")
-                        li.client-info__item.client-info__controls
-                            base-btn(v-if="integrationRegru", :icon="{name:'regruOtrs',left:true}", @click="$root.$emit('formORTS')") Создать заявку в ОТРС
-                            base-btn(:icon="{name:'transferBranch',left:true}", @click="$root.$emit('showBranch')") Передать диалог в отдел
-
-                        li.client-info__item.client-info__controls
-                            base-btn(name="setTag", @click="$root.$emit('showTagsEmit')", :icon="{name:'tag',left:true}") Поставить тэг диалогу
-
+                    li.client-info__item.client-info__item_client-info-actions
+                        client-info-actions
 
                     li.client-info__item
                         the-redirect-client
@@ -102,9 +93,11 @@ import SocialLinks from '@/components/SocialLinks'
 import TheRedirectClient from '@/components/TheRedirectClient'
 import autosize from 'autosize'
 import { httpParams, viewModeChat } from '@/mixins/mixins'
+import ClientInfoActions from '@/components/ClientInfoActions'
 
 export default {
     components: {
+        ClientInfoActions,
         SocialLinks,
         TheRedirectClient
     },
@@ -121,11 +114,6 @@ export default {
         }
     },
     computed: {
-        integrationRegru() {
-            return this.$store.state.user.siteCompanyList.find(
-                item => item.id === this.httpParams.params.site_id && item.regruIntegration
-            )
-        },
         info() {
             return this.$store.state.visitors.itemOpen
         },
@@ -212,15 +200,9 @@ export default {
 .client-info {
     max-height: 90vh;
 
-    &__controls {
+    &__item_ {
         border-top: 1px solid glob-color(border);
         padding-top: calc-em(20);
-
-        .icon {
-            width: 15px;
-            height: auto;
-            max-height: 20px;
-        }
     }
 
     &__scrollbar {
@@ -229,6 +211,10 @@ export default {
 
     &__item {
         margin-bottom: calc-em(20);
+
+        &_client-info-actions {
+            margin-bottom: 0;
+        }
 
         &_textarea {
             .field__input {

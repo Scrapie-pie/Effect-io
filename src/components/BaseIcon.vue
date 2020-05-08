@@ -33,6 +33,8 @@ import info from '@/assets/img/icons/info.svg'
 import warning from '@/assets/img/icons/warning.svg'
 import file from '@/assets/img/icons/file.svg'
 import chevronDown from '@/assets/img/icons/chevronDown.svg'
+import burgerMenu from '@/assets/img/icons/burgerMenu.svg'
+import arrowLeft from '@/assets/img/icons/arrowLeft.svg'
 
 import vk from '@/assets/img/icons/social/vk.svg'
 import tg from '@/assets/img/icons/social/tg.svg'

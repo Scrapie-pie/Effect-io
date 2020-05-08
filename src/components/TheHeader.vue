@@ -1,7 +1,7 @@
 <template lang="pug">
     header.the-header(v-if="headerShow")
         base-wait(name="header")
-        user-status.the-header__user-status
+        user-status.the-header__user-status(v-if="!$store.getters['resize/xs']")
         nav-main.the-header__nav-main(:item-list="canalList")
         .the-header__code
             |{{code}}
@@ -10,15 +10,12 @@
 </template>
 
 <script>
-import NavMain from '@/components/NavMain'
-import UserStatus from '@/components/UserStatus'
-
 import { viewModeChat } from '@/mixins/mixins'
 
 export default {
     components: {
-        NavMain,
-        UserStatus
+        NavMain: () => import('@/components/NavMain'),
+        UserStatus: () => import('@/components/UserStatus')
     },
     mixins: [viewModeChat],
     data() {
@@ -168,6 +165,30 @@ export default {
 
     .icon_phrases {
         fill: #009efd;
+    }
+
+    @include media($width_xs) {
+        .nav-main {
+            &__list {
+                display: flex;
+                flex-direction: row;
+            }
+            &__item {
+                display: none;
+            }
+            &__item_processAll,
+            &__item_messageAll,
+            &__item_exit {
+                display: block;
+            }
+        }
+        &__user-status {
+            display: none;
+        }
+        &__nav-app {
+            margin-top: 0;
+            margin-left: auto;
+        }
     }
 }
 </style>

@@ -1,11 +1,12 @@
 <template lang="pug">
     form.user-status(@change="operatorStatusUpdate")
         .user-status__avatar-wrap
-            base-wait(name="userStatus")
-            //|я {{profile.first_name}}
-            base-avatar.user-status__avatar(:url="profile.photo")
+            template(v-if="!isMobile")
+                base-wait(name="userStatus")
+                //|я {{profile.first_name}}
+                base-avatar.user-status__avatar(:url="profile.photo")
 
-            .user-status__indicator(:class="`user-status__indicator_${statusCurrent.name}`")
+                .user-status__indicator(:class="`user-status__indicator_${statusCurrent.name}`")
             ul.user-status__list(:class="{'user-status__list_open':show}" v-click-outside="val=>show=false")
                 li.user-status__item
                     label.user-status__text.user-status__text_online(@click="show=false")
@@ -25,6 +26,7 @@
                         | Обед
         form.user-status__status
             button(type="button").user-status__current-status(@click.prevent="toggle")
+                .user-status__indicator(:class="`user-status__indicator_${statusCurrent.name}`" v-if="isMobile")
                 | {{statusCurrent.textShort}}
                 span.user-status__arrow(:class="{'user-status__arrow_open':show}")
 
@@ -41,16 +43,20 @@ export default {
     directives: {
         ClickOutside
     },
-    /*  props:{
-            status:{
+    mixins: [viewModeChat],
+    props: {
+        isMobile: {
+            type: Boolean,
+            default: false
+        }
+        /*       status:{
                 type:Number,
                 default:0,
                 validator: function (value) {
                     return [0, 1].indexOf(value) !== -1
                 }
-            }
-          },*/
-    mixins: [viewModeChat],
+            }*/
+    },
     data() {
         return {
             show: false,
@@ -263,6 +269,14 @@ export default {
         border: 1px solid $color_border;
         background: none;
 
+        display: inline-flex;
+        align-items: center;
+
+        #{$el}__indicator {
+            position: relative;
+            margin-right: calc-em(5);
+        }
+
         @include media($width_lg) {
             font-size: 0.9em;
             padding-right: 15px;
@@ -296,19 +310,19 @@ export default {
     &__list {
         @include box-decor();
         position: absolute;
-        left: 50%;
+        left: 0;
         top: 100%;
         z-index: 1;
         padding: calc-em(13) 0;
         opacity: 0;
         visibility: hidden;
-        transform: translate(-50%, 3em);
+        transform: translate(0, 3em);
         transition: $transition;
 
         &_open {
             opacity: 1;
             visibility: visible;
-            transform: translate(-50%, 0);
+            transform: translate(0, 0);
         }
     }
     &__input {

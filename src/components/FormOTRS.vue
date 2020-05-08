@@ -119,7 +119,11 @@ export default {
 <style lang="scss">
 .form-otrs {
     $self: '.form-otrs';
-    width: 275px;
+
+    width: 245px;
+    @include media($width_xs, 1) {
+    }
+
     text-align: left;
 
     &__fieldset {

@@ -1,5 +1,5 @@
 <template lang="pug">
-    nav-aside
+    nav-aside.the-last-messages
         form.last-messages-v
             base-wait(name="lastMessages")
             .last-messages-v__search()
@@ -324,6 +324,7 @@ export default {
         },
         router(event, item) {
             //console.log(event,item);
+            this.$store.commit('mobile/setShowChat', true)
 
             this.$router.push(item.rootLinkOptions.link)
             //console.log(event);

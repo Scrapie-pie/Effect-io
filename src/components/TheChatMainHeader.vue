@@ -53,19 +53,10 @@
                     base-btn(
                         theme="default"
                         padding="xs",
-                        @click.prevent="showSelectOperators=true;selectOperatorsMode='invite'"
+                        @click.prevent="$root.$emit('showSelectOperatorInvitePopup')"
                     ) + Пригласить
-                    .chat-main-header__select-operator
-                        box-controls(
-                            v-if="showSelectOperators",
-                            @boxControlClose="showSelectOperators=false"
-                            )
-                            select-operators(:name="selectOperatorsMode")
-                        box-controls(
-                            v-if="showSelectTags",
-                            @boxControlClose="showSelectTags=false"
-                        )
-                            select-tags(:name="selectOperatorsMode")
+
+
 
             li.chat-main-header__control.chat-main-header__control_more
                 base-btn(
@@ -74,50 +65,33 @@
                 ).chat-main-header__more-btn
                 .chat-main-header__more
                     box-controls(
-                        v-if="showMoreChatActions"
+                        v-if="showMoreChatActions",
                         @boxControlClose="showMoreChatActions=false"
                     )
                         the-chat-main-header-actions()
-                .chat-main-header__select-operator
-                    box-controls(
-                        v-if="showSelectBranch"
-                        @boxControlClose="showSelectBranch=false"
-                    )
-                        select-branch
-        box-controls(type="popup" v-if="showFormORTS", @boxControlClose="showFormORTS=false")
-            form-o-t-r-s
+
+
 </template>
 
 <script>
-import TheChatMainHeaderHistory from '@/components/TheChatMainHeaderHistory'
-import TheChatMainHeaderActions from '@/components/TheChatMainHeaderActions'
-import SelectOperators from '@/components/SelectOperators'
-import SelectBranch from '@/components/SelectBranch'
-import FormOTRS from '@/components/FormOTRS'
 import { viewModeChat, httpParams, removeMessageAndPush } from '@/mixins/mixins'
 import config from '@/config/index'
-import LinkShare from '@/components/LinkShare'
 
 export default {
     components: {
-        LinkShare,
-        SelectBranch,
-        TheChatMainHeaderHistory,
-        TheChatMainHeaderActions,
-        SelectOperators,
-        FormOTRS
+        LinkShare: () => import('@/components/LinkShare'),
+        TheChatMainHeaderHistory: () => import('@/components/TheChatMainHeaderHistory'),
+        TheChatMainHeaderActions: () => import('@/components/TheChatMainHeaderActions')
     },
     mixins: [viewModeChat, httpParams, removeMessageAndPush],
     data() {
         return {
             membersList: [],
             showClientHistoryActions: false,
-            showSelectOperators: false,
-            showSelectBranch: false,
+
             showMoreChatActions: false,
-            showSelectTags: false,
-            selectOperatorsMode: '',
-            showFormORTS: false
+
+            showSelectBranch: false
             //moreActionsClose:false,
         }
     },
@@ -163,32 +137,11 @@ export default {
         }
     },
     created() {
-        this.$root.$on('formORTS', () => {
-            if (this.viewModeChat === 'process') {
-                return
-            }
-            console.log('ей')
-            this.showMoreChatActions = false
-            setTimeout(() => {
-                this.showFormORTS = true
-            }, 500)
-        })
-        this.$root.$on('showBranch', () => {
-            this.showMoreChatActions = false
-            setTimeout(() => {
-                this.showSelectBranch = true
-            }, 500)
-        })
         this.$root.$on('showTransfer', () => {
             this.showMoreChatActions = false
             setTimeout(() => {
-                this.selectOperatorsMode = 'transfer'
-                this.showSelectOperators = true
-                console.log('showTransfer')
+                this.$root.$emit('showSelectOperatorTransferPopup')
             }, 500)
-        })
-        this.$root.$on('showSelectTag', () => {
-            this.showSelectTags = true
         })
     },
     mounted() {
@@ -245,6 +198,10 @@ export default {
     justify-content: space-between;
     margin-bottom: 2.5em;
     z-index: 10; //лодеры с сообщений были выше попапа
+
+    @include media($width_xs) {
+        display: none;
+    }
 
     &__controls {
         display: flex;

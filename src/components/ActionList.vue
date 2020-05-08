@@ -84,11 +84,11 @@ export default {
         }
     },
     watch: {
-        itemList(){
-            this.highlightIndex=-1
+        itemList() {
+            this.highlightIndex = -1
         },
         highlightIndex(val, oldVal) {
-            if(val==-1) return
+            if (val == -1) return
             let target = this.$refs.item[this.highlightIndex]
             let intersectionObserverOptions = {
                 root: this.$el,
@@ -135,7 +135,7 @@ export default {
             }
         },
         keyUp(e) {
-            console.log(e.key,this.highlightIndex);
+            console.log(e.key, this.highlightIndex)
             if (e.key === 'ArrowUp') {
                 if (this.highlightIndex <= 0) {
                     this.highlightIndex = this.itemList.length - 1
@@ -158,12 +158,12 @@ export default {
 
                 //this.$emit('input', this.itemList[this.highlightIndex][this.nameFieldValue])
             }
-            if(e.key === 'Enter') {
-                console.log(this.highlightIndex);
-                if(this.highlightIndex !== -1) this.$emit('input', this.itemList[this.highlightIndex][this.nameFieldValue])
+            if (e.key === 'Enter') {
+                console.log(this.highlightIndex)
+                if (this.highlightIndex !== -1)
+                    this.$emit('input', this.itemList[this.highlightIndex][this.nameFieldValue])
                 else this.$emit('close')
             }
-
         }
     }
 }

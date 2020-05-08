@@ -47,6 +47,12 @@ export default {
         width: 190px;
     }
 
+    @include media($width_xs) {
+        width: 100%;
+        margin: 0;
+        padding: 10px 0 0;
+    }
+
     &__link {
         text-decoration: none;
         color: $color_link;

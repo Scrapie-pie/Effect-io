@@ -57,7 +57,9 @@
 import { hideHeader } from '@/mixins/mixins'
 export default {
     components: {},
-    mixins: [hideHeader],
+    mixins: [
+        //hideHeader
+    ],
     data() {
         return {
             recoveryPage: false,

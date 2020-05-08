@@ -43,106 +43,99 @@
 </template>
 
 <script>
-    import FilterDropMenu from '@/components/FilterDropMenu'
+import FilterDropMenu from '@/components/FilterDropMenu'
 
-    export default {
-        components: {
-            FilterDropMenu
-        },
-        props: {
+export default {
+    components: {
+        FilterDropMenu
+    },
+    props: {
+        categoriesEdit: {
+            type: Object,
+            default: () => {}
+        }
+    },
+    data() {
+        return {
+            filterChannelIds: [],
+            filterSearchResult: [],
+            filterBranchIds: [],
+            filterBranchShowIds: [],
 
-            categoriesEdit: {
-                type: Object,
-                default: () => {}
-            }
-        },
-        data() {
-            return {
-                filterChannelIds: [],
-                filterSearchResult: [],
-                filterBranchIds: [],
-                filterBranchShowIds: [],
+            setFilterChannelIdsValue: [],
+            setFilterBranchIdsValue: [],
 
-                setFilterChannelIdsValue:[],
-                setFilterBranchIdsValue:[],
+            modelCategoryEdit: {
+                title: '',
+                id: '',
 
-
-
-                modelCategoryEdit: {
-                    title: '',
-                    id: '',
-
-                    branches_ids: [],
-                }
-            }
-        },
-
-        watch: {
-            categoriesEdit: {
-                handler(object) {
-
-                    let branchListFilter = this.$store.getters['user/branchListAll']
-                        .filter(item=>object.branches_ids.includes(item.id))
-
-                    this.setFilterBranchIdsValue = branchListFilter.map(item=>item.id)
-
-                    this.setFilterChannelIdsValue =  branchListFilter.map(item=>item.site_id)
-
-                    this.modelCategoryEdit = object
-
-
-                },
-                immediate: true
-            },
-
-
-        },
-        created() {},
-        methods: {
-            filterChannel(ids) {
-                this.filterChannelIds = ids
-                this.filterBranchShowIds = this.$store.getters['user/branchListAll']
-                    .filter(item => ids.includes(item.site_id))
-                    .map(item => {
-                        return item.id
-                    })
-            },
-            cancel() {
-                this.$emit('cancel')
-            },
-            snippetCreate() {
-                this.$store.dispatch('phrases/categoriesUpdate', this.modelCategoryEdit)
-            },
-            submit() {
-                this.$validator.validateAll().then(success => {
-                    if (success) {
-                        this.snippetCreate()
-                        this.$emit('cancel')
-                    }
-                })
+                branches_ids: []
             }
         }
+    },
+
+    watch: {
+        categoriesEdit: {
+            handler(object) {
+                let branchListFilter = this.$store.getters['user/branchListAll'].filter(item =>
+                    object.branches_ids.includes(item.id)
+                )
+
+                this.setFilterBranchIdsValue = branchListFilter.map(item => item.id)
+
+                this.setFilterChannelIdsValue = branchListFilter.map(item => item.site_id)
+
+                this.modelCategoryEdit = object
+            },
+            immediate: true
+        }
+    },
+    created() {},
+    methods: {
+        filterChannel(ids) {
+            this.filterChannelIds = ids
+            this.filterBranchShowIds = this.$store.getters['user/branchListAll']
+                .filter(item => ids.includes(item.site_id))
+                .map(item => {
+                    return item.id
+                })
+        },
+        cancel() {
+            this.$emit('cancel')
+        },
+        snippetCreate() {
+            this.$store.dispatch('phrases/categoriesUpdate', this.modelCategoryEdit)
+        },
+        submit() {
+            this.$validator.validateAll().then(success => {
+                if (success) {
+                    this.snippetCreate()
+                    this.$emit('cancel')
+                }
+            })
+        }
     }
+}
 </script>
 
 <style lang="scss">
-    .phrases-ready-edit {
-        &__label {
-            font-weight: bold;
-            margin-bottom: calc-em(20);
+.phrases-ready-edit {
+    &__label {
+        font-weight: bold;
+        margin-bottom: calc-em(20);
+    }
+
+    &__add-item {
+        & + & {
+            margin-top: calc-em(25);
         }
 
-        &__add-item {
-            & + & {
-                margin-top: calc-em(25);
-            }
-
-            &_select {
-                max-width: 275px;
-            }
-        }
-        &__add-item-button {
-            margin-right: calc-em(20);
+        &_select {
+            max-width: 275px;
         }
     }
+    &__add-item-button {
+        margin-right: calc-em(20);
+    }
+}
 </style>

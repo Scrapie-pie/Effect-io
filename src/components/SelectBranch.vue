@@ -167,6 +167,9 @@ export default {
 
     &__footer {
         margin-top: calc-em(50);
+        @include media($width_xs) {
+            margin-top: calc-em(20);
+        }
     }
 }
 </style>

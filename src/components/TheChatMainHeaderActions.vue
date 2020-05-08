@@ -5,11 +5,7 @@
                 legend.chat-actions__text-only-scr Выберите одно из действий
                 ul.chat-actions__list
                     template(v-if="viewModeChat!='process'")
-                        //li.chat-actions__more-item()
-                            base-btn(
-                            :icon="{name:'transfer',top:true}",
-                                @click.prevent="showBranch"
-                            ) Передать в отдел
+
                         li.chat-actions__more-item()
                             base-btn(
                                 :icon="{name:'transfer',top:true}",
@@ -78,9 +74,6 @@ export default {
         exitRoomConfirm() {
             if (this.showConfirmExit) this.showExitRoomConfirm = true
             else this.exitRoom()
-        },
-        showBranch() {
-            this.$root.$emit('showBranch')
         },
 
         showTransfer() {

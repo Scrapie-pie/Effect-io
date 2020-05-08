@@ -8,6 +8,8 @@ import operators from '@/store/operators'
 import visitors from '@/store/visitors'
 import roomActive from '@/store/roomActive'
 import sockets from '@/store/storeSockets'
+import mobile from '@/store/storeMobile'
+import resize from '@/store/storeResize'
 import { store as actionAnotherTab } from '@/modules/actionAnotherTab.js'
 
 //import rooms from '@/store/rooms'
@@ -62,6 +64,8 @@ const state = getDefaultState()
 
 export default new Vuex.Store({
     modules: {
+        resize,
+        mobile,
         sockets,
         user,
         phrases,

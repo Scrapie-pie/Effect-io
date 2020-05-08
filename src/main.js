@@ -17,6 +17,9 @@ import VueWait from 'vue-wait'
 
 Vue.use(VueWait)
 
+import VueResizeObserver from 'vue-resize-observer'
+Vue.use(VueResizeObserver)
+
 import clicky from 'vue-clicky'
 clicky({
     shift: true, //default: false - clicky won't trigger unless shift is pressed

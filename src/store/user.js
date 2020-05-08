@@ -158,6 +158,7 @@ export default {
             commit('visitors/resetState', null, { root: true })
             commit('phrases/resetState', null, { root: true })
             commit('tags/resetState', null, { root: true })
+            commit('mobile/resetState', null, { root: true })
         },
         getSettings({ commit }) {
             this._vm.$http.get('company/get-settings').then(({ data }) => {
