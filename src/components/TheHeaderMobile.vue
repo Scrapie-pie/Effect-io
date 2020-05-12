@@ -52,7 +52,7 @@ export default {
         nameSection() {
             return (
                 (this.viewModeChat == 'process' && 'Не обработано') ||
-                (this.viewModeChat === 'visitors' && 'Мои диалоги')
+                (this.viewModeChat === 'visitors' && 'Мои диалоги') || ''
             )
         },
 

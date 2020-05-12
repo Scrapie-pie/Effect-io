@@ -605,6 +605,7 @@ export default {
     &__header-title {
         @extend %h4;
         margin-bottom: 0;
+        margin-top:1em;
     }
 
     &__item {

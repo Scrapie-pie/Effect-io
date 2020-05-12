@@ -25,6 +25,7 @@ const refreshAuthLogic = failedRequest => {
 createAuthRefreshInterceptor(axios, refreshAuthLogic, {})
 
 // Настройки http-запросов
+console.log(process.env.VUE_APP_API_SERVER);
 axios.defaults.baseURL = process.env.VUE_APP_API_SERVER
 axios.defaults.headers.common['Content-Type'] = 'application/json'
 

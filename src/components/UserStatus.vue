@@ -319,10 +319,22 @@ export default {
         transform: translate(0, 3em);
         transition: $transition;
 
+
+
         &_open {
             opacity: 1;
             visibility: visible;
             transform: translate(0, 0);
+        }
+
+        @include media($width_xs,1){
+            transform: translate(-50%, 3em);
+            left:50%;
+
+            &_open {
+
+                transform: translate(-50%, 0);
+            }
         }
     }
     &__input {

@@ -1,5 +1,5 @@
 <template lang="pug">
-    #app.page__app(:class="{'is-page-mobile-show-chat':$store.state.mobile.showChat}" v-resize="onResize")
+    #app.page__app(:class="rootClass" v-resize="onResize")
         the-header-mobile(v-if="isAuth")
         the-header.page__header.page__padding(v-if="isAuth")
         main.page__main
@@ -44,6 +44,12 @@ export default {
         dialogActions
     ],
     computed: {
+        rootClass(){
+            return {
+                ['is-page-mobile-show-chat']:this.$store.state.mobile.showChat,
+                [`is-router-name-${this.$route.name}`]:true,
+            }
+        },
         isAuth() {
             return this.$store.getters['user/authenticated']
         }

@@ -160,6 +160,9 @@ export default {
     .is-page-mobile-show-chat .page-chat__main {
         display: block;
     }
+    .is-router-name-visor .page-chat__main {
+        display: block;
+    }
     /* .is-page-mobile-show-chat .nav-aside {
         display:none;
     }*/
