@@ -158,7 +158,7 @@ export default {
                 '&siteId=' +
                 this.httpParams.params.site_id
             const win = window.open(
-                'https://newrobocall.ru/' + 'cobrowsing' + params,
+                'https://effect.com/' + 'cobrowsing' + params,
                 '_blank'
             )
             win.focus()
