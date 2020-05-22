@@ -1,0 +1,30 @@
+stages:
+  - baseimage
+  - modules
+  - build
+
+build baseimage:
+    stage: baseimage
+    script:
+      - docker build --cache-from $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME:baseimage --pull --target baseimage -f docker/Dockerfile -t $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME:baseimage .
+      - docker push $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME:baseimage
+    
+modules:
+    image: $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME:baseimage
+    stage: modules
+    cache:
+      key: "$CI_COMMIT_REF_NAME"
+      paths:
+        - node_modules/
+    script:
+      - npm install
+    
+build:
+    stage: build
+    cache:
+      key: "$CI_COMMIT_REF_NAME"
+      policy: pull
+      paths:
+        - node_modules/
+    script:
+      - docker build --pull --cache-from $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME:baseimage -f docker/Dockerfile -t $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME:$CI_PIPELINE_ID .
