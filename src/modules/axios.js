@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import axios from 'axios'
 import createAuthRefreshInterceptor from 'axios-auth-refresh'
-import globalConfig from '@/config/index'
+
 
 const refreshAuthLogic = failedRequest => {
     console.log('refreshAuthLogic')

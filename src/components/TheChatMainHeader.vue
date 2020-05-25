@@ -75,7 +75,7 @@
 
 <script>
 import { viewModeChat, httpParams, removeMessageAndPush } from '@/mixins/mixins'
-import config from '@/config/index'
+
 
 export default {
     components: {

@@ -34,7 +34,7 @@ Object.defineProperty(Vue.prototype, '$http', { value: axios })
 
 import VuePerfectScrollbar from 'vue-perfect-scrollbar'
 
-import VueSocketio from 'vue-socket.io-extended'
+/*import VueSocketio from 'vue-socket.io-extended'
 import io from 'socket.io-client'
 
 import config from '@/config/index'
@@ -57,7 +57,7 @@ Vue.use(
         store,
         actionPrefix: 'socket'
     }
-)
+)*/
 
 import BaseIcon from '@/components/BaseIcon'
 import BaseField from '@/components/BaseField'

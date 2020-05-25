@@ -62,7 +62,7 @@
 </template>
 
 <script>
-import config from '@/config/index'
+
 import TextInfo from '@/components/TextInfo'
 import browserNotification from '@/modules/browserNotification'
 
