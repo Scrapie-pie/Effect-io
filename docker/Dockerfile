@@ -10,13 +10,13 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 COPY . .
-#RUN npm run build
+RUN npm run build
 
 
-#FROM nginx:1.14-alpine
-#EXPOSE 5000
-#WORKDIR /
-#RUN mkdir -p /var/logs/
-#COPY nginx.conf /etc/nginx/nginx.conf
-#COPY --from=builder /app /dist
+FROM nginx:1.14-alpine
+EXPOSE 5000
+WORKDIR /
+RUN mkdir -p /var/logs/
+COPY nginx.conf /etc/nginx/nginx.conf
+COPY --from=builder /app /dist
 
