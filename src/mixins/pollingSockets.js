@@ -1,4 +1,3 @@
-
 export default {
     data() {
         return {
@@ -10,7 +9,6 @@ export default {
     computed: {},
     methods: {
         pollingSocketsInit() {
-
             if (!this.pollingSocketsGo) return
             let pollingServ = this.$http
 
@@ -64,7 +62,9 @@ export default {
                     })
                 })
                 .finally(() => {
-                    let interval = process.env.VUE_APP_POLLING_INTERVAL_MS ? process.env.VUE_APP_POLLING_INTERVAL_MS : 5000
+                    let interval = process.env.VUE_APP_POLLING_INTERVAL_MS
+                        ? process.env.VUE_APP_POLLING_INTERVAL_MS
+                        : 5000
                     setTimeout(() => {
                         this.pollingSocketsInit()
                     }, +interval)

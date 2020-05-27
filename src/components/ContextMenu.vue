@@ -54,8 +54,15 @@ export default {
         z-index: 1;
     }
 
+    &__item {
+        &+&{
+            margin-top:calc-em(7);
+        }
+    }
+
     &__link {
         font-size: $font-size;
+        color:glob-color('info');
     }
 }
 </style>

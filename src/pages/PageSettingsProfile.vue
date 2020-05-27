@@ -1,6 +1,6 @@
 <template lang="pug">
 
-        form(@submit.prevent="userUpdate")
+        form(@submit.prevent="userUpdate").page-settings-profile
             base-wait(name="pageSettingsProfile")
             ul.settings-list
                 li.settings-list__item
@@ -389,3 +389,10 @@ export default {
     }
 }
 </script>
+<style lang="scss">
+    .page-settings-profile {
+        .settings-list__select {
+            width: 168px;
+        }
+    }
+</style>

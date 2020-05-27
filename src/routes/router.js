@@ -6,6 +6,7 @@ import axios from '@/modules/axios'
 const AccountAuth = () => import('@/components/AccountAuth')
 
 const PageTeam = () => import('@/pages/PageTeam')
+
 //import PageTestScreen from '@/pages/PageTestScreen'
 
 const PageVisitor = () => import('@/pages/PageVisitor')
@@ -18,12 +19,13 @@ const StatsTags = () => import('@/components/StatsTags')
 
 import settings from '@/routes/settings'
 import stats from '@/routes/stats'
+import channels from '@/routes/channels'
 
-import Ui from '@/routes/ui'
+//import Ui from '@/routes/ui'
 
 import { captureException, withScope } from '@sentry/browser'
 
-let helpers = process.env.NODE_ENV !== 'production' ? [...Ui] : []
+//let helpers = process.env.NODE_ENV !== 'production' ? [...Ui] : []
 
 const BaseNoFound = () => import('@/components/BaseNoFound')
 
@@ -53,6 +55,7 @@ const router = new Router({
             path: '/team',
             component: PageTeam
         },
+
         {
             name: 'teamChat',
             path: '/team/:id',
@@ -136,9 +139,10 @@ const router = new Router({
             path: '/tags',
             component: PageTags
         },
+        ...channels,
         ...settings,
         ...stats,
-        ...helpers,
+        //...helpers,
         {
             name: 'exit',
             path: '/exit'

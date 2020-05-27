@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 
 import user from '@/store/user'
+import scenario from '@/store/scenario'
 import phrases from '@/store/phrases'
 import tags from '@/store/tags'
 import operators from '@/store/operators'
@@ -64,6 +65,7 @@ const state = getDefaultState()
 
 export default new Vuex.Store({
     modules: {
+        scenario,
         resize,
         mobile,
         sockets,

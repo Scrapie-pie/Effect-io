@@ -5,7 +5,7 @@
             ul.settings-list
                 li.settings-list__item
                     h3.settings-list__name Уведомления
-                    base-radio-check.settings-list__control(name="push_notifications" v-model="model.push_notifications" @click="notificationsEnable") Включить браузерные уведомления
+                    base-radio-check.settings-list__control(name="push_notifications" v-model="model.push_notifications", @click="notificationsEnable") Включить браузерные уведомления
                     text-info.settings-list__text-info Вы будете получать уведомления о важных событиях в виде стандартного уведомления браузера, даже если он будет свернут.
 
                 li.settings-list__item
@@ -62,7 +62,6 @@
 </template>
 
 <script>
-
 import TextInfo from '@/components/TextInfo'
 import browserNotification from '@/modules/browserNotification'
 

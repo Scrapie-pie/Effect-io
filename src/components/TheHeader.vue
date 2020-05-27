@@ -64,6 +64,11 @@ export default {
                     link: { name: 'settingsProfile' },
                     icon: 'settingsApp'
                 },
+                {
+                    text: 'Каналы связи',
+                    link: { name: 'channelList' },
+                    icon: 'channelsOfConnection'
+                },
                 //{text: 'Сменить учетную запись', link: {name: 'auth'}},
                 { text: 'Выход', link: { name: 'exit' } }
             ]

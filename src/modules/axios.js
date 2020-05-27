@@ -2,7 +2,6 @@ import Vue from 'vue'
 import axios from 'axios'
 import createAuthRefreshInterceptor from 'axios-auth-refresh'
 
-
 const refreshAuthLogic = failedRequest => {
     console.log('refreshAuthLogic')
     //console.log(failedRequest);
@@ -25,7 +24,7 @@ const refreshAuthLogic = failedRequest => {
 createAuthRefreshInterceptor(axios, refreshAuthLogic, {})
 
 // Настройки http-запросов
-console.log(process.env.VUE_APP_API_SERVER);
+console.log(process.env.VUE_APP_API_SERVER)
 axios.defaults.baseURL = process.env.VUE_APP_API_SERVER
 axios.defaults.headers.common['Content-Type'] = 'application/json'
 
@@ -34,13 +33,9 @@ axios.interceptors.request.use(
         //console.log('axios.interceptors.request.use',config);
         const oldUrls = []
 
-
-
         if (localStorage.getItem('jwt')) {
             config.headers['jwt'] = localStorage.getItem('jwt')
         }
-
-
 
         return config
     },

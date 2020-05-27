@@ -179,6 +179,11 @@ export default {
         }
     },
     getters: {
+        siteCompanyListToId: (state, getters) => id => {
+
+
+            return state.siteCompanyList.find(item=>item.id===id)
+        },
         roles: state => {
             // в JavaScript, когда `false && myString` возвратит `false`, а `true && myString` возвратит `myString`.
             let { id, owner_id, role_id } = state.profile

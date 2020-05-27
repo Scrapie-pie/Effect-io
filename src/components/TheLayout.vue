@@ -4,7 +4,7 @@
             .layout__grid
                 h1.layout__title
                     slot(name="title")
-            router-link.layout__close(:to="{name:'processAll'}" title="Выход")
+            .layout__close(@click="$emit('close')" title="Выход")
                 span.layout__close-text-only-scr Выход
                 base-icon(name="close")
         .layout__grid
@@ -27,7 +27,11 @@ export default {
     data() {
         return {}
     },
+
     created() {},
+    methods:{
+
+    },
     mounted() {
         setTimeout(() => {
             console.log('scrollbarLayout')
@@ -68,6 +72,7 @@ export default {
         right: calc-em(15);
         top: 0;
         margin: calc-em(15);
+        cursor:pointer;
     }
 
     &__close-text-only-scr {
@@ -81,6 +86,7 @@ export default {
         max-width: 900px;
         margin: 0 auto;
         padding: 0 15px;
+        width: 100%;
     }
 
     &__content {
@@ -98,6 +104,69 @@ export default {
         width: 70%;
         margin: 0 auto;
         position: relative;
+    }
+
+    .settings-list {
+        .field {
+            min-width: auto;
+        }
+        &__name {
+            $color: glob-color('main');
+            font-weight: 600;
+            opacity: 0.8;
+            font-size: inherit;
+            margin-bottom: calc-em(20);
+        }
+
+        &__name,
+        &__text-info {
+            padding-left: calc-em(15);
+        }
+
+        &__item {
+            margin-bottom: calc-em(45);
+        }
+        &__text-info {
+            margin-top: calc-em(20);
+
+            &_sub {
+                margin-bottom: calc-em(35);
+            }
+        }
+
+        &__select {
+            width: 100%;
+            max-width: 276px;
+        }
+        &__field {
+            max-width: 276px;
+            width: 100%;
+        }
+        &__textarea {
+            max-width: 362px;
+            width: 100%;
+        }
+
+        &__name-wrap {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        &__sub {
+        }
+        &__sub-item {
+            margin-bottom: calc-em(20);
+        }
+
+        &__row {
+            display: flex;
+            align-items: center;
+            margin: 0 (calc-em(10) * -1);
+        }
+        &__col {
+            padding-left: calc-em(10);
+            padding-right: calc-em(10);
+        }
     }
 }
 </style>

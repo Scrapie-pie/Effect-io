@@ -1,0 +1,38 @@
+<template lang="pug">
+        the-layout(:header-padding-no="true" @close="close").settings-page
+            template(slot="title") Сценарии
+            template(slot="nav" v-if="menuList.length")
+                nav-main(:item-list="menuList")
+            template(slot="main")
+                 router-view
+</template>
+
+<script>
+import { hideHeader, httpParams } from '@/mixins/mixins'
+import TheLayout from '@/components/TheLayout'
+import NavMain from '@/components/NavMain'
+export default {
+    components: { NavMain, TheLayout },
+    mixins: [hideHeader, httpParams],
+    computed: {
+        menuList() {
+            return [
+                { text: 'Название и сайт', link: { name: 'scenarioSettingsName' } },
+                { text: 'Содержание', link: { name: 'scenarioSettingsContent' } },
+                { text: 'Условия', link: { name: 'scenarioSettingsConditions' } },
+                { text: 'Расписание', link: { name: 'scenarioSettingsTimeTable' } }
+            ]
+        }
+    },
+    methods:{
+        close(){
+            this.$router.push({name:'scenarioList'})
+        }
+    },
+    created(){
+
+    }
+}
+</script>
+
+<style lang="scss"></style>
