@@ -128,7 +128,12 @@
                                 v-model="adminMode",
                             ) Включить права администратора
                             text-info.settings-list__text-info Права администратора позволяют сотруднику: управлять другими аккаунтами сотрудников, просматривать статистику, менять данные основного аккаунта, добавлять/удалять/ редактировать данные всех сотрудников, отделов и каналов связи.
+                li.settings-list__item(v-if="$store.getters['user/isRole'](['admin','owner','operatorSenior'])")
+                    base-radio-check.settings-list__control(
+                    name="auto_attach_disabled"
+                    v-model="model.auto_attach_disabled"
 
+                    ) Не распределять автоматически чаты
             base-btn(type="submit") Сохранить
 </template>
 
@@ -185,7 +190,8 @@ export default {
                 is_common_chat: null,
                 branches_ids: [],
                 use_chat: null,
-                use_calls: null
+                use_calls: null,
+                auto_attach_disabled:false,
             },
             operatorSeniorMode: false,
             adminMode: false,
