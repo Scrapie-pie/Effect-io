@@ -35,66 +35,55 @@
 
 <script>
 import browserNotification from '@/modules/browserNotification'
-import {scenarioSettings} from "@/mixins/mixins";
+import { scenarioSettings } from '@/mixins/mixins'
 
 export default {
     components: {},
-    mixins:[scenarioSettings],
+    mixins: [scenarioSettings],
     data() {
         return {
-            selectValueStartSiteId:{url:''},
+            selectValueStartSiteId: { url: '' },
             model: {
                 title: null,
                 site_id: null,
-                comment:null
+                comment: null
             }
         }
     },
 
-    computed: {
-
-
-    },
+    computed: {},
     watch: {
         '$store.state.user.siteCompanyList': {
             handler(val) {
                 if (val) {
                     this.model.site_id = +this.$route.params.siteId
-
                 }
             },
             deep: true,
             immediate: true
-        },
-
+        }
     },
     created() {
-
-
-
         //this.clearFormValue();
     },
     methods: {
-
         submit() {
-            let {scenarioId} = this.$route.params
+            let { scenarioId } = this.$route.params
 
-            if(+scenarioId==-1) {
-                return this.$store.dispatch('scenario/addItem',this.model).then((data)=>{
-
-
+            if (+scenarioId == -1) {
+                return this.$store.dispatch('scenario/addItem', this.model).then(data => {
                     browserNotification('Сохранено')
-                    this.$router.push({ name: 'scenarioSettingsContent',params:{scenarioId:data.id} })
+                    this.$router.push({
+                        name: 'scenarioSettingsContent',
+                        params: { scenarioId: data.id }
+                    })
                 })
             }
 
-            this.$store.dispatch('scenario/changeItem',this.model).then(()=>{
+            this.$store.dispatch('scenario/changeItem', this.model).then(() => {
                 browserNotification('Сохранено')
                 this.$router.push({ name: 'scenarioSettingsContent' })
             })
-
-
-
         }
     }
 }

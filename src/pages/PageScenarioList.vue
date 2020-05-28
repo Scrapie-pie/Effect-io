@@ -44,7 +44,7 @@
 
 <script>
 import TheLayoutTable from '@/components/TheLayoutTable'
-import lodash_cloneDeep from 'lodash/cloneDeep';
+import lodash_cloneDeep from 'lodash/cloneDeep'
 import ContextMenu from '@/components/ContextMenu'
 
 export default {
@@ -59,29 +59,27 @@ export default {
     computed: {
         itemList() {
             let list = lodash_cloneDeep(this.$store.getters['scenario/gettersAll'])
-            return list.filter(item=>item.site_id===+this.$route.params.siteId)
-                .map(item=>{
-
-                item.site = this.$store.getters['user/siteCompanyListToId'](item.site_id)
-                return item
-            })
+            return list
+                .filter(item => item.site_id === +this.$route.params.siteId)
+                .map(item => {
+                    item.site = this.$store.getters['user/siteCompanyListToId'](item.site_id)
+                    return item
+                })
         }
     },
     created() {},
     methods: {
-        removeScenario({id}){
-            this.$store.dispatch('scenario/removeItem',id)
+        removeScenario({ id }) {
+            this.$store.dispatch('scenario/removeItem', id)
         },
         changeActiveScenario(scenario) {
-            console.log(scenario);
+            console.log(scenario)
             let active = scenario.active ? 0 : 1,
                 data = {
-
                     id: scenario.id,
                     active: active
                 }
-            this.$store.dispatch('scenario/changeItem',data)
-
+            this.$store.dispatch('scenario/changeItem', data)
         }
     }
 }

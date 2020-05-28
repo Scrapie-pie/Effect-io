@@ -191,7 +191,7 @@ export default {
                 branches_ids: [],
                 use_chat: null,
                 use_calls: null,
-                auto_attach_enabled:0,
+                auto_attach_enabled: 0
             },
             operatorSeniorMode: false,
             adminMode: false,
@@ -280,20 +280,22 @@ export default {
             }
         },
         fillProfile() {
-            ;(this.model.user_id = this.profile.user_id),
-                (this.model.owner_id = this.profile.owner_id), //нужен для проверки userIdNoOwner()
-                (this.model.avatar = this.profile.avatar),
-                (this.model.first_name = this.profile.first_name),
-                (this.model.last_name = this.profile.last_name),
-                (this.model.phone = this.profile.phone),
-                (this.model.phones = this.profile.phones),
-                (this.model.mail = this.profile.mail),
-                (this.model.role_id = this.profile.role_id),
-                (this.model.is_common_chat = this.profile.is_common_chat),
-                (this.model.branches_ids = this.profile.branches_ids),
-                (this.model.use_chat = this.profile.use_chat),
-                (this.model.use_calls = this.profile.use_calls)
-                (this.model.auto_attach_enabled = this.profile.auto_attach_enabled)
+            console.log(this.profile);
+                this.model.user_id = this.profile.user_id;
+                this.model.owner_id = this.profile.owner_id; //нужен для проверки userIdNoOwner()
+                this.model.avatar = this.profile.avatar;
+                this.model.first_name = this.profile.first_name;
+                this.model.last_name = this.profile.last_name;
+                this.model.phone = this.profile.phone;
+                this.model.phones = this.profile.phones;
+                this.model.mail = this.profile.mail;
+                this.model.role_id = this.profile.role_id;
+                this.model.is_common_chat = this.profile.is_common_chat;
+                this.model.branches_ids = this.profile.branches_ids;
+                this.model.use_chat = this.profile.use_chat;
+                this.model.use_calls = this.profile.use_calls;
+                this.model.auto_attach_enabled = this.profile.auto_attach_enabled;
+
 
             this.adminMode = this.profile.role_id === 13
             this.operatorSeniorMode = this.profile.role_id === 14
@@ -368,9 +370,10 @@ export default {
                         .post('user/update-profile', this.model)
                         .then(({ data }) => {
                             if (data.data.id === this.profile.id)
-                                this.$store.commit('user/profileUpdate', data.data)
-                            browserNotification('Сохранено')
+                                browserNotification('Сохранено')
                             this.$router.push({ name: 'team' })
+                                this.$store.commit('user/profileUpdate', data.data)
+
                         })
                         .catch(({ response }) => {
                             if (response.data.errors) {
@@ -397,9 +400,9 @@ export default {
 }
 </script>
 <style lang="scss">
-    .page-settings-profile {
-        .settings-list__select {
-            width: 168px;
-        }
+.page-settings-profile {
+    .settings-list__select {
+        width: 168px;
     }
+}
 </style>

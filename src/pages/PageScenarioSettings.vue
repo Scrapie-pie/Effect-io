@@ -24,13 +24,11 @@ export default {
             ]
         }
     },
-    methods:{
-        close(){
-            this.$router.push({name:'scenarioList'})
+    created() {},
+    methods: {
+        close() {
+            this.$router.push({ name: 'scenarioList' })
         }
-    },
-    created(){
-
     }
 }
 </script>

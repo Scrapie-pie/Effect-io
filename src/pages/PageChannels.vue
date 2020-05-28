@@ -39,7 +39,7 @@
 import TheLayoutTable from '@/components/TheLayoutTable'
 
 import ContextMenu from '@/components/ContextMenu'
-import FilterDropMenu from "@/components/FilterDropMenu";
+import FilterDropMenu from '@/components/FilterDropMenu'
 
 export default {
     components: {
@@ -50,21 +50,18 @@ export default {
 
     data() {
         return {
-            filterChannelIds:[]
-
+            filterChannelIds: []
         }
     },
     computed: {
         itemList() {
-            return this.$store.state.user.siteCompanyList.filter(item=>this.filterChannelIds.includes(item.id))
+            return this.$store.state.user.siteCompanyList.filter(item =>
+                this.filterChannelIds.includes(item.id)
+            )
         }
     },
-    created() {
-
-    },
-    methods: {
-
-    }
+    created() {},
+    methods: {}
 }
 </script>
 

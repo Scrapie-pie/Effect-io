@@ -152,8 +152,8 @@ const router = new Router({
             path: '*',
             redirect: '/'
         }
-    ],
-   /* scrollBehavior (to, from, savedPosition) {
+    ]
+    /* scrollBehavior (to, from, savedPosition) {
         console.log('scrollBehavior',to);
         console.log(to.name.includes('scenarioSettings'));
         if(to.name.includes('scenarioSettings')) return {x:0,y:0}

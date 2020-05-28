@@ -55,14 +55,14 @@ export default {
     }
 
     &__item {
-        &+&{
-            margin-top:calc-em(7);
+        & + & {
+            margin-top: calc-em(7);
         }
     }
 
     &__link {
         font-size: $font-size;
-        color:glob-color('info');
+        color: glob-color('info');
     }
 }
 </style>

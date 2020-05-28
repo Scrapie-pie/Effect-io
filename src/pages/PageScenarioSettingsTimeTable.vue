@@ -52,54 +52,44 @@
 
 <script>
 import browserNotification from '@/modules/browserNotification'
-import {scenarioSettings} from "@/mixins/mixins";
-import SelectTimeSize from "@/components/SelectTimeSize";
+import { scenarioSettings } from '@/mixins/mixins'
+import SelectTimeSize from '@/components/SelectTimeSize'
 export default {
-    components: {SelectTimeSize},
-    mixins:[scenarioSettings],
+    components: { SelectTimeSize },
+    mixins: [scenarioSettings],
     data() {
         return {
-
             timeSizeList: [
                 { name: 'Секунд', value: 0 },
                 { name: 'Минут', value: 1 },
-                { name: 'Часов', value: 2 },
-
+                { name: 'Часов', value: 2 }
             ],
 
             model: {
-                conditions:{
-                    do_not_resend_to_answered:0,
-                    resend_message_type:0,
-                    resend_message_after:0,
-                    resend_message_count:0,
-                    resend_message_interval:0,
-                    resend_message_after_time_units:0,
-                    resend_message_interval_time_units:0,
-
+                conditions: {
+                    do_not_resend_to_answered: 0,
+                    resend_message_type: 0,
+                    resend_message_after: 0,
+                    resend_message_count: 0,
+                    resend_message_interval: 0,
+                    resend_message_after_time_units: 0,
+                    resend_message_interval_time_units: 0
                 }
             }
         }
     },
 
-    computed: {
-
-    },
+    computed: {},
     watch: {},
     created() {
         //this.clearFormValue();
     },
     methods: {
         submit() {
-
-
-            this.$store.dispatch('scenario/changeItem',this.model).then(()=>{
+            this.$store.dispatch('scenario/changeItem', this.model).then(() => {
                 browserNotification('Сохранено')
-                this.$router.push({name:'scenarioList'})
-
+                this.$router.push({ name: 'scenarioList' })
             })
-
-
         }
     }
 }

@@ -69,16 +69,15 @@
 import browserNotification from '@/modules/browserNotification'
 import TextInfo from '@/components/TextInfo'
 
-import {scenarioSettings} from "@/mixins/mixins";
+import { scenarioSettings } from '@/mixins/mixins'
 
 export default {
     components: {
         TextInfo
     },
-    mixins:[scenarioSettings],
+    mixins: [scenarioSettings],
     data() {
         return {
-
             typeList: [
                 { name: 'CallBack(Обратный звонок)', value: 0 },
                 { name: 'Онлайн чат', value: 1 }
@@ -89,18 +88,16 @@ export default {
                 { name: 'Стандартный вид', value: 0 }
             ],
             model: {
-                type:null,
-                conditions:{
-                    message:[],
-                    animated:0,
+                type: null,
+                conditions: {
+                    message: [],
+                    animated: 0
                 }
             }
         }
     },
 
-    computed: {
-
-    },
+    computed: {},
     watch: {},
     created() {
         this.type = this.typeList[0]
@@ -111,12 +108,10 @@ export default {
         submit() {
             browserNotification('Сохранено')
 
-            this.$store.dispatch('scenario/changeItem',this.model).then(()=>{
+            this.$store.dispatch('scenario/changeItem', this.model).then(() => {
                 browserNotification('Сохранено')
                 this.$router.push({ name: 'scenarioSettingsConditions' })
             })
-
-
         }
     }
 }

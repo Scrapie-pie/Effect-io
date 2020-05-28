@@ -20,30 +20,24 @@
 </template>
 
 <script>
-    import {scrollbar} from "@/mixins/mixins";
+import { scrollbar } from '@/mixins/mixins'
 
-    export default {
-    mixins:[scrollbar],
+export default {
+    mixins: [scrollbar],
     props: {
         headerPaddingNo: Boolean
     },
     data() {
         return {}
     },
-    watch:{
-        '$route'(){
-
-
-            this.scrollbarScrollerPush(this.$refs.scrollbarLayout,0)
+    watch: {
+        $route() {
+            this.scrollbarScrollerPush(this.$refs.scrollbarLayout, 0)
         }
     },
     created() {},
-    methods:{
-
-    },
-    mounted() {
-
-    }
+    mounted() {},
+    methods: {}
 }
 </script>
 
@@ -78,7 +72,7 @@
         right: calc-em(15);
         top: 0;
         margin: calc-em(15);
-        cursor:pointer;
+        cursor: pointer;
     }
 
     &__close-text-only-scr {

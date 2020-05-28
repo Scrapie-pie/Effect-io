@@ -10,21 +10,18 @@
 </template>
 
 <script>
+import { apiGeo } from '@/api/api'
 
-    import {apiGeo} from "@/api/api";
-
-    export default {
-    name: "select-countries",
-    props:['value'],
+export default {
+    name: 'SelectCountries',
+    props: ['value'],
     data() {
         return {
-            countryList:[]
+            countryList: []
         }
     },
-    created(){
-        apiGeo.countries().then(list=>{
-
-
+    created() {
+        apiGeo.countries().then(list => {
             this.countryList = list
         })
     }
@@ -32,5 +29,6 @@
 </script>
 
 <style lang="scss">
-    .select-countries{}
+.select-countries {
+}
 </style>

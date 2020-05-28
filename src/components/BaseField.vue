@@ -75,7 +75,6 @@ export default {
     inject: ['$validator'],
     inheritAttrs: false,
     props: {
-
         theme: {
             type: String,
             required: false,

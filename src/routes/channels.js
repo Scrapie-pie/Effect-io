@@ -10,12 +10,10 @@ export default [
         path: '/channels',
         component: {
             render(h) {
-
                 return h('router-view')
             },
-            created(){
+            created() {
                 return store.dispatch('scenario/getAll')
-
             }
         },
 

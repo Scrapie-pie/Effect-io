@@ -38,7 +38,8 @@ export default {
                 is_common_chat,
                 role_id,
                 use_chat,
-                use_calls
+                use_calls,
+                auto_attach_enabled
             }
         ) {
             let obj = {}
@@ -58,6 +59,7 @@ export default {
             if (role_id !== undefined) obj.role_id = role_id
             if (use_chat !== undefined) obj.use_chat = use_chat
             if (use_calls !== undefined) obj.use_calls = use_calls
+            if (auto_attach_enabled !== undefined) obj.auto_attach_enabled = auto_attach_enabled
 
             state.profile = Object.assign(state.profile, obj)
         },
@@ -180,9 +182,7 @@ export default {
     },
     getters: {
         siteCompanyListToId: (state, getters) => id => {
-
-
-            return state.siteCompanyList.find(item=>item.id===id)
+            return state.siteCompanyList.find(item => item.id === id)
         },
         roles: state => {
             // в JavaScript, когда `false && myString` возвратит `false`, а `true && myString` возвратит `myString`.

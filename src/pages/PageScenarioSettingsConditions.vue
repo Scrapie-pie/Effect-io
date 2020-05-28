@@ -158,17 +158,18 @@
 
 <script>
 import browserNotification from '@/modules/browserNotification'
-import SelectTimeSize from "@/components/SelectTimeSize";
-import SelectCitiesAndRegions from "@/components/SelectCitiesAndRegions";
-import SelectCountries from "@/components/SelectCountries";
-import {scenarioSettings} from "@/mixins/mixins";
+import SelectTimeSize from '@/components/SelectTimeSize'
+import SelectCitiesAndRegions from '@/components/SelectCitiesAndRegions'
+import SelectCountries from '@/components/SelectCountries'
+import { scenarioSettings } from '@/mixins/mixins'
 
 export default {
     components: {
         SelectCountries,
         SelectCitiesAndRegions,
-        SelectTimeSize},
-    mixins:[scenarioSettings],
+        SelectTimeSize
+    },
+    mixins: [scenarioSettings],
     data() {
         return {
             countryList: [],
@@ -178,74 +179,67 @@ export default {
                 { name: 'Секунд', value: 0 }
             ],
 
-
             sitePagesSetList: [
-                { name: 'На всех страницах сайта', value: 0},
+                { name: 'На всех страницах сайта', value: 0 },
                 { name: 'Только на главной', value: 1 },
                 { name: 'На указанной', value: 2 },
                 { name: 'На всех кроме', value: 3 }
             ],
             model: {
-
-                conditions:{
-                    site_pages_set:0,
-                    site_pages:[],
-                    guaranteed_show_after:0,
-                    guaranteed_show_after_time:0,
-                    guaranteed_show_after_time_units:0,
-                    show_strictly_not_earlier:0,
-                    show_strictly_not_earlier_time:0,
-                    show_strictly_not_earlier_time_units:0,
-                    branch_off_hours:0,
-                    first_time:0,
-                    active_button_click:0,
-                    trying_leave:0,
-                    browsing_other_tab:0,
-                    returns_after:0,
-                    returns_after_interval:0,
-                    returns_after_interval_units:0,
-                    browsed_not_less:0,
-                    browsed_not_less_pages:'',
-                    scrolled_to_end:0,
-                    scrolled_to_end_page:[],
-                    only_if_comes_from:0,
-                    only_if_comes_from_site:[],
-                    only_moved_by_tag:0,
-                    only_moved_by_tag_value:'',
-                    only_by_key_phrase:0,
-                    only_by_key_phrase_value:'',
-                    only_if_known_name:0,
-                    country:'',
-                    cities_and_regions:[],
-                    cities_and_regions_excluding:[]
+                conditions: {
+                    site_pages_set: 0,
+                    site_pages: [],
+                    guaranteed_show_after: 0,
+                    guaranteed_show_after_time: 0,
+                    guaranteed_show_after_time_units: 0,
+                    show_strictly_not_earlier: 0,
+                    show_strictly_not_earlier_time: 0,
+                    show_strictly_not_earlier_time_units: 0,
+                    branch_off_hours: 0,
+                    first_time: 0,
+                    active_button_click: 0,
+                    trying_leave: 0,
+                    browsing_other_tab: 0,
+                    returns_after: 0,
+                    returns_after_interval: 0,
+                    returns_after_interval_units: 0,
+                    browsed_not_less: 0,
+                    browsed_not_less_pages: '',
+                    scrolled_to_end: 0,
+                    scrolled_to_end_page: [],
+                    only_if_comes_from: 0,
+                    only_if_comes_from_site: [],
+                    only_moved_by_tag: 0,
+                    only_moved_by_tag_value: [],
+                    only_by_key_phrase: 0,
+                    only_by_key_phrase_value: '',
+                    only_if_known_name: 0,
+                    country: '',
+                    cities_and_regions: [],
+                    cities_and_regions_excluding: []
                 }
             }
-
         }
     },
 
-    computed: {
-
-    },
-    watch: {
-
-    },
-    created() {
-
-    },
+    computed: {},
+    watch: {},
+    created() {},
     methods: {
         submit() {
-
-
-            this.$store.dispatch('scenario/changeItem',this.model).then(()=>{
+            this.model.cities_and_regions.map(objectAndId => {
+                if (objectAndId.id) return objectAndId.id
+                else return objectAndId
+            })
+            this.model.cities_and_regions_excluding.map(objectAndId => {
+                if (objectAndId.id) return objectAndId.id
+                else return objectAndId
+            })
+            this.$store.dispatch('scenario/changeItem', this.model).then(() => {
                 browserNotification('Сохранено')
                 this.$router.push({ name: 'scenarioSettingsTimeTable' })
             })
-
-
         }
-
-
     }
 }
 </script>

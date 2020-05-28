@@ -33,9 +33,9 @@ export default {
             } else return false
         }
     },
-    methods:{
-        close(){
-            this.$router.push({name:'processAll'})
+    methods: {
+        close() {
+            this.$router.push({ name: 'processAll' })
         }
     }
 }

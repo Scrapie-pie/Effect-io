@@ -9,24 +9,22 @@
 
 <script>
 export default {
-    name: "select-time-size",
-    props:['value'],
+    name: 'SelectTimeSize',
+    props: ['value'],
     data() {
         return {
             timeSizeList: [
                 { name: 'Секунд', value: 0 },
                 { name: 'Минут', value: 1 },
-                { name: 'Часов', value: 2 },
-
-            ],
+                { name: 'Часов', value: 2 }
+            ]
         }
     },
-    methods:{
-
-    }
+    methods: {}
 }
 </script>
 
 <style lang="scss">
-    .select-time-size{}
+.select-time-size {
+}
 </style>

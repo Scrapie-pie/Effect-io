@@ -3,41 +3,43 @@
     :label="label",
     :name="name",
     type="select",
-    :selectOptions="{value:value,options:options, label:'title',filterable:true,reduce:e=>e.id}"
+    :selectOptions="{value:setValue(value),options:options, label:'title',filterable:true,reduce:e=>e.id}"
     multiple,
     @search="onSearch",
     @input="input"
     )
 </template>
 
-
-
 <script>
-import {apiGeo} from "@/api/api";
-import debounce from  'lodash/debounce'
+import { apiGeo } from '@/api/api'
+import debounce from 'lodash/debounce'
 export default {
-    name: "select-cities-and-regions",
-    props:{
-        countryCode:{
-            type:Array,
-            default:()=>([])
+    name: 'SelectCitiesAndRegions',
+    props: {
+        countryCode: {
+            type: Array,
+            default: () => []
         },
 
-        name:{
-            type:String,
-            default:''
+        name: {
+            type: String,
+            default: ''
         },
-        label:{
-            type:String,
-            default:''
+        label: {
+            type: String,
+            default: ''
         },
-        isExcluding:{
-            type:Boolean,
-            default:false
+        isExcluding: {
+            type: Boolean,
+            default: false
         },
-        value:{
-            type:Array,
-            default:()=>([])
+        value: {
+            type: Array,
+            default: () => []
+        },
+        optionlist: {
+            type: Array,
+            default: () => []
         }
     },
     data() {
@@ -46,23 +48,25 @@ export default {
         }
     },
     methods: {
-        input(val){
-            console.log(val);
-            this.$emit('input',val)
+        setValue(val) {
+            return val
+            return val.map(item => item.id)
+        },
+        input(val) {
+            console.log(val)
+            this.$emit('input', val)
         },
         onSearch(search, loading) {
-            loading(true);
-            this.search(loading, search, this);
+            loading(true)
+            this.search(loading, search, this)
         },
         search: debounce((loading, search, vm) => {
-
-            apiGeo.cities({keyword:search,country_code:vm.countryCode}).then(list => {
-
+            apiGeo.cities({ keyword: search, country_code: vm.countryCode }).then(list => {
                 vm.options = list
-                loading(false);
-            });
+                loading(false)
+            })
 
-           /* fetch(
+            /* fetch(
                 `https://api.github.com/search/repositories?q=${escape(search)}`
             ).then(res => {
                 res.json().then(json => (vm.options = json.items));
@@ -70,12 +74,12 @@ export default {
             });*/
         }, 350)
     },
-    created(){
-
-    }
+    created() {},
+    mounted() {}
 }
 </script>
 
 <style lang="scss">
-    .select-cities-and-regions{}
+.select-cities-and-regions {
+}
 </style>
