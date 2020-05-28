@@ -133,7 +133,7 @@
                     name="auto_attach_enabled"
                     v-model="model.auto_attach_enabled"
 
-                    ) Не распределять автоматически чаты
+                    ) Распределять автоматически чаты
             base-btn(type="submit") Сохранить
 </template>
 
