@@ -36,7 +36,7 @@
                                 type="text",
 
                             name="guaranteed_show_after_time"
-                            v-model="model.conditions.guaranteed_show_after_time"
+                            v-model.number="model.conditions.guaranteed_show_after_time"
                             )
                             select-time-size.settings-list__control.settings-list__select(name="guaranteed_show_after_time_units"  v-model="model.conditions.guaranteed_show_after_time_units")
                     li.settings-list__sub-item
@@ -45,7 +45,7 @@
                             v-model="model.conditions.show_strictly_not_earlier") Показ строго не ранее
                             base-field.settings-list__control.settings-list__field(
                                 type="text",
-                            name="show_strictly_not_earlier_time"  v-model="model.conditions.show_strictly_not_earlier_time"
+                            name="show_strictly_not_earlier_time"  v-model.number="model.conditions.show_strictly_not_earlier_time"
                             )
                             select-time-size.settings-list__control.settings-list__select(name="show_strictly_not_earlier_time_units"  v-model="model.conditions.show_strictly_not_earlier_time_units")
 
@@ -81,7 +81,7 @@
                             base-field.settings-list__control.settings-list__field(
                             type="text",
                             name="browsed_not_less_pages"
-                            v-model="model.conditions.browsed_not_less_pages"
+                            v-model.number="model.conditions.browsed_not_less_pages"
                             )
                             span страниц
 
