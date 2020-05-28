@@ -3,7 +3,7 @@
     :label="label",
     :name="name",
     type="select",
-    :selectOptions="{value:value,options:options, label:'name',filterable:true}"
+    :selectOptions="{value:value,options:options, label:'title',filterable:true,reduce:e=>e.id}"
     multiple,
     @search="onSearch",
     @input="input"
@@ -13,10 +13,16 @@
 
 
 <script>
+import {apiGeo} from "@/api/api";
 import debounce from  'lodash/debounce'
 export default {
     name: "select-cities-and-regions",
     props:{
+        countryCode:{
+            type:Array,
+            default:()=>([])
+        },
+
         name:{
             type:String,
             default:''
@@ -49,12 +55,19 @@ export default {
             this.search(loading, search, this);
         },
         search: debounce((loading, search, vm) => {
-            fetch(
+
+            apiGeo.cities({keyword:search,country_code:vm.countryCode}).then(list => {
+
+                vm.options = list
+                loading(false);
+            });
+
+           /* fetch(
                 `https://api.github.com/search/repositories?q=${escape(search)}`
             ).then(res => {
                 res.json().then(json => (vm.options = json.items));
                 loading(false);
-            });
+            });*/
         }, 350)
     },
     created(){

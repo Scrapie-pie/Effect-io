@@ -191,7 +191,7 @@ export default {
                 branches_ids: [],
                 use_chat: null,
                 use_calls: null,
-                auto_attach_enabled:true,
+                auto_attach_enabled:0,
             },
             operatorSeniorMode: false,
             adminMode: false,
@@ -293,6 +293,7 @@ export default {
                 (this.model.branches_ids = this.profile.branches_ids),
                 (this.model.use_chat = this.profile.use_chat),
                 (this.model.use_calls = this.profile.use_calls)
+                (this.model.auto_attach_enabled = this.profile.auto_attach_enabled)
 
             this.adminMode = this.profile.role_id === 13
             this.operatorSeniorMode = this.profile.role_id === 14

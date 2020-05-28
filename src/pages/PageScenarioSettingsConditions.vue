@@ -72,7 +72,7 @@
                             base-field.settings-list__control.settings-list__field(
                             type="text",
                             name="returns_after_interval"
-                            v-model="model.conditions.returns_after_interval"
+                            v-model.number="model.conditions.returns_after_interval"
                             )
                             select-time-size.settings-list__control.settings-list__select(name="show_strictly_not_earlier_time_units"  v-model="model.conditions.returns_after_interval_units")
                     li.settings-list__sub-item
@@ -91,7 +91,7 @@
                         type="text",
                         placeholder="Введите url страницы",
                         name="scrolled_to_end_page"
-                        v-model="model.conditions.scrolled_to_end_page"
+                        v-model="model.conditions.scrolled_to_end_page[0]"
                         )
             li.settings-list__item
                 h3.settings-list__name Источники и метки
@@ -100,6 +100,7 @@
                         base-radio-check.settings-list__control.settings-list__sub-item(name="only_if_comes_from" v-model="model.conditions.only_if_comes_from") Выводить сообщение только если перешел с сайта
                         base-field.settings-list__control.settings-list__textarea(
                         type="textarea",
+                        maxlength="2000"
                         placeholder="Введите адреса сайтов (url), каждый с новой строки",
                         name="only_if_comes_from_site"
                         v-model="model.conditions.only_if_comes_from_site"
@@ -108,14 +109,17 @@
                         base-radio-check.settings-list__control.settings-list__sub-item(name="only_moved_by_tag"   v-model="model.conditions.only_moved_by_tag") Выводить сообщение, только если перешел по метке
                         base-field.settings-list__control.settings-list__textarea(
                         type="textarea",
+                        maxlength="2000"
                         placeholder="Ввдите метки без кавычек, каждая с новой строки",
                         name="only_moved_by_tag_value"
                         v-model="model.conditions.only_moved_by_tag_value"
+
                         )
                     li.settings-list__sub-item
                         base-radio-check.settings-list__control.settings-list__sub-item(name="only_by_key_phrase"  v-model="model.conditions.only_by_key_phrase") Выводить сообщение, только если перешел по ключевой фразе
                         base-field.settings-list__control.settings-list__textarea(
                         type="textarea",
+                        maxlength="2000"
                         placeholder="Введите фразы, каждая с новой строки",
                         name="only_by_key_phrase_value"
                         v-model="model.conditions.only_by_key_phrase_value"
@@ -133,17 +137,19 @@
                         select-countries.settings-list__control(v-model="model.conditions.country")
                     li.settings-list__item
                         select-cities-and-regions.settings-list__control(
+
                             label="Выберите города и регионы"
                             v-model="model.conditions.cities_and_regions"
-                            name="cities_and_regions"
+                            name="cities_and_regions",
+                            :country-code="model.conditions.country"
                         )
 
                     li.settings-list__item
                         select-cities-and-regions.settings-list__control(
                             label="За исключением регионов"
                             v-model="model.conditions.cities_and_regions_excluding"
-                            name="cities_and_regions_excluding"
-                            is-excluding
+                            name="cities_and_regions_excluding",
+                            :country-code="model.conditions.country"
                         )
 
         pre {{model}}
@@ -201,9 +207,9 @@ export default {
                     browsed_not_less:0,
                     browsed_not_less_pages:'',
                     scrolled_to_end:0,
-                    scrolled_to_end_page:'',
+                    scrolled_to_end_page:[],
                     only_if_comes_from:0,
-                    only_if_comes_from_site:'',
+                    only_if_comes_from_site:[],
                     only_moved_by_tag:0,
                     only_moved_by_tag_value:'',
                     only_by_key_phrase:0,
@@ -247,7 +253,7 @@ export default {
 .page-scenario-settings-conditions {
     &__time-show {
         display: grid;
-        grid-template-columns: minmax(max-content, 221px) 54px 107px;
+        grid-template-columns: minmax(max-content, 221px) 60px 107px;
         align-items: center;
         gap: calc-em(15);
     }

@@ -12,6 +12,12 @@ export default {
         })
 
     },
+    cities(params) {
+        return axios.get('geo/get-cities', params).then(data=>{
+            return data.data.data
+        })
+
+    },
 
 
 

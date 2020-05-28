@@ -2,7 +2,7 @@
     base-field.select-countries(
     label="Выберите страну / страны"
     type="select",
-    :selectOptions="{ label:'title',options:countryList,reduce:e=>e.id}"
+    :selectOptions="{value:value, label:'title',options:countryList,reduce:e=>e.id}"
     name="country"
     multiple,
     @input="val=>$emit('input',val)"

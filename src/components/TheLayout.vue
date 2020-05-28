@@ -20,23 +20,29 @@
 </template>
 
 <script>
-export default {
+    import {scrollbar} from "@/mixins/mixins";
+
+    export default {
+    mixins:[scrollbar],
     props: {
         headerPaddingNo: Boolean
     },
     data() {
         return {}
     },
+    watch:{
+        '$route'(){
 
+
+            this.scrollbarScrollerPush(this.$refs.scrollbarLayout,0)
+        }
+    },
     created() {},
     methods:{
 
     },
     mounted() {
-        setTimeout(() => {
-            console.log('scrollbarLayout')
-            window.scrl = this.$refs.scrollbarLayout
-        }, 3000)
+
     }
 }
 </script>
