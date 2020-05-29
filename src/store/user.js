@@ -90,6 +90,8 @@ export default {
             }
         },
         settings(state, val) {
+            val.languages={ru: "Русский"}
+            val.settings.language='ru'
             state.settings = val
         },
         settingsUpdateFields(state, obj) {
@@ -163,7 +165,7 @@ export default {
             commit('mobile/resetState', null, { root: true })
         },
         getSettings({ commit }) {
-            this._vm.$http.get('company/get-settings').then(({ data }) => {
+            this._vm.$http.get('user/get-settings').then(({ data }) => {
                 commit('settings', data.data)
             })
         },

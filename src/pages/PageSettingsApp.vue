@@ -162,7 +162,7 @@ export default {
                 language: this.model.language.prefix
             }
 
-            this.$http.put('company/settings-update', data).then(() => {
+            this.$http.put('user/update-settings', data).then(() => {
                 browserNotification('Сохранено')
                 this.$store.commit('user/settingsUpdate', data)
                 this.$router.push({ name: 'team' })
