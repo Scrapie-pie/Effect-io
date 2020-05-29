@@ -1,5 +1,9 @@
 export default {
-    methods: {},
+    methods: {
+        callbackLoadModel() {
+
+        }
+    },
     computed: {
         scenarioCurrent() {
             return this.$store.getters['scenario/gettersAll'].find(
@@ -13,6 +17,7 @@ export default {
                 if (val) {
                     console.log(val)
                     this.model = val
+                    this.callbackLoadModel()
                 }
             },
 

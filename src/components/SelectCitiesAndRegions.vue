@@ -3,7 +3,7 @@
     :label="label",
     :name="name",
     type="select",
-    :selectOptions="{value:setValue(value),options:options, label:'title',filterable:true,reduce:e=>e.id}"
+    :selectOptions="{value:setValue(value),options:options, label:'title',filterable:true}"
     multiple,
     @search="onSearch",
     @input="input"
@@ -72,7 +72,7 @@ export default {
                 res.json().then(json => (vm.options = json.items));
                 loading(false);
             });*/
-        }, 350)
+        }, 500)
     },
     created() {},
     mounted() {}

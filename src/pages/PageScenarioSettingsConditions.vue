@@ -21,7 +21,7 @@
                         type="text",
                         placeholder="Введите url страницы",
                         name="site_pages"
-                        v-model="model.conditions.site_pages[0]"
+                        v-model.trim="model.conditions.site_pages[0]"
                         )
             li.settings-list__item
                 h3.settings-list__name Время показа
@@ -103,7 +103,7 @@
                         maxlength="2000"
                         placeholder="Введите адреса сайтов (url), каждый с новой строки",
                         name="only_if_comes_from_site"
-                        v-model="model.conditions.only_if_comes_from_site"
+                        v-model="only_if_comes_from_site"
                         )
                     li.settings-list__sub-item
                         base-radio-check.settings-list__control.settings-list__sub-item(name="only_moved_by_tag"   v-model="model.conditions.only_moved_by_tag") Выводить сообщение, только если перешел по метке
@@ -112,7 +112,7 @@
                         maxlength="2000"
                         placeholder="Ввдите метки без кавычек, каждая с новой строки",
                         name="only_moved_by_tag_value"
-                        v-model="model.conditions.only_moved_by_tag_value"
+                        v-model="only_moved_by_tag_value"
 
                         )
                     li.settings-list__sub-item
@@ -122,7 +122,7 @@
                         maxlength="2000"
                         placeholder="Введите фразы, каждая с новой строки",
                         name="only_by_key_phrase_value"
-                        v-model="model.conditions.only_by_key_phrase_value"
+                        v-model="only_by_key_phrase_value"
                         )
             li.settings-list__item
                 h3.settings-list__name Настройка на аудиторные сегменты
@@ -185,6 +185,9 @@ export default {
                 { name: 'На указанной', value: 2 },
                 { name: 'На всех кроме', value: 3 }
             ],
+            only_if_comes_from_site: '',
+            only_moved_by_tag_value: '',
+            only_by_key_phrase_value: '',
             model: {
                 conditions: {
                     site_pages_set: 0,
@@ -212,9 +215,9 @@ export default {
                     only_moved_by_tag: 0,
                     only_moved_by_tag_value: [],
                     only_by_key_phrase: 0,
-                    only_by_key_phrase_value: '',
+                    only_by_key_phrase_value: [],
                     only_if_known_name: 0,
-                    country: '',
+                    country: [],
                     cities_and_regions: [],
                     cities_and_regions_excluding: []
                 }
@@ -226,16 +229,34 @@ export default {
     watch: {},
     created() {},
     methods: {
+        callbackLoadModel(){
+            this.only_if_comes_from_site = this.model.conditions.only_if_comes_from_site.join('\n')
+            this.only_moved_by_tag_value = this.model.conditions.only_moved_by_tag_value.join('\n')
+            this.only_by_key_phrase_value = this.model.conditions.only_by_key_phrase_value.join('\n')
+        },
         submit() {
-            this.model.cities_and_regions.map(objectAndId => {
-                if (objectAndId.id) return objectAndId.id
-                else return objectAndId
+
+            let model = this.model
+
+            model.conditions.site_pages = model.conditions.site_pages.filter(item=>item)
+
+            if(this.only_if_comes_from_site) model.conditions.only_if_comes_from_site = this.only_if_comes_from_site.split('\n')
+            if(this.only_moved_by_tag_value) model.conditions.only_moved_by_tag_value = this.only_moved_by_tag_value.split('\n')
+            if(this.only_by_key_phrase_value) model.conditions.only_by_key_phrase_value = this.only_by_key_phrase_value.split('\n')
+
+
+            console.log(this.only_if_comes_from_site,model.conditions.only_if_comes_from_site);
+
+            model.conditions.cities_and_regions = model.conditions.cities_and_regions?.map(objectAndId => {
+                if (objectAndId.id) objectAndId = objectAndId.id
+                return objectAndId
             })
-            this.model.cities_and_regions_excluding.map(objectAndId => {
-                if (objectAndId.id) return objectAndId.id
-                else return objectAndId
+            model.conditions.cities_and_regions_excluding= model.conditions.cities_and_regions_excluding?.map(objectAndId => {
+                if (objectAndId.id) objectAndId = objectAndId.id
+                return objectAndId
             })
-            this.$store.dispatch('scenario/changeItem', this.model).then(() => {
+
+            this.$store.dispatch('scenario/changeItem', model).then(() => {
                 browserNotification('Сохранено')
                 this.$router.push({ name: 'scenarioSettingsTimeTable' })
             })
