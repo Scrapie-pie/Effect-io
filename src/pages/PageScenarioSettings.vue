@@ -16,12 +16,18 @@ export default {
     mixins: [hideHeader, httpParams],
     computed: {
         menuList() {
-            return [
+
+            let list = [
                 { text: 'Название и сайт', link: { name: 'scenarioSettingsName' } },
+            ]
+
+            if(this.$route.params.scenarioId!='-1') list = [list[0],
                 { text: 'Содержание', link: { name: 'scenarioSettingsContent' } },
                 { text: 'Условия', link: { name: 'scenarioSettingsConditions' } },
                 { text: 'Расписание', link: { name: 'scenarioSettingsTimeTable' } }
             ]
+
+            return list
         }
     },
     created() {},
