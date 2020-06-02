@@ -1,3 +1,4 @@
+import cloneDeep from 'lodash/cloneDeep'
 export default {
     methods: {
         callbackLoadModel() {}
@@ -13,8 +14,8 @@ export default {
         scenarioCurrent: {
             handler(val) {
                 if (val) {
-                    console.log(val)
-                    this.model = val
+
+                    this.model = cloneDeep(val)
                     this.callbackLoadModel()
                 }
             },
