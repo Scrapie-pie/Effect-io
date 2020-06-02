@@ -10,6 +10,10 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 COPY . .
+ENV NODE_ENV=production
+ENV VUE_APP_API_SERVER=https://api.newrobocall.ru/
+ENV VUE_APP_POLLING_SERVER=//polling.newrobocall.ru
+ENV VUE_APP_POLLING_INTERVAL_MS=5000
 RUN npm run build
 
 
