@@ -132,6 +132,7 @@ window.showError = function(error) {
 }
 
 import VueYandexMetrika from 'vue-yandex-metrika'
+import './registerServiceWorker'
 
 Vue.use(VueYandexMetrika, {
     id: 57350245,
