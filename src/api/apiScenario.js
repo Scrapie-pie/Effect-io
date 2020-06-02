@@ -10,6 +10,9 @@ export default {
     removeItem(id) {
         return axios.delete('scenario/remove', { params: { id } })
     },
+    copyItem(id) {
+        return axios.post('scenario/copy', { id })
+    },
     changeItem(params) {
         return axios.put('scenario/change', params)
     }

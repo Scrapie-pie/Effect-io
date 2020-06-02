@@ -229,32 +229,41 @@ export default {
     watch: {},
     created() {},
     methods: {
-        callbackLoadModel(){
+        callbackLoadModel() {
             this.only_if_comes_from_site = this.model.conditions.only_if_comes_from_site.join('\n')
             this.only_moved_by_tag_value = this.model.conditions.only_moved_by_tag_value.join('\n')
-            this.only_by_key_phrase_value = this.model.conditions.only_by_key_phrase_value.join('\n')
+            this.only_by_key_phrase_value = this.model.conditions.only_by_key_phrase_value.join(
+                '\n'
+            )
         },
         submit() {
-
             let model = this.model
 
-            model.conditions.site_pages = model.conditions.site_pages.filter(item=>item)
+            model.conditions.site_pages = model.conditions.site_pages.filter(item => item)
 
-            if(this.only_if_comes_from_site) model.conditions.only_if_comes_from_site = this.only_if_comes_from_site.split('\n')
-            if(this.only_moved_by_tag_value) model.conditions.only_moved_by_tag_value = this.only_moved_by_tag_value.split('\n')
-            if(this.only_by_key_phrase_value) model.conditions.only_by_key_phrase_value = this.only_by_key_phrase_value.split('\n')
+            if (this.only_if_comes_from_site)
+                model.conditions.only_if_comes_from_site = this.only_if_comes_from_site.split('\n')
+            if (this.only_moved_by_tag_value)
+                model.conditions.only_moved_by_tag_value = this.only_moved_by_tag_value.split('\n')
+            if (this.only_by_key_phrase_value)
+                model.conditions.only_by_key_phrase_value = this.only_by_key_phrase_value.split(
+                    '\n'
+                )
 
+            console.log(this.only_if_comes_from_site, model.conditions.only_if_comes_from_site)
 
-            console.log(this.only_if_comes_from_site,model.conditions.only_if_comes_from_site);
-
-            model.conditions.cities_and_regions = model.conditions.cities_and_regions?.map(objectAndId => {
-                if (objectAndId.id) objectAndId = objectAndId.id
-                return objectAndId
-            })
-            model.conditions.cities_and_regions_excluding= model.conditions.cities_and_regions_excluding?.map(objectAndId => {
-                if (objectAndId.id) objectAndId = objectAndId.id
-                return objectAndId
-            })
+            model.conditions.cities_and_regions = model.conditions.cities_and_regions?.map(
+                objectAndId => {
+                    if (objectAndId.id) objectAndId = objectAndId.id
+                    return objectAndId
+                }
+            )
+            model.conditions.cities_and_regions_excluding = model.conditions.cities_and_regions_excluding?.map(
+                objectAndId => {
+                    if (objectAndId.id) objectAndId = objectAndId.id
+                    return objectAndId
+                }
+            )
 
             this.$store.dispatch('scenario/changeItem', model).then(() => {
                 browserNotification('Сохранено')

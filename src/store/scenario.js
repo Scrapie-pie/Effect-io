@@ -35,6 +35,13 @@ export default {
                 return commit('all', list)
             })
         },
+        copyItem({ state, commit, dispatch }, item) {
+            return apiScenario.copyItem(item.id).then(({ data: { data } }) => {
+                let list = state.all
+                list.push(data)
+                return commit('all', list)
+            })
+        },
         changeItem({ state, commit, dispatch }, data) {
             return apiScenario.changeItem(data).then(({ data: { data } }) => {
                 let id = data.id

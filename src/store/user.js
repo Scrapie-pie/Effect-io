@@ -90,8 +90,8 @@ export default {
             }
         },
         settings(state, val) {
-            val.languages={ru: "Русский"}
-            val.settings.language='ru'
+            val.languages = { ru: 'Русский' }
+            val.settings.language = 'ru'
             state.settings = val
         },
         settingsUpdateFields(state, obj) {

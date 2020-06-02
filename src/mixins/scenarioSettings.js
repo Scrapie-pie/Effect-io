@@ -1,8 +1,6 @@
 export default {
     methods: {
-        callbackLoadModel() {
-
-        }
+        callbackLoadModel() {}
     },
     computed: {
         scenarioCurrent() {

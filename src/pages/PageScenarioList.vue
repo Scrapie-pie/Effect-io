@@ -33,10 +33,8 @@
                                 slot="item",
                                 :to="{name:'scenarioSettingsName',params:{scenarioId:item.id}}"
                             ) Редактировать
-                            router-link(
-                                slot="item",
-                                :to="{name:'settingsProfile',query: { user_id: item.id }}"
-                            ) Дублировать
+                            base-btn(theme="link" slot="item",  @click="copyScenario(item)") Дублировать
+
                             base-btn(theme="link" slot="item", @click="removeScenario(item)") Удалить
 
 
@@ -69,6 +67,9 @@ export default {
     },
     created() {},
     methods: {
+        copyScenario(item) {
+            this.$store.dispatch('scenario/copyItem', item)
+        },
         removeScenario({ id }) {
             this.$store.dispatch('scenario/removeItem', id)
         },
