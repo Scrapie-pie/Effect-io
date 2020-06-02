@@ -14,10 +14,6 @@ RUN npm run build
 
 
 FROM nginx:1.14-alpine
-ENV VUE_APP_SENTRY=on
-ENV VUE_APP_API_SERVER=http://api
-ENV VUE_APP_POLLING_SERVER=https//polling.effect.com
-ENV VUE_APP_POLLING_INTERVAL_MS=5000
 EXPOSE 5000
 WORKDIR /
 RUN mkdir -p /var/logs/
