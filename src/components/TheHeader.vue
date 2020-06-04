@@ -67,7 +67,8 @@ export default {
                 {
                     text: 'Каналы связи',
                     link: { name: 'channelList' },
-                    icon: 'channelsOfConnection'
+                    icon: 'channelsOfConnection',
+                    hide: !this.$store.getters['user/isRole'](['admin', 'owner', 'operatorSenior'])
                 },
                 //{text: 'Сменить учетную запись', link: {name: 'auth'}},
                 { text: 'Выход', link: { name: 'exit' } }
