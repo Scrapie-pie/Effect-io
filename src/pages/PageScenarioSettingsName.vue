@@ -70,7 +70,6 @@ export default {
     },
     methods: {
         submit() {
-
             this.$validator.validateAll().then(response => {
                 if (response) {
                     let { scenarioId } = this.$route.params
@@ -91,9 +90,6 @@ export default {
                     })
                 }
             })
-
-
-
         }
     }
 }

@@ -14,7 +14,6 @@ export default {
         scenarioCurrent: {
             handler(val) {
                 if (val) {
-
                     this.model = cloneDeep(val)
                     this.callbackLoadModel()
                 }
