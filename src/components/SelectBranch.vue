@@ -15,7 +15,7 @@
                         li.select-operator__item(v-for="(item, index) in filterSearchResult",:key="item.id")
                             .select-operator__checkbox
                                 //input(type="checkbox" name="itemCheck" v-model="itemCheck[item.id]" :value="item.id")
-                                base-radio-check(name="itemCheck" v-model="itemCheck[item.id]" :value="item.id" :id="item.id")
+                                base-radio-check(name="itemCheck" v-model="itemCheck[item.id]" :value="item.id" :id="item.id" type="radio")
                             label(:for="item.id")
                                 base-people(
                                     :bg-text-no-fill="true",
