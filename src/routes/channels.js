@@ -14,15 +14,26 @@ export default [
             },
             created() {
                 return store.dispatch('scenario/getAll')
-            }
+            },
+            beforeRouteEnter (to, from, next) {
+                // вызывается до подтверждения пути, соответствующего этому компоненту.
+                // НЕ ИМЕЕТ доступа к контексту экземпляра компонента `this`,
+                // так как к моменту вызова экземпляр ещё не создан!
+                if (store.getters['user/isRole'](['admin', 'owner', 'operatorSenior'])) {
+                    return next()
+                } else return next({name: 'processAll'})
+
+            },
         },
 
         children: [
             {
                 name: 'channelList',
                 path: '',
-                component: PageChannels
+                component: PageChannels,
+
             },
+
             ...scenario
         ]
     }
