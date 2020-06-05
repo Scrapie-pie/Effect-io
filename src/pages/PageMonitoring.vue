@@ -2,7 +2,7 @@
     the-layout-table.page-monitoring
         h1.h4(slot="control") Онлайн мониторинг
         base-wait(name="pageMonitoring")
-        p.page-monitoring__turn
+        p.page-monitoring__turn(:class="{'error':count}")
             strong Ожидает в очереди:   0
         base-table
             thead
@@ -43,7 +43,9 @@ export default {
         }
     },
     computed: {
-
+        count(){
+            return 1
+        }
 
     },
 
@@ -80,6 +82,11 @@ export default {
         max-width:350px;
         text-align:center;
         margin-bottom:2em;
+        &.error {
+            background-color:glob-color('error');
+            border-color:glob-color('error');
+            color:glob-color('light');
+        }
     }
 }
 </style>
