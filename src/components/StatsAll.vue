@@ -24,23 +24,72 @@
                             btn-sort(:toggle="sortFieldsComp['dialogues_missed']", @result="val=>sortFieldsSetSortField(val,'dialogues_missed')")
                     th
                         .stats-table-line__th-wrap
+                            base-icon(name="ball3")
+                            btn-sort(:toggle="sortFieldsComp['excellent_ratings']", @result="val=>sortFieldsSetSortField(val,'excellent_ratings')")
+                    th
+                        .stats-table-line__th-wrap
+                            base-icon(name="ball2")
+                            btn-sort(:toggle="sortFieldsComp['badly_ratings']", @result="val=>sortFieldsSetSortField(val,'badly_ratings')")
+                    th
+                        .stats-table-line__th-wrap
+                            base-icon(name="ball1")
+                            btn-sort(:toggle="sortFieldsComp['middling_ratings']", @result="val=>sortFieldsSetSortField(val,'middling_ratings')")
+                    th
+                        .stats-table-line__th-wrap
+                            | Время онлайн
+                            btn-sort(:toggle="sortFieldsComp['first_answer_average_speed']", @result="val=>sortFieldsSetSortField(val,'first_answer_average_speed')")
+                    th
+                        .stats-table-line__th-wrap
+                            | Время в диалоге <br> 1-2
+                            btn-sort(:toggle="sortFieldsComp['first_answer_average_speed']", @result="val=>sortFieldsSetSortField(val,'first_answer_average_speed')")
+                    th
+                        .stats-table-line__th-wrap
+                            | Время в диалоге <br> 3-5 (включительно)
+                            btn-sort(:toggle="sortFieldsComp['first_answer_average_speed']", @result="val=>sortFieldsSetSortField(val,'first_answer_average_speed')")
+                    th
+                        .stats-table-line__th-wrap
+                            | Время в диалоге <br> 6-10 (включительно)
+                            btn-sort(:toggle="sortFieldsComp['first_answer_average_speed']", @result="val=>sortFieldsSetSortField(val,'first_answer_average_speed')")
+                    th
+                        .stats-table-line__th-wrap
+                            | Время в диалоге <br> 6-10 (включительно)
+                            btn-sort(:toggle="sortFieldsComp['first_answer_average_speed']", @result="val=>sortFieldsSetSortField(val,'first_answer_average_speed')")
+                    th
+                        .stats-table-line__th-wrap
+                            |Время в диалоге <br>  11+
+                            btn-sort(:toggle="sortFieldsComp['missed_average_time']", @result="val=>sortFieldsSetSortField(val,'missed_average_time')")
+                    th
+                        .stats-table-line__th-wrap
+                            |Среднее время <br>  в диалоге
+                            btn-sort(:toggle="sortFieldsComp['missed_average_time']", @result="val=>sortFieldsSetSortField(val,'missed_average_time')")
+                    th
+                        .stats-table-line__th-wrap
+                            |Время <br> в перерыве
+                            btn-sort(:toggle="sortFieldsComp['missed_average_time']", @result="val=>sortFieldsSetSortField(val,'missed_average_time')")
+                    th
+                        .stats-table-line__th-wrap
                             |Среднее время <br>  для пропущенных
                             btn-sort(:toggle="sortFieldsComp['missed_average_time']", @result="val=>sortFieldsSetSortField(val,'missed_average_time')")
+
                     th
                         .stats-table-line__th-wrap
                             |Среднее <br>  время ответа
                             btn-sort(:toggle="sortFieldsComp['first_answer_average_speed']", @result="val=>sortFieldsSetSortField(val,'first_answer_average_speed')")
                     th
                         .stats-table-line__th-wrap
-                            |20 сек <br> % от общего
+                            |до 30 сек <br> % от общего
                             btn-sort(:toggle="sortFieldsComp['first_answers_in_20_40_seconds']", @result="val=>sortFieldsSetSortField(val,'first_answers_in_20_40_seconds')")
                     th
                         .stats-table-line__th-wrap
-                            |40 сек <br> % от общего
+                            |31-60 сек <br> % от общего
                             btn-sort(:toggle="sortFieldsComp['first_answers_in_40_60_seconds']", @result="val=>sortFieldsSetSortField(val,'first_answers_in_40_60_seconds')")
                     th
                         .stats-table-line__th-wrap
-                            |Более 60 сек <br> % от общего
+                            |61-90 сек <br> % от общего
+                            btn-sort(:toggle="sortFieldsComp['first_answers_in_60_more_seconds']", @result="val=>sortFieldsSetSortField(val,'first_answers_in_60_more_seconds')")
+                    th
+                        .stats-table-line__th-wrap
+                            |Свыше 91 сек <br> % от общего
                             btn-sort(:toggle="sortFieldsComp['first_answers_in_60_more_seconds']", @result="val=>sortFieldsSetSortField(val,'first_answers_in_60_more_seconds')")
                     th
                         .stats-table-line__th-wrap
@@ -93,16 +142,9 @@
                             btn-sort(:toggle="sortFieldsComp['guest_messages']", @result="val=>sortFieldsSetSortField(val,'guest_messages')")
                     th
                         .stats-table-line__th-wrap
-                            base-icon(name="ball3")
-                            btn-sort(:toggle="sortFieldsComp['excellent_ratings']", @result="val=>sortFieldsSetSortField(val,'excellent_ratings')")
-                    th
-                        .stats-table-line__th-wrap
-                            base-icon(name="ball2")
-                            btn-sort(:toggle="sortFieldsComp['badly_ratings']", @result="val=>sortFieldsSetSortField(val,'badly_ratings')")
-                    th
-                        .stats-table-line__th-wrap
-                            base-icon(name="ball1")
-                            btn-sort(:toggle="sortFieldsComp['middling_ratings']", @result="val=>sortFieldsSetSortField(val,'middling_ratings')")
+                            |Уровень <br> удовлетворенности
+                            btn-sort(:toggle="sortFieldsComp['guest_messages']", @result="val=>sortFieldsSetSortField(val,'guest_messages')")
+
 
             tbody(v-if="$route.name=='statsAllByHours' || $route.name=='statsAll' || $route.name=='statsAllBranch' || $route.name=='statsAllOperator'").commn
                 tr(v-for="(item, index) in commonRow", :key="index")
@@ -114,11 +156,23 @@
                     td {{item.dialogues_requests}}
                     td {{item.dialogues_accepted}}
                     td {{item.dialogues_missed}}
+                    td {{item.excellent_ratings}}
+                    td {{item.middling_ratings}}
+                    td {{item.badly_ratings}}
+                    td null
+                    td null
+                    td null
+                    td null
+                    td null
+                    td null
+                    td null
+                    td null
                     td {{item.missed_average_time | datetimeStoHMS(true)}}
                     td {{item.first_answer_average_speed | datetimeStoHMS(true)}}
                     td {{item.first_answers_in_20_40_seconds }} #[br] {{item.first_answers_in_20_40_seconds_percents}}%
                     td {{item.first_answers_in_40_60_seconds }} #[br] {{item.first_answers_in_40_60_seconds_percents}}%
                     td {{item.first_answers_in_60_more_seconds }} #[br]{{item.first_answers_in_60_more_seconds_percents}}%
+                    td null
 
                     td {{item.dialogues_transferred_to_branches}}
                     td {{item.chats_with_new_guests}}
@@ -133,13 +187,12 @@
                         td(v-if="hideStatsAllBranchAndByDates") {{item.operators_time_in_break  | datetimeStoHMS(true)}}
                     td {{item.operator_messages}}
                     td {{item.guest_messages}}
-                    td {{item.excellent_ratings}}
-                    td {{item.middling_ratings}}
-                    td {{item.badly_ratings}}
+                    td null
+
 
             tbody(v-for="(item, index) in itemList", :key="item.id")
                 tr
-                    td(:colspan="!($route.name=='statsAll' || $route.name=='statsAllByHours')?24:16" style="padding:0")
+                    td(:colspan="!($route.name=='statsAll' || $route.name=='statsAllByHours')?34:27" style="padding:0")
                 tr
                     td
 
@@ -157,11 +210,23 @@
                     td {{item.dialogues_requests}}
                     td {{item.dialogues_accepted}}
                     td {{item.dialogues_missed}}
+                    td {{item.excellent_ratings}}
+                    td {{item.middling_ratings}}
+                    td {{item.badly_ratings}}
+                    td null
+                    td null
+                    td null
+                    td null
+                    td null
+                    td null
+                    td null
+                    td null
                     td {{item.missed_average_time | datetimeStoHMS(true)}}
                     td {{item.first_answer_average_speed | datetimeStoHMS(true)}}
                     td {{item.first_answers_in_20_40_seconds }} #[br] {{item.first_answers_in_20_40_seconds_percents}}%
                     td {{item.first_answers_in_40_60_seconds }} #[br] {{item.first_answers_in_40_60_seconds_percents}}%
                     td {{item.first_answers_in_60_more_seconds }} #[br]{{item.first_answers_in_60_more_seconds_percents}}%
+                    td null
 
                     td {{item.dialogues_transferred_to_branches}}
                     td {{item.chats_with_new_guests}}
@@ -176,9 +241,8 @@
                         td(v-if="hideStatsAllBranchAndByDates") {{item.operators_time_in_break  | datetimeStoHMS(true)}}
                     td {{item.operator_messages}}
                     td {{item.guest_messages}}
-                    td {{item.excellent_ratings}}
-                    td {{item.middling_ratings}}
-                    td {{item.badly_ratings}}
+                    td null
+
 
                 template( v-if="item.byHoursListToggle")
                     tr(v-for="(item, index) in item.byHoursList")
@@ -188,11 +252,23 @@
                         td {{item.dialogues_requests}}
                         td {{item.dialogues_accepted}}
                         td {{item.dialogues_missed}}
+                        td {{item.excellent_ratings}}
+                        td {{item.middling_ratings}}
+                        td {{item.badly_ratings}}
+                        td null
+                        td null
+                        td null
+                        td null
+                        td null
+                        td null
+                        td null
+                        td null
                         td {{item.missed_average_time | datetimeStoHMS(true)}}
                         td {{item.first_answer_average_speed | datetimeStoHMS(true)}}
                         td {{item.first_answers_in_20_40_seconds }} #[br] {{item.first_answers_in_20_40_seconds_percents}}%
                         td {{item.first_answers_in_40_60_seconds }} #[br] {{item.first_answers_in_40_60_seconds_percents}}%
                         td {{item.first_answers_in_60_more_seconds }} #[br]{{item.first_answers_in_60_more_seconds_percents}}%
+                        td null
 
                         td {{item.dialogues_transferred_to_branches}}
                         td {{item.chats_with_new_guests}}
@@ -207,9 +283,7 @@
                             td(v-if="hideStatsAllBranchAndByDates") {{item.operators_time_in_break  | datetimeStoHMS(true)}}
                         td {{item.operator_messages}}
                         td {{item.guest_messages}}
-                        td {{item.excellent_ratings}}
-                        td {{item.middling_ratings}}
-                        td {{item.badly_ratings}}
+                        td null
 
         nav.stats-table-line__nav
             ul.stats-table-line__nav-list
