@@ -156,7 +156,7 @@
                             :country-code="model.conditions.country"
                         )
 
-        pre {{model}}
+
         base-btn(type="submit") Сохранить и продолжить
 </template>
 

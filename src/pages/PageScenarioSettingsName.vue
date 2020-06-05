@@ -31,7 +31,7 @@
                 name="comment"
                 v-model="model.comment"
                 )
-        pre {{model}}
+
         base-btn(type="submit") Сохранить и продолжить
 </template>
 

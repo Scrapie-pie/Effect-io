@@ -46,7 +46,7 @@
 
                     li.settings-list__sub-item
                         base-radio-check.settings-list__control(name="do_not_resend_to_answered" v-model="model.conditions.do_not_resend_to_answered") Не отправлять повторные сообщения тем посетителям, кто ответил
-        pre {{model}}
+
         base-btn(type="submit") Сохранить и завершить
 </template>
 
