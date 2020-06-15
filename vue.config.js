@@ -1,4 +1,11 @@
+let publicPath = "/";
+
+if (process.env.VUE_APP_IS_DOCKER === "true") {
+    publicPath = "/dist/";
+}
+
 module.exports = {
+    publicPath,
     /*   devServer:{
         port:4000
     },*/
