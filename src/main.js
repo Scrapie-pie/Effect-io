@@ -133,8 +133,6 @@ window.showError = function(error) {
 
 import VueYandexMetrika from 'vue-yandex-metrika'
 
-
-
 Vue.use(VueYandexMetrika, {
     id: 57350245,
     router: router,
@@ -163,5 +161,3 @@ new Vue({
     store,
     render: h => h(App)
 }).$mount('#app')
-
-

@@ -38,7 +38,8 @@ export default {
                 is_common_chat,
                 role_id,
                 use_chat,
-                use_calls
+                use_calls,
+                auto_attach_enabled
             }
         ) {
             let obj = {}
@@ -58,6 +59,7 @@ export default {
             if (role_id !== undefined) obj.role_id = role_id
             if (use_chat !== undefined) obj.use_chat = use_chat
             if (use_calls !== undefined) obj.use_calls = use_calls
+            if (auto_attach_enabled !== undefined) obj.auto_attach_enabled = auto_attach_enabled
 
             state.profile = Object.assign(state.profile, obj)
         },
@@ -88,6 +90,8 @@ export default {
             }
         },
         settings(state, val) {
+            val.languages = { ru: 'Русский' }
+            val.settings.language = 'ru'
             state.settings = val
         },
         settingsUpdateFields(state, obj) {
@@ -161,7 +165,7 @@ export default {
             commit('mobile/resetState', null, { root: true })
         },
         getSettings({ commit }) {
-            this._vm.$http.get('company/get-settings').then(({ data }) => {
+            this._vm.$http.get('user/get-settings').then(({ data }) => {
                 commit('settings', data.data)
             })
         },
@@ -179,6 +183,9 @@ export default {
         }
     },
     getters: {
+        siteCompanyListToId: (state, getters) => id => {
+            return state.siteCompanyList.find(item => item.id === id)
+        },
         roles: state => {
             // в JavaScript, когда `false && myString` возвратит `false`, а `true && myString` возвратит `myString`.
             let { id, owner_id, role_id } = state.profile

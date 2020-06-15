@@ -84,7 +84,7 @@ import { wrapTextUrls } from '@/modules/modules'
 import { datetimeDMY, datetimeHMS } from '@/modules/datetime'
 import inputEmoji from '@/components/inputEmoji'
 
-import { viewModeChat, httpParams, scrollbar,chatMainScrollPushArrow } from '@/mixins/mixins'
+import { viewModeChat, httpParams, scrollbar, chatMainScrollPushArrow } from '@/mixins/mixins'
 
 import lodash_groupBy from 'lodash/groupBy'
 import lodash_find from 'lodash/find'
@@ -111,7 +111,7 @@ export default {
             return
         }
     },
-    mixins: [viewModeChat, httpParams, scrollbar,chatMainScrollPushArrow],
+    mixins: [viewModeChat, httpParams, scrollbar, chatMainScrollPushArrow],
     data() {
         return {
             historyMessageLoadStart: true, //При прокрутке страницы, функция historyMessageLoad выполнялась раньше чем приходил ответ, из за этого лишние индификаторы были
@@ -122,7 +122,7 @@ export default {
             visitorTypingLive: '',
             chat_id: null,
 
-            scrollTopBeforeAddContent:0,
+            scrollTopBeforeAddContent: 0
         }
     },
 
@@ -274,7 +274,6 @@ export default {
                 return
             } else {
                 this.CMSPA_scrollbarScrollerPush()
-
             }
         }
     },
@@ -403,18 +402,12 @@ export default {
             // ищем предыдущее сообщение
         },
         messageListUnshift(message) {
-
             this.messageList.unshift(message)
             if (!message.socket) {
-
                 this.CMSPA_scrollbarScrollerPush(true)
-            }
-            else {
-
+            } else {
                 this.CMSPA_scrollbarScrollerPush()
             }
-
-
         },
         transferCancel(to_id) {
             let data = this.httpParams.params
@@ -501,24 +494,22 @@ export default {
             } else return false
         },
         scrollLoad(e) {
-
             if (this.scrollLoadAllow(e, 'up')) {
                 const scroller = e.target
-                let
-                    height = scroller.clientHeight,
-                    scrollHeight = scroller.scrollHeight - height;
+                let height = scroller.clientHeight,
+                    scrollHeight = scroller.scrollHeight - height
 
-
-                this.historyMessageLoad().then(()=>{
-                    scroller.scrollTop=scroller.scrollHeight - scroller.clientHeight-scrollHeight+this.scrollTopBeforeAddContent //После загрузки двигаем полосу прокрутки на предыдущее место
+                this.historyMessageLoad().then(() => {
+                    scroller.scrollTop =
+                        scroller.scrollHeight -
+                        scroller.clientHeight -
+                        scrollHeight +
+                        this.scrollTopBeforeAddContent //После загрузки двигаем полосу прокрутки на предыдущее место
                 })
             }
         },
         historyMessageLoad() {
-
             return new Promise((resolve, reject) => {
-
-
                 if (!this.messageRun) return
                 if (!this.historyMessageLoadStart) return
 
@@ -575,11 +566,7 @@ export default {
 
                     resolve()
                 })
-
-
             })
-
-
         }
     }
 }
@@ -605,7 +592,7 @@ export default {
     &__header-title {
         @extend %h4;
         margin-bottom: 0;
-        margin-top:1em;
+        margin-top: 1em;
     }
 
     &__item {

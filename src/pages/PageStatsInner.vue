@@ -66,7 +66,6 @@
 </template>
 
 <script>
-
 const TheLayoutTable = () => import('@/components/TheLayoutTable')
 const StatsOperators = () => import('@/components/StatsOperators')
 const StatsBranches = () => import('@/components/StatsBranches')

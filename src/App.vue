@@ -44,10 +44,10 @@ export default {
         dialogActions
     ],
     computed: {
-        rootClass(){
+        rootClass() {
             return {
-                ['is-page-mobile-show-chat']:this.$store.state.mobile.showChat,
-                [`is-router-name-${this.$route.name}`]:true,
+                ['is-page-mobile-show-chat']: this.$store.state.mobile.showChat,
+                [`is-router-name-${this.$route.name}`]: true
             }
         },
         isAuth() {

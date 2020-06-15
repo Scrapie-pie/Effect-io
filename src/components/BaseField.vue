@@ -43,7 +43,7 @@
             label.field__label(v-if="label" v-text="label")
             base-select(
                 :class="{invalid_force: errors.has(name)}"
-                key="id"
+                :key="value"
                 v-bind="getSelectOptions",
                 v-on="inputListeners",
             ).field__select

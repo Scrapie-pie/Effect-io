@@ -76,7 +76,6 @@
 <script>
 import { viewModeChat, httpParams, removeMessageAndPush } from '@/mixins/mixins'
 
-
 export default {
     components: {
         LinkShare: () => import('@/components/LinkShare'),
@@ -157,10 +156,7 @@ export default {
                 this.httpParams.params.guest_uuid +
                 '&siteId=' +
                 this.httpParams.params.site_id
-            const win = window.open(
-                'https://effect.com/' + 'cobrowsing' + params,
-                '_blank'
-            )
+            const win = window.open('https://effect.com/' + 'cobrowsing' + params, '_blank')
             win.focus()
             this.$http.post('co-browsing/request', this.httpParams.params)
         },

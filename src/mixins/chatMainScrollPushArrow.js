@@ -1,23 +1,25 @@
 export default {
     data() {
         return {
-            CMSPA_scrollDownButtonShow: false,
-
+            CMSPA_scrollDownButtonShow: false
         }
     },
-    methods:{
+    methods: {
         CMSPA_chatDown() {
             this.scrollbarScrollerPush(this.$refs.scrollbar)
             this.scrollDownButtonShow = false
         },
-        CMSPA_scrollbarScrollerPush(isScrollPushUser){
+        CMSPA_scrollbarScrollerPush(isScrollPushUser) {
             let isScrollPush = false
 
-            if (Math.ceil(this.$refs.scrollbar.$el.scrollTop) === this.scrollerPxToPercent(this.$refs.scrollbar.$el, 100)) {isScrollPush = true}
+            if (
+                Math.ceil(this.$refs.scrollbar.$el.scrollTop) ===
+                this.scrollerPxToPercent(this.$refs.scrollbar.$el, 100)
+            ) {
+                isScrollPush = true
+            }
 
-            if(isScrollPushUser) isScrollPush =isScrollPushUser
-
-
+            if (isScrollPushUser) isScrollPush = isScrollPushUser
 
             setTimeout(() => {
                 if (isScrollPush) {

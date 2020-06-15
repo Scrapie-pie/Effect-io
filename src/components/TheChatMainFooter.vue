@@ -375,7 +375,6 @@ export default {
                     to_id,
                     delivery_status: 1
                 }
-
             } else if (this.viewModeChat === 'common') {
                 data.room_id = this.$store.state.user.profile.common_room_id
                 data.delivery_status = 1
@@ -419,8 +418,6 @@ export default {
                             },
                             delivery_status: data.delivery_status
                         }
-
-
 
                     if (this.viewModeChat === 'visitors' || this.viewModeChat === 'operators') {
                         //Был баг. На медленном инете, пользователь отправлял сообщение, не дожидаясь ответа переходил в другой чат, сообщение прилетало тудв
@@ -547,7 +544,7 @@ export default {
     }
 
     &__scrollbar {
-       // max-height: 7.5em;
+        // max-height: 7.5em;
     }
     &__input {
         width: 100%;
@@ -564,7 +561,7 @@ export default {
 
     .input-emoji {
         padding-top: $pt;
-        height:9em;
+        height: 9em;
     }
 
     &__buttons {
