@@ -36,6 +36,11 @@ export default {
                 /* {text: 'recover', link: {name: 'recover'}},
                      {text: 'Ui', link: {name: 'ui'}},*/
                 {
+                    text: 'Онлайн мониторинг',
+                    link: { name: 'monitoring' },
+                    icon: 'monitoring'
+                },
+                {
                     text: 'Поиск по диалогам',
                     link: { name: 'searchList' },
                     icon: 'search'
