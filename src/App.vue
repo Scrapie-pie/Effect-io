@@ -98,6 +98,7 @@ export default {
                 clientInfo: ['guest/info', 'guest/update-by-operator'],
                 pageVisitors: ['guest/list', 'chat-room-user/take'],
                 pageTeam: ['employee/company-list', 'user/update-profile'],
+                pageMonitoring:['monitoring/read'],
                 pageStats: ['statistic/get-by-params'],
                 phrasesReady: [
                     'snippet/read-snippet',

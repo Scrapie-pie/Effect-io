@@ -2,8 +2,8 @@
     the-layout-table.page-monitoring
         h1.h4(slot="control") Онлайн мониторинг
         base-wait(name="pageMonitoring")
-        p.page-monitoring__turn(:class="{'error':count}")
-            strong Ожидает в очереди:   0
+        p.page-monitoring__turn(:class="{'error':branch_unprocessed}")
+            strong Ожидает в очереди:   {{branch_unprocessed}}
         base-table
             thead
                 tr
@@ -12,12 +12,18 @@
                     th Всего
 
             tbody
-                tr.page-monitoring__tr(v-for="(item, index) in itemList", :key="item.id")
+                tr.page-monitoring__tr
+                    td.page-monitoring__name Общее
+
+                    td {{branch_active}}
+
+                    td {{branch_day_active}}
+                tr.page-monitoring__tr(v-for="(item, index) in itemList", :key="item.user_id")
                     td.page-monitoring__name {{item.name}}
 
-                    td {{item.active}}
+                    td {{item.users_active}}
 
-                    td {{item.all}}
+                    td {{item.users_day_active}}
 
 
 
@@ -29,6 +35,7 @@
 
 
 import TheLayoutTable from "@/components/TheLayoutTable";
+import {apiMonitoring} from "@/api/api";
 
 export default {
     components: {
@@ -39,28 +46,74 @@ export default {
     mixins: [],
     data() {
         return {
+            branch_unprocessed:0,
+            branch_active:0,
+            branch_day_active:0,
+
+
             itemList:[]
         }
     },
     computed: {
         count(){
             return 1
-        }
+        },
+
+
 
     },
 
     created() {
-        this.itemList = [
-            {name:'Общее',active:888,all:777},
-            {name:'Екатерина Мальцева',active:888,all:777},
-            {name:'Екатерина Мальцева',active:888,all:777},
-            {name:'Екатерина Мальцева',active:888,all:777},
-            {name:'Екатерина Мальцева',active:888,all:777},
+        this.$root.$on('emitMonitoring',this.setData)
+        apiMonitoring.get().then(r=>{
 
-        ]
+
+            this.setData(r)
+
+        })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    },
+    beforeCreate(){
+        this.$root.$off('emitMonitoring',this.setData)
     },
     methods: {
+        setData(r){
+            this.branch_unprocessed = r.branch_unprocessed
+            this.branch_active = r.branch_active
+            this.branch_day_active = r.branch_day_active
 
+            this.itemList=r.users_active.map(({user_id,count},index)=>{
+
+
+                let operator = this.$store.getters['operators/all'].find(
+                    itemSub => itemSub.id === user_id
+                )
+
+                if (operator) return {
+                    user_id,
+                    name:operator.fullName,
+                    users_active:count,
+                    users_day_active:r.users_day_active[index].count
+                }
+                else return {}
+
+            })
+        }
     }
 }
 </script>
