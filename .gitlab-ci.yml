@@ -2,6 +2,7 @@ stages:
   - baseimage
   - modules
   - build
+  - deploy
 
 build baseimage:
     stage: baseimage
@@ -27,4 +28,14 @@ build:
       paths:
         - node_modules/
     script:
-      - docker build --pull --cache-from $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME:baseimage -f docker/Dockerfile -t $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME:$CI_PIPELINE_ID .
+      - docker build --build-arg NODE_ENV=production --build-arg VUE_APP_API_SERVER=https://api.newrobocall.ru/ --build-arg VUE_APP_POLLING_SERVER=//polling.newrobocall.ru --build-arg VUE_APP_POLLING_INTERVAL_MS=5000 --pull --cache-from $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME:baseimage -f docker/Dockerfile -t $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME:$CI_PIPELINE_ID .
+      - docker push $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME:$CI_PIPELINE_ID
+
+deploy:
+    stage: deploy
+    image: docker.reg.ru/effectcom/devops
+    environment:
+      name: develop
+      url: https://oi.dev.effect.com
+    script:
+      - /deploy.sh oi $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME:$CI_PIPELINE_ID
