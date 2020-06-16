@@ -28,7 +28,7 @@ build:
       paths:
         - node_modules/
     script:
-      - docker build --build-arg NODE_ENV=production --build-arg VUE_APP_IS_DOCKER=true --build-arg VUE_APP_API_SERVER=https://api.dev.effect.com/ --build-arg VUE_APP_POLLING_SERVER=//polling.newrobocall.ru --build-arg VUE_APP_POLLING_INTERVAL_MS=5000 --pull --cache-from $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME:baseimage -f docker/Dockerfile -t $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME:$CI_PIPELINE_ID .
+      - docker build --build-arg NODE_ENV=production --build-arg VUE_APP_IS_DOCKER=true --build-arg VUE_APP_API_SERVER=https://api.newrobocall.ru/ --build-arg VUE_APP_POLLING_SERVER=//polling.dev.effect.com --build-arg VUE_APP_POLLING_INTERVAL_MS=5000 --pull --cache-from $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME:baseimage -f docker/Dockerfile -t $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME:$CI_PIPELINE_ID .
       - docker push $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME:$CI_PIPELINE_ID
 
 deploy:
