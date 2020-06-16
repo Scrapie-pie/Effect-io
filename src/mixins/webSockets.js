@@ -43,7 +43,7 @@ export default {
         },
         messageStatusActive(message) {
             if (message.status === 'active') {
-                if (message.from_role_id != 9) this.playSoundFile('sound_new_guest_message')
+                if (message.play_sound) this.playSoundFile('sound_new_guest_message')
 
                 this.$store.commit('visitors/selfMessageLastUpdate', message)
 
