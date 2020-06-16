@@ -99,39 +99,24 @@
                         .stats-table-line__th-wrap
                             |Обратились <br>  впервые
                             btn-sort(:toggle="sortFieldsComp['chats_with_new_guests']", @result="val=>sortFieldsSetSortField(val,'chats_with_new_guests')")
-                    template(v-if="!($route.name=='statsAll' || $route.name=='statsAllByHours')")
-                        th(v-if="hideStatsAllBranchAndByDates")
-                            .stats-table-line__th-wrap
-                                |Время <br>  онлайн
-                                btn-sort(:toggle="sortFieldsComp['operators_time_in_online']", @result="val=>sortFieldsSetSortField(val,'operators_time_in_online')")
-                        th(v-if="hideStatsAllBranchAndByDates")
-                            .stats-table-line__th-wrap
-                                |Время <br>  в диалоге
-                                btn-sort(:toggle="sortFieldsComp['operators_time_in_chats']", @result="val=>sortFieldsSetSortField(val,'operators_time_in_chats')")
-                        th
-                            .stats-table-line__th-wrap
-                                |1 чат
-                                btn-sort(:toggle="sortFieldsComp['operators_time_in_1_chat']", @result="val=>sortFieldsSetSortField(val,'operators_time_in_1_chat')")
-                        th
-                            .stats-table-line__th-wrap
-                                |2 чат
-                                btn-sort(:toggle="sortFieldsComp['operators_time_in_2_chat']", @result="val=>sortFieldsSetSortField(val,'operators_time_in_2_chat')")
-                        th
-                            .stats-table-line__th-wrap
-                                |3 чата
-                                btn-sort(:toggle="sortFieldsComp['operators_time_in_3_chat']", @result="val=>sortFieldsSetSortField(val,'operators_time_in_3_chat')")
-                        th
-                            .stats-table-line__th-wrap
-                                |4 чата <br> и более
-                                btn-sort(:toggle="sortFieldsComp['operators_time_in_4_and_more_chats']", @result="val=>sortFieldsSetSortField(val,'operators_time_in_4_and_more_chats')")
-                        th(v-if="hideStatsAllBranchAndByDates")
-                            .stats-table-line__th-wrap
-                                |Среднее <br>  время <br>  в диалоге
-                                btn-sort(:toggle="sortFieldsComp['average_time_in_chats']", @result="val=>sortFieldsSetSortField(val,'average_time_in_chats')")
-                        th(v-if="hideStatsAllBranchAndByDates")
-                            .stats-table-line__th-wrap
-                                |Время <br>  в перерыве
-                                btn-sort(:toggle="sortFieldsComp['operators_time_in_break']", @result="val=>sortFieldsSetSortField(val,'operators_time_in_break')")
+
+                    th(v-if="hideStatsAllBranchAndByDates")
+                        .stats-table-line__th-wrap
+                            |Время <br>  онлайн
+                            btn-sort(:toggle="sortFieldsComp['operators_time_in_online']", @result="val=>sortFieldsSetSortField(val,'operators_time_in_online')")
+                    th(v-if="hideStatsAllBranchAndByDates")
+                        .stats-table-line__th-wrap
+                            |Время <br>  в диалоге
+                            btn-sort(:toggle="sortFieldsComp['operators_time_in_chats']", @result="val=>sortFieldsSetSortField(val,'operators_time_in_chats')")
+
+                    th(v-if="hideStatsAllBranchAndByDates")
+                        .stats-table-line__th-wrap
+                            |Среднее <br>  время <br>  в диалоге
+                            btn-sort(:toggle="sortFieldsComp['average_time_in_chats']", @result="val=>sortFieldsSetSortField(val,'average_time_in_chats')")
+                    th(v-if="hideStatsAllBranchAndByDates")
+                        .stats-table-line__th-wrap
+                            |Время <br>  в перерыве
+                            btn-sort(:toggle="sortFieldsComp['operators_time_in_break']", @result="val=>sortFieldsSetSortField(val,'operators_time_in_break')")
                     th
                         .stats-table-line__th-wrap
                             |Сообщений  <br> операторов
@@ -176,15 +161,12 @@
 
                     td {{item.dialogues_transferred_to_branches}}
                     td {{item.chats_with_new_guests}}
-                    template(v-if="!($route.name=='statsAll' || $route.name=='statsAllByHours')")
-                        td(v-if="hideStatsAllBranchAndByDates") {{item.operators_time_in_online  | datetimeStoHMS(true)}}
-                        td(v-if="hideStatsAllBranchAndByDates") {{item.operators_time_in_chats  | datetimeStoHMS(true)}}
-                        td {{item.operators_time_in_1_chat  | datetimeStoHMS(true)}}
-                        td {{item.operators_time_in_2_chats  | datetimeStoHMS(true)}}
-                        td {{item.operators_time_in_3_chats  | datetimeStoHMS(true)}}
-                        td {{item.operators_time_in_4_and_more_chats  | datetimeStoHMS(true)}}
-                        td(v-if="hideStatsAllBranchAndByDates") {{item.average_time_in_chats | datetimeStoHMS(true)}}
-                        td(v-if="hideStatsAllBranchAndByDates") {{item.operators_time_in_break  | datetimeStoHMS(true)}}
+
+                    td(v-if="hideStatsAllBranchAndByDates") {{item.operators_time_in_online  | datetimeStoHMS(true)}}
+                    td(v-if="hideStatsAllBranchAndByDates") {{item.operators_time_in_chats  | datetimeStoHMS(true)}}
+
+                    td(v-if="hideStatsAllBranchAndByDates") {{item.average_time_in_chats | datetimeStoHMS(true)}}
+                    td(v-if="hideStatsAllBranchAndByDates") {{item.operators_time_in_break  | datetimeStoHMS(true)}}
                     td {{item.operator_messages}}
                     td {{item.guest_messages}}
                     td null
@@ -192,7 +174,7 @@
 
             tbody(v-for="(item, index) in itemList", :key="item.id")
                 tr
-                    td(:colspan="!($route.name=='statsAll' || $route.name=='statsAllByHours')?34:27" style="padding:0")
+                    td(:colspan="30" style="padding:0")
                 tr
                     td
 
@@ -230,15 +212,12 @@
 
                     td {{item.dialogues_transferred_to_branches}}
                     td {{item.chats_with_new_guests}}
-                    template(v-if="!($route.name=='statsAll' || $route.name=='statsAllByHours')")
-                        td(v-if="hideStatsAllBranchAndByDates") {{item.operators_time_in_online  | datetimeStoHMS(true)}}
-                        td(v-if="hideStatsAllBranchAndByDates") {{item.operators_time_in_chats  | datetimeStoHMS(true)}}
-                        td {{item.operators_time_in_1_chat  | datetimeStoHMS(true)}}
-                        td {{item.operators_time_in_2_chats  | datetimeStoHMS(true)}}
-                        td {{item.operators_time_in_3_chats  | datetimeStoHMS(true)}}
-                        td {{item.operators_time_in_4_and_more_chats  | datetimeStoHMS(true)}}
-                        td(v-if="hideStatsAllBranchAndByDates") {{item.average_time_in_chats | datetimeStoHMS(true)}}
-                        td(v-if="hideStatsAllBranchAndByDates") {{item.operators_time_in_break  | datetimeStoHMS(true)}}
+
+                    td(v-if="hideStatsAllBranchAndByDates") {{item.operators_time_in_online  | datetimeStoHMS(true)}}
+                    td(v-if="hideStatsAllBranchAndByDates") {{item.operators_time_in_chats  | datetimeStoHMS(true)}}
+
+                    td(v-if="hideStatsAllBranchAndByDates") {{item.average_time_in_chats | datetimeStoHMS(true)}}
+                    td(v-if="hideStatsAllBranchAndByDates") {{item.operators_time_in_break  | datetimeStoHMS(true)}}
                     td {{item.operator_messages}}
                     td {{item.guest_messages}}
                     td null
@@ -272,15 +251,12 @@
 
                         td {{item.dialogues_transferred_to_branches}}
                         td {{item.chats_with_new_guests}}
-                        template(v-if="!($route.name=='statsAll' || $route.name=='statsAllByHours')")
-                            td(v-if="hideStatsAllBranchAndByDates") {{item.operators_time_in_online  | datetimeStoHMS(true)}}
-                            td(v-if="hideStatsAllBranchAndByDates") {{item.operators_time_in_chats  | datetimeStoHMS(true)}}
-                            td {{item.operators_time_in_1_chat  | datetimeStoHMS(true)}}
-                            td {{item.operators_time_in_2_chats  | datetimeStoHMS(true)}}
-                            td {{item.operators_time_in_3_chats  | datetimeStoHMS(true)}}
-                            td {{item.operators_time_in_4_and_more_chats  | datetimeStoHMS(true)}}
-                            td(v-if="hideStatsAllBranchAndByDates") {{item.average_time_in_chats | datetimeStoHMS(true)}}
-                            td(v-if="hideStatsAllBranchAndByDates") {{item.operators_time_in_break  | datetimeStoHMS(true)}}
+
+                        td(v-if="hideStatsAllBranchAndByDates") {{item.operators_time_in_online  | datetimeStoHMS(true)}}
+                        td(v-if="hideStatsAllBranchAndByDates") {{item.operators_time_in_chats  | datetimeStoHMS(true)}}
+
+                        td(v-if="hideStatsAllBranchAndByDates") {{item.average_time_in_chats | datetimeStoHMS(true)}}
+                        td(v-if="hideStatsAllBranchAndByDates") {{item.operators_time_in_break  | datetimeStoHMS(true)}}
                         td {{item.operator_messages}}
                         td {{item.guest_messages}}
                         td null
