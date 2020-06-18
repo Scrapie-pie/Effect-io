@@ -18,12 +18,12 @@
                     td {{branch_active}}
 
                     td {{branch_day_active}}
-                tr.page-monitoring__tr(v-for="(item, index) in itemList", :key="item.id")
+                tr.page-monitoring__tr(v-for="(item, index) in itemList", :key="item.user_id")
                     td.page-monitoring__name {{item.fullName}}
 
-                    td {{item.users_active}}
+                    td {{item.active}}
 
-                    td {{item.users_day_active}}
+                    td {{item.day_active}}
 
 
 
@@ -49,8 +49,8 @@ export default {
             branch_unprocessed:0,
             branch_active:0,
             branch_day_active:0,
-            users_active:[],
-            users_day_active:[],
+            users_list:[],
+
 
         }
     },
@@ -86,22 +86,16 @@ export default {
     },
     computed:{
         itemList(){
-            return this.$store.getters['operators/all'].map(operator=>{
 
-                let users_activeFind = this.users_active.find(users_activeItem=>users_activeItem.user_id===operator.id)
-                if(users_activeFind) {
-                    operator.users_active = users_activeFind.count
-                } else{
-                    operator.users_active = 0
+            return this.users_list.map(user=>{
+
+                let operator = this.$store.getters['operators/all'].find(operator=>operator.id==user.user_id)
+                if(operator) {
+                    user.fullName=operator.fullName
                 }
-                let users_day_activeFind = this.users_day_active.find(users_day_activeItem=>users_day_activeItem.user_id===operator.id)
-                if(users_day_activeFind) {
-                    operator.users_day_active = users_day_activeFind.count
-                } else{
-                    operator.users_day_active = 0
-                }
-                return operator
+                return user
             })
+
         }
     },
     methods: {
@@ -109,9 +103,10 @@ export default {
             this.branch_unprocessed = r.branch_unprocessed
             this.branch_active = r.branch_active
             this.branch_day_active = r.branch_day_active
+            this.users_list = r.users_list
 
-            this.users_active=r.users_active
-            this.users_day_active=r.users_day_active
+
+
 
 
 
