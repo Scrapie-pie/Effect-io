@@ -139,7 +139,7 @@ export default {
             }
         },
         checkFileSize(file) {
-            //if (file.size > 5120000) return false
+            if (file.size > 5120000) return false
             return true
         },
         uploadIMG(event, type, check = true) {
