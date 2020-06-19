@@ -130,7 +130,7 @@ export default {
                         e.dataTransfer.dropEffect = 'none'
                         e.target.closest('.js-dragDrop').classList.add('drag-error')
 
-                        this.$root.$emit('popup-notice', 'Размер превышает 5мб')
+                        this.$root.$emit('popup-notice', 'Размер превышает 15мб')
                     }
                 }
 
