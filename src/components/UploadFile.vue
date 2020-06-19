@@ -154,7 +154,7 @@ export default {
             this.file = file[0]
 
             if (check && !this.checkFileSize(file[0]))
-                return this.$root.$emit('popup-notice', 'Размер файла превышает 5мб')
+                return this.$root.$emit('popup-notice', 'Размер файла превышает 15мб')
 
             this.createIMG(file[0], type)
         },
