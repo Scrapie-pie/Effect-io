@@ -13,7 +13,7 @@
 
             .filter-drop-menu__box(:class="{'filter-drop-menu__box_open':show}")
                 template(v-if="name==='calendar'")
-                    app-calendar(@get="val=>modelradio=val", :options="calendarOptions")
+                    app-calendar(@get="val=>modelradio=val", :options="calendarOptions", @hide="show=false")
 
                 template(v-else)
                     .filter-drop-menu__controls
