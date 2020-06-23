@@ -2,7 +2,7 @@ FROM node:10.16.3-alpine as baseimage
 
 RUN npm i npm@latest -g
 RUN apk update && apk upgrade && \
-    apk add --no-cache git g++ make bash zlib-dev libpng-dev rsync curl python3-dev python php-redis
+    apk add --no-cache git g++ make bash zlib-dev libpng-dev rsync curl python3-dev python
 
 
 FROM baseimage as builder
