@@ -43,7 +43,7 @@ export default {
         },
         messageStatusActive(message) {
             if (message.status === 'active') {
-                if (message.from_role_id != 9) this.playSoundFile('sound_new_guest_message')
+                if (message.play_sound) this.playSoundFile('sound_new_guest_message')
 
                 this.$store.commit('visitors/selfMessageLastUpdate', message)
 
@@ -195,6 +195,13 @@ export default {
 
             this.$store.commit('sockets/historyPush', {
                 event: 'hot-guest',
+                socket_id: val.socket_id
+            })
+        },
+        'monitoring'(val){
+
+            this.$store.commit('sockets/historyPush', {
+                event: 'monitoring',
                 socket_id: val.socket_id
             })
         },

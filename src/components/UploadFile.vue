@@ -130,7 +130,7 @@ export default {
                         e.dataTransfer.dropEffect = 'none'
                         e.target.closest('.js-dragDrop').classList.add('drag-error')
 
-                        this.$root.$emit('popup-notice', 'Размер превышает 5мб')
+                        this.$root.$emit('popup-notice', 'Размер превышает 15мб')
                     }
                 }
 
@@ -139,7 +139,7 @@ export default {
             }
         },
         checkFileSize(file) {
-            if (file.size > 5120000) return false
+            if (file.size > 15360000) return false
             return true
         },
         uploadIMG(event, type, check = true) {
@@ -154,7 +154,7 @@ export default {
             this.file = file[0]
 
             if (check && !this.checkFileSize(file[0]))
-                return this.$root.$emit('popup-notice', 'Размер файла превышает 5мб')
+                return this.$root.$emit('popup-notice', 'Размер файла превышает 15мб')
 
             this.createIMG(file[0], type)
         },

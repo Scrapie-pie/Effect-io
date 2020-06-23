@@ -46,7 +46,7 @@ export default {
             errText: '',
             email: '',
             operator_comment: '',
-            category: ''
+            category: {}
         }
     },
     computed: {

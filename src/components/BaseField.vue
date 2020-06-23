@@ -42,8 +42,8 @@
         .field(:class="classObject" v-else-if="type==='select'" ref="input")
             label.field__label(v-if="label" v-text="label")
             base-select(
-                :class="{invalid_force: errors.has(name)}"
-                :key="value"
+                :class="{invalid_force: errors.has(name)}",
+
                 v-bind="getSelectOptions",
                 v-on="inputListeners",
             ).field__select
