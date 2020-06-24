@@ -120,7 +120,7 @@ export default {
 
                         this.$root.$emit(
                             'popup-notice',
-                            'Тип файла не поддерживается или размер превышает 5мб'
+                            'Тип файла не поддерживается или размер превышает 15мб'
                         )
                     }
                 }
@@ -130,7 +130,7 @@ export default {
             }
         },
         checkFileSize(file) {
-            if (file.size > 5120000) return false
+            if (file.size > 15360000) return false
             return true
         },
         uploadIMG(event, type, check = true) {
@@ -145,7 +145,7 @@ export default {
             this.file = file[0]
 
             if (check && !this.checkFileSize(file[0]))
-                return this.$root.$emit('popup-notice', 'Размер файла превышает 5мб')
+                return this.$root.$emit('popup-notice', 'Размер файла превышает 15мб')
 
             console.log('file.type', file[0].type)
             if (this.allowedFiles.includes(file[0].type)) this.createIMG(file[0], type)

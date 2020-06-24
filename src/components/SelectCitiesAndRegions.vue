@@ -61,6 +61,7 @@ export default {
             this.search(loading, search, this)
         },
         search: debounce((loading, search, vm) => {
+            console.log(search)
             apiGeo.cities({ keyword: search, country_code: vm.countryCode }).then(list => {
                 vm.options = list
                 loading(false)

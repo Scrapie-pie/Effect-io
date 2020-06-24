@@ -29,6 +29,7 @@
                     li.settings-list__sub-item
                         .page-scenario-settings-conditions__time-show
                             base-radio-check.settings-list__control(
+                                @click="model.conditions.show_strictly_not_earlier=0"
                                 name="guaranteed_show_after"
                                 v-model="model.conditions.guaranteed_show_after"
                             ) Гарантированный показ через
@@ -37,11 +38,14 @@
 
                             name="guaranteed_show_after_time"
                             v-model.number="model.conditions.guaranteed_show_after_time"
+
                             )
                             select-time-size.settings-list__control.settings-list__select(name="guaranteed_show_after_time_units"  v-model="model.conditions.guaranteed_show_after_time_units")
                     li.settings-list__sub-item
                         .page-scenario-settings-conditions__time-show
-                            base-radio-check.settings-list__control( name="show_strictly_not_earlier"
+                            base-radio-check.settings-list__control(
+                            @click="model.conditions.guaranteed_show_after=0"
+                            name="show_strictly_not_earlier"
                             v-model="model.conditions.show_strictly_not_earlier") Показ строго не ранее
                             base-field.settings-list__control.settings-list__field(
                                 type="text",
@@ -152,7 +156,7 @@
                             :country-code="model.conditions.country"
                         )
 
-        pre {{model}}
+
         base-btn(type="submit") Сохранить и продолжить
 </template>
 

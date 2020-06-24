@@ -2,6 +2,7 @@ const getDefaultState = () => {
     return {
         history: [],
         emitList: {
+            'monitoring':'emitMonitoring',
             'typing-live': 'emitTypingLive',
             'hot-guest': 'emitHotGust',
             'new-message': 'emitNewMessage',

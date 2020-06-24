@@ -9,7 +9,9 @@
                 base-field.settings-list__control.settings-list__field(
                 placeholder="Введите название сценария",
                 type="text",
-                name="first_name"
+                name="name"
+                v-validate="'required'"
+                data-vv-as="Название сценария"
                 v-model="model.title"
 
                 )
@@ -29,7 +31,7 @@
                 name="comment"
                 v-model="model.comment"
                 )
-        pre {{model}}
+
         base-btn(type="submit") Сохранить и продолжить
 </template>
 
@@ -68,21 +70,25 @@ export default {
     },
     methods: {
         submit() {
-            let { scenarioId } = this.$route.params
+            this.$validator.validateAll().then(response => {
+                if (response) {
+                    let { scenarioId } = this.$route.params
 
-            if (+scenarioId == -1) {
-                return this.$store.dispatch('scenario/addItem', this.model).then(data => {
-                    browserNotification('Сохранено')
-                    this.$router.push({
-                        name: 'scenarioSettingsContent',
-                        params: { scenarioId: data.id }
+                    if (+scenarioId == -1) {
+                        return this.$store.dispatch('scenario/addItem', this.model).then(data => {
+                            browserNotification('Сохранено')
+                            this.$router.push({
+                                name: 'scenarioSettingsContent',
+                                params: { scenarioId: data.id }
+                            })
+                        })
+                    }
+
+                    this.$store.dispatch('scenario/changeItem', this.model).then(() => {
+                        browserNotification('Сохранено')
+                        this.$router.push({ name: 'scenarioSettingsContent' })
                     })
-                })
-            }
-
-            this.$store.dispatch('scenario/changeItem', this.model).then(() => {
-                browserNotification('Сохранено')
-                this.$router.push({ name: 'scenarioSettingsContent' })
+                }
             })
         }
     }

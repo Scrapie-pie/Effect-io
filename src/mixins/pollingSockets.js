@@ -24,7 +24,7 @@ export default {
                     params: {
                         uuid: this.$store.state.user.profile.uuid,
                         socketGroupId: this.$store.state.user.profile.owner_id,
-                        type: 'employee'
+                        type: 'user'
                     }
                 })
                 .then(({ data: { data } }) => {

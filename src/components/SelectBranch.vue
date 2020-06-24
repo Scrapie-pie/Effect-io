@@ -15,7 +15,7 @@
                         li.select-operator__item(v-for="(item, index) in filterSearchResult",:key="item.id")
                             .select-operator__checkbox
                                 //input(type="checkbox" name="itemCheck" v-model="itemCheck[item.id]" :value="item.id")
-                                base-radio-check(name="itemCheck" v-model="itemCheck[item.id]" :value="item.id" :id="item.id")
+                                base-radio-check(name="itemCheck" v-model="itemCheck" :value="item.id" :id="item.id" type="radio")
                             label(:for="item.id")
                                 base-people(
                                     :bg-text-no-fill="true",
@@ -44,7 +44,7 @@ export default {
     data() {
         return {
             filterSearchResult: [],
-            itemCheck: {},
+            itemCheck: '',
             search: '',
             comment: ''
         }
@@ -81,20 +81,14 @@ export default {
         itemList() {
             return this.$store.getters['user/branchListAll']
         },
-        itemListIds() {
-            let list = []
-            for (let key in this.itemCheck) {
-                if (this.itemCheck[key]) list.push(Number(key))
-            }
-            return list
-        }
+
     },
     created() {},
     methods: {
         submit() {
             let data = this.httpParams.params
 
-            data.branch_id = this.itemListIds[0]
+            data.branch_id = this.itemCheck
             data.comment = this.comment
 
             this.$http.put('chat-room-user/transfer-to-branch-request', data).then(({ data }) => {

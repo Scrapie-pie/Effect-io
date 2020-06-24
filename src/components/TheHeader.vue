@@ -36,6 +36,11 @@ export default {
                 /* {text: 'recover', link: {name: 'recover'}},
                      {text: 'Ui', link: {name: 'ui'}},*/
                 {
+                    text: 'Онлайн мониторинг',
+                    link: { name: 'monitoring' },
+                    icon: 'monitoring'
+                },
+                {
                     text: 'Поиск по диалогам',
                     link: { name: 'searchList' },
                     icon: 'search'
@@ -67,7 +72,8 @@ export default {
                 {
                     text: 'Каналы связи',
                     link: { name: 'channelList' },
-                    icon: 'channelsOfConnection'
+                    icon: 'channelsOfConnection',
+                    hide: !this.$store.getters['user/isRole'](['admin', 'owner', 'operatorSenior'])
                 },
                 //{text: 'Сменить учетную запись', link: {name: 'auth'}},
                 { text: 'Выход', link: { name: 'exit' } }

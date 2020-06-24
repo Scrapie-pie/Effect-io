@@ -14,7 +14,7 @@
                         name="time_from",
                         :step="60*1"
                         v-model="time_from",
-                        :max="time_to"
+
 
                     )
             li.app-calendar__time
@@ -25,7 +25,7 @@
                     name="time_to",
                     :step="60*1"
                     v-model="time_to",
-                    :min="time_from"
+
 
                 )
 
@@ -168,7 +168,9 @@ export default {
             return getComputedStyle(document.body).getPropertyValue(`--color-${nameColor}`)
         },
         send() {
-            console.log('send')
+
+
+            this.$emit('hide')
             this.$emit('get', this.dates)
         }
     }
