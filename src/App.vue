@@ -84,10 +84,25 @@ export default {
 
         this.$store.commit('setFilterlocalStorage')
     },
+    mounted(){
+        this.set1vhForMobileViewport()
+    },
     beforeDestroy() {
         window.removeEventListener('unhandledrejection', this.promiseErrorHandler)
     },
     methods: {
+        set1vhForMobileViewport(){
+
+            let vh = window.innerHeight * 0.01;
+            document.documentElement.style.setProperty('--vh', `${vh}px`);
+
+
+            window.addEventListener('resize', () => {
+                // We execute the same script as before
+                let vh = window.innerHeight * 0.01;
+                document.documentElement.style.setProperty('--vh', `${vh}px`);
+            });
+        },
         startEndLoader(url, action) {
             let mapLoaders = {
                 otrsSend: ['regru/regru/send-ticket-to-crm'],
@@ -245,14 +260,20 @@ export default {
             )
         },
         onResize({ width, height }) {
-            console.log(width, height)
+            console.log(width, height);
             this.$store.commit('resize/setWindowSize', { width, height })
+
         }
     }
 }
 </script>
 
 <style lang="scss">
+    :root{
+        @each $i, $c in $glob-colors{
+            --color-#{$i}:#{$c};
+        }
+    }
 .page {
     $transition: $glob-trans;
     $indent-main: $glob-indent-main-lr;
@@ -278,6 +299,10 @@ export default {
             @include media($width_lg) {
                 margin-left: -75px;
             }
+        }
+
+        @include media($width_xs) {
+            height: calc(var(--vh, 1vh) * 100);
         }
     }
 
@@ -316,7 +341,7 @@ export default {
         padding-left: $indent-main;
         padding-right: $indent-main;
         height: 100%;
-
+        min-height: 0;
         @include media($width_xs) {
             padding-left: 0;
             padding-right: 0;
@@ -352,7 +377,7 @@ export default {
         }
 
         &__main {
-            height: 80vh;
+            /*height: 80vh;*/
         }
     }
 }
