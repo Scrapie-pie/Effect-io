@@ -27,7 +27,7 @@ build:
       policy: pull
       paths:
         - node_modules/
-    image: docker.reg.ru/effectcom/devop
+    image: docker.reg.ru/effectcom/devops
     script:
       - /vars.sh
       - docker build --build-arg NODE_ENV=production --build-arg VUE_APP_IS_DOCKER=true --build-arg VUE_APP_API_SERVER=https://api.$BASE_DOMAIN/ --build-arg VUE_APP_POLLING_SERVER=//polling.$BASE_DOMAIN --build-arg VUE_APP_POLLING_INTERVAL_MS=5000 --pull --cache-from $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME:baseimage -f docker/Dockerfile -t $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME:$CI_PIPELINE_ID .
