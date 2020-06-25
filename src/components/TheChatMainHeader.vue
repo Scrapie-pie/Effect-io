@@ -151,14 +151,22 @@ export default {
     },
     methods: {
         coBrowser() {
+            let host='//effect.com/'
+            if(process.env.VUE_APP_ENV!=='production') host = '//newrobocall.ru/'
+
+
             const params =
                 '?guestUuid=' +
                 this.httpParams.params.guest_uuid +
                 '&siteId=' +
                 this.httpParams.params.site_id
-            const win = window.open('https://effect.com/' + 'cobrowsing' + params, '_blank')
-            win.focus()
-            this.$http.post('co-browsing/request', this.httpParams.params)
+
+
+            this.$http.post('co-browsing/request', this.httpParams.params).then(()=>{
+                const win = window.open(host + 'cobrowsing' + params, '_blank')
+                win.focus()
+
+            })
         },
         chatCompletion() {
             let data = this.httpParams.params
