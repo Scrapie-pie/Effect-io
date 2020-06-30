@@ -36,7 +36,7 @@ function wrapTextUrls(text = '') {
 
 
                 if (isEmail) {
-					return '<a href="mailto:' + match + '">' + match + '</a>'
+					return '<span>' + match + '</span>'
 				} else {
 
                     if(!p7) return first +   second + p15  // p7 = http || https

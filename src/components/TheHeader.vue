@@ -85,7 +85,7 @@ export default {
                     text: 'Не обработано',
                     link: { name: 'processAll' },
                     unread: this.unreadProcess,
-                    icon: 'process'
+                    icon: 'processIcon'
                 },
                 {
                     text: 'Мои диалоги',
