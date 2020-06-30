@@ -6,13 +6,18 @@
                 .phrases-ready__filter
                     .phrases-ready__filter-item
                         filter-drop-menu(
+                        name-alias-for-filter-store="siteCompanyPhrasesTop"
+                        is-save-result-page
                         name="siteCompany",
                         @get="filterChannel"
                         all-output
                         immediate-output
                         )
                     .phrases-ready__filter-item
-                        filter-drop-menu( name="branch", @get="(val)=>filterBranchIds=val", :filter-show-ids="filterBranchShowIds" all-output immediate-output)
+                        filter-drop-menu(
+                        name-alias-for-filter-store="branchPhrasesTop"
+                        is-save-result-page
+                        name="branch", @get="(val)=>filterBranchIds=val", :filter-show-ids="filterBranchShowIds" all-output immediate-output)
                     .phrases-ready__filter-item
                         base-filter-search(:item-list="snippetsFilterBranch", @result="(val)=>filterSearchResult=val", field-name="text")
                     .phrases-ready__filter-item.phrases-ready__btn-add
