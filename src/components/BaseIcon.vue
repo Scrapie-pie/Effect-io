@@ -71,7 +71,7 @@ import account from '@/assets/img/icons/chat/menu/account.svg'
 import common from '@/assets/img/icons/chat/menu/common.svg'
 import auth from '@/assets/img/icons/chat/menu/auth.svg'
 import chatId from '@/assets/img/icons/chat/menu/chatId.svg'
-import process from '@/assets/img/icons/chat/menu/process.svg'
+import processIcon from '@/assets/img/icons/chat/menu/process.svg'
 import settingsApp from '@/assets/img/icons/chat/menu/settingsApp.svg'
 import team from '@/assets/img/icons/chat/menu/team.svg'
 import visitors from '@/assets/img/icons/chat/menu/visitors.svg'
@@ -109,7 +109,7 @@ export default {
         src() {
             //return `#${this.name}`;
 
-            return `/icons-sprite.svg#${this.name}`
+            return `${process.env.BASE_URL}icons-sprite.svg#${this.name}`
         }
     },
     created() {}
