@@ -13,7 +13,8 @@
                     li.phrases-ready-edit__add-item(v-if="create.is_common")
                         p Выбрать сайт к которому относится шаблон
                         filter-drop-menu(
-
+                        name-alias-for-filter-store="siteCompanyPhrasesAdd"
+                        is-save-result-page
                         name="siteCompany",
 
                         @get="filterChannel"
@@ -24,7 +25,10 @@
                     li.phrases-ready-edit__add-item(v-if="create.is_common")
                         p Добавить шаблон только для выбранных отделов:
 
-                        filter-drop-menu(name="branch", @get="setFilterBranchIds", :filter-show-ids="filterBranchShowIds" all-output immediate-output)
+                        filter-drop-menu(
+                        name-alias-for-filter-store="branchPhrasesAdd"
+                        is-save-result-page
+                        name="branch", @get="setFilterBranchIds", :filter-show-ids="filterBranchShowIds" all-output immediate-output)
 
                 template
                     li.phrases-ready-edit__add-item.phrases-ready-edit__add-item_select

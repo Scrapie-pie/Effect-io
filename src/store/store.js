@@ -28,7 +28,11 @@ const getDefaultFilterSelect = () => {
         filterSelect: {
             url: '',
             calendar: {},
-            last_days: ''
+            last_days: '',
+            siteCompanyPhrasesTop:[],
+            siteCompanyPhrasesAdd:[],
+            branchPhrasesTop:[],
+            branchPhrasesAdd:[],
         }
     }
 }
