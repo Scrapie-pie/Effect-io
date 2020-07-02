@@ -5,6 +5,7 @@ if (process.env.VUE_APP_IS_DOCKER === "true") {
 }
 
 module.exports = {
+    lintOnSave:false,
     publicPath,
     /*   devServer:{
         port:4000
