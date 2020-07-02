@@ -155,7 +155,7 @@ export default {
         }
     }
 
-    &_gallery {
+    &_gallery#{$self} {
         position: fixed;
         left: 0;
         right: 0;
@@ -179,11 +179,12 @@ export default {
             justify-content: center;
 
             box-shadow: none;
+            transform:none;
             position: static;
-            display: inline-block;
-            img {
-                margin-top: 0;
 
+            img {
+                margin-top: auto;
+                margin-bottom:auto;
                 position: relative;
                 z-index: 9999;
             }
