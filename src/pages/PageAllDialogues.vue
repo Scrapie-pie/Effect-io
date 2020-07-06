@@ -221,7 +221,7 @@ export default {
                 name: 'visor',
                 params: { guest_uuid, site_id, chat_id }
             })
-            window.open(routeData.href, guest_uuid + site_id + chat_id, 'width=700,height=700')
+            window.open(routeData.href, guest_uuid + site_id + chat_id, 'width=800,height=700')
         },
 
         filterBall(val) {

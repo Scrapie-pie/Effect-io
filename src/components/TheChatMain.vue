@@ -4,7 +4,7 @@
         the-chat-main-header.chat-main__header(v-if!="!['search','visor','common'].includes(viewModeChat)")
         .chat-main__header(v-if="['search','visor'].includes(viewModeChat)")
             h1.chat-main__header-title Просмотр диалога: {{chat_id}}
-
+            base-btn(v-if="$store.getters['user/isRole'](['admin', 'owner', 'operatorSenior'])" name="setTag", @click="$root.$emit('showTagsEmit')" theme="link" color="info") Добавить тэг
 
 
 
@@ -618,6 +618,12 @@ export default {
     &__list,
     &__header {
         padding-right: calc-em(15);
+    }
+    &__header {
+        display: grid;
+        grid-template-columns: max-content max-content;
+        gap: calc-em(30);
+        align-items: baseline;
     }
 
     &__date {

@@ -179,12 +179,12 @@ export default {
             justify-content: center;
 
             box-shadow: none;
-            transform:none;
+            transform: none;
             position: static;
 
             img {
                 margin-top: auto;
-                margin-bottom:auto;
+                margin-bottom: auto;
                 position: relative;
                 z-index: 9999;
             }

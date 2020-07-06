@@ -45,9 +45,9 @@ import autosize from 'autosize'
 import { mapGetters, mapActions } from 'vuex'
 
 import browserNotification from '@/modules/browserNotification'
-import FilterDropMenu from "@/components/FilterDropMenu";
+import FilterDropMenu from '@/components/FilterDropMenu'
 export default {
-    components: {FilterDropMenu},
+    components: { FilterDropMenu },
     data() {
         return {
             filterBranchIds: [],
@@ -65,17 +65,11 @@ export default {
         itemListText() {
             let list = this.itemList.map(item => item.tag)
 
-
-
             return list.filter(item => {
-
-
                 return this.filterBranchIds.every(id => {
                     return item.branches_ids.includes(id)
                 })
             })
-
-
         },
         itemListTextArea() {
             if (!this.itemListText.length) return ''

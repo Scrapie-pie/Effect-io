@@ -80,7 +80,7 @@ export default {
         categoriesEdit: {
             handler(object) {
                 object = lodash_cloneDeep(object)
-                console.log(object);
+                console.log(object)
                 let branchListFilter = this.$store.getters['user/branchListAll'].filter(item =>
                     object.branches_ids.includes(item.id)
                 )

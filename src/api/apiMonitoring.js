@@ -2,7 +2,6 @@ import axios from '@/modules/axios'
 
 export default {
     get(params) {
-        return axios.get('monitoring/read', params).then(({data})=>data.data)
-    },
-
+        return axios.get('monitoring/read', params).then(({ data }) => data.data)
+    }
 }

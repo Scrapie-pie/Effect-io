@@ -21,7 +21,19 @@
                     name-field-value="id"
                     v-model="model"
                 )
+            .select-tags__coment-wrap
+                label.select-tags__label Оставьте комментарий
+                base-field.select-tags__coment(
+                    type="textarea"
+                    name="comment",
 
+                    maxLength="5000"
+                    v-model="comment"
+                )
+            base-btn(
+                type="submit"
+
+            ) Сохранить
 </template>
 
 <script>
@@ -71,8 +83,18 @@ export default {
     $transition: $glob-trans;
     position: relative;
 
+    text-align:left;
+
     width: 100%;
     max-width: 415px;
+
+    &__coment-wrap {
+        margin-top:5em;
+    }
+
+    &__label,&__coment {
+        margin-bottom: calc-em(15);
+    }
 
     &__box {
         min-width: 0;

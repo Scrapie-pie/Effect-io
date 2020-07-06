@@ -29,12 +29,12 @@ const getDefaultFilterSelect = () => {
             url: '',
             calendar: {},
             last_days: '',
-            branchPageTags:undefined,
-            siteCompanyPageTags:undefined,
-            siteCompanyPhrasesTop:undefined,
-            siteCompanyPhrasesAdd:undefined,
-            branchPhrasesTop:undefined,
-            branchPhrasesAdd:undefined,
+            branchPageTags: undefined,
+            siteCompanyPageTags: undefined,
+            siteCompanyPhrasesTop: undefined,
+            siteCompanyPhrasesAdd: undefined,
+            branchPhrasesTop: undefined,
+            branchPhrasesAdd: undefined
         }
     }
 }

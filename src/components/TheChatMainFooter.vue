@@ -591,11 +591,10 @@ export default {
             @extend %full-abs;
             top: auto;
 
-
             @include media($width_xs) {
                 transform: none;
                 margin-bottom: 5em;
-                position:fixed;
+                position: fixed;
             }
         }
     }

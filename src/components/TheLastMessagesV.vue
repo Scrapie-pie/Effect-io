@@ -191,17 +191,16 @@ export default {
             if (item.hot && item.awaiting_answer_timeFormat) return true
         },
         timerHotLevel(item) {
-            let seconds = Math.round(this.timerNow - item.awaiting_answer_timeFormat);
-            let level = 0;
-            if(seconds > 30) level = 1
-            if(seconds > 60) level = 2
-            if(seconds > 120) level = 3
-            if(seconds > 180) level = 4
+            let seconds = Math.round(this.timerNow - item.awaiting_answer_timeFormat)
+            let level = 0
+            if (seconds > 30) level = 1
+            if (seconds > 60) level = 2
+            if (seconds > 120) level = 3
+            if (seconds > 180) level = 4
 
             return level
         },
         timer(item) {
-
             return datetimeStoHMS(Math.round(this.timerNow - item.awaiting_answer_timeFormat), true)
         },
         setName(item, visitorInfo) {
@@ -442,7 +441,6 @@ export default {
         color: $color_light;
     }
     &__timer {
-
         position: absolute;
         right: 0;
         top: 0;
