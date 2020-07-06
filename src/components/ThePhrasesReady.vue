@@ -123,8 +123,10 @@ export default {
             let list = this.$store.getters['phrases/categories']
 
             return list.filter(item => {
+
                 if (!item.is_common) return true
                 return this.filterBranchIds.every(id => {
+                    console.log(id,item.branches_ids,item);
                     return item.branches_ids.includes(id)
                 })
             })
