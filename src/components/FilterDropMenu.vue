@@ -146,7 +146,8 @@ export default {
 
 
 
-            if (this.getNameAliasForFilterStore in this.filterSelectStore === false) return false
+            if (this.getNameAliasForFilterStore in this.filterSelectStore === false) return undefined
+            if (this.filterSelectStore[this.getNameAliasForFilterStore]===undefined) return undefined
             return this.itemList.filter(item => this.filterSelectStore[this.getNameAliasForFilterStore].includes(item.id))
         },
         filterSelectStore() {
@@ -281,7 +282,7 @@ export default {
         itemList: {
             handler(val, oldval) {
                 if (this.type === 'checkbox') {
-                    if (this.getFilterSelectStore.length) {
+                    if (this.getFilterSelectStore!==undefined) {
                         this.modelcheckbox = this.getFilterSelectStore
                     } else if (this.allChecked) {
                         //если нет query п умолчанию выставляем все
@@ -294,7 +295,7 @@ export default {
                         }
                     }
                 } else {
-                    if (this.getFilterSelectStore.length && this.isSaveResultPage) {
+                    if (this.getFilterSelectStore!==undefined && this.isSaveResultPage) {
                         this.modelradio = this.getFilterSelectStore[0]
                     } else {
                         this.modelradio = val[0]

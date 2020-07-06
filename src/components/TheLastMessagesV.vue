@@ -18,7 +18,7 @@
                     )
                         .last-messages-v__timer(
                             v-if="timerVisible(item)",
-                            v-text="timer(item,timerNow,index)"
+                            v-text="timer(item)"
                             )
 
                         //router-link.last-messages-v__btn(
@@ -190,8 +190,19 @@ export default {
             if (!this.timerNow) return
             if (item.hot && item.awaiting_answer_timeFormat) return true
         },
-        timer(item, timerNow, index) {
-            return datetimeStoHMS(Math.round(timerNow - item.awaiting_answer_timeFormat), true)
+        timerHotLevel(item) {
+            let seconds = Math.round(this.timerNow - item.awaiting_answer_timeFormat);
+            let level = 0;
+            if(seconds > 30) level = 1
+            if(seconds > 60) level = 2
+            if(seconds > 120) level = 3
+            if(seconds > 180) level = 4
+
+            return level
+        },
+        timer(item) {
+
+            return datetimeStoHMS(Math.round(this.timerNow - item.awaiting_answer_timeFormat), true)
         },
         setName(item, visitorInfo) {
             if (item.very_hot) return item.name
@@ -215,6 +226,7 @@ export default {
             item.classList = {}
             item.classList['last-messages-v__item_active'] = open
             item.classList['last-messages-v__item_hot'] = item.hot
+            item.classList[`last-messages-v__item_hot_level_${this.timerHotLevel(item)}`] = true
             item.classList['last-messages-v__item_very-hot'] = item.very_hot
 
             return item
@@ -337,6 +349,7 @@ export default {
 .last-messages-v {
     $color_bg-hover: glob-color('border');
     $color_bg-error: glob-color('error');
+    $color_bg-accent: glob-color('accent');
     $color_bg-info: glob-color('info');
     $color_light: glob-color('light');
     $transition: $glob-trans;
@@ -382,7 +395,7 @@ export default {
             &::before {
                 content: '';
                 @extend %full-abs;
-                background-color: $color_bg-error;
+
                 opacity: 0.5;
                 z-index: 0;
             }
@@ -391,6 +404,14 @@ export default {
             &::before {
                 background-color: $color_bg-info;
             }
+        }
+
+        &_hot_level_3:before {
+            background-color: $color_bg-accent;
+            //opacity: 1;
+        }
+        &_hot_level_4:before {
+            background-color: $color_bg-error;
         }
     }
 
@@ -414,11 +435,14 @@ export default {
         border-color: transparent;
         font-size: 0;
     }
-
-    //////
-    &__timer {
+    &__item_hot_level_2 &__timer,
+    &__item_hot_level_3 &__timer,
+    &__item_hot_level_4 &__timer {
         background-color: $color_bg-error;
         color: $color_light;
+    }
+    &__timer {
+
         position: absolute;
         right: 0;
         top: 0;

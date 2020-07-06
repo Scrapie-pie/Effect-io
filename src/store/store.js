@@ -29,10 +29,10 @@ const getDefaultFilterSelect = () => {
             url: '',
             calendar: {},
             last_days: '',
-            siteCompanyPhrasesTop:[],
-            siteCompanyPhrasesAdd:[],
-            branchPhrasesTop:[],
-            branchPhrasesAdd:[],
+            siteCompanyPhrasesTop:undefined,
+            siteCompanyPhrasesAdd:undefined,
+            branchPhrasesTop:undefined,
+            branchPhrasesAdd:undefined,
         }
     }
 }
