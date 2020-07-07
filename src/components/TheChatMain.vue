@@ -4,7 +4,7 @@
         the-chat-main-header.chat-main__header(v-if!="!['search','visor','common'].includes(viewModeChat)")
         .chat-main__header(v-if="['search','visor'].includes(viewModeChat)")
             h1.chat-main__header-title Просмотр диалога: {{chat_id}}
-            base-btn(v-if="$store.getters['user/isRole'](['admin', 'owner', 'operatorSenior'])" name="setTag", @click="$root.$emit('showTagsEmit')" theme="link" color="info") Добавить тэг
+            base-btn(v-if="$store.getters['user/isRole'](['admin', 'owner', 'operatorSenior'])" name="setTag", @click="$root.$emit('showTagsEmit')" theme="link") Добавить тэг
 
 
 

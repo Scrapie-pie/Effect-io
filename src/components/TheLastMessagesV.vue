@@ -26,6 +26,7 @@
                             v-text="item.rootLinkOptions.text"
                             )
                         base-people.last-messages-v__people(v-bind="item.basePeopleOptions")
+                        .last-messages-v__tag-info(v-if="!item.isTag") Нет тега
                         process-actions(:paramsIds="{guest_uuid:item.guest_uuid,site_id:item.site_id}" v-if="viewModeChat=='process'")
 
 
@@ -346,6 +347,7 @@ export default {
 
 <style lang="scss">
 .last-messages-v {
+
     $color_bg-hover: glob-color('border');
     $color_bg-error: glob-color('error');
     $color_bg-accent: glob-color('accent');
@@ -459,6 +461,15 @@ export default {
         .btn {
             font-size: inherit;
         }
+    }
+
+    &__tag-info {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        display: inline-block;
+        background-color:$color_light;
+        padding:.1em .75em;
     }
 }
 </style>

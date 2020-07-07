@@ -67,7 +67,7 @@ export default {
 
             return list.filter(item => {
                 return this.filterBranchIds.every(id => {
-                    return item.branches_ids.includes(id)
+                    return item?.branches_ids?.includes(id)
                 })
             })
         },

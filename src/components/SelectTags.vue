@@ -21,7 +21,7 @@
                     name-field-value="id"
                     v-model="model"
                 )
-            .select-tags__coment-wrap
+            .select-tags__coment-wrap(v-if="$store.getters['user/isRole'](['admin', 'owner', 'operatorSenior'])")
                 label.select-tags__label Оставьте комментарий
                 base-field.select-tags__coment(
                     type="textarea"
@@ -30,10 +30,7 @@
                     maxLength="5000"
                     v-model="comment"
                 )
-            base-btn(
-                type="submit"
 
-            ) Сохранить
 </template>
 
 <script>
@@ -48,6 +45,7 @@ export default {
     mixins: [httpParams],
     data() {
         return {
+            comment: null,
             model: '',
             filterSearchResult: []
         }
@@ -59,7 +57,8 @@ export default {
         model(val) {
             if (val) {
                 let data = this.httpParams.params
-                data.tag_id = val
+                data.tag_id = +val
+                data.comment = this.comment
                 this.setTagChat(data)
                 this.$root.$emit('globBoxControlClose', data.tag_id)
             }
@@ -83,16 +82,17 @@ export default {
     $transition: $glob-trans;
     position: relative;
 
-    text-align:left;
+    text-align: left;
 
     width: 100%;
     max-width: 415px;
 
     &__coment-wrap {
-        margin-top:5em;
+        margin-top: 5em;
     }
 
-    &__label,&__coment {
+    &__label,
+    &__coment {
         margin-bottom: calc-em(15);
     }
 
