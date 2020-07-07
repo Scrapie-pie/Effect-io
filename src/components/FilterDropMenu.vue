@@ -128,6 +128,7 @@ export default {
             ],
             urlListData: [],
             titleName: {
+                tag: 'теги',
                 branch: 'отделы',
                 url: 'страницы',
                 operator: 'сотрудники',
@@ -210,6 +211,13 @@ export default {
         branchList() {
             return this.$store.getters['user/branchListAll'].map(item => {
                 item.name = item.titleAndSite
+                return item
+            })
+        },
+        tagList() {
+
+            return this.$store.getters['tags/itemList'].map(item => {
+                item.name = item.tag
                 return item
             })
         },
@@ -374,6 +382,9 @@ export default {
 
                 this.urlListData = [...data]
             })*/
+        }
+        if (this.name === 'tag') {
+            this.$store.dispatch('tags/get')
         }
     },
     mounted() {
