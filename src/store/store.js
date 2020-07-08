@@ -26,9 +26,9 @@ const getDefaultStateRoom = () => {
 const getDefaultFilterSelect = () => {
     return {
         filterSelect: {
-            url: '',
-            calendar: {},
-            last_days: '',
+            url: undefined,
+            calendar: undefined,
+            last_days: undefined,
             siteCompanyPhrasesTop:undefined,
             siteCompanyPhrasesAdd:undefined,
             branchPhrasesTop:undefined,
