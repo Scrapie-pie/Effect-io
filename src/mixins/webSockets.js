@@ -191,7 +191,7 @@ export default {
         'hot-guest'(val) {
             //this.$socket.emit('delivered', val.socket_id);
 
-            this.$store.commit('visitors/messageHot', { val, set: true })
+            this.$store.commit('visitors/messageHot', val)
 
             this.$store.commit('sockets/historyPush', {
                 event: 'hot-guest',
@@ -219,7 +219,8 @@ export default {
             val.socket = true //Todo Временное решение, на проверку дубликатов, пока Симон не исправит
 
             if (val.from_role_id != 8 && val.from_role_id != 9) {
-                this.$store.commit('visitors/messageHot', { val, set: false })
+                val.status=0
+                this.$store.commit('visitors/messageHot',  val)
             }
 
             if (
@@ -407,6 +408,7 @@ export default {
             })
             //this.$socket.emit('delivered', val.socket_id);
             console.log('auto-attach', val)
+            val.very_hot=2
 
             if (val.code === this.$store.state.user.profile.code)
                 this.$store.commit('user/profileUpdate', { code: null })

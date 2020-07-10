@@ -178,6 +178,7 @@ export default {
                     }
                 }, 300)
                 setTimeout(() => {
+                    this.messageRead()
                     this.$refs?.inputEmoji?.$el.focus()
                 }, 750)
             },
@@ -298,6 +299,9 @@ export default {
                     site_id: this.httpParams.params.site_id,
                     type: this.viewModeChat
                 })
+
+
+
             }
             if (this.viewModeChat === 'common') {
                 this.$http.put('message/operator-mark-as-read', {
@@ -368,7 +372,9 @@ export default {
                 }
 
                 let val = this.httpParams.params
-                this.$store.commit('visitors/messageHot', { val, set: false })
+                val.status=0
+                this.$store.commit('visitors/messageHot', val)
+                this.$store.commit('visitors/messageVeryHot', val)
             } else if (this.viewModeChat === 'operators') {
                 to_id = +this.httpParams.params.id
                 data = {
