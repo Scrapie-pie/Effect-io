@@ -344,8 +344,11 @@ export default {
         },
         router(event, item) {
             //console.log(event,item);
-            this.$store.commit('mobile/setShowChat', true)
 
+            let query = {
+                forMobileShowChat:true
+            }
+            item.rootLinkOptions.link.query=query
             this.$router.push(item.rootLinkOptions.link)
             //console.log(event);
         }

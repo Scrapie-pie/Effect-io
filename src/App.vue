@@ -45,8 +45,10 @@ export default {
     ],
     computed: {
         rootClass() {
+
             return {
-                ['is-page-mobile-show-chat']: this.$store.state.mobile.showChat,
+
+                ['is-page-mobile-show-chat']: this.$route.query.forMobileShowChat,
                 [`is-router-name-${this.$route.name}`]: true
             }
         },

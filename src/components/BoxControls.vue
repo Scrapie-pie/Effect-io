@@ -166,21 +166,25 @@ export default {
         overflow: auto;
 
         #{$self}__box {
-            position: fixed;
+
             left: 0;
             right: 0;
-            top: 0;
-            bottom: 0;
-            margin: 0;
+
             background-color: transparent;
             text-align: center;
-            display: flex;
+
             align-items: center;
             justify-content: center;
 
             box-shadow: none;
             transform:none;
             position: static;
+
+
+            display: inline-flex;
+            bottom: auto;
+            top: auto;
+            margin: auto;
 
             img {
                 margin-top: auto;
