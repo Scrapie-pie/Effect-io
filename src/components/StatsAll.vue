@@ -22,55 +22,49 @@
                         .stats-table-line__th-wrap
                             |Пропущено
                             btn-sort(:toggle="sortFieldsComp['dialogues_missed']", @result="val=>sortFieldsSetSortField(val,'dialogues_missed')")
+
                     th
                         .stats-table-line__th-wrap
                             base-icon(name="ball3")
                             btn-sort(:toggle="sortFieldsComp['excellent_ratings']", @result="val=>sortFieldsSetSortField(val,'excellent_ratings')")
-                    th
-                        .stats-table-line__th-wrap
-                            base-icon(name="ball2")
-                            btn-sort(:toggle="sortFieldsComp['badly_ratings']", @result="val=>sortFieldsSetSortField(val,'badly_ratings')")
+
                     th
                         .stats-table-line__th-wrap
                             base-icon(name="ball1")
                             btn-sort(:toggle="sortFieldsComp['middling_ratings']", @result="val=>sortFieldsSetSortField(val,'middling_ratings')")
                     th
                         .stats-table-line__th-wrap
-                            | Время онлайн
-                            btn-sort(:toggle="sortFieldsComp['first_answer_average_speed']", @result="val=>sortFieldsSetSortField(val,'first_answer_average_speed')")
+                            base-icon(name="ball2")
+                            btn-sort(:toggle="sortFieldsComp['badly_ratings']", @result="val=>sortFieldsSetSortField(val,'badly_ratings')")
+
+                    th(v-if="hideStatsAllBranchAndByDates")
+                        .stats-table-line__th-wrap
+                            |Время <br>  в диалоге
+                            btn-sort(:toggle="sortFieldsComp['operators_time_in_chats']", @result="val=>sortFieldsSetSortField(val,'operators_time_in_chats')")
                     th
                         .stats-table-line__th-wrap
                             | Время в диалоге <br> 1-2
-                            btn-sort(:toggle="sortFieldsComp['first_answer_average_speed']", @result="val=>sortFieldsSetSortField(val,'first_answer_average_speed')")
+                            btn-sort(:toggle="sortFieldsComp['operators_time_in_1_2_chat']", @result="val=>sortFieldsSetSortField(val,'operators_time_in_1_2_chat')")
                     th
                         .stats-table-line__th-wrap
                             | Время в диалоге <br> 3-5 (включительно)
-                            btn-sort(:toggle="sortFieldsComp['first_answer_average_speed']", @result="val=>sortFieldsSetSortField(val,'first_answer_average_speed')")
+                            btn-sort(:toggle="sortFieldsComp['operators_time_in_3_5_chats']", @result="val=>sortFieldsSetSortField(val,'operators_time_in_3_5_chats')")
                     th
                         .stats-table-line__th-wrap
                             | Время в диалоге <br> 6-10 (включительно)
-                            btn-sort(:toggle="sortFieldsComp['first_answer_average_speed']", @result="val=>sortFieldsSetSortField(val,'first_answer_average_speed')")
-                    th
-                        .stats-table-line__th-wrap
-                            | Время в диалоге <br> 6-10 (включительно)
-                            btn-sort(:toggle="sortFieldsComp['first_answer_average_speed']", @result="val=>sortFieldsSetSortField(val,'first_answer_average_speed')")
+                            btn-sort(:toggle="sortFieldsComp['operators_time_in_6_10_chats']", @result="val=>sortFieldsSetSortField(val,'operators_time_in_6_10_chats')")
                     th
                         .stats-table-line__th-wrap
                             |Время в диалоге <br>  11+
-                            btn-sort(:toggle="sortFieldsComp['missed_average_time']", @result="val=>sortFieldsSetSortField(val,'missed_average_time')")
+                            btn-sort(:toggle="sortFieldsComp['operators_time_in_11_and_more_chats']", @result="val=>sortFieldsSetSortField(val,'operators_time_in_11_and_more_chats')")
                     th
                         .stats-table-line__th-wrap
                             |Среднее время <br>  в диалоге
-                            btn-sort(:toggle="sortFieldsComp['missed_average_time']", @result="val=>sortFieldsSetSortField(val,'missed_average_time')")
-                    th
-                        .stats-table-line__th-wrap
-                            |Время <br> в перерыве
-                            btn-sort(:toggle="sortFieldsComp['missed_average_time']", @result="val=>sortFieldsSetSortField(val,'missed_average_time')")
+                            btn-sort(:toggle="sortFieldsComp['average_time_in_chats']", @result="val=>sortFieldsSetSortField(val,'average_time_in_chats')")
                     th
                         .stats-table-line__th-wrap
                             |Среднее время <br>  для пропущенных
                             btn-sort(:toggle="sortFieldsComp['missed_average_time']", @result="val=>sortFieldsSetSortField(val,'missed_average_time')")
-
                     th
                         .stats-table-line__th-wrap
                             |Среднее <br>  время ответа
@@ -78,19 +72,19 @@
                     th
                         .stats-table-line__th-wrap
                             |до 30 сек <br> % от общего
-                            btn-sort(:toggle="sortFieldsComp['first_answers_in_20_40_seconds']", @result="val=>sortFieldsSetSortField(val,'first_answers_in_20_40_seconds')")
+                            btn-sort(:toggle="sortFieldsComp['first_answers_in_30_seconds_percents']", @result="val=>sortFieldsSetSortField(val,'first_answers_in_30_seconds_percents')")
                     th
                         .stats-table-line__th-wrap
                             |31-60 сек <br> % от общего
-                            btn-sort(:toggle="sortFieldsComp['first_answers_in_40_60_seconds']", @result="val=>sortFieldsSetSortField(val,'first_answers_in_40_60_seconds')")
+                            btn-sort(:toggle="sortFieldsComp['first_answers_in_31_60_seconds_percents']", @result="val=>sortFieldsSetSortField(val,'first_answers_in_31_60_seconds_percents')")
                     th
                         .stats-table-line__th-wrap
                             |61-90 сек <br> % от общего
-                            btn-sort(:toggle="sortFieldsComp['first_answers_in_60_more_seconds']", @result="val=>sortFieldsSetSortField(val,'first_answers_in_60_more_seconds')")
+                            btn-sort(:toggle="sortFieldsComp['first_answers_in_61_90_seconds_percents']", @result="val=>sortFieldsSetSortField(val,'first_answers_in_61_90_seconds_percents')")
                     th
                         .stats-table-line__th-wrap
                             |Свыше 91 сек <br> % от общего
-                            btn-sort(:toggle="sortFieldsComp['first_answers_in_60_more_seconds']", @result="val=>sortFieldsSetSortField(val,'first_answers_in_60_more_seconds')")
+                            btn-sort(:toggle="sortFieldsComp['first_answers_in_91_more_seconds_percents']", @result="val=>sortFieldsSetSortField(val,'first_answers_in_91_more_seconds_percents')")
                     th
                         .stats-table-line__th-wrap
                             |Передано <br>  в отдел
@@ -104,15 +98,12 @@
                         .stats-table-line__th-wrap
                             |Время <br>  онлайн
                             btn-sort(:toggle="sortFieldsComp['operators_time_in_online']", @result="val=>sortFieldsSetSortField(val,'operators_time_in_online')")
-                    th(v-if="hideStatsAllBranchAndByDates")
-                        .stats-table-line__th-wrap
-                            |Время <br>  в диалоге
-                            btn-sort(:toggle="sortFieldsComp['operators_time_in_chats']", @result="val=>sortFieldsSetSortField(val,'operators_time_in_chats')")
+
 
                     th(v-if="hideStatsAllBranchAndByDates")
                         .stats-table-line__th-wrap
-                            |Среднее <br>  время <br>  в диалоге
-                            btn-sort(:toggle="sortFieldsComp['average_time_in_chats']", @result="val=>sortFieldsSetSortField(val,'average_time_in_chats')")
+                            |Среднее <br>  время <br> оператора
+                            btn-sort(:toggle="sortFieldsComp['average_time_in_chats_2']", @result="val=>sortFieldsSetSortField(val,'average_time_in_chats_2')")
                     th(v-if="hideStatsAllBranchAndByDates")
                         .stats-table-line__th-wrap
                             |Время <br>  в перерыве
@@ -125,10 +116,7 @@
                         .stats-table-line__th-wrap
                             |Сообщений <br>  посетителей
                             btn-sort(:toggle="sortFieldsComp['guest_messages']", @result="val=>sortFieldsSetSortField(val,'guest_messages')")
-                    th
-                        .stats-table-line__th-wrap
-                            |Уровень <br> удовлетворенности
-                            btn-sort(:toggle="sortFieldsComp['guest_messages']", @result="val=>sortFieldsSetSortField(val,'guest_messages')")
+
 
 
             tbody(v-if="$route.name=='statsAllByHours' || $route.name=='statsAll' || $route.name=='statsAllBranch' || $route.name=='statsAllOperator'").commn
@@ -144,32 +132,34 @@
                     td {{item.excellent_ratings}}
                     td {{item.middling_ratings}}
                     td {{item.badly_ratings}}
-                    td null
-                    td null
-                    td null
-                    td null
-                    td null
-                    td null
-                    td null
-                    td null
+                    td {{item.average_time_in_chats  | datetimeStoHMS(true)}}
+                    td {{item.operators_time_in_1_2_chat}}
+                    td {{item.operators_time_in_3_5_chats}}
+                    td {{item.operators_time_in_6_10_chats}}
+                    td {{item.operators_time_in_11_and_more_chats}}
+                    td(v-if="hideStatsAllBranchAndByDates") {{item.average_time_in_chats | datetimeStoHMS(true)}}
                     td {{item.missed_average_time | datetimeStoHMS(true)}}
                     td {{item.first_answer_average_speed | datetimeStoHMS(true)}}
-                    td {{item.first_answers_in_20_40_seconds }} #[br] {{item.first_answers_in_20_40_seconds_percents}}%
-                    td {{item.first_answers_in_40_60_seconds }} #[br] {{item.first_answers_in_40_60_seconds_percents}}%
-                    td {{item.first_answers_in_60_more_seconds }} #[br]{{item.first_answers_in_60_more_seconds_percents}}%
-                    td null
+
+
+
+                    td {{item.first_answers_in_30_seconds }} #[br] {{item.first_answers_in_30_seconds_percents}}%
+                    td {{item.first_answers_in_31_60_seconds }} #[br] {{item.first_answers_in_31_60_seconds_percents}}%
+                    td {{item.first_answers_in_61_90_seconds }} #[br]{{item.first_answers_in_61_90_seconds_percents}}%
+                    td {{item.first_answers_in_91_more_seconds }} #[br]{{item.first_answers_in_91_more_seconds_percents}}%
+
 
                     td {{item.dialogues_transferred_to_branches}}
                     td {{item.chats_with_new_guests}}
 
                     td(v-if="hideStatsAllBranchAndByDates") {{item.operators_time_in_online  | datetimeStoHMS(true)}}
-                    td(v-if="hideStatsAllBranchAndByDates") {{item.operators_time_in_chats  | datetimeStoHMS(true)}}
+                    td(v-if="hideStatsAllBranchAndByDates") {{item.average_time_in_chats_2  | datetimeStoHMS(true)}}
 
-                    td(v-if="hideStatsAllBranchAndByDates") {{item.average_time_in_chats | datetimeStoHMS(true)}}
+
                     td(v-if="hideStatsAllBranchAndByDates") {{item.operators_time_in_break  | datetimeStoHMS(true)}}
                     td {{item.operator_messages}}
                     td {{item.guest_messages}}
-                    td null
+
 
 
             tbody(v-for="(item, index) in itemList", :key="item.id")
@@ -195,32 +185,34 @@
                     td {{item.excellent_ratings}}
                     td {{item.middling_ratings}}
                     td {{item.badly_ratings}}
-                    td null
-                    td null
-                    td null
-                    td null
-                    td null
-                    td null
-                    td null
-                    td null
+                    td {{item.average_time_in_chats  | datetimeStoHMS(true)}}
+                    td {{item.operators_time_in_1_2_chat}}
+                    td {{item.operators_time_in_3_5_chats}}
+                    td {{item.operators_time_in_6_10_chats}}
+                    td {{item.operators_time_in_11_and_more_chats}}
+                    td(v-if="hideStatsAllBranchAndByDates") {{item.average_time_in_chats | datetimeStoHMS(true)}}
                     td {{item.missed_average_time | datetimeStoHMS(true)}}
                     td {{item.first_answer_average_speed | datetimeStoHMS(true)}}
-                    td {{item.first_answers_in_20_40_seconds }} #[br] {{item.first_answers_in_20_40_seconds_percents}}%
-                    td {{item.first_answers_in_40_60_seconds }} #[br] {{item.first_answers_in_40_60_seconds_percents}}%
-                    td {{item.first_answers_in_60_more_seconds }} #[br]{{item.first_answers_in_60_more_seconds_percents}}%
-                    td null
+
+
+
+                    td {{item.first_answers_in_30_seconds }} #[br] {{item.first_answers_in_30_seconds_percents}}%
+                    td {{item.first_answers_in_31_60_seconds }} #[br] {{item.first_answers_in_31_60_seconds_percents}}%
+                    td {{item.first_answers_in_61_90_seconds }} #[br]{{item.first_answers_in_61_90_seconds_percents}}%
+                    td {{item.first_answers_in_91_more_seconds }} #[br]{{item.first_answers_in_91_more_seconds_percents}}%
+
 
                     td {{item.dialogues_transferred_to_branches}}
                     td {{item.chats_with_new_guests}}
 
                     td(v-if="hideStatsAllBranchAndByDates") {{item.operators_time_in_online  | datetimeStoHMS(true)}}
-                    td(v-if="hideStatsAllBranchAndByDates") {{item.operators_time_in_chats  | datetimeStoHMS(true)}}
+                    td(v-if="hideStatsAllBranchAndByDates") {{item.average_time_in_chats_2  | datetimeStoHMS(true)}}
 
-                    td(v-if="hideStatsAllBranchAndByDates") {{item.average_time_in_chats | datetimeStoHMS(true)}}
+
                     td(v-if="hideStatsAllBranchAndByDates") {{item.operators_time_in_break  | datetimeStoHMS(true)}}
                     td {{item.operator_messages}}
                     td {{item.guest_messages}}
-                    td null
+
 
 
                 template( v-if="item.byHoursListToggle")
@@ -234,32 +226,34 @@
                         td {{item.excellent_ratings}}
                         td {{item.middling_ratings}}
                         td {{item.badly_ratings}}
-                        td null
-                        td null
-                        td null
-                        td null
-                        td null
-                        td null
-                        td null
-                        td null
+                        td {{item.average_time_in_chats  | datetimeStoHMS(true)}}
+                        td {{item.operators_time_in_1_2_chat}}
+                        td {{item.operators_time_in_3_5_chats}}
+                        td {{item.operators_time_in_6_10_chats}}
+                        td {{item.operators_time_in_11_and_more_chats}}
+                        td(v-if="hideStatsAllBranchAndByDates") {{item.average_time_in_chats | datetimeStoHMS(true)}}
                         td {{item.missed_average_time | datetimeStoHMS(true)}}
                         td {{item.first_answer_average_speed | datetimeStoHMS(true)}}
-                        td {{item.first_answers_in_20_40_seconds }} #[br] {{item.first_answers_in_20_40_seconds_percents}}%
-                        td {{item.first_answers_in_40_60_seconds }} #[br] {{item.first_answers_in_40_60_seconds_percents}}%
-                        td {{item.first_answers_in_60_more_seconds }} #[br]{{item.first_answers_in_60_more_seconds_percents}}%
-                        td null
+
+
+
+                        td {{item.first_answers_in_30_seconds }} #[br] {{item.first_answers_in_30_seconds_percents}}%
+                        td {{item.first_answers_in_31_60_seconds }} #[br] {{item.first_answers_in_31_60_seconds_percents}}%
+                        td {{item.first_answers_in_61_90_seconds }} #[br]{{item.first_answers_in_61_90_seconds_percents}}%
+                        td {{item.first_answers_in_91_more_seconds }} #[br]{{item.first_answers_in_91_more_seconds_percents}}%
+
 
                         td {{item.dialogues_transferred_to_branches}}
                         td {{item.chats_with_new_guests}}
 
                         td(v-if="hideStatsAllBranchAndByDates") {{item.operators_time_in_online  | datetimeStoHMS(true)}}
-                        td(v-if="hideStatsAllBranchAndByDates") {{item.operators_time_in_chats  | datetimeStoHMS(true)}}
+                        td(v-if="hideStatsAllBranchAndByDates") {{item.average_time_in_chats_2  | datetimeStoHMS(true)}}
 
-                        td(v-if="hideStatsAllBranchAndByDates") {{item.average_time_in_chats | datetimeStoHMS(true)}}
+
                         td(v-if="hideStatsAllBranchAndByDates") {{item.operators_time_in_break  | datetimeStoHMS(true)}}
                         td {{item.operator_messages}}
                         td {{item.guest_messages}}
-                        td null
+
 
         nav.stats-table-line__nav
             ul.stats-table-line__nav-list
