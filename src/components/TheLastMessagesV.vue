@@ -18,7 +18,7 @@
                     )
                         .last-messages-v__timer(
                             v-if="timerVisible(item)",
-                            v-text="timer(item,timerNow,index)"
+                            v-text="timer(item)"
                             )
 
                         //router-link.last-messages-v__btn(
@@ -187,14 +187,25 @@ export default {
             this.getItemList()
         },
         timerVisible(item) {
-            if (!this.timerNow) return
+            if (!this.timerNow || item.very_hot) return false
             if (item.hot && item.awaiting_answer_timeFormat) return true
         },
-        timer(item, timerNow, index) {
-            return datetimeStoHMS(Math.round(timerNow - item.awaiting_answer_timeFormat), true)
+        timerHotLevel(item) {
+            let seconds = Math.round(this.timerNow - item.awaiting_answer_timeFormat);
+            let level = 0;
+            if(seconds > 30) level = 1
+            if(seconds > 60) level = 2
+            if(seconds > 120) level = 3
+            if(seconds > 180) level = 4
+
+            return level
+        },
+        timer(item) {
+
+            return datetimeStoHMS(Math.round(this.timerNow - item.awaiting_answer_timeFormat), true)
         },
         setName(item, visitorInfo) {
-            if (item.very_hot) return item.name
+            if (item.very_hot===1 || item.hot===5) return item.name
             if (item.guest_uuid + item.site_id === visitorInfo.guest_uuid + visitorInfo.site_id)
                 return visitorInfo.regRuLogin || visitorInfo.name
             else return item.name
@@ -215,7 +226,9 @@ export default {
             item.classList = {}
             item.classList['last-messages-v__item_active'] = open
             item.classList['last-messages-v__item_hot'] = item.hot
+            item.classList[`last-messages-v__item_hot_status_`+item.hot] = true
             item.classList['last-messages-v__item_very-hot'] = item.very_hot
+            item.classList['last-messages-v__item_very-hot_status_'+item.very_hot] = true
 
             return item
         },
@@ -259,14 +272,21 @@ export default {
             item = this.itemFormatSetClassList(item)
             item = this.itemFormatSetLink(item)
 
-            if (item.very_hot) {
+            if (item.very_hot===1) {
                 ///такое только в не обработанном
                 item.avatarName = 'warning'
                 item.name = 'Диалог необходимо <br> принять <br> в приоритетном порядке!'
                 item.last_authorAndMessage = 'Передача диалога...'
-            } else {
+            }
+            else if (item.hot==5) {
+                item.name = 'Гость <br> Возможно диалог <br> требует ответа'
+                console.log(item.name);
+            }
+            else {
                 item.last_authorAndMessage = this.authorAndMessage(item)
             }
+
+
             item = this.itemFormatSetOptions(item)
             return item
         },
@@ -324,8 +344,11 @@ export default {
         },
         router(event, item) {
             //console.log(event,item);
-            this.$store.commit('mobile/setShowChat', true)
 
+            let query = {
+                forMobileShowChat:true
+            }
+            item.rootLinkOptions.link.query=query
             this.$router.push(item.rootLinkOptions.link)
             //console.log(event);
         }
@@ -337,6 +360,7 @@ export default {
 .last-messages-v {
     $color_bg-hover: glob-color('border');
     $color_bg-error: glob-color('error');
+    $color_bg-accent: glob-color('accent');
     $color_bg-info: glob-color('info');
     $color_light: glob-color('light');
     $transition: $glob-trans;
@@ -382,14 +406,35 @@ export default {
             &::before {
                 content: '';
                 @extend %full-abs;
-                background-color: $color_bg-error;
+
                 opacity: 0.5;
                 z-index: 0;
             }
         }
+
+        &_hot {
+            &_status_3:before {
+                background-color: $color_bg-accent;
+                //opacity: 1;
+            }
+            &_status_4:before {
+                background-color: $color_bg-error;
+            }
+            &_status_5:before {
+                opacity:1;
+                background-color: #c4f2ff ;
+            }
+        }
+
+
         &_very-hot {
-            &::before {
+            &_status_1::before {
                 background-color: $color_bg-info;
+            }
+            &_status_2::before,
+            &_status_3::before {
+                background-color: #e3ecfb;
+                opacity:1;
             }
         }
     }
@@ -414,11 +459,15 @@ export default {
         border-color: transparent;
         font-size: 0;
     }
-
-    //////
-    &__timer {
+    &__item_hot_status_2 &__timer,
+    &__item_hot_status_3 &__timer,
+    &__item_hot_status_4 &__timer,
+    &__item_hot_status_5 &__timer {
         background-color: $color_bg-error;
         color: $color_light;
+    }
+    &__timer {
+
         position: absolute;
         right: 0;
         top: 0;

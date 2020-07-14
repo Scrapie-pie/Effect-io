@@ -19,7 +19,7 @@
             base-no-found(v-show="messageNo" :name="$route.name")
             section(v-show="!messageNo" v-if="selfOnlineHide").page__view.page-chat
                 transition(name="the-header-mobile-transition")
-                    the-last-messages-v(v-show="!$store.state.mobile.showChat")
+                    the-last-messages-v(v-show="!$route.query.forMobileShowChat")
                 section(v-if="!show").page__view.page-chat
                     section.page-chat__main
                             the-chat-main
@@ -31,7 +31,7 @@
             section(v-show="!processNo" v-if="processOnlineHide").page__view.page-chat
 
                 transition(name="the-header-mobile-transition")
-                    the-last-messages-v(v-show="!$store.state.mobile.showChat")
+                    the-last-messages-v(v-show="!$route.query.forMobileShowChat")
 
                 section(v-if="!show").page__view.page-chat
 
@@ -113,7 +113,7 @@ export default {
     beforeRouteLeave(to, from, next) {
         this.messageSubscribeSocket(null, from)
         this.$store.commit('roomActive/resetState')
-        this.$store.commit('mobile/setShowChat', false)
+
         return next()
     },
 

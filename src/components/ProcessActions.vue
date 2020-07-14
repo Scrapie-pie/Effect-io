@@ -105,7 +105,7 @@ export default {
             )
             console.log(this.processItem)
 
-            this.processItem.very_hot = 0
+            this.processItem.very_hot = 2
         },
         routerNext(status) {
             let { guest_uuid, site_id } = this.processItem
@@ -136,9 +136,10 @@ export default {
 
                     this.$router.push({
                         name: 'chatId',
-                        params: { guest_uuid, site_id }
+                        params: { guest_uuid, site_id },
+                        query:{forMobileShowChat:true}
                     })
-                    this.$store.commit('mobile/setShowChat', true)
+
                 }, 500) //Приходит сокет room-users, обновляется статус комнаты, запускается функция this.accessPage, редиректится в не обработано, ждем примерно секунду, редиректим в диалоги
             }
         },

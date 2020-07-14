@@ -259,6 +259,7 @@ export default {
 
     &_link {
         text-decoration: underline;
+        text-align:left;
     }
 
     &-arrow {

@@ -5,9 +5,9 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build --moder --mode staging",
-    "prod-build": "vue-cli-service build --moder --mode production ",
-    "lint": "vue-cli-service lint --fix",
     "test:unit": "vue-cli-service test:unit",
+    "lint": "vue-cli-service lint --fix",
+    "prod-build": "vue-cli-service build --moder --mode production ",
     "ws": "vue-cli-service build --target wc --name effect-widget src/App.vue"
   },
   "dependencies": {
@@ -22,6 +22,7 @@
     "inputmask": "^4.0.8",
     "intl-tel-input": "^15.1.2",
     "lodash": "^4.17.15",
+    "register-service-worker": "^1.7.1",
     "v-calendar": "^0.9.7",
     "vee-validate": "^2.2.11",
     "vue": "^2.6.10",
@@ -37,6 +38,7 @@
     "@babel/plugin-proposal-optional-chaining": "^7.2.0",
     "@vue/cli-plugin-babel": "^3.8.0",
     "@vue/cli-plugin-eslint": "^3.8.0",
+    "@vue/cli-plugin-pwa": "~4.4.0",
     "@vue/cli-plugin-unit-jest": "^3.8.0",
     "@vue/cli-service": "^3.8.4",
     "@vue/test-utils": "^1.0.0-beta.29",
@@ -59,14 +61,6 @@
     "vue-wait": "^1.4.6",
     "vuex-shared-mutations": "^1.0.2",
     "webpack": "^4.39.3"
-  },
-  "lint-staged": {
-    "* .js": [
-      "lint"
-    ],
-    "* .vue": [
-      "lint"
-    ]
   },
   "eslintConfig": {
     "root": true,
@@ -119,5 +113,13 @@
       "**/tests/unit/**/*.spec.(js|jsx|ts|tsx)|**/__tests__/*.(js|jsx|ts|tsx)"
     ],
     "testURL": "http://localhost/"
+  },
+  "lint-staged": {
+    "* .js": [
+      "lint"
+    ],
+    "* .vue": [
+      "lint"
+    ]
   }
 }

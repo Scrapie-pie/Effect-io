@@ -169,7 +169,7 @@ export default {
 
     &__fieldset {
         padding-right: calc-em(15);
-        flex: 0 0 auto;
+        flex: 0 1 auto;
 
         max-width: 220px;
         width: 100%;

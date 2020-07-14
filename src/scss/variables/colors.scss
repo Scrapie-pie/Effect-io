@@ -3,6 +3,7 @@ $glob-colors:(
         'success':#00bc00,
         'success-dark':#00b05a,
         'error':#ff6257,
+        'accent':#ffa000,
         'info':#0cf,
         'info-dark':#009fff,
         'info-light':#e5f5ff,
@@ -21,9 +22,4 @@ $glob-colors:(
     @return var(--color-#{$key})
   }
   @return $clr
-}
-:root{
-  @each $i, $c in $glob-colors{
-    --color-#{$i}:#{$c};
-  }
 }

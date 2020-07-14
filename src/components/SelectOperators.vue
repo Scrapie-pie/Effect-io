@@ -136,9 +136,10 @@ export default {
         },
         availableOperators() {
             return this.$store.getters['operators/online'].filter(
-                item =>
+                item => {
                     //item.id !== this.$store.state.user.profile.id && // Убираем себя из списка
-                    !this.$store.state.roomActive.usersActive.includes(item.id) //Убираем операторов если они уже есть в комнате
+                    return !this.$store.state.roomActive.usersActive.includes(item.id) //Убираем операторов если они уже есть в
+                }
             )
         },
         itemLisFilter() {

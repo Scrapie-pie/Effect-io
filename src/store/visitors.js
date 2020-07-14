@@ -62,23 +62,40 @@ export default {
             state.allCount = val.count
         },
 
-        messageHot(state, { val: { guest_uuid, site_id, awaiting_answer_time }, set }) {
+        messageHot(state, {guest_uuid, site_id, awaiting_answer_time,status}) {
             let main = name => {
                 let findIndex = state[name].findIndex(
                     item => item.guest_uuid + item.site_id === guest_uuid + site_id
                 )
 
                 if (findIndex !== -1) {
-                    this._vm.$set(state[name][findIndex], 'hot', set)
+                    this._vm.$set(state[name][findIndex], 'hot', status)
                     this._vm.$set(
                         state[name][findIndex],
                         'awaiting_answer_timeFormat',
                         new Date().getTime() / 1000 - awaiting_answer_time
                     )
+
                 }
             }
 
             main('process')
+            main('self')
+        },
+        messageVeryHot(state, {guest_uuid, site_id,status}) {
+            let main = name => {
+                let findIndex = state[name].findIndex(
+                    item => item.guest_uuid + item.site_id === guest_uuid + site_id
+                )
+
+                if (findIndex !== -1) {
+                    this._vm.$set(state[name][findIndex], 'very_hot', status)
+
+
+                }
+            }
+
+
             main('self')
         },
         process(state, val) {

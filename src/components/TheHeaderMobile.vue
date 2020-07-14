@@ -10,7 +10,7 @@
             transition(name="the-header-mobile-transition")
                 div(v-if="showChat").the-header-mobile__chat-control
                     div.the-header-mobile__chat-control-arrow-wrap
-                        base-btn(:icon="{name:'arrowLeft',box:false}", @click="$store.commit('mobile/setShowChat',false)")
+                        base-btn(:icon="{name:'arrowLeft',box:false}", @click="hideChat")
                         count-all
                     base-people(
                         :name="info.name" ,
@@ -47,7 +47,7 @@ export default {
     },
     computed: {
         showChat() {
-            return this.$store.getters['mobile/showChat']
+            return this.$route.query.forMobileShowChat
         },
         nameSection() {
             return (
@@ -62,7 +62,12 @@ export default {
         }
     },
 
-    methods: {}
+    methods: {
+        hideChat(){
+            this.$router.replace({query:{forMobileShowChat:null}})
+
+        }
+    }
 }
 </script>
 

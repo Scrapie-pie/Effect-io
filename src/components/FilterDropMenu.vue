@@ -61,6 +61,10 @@ export default {
             type: Boolean,
             default: false
         },
+        nameAliasForFilterStore: { //
+            type: String,
+            default: ''
+        },
         allOutput: {
             type: Boolean,
             default: false
@@ -135,9 +139,16 @@ export default {
         }
     },
     computed: {
+        getNameAliasForFilterStore(){
+          return this.nameAliasForFilterStore || this.name
+        },
         getFilterSelectStore() {
-            if (this.name in this.filterSelectStore === false) return false
-            return this.itemList.filter(item => this.filterSelectStore[this.name].includes(item.id))
+
+
+
+            if (this.getNameAliasForFilterStore in this.filterSelectStore === false) return undefined
+            if (this.filterSelectStore[this.getNameAliasForFilterStore]===undefined) return undefined
+            return this.itemList.filter(item => this.filterSelectStore[this.getNameAliasForFilterStore].includes(item.id))
         },
         filterSelectStore() {
             return this.$store.state.filterSelect
@@ -257,6 +268,9 @@ export default {
                                 'get',
                                 this.modelcheckbox.map(item => item.id)
                             )
+                            if (this.isSaveResultPage){
+                                this.$store.commit('setFilter', { [this.getNameAliasForFilterStore]: this.modelcheckbox.map(item => item.id)})
+                            }
                         }
                     }
                 } else {
@@ -268,7 +282,7 @@ export default {
         itemList: {
             handler(val, oldval) {
                 if (this.type === 'checkbox') {
-                    if (this.getFilterSelectStore.length) {
+                    if (this.getFilterSelectStore!==undefined) {
                         this.modelcheckbox = this.getFilterSelectStore
                     } else if (this.allChecked) {
                         //если нет query п умолчанию выставляем все
@@ -281,7 +295,7 @@ export default {
                         }
                     }
                 } else {
-                    if (this.getFilterSelectStore.length && this.isSaveResultPage) {
+                    if (this.getFilterSelectStore!==undefined && this.isSaveResultPage) {
                         this.modelradio = this.getFilterSelectStore[0]
                     } else {
                         this.modelradio = val[0]
@@ -301,13 +315,13 @@ export default {
                     if (!val) return
                     this.$emit('get', val.id)
                     if (this.isSaveResultPage)
-                        this.$store.commit('setFilter', { [this.name]: [val.id] })
+                        this.$store.commit('setFilter', { [this.getNameAliasForFilterStore]: [val.id] })
                 }
                 if (this.name === 'calendar') {
                     if (val && val.date_from && val.date_to) {
                         this.$emit('get', val)
                         this.$store.commit('setFilter', {
-                            [this.name]: [val]
+                            [this.getNameAliasForFilterStore]: [val]
                         })
                     }
 
@@ -322,12 +336,15 @@ export default {
 
                 if (val.length !== this.itemList.length) this.allChecked = false
                 if (!this.show && this.immediateOutput) {
-                    console.log('this.filterShowIds', this.filterShowIds)
+                    console.log('this.filterShowIds', val.map(item => item.id),this.getNameAliasForFilterStore)
                     this.$emit(
                         'get',
                         val.map(item => item.id)
                     )
-                    //this.$store.commit('setFilter', { [this.name]: val.map(item=>item.id) })
+
+                     /* if (this.isSaveResultPage){
+                          this.$store.commit('setFilter', { [this.getNameAliasForFilterStore]: val.map(item=>item.id) })
+                      }*/
                 }
 
                 this.modelPrev = valOld
