@@ -13,6 +13,12 @@
         slot="control"
 
         )
+        filter-drop-menu(
+        name="tag",
+        key="tag",
+        @get="val=>tags_ids=val"
+        slot="control"
+        )
         base-filter-search(
         slot="control",
         placeholder="Введите ID",
@@ -73,6 +79,7 @@ export default {
     mixins: [scrollbar, paginator, filterLastDaysAndCalendar],
     data() {
         return {
+            tags_ids: null,
             apiMethod: 'chat/get-all',
             containerFullFillItemListClassName: {
                 scrollBar: 'layout-table__content',
@@ -83,6 +90,7 @@ export default {
     computed: {
         paramsComp() {
             return {
+                tags_ids: this.tags_ids,
                 with_messages_count: 1,
                 date_from: this.date_from,
                 date_to: this.date_to,

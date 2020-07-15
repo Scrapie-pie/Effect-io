@@ -166,8 +166,7 @@ export default {
                     !val.selfUuid &&
                     val.from_role_id != 9 //не системное
                 ) {
-
-                    if(val.hasOwnProperty('inc_counter') && !val.inc_counter) return
+                    if (val.hasOwnProperty('inc_counter') && !val.inc_counter) return
 
                     let unread = state.self[findIndex].unread
                     unread.push(val.id)

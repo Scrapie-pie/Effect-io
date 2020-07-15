@@ -26,6 +26,11 @@
         @result="(val)=>filterSearchResult=val",
         @text="(val)=>search=val",
         )
+        filter-drop-menu(
+        v-if="routerName==='statsTags'"
+        name="branch", @get="(val)=>filterBranchIds=val"
+        slot="control"
+        )
         base-btn(
         v-if="!filterSearchShow && btnDownloadShow"
         slot="control",
@@ -42,6 +47,7 @@
         v-model="branch"
         )
 
+
         filter-drop-menu(
         v-if="routerName==='statsLogStatusOperatorList'"
         name="operator",
@@ -49,6 +55,7 @@
         slot="control"
         key="operator"
         )
+
 
         ul.page-stats-inner__count(v-if="routerName==='statsService'" slot="head")
             li Отделов в команде: {{$store.state.user.branchListAll.length}}

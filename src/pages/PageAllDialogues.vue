@@ -1,41 +1,5 @@
 <template lang="pug">
     article.page-all
-        //nav-aside.page-all__filter-list(v-if="0")
-            scroll-bar.page-all__scrollbar
-                filter-drop-menu(name="last_days", @get="filterLast_days"  type="radio")
-                filter-drop-menu(
-                v-if="showCalendar"
-                name="calendar",
-                @get="filterCalendar"
-                )
-                filter-drop-menu(
-                name="siteCompany",
-                @get="filterChannel"
-
-                )
-                filter-drop-menu(
-                name="operator",
-                @get="filterOperator"
-
-                )
-
-
-                filter-drop-menu(
-                name="status",
-                @get="filterStatus"
-
-                )
-                filter-drop-menu(
-                name="ball",
-                @get="filterBall"
-
-                )
-                filter-drop-menu(
-                name="url",
-                type="radio",
-                @get="filterUrl"
-
-                )
         the-layout-table.page-log-dialogues(@scrolldown="scrollLoad")
 
             filter-drop-menu(is-save-result-page name="last_days", @get="filterLast_days" slot="control" type="radio" key="last_days")
@@ -52,12 +16,12 @@
             filter-drop-menu(
                 name="siteCompany",
                 key="siteCompany",
-                @get="filterChannel"
+                @get="val=>sites_ids=val"
                 slot="control"
                 )
             filter-drop-menu(
                 name="operator",
-                @get="filterOperator"
+                @get="val=>users_ids=val"
                 slot="control"
                 key="operator"
                 )
@@ -66,23 +30,30 @@
             filter-drop-menu(
                 name="status",
                 key="status",
-                @get="filterStatus"
+                @get="val=>statuses=val"
                 slot="control"
                 )
             filter-drop-menu(
                 name="ball",
                 key="ball",
-                @get="filterBall"
+                @get="val=>rates=val"
                 slot="control"
                 )
             //base-field(name="url" slot="control"  key="url", placeholder="Страницы", @input="val=>url=[val]", :value="url")
+
+            filter-drop-menu(
+                name="tag",
+                key="tag",
+                @get="val=>tags_ids=val"
+                slot="control"
+            )
             filter-drop-menu(
                 name="url",
                 key="url",
-
-                @get="filterUrl"
+                @get="val=>url=val"
                 slot="control"
                 )
+
             div(slot="control" v-if="itemListCount")
                 |На странице показано {{showItemLength}} из {{ itemListCount}}
 
@@ -159,7 +130,8 @@ export default {
 
             users_ids: null,
             sites_ids: null,
-            branches_ids: null,
+
+            tags_ids: null,
             statuses: null,
             rates: null,
 
@@ -173,7 +145,8 @@ export default {
             return {
                 users_ids: this.users_ids,
                 sites_ids: this.sites_ids,
-                branches_ids: this.branches_ids,
+
+                tags_ids: this.tags_ids,
                 statuses: this.statuses,
                 rates: this.rates,
                 date_from: this.date_from,
@@ -188,6 +161,7 @@ export default {
     watch: {
         paramsComp() {
             if (
+                this.tags_ids &&
                 this.users_ids &&
                 this.sites_ids &&
                 this.statuses &&
@@ -221,24 +195,13 @@ export default {
                 name: 'visor',
                 params: { guest_uuid, site_id, chat_id }
             })
-            window.open(routeData.href, guest_uuid + site_id + chat_id, 'width=700,height=700')
+            window.open(routeData.href, guest_uuid + site_id + chat_id, 'width=800,height=700')
         },
 
-        filterBall(val) {
-            this.rates = val
-        },
-        filterChannel(val) {
-            this.sites_ids = val
-        },
-        filterStatus(val) {
-            this.statuses = val
-        },
-        filterOperator(val) {
-            this.users_ids = val
-        },
-        filterUrl(val) {
-            this.url = val
-        }
+
+
+
+
     }
 }
 </script>

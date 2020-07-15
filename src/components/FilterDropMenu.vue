@@ -61,7 +61,8 @@ export default {
             type: Boolean,
             default: false
         },
-        nameAliasForFilterStore: { //
+        nameAliasForFilterStore: {
+            //
             type: String,
             default: ''
         },
@@ -127,6 +128,7 @@ export default {
             ],
             urlListData: [],
             titleName: {
+                tag: 'теги',
                 branch: 'отделы',
                 url: 'страницы',
                 operator: 'сотрудники',
@@ -139,22 +141,24 @@ export default {
         }
     },
     computed: {
-        getNameAliasForFilterStore(){
-          return this.nameAliasForFilterStore || this.name
+        getNameAliasForFilterStore() {
+            return this.nameAliasForFilterStore || this.name
         },
         getFilterSelectStore() {
-
-
-
-            if (this.getNameAliasForFilterStore in this.filterSelectStore === false) return undefined
-            if (this.filterSelectStore[this.getNameAliasForFilterStore]===undefined) return undefined
-            return this.itemList.filter(item => this.filterSelectStore[this.getNameAliasForFilterStore].includes(item.id))
+            if (this.getNameAliasForFilterStore in this.filterSelectStore === false)
+                return undefined
+            if (this.filterSelectStore[this.getNameAliasForFilterStore] === undefined)
+                return undefined
+            return this.itemList.filter(item =>
+                this.filterSelectStore[this.getNameAliasForFilterStore].includes(item.id)
+            )
         },
         filterSelectStore() {
             return this.$store.state.filterSelect
         },
         title() {
             if (this.type === 'radio') {
+
                 if (this.modelradio) return this.modelradio.name
             }
 
@@ -208,6 +212,13 @@ export default {
         branchList() {
             return this.$store.getters['user/branchListAll'].map(item => {
                 item.name = item.titleAndSite
+                return item
+            })
+        },
+        tagList() {
+
+            return this.$store.getters['tags/itemList'].map(item => {
+                item.name = item.tag
                 return item
             })
         },
@@ -268,8 +279,12 @@ export default {
                                 'get',
                                 this.modelcheckbox.map(item => item.id)
                             )
-                            if (this.isSaveResultPage){
-                                this.$store.commit('setFilter', { [this.getNameAliasForFilterStore]: this.modelcheckbox.map(item => item.id)})
+                            if (this.isSaveResultPage) {
+                                this.$store.commit('setFilter', {
+                                    [this.getNameAliasForFilterStore]: this.modelcheckbox.map(
+                                        item => item.id
+                                    )
+                                })
                             }
                         }
                     }
@@ -282,7 +297,7 @@ export default {
         itemList: {
             handler(val, oldval) {
                 if (this.type === 'checkbox') {
-                    if (this.getFilterSelectStore!==undefined) {
+                    if (this.getFilterSelectStore !== undefined) {
                         this.modelcheckbox = this.getFilterSelectStore
                     } else if (this.allChecked) {
                         //если нет query п умолчанию выставляем все
@@ -295,7 +310,7 @@ export default {
                         }
                     }
                 } else {
-                    if (this.getFilterSelectStore!==undefined && this.isSaveResultPage) {
+                    if (this.getFilterSelectStore !== undefined && this.isSaveResultPage) {
                         this.modelradio = this.getFilterSelectStore[0]
                     } else {
                         this.modelradio = val[0]
@@ -315,7 +330,9 @@ export default {
                     if (!val) return
                     this.$emit('get', val.id)
                     if (this.isSaveResultPage)
-                        this.$store.commit('setFilter', { [this.getNameAliasForFilterStore]: [val.id] })
+                        this.$store.commit('setFilter', {
+                            [this.getNameAliasForFilterStore]: [val.id]
+                        })
                 }
                 if (this.name === 'calendar') {
                     if (val && val.date_from && val.date_to) {
@@ -336,13 +353,17 @@ export default {
 
                 if (val.length !== this.itemList.length) this.allChecked = false
                 if (!this.show && this.immediateOutput) {
-                    console.log('this.filterShowIds', val.map(item => item.id),this.getNameAliasForFilterStore)
+                    console.log(
+                        'this.filterShowIds',
+                        val.map(item => item.id),
+                        this.getNameAliasForFilterStore
+                    )
                     this.$emit(
                         'get',
                         val.map(item => item.id)
                     )
 
-                     /* if (this.isSaveResultPage){
+                    /* if (this.isSaveResultPage){
                           this.$store.commit('setFilter', { [this.getNameAliasForFilterStore]: val.map(item=>item.id) })
                       }*/
                 }
@@ -362,6 +383,9 @@ export default {
 
                 this.urlListData = [...data]
             })*/
+        }
+        if (this.name === 'tag') {
+            this.$store.dispatch('tags/get')
         }
     },
     mounted() {

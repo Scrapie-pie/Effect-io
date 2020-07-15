@@ -4,6 +4,7 @@
             tr
                 th
                 th
+                th
                     |Всего диалогов
                     btn-sort(
                         :toggle="sortFieldsComp['chats']",
@@ -19,6 +20,11 @@
             tr(v-for="(item, index) in itemList", :key="index")
                 td
                     | {{item.name}}
+                td
+                    base-btn.base-table__show-hover(
+                    :router="{name:'all',query:{tags:[index]}}"
+
+                    ) Перейти в журнал
                 td
                     | {{item.chats}}
                 td

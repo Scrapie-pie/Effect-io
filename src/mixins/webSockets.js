@@ -198,8 +198,7 @@ export default {
                 socket_id: val.socket_id
             })
         },
-        'monitoring'(val){
-
+        monitoring(val) {
             this.$store.commit('sockets/historyPush', {
                 event: 'monitoring',
                 socket_id: val.socket_id

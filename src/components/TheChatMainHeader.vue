@@ -151,9 +151,8 @@ export default {
     },
     methods: {
         coBrowser() {
-            let host='//effect.com/'
-            if(process.env.VUE_APP_ENV!=='production') host = '//newrobocall.ru/'
-
+            let host = '//effect.com/'
+            if (process.env.VUE_APP_ENV !== 'production') host = '//newrobocall.ru/'
 
             const params =
                 '?guestUuid=' +
@@ -161,11 +160,9 @@ export default {
                 '&siteId=' +
                 this.httpParams.params.site_id
 
-
-            this.$http.post('co-browsing/request', this.httpParams.params).then(()=>{
+            this.$http.post('co-browsing/request', this.httpParams.params).then(() => {
                 const win = window.open(host + 'cobrowsing' + params, '_blank')
                 win.focus()
-
             })
         },
         chatCompletion() {
