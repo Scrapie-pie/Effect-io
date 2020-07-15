@@ -16,9 +16,10 @@
                         )
                     .page-tags__filter-item
                         filter-drop-menu(
+                        type="radio"
                         name-alias-for-filter-store="branchPageTags"
                         is-save-result-page
-                        name="branch", @get="(val)=>filterBranchIds=val", :filter-show-ids="filterBranchShowIds" all-output immediate-output)
+                        name="branch", @get="(val)=>filterBranchIds=[val]", :filter-show-ids="filterBranchShowIds" all-output immediate-output)
 
             fieldset
                 legend.page-tags__title Тэги
@@ -34,7 +35,7 @@
                             maxlength="2000"
                         )
                     li.page-tags__item
-                        base-radio-check(name="obligationTag" v-model="is_tag_required_in_chat") Выберите для каких разделов проставление тэгов будет обязательно
+                        base-radio-check(name="obligationTag" v-model="is_tag_required") Выберите для каких разделов проставление тэгов будет обязательно
                     li.page-tags__item.page-tags__item_btn
                         base-btn(@click="save") Сохранить
 
@@ -55,7 +56,7 @@ export default {
             filterChannelIds: [],
             autosizeInit: true,
             textarea: '',
-            is_tag_required_in_chat: 0
+            is_tag_required: 0
         }
     },
     computed: {
@@ -63,13 +64,12 @@ export default {
         ...mapGetters('user', ['settings']),
 
         itemListText() {
-            let list = this.itemList.map(item => item.tag)
+            let list = this.itemList
 
-            return list.filter(item => {
-                return this.filterBranchIds.every(id => {
-                    return item?.branches_ids?.includes(id)
-                })
-            })
+            return list.filter(item =>{
+                console.log(item.branch_id,this.filterBranchIds[0]);
+                return item.branch_id===this.filterBranchIds[0]
+            }).map(item => item.tag)
         },
         itemListTextArea() {
             if (!this.itemListText.length) return ''
@@ -95,13 +95,21 @@ export default {
             immediate: true
         },
 
-        settings: {
+        filterBranchIds: {
             handler(val) {
-                if (val) this.is_tag_required_in_chat = val.settings.is_tag_required_in_chat
+                if (val.length) {
+                    let find = this.$store.getters['user/branchListAll'].find(item=>item.id===val[0])
+                    if(find) {
+                        console.log(find.options);
+                        this.is_tag_required = find.options.tag_required
+                    }
+                }
             },
 
             immediate: true
-        }
+        },
+
+
     },
     created() {
         this.$store.dispatch('tags/get')
@@ -110,10 +118,7 @@ export default {
         //console.log(this.$refs.textarea.$el.querySelector('textarea'));
     },
     methods: {
-        setFilterBranchIds(ids) {
-            this.filterBranchIds = ids
-            this.create.branches_ids = ids
-        },
+
         filterChannel(ids) {
             this.filterChannelIds = ids
             this.filterBranchShowIds = this.$store.getters['user/branchListAll']
@@ -126,13 +131,14 @@ export default {
             this.$store
                 .dispatch('tags/update', {
                     tags: this.tags,
-                    is_tag_required_in_chat: this.is_tag_required_in_chat
+                    is_tag_required: this.is_tag_required,
+                    branch_id:this.filterBranchIds[0]
                 })
                 .then(() => {
                     browserNotification('Сохранено')
                     //this.$router.push({name: 'processAll'});
                     this.$store.commit('user/settingsUpdateFields', {
-                        is_tag_required_in_chat: this.is_tag_required_in_chat
+                        is_tag_required: this.is_tag_required
                     })
                 })
         }

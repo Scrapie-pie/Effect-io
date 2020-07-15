@@ -19,9 +19,9 @@ export default {
         }
     },
     actions: {
-        update({ commit }, { tags, is_tag_required_in_chat }) {
+        update({ commit }, { tags, is_tag_required,branch_id }) {
             this._vm.$http
-                .post('tag/tag/set-settings', { tags, is_tag_required_in_chat })
+                .post('tag/tag/set-settings', { tags, is_tag_required:is_tag_required,branch_id })
                 .then(({ data }) => {
                     commit('set', data.data)
                 })

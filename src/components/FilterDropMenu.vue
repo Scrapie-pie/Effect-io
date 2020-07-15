@@ -158,6 +158,7 @@ export default {
         },
         title() {
             if (this.type === 'radio') {
+
                 if (this.modelradio) return this.modelradio.name
             }
 
