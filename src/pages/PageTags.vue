@@ -67,7 +67,7 @@ export default {
             let list = this.itemList
 
             return list.filter(item =>{
-                console.log(item.branch_id,this.filterBranchIds[0]);
+
                 return item.branch_id===this.filterBranchIds[0]
             }).map(item => item.tag)
         },
@@ -100,7 +100,7 @@ export default {
                 if (val.length) {
                     let find = this.$store.getters['user/branchListAll'].find(item=>item.id===val[0])
                     if(find) {
-                        console.log(find.options);
+
                         this.is_tag_required = find.options.tag_required
                     }
                 }

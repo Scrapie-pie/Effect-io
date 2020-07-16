@@ -188,6 +188,18 @@ export default {
                 socket_id: val.socket_id
             })
         },
+        'chat-tag-exist'(val) {
+            //this.$socket.emit('delivered', val.socket_id);
+
+            this.$store.commit('visitors/selfItemFieldUpdate',{
+                guest_uuid:val.guest_uuid,site_id:val.site_id,fieldName:'no_tag',fieldValue:val.no_tag
+            })
+
+            this.$store.commit('sockets/historyPush', {
+                event: 'chat-tag-exist',
+                socket_id: val.socket_id
+            })
+        },
         'hot-guest'(val) {
             //this.$socket.emit('delivered', val.socket_id);
 

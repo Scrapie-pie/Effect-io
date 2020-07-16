@@ -60,7 +60,14 @@ export default {
                 data.tag_id = +val
                 data.comment = this.comment
                 this.setTagChat(data)
+
                 this.$root.$emit('globBoxControlClose', data.tag_id)
+
+
+                this.$store.commit('visitors/selfItemFieldUpdate',{
+                    guest_uuid:data.guest_uuid,site_id:data.site_id,fieldName:'no_tag',fieldValue:false
+                })
+
             }
         }
     },

@@ -141,6 +141,7 @@ export default {
         }
     },
     computed: {
+
         getNameAliasForFilterStore() {
             return this.nameAliasForFilterStore || this.name
         },
@@ -296,8 +297,12 @@ export default {
         },
         itemList: {
             handler(val, oldval) {
+                console.log(this.getQuery,this.type);
                 if (this.type === 'checkbox') {
-                    if (this.getFilterSelectStore !== undefined) {
+
+
+
+                    if (this.getFilterSelectStore !== undefined  && this.isSaveResultPage) {
                         this.modelcheckbox = this.getFilterSelectStore
                     } else if (this.allChecked) {
                         //если нет query п умолчанию выставляем все
@@ -309,7 +314,9 @@ export default {
                             )
                         }
                     }
+
                 } else {
+
                     if (this.getFilterSelectStore !== undefined && this.isSaveResultPage) {
                         this.modelradio = this.getFilterSelectStore[0]
                     } else {
@@ -320,6 +327,8 @@ export default {
                             )
                         }
                     }
+
+
                 }
             },
             immediate: true
@@ -384,6 +393,8 @@ export default {
                 this.urlListData = [...data]
             })*/
         }
+
+
         if (this.name === 'tag') {
             this.$store.dispatch('tags/get')
         }

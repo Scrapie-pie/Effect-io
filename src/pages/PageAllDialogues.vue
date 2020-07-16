@@ -42,6 +42,8 @@
             //base-field(name="url" slot="control"  key="url", placeholder="Страницы", @input="val=>url=[val]", :value="url")
 
             filter-drop-menu(
+                is-save-result-page
+                name-alias-for-filter-store="pageAllDialoguesTags"
                 name="tag",
                 key="tag",
                 @get="val=>tags_ids=val"

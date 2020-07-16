@@ -148,7 +148,16 @@ export default {
         setSelfLastPageN(state, val) {
             state.selfLastPageN = val
         },
+        selfItemFieldUpdate(state, {guest_uuid,site_id,fieldName,fieldValue}){
+            let findIndex = state.self.findIndex(item => {
+                return item.guest_uuid + item.site_id === guest_uuid + site_id
+            })
 
+            if (findIndex !== -1) {
+                state.self[findIndex][fieldName] = fieldValue
+
+            }
+        },
         selfMessageLastUpdate(state, val) {
             let findIndex = state.self.findIndex(item => {
                 if (val.selfUuid) return item.guest_uuid === val.selfUuid

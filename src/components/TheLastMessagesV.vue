@@ -26,7 +26,7 @@
                             v-text="item.rootLinkOptions.text"
                             )
                         base-people.last-messages-v__people(v-bind="item.basePeopleOptions")
-                        .last-messages-v__tag-info(v-if="!item.isTag") Нет тега
+                        .last-messages-v__tag-info(v-if="!item.no_tag") Нет тега
                         process-actions(:paramsIds="{guest_uuid:item.guest_uuid,site_id:item.site_id}" v-if="viewModeChat=='process'")
 
 
