@@ -5,7 +5,7 @@
             legend.select-tags__title Выберите тэг
             .select-tags__controls
                 base-filter-search.select-tags__controls-search(
-                    :item-list="itemList",
+                    :item-list="filterItemlist",
                     @result="(val)=>filterSearchResult=val",
                     field-name="tag"
                 )
@@ -51,6 +51,12 @@ export default {
         }
     },
     computed: {
+        filterItemlist(){
+            return this.itemList.filter(item=>{
+                console.log(this.$store.state.user.profile.branches_ids,item.branch_id);
+                return this.$store.state.user.profile.branches_ids.includes(item.branch_id)
+            })
+        },
         ...mapGetters('tags', ['itemList'])
     },
     watch: {

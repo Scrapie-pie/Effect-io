@@ -218,10 +218,13 @@ export default {
         },
         tagList() {
 
-            return this.$store.getters['tags/itemList'].map(item => {
+            return [...this.$store.getters['tags/itemList'].map(item => {
                 item.name = item.tag
                 return item
-            })
+            }),{
+                name:'Диалоги без тэга',
+                id:-1
+            }]
         },
         siteCompanyList() {
             return this.$store.state.user.siteCompanyList.map(item => {

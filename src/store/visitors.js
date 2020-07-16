@@ -152,8 +152,9 @@ export default {
             let findIndex = state.self.findIndex(item => {
                 return item.guest_uuid + item.site_id === guest_uuid + site_id
             })
-
+            console.log(findIndex);
             if (findIndex !== -1) {
+                console.log(state.self[findIndex][fieldName]);
                 state.self[findIndex][fieldName] = fieldValue
 
             }

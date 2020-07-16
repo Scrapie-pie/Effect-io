@@ -28,7 +28,7 @@
         )
         filter-drop-menu(
         v-if="routerName==='statsTags'"
-        name="branch", @get="(val)=>filterBranchIds=val"
+        name="branch", @get="(val)=>branch_ids=val"
         slot="control"
         )
         base-btn(
@@ -120,7 +120,8 @@ export default {
                 id: null
             },
             by_dates: 0,
-            users_ids: []
+            users_ids: [],
+            branch_ids: []
         }
     },
     computed: {
@@ -202,6 +203,11 @@ export default {
                 this.routerName === 'statsOperators'
             )
                 obj.filterListOn = true
+            if (
+                this.routerName === 'statsTags'
+
+            )
+                obj.branch_ids= this.branch_ids
 
             let main = {
                 date_from: this.date_from,

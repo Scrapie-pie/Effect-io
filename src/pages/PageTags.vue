@@ -67,7 +67,7 @@ export default {
             let list = this.itemList
 
             return list.filter(item =>{
-
+                console.log(item.branch_id,this.filterBranchIds[0]);
                 return item.branch_id===this.filterBranchIds[0]
             }).map(item => item.tag)
         },
