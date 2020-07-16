@@ -30,11 +30,11 @@
 
                     th
                         .stats-table-line__th-wrap
-                            base-icon(name="ball1")
+                            base-icon(name="ball2")
                             btn-sort(:toggle="sortFieldsComp['middling_ratings']", @result="val=>sortFieldsSetSortField(val,'middling_ratings')")
                     th
                         .stats-table-line__th-wrap
-                            base-icon(name="ball2")
+                            base-icon(name="ball1")
                             btn-sort(:toggle="sortFieldsComp['badly_ratings']", @result="val=>sortFieldsSetSortField(val,'badly_ratings')")
 
                     th(v-if="hideStatsAllBranchAndByDates")
