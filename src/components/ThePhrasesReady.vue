@@ -136,7 +136,7 @@ export default {
             handler(val) {
                 if (val.length) {
                     this.categoriesSelectId = val[0].id
-                }
+                } else this.categoriesSelectId = null
             },
             immediate: true
         }

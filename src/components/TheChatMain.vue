@@ -452,7 +452,7 @@ export default {
             }
         },
         accessPage(list, viewModeChat) {
-            console.log('accessPage')
+            console.log('accessPage',viewModeChat,list,this.$store.state.user.profile.id)
             if (viewModeChat === 'common') return true
 
             if (viewModeChat === 'search') return true
