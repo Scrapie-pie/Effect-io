@@ -132,7 +132,7 @@
                     td {{item.excellent_ratings}}
                     td {{item.middling_ratings}}
                     td {{item.badly_ratings}}
-                    td {{item.average_time_in_chats  | datetimeStoHMS(true)}}
+                    td {{item.operators_time_in_chats  | datetimeStoHMS(true)}}
                     td {{item.operators_time_in_1_2_chat   | datetimeStoHMS(true)}}
                     td {{item.operators_time_in_3_5_chats   | datetimeStoHMS(true)}}
                     td {{item.operators_time_in_6_10_chats   | datetimeStoHMS(true)}}
@@ -185,7 +185,7 @@
                     td {{item.excellent_ratings}}
                     td {{item.middling_ratings}}
                     td {{item.badly_ratings}}
-                    td {{item.average_time_in_chats  | datetimeStoHMS(true)}}
+                    td {{item.operators_time_in_chats  | datetimeStoHMS(true)}}
                     td {{item.operators_time_in_1_2_chat   | datetimeStoHMS(true)}}
                     td {{item.operators_time_in_3_5_chats   | datetimeStoHMS(true)}}
                     td {{item.operators_time_in_6_10_chats   | datetimeStoHMS(true)}}
@@ -226,7 +226,7 @@
                         td {{item.excellent_ratings}}
                         td {{item.middling_ratings}}
                         td {{item.badly_ratings}}
-                        td {{item.average_time_in_chats  | datetimeStoHMS(true)}}
+                        td {{item.operators_time_in_chats  | datetimeStoHMS(true)}}
                         td {{item.operators_time_in_1_2_chat   | datetimeStoHMS(true)}}
                         td {{item.operators_time_in_3_5_chats   | datetimeStoHMS(true)}}
                         td {{item.operators_time_in_6_10_chats   | datetimeStoHMS(true)}}

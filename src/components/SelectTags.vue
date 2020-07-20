@@ -37,6 +37,7 @@
 import ActionList from '@/components/ActionList'
 import { httpParams } from '@/mixins/mixins'
 import { mapGetters, mapActions } from 'vuex'
+
 export default {
     name: 'SelectTags',
     components: {
@@ -52,9 +53,12 @@ export default {
     },
     computed: {
         filterItemlist(){
+            let site_id = this.httpParams.params.site_id
             return this.itemList.filter(item=>{
-                console.log(this.$store.state.user.profile.branches_ids,item.branch_id);
-                return this.$store.state.user.profile.branches_ids.includes(item.branch_id)
+                if(!this.$store.state.user.profile.branches_ids.includes(item.branch_id)) return false
+                if(this.$store.getters['user/branchListAll'].find(itemSub =>itemSub.id===item.branch_id && itemSub.site_id===site_id)) return true
+
+
             })
         },
         ...mapGetters('tags', ['itemList'])
