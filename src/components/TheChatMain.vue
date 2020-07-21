@@ -621,7 +621,7 @@ export default {
     }
     &__header {
         display: grid;
-        grid-template-columns: max-content max-content;
+        grid-template-columns: 1fr max-content;
         gap: calc-em(30);
         align-items: baseline;
     }

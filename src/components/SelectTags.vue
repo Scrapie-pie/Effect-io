@@ -53,10 +53,16 @@ export default {
     },
     computed: {
         filterItemlist(){
-            let site_id = this.httpParams.params.site_id
+            let site_id = +this.httpParams.params.site_id
             return this.itemList.filter(item=>{
+
+                //return this.$store.state.user.profile.branches_ids.includes(item.branch_id) && item.site_id === site_id
+
                 if(!this.$store.state.user.profile.branches_ids.includes(item.branch_id)) return false
-                if(this.$store.getters['user/branchListAll'].find(itemSub =>itemSub.id===item.branch_id && itemSub.site_id===site_id)) return true
+                if(this.$store.getters['user/branchListAll'].find(itemSub =>{
+                        console.log(itemSub.id,item.branch_id,itemSub.site_id,site_id);
+                        return itemSub.id===item.branch_id && itemSub.site_id===site_id
+                })) return true
 
 
             })

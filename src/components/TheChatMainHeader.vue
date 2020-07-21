@@ -201,7 +201,7 @@ export default {
     z-index: 10; //лодеры с сообщений были выше попапа
 
     @include media($width_xs) {
-        display: none;
+        display: none!important;
     }
 
     &__controls {
