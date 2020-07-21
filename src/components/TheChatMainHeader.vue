@@ -161,8 +161,11 @@ export default {
                 this.httpParams.params.site_id
 
             this.$http.post('co-browsing/request', this.httpParams.params).then(() => {
-                const win = window.open(host + 'cobrowsing' + params, '_blank')
-                win.focus()
+                setTimeout(()=>{
+                    const win = window.open(host + 'cobrowsing' + params, '_blank')
+                    win.focus()
+                },3000)
+
             })
         },
         chatCompletion() {
