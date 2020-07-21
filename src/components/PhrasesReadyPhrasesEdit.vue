@@ -59,6 +59,7 @@
 
 <script>
 import FilterDropMenu from '@/components/FilterDropMenu'
+import lodash_cloneDeep from 'lodash/cloneDeep'
 
 export default {
     components: {
@@ -107,6 +108,7 @@ export default {
     watch: {
         phrasesEdit: {
             handler(object) {
+                object = lodash_cloneDeep(object)
                 let list = this.$store.getters['phrases/categories']
                 if (this.$route.params.site_id) list = this.$store.getters['phrases/categoriesUse']
                 let findCategory = list.find(item => item.id === object.category_id)

@@ -75,6 +75,10 @@ export default {
             type: Array,
             default: () => []
         },
+        branch_ids: {
+            type: Array,
+            default: () => []
+        },
 
         btnDetailHide: {
             type: Boolean,
@@ -142,6 +146,7 @@ export default {
                 user_id: this.user_id,
                 users_ids: this.users_ids,
                 branch_id: this.branch_id,
+                branch_ids: this.branch_ids,
 
                 is_one_time_chat: this.is_one_time_chat,
 

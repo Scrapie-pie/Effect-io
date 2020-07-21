@@ -10,6 +10,7 @@
                     @get="filterChannel"
                     immediate-output
                     :set-value-ids="setFilterChannelIdsValue"
+
                     )
 
                 li.phrases-ready-edit__add-item(v-if="modelCategoryEdit.is_common")
@@ -44,6 +45,7 @@
 
 <script>
 import FilterDropMenu from '@/components/FilterDropMenu'
+import lodash_cloneDeep from 'lodash/cloneDeep'
 
 export default {
     components: {
@@ -77,6 +79,8 @@ export default {
     watch: {
         categoriesEdit: {
             handler(object) {
+                object = lodash_cloneDeep(object)
+                console.log(object)
                 let branchListFilter = this.$store.getters['user/branchListAll'].filter(item =>
                     object.branches_ids.includes(item.id)
                 )

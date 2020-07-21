@@ -80,8 +80,7 @@ export default {
         },
         itemList() {
             return this.$store.getters['user/branchListAll']
-        },
-
+        }
     },
     created() {},
     methods: {

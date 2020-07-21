@@ -26,7 +26,8 @@
                             v-text="item.rootLinkOptions.text"
                             )
                         base-people.last-messages-v__people(v-bind="item.basePeopleOptions")
-                        process-actions(:paramsIds="{guest_uuid:item.guest_uuid,site_id:item.site_id}" v-if="viewModeChat=='process'")
+                        .last-messages-v__tag-info(v-if="item.no_tag && viewModeChat==='visitors'") Нет тега
+                        process-actions(:paramsIds="{guest_uuid:item.guest_uuid,site_id:item.site_id}" v-if="viewModeChat==='process'")
 
 
 
@@ -191,17 +192,16 @@ export default {
             if (item.hot && item.awaiting_answer_timeFormat) return true
         },
         timerHotLevel(item) {
-            let seconds = Math.round(this.timerNow - item.awaiting_answer_timeFormat);
-            let level = 0;
-            if(seconds > 30) level = 1
-            if(seconds > 60) level = 2
-            if(seconds > 120) level = 3
-            if(seconds > 180) level = 4
+            let seconds = Math.round(this.timerNow - item.awaiting_answer_timeFormat)
+            let level = 0
+            if (seconds > 30) level = 1
+            if (seconds > 60) level = 2
+            if (seconds > 120) level = 3
+            if (seconds > 180) level = 4
 
             return level
         },
         timer(item) {
-
             return datetimeStoHMS(Math.round(this.timerNow - item.awaiting_answer_timeFormat), true)
         },
         setName(item, visitorInfo) {
@@ -358,6 +358,7 @@ export default {
 
 <style lang="scss">
 .last-messages-v {
+
     $color_bg-hover: glob-color('border');
     $color_bg-error: glob-color('error');
     $color_bg-accent: glob-color('accent');
@@ -467,7 +468,6 @@ export default {
         color: $color_light;
     }
     &__timer {
-
         position: absolute;
         right: 0;
         top: 0;
@@ -486,6 +486,15 @@ export default {
         .btn {
             font-size: inherit;
         }
+    }
+
+    &__tag-info {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        display: inline-block;
+        background-color:$color_light;
+        padding:.1em .75em;
     }
 }
 </style>

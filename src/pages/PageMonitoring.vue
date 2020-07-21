@@ -31,85 +31,51 @@
 </template>
 
 <script>
-
-
-
-import TheLayoutTable from "@/components/TheLayoutTable";
-import {apiMonitoring} from "@/api/api";
+import TheLayoutTable from '@/components/TheLayoutTable'
+import { apiMonitoring } from '@/api/api'
 
 export default {
     components: {
         TheLayoutTable
-
-
     },
     mixins: [],
     data() {
         return {
-            branch_unprocessed:0,
-            branch_active:0,
-            branch_day_active:0,
-            users_list:[],
-
-
+            branch_unprocessed: 0,
+            branch_active: 0,
+            branch_day_active: 0,
+            users_list: []
         }
     },
-
-
-    created() {
-        this.$root.$on('emitMonitoring',this.setData)
-        apiMonitoring.get().then(r=>{
-
-
-            this.setData(r)
-
-        })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    },
-    beforeCreate(){
-        this.$root.$off('emitMonitoring',this.setData)
-    },
-    computed:{
-        itemList(){
-
-            return this.users_list.map(user=>{
-
-                let operator = this.$store.getters['operators/all'].find(operator=>operator.id==user.user_id)
-                if(operator) {
-                    user.fullName=operator.fullName
+    computed: {
+        itemList() {
+            return this.users_list.map(user => {
+                let operator = this.$store.getters['operators/all'].find(
+                    operator => operator.id == user.user_id
+                )
+                if (operator) {
+                    user.fullName = operator.fullName
                 }
                 return user
             })
-
         }
     },
+
+    created() {
+        this.$root.$on('emitMonitoring', this.setData)
+        apiMonitoring.get().then(r => {
+            this.setData(r)
+        })
+    },
+    beforeCreate() {
+        this.$root.$off('emitMonitoring', this.setData)
+    },
     methods: {
-        setData(r){
+        setData(r) {
             this.branch_unprocessed = r.branch_unprocessed
             this.branch_active = r.branch_active
             this.branch_day_active = r.branch_day_active
             this.users_list = r.users_list
-
-
-
-
-
-
         }
     }
 }
@@ -117,25 +83,25 @@ export default {
 
 <style lang="scss">
 .page-monitoring {
- .base-table {
-     width:auto;
- }
+    .base-table {
+        width: auto;
+    }
     &__name {
-        white-space:nowrap;
+        white-space: nowrap;
     }
     &__turn {
         @extend %h1;
-        padding:.7em 1em;
-        border:2px solid glob-color(border);
-        display:inline-block;
-        width:100%;
-        max-width:350px;
-        text-align:center;
-        margin-bottom:2em;
+        padding: 0.7em 1em;
+        border: 2px solid glob-color(border);
+        display: inline-block;
+        width: 100%;
+        max-width: 350px;
+        text-align: center;
+        margin-bottom: 2em;
         &.error {
-            background-color:glob-color('error');
-            border-color:glob-color('error');
-            color:glob-color('light');
+            background-color: glob-color('error');
+            border-color: glob-color('error');
+            color: glob-color('light');
         }
     }
 }

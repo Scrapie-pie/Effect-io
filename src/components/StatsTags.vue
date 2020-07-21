@@ -4,6 +4,7 @@
             tr
                 th
                 th
+                th
                     |Всего диалогов
                     btn-sort(
                         :toggle="sortFieldsComp['chats']",
@@ -16,13 +17,19 @@
                         @result="val=>sortFieldsSetSortField(val,'percents')"
                     )
         tbody
-            tr(v-for="(item, index) in itemList", :key="index")
+            tr(v-for="(item, index) in itemList", :key="item.id")
                 td
                     | {{item.name}}
+                td
+                    base-btn.base-table__show-hover(@click="link(item)"
+
+
+                    ) Перейти в журнал
                 td
                     | {{item.chats}}
                 td
                     |{{item.percents}} %
+
 
 
 
@@ -49,7 +56,13 @@ export default {
             return this.bodyList
         }
     },
-    methods: {}
+    methods: {
+        link(item){
+
+            this.$store.commit('setFilter', { pageAllDialoguesTags: [item.id] })
+            this.$router.push({name:'all'})
+        }
+    }
 }
 </script>
 

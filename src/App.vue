@@ -86,24 +86,22 @@ export default {
 
         this.$store.commit('setFilterlocalStorage')
     },
-    mounted(){
+    mounted() {
         this.set1vhForMobileViewport()
     },
     beforeDestroy() {
         window.removeEventListener('unhandledrejection', this.promiseErrorHandler)
     },
     methods: {
-        set1vhForMobileViewport(){
-
-            let vh = window.innerHeight * 0.01;
-            document.documentElement.style.setProperty('--vh', `${vh}px`);
-
+        set1vhForMobileViewport() {
+            let vh = window.innerHeight * 0.01
+            document.documentElement.style.setProperty('--vh', `${vh}px`)
 
             window.addEventListener('resize', () => {
                 // We execute the same script as before
-                let vh = window.innerHeight * 0.01;
-                document.documentElement.style.setProperty('--vh', `${vh}px`);
-            });
+                let vh = window.innerHeight * 0.01
+                document.documentElement.style.setProperty('--vh', `${vh}px`)
+            })
         },
         startEndLoader(url, action) {
             let mapLoaders = {
@@ -115,7 +113,7 @@ export default {
                 clientInfo: ['guest/info', 'guest/update-by-operator'],
                 pageVisitors: ['guest/list', 'chat-room-user/take'],
                 pageTeam: ['employee/company-list', 'user/update-profile'],
-                pageMonitoring:['monitoring/read'],
+                pageMonitoring: ['monitoring/read'],
                 pageStats: ['statistic/get-by-params'],
                 phrasesReady: [
                     'snippet/read-snippet',
@@ -262,20 +260,19 @@ export default {
             )
         },
         onResize({ width, height }) {
-            console.log(width, height);
+            console.log(width, height)
             this.$store.commit('resize/setWindowSize', { width, height })
-
         }
     }
 }
 </script>
 
 <style lang="scss">
-    :root{
-        @each $i, $c in $glob-colors{
-            --color-#{$i}:#{$c};
-        }
+:root {
+    @each $i, $c in $glob-colors {
+        --color-#{$i}: #{$c};
     }
+}
 .page {
     $transition: $glob-trans;
     $indent-main: $glob-indent-main-lr;

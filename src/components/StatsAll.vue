@@ -30,11 +30,11 @@
 
                     th
                         .stats-table-line__th-wrap
-                            base-icon(name="ball1")
+                            base-icon(name="ball2")
                             btn-sort(:toggle="sortFieldsComp['middling_ratings']", @result="val=>sortFieldsSetSortField(val,'middling_ratings')")
                     th
                         .stats-table-line__th-wrap
-                            base-icon(name="ball2")
+                            base-icon(name="ball1")
                             btn-sort(:toggle="sortFieldsComp['badly_ratings']", @result="val=>sortFieldsSetSortField(val,'badly_ratings')")
 
                     th(v-if="hideStatsAllBranchAndByDates")
@@ -132,11 +132,11 @@
                     td {{item.excellent_ratings}}
                     td {{item.middling_ratings}}
                     td {{item.badly_ratings}}
-                    td {{item.average_time_in_chats  | datetimeStoHMS(true)}}
-                    td {{item.operators_time_in_1_2_chat}}
-                    td {{item.operators_time_in_3_5_chats}}
-                    td {{item.operators_time_in_6_10_chats}}
-                    td {{item.operators_time_in_11_and_more_chats}}
+                    td {{item.operators_time_in_chats  | datetimeStoHMS(true)}}
+                    td {{item.operators_time_in_1_2_chat   | datetimeStoHMS(true)}}
+                    td {{item.operators_time_in_3_5_chats   | datetimeStoHMS(true)}}
+                    td {{item.operators_time_in_6_10_chats   | datetimeStoHMS(true)}}
+                    td {{item.operators_time_in_11_and_more_chats   | datetimeStoHMS(true)}}
                     td(v-if="hideStatsAllBranchAndByDates") {{item.average_time_in_chats | datetimeStoHMS(true)}}
                     td {{item.missed_average_time | datetimeStoHMS(true)}}
                     td {{item.first_answer_average_speed | datetimeStoHMS(true)}}
@@ -185,11 +185,11 @@
                     td {{item.excellent_ratings}}
                     td {{item.middling_ratings}}
                     td {{item.badly_ratings}}
-                    td {{item.average_time_in_chats  | datetimeStoHMS(true)}}
-                    td {{item.operators_time_in_1_2_chat}}
-                    td {{item.operators_time_in_3_5_chats}}
-                    td {{item.operators_time_in_6_10_chats}}
-                    td {{item.operators_time_in_11_and_more_chats}}
+                    td {{item.operators_time_in_chats  | datetimeStoHMS(true)}}
+                    td {{item.operators_time_in_1_2_chat   | datetimeStoHMS(true)}}
+                    td {{item.operators_time_in_3_5_chats   | datetimeStoHMS(true)}}
+                    td {{item.operators_time_in_6_10_chats   | datetimeStoHMS(true)}}
+                    td {{item.operators_time_in_11_and_more_chats   | datetimeStoHMS(true)}}
                     td(v-if="hideStatsAllBranchAndByDates") {{item.average_time_in_chats | datetimeStoHMS(true)}}
                     td {{item.missed_average_time | datetimeStoHMS(true)}}
                     td {{item.first_answer_average_speed | datetimeStoHMS(true)}}
@@ -226,11 +226,11 @@
                         td {{item.excellent_ratings}}
                         td {{item.middling_ratings}}
                         td {{item.badly_ratings}}
-                        td {{item.average_time_in_chats  | datetimeStoHMS(true)}}
-                        td {{item.operators_time_in_1_2_chat}}
-                        td {{item.operators_time_in_3_5_chats}}
-                        td {{item.operators_time_in_6_10_chats}}
-                        td {{item.operators_time_in_11_and_more_chats}}
+                        td {{item.operators_time_in_chats  | datetimeStoHMS(true)}}
+                        td {{item.operators_time_in_1_2_chat   | datetimeStoHMS(true)}}
+                        td {{item.operators_time_in_3_5_chats   | datetimeStoHMS(true)}}
+                        td {{item.operators_time_in_6_10_chats   | datetimeStoHMS(true)}}
+                        td {{item.operators_time_in_11_and_more_chats   | datetimeStoHMS(true)}}
                         td(v-if="hideStatsAllBranchAndByDates") {{item.average_time_in_chats | datetimeStoHMS(true)}}
                         td {{item.missed_average_time | datetimeStoHMS(true)}}
                         td {{item.first_answer_average_speed | datetimeStoHMS(true)}}

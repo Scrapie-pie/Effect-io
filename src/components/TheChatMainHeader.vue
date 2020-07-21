@@ -151,9 +151,8 @@ export default {
     },
     methods: {
         coBrowser() {
-            let host='//effect.com/'
-            if(process.env.VUE_APP_ENV!=='production') host = '//newrobocall.ru/'
-
+            let host = '//effect.com/'
+            if (process.env.VUE_APP_ENV !== 'production') host = '//newrobocall.ru/'
 
             const params =
                 '?guestUuid=' +
@@ -161,11 +160,9 @@ export default {
                 '&siteId=' +
                 this.httpParams.params.site_id
 
-
-            this.$http.post('co-browsing/request', this.httpParams.params).then(()=>{
+            this.$http.post('co-browsing/request', this.httpParams.params).then(() => {
                 const win = window.open(host + 'cobrowsing' + params, '_blank')
                 win.focus()
-
             })
         },
         chatCompletion() {
@@ -186,7 +183,7 @@ export default {
             document.addEventListener('click', this.hideClientInfo)
         },
         hideClientInfo(e) {
-            if (!e.target.matches('.chat-chat__info, .chat-chat__info *,.js-client-info')) {
+            if (!e.target.matches('.page-chat__info, .page-chat__info *,.js-client-info')) {
                 document.body.classList.remove('is-opened-client-info')
                 document.removeEventListener('click', this.hideClientInfo)
             }

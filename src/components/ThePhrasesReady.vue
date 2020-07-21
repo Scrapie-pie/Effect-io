@@ -125,6 +125,7 @@ export default {
             return list.filter(item => {
                 if (!item.is_common) return true
                 return this.filterBranchIds.every(id => {
+                    console.log(id, item.branches_ids, item)
                     return item.branches_ids.includes(id)
                 })
             })
@@ -135,7 +136,7 @@ export default {
             handler(val) {
                 if (val.length) {
                     this.categoriesSelectId = val[0].id
-                }
+                } else this.categoriesSelectId = null
             },
             immediate: true
         }

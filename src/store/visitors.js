@@ -148,7 +148,17 @@ export default {
         setSelfLastPageN(state, val) {
             state.selfLastPageN = val
         },
+        selfItemFieldUpdate(state, {guest_uuid,site_id,fieldName,fieldValue}){
+            let findIndex = state.self.findIndex(item => {
+                return item.guest_uuid + item.site_id === guest_uuid + site_id
+            })
+            console.log(findIndex);
+            if (findIndex !== -1) {
+                console.log(state.self[findIndex][fieldName]);
+                state.self[findIndex][fieldName] = fieldValue
 
+            }
+        },
         selfMessageLastUpdate(state, val) {
             let findIndex = state.self.findIndex(item => {
                 if (val.selfUuid) return item.guest_uuid === val.selfUuid
@@ -166,8 +176,7 @@ export default {
                     !val.selfUuid &&
                     val.from_role_id != 9 //не системное
                 ) {
-
-                    if(val.hasOwnProperty('inc_counter') && !val.inc_counter) return
+                    if (val.hasOwnProperty('inc_counter') && !val.inc_counter) return
 
                     let unread = state.self[findIndex].unread
                     unread.push(val.id)

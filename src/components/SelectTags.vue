@@ -5,7 +5,7 @@
             legend.select-tags__title Выберите тэг
             .select-tags__controls
                 base-filter-search.select-tags__controls-search(
-                    :item-list="itemList",
+                    :item-list="filterItemlist",
                     @result="(val)=>filterSearchResult=val",
                     field-name="tag"
                 )
@@ -21,6 +21,15 @@
                     name-field-value="id"
                     v-model="model"
                 )
+            .select-tags__coment-wrap(v-if="$store.getters['user/isRole'](['admin', 'owner', 'operatorSenior'])")
+                label.select-tags__label Оставьте комментарий
+                base-field.select-tags__coment(
+                    type="textarea"
+                    name="comment",
+
+                    maxLength="5000"
+                    v-model="comment"
+                )
 
 </template>
 
@@ -28,6 +37,7 @@
 import ActionList from '@/components/ActionList'
 import { httpParams } from '@/mixins/mixins'
 import { mapGetters, mapActions } from 'vuex'
+
 export default {
     name: 'SelectTags',
     components: {
@@ -36,20 +46,38 @@ export default {
     mixins: [httpParams],
     data() {
         return {
+            comment: null,
             model: '',
             filterSearchResult: []
         }
     },
     computed: {
+        filterItemlist(){
+            let site_id = this.httpParams.params.site_id
+            return this.itemList.filter(item=>{
+                if(!this.$store.state.user.profile.branches_ids.includes(item.branch_id)) return false
+                if(this.$store.getters['user/branchListAll'].find(itemSub =>itemSub.id===item.branch_id && itemSub.site_id===site_id)) return true
+
+
+            })
+        },
         ...mapGetters('tags', ['itemList'])
     },
     watch: {
         model(val) {
             if (val) {
                 let data = this.httpParams.params
-                data.tag_id = val
+                data.tag_id = +val
+                data.comment = this.comment
                 this.setTagChat(data)
+
                 this.$root.$emit('globBoxControlClose', data.tag_id)
+
+
+                this.$store.commit('visitors/selfItemFieldUpdate',{
+                    guest_uuid:data.guest_uuid,site_id:data.site_id,fieldName:'no_tag',fieldValue:false
+                })
+
             }
         }
     },
@@ -71,8 +99,19 @@ export default {
     $transition: $glob-trans;
     position: relative;
 
+    text-align: left;
+
     width: 100%;
     max-width: 415px;
+
+    &__coment-wrap {
+        margin-top: 5em;
+    }
+
+    &__label,
+    &__coment {
+        margin-bottom: calc-em(15);
+    }
 
     &__box {
         min-width: 0;

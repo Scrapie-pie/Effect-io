@@ -168,8 +168,6 @@ export default {
             return getComputedStyle(document.body).getPropertyValue(`--color-${nameColor}`)
         },
         send() {
-
-
             this.$emit('hide')
             this.$emit('get', this.dates)
         }

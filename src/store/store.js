@@ -29,10 +29,13 @@ const getDefaultFilterSelect = () => {
             url: undefined,
             calendar: undefined,
             last_days: undefined,
+            branchPageTags: undefined,
+            siteCompanyPageTags: undefined,
             siteCompanyPhrasesTop:undefined,
             siteCompanyPhrasesAdd:undefined,
             branchPhrasesTop:undefined,
             branchPhrasesAdd:undefined,
+
         }
     }
 }

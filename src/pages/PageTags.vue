@@ -3,6 +3,25 @@
         base-wait(name="pageTags")
         form
             fieldset
+                .page-tags__filter
+                    .page-tags__filter-item
+
+                        filter-drop-menu(
+                        name-alias-for-filter-store="siteCompanyPageTags"
+                        is-save-result-page
+                        name="siteCompany",
+                        @get="filterChannel"
+                        all-output
+                        immediate-output
+                        )
+                    .page-tags__filter-item
+                        filter-drop-menu(
+                        type="radio"
+                        name-alias-for-filter-store="branchPageTags"
+                        is-save-result-page
+                        name="branch", @get="(val)=>filterBranchIds=[val]", :filter-show-ids="filterBranchShowIds" all-output immediate-output)
+
+            fieldset
                 legend.page-tags__title Тэги
                 ul.page-tags__list
                     li.page-tags__item
@@ -16,7 +35,7 @@
                             maxlength="2000"
                         )
                     li.page-tags__item
-                        base-radio-check(name="obligationTag" v-model="is_tag_required_in_chat") Обязательное присвоение тэга
+                        base-radio-check(name="obligationTag" v-model="is_tag_required") Выберите для каких разделов проставление тэгов будет обязательно
                     li.page-tags__item.page-tags__item_btn
                         base-btn(@click="save") Сохранить
 
@@ -27,13 +46,17 @@ import autosize from 'autosize'
 import { mapGetters, mapActions } from 'vuex'
 
 import browserNotification from '@/modules/browserNotification'
+import FilterDropMenu from '@/components/FilterDropMenu'
 export default {
-    components: {},
+    components: { FilterDropMenu },
     data() {
         return {
+            filterBranchIds: [],
+            filterBranchShowIds: [],
+            filterChannelIds: [],
             autosizeInit: true,
             textarea: '',
-            is_tag_required_in_chat: 0
+            is_tag_required: 0
         }
     },
     computed: {
@@ -41,7 +64,12 @@ export default {
         ...mapGetters('user', ['settings']),
 
         itemListText() {
-            return this.itemList.map(item => item.tag)
+            let list = this.itemList
+
+            return list.filter(item =>{
+                console.log(item.branch_id,this.filterBranchIds[0]);
+                return item.branch_id===this.filterBranchIds[0]
+            }).map(item => item.tag)
         },
         itemListTextArea() {
             if (!this.itemListText.length) return ''
@@ -67,13 +95,21 @@ export default {
             immediate: true
         },
 
-        settings: {
+        filterBranchIds: {
             handler(val) {
-                if (val) this.is_tag_required_in_chat = val.settings.is_tag_required_in_chat
+                if (val.length) {
+                    let find = this.$store.getters['user/branchListAll'].find(item=>item.id===val[0])
+                    if(find) {
+
+                        this.is_tag_required = find.options.tag_required
+                    }
+                }
             },
 
             immediate: true
-        }
+        },
+
+
     },
     created() {
         this.$store.dispatch('tags/get')
@@ -82,17 +118,27 @@ export default {
         //console.log(this.$refs.textarea.$el.querySelector('textarea'));
     },
     methods: {
+
+        filterChannel(ids) {
+            this.filterChannelIds = ids
+            this.filterBranchShowIds = this.$store.getters['user/branchListAll']
+                .filter(item => ids.includes(item.site_id))
+                .map(item => {
+                    return item.id
+                })
+        },
         save() {
             this.$store
                 .dispatch('tags/update', {
                     tags: this.tags,
-                    is_tag_required_in_chat: this.is_tag_required_in_chat
+                    is_tag_required: this.is_tag_required,
+                    branch_id:this.filterBranchIds[0]
                 })
                 .then(() => {
                     browserNotification('Сохранено')
                     //this.$router.push({name: 'processAll'});
                     this.$store.commit('user/settingsUpdateFields', {
-                        is_tag_required_in_chat: this.is_tag_required_in_chat
+                        is_tag_required: this.is_tag_required
                     })
                 })
         }
@@ -108,6 +154,18 @@ export default {
 
 <style lang="scss">
 .page-tags {
+    &__filter {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+
+        @extend %row-flex;
+
+        &-item {
+            @extend %row-flex-col;
+            margin-bottom: calc-em(35);
+        }
+    }
     &__title {
         @extend %h4;
         margin-bottom: calc-em(40);

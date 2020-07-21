@@ -2,7 +2,7 @@ const getDefaultState = () => {
     return {
         history: [],
         emitList: {
-            'monitoring':'emitMonitoring',
+            monitoring: 'emitMonitoring',
             'typing-live': 'emitTypingLive',
             'hot-guest': 'emitHotGust',
             'new-message': 'emitNewMessage',
@@ -18,7 +18,8 @@ const getDefaultState = () => {
             'unprocessed-remove': 'emitUnprocessedRemove',
             'update-employees': 'emitUpdateEmployees',
             'employee-online': 'emitEmployeeOnline',
-            logout: 'emitLogout'
+            logout: 'emitLogout',
+            'chat-tag-exist':'emitChatTagExist'
         }
     }
 }
