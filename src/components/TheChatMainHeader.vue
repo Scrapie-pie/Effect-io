@@ -279,7 +279,9 @@ export default {
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
-        width: 100%;
+
+        width: auto;
+        max-width: 100%;
     }
     &__channel-btn-wrap:hover &__client-history-actions {
         opacity: 1;
