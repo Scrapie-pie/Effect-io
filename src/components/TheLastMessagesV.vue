@@ -229,6 +229,7 @@ export default {
             item.classList[`last-messages-v__item_hot_status_`+item.hot] = true
             item.classList['last-messages-v__item_very-hot'] = item.very_hot
             item.classList['last-messages-v__item_very-hot_status_'+item.very_hot] = true
+            item.classList['last-messages-v__item_no_tag'] = item.no_tag
 
             return item
         },
@@ -363,6 +364,7 @@ export default {
     $color_bg-error: glob-color('error');
     $color_bg-accent: glob-color('accent');
     $color_bg-info: glob-color('info');
+    $color_bg-info-dark: glob-color('info-dark');
     $color_light: glob-color('light');
     $transition: $glob-trans;
 
@@ -400,6 +402,11 @@ export default {
         &:hover,
         &_active {
             background-color: $color_bg-hover;
+        }
+
+        &_no_tag {
+
+            border:4px solid $color_bg-info-dark;
         }
 
         &_hot,
@@ -493,7 +500,8 @@ export default {
         bottom: 0;
         right: 0;
         display: inline-block;
-        background-color:$color_light;
+        background-color:$color_bg-info-dark;
+        color:$color_light;
         padding:.1em .75em;
     }
 }
