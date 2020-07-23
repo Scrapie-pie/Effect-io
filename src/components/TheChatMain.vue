@@ -64,12 +64,12 @@
 
         footer.chat-main__footer(v-if="!['search','visor'].includes(viewModeChat)")
             .chat-main__scroll-down-button-wrap
-                base-btn.chat-main__scroll-down-button(
-                    color="info"
+                scroll-down-button.chat-main__scroll-down-button(
                     v-if="CMSPA_scrollDownButtonShow"
                     @click="CMSPA_chatDown",
-                    :icon="{box:true,name:'chevronDown',textHidden:'Прокрутить вниз'}"
-                    )
+                    :count="CMSPA_countNoReadMessage"
+                )
+
             the-chat-main-footer
 
 </template>
@@ -89,9 +89,11 @@ import { viewModeChat, httpParams, scrollbar, chatMainScrollPushArrow } from '@/
 import lodash_groupBy from 'lodash/groupBy'
 import lodash_find from 'lodash/find'
 import lodash_uniqBy from 'lodash/uniqBy'
+import ScrollDownButton from "@/components/ScrollDownButton";
 
 export default {
     components: {
+        ScrollDownButton,
         inputEmoji,
         TheChatSystemMessages,
         TheChatMainHeader,
@@ -698,9 +700,7 @@ export default {
         position: relative;
     }
     &__scroll-down-button {
-        fill: glob-color(light);
-        border-radius: 50%;
-        padding: 5px;
+
     }
     &__scroll-down-button-wrap {
         position: absolute;
