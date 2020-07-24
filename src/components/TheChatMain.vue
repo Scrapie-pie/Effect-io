@@ -275,7 +275,7 @@ export default {
             if (!val.length === !oldVal.length) {
                 return
             } else {
-                this.CMSPA_scrollbarScrollerPush()
+                this.CMSPA_scrollbarScrollerPushTyping()
             }
         }
     },

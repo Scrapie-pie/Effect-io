@@ -18,6 +18,22 @@ export default {
             this.scrollbarScrollerPush(this.$refs.scrollbar)
             this.scrollDownButtonShow = false
         },
+        CMSPA_scrollbarScrollerPushTyping(){
+
+
+            if (
+                Math.ceil(this.$refs.scrollbar.$el.scrollTop) >=
+                this.scrollerPxToPercent(this.$refs.scrollbar.$el, 100) - 30
+            ) {
+                setTimeout(() => {
+                    this.scrollbarScrollerPush(this.$refs.scrollbar)
+                }, 50)
+
+            }
+
+
+
+        },
         CMSPA_scrollbarScrollerPush(isScrollPushUser) {
             let isScrollPush = false
 
