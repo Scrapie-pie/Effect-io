@@ -19,7 +19,8 @@ const getDefaultState = () => {
             'update-employees': 'emitUpdateEmployees',
             'employee-online': 'emitEmployeeOnline',
             logout: 'emitLogout',
-            'chat-tag-exist':'emitChatTagExist'
+            'chat-tag-exist':'emitChatTagExist',
+            'update-chat-status':'emitUpdateChatStatus'
         }
     }
 }

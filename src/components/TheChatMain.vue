@@ -214,9 +214,29 @@ export default {
         },
         visitorInfo() {
             return this.$store.state.visitors.itemOpen
+        },
+        isPopupTagsShow(){
+
+            const {guest_uuid,site_id} = this.visitorInfo
+
+            const find = this.$store.state.visitors.self.find(item=>item.guest_uuid+item.site_id===guest_uuid+site_id)
+
+
+            return find?.chat_ended && find?.no_tag
+
         }
     },
     watch: {
+        isPopupTagsShow:{
+            handler(bool){
+
+
+                if(bool) this.$root.$emit('showTagsEmit', 'actionAfterChatCompletion')
+
+
+            },
+            immediate: true
+        },
         /*    roomActiveUsers:{
             handler(list){
 

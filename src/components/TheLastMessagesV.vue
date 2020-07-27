@@ -229,6 +229,7 @@ export default {
             item.classList[`last-messages-v__item_hot_status_`+item.hot] = true
             item.classList['last-messages-v__item_very-hot'] = item.very_hot
             item.classList['last-messages-v__item_very-hot_status_'+item.very_hot] = true
+            item.classList['last-messages-v__item_chat_ended'] = item.chat_ended
             item.classList['last-messages-v__item_no_tag'] = item.no_tag
 
             return item
@@ -359,7 +360,7 @@ export default {
 
 <style lang="scss">
 .last-messages-v {
-
+    $el:'.last-messages-v';
     $color_bg-hover: glob-color('border');
     $color_bg-error: glob-color('error');
     $color_bg-accent: glob-color('accent');
@@ -404,9 +405,13 @@ export default {
             background-color: $color_bg-hover;
         }
 
-        &_no_tag {
+        &_chat_ended#{$el}__item_no_tag {
 
             border:4px solid $color_bg-info-dark;
+
+            #{$el}__tag-info {
+                background-color:$color_bg-info-dark;
+            }
         }
 
         &_hot,
@@ -500,7 +505,7 @@ export default {
         bottom: 0;
         right: 0;
         display: inline-block;
-        background-color:$color_bg-info-dark;
+        background-color:$color_bg-info;
         color:$color_light;
         padding:.1em .75em;
     }
