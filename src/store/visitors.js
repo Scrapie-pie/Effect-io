@@ -63,10 +63,15 @@ export default {
         },
         selfUpdateStatusItem(state,{site_id,uuid,guest_uuid,chat_ended}){
             const name = 'self'
+
+            console.log(site_id, uuid, guest_uuid, chat_ended);
+            console.log(state[name]);
             let findIndex = state[name].findIndex(
                 item => item.guest_uuid + item.site_id === guest_uuid + site_id
             )
 
+            console.log(findIndex);
+            console.log(this._vm.$set(state[name][findIndex]))
             if (findIndex !== -1) {
                 this._vm.$set(state[name][findIndex], 'chat_ended', chat_ended)
 
