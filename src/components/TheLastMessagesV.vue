@@ -411,6 +411,7 @@ export default {
 
             #{$el}__tag-info {
                 background-color:$color_bg-info-dark;
+                color:$color_light;
             }
         }
 
@@ -505,8 +506,8 @@ export default {
         bottom: 0;
         right: 0;
         display: inline-block;
-        background-color:$color_bg-info;
-        color:$color_light;
+        background-color:$color_light;
+
         padding:.1em .75em;
     }
 }
