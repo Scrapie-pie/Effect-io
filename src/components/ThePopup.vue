@@ -115,7 +115,7 @@ export default {
                 data.intent = 'farewell'
 
                 setTimeout(() => {
-                    this.$http.post('message/send-from-operator', data)
+                    //this.$http.post('message/send-from-operator', data)
                 }, 500)
             }
         }
