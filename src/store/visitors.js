@@ -190,8 +190,8 @@ export default {
 
                 //this._vm.$set(state.self[findIndex],'name',val.from_user_info.name)
                 if (
-                    !val.selfUuid &&
-                    val.from_role_id != 9 //не системное
+                    !val.selfUuid
+
                 ) {
                     if (val.hasOwnProperty('inc_counter') && !val.inc_counter) return
 

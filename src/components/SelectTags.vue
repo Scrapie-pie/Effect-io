@@ -44,6 +44,14 @@ export default {
         ActionList
     },
     mixins: [httpParams],
+    props:
+        {
+            finishChat:{
+                type:Boolean,
+                default:false
+            }
+        }
+    ,
     data() {
         return {
             comment: null,
@@ -75,6 +83,7 @@ export default {
                 let data = this.httpParams.params
                 data.tag_id = +val
                 data.comment = this.comment
+                if(this.finishChat) data.finish_chat = true
                 this.setTagChat(data)
 
                 this.$root.$emit('globBoxControlClose', data.tag_id)
