@@ -105,13 +105,16 @@ export default {
         },
         showTagsEmit(actionAfter) {
 
-            if(actionAfter==='actionAfterChatCompletion') this.showTagsPopupFinishChat = true
+            if(actionAfter==='actionAfterChatCompletion') {
+                this.showTagsPopupFinishChat = true
+            }
 
             this.$store.dispatch('tags/get')
             this.showTagsPopup = true
         },
         tagsClose(tag_id) {
             this.showTagsPopup = false
+            this.showTagsPopupFinishChat = false
            /* console.log(this.tagsActionAfter)
             if (this.tagsActionAfter === 'actionAfterChatCompletion' && tag_id) {
                 let data = this.httpParams.params
