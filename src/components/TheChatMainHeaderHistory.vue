@@ -26,7 +26,7 @@ export default {
             if (!this.httpParams) return
 
             this.$http.get('history/read', this.httpParams).then(({ data }) => {
-                this.itemList = data.data
+                this.itemList = data.data.data
             })
         }
     }
