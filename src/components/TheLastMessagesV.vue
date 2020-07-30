@@ -420,7 +420,15 @@ export default {
             background-color: $color_bg-hover;
         }
 
+        &_chat_ended#{$el}__item_no_tag {
 
+            border:4px solid $color_bg-info-dark;
+
+            #{$el}__tag-info {
+                background-color:$color_bg-info-dark;
+                color:$color_light;
+            }
+        }
 
         &_hot,
         &_very-hot {
@@ -456,15 +464,6 @@ export default {
             &_status_3::before {
                 background-color: #e3ecfb;
                 opacity:1;
-            }
-        }
-
-        &_chat_ended#{$el}__item_no_tag {
-
-            border:4px solid $color_bg-info-dark;
-
-            #{$el}__tag-info {
-                background-color:$color_bg-info-dark;
             }
         }
     }
@@ -522,8 +521,8 @@ export default {
         bottom: 0;
         right: 0;
         display: inline-block;
-        background-color:$color_bg-info;
-        color:$color_light;
+        background-color:$color_light;
+
         padding:.1em .75em;
     }
 }
