@@ -217,10 +217,11 @@ export default {
         },
         isPopupTagsShow(){
 
-            const {guest_uuid,site_id} = this.visitorInfo
+            const guest_uuid = this?.httpParams?.params.guest_uuid
+            const site_id = this?.httpParams?.params.site_id
 
             const find = this.$store.state.visitors.self.find(item=>item.guest_uuid+item.site_id===guest_uuid+site_id)
-
+            console.log('isPopupTagsShow',find);
 
             return find?.chat_ended && find?.no_tag
 

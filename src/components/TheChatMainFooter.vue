@@ -281,35 +281,52 @@ export default {
             }, 1)
         },
         messageRead() {
-            if (this.viewModeChat === 'operators') {
-                this.$http.put('message/operator-mark-as-read', {
-                    user_id: this.httpParams.params.id
-                })
-                this.$store.dispatch('setMessageRead', {
-                    id: this.httpParams.params.id,
-                    type: this.viewModeChat
-                })
-            } //Todo у оператора
-            if (this.viewModeChat === 'visitors') {
-                this.$http.put('message/operator-mark-as-read', {
-                    room_id: this.$store.state.roomActive.id
-                })
-                this.$store.dispatch('setMessageRead', {
-                    guest_uuid: this.httpParams.params.guest_uuid,
-                    site_id: this.httpParams.params.site_id,
-                    type: this.viewModeChat
-                })
-
-
-
+            let payload ={
+                id: this.httpParams.params.id,
+                guest_uuid: this.httpParams.params.guest_uuid,
+                site_id: this.httpParams.params.site_id,
+                type: this.viewModeChat
             }
+
+
             if (this.viewModeChat === 'common') {
                 this.$http.put('message/operator-mark-as-read', {
                     room_id: this.$store.state.user.profile.common_room_id
                 })
 
                 this.$store.commit('user/unreadUpdate', ['common', 'clear'])
+                this.$root.$emit('actionAnotherTab', [
+                    'mutation',
+                    'user/unreadUpdate',
+                    ['common', 'clear']
+                ])
+                return
             }
+            if (this.viewModeChat === 'operators') {
+                this.$http.put('message/operator-mark-as-read', {
+                    user_id: this.httpParams.params.id
+                })
+
+
+
+            } //Todo у оператора
+            if (this.viewModeChat === 'visitors') {
+                this.$http.put('message/operator-mark-as-read', {
+                    room_id: this.$store.state.roomActive.id
+                })
+
+            }
+            if(this.viewModeChat === 'operators' || this.viewModeChat === 'visitors') {
+                this.$store.dispatch('setMessageRead', payload)
+                this.$root.$emit('actionAnotherTab', [
+                    'dispatch',
+                    'setMessageRead',
+                    payload
+                ])
+            }
+
+
+
         },
         thePhrasesReadyClose(val) {
             this.showPhrases = false
