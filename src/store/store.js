@@ -148,9 +148,9 @@ export default new Vuex.Store({
             })
             if (findIndex !== -1) {
                 let unread = itemList[findIndex].unread
-
+                console.log('unread',unread);
                 commit(type + '/messageRead', findIndex)
-                if (unreadType === 'guest')
+                if (unreadType === 'guest' && unread.length)
                     return commit('user/unreadUpdate', [unreadType, -1], { root: true })
                 commit('user/unreadUpdate', [unreadType, -unread.length], { root: true })
             }

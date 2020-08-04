@@ -9,7 +9,7 @@
         box-controls(v-if="img",  type="gallery", @boxControlClose="img=false")
             img(:src="img" alt="Увеличенная картинка")
         box-controls.popup__select-tags(type="popup"  v-if="showTagsPopup", @boxControlClose="tagsClose")
-            select-tags
+            select-tags(:finish-chat="showTagsPopupFinishChat")
         box-controls.popup__select-branch(
             type="popup"
             v-if="showSelectBranch",
@@ -50,6 +50,7 @@ export default {
             img: false,
             noticeText: false,
             showTagsPopup: false,
+            showTagsPopupFinishChat: false,
             tagsActionAfter: true,
             showSelectBranch: false,
             showFormORTS: false,
@@ -103,13 +104,18 @@ export default {
             this.img = img
         },
         showTagsEmit(actionAfter) {
-            this.tagsActionAfter = actionAfter
+
+            if(actionAfter==='actionAfterChatCompletion') {
+                this.showTagsPopupFinishChat = true
+            }
+
             this.$store.dispatch('tags/get')
             this.showTagsPopup = true
         },
         tagsClose(tag_id) {
             this.showTagsPopup = false
-            console.log(this.tagsActionAfter)
+            this.showTagsPopupFinishChat = false
+           /* console.log(this.tagsActionAfter)
             if (this.tagsActionAfter === 'actionAfterChatCompletion' && tag_id) {
                 let data = this.httpParams.params
                 data.intent = 'farewell'
@@ -117,7 +123,7 @@ export default {
                 setTimeout(() => {
                     this.$http.post('message/send-from-operator', data)
                 }, 500)
-            }
+            }*/
         }
     }
 }

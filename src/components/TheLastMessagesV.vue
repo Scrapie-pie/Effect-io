@@ -188,7 +188,7 @@ export default {
             this.getItemList()
         },
         timerVisible(item) {
-            if (!this.timerNow || item.very_hot) return false
+            if (!this.timerNow || item.very_hot || item.chat_ended) return false
             if (item.hot && item.awaiting_answer_timeFormat) return true
         },
         timerHotLevel(item) {
@@ -205,7 +205,7 @@ export default {
             return datetimeStoHMS(Math.round(this.timerNow - item.awaiting_answer_timeFormat), true)
         },
         setName(item, visitorInfo) {
-            if (item.very_hot===1 || item.hot===5) return item.name
+            if (item.very_hot || item.hot===5) return item.name
             if (item.guest_uuid + item.site_id === visitorInfo.guest_uuid + visitorInfo.site_id)
                 return visitorInfo.regRuLogin || visitorInfo.name
             else return item.name
@@ -225,10 +225,15 @@ export default {
             }
             item.classList = {}
             item.classList['last-messages-v__item_active'] = open
-            item.classList['last-messages-v__item_hot'] = item.hot
-            item.classList[`last-messages-v__item_hot_status_`+item.hot] = true
-            item.classList['last-messages-v__item_very-hot'] = item.very_hot
-            item.classList['last-messages-v__item_very-hot_status_'+item.very_hot] = true
+            item.classList['last-messages-v__item_chat_ended'] = item.chat_ended
+
+            if(!item.chat_ended) {
+                item.classList['last-messages-v__item_hot'] = item.hot
+                item.classList[`last-messages-v__item_hot_status_`+item.hot] = true
+                item.classList['last-messages-v__item_very-hot'] = item.very_hot
+                item.classList['last-messages-v__item_very-hot_status_'+item.very_hot] = true
+            }
+            item.classList['last-messages-v__item_no_tag'] = item.no_tag
 
             return item
         },
@@ -272,19 +277,31 @@ export default {
             item = this.itemFormatSetClassList(item)
             item = this.itemFormatSetLink(item)
 
-            if (item.very_hot===1) {
-                ///такое только в не обработанном
-                item.avatarName = 'warning'
-                item.name = 'Диалог необходимо <br> принять <br> в приоритетном порядке!'
-                item.last_authorAndMessage = 'Передача диалога...'
+
+            if(!item.chat_ended) {
+                if (item.very_hot===1) {
+                    ///такое только в не обработанном
+                    item.avatarName = 'warning'
+                    item.name = 'Диалог необходимо <br> принять <br> в приоритетном порядке!'
+                    item.last_authorAndMessage = 'Передача диалога...'
+
+                    item = this.itemFormatSetOptions(item)
+                    return item
+
+                }
+
+                if (!item.very_hot && item.hot===5) {
+                    item.name = 'Гость <br> Возможно диалог <br> требует ответа'
+                    console.log(item.name);
+                    item = this.itemFormatSetOptions(item)
+                    return item
+                }
             }
-            else if (item.hot==5) {
-                item.name = 'Гость <br> Возможно диалог <br> требует ответа'
-                console.log(item.name);
-            }
-            else {
+
+
+
                 item.last_authorAndMessage = this.authorAndMessage(item)
-            }
+
 
 
             item = this.itemFormatSetOptions(item)
@@ -358,11 +375,12 @@ export default {
 
 <style lang="scss">
 .last-messages-v {
-
+    $el:'.last-messages-v';
     $color_bg-hover: glob-color('border');
     $color_bg-error: glob-color('error');
     $color_bg-accent: glob-color('accent');
     $color_bg-info: glob-color('info');
+    $color_bg-info-dark: glob-color('info-dark');
     $color_light: glob-color('light');
     $transition: $glob-trans;
 
@@ -400,6 +418,16 @@ export default {
         &:hover,
         &_active {
             background-color: $color_bg-hover;
+        }
+
+        &_chat_ended#{$el}__item_no_tag {
+
+            border:4px solid $color_bg-info-dark;
+
+            #{$el}__tag-info {
+                background-color:$color_bg-info-dark;
+                color:$color_light;
+            }
         }
 
         &_hot,
@@ -494,6 +522,7 @@ export default {
         right: 0;
         display: inline-block;
         background-color:$color_light;
+
         padding:.1em .75em;
     }
 }

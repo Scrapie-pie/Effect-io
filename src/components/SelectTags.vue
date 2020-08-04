@@ -44,6 +44,14 @@ export default {
         ActionList
     },
     mixins: [httpParams],
+    props:
+        {
+            finishChat:{
+                type:Boolean,
+                default:false
+            }
+        }
+    ,
     data() {
         return {
             comment: null,
@@ -53,10 +61,16 @@ export default {
     },
     computed: {
         filterItemlist(){
-            let site_id = this.httpParams.params.site_id
+            let site_id = +this.httpParams.params.site_id
             return this.itemList.filter(item=>{
+
+                //return this.$store.state.user.profile.branches_ids.includes(item.branch_id) && item.site_id === site_id
+
                 if(!this.$store.state.user.profile.branches_ids.includes(item.branch_id)) return false
-                if(this.$store.getters['user/branchListAll'].find(itemSub =>itemSub.id===item.branch_id && itemSub.site_id===site_id)) return true
+                if(this.$store.getters['user/branchListAll'].find(itemSub =>{
+                        console.log(itemSub.id,item.branch_id,itemSub.site_id,site_id);
+                        return itemSub.id===item.branch_id && itemSub.site_id===site_id
+                })) return true
 
 
             })
@@ -69,6 +83,7 @@ export default {
                 let data = this.httpParams.params
                 data.tag_id = +val
                 data.comment = this.comment
+                if(this.finishChat) data.finish_chat = true
                 this.setTagChat(data)
 
                 this.$root.$emit('globBoxControlClose', data.tag_id)

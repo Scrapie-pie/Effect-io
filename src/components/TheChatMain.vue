@@ -64,12 +64,12 @@
 
         footer.chat-main__footer(v-if="!['search','visor'].includes(viewModeChat)")
             .chat-main__scroll-down-button-wrap
-                base-btn.chat-main__scroll-down-button(
-                    color="info"
+                scroll-down-button.chat-main__scroll-down-button(
                     v-if="CMSPA_scrollDownButtonShow"
                     @click="CMSPA_chatDown",
-                    :icon="{box:true,name:'chevronDown',textHidden:'Прокрутить вниз'}"
-                    )
+                    :count="CMSPA_countNoReadMessage"
+                )
+
             the-chat-main-footer
 
 </template>
@@ -89,9 +89,11 @@ import { viewModeChat, httpParams, scrollbar, chatMainScrollPushArrow } from '@/
 import lodash_groupBy from 'lodash/groupBy'
 import lodash_find from 'lodash/find'
 import lodash_uniqBy from 'lodash/uniqBy'
+import ScrollDownButton from "@/components/ScrollDownButton";
 
 export default {
     components: {
+        ScrollDownButton,
         inputEmoji,
         TheChatSystemMessages,
         TheChatMainHeader,
@@ -212,9 +214,30 @@ export default {
         },
         visitorInfo() {
             return this.$store.state.visitors.itemOpen
+        },
+        isPopupTagsShow(){
+
+            const guest_uuid = this?.httpParams?.params.guest_uuid
+            const site_id = this?.httpParams?.params.site_id
+
+            const find = this.$store.state.visitors.self.find(item=>item.guest_uuid+item.site_id===guest_uuid+site_id)
+            console.log('isPopupTagsShow',find);
+
+            return find?.chat_ended && find?.no_tag
+
         }
     },
     watch: {
+        isPopupTagsShow:{
+            handler(bool){
+
+
+                if(bool) this.$root.$emit('showTagsEmit', 'actionAfterChatCompletion')
+
+
+            },
+            immediate: true
+        },
         /*    roomActiveUsers:{
             handler(list){
 
@@ -273,7 +296,7 @@ export default {
             if (!val.length === !oldVal.length) {
                 return
             } else {
-                this.CMSPA_scrollbarScrollerPush()
+                this.CMSPA_scrollbarScrollerPushTyping()
             }
         }
     },
@@ -621,7 +644,7 @@ export default {
     }
     &__header {
         display: grid;
-        grid-template-columns: max-content max-content;
+        grid-template-columns: 1fr max-content;
         gap: calc-em(30);
         align-items: baseline;
     }
@@ -698,9 +721,7 @@ export default {
         position: relative;
     }
     &__scroll-down-button {
-        fill: glob-color(light);
-        border-radius: 50%;
-        padding: 5px;
+
     }
     &__scroll-down-button-wrap {
         position: absolute;

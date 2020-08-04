@@ -161,8 +161,11 @@ export default {
                 this.httpParams.params.site_id
 
             this.$http.post('co-browsing/request', this.httpParams.params).then(() => {
-                const win = window.open(host + 'cobrowsing' + params, '_blank')
-                win.focus()
+                setTimeout(()=>{
+                    const win = window.open(host + 'cobrowsing' + params, '_blank')
+                    win.focus()
+                },3000)
+
             })
         },
         chatCompletion() {
@@ -201,7 +204,7 @@ export default {
     z-index: 10; //лодеры с сообщений были выше попапа
 
     @include media($width_xs) {
-        display: none;
+        display: none!important;
     }
 
     &__controls {
@@ -279,7 +282,9 @@ export default {
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
-        width: 100%;
+
+        width: auto;
+        max-width: 100%;
     }
     &__channel-btn-wrap:hover &__client-history-actions {
         opacity: 1;

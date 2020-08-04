@@ -188,6 +188,16 @@ export default {
                 socket_id: val.socket_id
             })
         },
+        'update-chat-status'(val) {
+
+            this.$store.commit('visitors/selfUpdateStatusItem',val)
+
+
+            this.$store.commit('sockets/historyPush', {
+                event: 'update-chat-status',
+                socket_id: val.socket_id
+            })
+        },
         'chat-tag-exist'(val) {
             //this.$socket.emit('delivered', val.socket_id);
 

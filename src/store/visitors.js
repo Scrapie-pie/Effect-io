@@ -61,7 +61,24 @@ export default {
             state.all = val.list
             state.allCount = val.count
         },
+        selfUpdateStatusItem(state,{site_id,uuid,guest_uuid,chat_ended}){
+            const name = 'self'
 
+            console.log(site_id, uuid, guest_uuid, chat_ended);
+            console.log(state[name]);
+            let findIndex = state[name].findIndex(
+                item => item.guest_uuid + item.site_id === guest_uuid + site_id
+            )
+
+            console.log(findIndex);
+            console.log(this._vm.$set(state[name][findIndex]))
+            if (findIndex !== -1) {
+                this._vm.$set(state[name][findIndex], 'chat_ended', chat_ended)
+
+
+
+            }
+        },
         messageHot(state, {guest_uuid, site_id, awaiting_answer_time,status}) {
             let main = name => {
                 let findIndex = state[name].findIndex(
@@ -173,8 +190,8 @@ export default {
 
                 //this._vm.$set(state.self[findIndex],'name',val.from_user_info.name)
                 if (
-                    !val.selfUuid &&
-                    val.from_role_id != 9 //не системное
+                    !val.selfUuid
+
                 ) {
                     if (val.hasOwnProperty('inc_counter') && !val.inc_counter) return
 

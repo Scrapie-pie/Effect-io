@@ -11,6 +11,11 @@ const mixins = {
 
                     this.$store.commit('actionAnotherTab/resetState')
                 }
+                if (type === 'dispatch') {
+                    this.$store.dispatch(method, payload)
+
+                    this.$store.commit('actionAnotherTab/resetState')
+                }
 
                 if (type === 'method') {
                     this[methodRoot + method](payload)
@@ -34,6 +39,9 @@ const mixins = {
         this.$root.$off('actionAnotherTab', this.actionAnotherTab)
     },
     methods: {
+        [methodRoot + 'messageRead'](payload) {
+            dialogPush(this, ...payload)
+        },
         [methodRoot + 'dialogPush'](payload) {
             dialogPush(this, ...payload)
         },
