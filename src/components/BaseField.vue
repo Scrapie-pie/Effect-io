@@ -147,9 +147,11 @@ export default {
             return Object.assign(
                 {
                     /*resetOnOptionsChange:false*/
+                    disabled: this.disabled
                 },
                 this.$attrs,
-                this.selectOptions
+                this.selectOptions,
+
             )
         },
         selectLoading() {
