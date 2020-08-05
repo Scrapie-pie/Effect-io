@@ -282,9 +282,9 @@ export default {
         },
         messageRead() {
             let payload ={
-                id: this.httpParams.params.id,
-                guest_uuid: this.httpParams.params.guest_uuid,
-                site_id: this.httpParams.params.site_id,
+                id: this.httpParams?.params.id,
+                guest_uuid: this.httpParams?.params.guest_uuid,
+                site_id: this.httpParams?.params.site_id,
                 type: this.viewModeChat
             }
 
@@ -450,31 +450,59 @@ export default {
                                 message.site_id === this.httpParams.params.site_id
                             ) {
                                 this.$root.$emit('messageAdd', message)
+                                this.$root.$emit('actionAnotherTab', [
+                                    'emit',
+                                    'messageAdd',
+                                    message
+                                ])
                             }
                         }
 
                         if (this.viewModeChat === 'operators') {
                             if (httpParamsRequestBefore.params.id === this.httpParams.params.id) {
                                 this.$root.$emit('messageAdd', message)
+                                this.$root.$emit('actionAnotherTab', [
+                                    'emit',
+                                    'messageAdd',
+                                    message
+                                ])
                             }
                         }
                     }
-                    if (this.viewModeChat === 'common') this.$root.$emit('messageAdd', message)
+                    if (this.viewModeChat === 'common') {
+                        this.$root.$emit('messageAdd', message)
+                        this.$root.$emit('actionAnotherTab', [
+                            'emit',
+                            'messageAdd',
+                            message
+                        ])
+                    }
 
-                    localStorage.setItem('messageAdd', JSON.stringify(message))
+
 
                     message.from_user_info.id = this.$store.state.user.profile.employee_id
 
                     if (viewModeChatRequestBefore === 'operators') {
                         message.selfId = httpParamsRequestBefore.params.id
                         this.$store.commit('operators/messageLastUpdate', message)
+                        this.$root.$emit('actionAnotherTab', [
+                            'mutation',
+                            'operators/messageLastUpdate',
+                            message
+                        ])
                     } //Todo у оператора}
 
                     if (viewModeChatRequestBefore === 'visitors') {
                         message.selfUuid = httpParamsRequestBefore.params.guest_uuid
                         message.last_message_author = 'Вы'
                         this.$store.commit('visitors/selfMessageLastUpdate', message)
+                        this.$root.$emit('actionAnotherTab', [
+                            'mutation',
+                            'visitors/selfMessageLastUpdate',
+                            message
+                        ])
                     }
+                    //localStorage.setItem('messageAdd', JSON.stringify(message))
                 })
                 .then(() => {
                     this.messageReset({
