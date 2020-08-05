@@ -27,6 +27,7 @@ export default {
         },
         hideSettingsApp() {
             //у чужого пользователя одна страница настроек, по этому меню не нужно
+            if(this.$route.query?.add==='operator') return true
             let user_id = +this.$route.query.user_id
             if (user_id) {
                 return user_id !== this.$store.state.user.profile.id
