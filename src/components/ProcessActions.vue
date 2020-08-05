@@ -8,13 +8,15 @@
                     color="success-dark"
                     size="lg" ,
                     @click="processActionYes"
-                    v-text="btnTextYes"
+                    v-text="btnTextYes",
+                    :disabled="disabled"
                 )
             li.process-actions__item.process-actions__item_no
                 base-btn(
-                color="info-dark",
-                size="lg",
-                @click="processActionNo"
+                    :disabled="disabled"
+                    color="info-dark",
+                    size="lg",
+                    @click="processActionNo"
                 ) Отклонить
 </template>
 
@@ -40,7 +42,8 @@ export default {
     },
     data() {
         return {
-            processItem: {}
+            processItem: {},
+            disabled:false,
         }
     },
     computed: {
@@ -145,18 +148,21 @@ export default {
         },
 
         processActionNo() {
+            this.disabled=true
             this.processItemSave()
-            if (this.status) this[this.status + 'No']().then(() => this.routerNext('no'))
+            if (this.status) this[this.status + 'No']().then(() => this.routerNext('no')).finally(()=>this.disabled=false)
         },
         processActionYes() {
+            this.disabled=true
             this.processItemSave()
 
             if (this.status)
                 this[this.status]().then(r => {
                     console.table('processActionYes', r)
                     this.routerNext('yes')
-                })
+                }).finally(()=>this.disabled=false)
         },
+
         recipient() {
             return this.$http.put('chat-room-user/transfer-acceptance', this.visitorIds)
         },
