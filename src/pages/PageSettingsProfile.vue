@@ -78,6 +78,7 @@
                         :selectOptions="{value:branchListSelected, label:'titleAndSite',options:compBranchListRemaining}"
                         name="voice"
                         multiple,
+                        :disabled="!$store.getters['user/isRole'](['admin','owner','operatorSenior'])"
                     )
                     text-info.settings-list__text-info Вы можете назначить сотрудника в один или несколько отделов. Чтобы выбрать отдел, начните набирать его название в данном поле.
 
