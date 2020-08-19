@@ -27,7 +27,7 @@
             p.base-people__text(
                 v-if="text"
             )
-                input-emoji(type="text" :text="text")
+                input-emoji(is-output-text :text="text", :isNoBr="inputEmojiNoBr")
 
             figure.base-people__files(v-if="files.length")
                 ul.base-people__files-list
@@ -71,6 +71,10 @@ export default {
         }
     },
     props: {
+        inputEmojiNoBr:{
+            type: Boolean,
+            default: false
+        },
         router: {
             type: Object,
             default: function() {

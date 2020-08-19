@@ -1,4 +1,4 @@
-function textWidtTagToText(domEl) {
+function textWidthTagToText(domEl) {
     let listText = []
     domEl?.childNodes.forEach((item, index) => {
         delete item.onerror
@@ -11,7 +11,13 @@ function textWidtTagToText(domEl) {
         }
     })
 
-    return listText.join('')
+
+    listText = listText.join('')
+
+    //listText =listText.replace(/</g, '&lt;')
+    //listText =listText.replace(/>/g, '&gt;')
+
+    return listText
 }
 
-export default textWidtTagToText
+export default textWidthTagToText
