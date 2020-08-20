@@ -27,7 +27,7 @@
 
 
 
-                                input-emoji.chat-main__messages-sys(tag="p" v-else type="text", :text="sysText(item)")
+                                input-emoji.chat-main__messages-sys(is-output-text tag="p" v-else type="text", :text="sysText(item)")
                             template(v-else)
                                 message-item(v-bind="item.basePeopleOptions")
 
