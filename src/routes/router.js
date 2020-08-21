@@ -34,6 +34,15 @@ function timeout(ms) {
     return new Promise(resolve => setTimeout(resolve, ms))
 }
 
+{
+    // https://stackoverflow.com/questions/57837758/navigationduplicated-navigating-to-current-location-search-is-not-allowed
+    const originalPush = Router.prototype.push;
+    Router.prototype.push = function push(location) {
+        return originalPush.call(this, location).catch(err => err)
+    };
+}
+
+
 const router = new Router({
     mode: 'history',
     base: process.env.BASE_URL,
