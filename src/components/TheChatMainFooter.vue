@@ -168,14 +168,7 @@ export default {
                 this.checkIsProcessPage()
 
                 setTimeout(() => {
-                    if (this.viewModeChat === 'visitors') {
-                        this.getPhrasesSelectText('')
-                        this.getTextAreaVisitors(this.$store.state.visitors.self, to.params)
-                    }
-                    if (this.viewModeChat === 'operators') {
-                        this.getPhrasesSelectText('')
-                        this.getTextAreaOperators(this.$store.state.operators.all, to.params)
-                    }
+                    this.getTextArea(this.$store.state.visitors.self, to.params,this.viewModeChat)
                 }, 300)
                 setTimeout(() => {
                     this.messageRead()
@@ -196,41 +189,43 @@ export default {
         saveTextarea({
             httpParamsRequestBefore = { params: this.$route.params },
             viewModeChat = this.viewModeChat,
-            message = this.message
+            message = this.message,
+            uploadFileList=this.uploadFileList
         }) {
-            console.log(httpParamsRequestBefore, this.message)
-            if (viewModeChat === 'visitors') {
-                this.$store.commit('visitors/saveTextAreaItem', {
+
+            if (viewModeChat === 'visitors' || viewModeChat === 'operators') {
+                this.$store.commit(`${viewModeChat}/saveTextAreaItem`, {
                     ids: httpParamsRequestBefore.params,
-                    textArea: message
+                    textArea: message,
+                    uploadFileList
                 })
             }
 
-            if (viewModeChat === 'operators') {
-                this.$store.commit('operators/saveTextAreaItem', {
-                    ids: httpParamsRequestBefore.params,
-                    textArea: message
-                })
-            }
+
         },
 
         inputEmojiInputChange(text) {
             this.typingLive(text)
         },
-        getTextAreaVisitors(list, routerParams) {
-            let { site_id, guest_uuid } = routerParams
-            let find = list.find(item => item.site_id + item.guest_uuid === site_id + guest_uuid)
-            if (find?.textArea) {
-                this.getPhrasesSelectText(find.textArea)
+        getTextArea(list, routerParams,viewModeChat) {
+
+            if(viewModeChat==='visitors' || viewModeChat==='operators') {
+                const { site_id, guest_uuid, id } = routerParams
+                let find
+                const strategies = {
+                    visitors:()=>{find = list.find(item => item.site_id + item.guest_uuid === site_id + guest_uuid)},
+                    operators:()=>{find = list.find(item => item.id === id)}
+                }
+
+                this.getPhrasesSelectText('')
+                this.uploadFileList = []
+                strategies[viewModeChat]()
+                if (find?.textArea) this.getPhrasesSelectText(find.textArea)
+                if (find?.uploadFileList.length) this.uploadFileList = find.uploadFileList
             }
+
         },
-        getTextAreaOperators(list, routerParams) {
-            let { id } = routerParams
-            let find = list.find(item => item.id === id)
-            if (find?.textArea) {
-                this.getPhrasesSelectText(find.textArea)
-            }
-        },
+
         textWidthTagToText() {
             let ct = document.getElementById('contenteditable')
             let listText = textWidthTagToText(ct)
@@ -345,14 +340,15 @@ export default {
             this.input = e.target.value
             this.send()
         },
-        messageReset({ httpParamsRequestBefore, viewModeChat, message }) {
+        messageReset({ httpParamsRequestBefore, viewModeChat, message,uploadFileList }) {
             this.message = message
             this.spellingIgnoredWords = []
             this.uploadFileList = []
             this.saveTextarea({
                 httpParamsRequestBefore,
                 viewModeChat,
-                message
+                message,
+                uploadFileList
             })
         },
         send() {

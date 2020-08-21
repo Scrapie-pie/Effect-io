@@ -417,7 +417,8 @@ export default {
 
         &:hover,
         &_active {
-            background-color: $color_bg-hover;
+           // background-color: $color_bg-hover;
+            filter: brightness(0.9);
         }
 
         &_chat_ended#{$el}__item_no_tag {

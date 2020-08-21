@@ -151,7 +151,7 @@ export default {
             state.self = val.list.map(commonSelfProcces(this))
             if (val.count) state.selfCount = val.count
         },
-        saveTextAreaItem(state, { ids, textArea }) {
+        saveTextAreaItem(state, { ids, textArea,uploadFileList }) {
             let findIndex
 
             let { guest_uuid, site_id } = ids
@@ -160,6 +160,7 @@ export default {
             )
             if (findIndex !== -1) {
                 this._vm.$set(state.self[findIndex], 'textArea', textArea)
+                this._vm.$set(state.self[findIndex], 'uploadFileList', uploadFileList)
             }
         },
         setSelfLastPageN(state, val) {
