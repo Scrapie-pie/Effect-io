@@ -41,10 +41,10 @@
                         div(v-else)
                             base-icon.base-people__files-icon(name="file")
                             a(
-
                                 v-text="item.name",
                                 :href="item.link"
-                                target="_blank"
+                                target="_blank",
+                                :download="item.name"
                             )
 
 </template>
