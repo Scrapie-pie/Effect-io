@@ -14,16 +14,21 @@ import '@/scss/vendors/gl-16-emoji.css'
 import lodash_split from 'lodash/split'
 import { getCaretPosition } from '@/mixins/mixins'
 import textWidthTagToText from '@/modules/textWidthTagToText'
+import { wrapTextUrls } from '@/modules/modules'
 export default {
     mixins: [getCaretPosition],
     props: {
+        isNoBr: {
+            type: Boolean,
+            default: false
+        },
         tag: {
             type: String,
             default: 'span'
         },
-        type: {
-            type: String,
-            default: ''
+        isOutputText: {
+            type: Boolean,
+            default: false
         },
         text: {
             type: String,
@@ -42,7 +47,7 @@ export default {
 
             this.$emit('inputChange', val)
 
-            if (this.type === 'text') return
+            if (this.isOutputText) return
             setTimeout(() => {
                 this.placeCaretAtEnd(this.$el)
             }, 100)
@@ -50,6 +55,64 @@ export default {
     },
     mounted() {},
     methods: {
+        textToTextWidthTagEmoj(text,isOutputText){
+
+            if(isOutputText) {
+                text = text
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;')
+                    .replace(/onerror/g, 'xss_off_onerror')
+
+                text = this.wrapTextUrls(text)
+
+                if(!this.isNoBr) text = this.messageBreakLine(text)
+            }
+
+            let splitStr = lodash_split(text, '')
+
+            splitStr = splitStr.map(item => {
+
+                if (!isOutputText) {
+                    if (item == '\n') item = <br />
+                }
+
+                let find = emojisBaseAll.find(itemFind=>itemFind[1] == item)
+                if (find) {
+                    if (!Array.isArray(find)) return item
+
+                    if (item.length > 1) {
+
+                        let attrs = {
+                            class:'gl-16 gl-16-' + find[0],
+                            src:"data:image/svg+xml;utf8,<svg viewBox='0 0 0 0' version='1.1' xmlns='http://www.w3.org/2000/svg'><circle cx='0' cy='0' r='0'/></svg>",
+                            alt:item
+                        }
+
+                        if (isOutputText) {
+                            attrs = Object.entries(attrs).map(([key,value])=>`${key}="${value}" `).join('')
+                            item = `<img ${attrs} />`
+                        }
+                        else {
+                            item = <img attrs={attrs} />
+                        }
+                    }
+
+                    return item
+
+                } else {
+                    return item
+                }
+
+
+            })
+
+            return splitStr
+
+        },
+        wrapTextUrls,
+        messageBreakLine(value) {
+            return value.replace(/(\r\n|\n|&lt;br&gt;)/g, '<br>') // из виджета &lt;br&gt;
+        },
         listenerCopy(e) {
             let listText = []
             e.currentTarget.childNodes.forEach((item, index) => {
@@ -66,10 +129,17 @@ export default {
             e.preventDefault()
         },
         listenerClearStylePaste(event) {
-            let paste = (event.clipboardData || window.clipboardData).getData('text/plain')
+            let text = (event.clipboardData || window.clipboardData).getData('text/plain')
 
-            paste = paste.replace(/(\r\n|\n|&lt;br&gt;)/g, '<br>')
-            paste = paste.replace(/onerror/g, 'xss_off_onerror')
+
+
+
+           /* text = text  .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/onerror/g, 'xss_off_onerror')
+            text =  this.messageBreakLine(text)
+            console.log(text);*/
+            text =  this.textToTextWidthTagEmoj(text,true).join('')
 
             /* const selection = window.getSelection();
             if (!selection.rangeCount) return false;
@@ -80,7 +150,7 @@ export default {
 
             //console.log(text);
 
-            document.execCommand('inserthtml', false, paste)
+            document.execCommand('inserthtml', false, text)
         },
         blur(e) {
             this.$emit('blur', '')
@@ -110,62 +180,36 @@ export default {
         }
     },
     render(h) {
-        let src =
-            'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAABN2lDQ1BBZG9iZSBSR0IgKDE5OTgpAAAokZWPv0rDUBSHvxtFxaFWCOLgcCdRUGzVwYxJW4ogWKtDkq1JQ5ViEm6uf/oQjm4dXNx9AidHwUHxCXwDxamDQ4QMBYvf9J3fORzOAaNi152GUYbzWKt205Gu58vZF2aYAoBOmKV2q3UAECdxxBjf7wiA10277jTG+38yH6ZKAyNguxtlIYgK0L/SqQYxBMygn2oQD4CpTto1EE9AqZf7G1AKcv8ASsr1fBBfgNlzPR+MOcAMcl8BTB1da4Bakg7UWe9Uy6plWdLuJkEkjweZjs4zuR+HiUoT1dFRF8jvA2AxH2w3HblWtay99X/+PRHX82Vun0cIQCw9F1lBeKEuf1UYO5PrYsdwGQ7vYXpUZLs3cLcBC7dFtlqF8hY8Dn8AwMZP/fNTP8gAAAAJcEhZcwAACxMAAAsTAQCanBgAAAXRaVRYdFhNTDpjb20uYWRvYmUueG1wAAAAAAA8P3hwYWNrZXQgYmVnaW49Iu+7vyIgaWQ9Ilc1TTBNcENlaGlIenJlU3pOVGN6a2M5ZCI/PiA8eDp4bXBtZXRhIHhtbG5zOng9ImFkb2JlOm5zOm1ldGEvIiB4OnhtcHRrPSJBZG9iZSBYTVAgQ29yZSA1LjYtYzE0MiA3OS4xNjA5MjQsIDIwMTcvMDcvMTMtMDE6MDY6MzkgICAgICAgICI+IDxyZGY6UkRGIHhtbG5zOnJkZj0iaHR0cDovL3d3dy53My5vcmcvMTk5OS8wMi8yMi1yZGYtc3ludGF4LW5zIyI+IDxyZGY6RGVzY3JpcHRpb24gcmRmOmFib3V0PSIiIHhtbG5zOnhtcD0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wLyIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0RXZ0PSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VFdmVudCMiIHhtbG5zOmRjPSJodHRwOi8vcHVybC5vcmcvZGMvZWxlbWVudHMvMS4xLyIgeG1sbnM6cGhvdG9zaG9wPSJodHRwOi8vbnMuYWRvYmUuY29tL3Bob3Rvc2hvcC8xLjAvIiB4bXA6Q3JlYXRvclRvb2w9IkFkb2JlIFBob3Rvc2hvcCBDQyAyMDE4IChXaW5kb3dzKSIgeG1wOkNyZWF0ZURhdGU9IjIwMTktMDQtMTlUMTU6Mjc6NTMrMDM6MDAiIHhtcDpNZXRhZGF0YURhdGU9IjIwMTktMDQtMTlUMTU6Mjc6NTMrMDM6MDAiIHhtcDpNb2RpZnlEYXRlPSIyMDE5LTA0LTE5VDE1OjI3OjUzKzAzOjAwIiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOjc5NzBiY2E4LTg4YWUtZTg0Ni1hZWM2LTI2NzExODI2MzZjNSIgeG1wTU06RG9jdW1lbnRJRD0iYWRvYmU6ZG9jaWQ6cGhvdG9zaG9wOjkzZDIyMjZhLTVhYmEtOGE0NS05MzI3LWJhOTQ1NjQ0ZGQ5NCIgeG1wTU06T3JpZ2luYWxEb2N1bWVudElEPSJ4bXAuZGlkOjYyYzVhNTU1LTYzZjMtNjI0MS05YmQ1LTA2ODUyYmZhNDU2YSIgZGM6Zm9ybWF0PSJpbWFnZS9wbmciIHBob3Rvc2hvcDpDb2xvck1vZGU9IjMiPiA8eG1wTU06SGlzdG9yeT4gPHJkZjpTZXE+IDxyZGY6bGkgc3RFdnQ6YWN0aW9uPSJjcmVhdGVkIiBzdEV2dDppbnN0YW5jZUlEPSJ4bXAuaWlkOjYyYzVhNTU1LTYzZjMtNjI0MS05YmQ1LTA2ODUyYmZhNDU2YSIgc3RFdnQ6d2hlbj0iMjAxOS0wNC0xOVQxNToyNzo1MyswMzowMCIgc3RFdnQ6c29mdHdhcmVBZ2VudD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTggKFdpbmRvd3MpIi8+IDxyZGY6bGkgc3RFdnQ6YWN0aW9uPSJzYXZlZCIgc3RFdnQ6aW5zdGFuY2VJRD0ieG1wLmlpZDo3OTcwYmNhOC04OGFlLWU4NDYtYWVjNi0yNjcxMTgyNjM2YzUiIHN0RXZ0OndoZW49IjIwMTktMDQtMTlUMTU6Mjc6NTMrMDM6MDAiIHN0RXZ0OnNvZnR3YXJlQWdlbnQ9IkFkb2JlIFBob3Rvc2hvcCBDQyAyMDE4IChXaW5kb3dzKSIgc3RFdnQ6Y2hhbmdlZD0iLyIvPiA8L3JkZjpTZXE+IDwveG1wTU06SGlzdG9yeT4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz6lkCtfAAAADUlEQVQImWP4//8/AwAI/AL+hc2rNAAAAABJRU5ErkJggg=='
-        src =
-            "data:image/svg+xml;utf8,<svg viewBox='0 0 0 0' version='1.1' xmlns='http://www.w3.org/2000/svg'><circle cx='0' cy='0' r='0'/></svg>"
 
-        let splitStr = lodash_split(this.text, '')
-        splitStr = splitStr.map(item => {
-            if (this.type != 'text' && item == '\n') item = <br />
+        let Tag = this.tag
+        let splitStr = this.text
 
-            let find = emojisBaseAll.find(itemFind => {
-                return itemFind[1] == item
-            })
+        splitStr =  this.textToTextWidthTagEmoj(splitStr,this.isOutputText)
 
-            if (find) {
-                if (!Array.isArray(find)) return item
-            } else {
-                return item
-            }
+        const attributes = {
+            attrs: {
+                class: 'input-emoji'
+            },
+        }
 
-            let className = 'gl-16 gl-16-' + find[0]
 
-            if (item.length > 1) {
-                if (this.type == 'text')
-                    item = `<img class="${className}"   src="${src}" alt="${item}"/>`
-                else item = <img class={className} src={src} alt={item} />
-            }
-            return item
-        })
+        if (this.isOutputText) {
+            attributes.domProps={innerHTML: splitStr.join('')}
 
-        const Tag = this.tag
-        if (this.type === 'text') {
-            const attributes = {
-                attrs: {
-                    class: 'input-emoji'
-                },
-                on: {
-                    //copy: this.listenerCopy
-                }
-            }
-            splitStr = splitStr.join('')
-            return <Tag {...attributes} domPropsInnerHTML={splitStr} />
+            return <Tag {...attributes} />
         } else {
-            const attributes = {
-                attrs: {
-                    class: 'input-emoji',
-                    id: 'contenteditable',
-                    contenteditable: true,
-                    placeholder: 'Enter - отправить сообщение, Shift+Enter - новая строка.'
-                },
-                on: {
-                    input: this.inputChange,
-                    blur: this.blur,
-                    paste: this.listenerClearStylePaste
-                    //oncopy: this.listenerCopy
-                }
+            attributes.attrs={
+                ...attributes.attrs,
+                id: 'contenteditable',
+                contenteditable: true,
+                placeholder: 'Enter - отправить сообщение, Shift+Enter - новая строка.'
             }
+            attributes.on = {
+                input: this.inputChange,
+                blur: this.blur,
+                paste: this.listenerClearStylePaste
+            }
+
             return <pre {...attributes}>{splitStr}</pre>
         }
     }

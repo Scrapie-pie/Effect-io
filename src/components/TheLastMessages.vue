@@ -28,7 +28,7 @@ import NavAside from '@/components/NavAside'
 import lodash_sortBy from 'lodash/sortBy'
 
 import { viewModeChat, httpParams } from '@/mixins/mixins'
-import wrapTextUrls from '@/modules/wrapTextUrls'
+
 export default {
     components: { NavAside },
     mixins: [viewModeChat, httpParams],
@@ -74,8 +74,9 @@ export default {
         },
         itemFormatSetOptions(item) {
             let text = this.lastMessage(item.last_message, item)
-            text = wrapTextUrls(item.last_message)
+            text = item.last_message
             item.basePeopleOptions = {
+                inputEmojiNoBr:true,
                 status: item.online,
                 avatarUrl: item.photo,
                 name: item.fullName,

@@ -40,7 +40,7 @@ import lodash_sortBy from 'lodash/sortBy'
 import lodash_difference from 'lodash/difference'
 
 import { viewModeChat, httpParams, scrollbar, paginator } from '@/mixins/mixins'
-import { wrapTextUrls } from '@/modules/modules'
+
 import { datetimeStoHMS } from '@/modules/datetime'
 
 export default {
@@ -239,12 +239,13 @@ export default {
         },
         itemFormatSetOptions(item) {
             item.basePeopleOptions = {
+                inputEmojiNoBr:true,
                 avatarUrl: item.photo,
                 avatarStub: item.photo_stub,
                 avatarName: item.avatarName,
                 name: this.setName(item, this.visitorInfo),
                 regRuLogin: item.regRuLogin,
-                text: wrapTextUrls(item.last_authorAndMessage),
+                text: item.last_authorAndMessage,
                 channelName: this.$store.getters.channelName(item.channel_type),
 
                 bgTextNoFill: true,
