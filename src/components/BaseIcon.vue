@@ -15,6 +15,11 @@
     importAll(sistemFiles);*/
 //files.keys().forEach(files);
 
+import tags from '@/assets/img/icons/tags.svg'
+import monitoring from '@/assets/img/icons/monitoring.svg'
+import channels from '@/assets/img/icons/channels.svg'
+
+
 import regruDesctop from '@/assets/img/icons/regru/regruDesctop.svg'
 import regruManager from '@/assets/img/icons/regru/regruManager.svg'
 import regruOtrs from '@/assets/img/icons/regru/regruOtrs.svg'

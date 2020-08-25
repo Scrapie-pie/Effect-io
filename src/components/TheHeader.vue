@@ -72,7 +72,7 @@ export default {
                 {
                     text: 'Каналы связи',
                     link: { name: 'channelList' },
-                    icon: 'channelsOfConnection',
+                    icon: 'channels',
                     hide: !this.$store.getters['user/isRole'](['admin', 'owner', 'operatorSenior'])
                 },
                 //{text: 'Сменить учетную запись', link: {name: 'auth'}},
@@ -176,6 +176,9 @@ export default {
 
     .icon_phrases {
         fill: #009efd;
+    }
+    .icon_monitoring{
+        transform: scale(1.2);
     }
 
     @include media($width_xs) {
