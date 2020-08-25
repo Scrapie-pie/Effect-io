@@ -383,6 +383,7 @@ export default {
     $color_bg-info: glob-color('info');
     $color_bg-info-dark: glob-color('info-dark');
     $color_light: glob-color('light');
+    $color_info-lighten: glob-color('info-lighten');
     $transition: $glob-trans;
 
     display: flex;
@@ -415,10 +416,12 @@ export default {
         padding-top: calc-em(10);
         padding-bottom: calc-em(10);
         cursor: pointer;
+        background-color:$color_info-lighten;
 
         &:hover,
         &_active {
-            background-color: $color_bg-hover;
+           // background-color: $color_bg-hover;
+            filter: brightness(0.9);
         }
 
         &_chat_ended#{$el}__item_no_tag {
