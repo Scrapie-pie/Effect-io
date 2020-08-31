@@ -16,7 +16,7 @@
                     label.user-status__text.user-status__text_offline(@click="show=false")
                         input.user-status__input(type="radio" name="status" value="0" v-model.number="status")
                         | Не в сети (оффлайн)
-                li.user-status__item
+                //li.user-status__item
                     label.user-status__text.user-status__text_break(@click="show=false")
                         input.user-status__input(type="radio" name="status" value="2" v-model.number="status")
                         | Перерыв

@@ -106,7 +106,7 @@
                             btn-sort(:toggle="sortFieldsComp['average_time_in_chats_2']", @result="val=>sortFieldsSetSortField(val,'average_time_in_chats_2')")
                     th(v-if="hideStatsAllBranchAndByDates")
                         .stats-table-line__th-wrap
-                            |Время <br>  в перерыве
+                            |Время <br>  в обеде
                             btn-sort(:toggle="sortFieldsComp['operators_time_in_break']", @result="val=>sortFieldsSetSortField(val,'operators_time_in_break')")
                     th
                         .stats-table-line__th-wrap
