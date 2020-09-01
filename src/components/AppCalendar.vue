@@ -139,12 +139,12 @@ export default {
         },
         selectedDayStore: {
             handler(val, oldval) {
-                if (!val.length) return
+                if (!val?.length) return
                 if (!this.selectedDayStoreOnce) return
 
                 let { end, start, time_from, time_to } = val[0]
 
-                console.log(this.mode)
+
                 if (this.mode === 'single') {
                     this.selectedDay = new Date(start)
                 } else {
