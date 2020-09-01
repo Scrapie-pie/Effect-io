@@ -15,7 +15,7 @@
     importAll(sistemFiles);*/
 //files.keys().forEach(files);
 
-import tags from '@/assets/img/icons/tags.svg'
+/*import tags from '@/assets/img/icons/tags.svg'
 import monitoring from '@/assets/img/icons/monitoring.svg'
 import channels from '@/assets/img/icons/channels.svg'
 
@@ -102,7 +102,15 @@ import n16 from '@/assets/img/icons/avatars/n16.svg'
 import n17 from '@/assets/img/icons/avatars/n17.svg'
 import n18 from '@/assets/img/icons/avatars/n18.svg'
 import n19 from '@/assets/img/icons/avatars/n19.svg'
-import n20 from '@/assets/img/icons/avatars/n20.svg'
+import n20 from '@/assets/img/icons/avatars/n20.svg'*/
+
+
+
+function requireAll(r) {
+    r.keys().forEach(r);
+}
+
+requireAll(require.context("@/assets/img/icons/", true, /.*\.svg$/));
 
 export default {
     props: {

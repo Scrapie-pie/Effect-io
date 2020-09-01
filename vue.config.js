@@ -20,7 +20,7 @@ module.exports = {
         sourceMap: true,
         loaderOptions: {
             sass: {
-                data: '@import "@/scss/settings.scss";'
+                additionalData: '@import "@/scss/settings.scss";'
             }
         }
     },
