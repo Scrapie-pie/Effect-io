@@ -1,9 +1,9 @@
 <template lang="pug">
     ul.client-info-actions(:class="{'client-info-actions_is-mobile':isMobile}")
-        li.client-info-actions__item(v-if="info.regRuId")
-            base-btn( type="a", :href="`https://desktop.reg.ru/card/user/${info.regRuId}/`" target="_blank" , :icon="{name:'regruDesctop',left:true}",) Открыть десктоп
+        li.client-info-actions__item(v-if="integrationRegru")
+            base-btn( type="a", :href="regruLinkDesctop" target="_blank" , :icon="{name:'regruDesctop',left:true}",) Открыть десктоп
             br
-            base-btn( type="a", :href="`https://manager.reg.ru/manager/user_details?user_id=${info.regRuId}`" target="_blank" , :icon="{name:'regruManager',left:true}",) Открыть менеджер
+            base-btn( type="a", :href="regruLinkManager" target="_blank" , :icon="{name:'regruManager',left:true}",) Открыть менеджер
         template(v-if="viewModeChat!='process'")
             li.client-info-actions__item
                 base-btn(v-if="integrationRegru", :icon="{name:'regruOtrs',left:true}", @click="showFormORTS") Создать заявку в ОТРС
@@ -30,6 +30,16 @@ export default {
         return {}
     },
     computed: {
+        regruLinkDesctop(){
+            let link = 'https://desktop.reg.ru/';
+            if(this.info.regRuId) link= `https://desktop.reg.ru/card/user/${this.info.regRuId}/`;
+            return link
+        },
+        regruLinkManager(){
+            let link = 'https://manager.reg.ru/';
+            if(this.info.regRuId) link= `https://manager.reg.ru/manager/user_details?user_id=${this.info.regRuId}`;
+            return link
+        },
         integrationRegru() {
             return this.$store.state.user.siteCompanyList.find(
                 item => item.id === this?.httpParams?.params.site_id && item.regruIntegration
