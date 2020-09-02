@@ -107,7 +107,7 @@
                     th(v-if="hideStatsAllBranchAndByDates")
                         .stats-table-line__th-wrap
                             |Время <br>  в обеде
-                            btn-sort(:toggle="sortFieldsComp['operators_time_in_break']", @result="val=>sortFieldsSetSortField(val,'operators_time_in_break')")
+                            btn-sort(:toggle="sortFieldsComp['operators_time_in_lunch']", @result="val=>sortFieldsSetSortField(val,'operators_time_in_lunch')")
                     th
                         .stats-table-line__th-wrap
                             |Сообщений  <br> операторов
@@ -156,7 +156,7 @@
                     td(v-if="hideStatsAllBranchAndByDates") {{item.average_time_in_chats_2  | datetimeStoHMS(true)}}
 
 
-                    td(v-if="hideStatsAllBranchAndByDates") {{item.operators_time_in_break  | datetimeStoHMS(true)}}
+                    td(v-if="hideStatsAllBranchAndByDates") {{item.operators_time_in_lunch  | datetimeStoHMS(true)}}
                     td {{item.operator_messages}}
                     td {{item.guest_messages}}
 
@@ -209,7 +209,7 @@
                     td(v-if="hideStatsAllBranchAndByDates") {{item.average_time_in_chats_2  | datetimeStoHMS(true)}}
 
 
-                    td(v-if="hideStatsAllBranchAndByDates") {{item.operators_time_in_break  | datetimeStoHMS(true)}}
+                    td(v-if="hideStatsAllBranchAndByDates") {{item.operators_time_in_lunch  | datetimeStoHMS(true)}}
                     td {{item.operator_messages}}
                     td {{item.guest_messages}}
 
@@ -250,7 +250,7 @@
                         td(v-if="hideStatsAllBranchAndByDates") {{item.average_time_in_chats_2  | datetimeStoHMS(true)}}
 
 
-                        td(v-if="hideStatsAllBranchAndByDates") {{item.operators_time_in_break  | datetimeStoHMS(true)}}
+                        td(v-if="hideStatsAllBranchAndByDates") {{item.operators_time_in_lunch  | datetimeStoHMS(true)}}
                         td {{item.operator_messages}}
                         td {{item.guest_messages}}
 
