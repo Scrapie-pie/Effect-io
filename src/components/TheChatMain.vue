@@ -27,7 +27,7 @@
 
 
 
-                                input-emoji.chat-main__messages-sys(is-output-text tag="p" v-else type="text", :text="sysText(item)")
+                                input-emoji.chat-main__messages-sys(is-output-text tag="p" v-else type="text", :text="sysText(item)", :isEscapeTags="false")
                             template(v-else)
                                 message-item(v-bind="item.basePeopleOptions")
 
@@ -43,6 +43,7 @@
                                 :avatar-stub="visitorInfo.photo_stub",
                                 :name="visitorInfo.name",
                                 :text="visitorTypingLive",
+                                :isEscapeTags="false",
                                 :right="true",
                             )
 

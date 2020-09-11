@@ -22,6 +22,11 @@ export default {
             type: Boolean,
             default: false
         },
+
+        isEscapeTags:{
+            type: Boolean,
+            default: true
+        },
         tag: {
             type: String,
             default: 'span'
@@ -55,12 +60,18 @@ export default {
     },
     mounted() {},
     methods: {
-        textToTextWidthTagEmoj(text,isOutputText){
+        textToTextWidthTagEmoj({text,isOutputText,isEscapeTags=this.isEscapeTags}){
 
             if(isOutputText) {
+
+                if(isEscapeTags) {
+                    text = text
+                        .replace(/</g, '&lt;')
+                        .replace(/>/g, '&gt;')
+                }
+
                 text = text
-                    .replace(/</g, '&lt;')
-                    .replace(/>/g, '&gt;')
+
                     .replace(/onerror/g, 'xss_off_onerror')
 
                 text = this.wrapTextUrls(text)
@@ -139,7 +150,7 @@ export default {
                 .replace(/onerror/g, 'xss_off_onerror')
             text =  this.messageBreakLine(text)
             console.log(text);*/
-            text =  this.textToTextWidthTagEmoj(text,true).join('')
+            text =  this.textToTextWidthTagEmoj({text,isOutputText:true}).join('')
 
             /* const selection = window.getSelection();
             if (!selection.rangeCount) return false;
@@ -184,7 +195,7 @@ export default {
         let Tag = this.tag
         let splitStr = this.text
 
-        splitStr =  this.textToTextWidthTagEmoj(splitStr,this.isOutputText)
+        splitStr =  this.textToTextWidthTagEmoj({text:splitStr,isOutputText:this.isOutputText})
 
         const attributes = {
             attrs: {

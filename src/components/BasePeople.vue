@@ -27,8 +27,10 @@
             p.base-people__text(
                 v-if="text"
             )
-                input-emoji(is-output-text :text="text", :isNoBr="inputEmojiNoBr")
+                input-emoji(is-output-text :text="text", :isNoBr="inputEmojiNoBr", :isEscapeTags="isEscapeTags")
 
+            p.base-people__text(v-if="$slots.text")
+                slot(name="text")
             figure.base-people__files(v-if="files.length")
                 ul.base-people__files-list
                     li.base-people__files-item(v-for="(item, index) in files" :key="item.link")
@@ -71,6 +73,10 @@ export default {
         }
     },
     props: {
+        isEscapeTags:{
+            type: Boolean,
+            default: true
+        },
         inputEmojiNoBr:{
             type: Boolean,
             default: false
