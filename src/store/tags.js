@@ -32,8 +32,8 @@ export default {
                 commit('set', data.data)
             })
         },
-        setTagChat({}, { tag_id, site_id, guest_uuid, comment,finish_chat }) {
-            this._vm.$http.post('tag/tag/set-chat-tag', { tag_id, site_id, guest_uuid, comment,finish_chat })
+        setTagChat({}, { tag_id, site_id, guest_uuid, comment,finish_chat,chat_id }) {
+            this._vm.$http.post('tag/tag/set-chat-tag', { tag_id, site_id, guest_uuid, comment,finish_chat,chat_id })
         }
     },
     getters: {
