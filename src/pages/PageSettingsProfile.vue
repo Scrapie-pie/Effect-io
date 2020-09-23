@@ -352,7 +352,7 @@ export default {
             this.model.avatar = event
         },
         createOperator() {
-            this.$http.post('employees', this.model).then(({ data }) => {
+            this.$http.post('employees/create', this.model).then(({ data }) => {
                 browserNotification('Оператор создан')
                 this.$router.push({ name: 'team' })
             })
@@ -367,7 +367,7 @@ export default {
                     }
 
                     this.$http
-                        .post('user/update-profile', this.model)
+                        .post('employees/update', this.model)
                         .then(({ data }) => {
                             if (data.data.id === this.profile.id) browserNotification('Сохранено')
                             this.$router.push({ name: 'team' })
