@@ -1,35 +1,36 @@
 <template lang="pug">
     section.popup
-        box-controls(v-if="!!noticeText", type="notice", @boxControlClose="noticeText=false")
-            span(slot="text" v-html="noticeText")
-            base-btn(@click="noticeText=false") Понятно
-        box-controls(v-if="notFind", type="popup", @boxControlClose="notFind=false")
-            template(slot="text") Поиск не работает в start версии
-            base-btn Посмотреть тарифы
-        box-controls(v-if="img",  type="gallery", @boxControlClose="img=false")
-            img(:src="img" alt="Увеличенная картинка")
-        box-controls.popup__select-tags(type="popup"  v-if="showTagsPopup", @boxControlClose="tagsClose")
-            select-tags(:finish-chat="showTagsPopupFinishChat")
-        box-controls.popup__select-branch(
-            type="popup"
-            v-if="showSelectBranch",
-            @boxControlClose="showSelectBranch=false"
+        keep-alive
+            box-controls(v-if="!!noticeText", type="notice", @boxControlClose="noticeText=false")
+                span(slot="text" v-html="noticeText")
+                base-btn(@click="noticeText=false") Понятно
+            box-controls(v-if="notFind", type="popup", @boxControlClose="notFind=false")
+                template(slot="text") Поиск не работает в start версии
+                base-btn Посмотреть тарифы
+            box-controls(v-if="img",  type="gallery", @boxControlClose="img=false")
+                img(:src="img" alt="Увеличенная картинка")
+            box-controls.popup__select-tags(type="popup"  v-if="showTagsPopup", @boxControlClose="tagsClose")
+                select-tags(:finish-chat="showTagsPopupFinishChat")
+            box-controls.popup__select-branch(
+                type="popup"
+                v-if="showSelectBranch",
+                @boxControlClose="showSelectBranch=false"
+                )
+                select-branch
+            box-controls(type="popup" v-if="showFormORTS", @boxControlClose="showFormORTS=false")
+                form-o-t-r-s
+            box-controls.popup__select-operator(
+                type="popup"
+                v-if="showSelectOperatorsInvite",
+                @boxControlClose="showSelectOperatorsInvite=false"
             )
-            select-branch
-        box-controls(type="popup" v-if="showFormORTS", @boxControlClose="showFormORTS=false")
-            form-o-t-r-s
-        box-controls.popup__select-operator(
-            type="popup"
-            v-if="showSelectOperatorsInvite",
-            @boxControlClose="showSelectOperatorsInvite=false"
-        )
-            select-operators(name="invite")
-        box-controls.popup__select-operator(
-            type="popup"
-            v-if="showSelectOperatorsTransfer",
-            @boxControlClose="showSelectOperatorsTransfer=false"
-        )
-            select-operators(name="transfer")
+                select-operators(name="invite")
+            box-controls.popup__select-operator(
+                type="popup"
+                v-if="showSelectOperatorsTransfer",
+                @boxControlClose="showSelectOperatorsTransfer=false"
+            )
+                select-operators(name="transfer")
 
 </template>
 
