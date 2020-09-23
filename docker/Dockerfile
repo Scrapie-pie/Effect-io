@@ -7,9 +7,10 @@ RUN apk update && apk upgrade && \
 
 FROM baseimage as builder
 WORKDIR /app
-COPY package*.json ./
-RUN npm install
+#COPY package*.json vue.config.js ./
 COPY . .
+RUN npm install
+#COPY . .
 ARG NODE_ENV
 ARG VUE_APP_API_SERVER
 ARG VUE_APP_POLLING_SERVER
