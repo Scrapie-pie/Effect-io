@@ -1,5 +1,6 @@
 <template lang="pug">
     form.select-tags
+
         base-wait(name="pageTags")
         fieldset.select-tags__box
             legend.select-tags__title Выберите тэг
