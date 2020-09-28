@@ -163,6 +163,18 @@ export default {
                 this._vm.$set(state.self[findIndex], 'uploadFileList', uploadFileList)
             }
         },
+        saveTextAreaPopups(state, {nameComponent, ids,obj}) {
+            let findIndex
+
+            let { guest_uuid, site_id,chat_id } = ids
+            findIndex = state.self.findIndex(
+                item => item.guest_uuid + item.site_id === guest_uuid + site_id
+            )
+            if (findIndex !== -1) {
+                this._vm.$set(state.self[findIndex], nameComponent, obj)
+
+            }
+        },
         setSelfLastPageN(state, val) {
             state.selfLastPageN = val
         },

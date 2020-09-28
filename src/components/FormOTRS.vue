@@ -11,7 +11,8 @@
                         name="login",
                         placeholder="Введите логин (e-mail) клиента"
                         v-model="email",
-                        :disabled="!!visitorsEmail"
+                        :disabled="!!visitorsEmail",
+                        @blur="saveTextArea"
                         )
                 li.form-otrs__item
                     base-field(
@@ -19,7 +20,8 @@
                         name="textarea",
                         placeholder="Комментарий"
                         maxLength="5000"
-                        v-model="operator_comment"
+                        v-model="operator_comment",
+                        @blur="saveTextArea"
                     )
                 li.form-otrs__item
                     base-field(
@@ -27,7 +29,7 @@
                     :selectOptions="{label:'title',options:selectCategories}"
                     name="category"
                     v-model="category",
-
+                    @blur="saveTextArea"
                     v-validate="'required'"
                     data-vv-as="\"Категория\""
                     )
@@ -77,9 +79,32 @@ export default {
         }
     },
     mounted() {
+        this.getTextArea()
         //this.getLoginRegRu()
     },
     methods: {
+        getTextArea(){
+            const {site_id,guest_uuid,chat_id} = this.httpParams.params
+            let list = this.$store.state.visitors.self
+
+            let find = list.find(item => item.site_id + item.guest_uuid+item.chat_id === site_id + guest_uuid + chat_id)
+            if(find) {
+                this.email = find?.formOTRS?.email || ''
+                this.operator_comment = find?.formOTRS?.operator_comment || ''
+                this.category = find?.formOTRS?.category || ''
+            }
+        },
+        saveTextArea(){
+            this.$store.commit(`visitors/saveTextAreaPopups`, {
+                ids: this.httpParams.params,
+                nameComponent: 'formOTRS',
+                obj:{
+                    email:this.email,
+                    operator_comment:this.operator_comment,
+                    category:this.category
+                }
+            })
+        },
         getLoginRegRu() {
             let params = this.httpParams.params
 
