@@ -367,7 +367,7 @@ export default {
                     }
 
                     this.$http
-                        .put('employees/update', this.model)
+                        .post('user/update-profile', this.model)
                         .then(({ data }) => {
                             if (data.data.id === this.profile.id) browserNotification('Сохранено')
                             this.$router.push({ name: 'team' })
