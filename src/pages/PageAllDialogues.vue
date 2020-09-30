@@ -145,6 +145,7 @@ export default {
     computed: {
         paramsComp() {
             return {
+                timezone:Intl.DateTimeFormat().resolvedOptions().timeZone,
                 users_ids: this.users_ids,
                 sites_ids: this.sites_ids,
 
