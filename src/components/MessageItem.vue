@@ -8,7 +8,7 @@
             p.message-item__text(
                 v-if="text"
             )
-                input-emoji(type="text" :text="text")
+                input-emoji(type="text", :text="text", :is-escape-tags="roleId!==9", is-output-text)
             figure.message-item__files(v-if="files.length")
                 ul.message-item__files-list
                     li.message-item__files-item(v-for="(item, index) in files" :key="item.link")

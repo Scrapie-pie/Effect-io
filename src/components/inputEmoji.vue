@@ -60,7 +60,7 @@ export default {
     },
     mounted() {},
     methods: {
-        textToTextWidthTagEmoj({text,isOutputText,isEscapeTags=this.isEscapeTags}){
+        textToTextWidthTagEmoj({text,isOutputText=this.isOutputText,isEscapeTags=this.isEscapeTags}){
 
             if(isOutputText) {
 
@@ -195,7 +195,7 @@ export default {
         let Tag = this.tag
         let splitStr = this.text
 
-        splitStr =  this.textToTextWidthTagEmoj({text:splitStr,isOutputText:this.isOutputText})
+        splitStr =  this.textToTextWidthTagEmoj({text:splitStr})
 
         const attributes = {
             attrs: {
